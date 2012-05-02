@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<script src="js/constants.js"></script>
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/parseFeed.js"></script>
+	<script>
+	
+		$(function() {
+			// Fetching and displaying the feed
+			fetchFeed();
+			displayStories(localStorage.lastResponseData);
+		});
+	
+		function displayStories(feed_data) {
+		
+			// get some news images from online.ntnu.no
+			/*var images = new Array(
+				"http://informatikk.org/extension/fletcher.php?image=0&creator=lol",
+				"http://informatikk.org/extension/fletcher.php?image=1&creator=wat",
+				"http://informatikk.org/extension/fletcher.php?image=2&creator=foo"
+			);*/
+	
+			// parse the feed
+			var xml_doc = $.parseXML(feed_data);
+			$xml = $(xml_doc);
+			var items = $xml.find("item");
+		
+			// find most recent post
+			localStorage.mostRecentRead = $(items[0]).find("guid").text();
+		
+			// add feed items to popup
+			items.each(function(index, element) {
+			
+				var post = parsePost(element);
+				var item = '';
+				
+				if (index < localStorage.unreadCount)
+					item += '<div class="post"><span class="unread">NEW || UPDATED</span><span class="date"> <b>::</b></span>'
+				else
+					item += '<div class="post"><span class="read"></span>';
+			
+				item += '\
+					<span class="creator">' + post.creator + '</span><span class="date"> <b>::</b> ' + post.date + '</span>\
+					<a href="' + post.link + '">\
+					<div class="item" onclick="openUrl(\'' + post.link + '\');">\
+						<img src="https://online.ntnu.no/media/steria_logo_thumbnail.jpeg" width="107" />\
+						<span class="title">' + post.title + '</span><br />\
+						<span class="description">' + post.description + '</span>\
+					</div>\
+					</a>\
+				</div>';
+				$('#popup').append(item);
+			});
+			
+			// all items are now considered read :)
+			chrome.browserAction.setBadgeText({text:''});
+			localStorage.unreadCount = 0;
+		}
+	
+	</script>
+	
+	<!-- For some reason the stylesheet must be defined after the scripts. wat. -->
+	<style>
+	
+		/*
+		Hierarchy:
+
+		Body
+			#Popup
+				#Logo
+				#Post
+					#Item
+						#Title
+						#Description
+						#Creator
+						#Date
+		*/
+
+		/* The popup (and desktop notification) body */
+
+		body {
+			overflow-x:hidden;
+			margin:0;
+			padding:0;
+			background:#001429 url('/img/background-popup.png') center center no-repeat;
+			border:1px solid black;
+			font:bold 9pt helvetica;
+			color:white;
+		}
+
+		/* The popup div */
+
+		#popup {
+			width:400px;
+			height:400px;
+			overflow-x:hidden;
+			padding:15px;
+		}
+
+		/* Toptext and logo */
+		
+		#buttons {
+			position:relative;
+			float:left;
+			z-index:100;
+			left:0px;
+			top:6px;
+			margin-left:7px;
+		}
+		
+		a .popupbutton {
+			border-radius:5px;
+			margin-right:8px;
+			-webkit-transition: all .2s ease-out;
+		}
+		
+		a .popupbutton:hover {
+			box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
+		}
+		
+		#logo {
+			float: right;
+			position: relative;
+			cursor: pointer;
+			z-index: 100;
+			right: 0px;
+			width: 150px;
+			top: 6px;
+		}
+		
+		/* Each ".post" in the popup contains one ".item" */
+
+		.post {
+			width:100%;
+		}
+
+		.unread {
+			font-size:8pt;
+			text-shadow: 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 25px #011b36, 0 0 30px #011b36, 0 0 35px #fff, 0 0 40px #011b36, 0 0 45px #011b36;
+			margin-left:7px;
+		}
+
+		.read {
+			margin-left:7px;
+		}
+
+		/* Each ".item" */
+
+		.item {
+			width:96%; /* 370px, 96% actually works better across win/mac/linux */
+			min-height:60px;
+			padding:7px;
+			text-overflow:ellipsis;
+			overflow:hidden;
+			margin-right:15px;
+			margin-bottom:8px;
+			-webkit-transition: -webkit-box-shadow 0.3s ease-out 0s;
+		}
+
+		a {
+			color:white;
+			text-decoration:none;
+			outline:none;
+		}
+
+		.item img {
+			float:left;
+			-webkit-box-shadow:0px 0px 10px #bbb;
+			padding:5px;
+			background:snow;
+			margin-right:15px;
+			width:107px;
+			height:70px;
+		}
+
+		.item:hover, .item:hover a {
+			-webkit-box-shadow: inset 0px 0px 2px #bbb, 0px 0px 15px #bbb;
+		}
+
+		.creator {
+			color:#ee861f;
+			text-transform:uppercase;
+			font-size:8pt;
+		}
+
+		.date {
+			text-transform:uppercase;
+			font-size:8pt;
+		}
+
+		.title {
+			margin-top:0;
+			margin-bottom:0;
+		}
+
+		.description {
+			font-weight:normal;
+		}
+	
+	</style>
+	
+	<!-- Google Analytics -->
+	<script type="text/javascript" src="js/googleAnalytics.js"></script>
+	
+</head>
+<body>
+	<div id="popup">
+		<div id="buttons">
+			<a href="options.html" target="_blank"><img class="popupbutton" src="img/popup-options.png" /></a> 
+			<script>document.write('<a href="'+EMAIL+'" target="_blank"><img class="popupbutton" src="img/popup-feedback.png" /></a>');</script>
+		</div>
+		<img src="img/logo-normal.png" id="logo" onclick="openUrl(EXTENSION_WEBSITE); window.close();" />
+		<br clear="all" />
+		<br clear="all" />
+	</div>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+{
+  "name": "Online Notifier",
+  "version": "0.99.2.0",
+  "manifest_version": 1,
+  "offline_enabled": true,
+	
+  "description": "Retrieves news and office status from Onlines systems.",
+  "update_url": "http://informatikk.org/notifier/updates.xml",
+  "homepage_url": "https://online.ntnu.no/",
+
+  "options_page": "options.html",
+	"background": {
+		"page": "background.html"
+	},
+
+  "browser_action": {
+    "default_icon": "img/icon-default.png",
+    "default_title": "Online Notifier",
+    "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16" : "img/logo-16.png",
+    "48" : "img/logo-48.png",
+    "128" : "img/logo-128.png"
+  },
+
+	//"content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com; object-src 'self'",
+
+  "permissions": [
+    "notifications",
+    "http://online.ntnu.no/*",
+    "https://online.ntnu.no/*",
+    "http://draug.online.ntnu.no/lys.txt",
+    "https://online.ntnu.no/service_static/online_notifier"
+  ],
+
+	"content_scripts": [
+    {
+      "matches": ["http://online.ntnu.no/*", "https://online.ntnu.no/*" ],
+      "js": ["js/jquery-1.7.2.min.js", "js/onWebsite.js"]
+    }
+  ]
+}
+
+
+
+
+
+

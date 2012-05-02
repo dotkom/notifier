@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<script src='js/constants.js'></script>
+	<script src='js/jquery-1.7.2.min.js'></script>
+	<script src='js/parseFeed.js'></script>
+	<style>
+
+	body {
+		overflow-x:hidden;
+		margin:0;
+		padding:0;
+	}
+
+	/* The item */
+
+	.item {
+		width:280px;
+		font-family:helvetica;
+		padding:5px;
+		text-overflow:ellipsis;
+		overflow:hidden;
+		margin-bottom:8px;
+	}
+
+	a {
+		cursor:pointer;
+		text-decoration:none;
+		font-size:9pt;
+		font-weight:normal;
+		color:black;
+	}
+
+	.item img {
+		float:left;
+		-webkit-box-shadow:0px 0px 10px DimGray;
+		padding:5px;
+		margin-left:5px;
+		margin-right:15px;
+		width:107px;
+		height:60px;
+	}
+
+	header {
+		display:block;
+		margin-bottom:8px;
+	}
+
+	.creator {
+		text-transform:uppercase;
+		font-family:helvetica;
+		font-size:8pt;
+		margin-left:5px;
+		font-weight:bold;
+		color:#ee861f;
+	}
+
+	.date {
+		text-transform:uppercase;
+		font-family:helvetica;
+		font-size:8pt;
+	}
+
+	.title {
+		margin-top:0;
+		margin-bottom:0;
+		font-weight:bold;
+	}
+
+	.description {
+		/* nothing to see here yet */
+	}
+	
+	/* For some reason if I don't embed the CSS directly in this file,
+	Chrome gets all buggy when the notification loads the first time,
+	so... code below. */
+	</style>
+
+	<script>
+	
+		function setNotification() {
+			
+			// get all data to put in the notification
+			var link, creator, date, img, title, desc;
+			if (localStorage.testNotification == 'true') {
+				localStorage.testNotification = 'false';
+				link = 'http://online.ntnu.no';
+				creator = EXTENSION_NAME;
+				date = new Date().toDateString();
+				img = 'http://fc03.deviantart.net/fs70/f/2011/154/6/6/minecraft_trollface_by_exit1-d3hxzjs.png';
+				title = "Trollolololololololololol";
+				desc = "Important message from " + CREATOR_NAME +": \"Have a trolling day sir!\"";
+			}
+			else {
+				link = localStorage.notificationLink;
+				creator = localStorage.notificationCreator;
+				date = localStorage.notificationDate;
+				img = 'https://online.ntnu.no/media/steria_logo_thumbnail.jpeg';
+				title = localStorage.notificationTitle;
+				desc = localStorage.notificationDescription;
+			}
+			
+			// shorten title and description to fit nicely
+			var maxlength = 90;
+			var total = title.length + desc.length;
+			if (maxlength < total) {
+				var diff = total - maxlength;
+				desc = desc.substring(0, desc.length - diff) + '...';
+			}
+			
+			// create the HTML
+			$('#notification').html('\
+				<a href="' + link + '">\
+				<div class="item" onclick="openUrl(\'' + link + '\'); window.close();">\
+					<header>\
+						<span class="creator">' + creator + '</span>\
+						<span class="date"> <b>::</b> ' + date + '</span>\
+					</header>\
+					<img src="' + img + '" />\
+					<span class="title">' + title + ' :: </span>\
+					<span class="description">' + desc + '</span>\
+				</div>\
+				</a>');
+			}
+			
+			// show html5 notification with timeout
+			$('body').ready(function() {
+				setNotification();
+				setTimeout(function() {
+				window.close();
+			}, DESKTOP_NOTIFICATION_TIMEOUT);
+		});
+	</script>
+
+	<!-- Google Analytics -->
+	<script type="text/javascript" src="js/googleAnalytics.js"></script>
+	
+</head>
+<body>
+	<div id="notification" />
+</body>
+</html>
+
+
+
+
+

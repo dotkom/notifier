@@ -1,0 +1,183 @@
+
+<!--
+
+questions? -> dotkom@online.ntnu.no
+
+~~~~progression list~~~~
+
+general stuff:
+[x] open options page on first run
+[x] reset vars in localStorage for when the extension is reloaded in dev-mode
+[x] separate script containing constants for changeability
+[x] run google analytics on all pages
+
+feed stuff:
+[x] fetch and parse feed from Onlines website
+[x] count unread news and present number in a small badge
+[x] serve desktop notifications on news / updates
+[x] fancy desktop notification design
+[x] popup presenting feed, separate between read and unread items
+[x] fancy css3 design for popup
+
+light stuff:
+[x] read light value from the arduino connected to draug.online.ntnu.no
+[x] find stable border value, fairly unaffected by sunlight
+[x] read light value every 5 minutes
+
+calendar stuff:
+[x] read all this from Onlines own server to be able to handle more requests
+[x] cheap requests, only asking for specifically needed info
+
+icon stuff:
+[x] change icon based on light values and calendar events
+[x] use title text containing the name of the event
+[x] separate icon showing when you're offline
+[x] update icon based on stored event every minute (react to meetings quickly)
+
+website stuff:
+[x] detect when user is visiting the Online website
+[x] fetch most recent news from Onlines website upon arrival
+[x] nullify counter badge upon arrival
+
+options stuff:
+[x] option for whether or not icons show office status
+[x] option for desktop notifications
+[x] option for nullifying counter badge (later removed for simplifying)
+[x] fancy css3 design for options page
+[x] fancy checkboxes for options page (old ones hidden)
+[x] google +1 button for Onlines website
+[x] optimalisere ikonets oppførsel slik at det reagerer umiddelbart på valg
+
+
+~~~~remains before release~~~~
+
+[ ] new/updated -> new .... updated ?
+	a = ['hest','pølse','tull','rill','f1'];
+	localStorage.a = JSON.stringify(a);
+	b = JSON.parse(localStorage.a);
+	console.log(b);
+[ ] hente bilder fra APIet/RSS-feed fra Online
+[ ] v1.0
+
+
+~~~~future stuff~~~~
+
+[ ] update URL at Onlines servers
+[ ] online notifier text in right-click menu should go somewhere
+[ ] update to manifest v2 with new security policies
+[ ] fetch feed with jquerys ajax instead of xhr
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/constants.js"></script>
+	<script src="js/parseFeed.js"></script>
+	<script src="js/officeStatus.js"></script>
+	<script>
+	
+		// Stop the extension if localStorage is not supported
+		if (typeof(localStorage)==='undefined') { // impossibru!!
+			alert(EXTENSION_NAME + " Error: localStorage not supported");
+			return;
+		}
+		
+		// Reset localStorage if extension is reloaded in dev mode
+		if (DEBUG) {
+			localStorage.clear();
+			console.log('\n\n\n\n\nlocalStorage cleared!');
+		}
+		
+		// Set some values and open options page after install
+		if (localStorage.everConnected != 'true') {
+			if (localStorage.showOfficeStatus == undefined)
+				localStorage.showOfficeStatus = 'true';
+			if (localStorage.showNotifications == undefined)
+				localStorage.showNotifications = 'true';
+			chrome.tabs.create({url: chrome.extension.getURL("options.html"), selected: true});
+		}
+		
+		localStorage.everConnected = 'false';
+		localStorage.wasConnected = 'false';
+		var iterationCounter = 1;
+
+		function mainLoop() {
+			if (DEBUG) console.log('\n# '+iterationCounter);
+	
+			// we're online :)
+			if (navigator.onLine) {
+				// now online, fetch all
+				if (localStorage.wasConnected == 'false') {
+					if (DEBUG) console.log('now online!');
+					updateOfficeStatus();
+					fetchFeed(FEED_URL, unreadCount);
+				}
+				// normal operation
+				else {
+					if (iterationCounter % REFRESH_OFFICE_INTERVAL == 0) {
+						if (DEBUG) console.log('refresh office status');
+						updateOfficeStatus();
+					}
+					if (iterationCounter % REFRESH_FEED_INTERVAL == 0) {
+						if (DEBUG) console.log('refresh feed');
+						fetchFeed(FEED_URL, unreadCount);
+					}
+				}
+				localStorage.everConnected = 'true';
+				localStorage.wasConnected = 'true';
+			}
+			// we're offline :(
+			else {
+				disconnected(localStorage.wasConnected);
+				localStorage.wasConnected = 'false';
+			}
+			iterationCounter++;
+			if (10000 < iterationCounter) // no reason to count to infinity
+				iterationCounter = 1;
+		}
+		
+		// Recieve all requests from parts of the extension that can't access
+		// localStorage or the rest of the codebase. Example: A content script.
+		function onRequest(request, sender, callback) {
+			if (DEBUG) console.log('request: '+request.action);
+			if (request.action == 'resetCounterWhenOnWebsite') {
+				localStorage.unreadCount = 0;
+				localStorage.mostRecentRead = localStorage.mostRecentUnread;
+				chrome.browserAction.setBadgeText({text:''});
+			}
+			else if (DEBUG) console.log('ERROR: unrecognized request');
+		}
+		
+		// wire up the onRequest listener function
+		chrome.extension.onRequest.addListener(onRequest);
+
+		// Document ready, go!
+		$(function() {
+			// Execute once
+			mainLoop();
+			// Schedule for repetition once a minute (checking connectivity,
+			// feed and office status). Runs every 3rd second in DEBUG-mode.
+			setInterval(function() {
+				mainLoop();
+			}, (DEBUG ? 3000 : 60000));
+		});
+
+	</script>
+
+	<!-- Google Analytics -->
+	<script type="text/javascript" src="js/googleAnalytics.js"></script>
+	
+</head>
+<body>
+</body>
+</html>
+
+
+
+
+
+
+
