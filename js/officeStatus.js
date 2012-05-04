@@ -23,7 +23,12 @@ function disconnected(wasConnected) {
 
 function defaultIcon() {
 	chrome.browserAction.setTitle({title:EXTENSION_NAME});
-	chrome.browserAction.setIcon({path:"img/icon-default.png"});
+	chrome.browserAction.setIcon({path:ICON_DEFAULT});
+}
+
+function errorIcon() {
+	chrome.browserAction.setTitle({title:CONNECTION_ERROR});
+	chrome.browserAction.setIcon({path:ICON_DISCONNECTED});
 }
 
 function resetLightData() {
@@ -60,9 +65,9 @@ function fetchEvent() {
 	})
 	.fail(function() {
 		if (DEBUG) console.log('ERROR: failed to fetch event -> reset event/light data');
-		resetMeetingData();
 		resetLightData();
-		defaultIcon();
+		resetMeetingData();
+		errorIcon();
 	});
 }
 
@@ -83,9 +88,9 @@ function fetchLights() {
 	})
 	.fail(function() {
 		if (DEBUG) console.log('ERROR: failed to fetch lights -> reset event/light data');
-		resetMeetingData();
 		resetLightData();
-		defaultIcon();
+		resetMeetingData();
+		errorIcon();
 	});
 }
 
@@ -122,7 +127,12 @@ function determineEventStatus() {
 		case 1: officeMeeting(previous == 1); break; // meeting
 		case 2: officeWaffles(previous == 2); break; // waffles
 		case 3: officeOpen(previous == 3); break; // error
-		default: if (DEBUG) console.log('ERROR: switch went to default');
+		default: {
+			if (DEBUG) console.log('ERROR: switched on '+localStorage.meetingStatus);
+			resetLightData();
+			resetMeetingData();
+			errorIcon();
+		}
 	}
 }
 

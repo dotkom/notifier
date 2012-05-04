@@ -1,4 +1,3 @@
-
 <!--
 
 questions? -> dotkom@online.ntnu.no
@@ -14,6 +13,7 @@ general stuff:
 feed stuff:
 [x] fetch and parse feed from Onlines website
 [x] count unread news and present number in a small badge
+[x] separate between new, updated and read items
 [x] serve desktop notifications on news / updates
 [x] fancy desktop notification design
 [x] popup presenting feed, separate between read and unread items
@@ -46,16 +46,11 @@ options stuff:
 [x] fancy css3 design for options page
 [x] fancy checkboxes for options page (old ones hidden)
 [x] google +1 button for Onlines website
-[x] optimalisere ikonets oppførsel slik at det reagerer umiddelbart på valg
+[x] optimize the icons behaviour to react immediately to changes
 
 
 ~~~~remains before release~~~~
 
-[ ] new/updated -> new .... updated ?
-	a = ['hest','pølse','tull','rill','f1'];
-	localStorage.a = JSON.stringify(a);
-	b = JSON.parse(localStorage.a);
-	console.log(b);
 [ ] hente bilder fra APIet/RSS-feed fra Online
 [ ] v1.0
 
@@ -65,7 +60,6 @@ options stuff:
 [ ] update URL at Onlines servers
 [ ] online notifier text in right-click menu should go somewhere
 [ ] update to manifest v2 with new security policies
-[ ] fetch feed with jquerys ajax instead of xhr
 
 -->
 
@@ -113,17 +107,17 @@ options stuff:
 				if (localStorage.wasConnected == 'false') {
 					if (DEBUG) console.log('now online!');
 					updateOfficeStatus();
-					fetchFeed(FEED_URL, unreadCount);
+					fetchFeed(unreadCount);
 				}
 				// normal operation
 				else {
 					if (iterationCounter % REFRESH_OFFICE_INTERVAL == 0) {
-						if (DEBUG) console.log('refresh office status');
+						//if (DEBUG) console.log('refresh office status');
 						updateOfficeStatus();
 					}
 					if (iterationCounter % REFRESH_FEED_INTERVAL == 0) {
-						if (DEBUG) console.log('refresh feed');
-						fetchFeed(FEED_URL, unreadCount);
+						//if (DEBUG) console.log('refresh feed');
+						fetchFeed(unreadCount);
 					}
 				}
 				localStorage.everConnected = 'true';
@@ -142,7 +136,6 @@ options stuff:
 		// Recieve all requests from parts of the extension that can't access
 		// localStorage or the rest of the codebase. Example: A content script.
 		function onRequest(request, sender, callback) {
-			if (DEBUG) console.log('request: '+request.action);
 			if (request.action == 'resetCounterWhenOnWebsite') {
 				localStorage.unreadCount = 0;
 				localStorage.mostRecentRead = localStorage.mostRecentUnread;

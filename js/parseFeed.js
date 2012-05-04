@@ -1,30 +1,30 @@
 
-function fetchFeed(url, callback) {
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function(data) {
-		if (xhr.readyState == 4) {
-			if (xhr.status == 200) {
-				var data = xhr.responseText;
-				localStorage.lastResponseData = data;
-				callback(data);
-			} else {
-				callback(null);
-			}
+// Fetchfeed is called by background.html periodically, with unreadCount as
+// callback. Fetchfeed is also called by popup.html when requested, but
+// without the callback as we already know the amount of unread posts.
+function fetchFeed(callback) {
+	$.ajax({
+		url: FEED_URL,
+		dataType: 'text',
+		success: function(xmlstring) {
+			localStorage.lastResponseData = xmlstring;
+			callback(xmlstring);
 		}
-	}
-	// Note: Permissions to use the URL must be granted in manifest.json
-	xhr.open('GET', url, true);
-	xhr.send();
+	})
+	.fail(function() {
+		if (DEBUG) console.log('ERROR: failed to fetch news feed');
+	});
 }
 
-function unreadCount(response) {
+function unreadCount(xmlstring) {
 
 	var unread_count = 0;
 	
 	// Parse the feed
-	var xml_doc = $.parseXML(response);
-	$xml = $(xml_doc);
+	var xmldoc = $.parseXML(xmlstring);
+	$xml = $(xmldoc);
 	var items = $xml.find("item");
+	var idList = []; // New || Updated
 	
 	// Count feed items
 	items.each( function(index, element) {
@@ -34,6 +34,7 @@ function unreadCount(response) {
 		// Counting...
 		if (id != localStorage.mostRecentRead) {
 			unread_count++;
+			idList.push(id); // New || Updated
 			// Send a desktop notification about the first unread element
 			if (unread_count == 1) {
 				if (localStorage.lastNotified != id) {
@@ -45,29 +46,36 @@ function unreadCount(response) {
 		// All counted :)
 		else {
 			if (unread_count == 0) {
-				if (DEBUG) console.log('feedparser: zero new posts');
+				if (DEBUG) console.log('no new posts');
 				chrome.browserAction.setBadgeText({text:''});
 			}
 			else if (unread_count >= 9) {
-				if (DEBUG) console.log('feedparser: 9+ unread posts');
+				if (DEBUG) console.log('9+ unread posts');
 				chrome.browserAction.setBadgeText({text:'9+'});
 			}
 			else {
-				if (DEBUG) console.log('feedparser: 1-8 unread posts');
+				if (DEBUG) console.log('1-8 unread posts');
 				chrome.browserAction.setBadgeText({text:String(unread_count)});
 			}
 			localStorage.unreadCount = unread_count;
+			storeMostRecentIds(idList); // New || Updated
 			return false;
 		}
 		
 		// Stop counting if unread number is greater than 9
 		if (index > 8) { // Remember index is counting 0
-			if (DEBUG) console.log('feedparser: 9+ unread posts (stopped counting)');
+			if (DEBUG) console.log('9+ unread posts (stopped counting)');
 			chrome.browserAction.setBadgeText({text:'9+'});
 			localStorage.unreadCount = 9;
+			// New or updated?
+			storeMostRecentIds(idList); // New || Updated
 			return false;
 		}
 	});
+}
+
+function storeMostRecentIds(idList) {
+	localStorage.mostRecentIdList = JSON.stringify(idList);
 }
 
 function showNotification(element) {

@@ -1,5 +1,5 @@
 
-var DEBUG = 1;
+var DEBUG = 0;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
@@ -29,6 +29,7 @@ var OPTIONS_OFFICE = 'Show office status: Open, closed, meeting, free waffles';
 var OPTIONS_NOTIFICATIONS = 'Show desktop notifications when news are published / updated';
 
 var DISCONNECTED = 'Connecting...';
+var CONNECTION_ERROR = 'Something went wrong, retrying...';
 var OFFICE_OPEN = 'Welcome to the office, free coffee! :)';
 var OFFICE_CLOSED = 'The office is closed';
 var OFFICE_UNTITLED_MEETING = 'Meeting at the office'; // titled meetings and waffles get names from their respective calendar entries

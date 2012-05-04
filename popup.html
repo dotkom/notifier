@@ -13,7 +13,7 @@
 			displayStories(localStorage.lastResponseData);
 		});
 	
-		function displayStories(feed_data) {
+		function displayStories(xmlstring) {
 		
 			// get some news images from online.ntnu.no
 			/*var images = new Array(
@@ -21,23 +21,37 @@
 				"http://informatikk.org/extension/fletcher.php?image=1&creator=wat",
 				"http://informatikk.org/extension/fletcher.php?image=2&creator=foo"
 			);*/
-	
+			
 			// parse the feed
-			var xml_doc = $.parseXML(feed_data);
-			$xml = $(xml_doc);
+			var xmldoc = $.parseXML(xmlstring);
+			$xml = $(xmldoc);
 			var items = $xml.find("item");
 		
 			// find most recent post
 			localStorage.mostRecentRead = $(items[0]).find("guid").text();
-		
+			
+			// get list of last viewed items and check for news that are just
+			// updated rather than being actual news
+			var updatedList = findUpdatedPosts();
+			
+			// build list of last viewed for the next time the popup opens
+			var idsOfLastViewed = [];
+			
 			// add feed items to popup
 			items.each(function(index, element) {
 			
 				var post = parsePost(element);
 				var item = '';
+				idsOfLastViewed.push(post.id);
 				
-				if (index < localStorage.unreadCount)
-					item += '<div class="post"><span class="unread">NEW || UPDATED</span><span class="date"> <b>::</b></span>'
+				if (index < localStorage.unreadCount) {
+					if (updatedList.indexOf(post.id) != -1) {
+						item += '<div class="post"><span class="unread">UPDATED</span><span class="date"> <b>::</b></span>';
+					}
+					else {
+						item += '<div class="post"><span class="unread">NEW</span><span class="date"> <b>::</b></span>';
+					}
+				}
 				else
 					item += '<div class="post"><span class="read"></span>';
 			
@@ -54,9 +68,36 @@
 				$('#popup').append(item);
 			});
 			
+			// store list of last viewed items
+			localStorage.lastViewedIdList = JSON.stringify(idsOfLastViewed);
+			
 			// all items are now considered read :)
 			chrome.browserAction.setBadgeText({text:''});
 			localStorage.unreadCount = 0;
+		}
+		
+		// Checks the most recent list of news against the most recently viewed list of news
+		function findUpdatedPosts() {
+			// Definition checks first
+			if (localStorage.lastViewedIdList == undefined) {
+				localStorage.lastViewedIdList = JSON.stringify([]);
+				return [];
+			}
+			else if (localStorage.mostRecentIdList == undefined) {
+				localStorage.mostRecentIdList = JSON.stringify([]);
+				return [];
+			}
+			// Compare lists, return union (updated items)
+			else {
+				var viewedList = JSON.parse(localStorage.lastViewedIdList);
+				var newsList = JSON.parse(localStorage.mostRecentIdList);
+				var updatedList = [];
+				for (viewed in viewedList)
+					for (news in newsList)
+						if (viewedList[viewed] == newsList[news])
+							updatedList.push(viewedList[viewed]);
+				return updatedList;
+			}
 		}
 	
 	</script>
