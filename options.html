@@ -58,7 +58,7 @@
 			}
 			
 			// Blinking cursor at pageflip
-		  	setInterval ( "pageFlipCursorAnimation()", 600 );
+		  	setInterval("pageFlipCursorAnimation()",600);
 			
 			// Fade in the +1 button when (probably) ready
 			setTimeout("$('#plusonebutton').fadeIn(150);",350);
@@ -66,14 +66,12 @@
 			// Catch new clicks
 			$('input:checkbox').click(function() {
 				localStorage[this.id] = this.checked;
-				if (this.id == 'showOfficeStatus' && this.checked == false) {
-					defaultIcon();
-					resetLightData();
-					resetMeetingData();
-				}
-				else if (this.id == 'showOfficeStatus' && this.checked == true) {
-					updateOfficeStatus();
-				}
+				if (this.id == 'showNotifications' && this.checked == true)
+					testDesktopNotification();
+				if (this.id == 'showOfficeStatus' && this.checked == false)
+					officeStatus_disable();
+				else if (this.id == 'showOfficeStatus' && this.checked == true)
+					officeStatus_update();
 				displayNotification();
 			});
 		});
@@ -98,7 +96,6 @@
 		
 		// Button for testing desktop notifications (DEBUG only)
 		function testDesktopNotification() {
-			localStorage.testNotification = 'true';
 			var notification = webkitNotifications.createHTMLNotification('notification.html');
 			notification.show();
 		}
@@ -112,8 +109,8 @@
 		}
 		
 		// Function to make the mail link a little prettier
-		function mailto() {
-			window.open(EMAIL);
+		function irc() {
+			window.open(IRC);
 		}
 		
 	</script>
@@ -129,7 +126,9 @@
 			overflow:hidden;
 		}
 		
-		#background { /* until the chromium team fixes the "body center center" bug */
+		#background {
+			/* using a div because the background needs to be resized
+			if the display is really big (1500px-2000px in width) */
 			background:url('img/background-options.png') center center no-repeat;
 			position:absolute;
 			left:0;
@@ -139,57 +138,19 @@
 			z-index:1;
 		}
 		
-		/* two copies of the background image are placed on top of the background.
-		the copies are see-through and are rotating slightly to give a floating
-		feeling. */
-	
-		img.rotatingbackgrounds
-		{
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			width: 1700px;
-			height: 1300px;
-			margin-left: -850px; /* half the width */
-			margin-top: -650px; /* half the height */
-			z-index:1;
-	    	}
-		img#rotateleft {
-			opacity:.55;
-	    	-webkit-animation-name:			rotateleft;
-	    	-webkit-animation-duration:		40s;
-	    	-webkit-animation-iteration-count:	infinite;
-	    	-webkit-animation-timing-function:	inear;
-		}
-		img#rotateright {
-			opacity:.35;
-	    	-webkit-animation-name:			rotateright;
-	    	-webkit-animation-duration:		15s;
-	    	-webkit-animation-iteration-count:	infinite;
-	    	-webkit-animation-timing-function:	linear;
-		}
-		@-webkit-keyframes rotateleft {
-	  		from {-webkit-transform: rotate(360deg);}
-	  		to {-webkit-transform: rotate(0deg);}
-		}
-		@-webkit-keyframes rotateright {
-	  		from {-webkit-transform: rotate(0deg);}
-	  		to {-webkit-transform: rotate(360deg);}
-		}
-	
 		/* this container keeps the content centered */
-	
+		
 		#container {
 			position: absolute;
 			left: 50%;
 			top: 50%;
 			width: 800px;
-			height: 270px; /*360px*/
+			height: 350px; /*360px or 270px*/
 			margin-left: -400px; /* half the width */
-			margin-top: -135px; /* half the height */
+			margin-top: -175px; /* half the height */
 			z-index:10;
 		}
-	
+		
 		/* the logo and other content at the left side of the vertical line */
 	
 		header {
@@ -224,7 +185,7 @@
 			background:#FFFEA8;
 			font-size:45px;
 			color: #ff44f8;
-			box-shadow:0px 0px 20px #bbb;
+			box-shadow:0px 0px 10px #bbb, 0px 0px 20px #bbb, 0px 0px 40px #bbb;
 			border-radius: 20px;
 			display:none;
 		}
@@ -234,7 +195,15 @@
 			-webkit-transition: all .2s ease-out;
 		}
 		.item:hover {
-			text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #011b36, 0 0 70px #011b36, 0 0 10px #fff, 0 0 40px #011b36, 0 0 70px #011b36;
+			text-shadow:
+				0 0 10px #fff,
+				0 0 15px #fff,
+				0 0 20px #fff,
+				0 0 30px #fff,
+				0 0 40px #011b36,
+				0 0 40px #011b36,
+				0 0 70px #011b36,
+				0 0 70px #011b36;
 		}
 		.item:hover span::before { /* part of the fancy checkboxes */
 			border: solid 1px #aaa;
@@ -394,14 +363,10 @@
 -->
 <!-- end GL -->
 	<div id="background" />
-	<!--
-	<img class="rotatingbackgrounds" id="rotateleft" src="img/background-options.png">
-	<img class="rotatingbackgrounds" id="rotateright" src="img/background-options.png">
-	-->
 	<div id="container">
 		<header>
 			<script>document.write('<a href="'+EXTENSION_WEBSITE+'">');</script>
-				<img src="img/logo-normal.png" /><br />
+				<script>document.write('<img src="'+LOGO+'" /><br />');</script>
 			</a>
 			<div style="margin-right:3px;">
 				notifier options
@@ -429,6 +394,12 @@
 					<img src="/img/options-desktop-notification.png" />
 				</label>
 			</div>
+			<div class="item">
+				<label for="showCantinaDinners">
+					<input type="checkbox" name="showCantinaDinners" value="showCantinaDinners" id="showCantinaDinners"><span><script>document.write(OPTIONS_DINNERS);</script></span><br />
+					<img src="/img/options-cantina-dinners.png" />
+				</label>
+			</div>
 		</div>
 		<!-- "Options saved <3" -->
 		<div id="notification">Saved &lt;3</div>
@@ -439,7 +410,7 @@
 	<div id="pageflip"></div>
 	<div id="pagefliplink">
 		<br />
-		<a href="javascript:mailto()" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><script>document.write(CREATOR_NAME)</script> with &lt;3<span class="pageflipcursor">_</span></a>
+		<a href="javascript:irc()" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><script>document.write(CREATOR_NAME)</script> with &lt;3<span class="pageflipcursor">_</span></a>
 	</div>
 	<!-- +1 button -->
 	<div id="plusonebutton" style="display:none;">

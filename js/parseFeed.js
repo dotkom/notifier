@@ -8,7 +8,8 @@ function fetchFeed(callback) {
 		dataType: 'text',
 		success: function(xmlstring) {
 			localStorage.lastResponseData = xmlstring;
-			callback(xmlstring);
+			if (callback != undefined)
+				callback(xmlstring);
 		}
 	})
 	.fail(function() {
@@ -29,7 +30,7 @@ function unreadCount(xmlstring) {
 	// Count feed items
 	items.each( function(index, element) {
 		
-		var id = $(element).find("guid").text();
+		var id = $(element).find("guid").text().split('/')[4];
 		
 		// Counting...
 		if (id != localStorage.mostRecentRead) {
@@ -90,7 +91,7 @@ function showNotification(element) {
 		localStorage.notificationCreator = post.creator;
 		localStorage.notificationDate = post.date;
 		localStorage.notificationId = post.id;
-		// image isn't fetched yet
+		localStorage.notificationImage = BACKUP_IMAGE;
 		var notification = webkitNotifications.createHTMLNotification('notification.html');
 		notification.show(); // HTML5-style
 	}
@@ -103,7 +104,8 @@ function parsePost(item) {
 	post.description = $(item).find("description").text();
 	post.creator = $(item).find("dc:creator").text();
 	post.date = $(item).find("pubDate").text().substr(5, 11);
-	post.id = $(item).find("guid").text();
+	post.id = $(item).find("guid").text().split('/')[4];
+	post.image = BACKUP_IMAGE;
 	
 	// remove excessive whitespace and ludicrous formatting from description
 	post.description = $.trim($(post.description).text());
@@ -130,6 +132,26 @@ function parsePost(item) {
 		post.description = post.description.substr(0, desclength) + '...';
 	
 	return post;
+}
+
+function getImageUrlForId(id, callback) {
+	var image = 'undefined';
+	$.getJSON(API_ADDRESS + id, function(json) {
+		if (json['online_news_image']) {
+			image = json['online_news_image']['0']['image'];
+			callback(id, image);
+		}
+		else {
+			image = BACKUP_IMAGE;
+			if (DEBUG) console.log('ERROR: no image exists for id: ' + id);
+			callback(id, image);
+		}
+	})
+	.error(function() {
+		image = BACKUP_IMAGE;
+		if (DEBUG) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
+		callback(id, image);
+	});
 }
 
 function openUrl(url) {

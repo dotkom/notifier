@@ -1,6 +1,6 @@
 {
   "name": "Online Notifier",
-  "version": "0.99.3.0",
+  "version": "1.0.0",
   "manifest_version": 1,
   "offline_enabled": true,
 	
@@ -32,7 +32,8 @@
     "http://online.ntnu.no/*",
     "https://online.ntnu.no/*",
     "http://draug.online.ntnu.no/lys.txt",
-    "https://online.ntnu.no/service_static/online_notifier"
+    "https://online.ntnu.no/service_static/online_notifier",
+		"http://sit.no/*"
   ],
 
 	"content_scripts": [

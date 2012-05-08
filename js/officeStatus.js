@@ -1,140 +1,130 @@
 
-// public functions
+// Public functions
 
-function updateOfficeStatus() {
+function officeStatus_update() {
 	if (localStorage.showOfficeStatus == 'true')
 		// Go down the rabbit hole
 		fetchEvent();
-	else if (DEBUG) console.log('office status not fetched, by choice of the user');
+	else if (DEBUG) console.log('user doesn\'t want office status');
 }
 
-function disconnected(wasConnected) {
-	if (wasConnected == 'false') {
-		if (DEBUG) console.log('still disconnected');
+function officeStatus_reset(lights, events) {
+	if (lights) {
+		if (DEBUG) console.log('reset light data');
+		localStorage.officeLightsOn = 'undefined';
+		localStorage.officeLightsOnPrevious = 'undefined';
 	}
-	else {
-		if (DEBUG) console.log('now disconnected!');
-		chrome.browserAction.setTitle({title:DISCONNECTED});
-		chrome.browserAction.setIcon({path:ICON_DISCONNECTED});
-		resetLightData();
-		resetMeetingData();
+	if (events) {
+		if (DEBUG) console.log('reset event data');
+		localStorage.eventStatus = 'undefined';
+		localStorage.eventStatusPrevious = 'undefined';
+		localStorage.eventTitle = 'undefined';
+		localStorage.eventTitlePrevious = 'undefined';
+	}
+	if (lights == undefined || events == undefined) {
+		if (DEBUG) console.log('ERROR: office status was not reset, missing parameters');
 	}
 }
 
-function defaultIcon() {
-	chrome.browserAction.setTitle({title:EXTENSION_NAME});
-	chrome.browserAction.setIcon({path:ICON_DEFAULT});
+function officeStatus_disconnected(wasConnected) {
+	if (localStorage.showOfficeStatus == 'true') {
+		if (wasConnected == 'false') {
+			if (DEBUG) console.log('still disconnected');
+		}
+		else {
+			if (DEBUG) console.log('now disconnected!');
+			setIconAndTitle(ICON_DISCONNECTED, DISCONNECTED);
+			officeStatus_reset(true, true);
+		}
+	}
+	else if (DEBUG) console.log('user doesn\'t want office status');
 }
 
-function errorIcon() {
-	chrome.browserAction.setTitle({title:CONNECTION_ERROR});
-	chrome.browserAction.setIcon({path:ICON_DISCONNECTED});
+function officeStatus_disable() {
+	setIconAndTitle(ICON_DEFAULT, EXTENSION_NAME);
+	officeStatus_reset(true, true);
 }
 
-function resetLightData() {
-	localStorage.officeLightsOn = undefined;
-	localStorage.officeLightsOnPrevious = undefined;
+function officeStatus_error() {
+	setIconAndTitle(ICON_DISCONNECTED, CONNECTION_ERROR);
+	officeStatus_reset(true, true);
 }
 
-function resetMeetingData() {
-	localStorage.meetingStatus = undefined;
-	localStorage.meetingStatusPrevious = undefined;
-	localStorage.meetingTitle = undefined;
-	localStorage.meetingTitlePrevious = undefined;
-}
+// Private functions
 
-// private functions
-
-/* Receives info on current google calendar event from Onlines servers.
-Receives the following without comments:
-1								// 0=closed, 1=meeting, 2=waffles, 3=error
-Meeting title		// meeting title or 'No title'-meeting or nothing
-*/
 function fetchEvent() {
+	// Receives info on current event from Onlines servers (without comments)
+	// 1								// 0=closed, 1=meeting, 2=waffles, 3=error
+	// Event title			// event title or 'No title'-meeting or nothing
 	$.ajax({
 		url: CALENDAR_URL,
 		success: function(data) {
-			if (localStorage.meetingStatus != undefined)
-				localStorage.meetingStatusPrevious = localStorage.meetingStatus;
-			if (localStorage.meetingTitle != undefined)
-				localStorage.meetingTitlePrevious = localStorage.meetingTitle;
-			localStorage.meetingStatus = data.split('\n',2)[0];
-			localStorage.meetingTitle = data.split('\n',2)[1];
+			if (localStorage.eventStatus != 'undefined')
+				localStorage.eventStatusPrevious = localStorage.eventStatus;
+			if (localStorage.eventTitle != 'undefined')
+				localStorage.eventTitlePrevious = localStorage.eventTitle;
+			localStorage.eventStatus = data.split('\n',2)[0];
+			localStorage.eventTitle = data.split('\n',2)[1];
 			fetchLights();
 		}
 	})
 	.fail(function() {
-		if (DEBUG) console.log('ERROR: failed to fetch event -> reset event/light data');
-		resetLightData();
-		resetMeetingData();
-		errorIcon();
+		if (DEBUG) console.log('failed to fetch event');
+		officeStatus_error();
 	});
 }
 
-/* Receives a number corresponding to the current intensity of light at
-the office. If the number is below a threshold of 800 the lights are on.
-on	<->	limit	<->	off
-0		<->	800		<->	1023
-*/
 function fetchLights() {
+	// Receives current light intensity from the office: OFF 0-800-1023 ON
 	$.ajax({
 		url: OFFICE_LIGHTS_URL,
 		success: function(data) {
-			if (localStorage.officeLightsOn != undefined)
+			if (localStorage.officeLightsOn != 'undefined')
 				localStorage.officeLightsOnPrevious = localStorage.officeLightsOn;
 			localStorage.officeLightsOn = data < OFFICE_LIGHTS_BORDER_VALUE;
 			determineLightStatus();
 		}
 	})
 	.fail(function() {
-		if (DEBUG) console.log('ERROR: failed to fetch lights -> reset event/light data');
-		resetLightData();
-		resetMeetingData();
-		errorIcon();
+		if (DEBUG) console.log('failed to fetch lights');
+		officeStatus_error();
 	});
 }
 
 function determineLightStatus() {
-	// lights off
+	if (localStorage.officeLightsOn == 'undefined') {
+		if (DEBUG) console.log('ERROR: determineLightStatus ran even though officeLightsOn was '+localStorage.officeLightsOn);
+		officeStatus_error();
+		return;
+	}
 	if (localStorage.officeLightsOn == 'false')
 		officeClosed(localStorage.officeLightsOnPrevious == 'false');
-	// lights on, proceed
-	else
+	else if (localStorage.officeLightsOn == 'true')
 		determineEventStatus();
+	else if (DEBUG) console.log('ERROR: determineLightStatus ran even though officeLightsOn was '+localStorage.officeLightsOn);
 	localStorage.officeLightsOnPrevious = localStorage.officeLightsOn;
 }
 
-// lights off
-
-function officeClosed(wasClosed) {
-	if (wasClosed) {
-		if (DEBUG) console.log('still closed');
-	}
-	else {
-		if (DEBUG) console.log('now closed!');
-		chrome.browserAction.setTitle({title:OFFICE_CLOSED});
-		chrome.browserAction.setIcon({path:ICON_CLOSED});
-		resetMeetingData();
-	}
-}
-
-// lights on, what's up
-
 function determineEventStatus() {
-	var previous = localStorage.meetingStatusPrevious;
-	switch(Number(localStorage.meetingStatus)) {
+	if (localStorage.eventStatus == 'undefined') {
+		if (DEBUG) console.log('ERROR: determineEventStatus ran even though eventStatus was '+localStorage.eventStatus);
+		officeStatus_error();
+		return;
+	}
+	var previous = Number(localStorage.eventStatusPrevious);
+	switch(Number(localStorage.eventStatus)) {
 		case 0: officeOpen(previous == 0); break; // open
 		case 1: officeMeeting(previous == 1); break; // meeting
 		case 2: officeWaffles(previous == 2); break; // waffles
-		case 3: officeOpen(previous == 3); break; // error
+		case 3: officeOpen(false); break; // error. false means it'll retry. assuming open office.
 		default: {
-			if (DEBUG) console.log('ERROR: switched on '+localStorage.meetingStatus);
-			resetLightData();
-			resetMeetingData();
-			errorIcon();
+			if (DEBUG) console.log('ERROR: switched on '+localStorage.eventStatus);
+			officeStatus_error();
 		}
 	}
 }
+
+// Statuses
 
 function officeOpen(wasOpen) {
 	if (wasOpen) {
@@ -142,20 +132,29 @@ function officeOpen(wasOpen) {
 	}
 	else {
 		if (DEBUG) console.log('now open!');
-		chrome.browserAction.setTitle({title:OFFICE_OPEN});
-		chrome.browserAction.setIcon({path:ICON_OPEN});
+		setIconAndTitle(ICON_OPEN, OFFICE_OPEN);
+	}
+}
+
+function officeClosed(wasClosed) {
+	if (wasClosed) {
+		if (DEBUG) console.log('still closed');
+	}
+	else {
+		if (DEBUG) console.log('now closed!');
+		setIconAndTitle(ICON_CLOSED, OFFICE_CLOSED);
+		officeStatus_reset(false, true);
 	}
 }
 
 function officeMeeting(wasMeeting) {
-	if (wasMeeting && (localStorage.meetingTitle == localStorage.meetingTitlePrevious)) {
+	if (wasMeeting && (localStorage.eventTitle == localStorage.eventTitlePrevious)) {
 		if (DEBUG) console.log('still meeting');
 	}
 	else {
 		if (DEBUG) console.log('now meeting!');
-		chrome.browserAction.setTitle({title:localStorage.meetingTitle});
-		chrome.browserAction.setIcon({path:ICON_MEETING});
-		localStorage.meetingPrevious = localStorage.meetingTitle;
+		setIconAndTitle(ICON_MEETING, localStorage.eventTitle);
+		localStorage.eventTitlePrevious = localStorage.eventTitle;
 	}
 }
 
@@ -165,10 +164,14 @@ function officeWaffles(wasWaffles) {
 	}
 	else {
 		if (DEBUG) console.log('now waffles!');
-		chrome.browserAction.setTitle({title:localStorage.meetingTitle});
-		chrome.browserAction.setIcon({path:ICON_WAFFLE});
-		localStorage.meetingPrevious = localStorage.meetingTitle;
+		setIconAndTitle(ICON_WAFFLE, localStorage.eventTitle);
+		localStorage.eventTitlePrevious = localStorage.eventTitle;
 	}
+}
+
+function setIconAndTitle(icon, title) {
+	chrome.browserAction.setIcon({path:icon});
+	chrome.browserAction.setTitle({title:title});
 }
 
 

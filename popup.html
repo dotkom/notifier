@@ -5,16 +5,19 @@
 	<script src="js/constants.js"></script>
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/parseFeed.js"></script>
+	<script src="js/cantinaDinner.js"></script>
 	<script>
 	
 		$(function() {
-			// Fetching and displaying the feed
+			// Fetching the cantina dinner feed
+			cantinaDinner_update();
+			// Fetching and displaying the news feed
 			fetchFeed();
 			displayStories(localStorage.lastResponseData);
 		});
-	
-		function displayStories(xmlstring) {
 		
+		function displayStories(xmlstring) {
+			
 			// get some news images from online.ntnu.no
 			/*var images = new Array(
 				"http://informatikk.org/extension/fletcher.php?image=0&creator=lol",
@@ -28,7 +31,7 @@
 			var items = $xml.find("item");
 		
 			// find most recent post
-			localStorage.mostRecentRead = $(items[0]).find("guid").text();
+			localStorage.mostRecentRead = $(items[0]).find("guid").text().split('/')[4];
 			
 			// get list of last viewed items and check for news that are just
 			// updated rather than being actual news
@@ -59,14 +62,38 @@
 					<span class="creator">' + post.creator + '</span><span class="date"> <b>::</b> ' + post.date + '</span>\
 					<a href="' + post.link + '">\
 					<div class="item" onclick="openUrl(\'' + post.link + '\');">\
-						<img src="https://online.ntnu.no/media/steria_logo_thumbnail.jpeg" width="107" />\
-						<span class="title">' + post.title + '</span><br />\
-						<span class="description">' + post.description + '</span>\
+						<img id="' + post.id + '" src="' + post.image + '" width="107" />\
+						<div class="textwrapper">\
+							<span class="title">' + post.title + '</span><br />\
+							<span class="description">' + post.description + '</span>\
+						</div>\
 					</div>\
 					</a>\
 				</div>';
 				$('#popup').append(item);
 			});
+			
+			// add dinners to the top of the popup
+			if (localStorage.showCantinaDinners == 'true') {
+				
+				// building posts from feed response and appending to header
+				if (localStorage.hangarenDinner != 'undefined' && localStorage.realfagDinner != 'undefined') {
+					var hangaren = buildCantinaDinnerPost(
+						'hangaren',
+						'http://sit.no/content/36444/Ukas-middagsmeny-pa-Hangaren',
+						localStorage.hangarenDinner
+					);
+					var realfag = buildCantinaDinnerPost(
+						'realfag',
+						'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag',
+						localStorage.realfagDinner
+					);
+					$('header').append('<div id="cantinadinners">' + hangaren + realfag + '</div>');
+				}
+				else
+					$('header').append('<div id="cantinadinners"><br /><span class="title">Unable</span> <span class="description">to get cantina dinners, come back later</span></div>');
+			}
+			else if (DEBUG) console.log('user is not hungry');
 			
 			// store list of last viewed items
 			localStorage.lastViewedIdList = JSON.stringify(idsOfLastViewed);
@@ -74,6 +101,27 @@
 			// all items are now considered read :)
 			chrome.browserAction.setBadgeText({text:''});
 			localStorage.unreadCount = 0;
+			
+			// finally, fetch news post images from the API async synchronously
+			for (id in idsOfLastViewed)
+				getImageUrlForId(idsOfLastViewed[id], function(id, image) {
+					$('#'+id).attr('src', image);
+				});
+		}
+		
+		function buildCantinaDinnerPost(title, link, dinner) {
+			var dinners = dinner.split(',');
+			var dinnerlist = '<ul id="dinnerlist" style="position:relative;right:15px;">';
+			for (dinner in dinners)
+				dinnerlist += '<li>' + dinners[dinner] + '</li>';
+			dinnerlist += '</ul>';
+			post = '<a href="' + link + '">'
+				+ '<div id="' + title + '" onclick="openUrl(\'' + link + '\');window.close();">'
+					+ '<span class="creator" style="position:relative;top:10px;">' + title + '</span>'
+					+ '<span class="description">' + dinnerlist + '</span>'
+				+ '</div>'
+				+ '</a>';
+			return post;
 		}
 		
 		// Checks the most recent list of news against the most recently viewed list of news
@@ -99,6 +147,22 @@
 				return updatedList;
 			}
 		}
+		
+		function optionsText(show) {
+			fadeButtonText(show, POPUP_OPTIONS_BUTTON);
+		}
+		function feedbackText(show) {
+			fadeButtonText(show, POPUP_FEEDBACK_BUTTON);
+		}
+		function makeExtensionText(show) {
+			fadeButtonText(show, POPUP_MAKE_EXTENSION_BUTTON);
+		}
+		function fadeButtonText(show, msg) {
+			var fadeInSpeed = 150;
+			var fadeOutSpeed = 50;
+			if (show) $('#buttontext').html(msg).fadeIn(fadeInSpeed);
+			else $('#buttontext').fadeOut(fadeOutSpeed).html('');
+		}
 	
 	</script>
 	
@@ -107,16 +171,19 @@
 	
 		/*
 		Hierarchy:
-
-		Body
-			#Popup
-				#Logo
-				#Post
-					#Item
-						#Title
-						#Description
-						#Creator
-						#Date
+		
+		body
+			#popup
+				header
+					#buttons
+					#logo
+					#dinners
+				#post (multiple)
+					#item
+						#title
+						#description
+						#creator
+						#date
 		*/
 
 		/* The popup (and desktop notification) body */
@@ -130,51 +197,114 @@
 			font:bold 9pt helvetica;
 			color:white;
 		}
-
+		
 		/* The popup div */
-
+		
 		#popup {
 			width:400px;
 			height:400px;
 			overflow-x:hidden;
 			padding:15px;
 		}
-
-		/* Toptext and logo */
+		
+		/* Container for non-post items: dinners, buttons, logo */
+		
+		header {
+			position:relative;
+			width:100%;
+			margin-bottom:10px;
+			border:0px solid red; /*debug*/
+		}
+		
+		/* Buttons, logo, dinners */
 		
 		#buttons {
 			position:relative;
 			float:left;
 			z-index:100;
-			left:0px;
-			top:6px;
-			margin-left:7px;
+			height:50px;
+			width:200px;
+			margin-left:5px;
+			margin-top:5px;
+			border:0px solid yellow; /*debug*/
 		}
 		
-		a .popupbutton {
+		#buttons a .popupbutton {
 			border-radius:5px;
-			margin-right:8px;
-			-webkit-transition: all .2s ease-out;
+			margin-right:12px;
+			-webkit-transition: all .15s ease-out;
 		}
 		
-		a .popupbutton:hover {
+		#buttons a .popupbutton:hover {
 			box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
 		}
 		
+		#buttons #buttontext {
+			display:none;
+			position:relative;
+			margin-top:5px;
+			text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+		}
+		
 		#logo {
+			position:relative;
+			margin-top:5px;
+			margin-right:5px;
 			float: right;
-			position: relative;
 			cursor: pointer;
 			z-index: 100;
 			right: 0px;
 			width: 150px;
-			top: 6px;
+			border:0px solid yellow; /*debug*/
+		}
+		
+		#cantinadinners {
+			position:relative;
+			margin-left:5px;
+			width:97%;
+			font-weight:normal;
+			line-height:1.5;
+			z-index:100;
+			border:0px solid yellow; /*debug*/
+		}
+		
+		#hangaren {
+			position:relative;
+			float:left;
+			border:0px solid yellow; /*debug*/
+		}
+		
+		#realfag {
+			position:relative;
+			float:right;
+			width:50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
+
+			border:0px solid yellow; /*debug*/
+		}
+		
+		#dinnerlist li {
+			-webkit-transition: text-shadow 0.15s ease-out 0s;
+		}
+		
+		#dinnerlist li:hover {
+			text-shadow:
+				0 0 10px #fff,
+				0 0 15px #fff,
+				0 0 20px #fff,
+				0 0 30px #fff,
+				0 0 40px #011b36,
+				0 0 40px #011b36,
+				0 0 70px #011b36,
+				0 0 70px #011b36;
 		}
 		
 		/* Each ".post" in the popup contains one ".item" */
 
 		.post {
 			width:100%;
+			position:relative;
+			clear:both;
+			border:0px solid red; /*debug*/
 		}
 
 		.unread {
@@ -190,7 +320,7 @@
 		/* Each ".item" */
 
 		.item {
-			width:96%; /* 370px, 96% actually works better across win/mac/linux */
+			width:96%;
 			min-height:60px;
 			padding:7px;
 			text-overflow:ellipsis;
@@ -213,7 +343,7 @@
 			background:snow;
 			margin-right:15px;
 			width:107px;
-			height:70px;
+			max-height:90px;
 		}
 
 		.item:hover, .item:hover a {
@@ -224,16 +354,27 @@
 			color:#ee861f;
 			text-transform:uppercase;
 			font-size:8pt;
+			font-weight:bold;
 		}
 
 		.date {
 			text-transform:uppercase;
 			font-size:8pt;
 		}
-
+		
+		.textwrapper {
+			position:relative;
+			top:-2px;
+			left:-5px;
+			float:right;
+			width:250px;
+			border:0px solid yellow; /*debug*/
+		}
+		
 		.title {
 			margin-top:0;
 			margin-bottom:0;
+			font-weight:bold;
 		}
 
 		.description {
@@ -248,13 +389,16 @@
 </head>
 <body>
 	<div id="popup">
-		<div id="buttons">
-			<a href="options.html" target="_blank"><img class="popupbutton" src="img/popup-options.png" /></a> 
-			<script>document.write('<a href="'+EMAIL+'" target="_blank"><img class="popupbutton" src="img/popup-feedback.png" /></a>');</script>
-		</div>
-		<img src="img/logo-normal.png" id="logo" onclick="openUrl(EXTENSION_WEBSITE); window.close();" />
-		<br clear="all" />
-		<br clear="all" />
+		<header>
+			<div id="buttons">
+				<a href="options.html" target="_blank"><img class="popupbutton" src="img/popup-options.png" onmouseover="optionsText(true);" onmouseout="optionsText(false);" /></a>
+				<script>document.write('<a href="'+EMAIL+'" target="_blank"><img class="popupbutton" src="img/popup-feedback.png" onmouseover="feedbackText(true);" onmouseout="feedbackText(false);" /></a>');</script>
+				<script>document.write('<a href="'+POPUP_MAKE_EXTENSION_LINK+'" target="_blank"><img class="popupbutton" src="img/popup-make-extension.png" onmouseover="makeExtensionText(true);" onmouseout="makeExtensionText(false);" /></a>');</script>
+				<div id="buttontext"></div>
+			</div>
+			<script>document.write('<img src="'+LOGO+'" id="logo" onclick="openUrl(EXTENSION_WEBSITE); window.close();" />');</script>
+			<br clear="all" />
+		</header>
 	</div>
 </body>
 </html>

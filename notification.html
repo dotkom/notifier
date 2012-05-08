@@ -39,7 +39,7 @@
 		margin-left:5px;
 		margin-right:15px;
 		width:107px;
-		height:60px;
+		max-height:90px;
 	}
 
 	header {
@@ -60,6 +60,13 @@
 		text-transform:uppercase;
 		font-family:helvetica;
 		font-size:8pt;
+	}
+	
+	.textwrapper {
+		position:relative;
+		float:right;
+		width:140px;
+		border:0px solid red; /*debug*/
 	}
 
 	.title {
@@ -82,24 +89,14 @@
 		function setNotification() {
 			
 			// get all data to put in the notification
-			var link, creator, date, img, title, desc;
-			if (localStorage.testNotification == 'true') {
-				localStorage.testNotification = 'false';
-				link = 'http://online.ntnu.no';
-				creator = EXTENSION_NAME;
-				date = new Date().toDateString();
-				img = 'http://fc03.deviantart.net/fs70/f/2011/154/6/6/minecraft_trollface_by_exit1-d3hxzjs.png';
-				title = "Trollolololololololololol";
-				desc = "Important message from " + CREATOR_NAME +": \"Have a trolling day sir!\"";
-			}
-			else {
-				link = localStorage.notificationLink;
-				creator = localStorage.notificationCreator;
-				date = localStorage.notificationDate;
-				img = 'https://online.ntnu.no/media/steria_logo_thumbnail.jpeg';
-				title = localStorage.notificationTitle;
-				desc = localStorage.notificationDescription;
-			}
+			var id, link, creator, date, img, title, desc;
+			id = localStorage.notificationId;
+			link = localStorage.notificationLink;
+			creator = localStorage.notificationCreator;
+			date = localStorage.notificationDate;
+			img = localStorage.notificationImage;
+			title = localStorage.notificationTitle;
+			desc = localStorage.notificationDescription;
 			
 			// shorten title and description to fit nicely
 			var maxlength = 90;
@@ -117,17 +114,24 @@
 						<span class="creator">' + creator + '</span>\
 						<span class="date"> <b>::</b> ' + date + '</span>\
 					</header>\
-					<img src="' + img + '" />\
-					<span class="title">' + title + ' :: </span>\
-					<span class="description">' + desc + '</span>\
+					<img id="' + id + '" src="' + img + '" />\
+					<div class="textwrapper">\
+						<span class="title">' + title + ' :: </span>\
+						<span class="description">' + desc + '</span>\
+					</div>\
 				</div>\
 				</a>');
-			}
 			
-			// show html5 notification with timeout
-			$('body').ready(function() {
-				setNotification();
-				setTimeout(function() {
+			// asynchronously fetch the image
+			getImageUrlForId(id, function(id, image) {
+				$('#'+id).attr('src', image);
+			});
+		}
+			
+		// show html5 notification with timeout
+		$(function() {
+			setNotification();
+			setTimeout(function() {
 				window.close();
 			}, DESKTOP_NOTIFICATION_TIMEOUT);
 		});

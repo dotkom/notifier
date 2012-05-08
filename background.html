@@ -9,8 +9,9 @@ general stuff:
 [x] reset vars in localStorage for when the extension is reloaded in dev-mode
 [x] separate script containing constants for changeability
 [x] run google analytics on all pages
+[x] in background: inject google analytics on first time online
 
-feed stuff:
+news feed stuff:
 [x] fetch and parse feed from Onlines website
 [x] count unread news and present number in a small badge
 [x] separate between new, updated and read items
@@ -18,6 +19,12 @@ feed stuff:
 [x] fancy desktop notification design
 [x] popup presenting feed, separate between read and unread items
 [x] fancy css3 design for popup
+[x] fetch images asynchronously from the API and inject only when needed
+
+cantina feed stuff:
+[x] fetch and parse feed from SiTs website, both hangaren and realfag
+[x] strip dinner menu down to the bare necessities
+[x] present dinner in a fancy view in the popup
 
 light stuff:
 [x] read light value from the arduino connected to draug.online.ntnu.no
@@ -29,10 +36,10 @@ calendar stuff:
 [x] cheap requests, only asking for specifically needed info
 
 icon stuff:
-[x] change icon based on light values and calendar events
+[x] change icon based on light values
+[x] change icon based on calendar events
 [x] use title text containing the name of the event
-[x] separate icon showing when you're offline
-[x] update icon based on stored event every minute (react to meetings quickly)
+[x] separate icon showing when you're offline or when an error has occured
 
 website stuff:
 [x] detect when user is visiting the Online website
@@ -40,9 +47,9 @@ website stuff:
 [x] nullify counter badge upon arrival
 
 options stuff:
-[x] option for whether or not icons show office status
+[x] option for showing office status in the icon
 [x] option for desktop notifications
-[x] option for nullifying counter badge (later removed for simplifying)
+[x] option for fetching cantina dinner menu
 [x] fancy css3 design for options page
 [x] fancy checkboxes for options page (old ones hidden)
 [x] google +1 button for Onlines website
@@ -51,7 +58,7 @@ options stuff:
 
 ~~~~remains before release~~~~
 
-[ ] hente bilder fra APIet/RSS-feed fra Online
+[ ] fikse bug med notification når man starter offline
 [ ] v1.0
 
 
@@ -60,6 +67,10 @@ options stuff:
 [ ] update URL at Onlines servers
 [ ] online notifier text in right-click menu should go somewhere
 [ ] update to manifest v2 with new security policies
+[ ] light info should be served through static_service
+
+- random:
+	for (foo in bar) console.log(foo + ' :: ' + bar[foo]);
 
 -->
 
@@ -71,6 +82,7 @@ options stuff:
 	<script src="js/constants.js"></script>
 	<script src="js/parseFeed.js"></script>
 	<script src="js/officeStatus.js"></script>
+	<script src="js/cantinaDinner.js"></script>
 	<script>
 	
 		// Stop the extension if localStorage is not supported
@@ -79,10 +91,12 @@ options stuff:
 			return;
 		}
 		
-		// Reset localStorage if extension is reloaded in dev mode
-		if (DEBUG) {
+		// Reset localStorage in dev mode, just reset office status otherwise
+		if (DEBUG)
 			localStorage.clear();
-			console.log('\n\n\n\n\nlocalStorage cleared!');
+		else {
+			officeStatus_reset(true, true);
+			cantinaDinner_reset();
 		}
 		
 		// Set some values and open options page after install
@@ -91,11 +105,13 @@ options stuff:
 				localStorage.showOfficeStatus = 'true';
 			if (localStorage.showNotifications == undefined)
 				localStorage.showNotifications = 'true';
+			if (localStorage.showCantinaDinners == undefined)
+				localStorage.showCantinaDinners = 'true';
 			chrome.tabs.create({url: chrome.extension.getURL("options.html"), selected: true});
 		}
 		
 		localStorage.everConnected = 'false';
-		localStorage.wasConnected = 'false';
+		localStorage.wasConnected = 'true';
 		var iterationCounter = 1;
 
 		function mainLoop() {
@@ -104,33 +120,46 @@ options stuff:
 			// we're online :)
 			if (navigator.onLine) {
 				// now online, fetch all
-				if (localStorage.wasConnected == 'false') {
-					if (DEBUG) console.log('now online!');
-					updateOfficeStatus();
+				if (localStorage.wasConnected == 'false' || localStorage.everConnected == 'false') {
+					officeStatus_update();
 					fetchFeed(unreadCount);
+					cantinaDinner_update();
+				}
+				if (localStorage.everConnected == 'false') {
+					connectGoogleAnalytics();
 				}
 				// normal operation
 				else {
-					if (iterationCounter % REFRESH_OFFICE_INTERVAL == 0) {
-						//if (DEBUG) console.log('refresh office status');
-						updateOfficeStatus();
-					}
-					if (iterationCounter % REFRESH_FEED_INTERVAL == 0) {
-						//if (DEBUG) console.log('refresh feed');
+					if (iterationCounter % REFRESH_OFFICE_INTERVAL == 0)
+						officeStatus_update();
+					if (iterationCounter % REFRESH_FEED_INTERVAL == 0)
 						fetchFeed(unreadCount);
-					}
+					if (iterationCounter % REFRESH_DINNER_INTERVAL == 0)
+						cantinaDinner_update();
 				}
 				localStorage.everConnected = 'true';
 				localStorage.wasConnected = 'true';
 			}
 			// we're offline :(
 			else {
-				disconnected(localStorage.wasConnected);
+				officeStatus_disconnected(localStorage.wasConnected);
 				localStorage.wasConnected = 'false';
 			}
+			
 			iterationCounter++;
 			if (10000 < iterationCounter) // no reason to count to infinity
 				iterationCounter = 1;
+		}
+		
+		// This page runs continously and will therefore experience downtime.
+		// In case there is downtime when the page opens for the first time
+		// we'll need to load the GAnalytics scripts once we're connected.
+		function connectGoogleAnalytics() {
+			if (DEBUG) console.log('connecting google analytics');
+			var script = document.createElement("script");
+			script.type = 'text/javascript';
+			script.src = 'js/googleAnalytics.js';
+			document.getElementsByTagName("head")[0].appendChild(script);
 		}
 		
 		// Recieve all requests from parts of the extension that can't access
@@ -159,9 +188,6 @@ options stuff:
 		});
 
 	</script>
-
-	<!-- Google Analytics -->
-	<script type="text/javascript" src="js/googleAnalytics.js"></script>
 	
 </head>
 <body>
