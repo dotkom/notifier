@@ -64,10 +64,10 @@ var ICON_WAFFLE = 'img/icon-waffle.png';
 // os detection
 
 var OPERATING_SYSTEM = "Unknown";
-if (navigator.appVersion.indexOf("Win")!=-1) os="Windows";
-if (navigator.appVersion.indexOf("Mac")!=-1) os="Mac";
-if (navigator.appVersion.indexOf("X11")!=-1) os="UNIX";
-if (navigator.appVersion.indexOf("Linux")!=-1) os="Linux";
+if (navigator.appVersion.indexOf("Win")!=-1) OPERATING_SYSTEM="Windows";
+if (navigator.appVersion.indexOf("Mac")!=-1) OPERATING_SYSTEM="Mac";
+if (navigator.appVersion.indexOf("X11")!=-1) OPERATING_SYSTEM="UNIX";
+if (navigator.appVersion.indexOf("Linux")!=-1) OPERATING_SYSTEM="Linux";
 
 
 

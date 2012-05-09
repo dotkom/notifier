@@ -9,11 +9,17 @@
 	<script>
 	
 		$(function() {
+			
 			// Fetching the cantina dinner feed
 			cantinaDinner_update();
+			
 			// Fetching and displaying the news feed
 			fetchFeed();
 			displayStories(localStorage.lastResponseData);
+			
+			// slight esthetical adjustment for different scrollbars
+			if (OPERATING_SYSTEM == 'Mac')
+				$('.textwrapper').attr("style","width:250px;");
 		});
 		
 		function displayStories(xmlstring) {
@@ -367,7 +373,7 @@
 			top:-2px;
 			left:-5px;
 			float:right;
-			width:250px;
+			width:235px;
 			border:0px solid yellow; /*debug*/
 		}
 		
