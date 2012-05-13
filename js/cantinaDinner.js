@@ -24,6 +24,7 @@ function cantinaDinner_disable() {
 */
 
 function cantinaDinner_error() {
+	localStorage.dinnerInfo = CANTINA_DINNER_ERROR;
 	cantinaDinner_reset();
 }
 
@@ -74,44 +75,74 @@ function parseDinnerData(xml) {
 	dayNames[4]="Torsdag";
 	dayNames[5]="Fredag";
 	dayNames[6]="Lørdag";
-	var today = dayNames[d.getDay()];
 	
 	// Find todays dinners
+	var today = dayNames[d.getDay()];
 	var dinnerForEachDay = dinnerDescription.split('<b>');
-	var todaysDinners = 'It appears to be a lack of cantina dinners today';
+	var todaysDinners = CANTINA_DINNER_NOT_OPEN;
 	for (dinnerDay in dinnerForEachDay) {
 		if (dinnerForEachDay[dinnerDay].lastIndexOf(today, 0) === 0) {
 			todaysDinners = dinnerForEachDay[dinnerDay];
 		}
 	}
+	if (todaysDinners == CANTINA_DINNER_NOT_OPEN) {
+		localStorage.dinnerInfo = CANTINA_DINNER_NOT_OPEN;
+		cantinaDinner_reset();
+	}
 	
 	// Separate todays dinners
 	var dinnerList = todaysDinners.split('<br>');
-
+	
 	// Remove empty or irrelevant information (items: first, last, second last)
 	dinnerList = dinnerList.splice(1,dinnerList.length-3);
 	
+	var B = 50;
+	
 	// Shorten relevant information to the bare necessities
 	for (dinner in dinnerList) {
+		
 		// Everything after X should be removed...
+		if (dinner==B) console.log('. :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('.') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('.')[0];
+		
+		if (dinner==B) console.log(', :: '+dinnerList[dinner]);
+		if (dinnerList[dinner].indexOf(',') != -1)
+			dinnerList[dinner] = dinnerList[dinner].split(',')[0];
+		
+		if (dinner==B) console.log(': :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf(':') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split(':')[0];
+		
+		if (dinner==B) console.log('( :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('(') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('(')[0];
+		
+		if (dinner==B) console.log('s :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('serveres') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('serveres')[0];
+		
+		if (dinner==B) console.log('S :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('Serveres') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('Serveres')[0];
+		
 		// Trim away extra whitespace...
+		
+		if (dinner==B) console.log('_ :: '+dinnerList[dinner]);
 		dinnerList[dinner] = dinnerList[dinner].trim();
+		
 		// Each description should have max 3 words...
+		
+		if (dinner==B) console.log('3 :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].split(' ').length > 3)
 			dinnerList[dinner] = dinnerList[dinner].split(' ').splice(0,3).join(' ');
+		
 		// If current item is info about veggie food, shorten...
+		
+		if (dinner==B) console.log('V :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('INGEN VEGETAR') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split(' ').splice(0,2).join(' ');
+		
 	}
 	
 	// Save respective cantina info to localstorage

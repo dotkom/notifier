@@ -24,13 +24,6 @@
 		
 		function displayStories(xmlstring) {
 			
-			// get some news images from online.ntnu.no
-			/*var images = new Array(
-				"http://informatikk.org/extension/fletcher.php?image=0&creator=lol",
-				"http://informatikk.org/extension/fletcher.php?image=1&creator=wat",
-				"http://informatikk.org/extension/fletcher.php?image=2&creator=foo"
-			);*/
-			
 			// parse the feed
 			var xmldoc = $.parseXML(xmlstring);
 			$xml = $(xmldoc);
@@ -97,7 +90,7 @@
 					$('header').append('<div id="cantinadinners">' + hangaren + realfag + '</div>');
 				}
 				else
-					$('header').append('<div id="cantinadinners"><br /><span class="title">Unable</span> <span class="description">to get cantina dinners, come back later</span></div>');
+					$('header').append('<div id="cantinadinners"><br /><span class="title">' + localStorage.dinnerInfo + '</span></div>');
 			}
 			else if (DEBUG) console.log('user is not hungry');
 			

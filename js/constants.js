@@ -1,10 +1,11 @@
 
-var DEBUG = 0;
+var DEBUG = 1;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
 var CREATOR_NAME = 'dotKom'; // max 8 letters because of styling
 var CREATOR_EMAIL = 'dotkom@online.ntnu.no';
+
 var FEED_URL = 'https://online.ntnu.no/feeds/news/';
 var API_KEY = 'f5be90e5ec1d2d454ae9';
 var API_ADDRESS = 'https://online.ntnu.no/api/' + API_KEY + '/news_image_by_id/';
@@ -31,23 +32,27 @@ var OFFICE_LIGHTS_BORDER_VALUE = 800; // 800 is great
 
 // messages, links
 
-var OPTIONS_OFFICE = 'Show office status: Open, closed, meeting, free waffles';
-var OPTIONS_NOTIFICATIONS = 'Show desktop notifications when news are published / updated';
-var OPTIONS_DINNERS = 'Show todays dinner menu from Hangaren and Realfag';
+var OPTIONS_OFFICE = 'Vis kontorets status: Åpent, stengt, møte, gratis vafler';//;'Show office status: Open, closed, meeting, free waffles';
+var OPTIONS_NOTIFICATIONS = 'Vis varsling på skrivebordet når nyheter publiseres / oppdateres';//'Show desktop notifications when news are published / updated';
+var OPTIONS_DINNERS = 'Vis dagens middagsmeny fra Hangaren og Realfag';//'Show today\'s dinner menu from Hangaren and Realfag';
 
-var DISCONNECTED = 'Connecting...';
-var CONNECTION_ERROR = 'Something went wrong, retrying...';
-var OFFICE_OPEN = 'Welcome to the office, free coffee! :)';
-var OFFICE_CLOSED = 'The office is closed';
-var OFFICE_UNTITLED_MEETING = 'Meeting at the office'; // titled meetings and waffles get names from their respective calendar entries
+var DISCONNECTED = 'Kobler til...';//'Connecting...';
+var CONNECTION_ERROR = 'Noe gikk galt, prøver igjen...';//'Something went wrong, retrying...';
+var OFFICE_OPEN = 'Velkommen til kontoret, det er gratis kaffe!';//'Welcome to the office, free coffee! :)';
+var OFFICE_CLOSED = 'Kontoret er stengt';//'The office is closed';
+var OFFICE_UNTITLED_MEETING = 'Møte på kontoret';//'Meeting at the office'; // titled meetings and waffles get names from their respective calendar entries
 
-var POPUP_OPTIONS_BUTTON = 'Go to options';
-var POPUP_FEEDBACK_BUTTON = 'Send feedback';
-var POPUP_MAKE_EXTENSION_BUTTON = 'Make your own extension';
+var POPUP_OPTIONS_BUTTON = 'Innstillinger';//'Go to options';
+var POPUP_FEEDBACK_BUTTON = 'Send tilbakemelding';//'Send feedback';
+var POPUP_MAKE_EXTENSION_BUTTON = 'Lag din egen Chrome-utvidelse';//'Make your own extension';
 var POPUP_MAKE_EXTENSION_LINK = 'http://lifehacker.com/5857721/how-to-build-a-chrome-extension';
 
-var EMAIL_SUBJECT = 'I wantz to tell u guise sumthing! :3'; // no ampersands!
-var EMAIL_BODY = '( praise is dearly recieved :: bugs must be described well :: wishes for new features are welcome )'; // no ampersands!
+var CANTINA_DINNER_NOT_OPEN = 'Kantinene er stengt i dag';//'The cantinas are closed today';
+var CANTINA_DINNER_ERROR = 'Klarte ikke å hente middagsmeny, prøv igjen senere';//'Unable to get cantina dinners, come back later';
+
+var EMAIL_SUBJECT = 'Online Notifier';//'I wantz to tell u guise sumthing! :3'; // no ampersands!
+var EMAIL_BODY = '( ros tas godt imot :: bugs må beskrives godt :: ønsker etter nye funksjoner tas gjere imot )';
+//'( praise is dearly recieved :: bugs must be described well :: wishes for new features are welcome )'; // no ampersands!
 var IRC = 'http://webchat.freenode.net/?channels=online';
 
 // images and icons
@@ -65,9 +70,10 @@ var ICON_WAFFLE = 'img/icon-waffle.png';
 
 var OPERATING_SYSTEM = "Unknown";
 if (navigator.appVersion.indexOf("Win")!=-1) OPERATING_SYSTEM="Windows";
-if (navigator.appVersion.indexOf("Mac")!=-1) OPERATING_SYSTEM="Mac";
 if (navigator.appVersion.indexOf("X11")!=-1) OPERATING_SYSTEM="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OPERATING_SYSTEM="Linux";
+if (navigator.appVersion.indexOf("Mac")!=-1)
+	OPERATING_SYSTEM = (navigator.appVersion.indexOf("10_7") != -1 ? "Mac" : "Old Mac");
 
 
 
