@@ -13,14 +13,10 @@ Features
 
 Tech
 
-- Chrome extension with a lot of HTML5, CSS3, Javascript/JQuery
+- Written in HTML5, CSS3 and Javascript/JQuery.
 - News is fetched through an RSS-feed for general data, API for images
 - Dinner info is fetched through an RSS-feed from sit.no
-- Office status is fetched from multiple sources
--- An Arduino with a light sensor measures light intensity at the office
--- An Apache server presents the light info here: draug.online.ntnu.no/lys.txt
--- A python script parses the Google Calendar for the office
--- A static service in Django presents the calendar info here: online.ntnu.no/service_static/online_notifier
+- Office status is fetched from multiple sources: An Arduino with a light sensor measures light intensity at the office. An Apache server presents the light info here: draug.online.ntnu.no/lys.txt, A python script parses the Google Calendar for the office. A static service in Django presents the calendar info here: online.ntnu.no/service_static/online_notifier
 
 Credz
 
