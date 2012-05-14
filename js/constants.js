@@ -1,5 +1,5 @@
 
-var DEBUG = 1;
+var DEBUG = 0;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
@@ -35,6 +35,7 @@ var OFFICE_LIGHTS_BORDER_VALUE = 800; // 800 is great
 var OPTIONS_OFFICE = 'Vis kontorets status: Åpent, stengt, møte, gratis vafler';//;'Show office status: Open, closed, meeting, free waffles';
 var OPTIONS_NOTIFICATIONS = 'Vis varsling på skrivebordet når nyheter publiseres / oppdateres';//'Show desktop notifications when news are published / updated';
 var OPTIONS_DINNER = 'Vis dagens middagsmeny fra Hangaren og Realfag';//'Show today\'s dinner menu from Hangaren and Realfag';
+var OPTIONS_GITHUB = 'http://github.com/dotkom/online-notifier/';
 
 var DISCONNECTED = 'Kobler til...';//'Connecting...';
 var CONNECTION_ERROR = 'Noe gikk galt, prøver igjen...';//'Something went wrong, retrying...';
@@ -43,6 +44,8 @@ var OFFICE_CLOSED = 'Kontoret er stengt';//'The office is closed';
 var OFFICE_UNTITLED_MEETING = 'Møte på kontoret';//'Meeting at the office'; // titled meetings and waffles get names from their respective calendar entries
 
 var POPUP_OPTIONS_BUTTON = 'Innstillinger';//'Go to options';
+var POPUP_IRC_BUTTON = 'Bli med i Onlines chattekanal';
+var POPUP_IRC_LINK = 'http://webchat.freenode.net/?channels=online';
 var POPUP_FEEDBACK_BUTTON = 'Send tilbakemelding';//'Send feedback';
 var POPUP_MAKE_EXTENSION_BUTTON = 'Lag din egen Chrome-utvidelse';//'Make your own extension';
 var POPUP_MAKE_EXTENSION_LINK = 'http://lifehacker.com/5857721/how-to-build-a-chrome-extension';
@@ -53,7 +56,6 @@ var CANTINA_DINNER_ERROR = 'Klarte ikke å hente middagsmeny, prøv igjen senere
 var EMAIL_SUBJECT = 'Online Notifier';//'I wantz to tell u guise sumthing! :3'; // no ampersands!
 var EMAIL_BODY = '( ros tas godt imot :: bugs må beskrives godt :: ønsker etter nye funksjoner tas gjere imot )';
 //'( praise is dearly recieved :: bugs must be described well :: wishes for new features are welcome )'; // no ampersands!
-var GITHUB = 'http://github.com/dotkom/online-notifier/';
 
 // images and icons
 

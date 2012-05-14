@@ -150,6 +150,9 @@
 		function optionsText(show) {
 			fadeButtonText(show, POPUP_OPTIONS_BUTTON);
 		}
+		function ircText(show) {
+			fadeButtonText(show, POPUP_IRC_BUTTON);
+		}
 		function feedbackText(show) {
 			fadeButtonText(show, POPUP_FEEDBACK_BUTTON);
 		}
@@ -391,6 +394,7 @@
 		<header>
 			<div id="buttons">
 				<a href="options.html" target="_blank"><img class="popupbutton" src="img/popup-options.png" onmouseover="optionsText(true);" onmouseout="optionsText(false);" /></a>
+				<script>document.write('<a href="'+POPUP_IRC_LINK+'" target="_blank"><img class="popupbutton" src="img/popup-irc.png" onmouseover="ircText(true);" onmouseout="ircText(false);" /></a>');</script>
 				<script>document.write('<a href="'+EMAIL+'" target="_blank"><img class="popupbutton" src="img/popup-feedback.png" onmouseover="feedbackText(true);" onmouseout="feedbackText(false);" /></a>');</script>
 				<script>document.write('<a href="'+POPUP_MAKE_EXTENSION_LINK+'" target="_blank"><img class="popupbutton" src="img/popup-make-extension.png" onmouseover="makeExtensionText(true);" onmouseout="makeExtensionText(false);" /></a>');</script>
 				<div id="buttontext"></div>
