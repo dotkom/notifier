@@ -99,8 +99,8 @@ options stuff:
 				localStorage.showOfficeStatus = 'true';
 			if (localStorage.showNotifications == undefined)
 				localStorage.showNotifications = 'true';
-			if (localStorage.showCantinaDinners == undefined)
-				localStorage.showCantinaDinners = 'true';
+			if (localStorage.showCantinaDinner == undefined)
+				localStorage.showCantinaDinner = 'true';
 			chrome.tabs.create({url: chrome.extension.getURL("options.html"), selected: true});
 		}
 		

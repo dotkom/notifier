@@ -2,7 +2,7 @@
 // Public functions
 
 function cantinaDinner_update() {
-	if (localStorage.showCantinaDinners == 'true')
+	if (localStorage.showCantinaDinner == 'true')
 		// Bring forth the woman
 		fetchDinners();
 	else if (DEBUG) console.log('user doesn\'t want dinner');
@@ -16,12 +16,10 @@ function cantinaDinner_reset() {
 	localStorage.realfagTitle = 'undefined';
 }
 
-/*
 function cantinaDinner_disable() {
-	setIconAndTitle(ICON_DEFAULT, EXTENSION_NAME);
-	officeStatus_reset();
+	localStorage.dinnerInfo = CANTINA_DINNER_ERROR;
+	cantinaDinner_reset();
 }
-*/
 
 function cantinaDinner_error() {
 	localStorage.dinnerInfo = CANTINA_DINNER_ERROR;

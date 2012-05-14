@@ -6,6 +6,7 @@
 	<script src='js/constants.js'></script>
 	<script src='js/jquery-1.7.2.min.js'></script>
 	<script src='js/officeStatus.js'></script>
+	<script src='js/cantinaDinner.js'></script>
 
 	<!-- begin GL -->
 	<!--	
@@ -66,12 +67,20 @@
 			// Catch new clicks
 			$('input:checkbox').click(function() {
 				localStorage[this.id] = this.checked;
-				if (this.id == 'showNotifications' && this.checked == true)
-					testDesktopNotification();
+				
 				if (this.id == 'showOfficeStatus' && this.checked == false)
 					officeStatus_disable();
 				else if (this.id == 'showOfficeStatus' && this.checked == true)
 					officeStatus_update();
+				
+				if (this.id == 'showNotifications' && this.checked == true)
+					testDesktopNotification();
+				
+				if (this.id == 'showCantinaDinner' && this.checked == false)
+					cantinaDinner_disable();
+				else if (this.id == 'showCantinaDinner' && this.checked == true)
+					cantinaDinner_update();
+				
 				displayNotification();
 			});
 		});
@@ -106,11 +115,6 @@
 				$('#background').attr("style","background:url('img/background-options-big.png') center center no-repeat;");
 			else
 				$('#background').attr("style","background:url('img/background-options.png') center center no-repeat;");
-		}
-		
-		// Function to make the mail link a little prettier
-		function irc() {
-			window.open(IRC);
 		}
 		
 	</script>
@@ -395,9 +399,9 @@
 				</label>
 			</div>
 			<div class="item">
-				<label for="showCantinaDinners">
-					<input type="checkbox" name="showCantinaDinners" value="showCantinaDinners" id="showCantinaDinners"><span><script>document.write(OPTIONS_DINNERS);</script></span><br />
-					<img src="/img/options-cantina-dinners.png" />
+				<label for="showCantinaDinner">
+					<input type="checkbox" name="showCantinaDinner" value="showCantinaDinner" id="showCantinaDinner"><span><script>document.write(OPTIONS_DINNER);</script></span><br />
+					<img src="/img/options-cantina-dinner.png" />
 				</label>
 			</div>
 		</div>
@@ -410,7 +414,7 @@
 	<div id="pageflip"></div>
 	<div id="pagefliplink">
 		<br />
-		<a href="javascript:irc()" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><script>document.write(CREATOR_NAME)</script> with &lt;3<span class="pageflipcursor">_</span></a>
+		<script>document.write('<a href="'+GITHUB+'" target="_blank">')</script>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><script>document.write(CREATOR_NAME)</script> with &lt;3<span class="pageflipcursor">_</span></a>
 	</div>
 	<!-- +1 button -->
 	<div id="plusonebutton" style="display:none;">

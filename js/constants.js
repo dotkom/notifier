@@ -1,5 +1,5 @@
 
-var DEBUG = 0;
+var DEBUG = 1;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
@@ -34,7 +34,7 @@ var OFFICE_LIGHTS_BORDER_VALUE = 800; // 800 is great
 
 var OPTIONS_OFFICE = 'Vis kontorets status: Åpent, stengt, møte, gratis vafler';//;'Show office status: Open, closed, meeting, free waffles';
 var OPTIONS_NOTIFICATIONS = 'Vis varsling på skrivebordet når nyheter publiseres / oppdateres';//'Show desktop notifications when news are published / updated';
-var OPTIONS_DINNERS = 'Vis dagens middagsmeny fra Hangaren og Realfag';//'Show today\'s dinner menu from Hangaren and Realfag';
+var OPTIONS_DINNER = 'Vis dagens middagsmeny fra Hangaren og Realfag';//'Show today\'s dinner menu from Hangaren and Realfag';
 
 var DISCONNECTED = 'Kobler til...';//'Connecting...';
 var CONNECTION_ERROR = 'Noe gikk galt, prøver igjen...';//'Something went wrong, retrying...';
@@ -53,7 +53,7 @@ var CANTINA_DINNER_ERROR = 'Klarte ikke å hente middagsmeny, prøv igjen senere
 var EMAIL_SUBJECT = 'Online Notifier';//'I wantz to tell u guise sumthing! :3'; // no ampersands!
 var EMAIL_BODY = '( ros tas godt imot :: bugs må beskrives godt :: ønsker etter nye funksjoner tas gjere imot )';
 //'( praise is dearly recieved :: bugs must be described well :: wishes for new features are welcome )'; // no ampersands!
-var IRC = 'http://webchat.freenode.net/?channels=online';
+var GITHUB = 'http://github.com/dotkom/online-notifier/';
 
 // images and icons
 
