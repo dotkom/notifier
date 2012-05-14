@@ -1,5 +1,5 @@
 
-var DEBUG = 1;
+var DEBUG = 0;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';

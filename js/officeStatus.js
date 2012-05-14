@@ -45,7 +45,8 @@ function officeStatus_disable() {
 	officeStatus_reset(true, true);
 }
 
-function officeStatus_error() {
+function officeStatus_error(msg) {
+	if (DEBUG) console.log('ERROR: '+msg);
 	setIconAndTitle(ICON_DISCONNECTED, CONNECTION_ERROR);
 	officeStatus_reset(true, true);
 }
@@ -56,59 +57,70 @@ function fetchEvent() {
 	// Receives info on current event from Onlines servers (without comments)
 	// 1								// 0=closed, 1=meeting, 2=waffles, 3=error
 	// Event title			// event title or 'No title'-meeting or nothing
-	$.ajax({
-		url: CALENDAR_URL,
-		success: function(data) {
+	if (localStorage.eventAjax != 'true') { // Already in progress?
+		localStorage.eventAjax = 'true'; // Lock
+		$.ajax({
+			url: CALENDAR_URL
+		})
+		.success(function(data) {
 			if (localStorage.eventStatus != 'undefined')
 				localStorage.eventStatusPrevious = localStorage.eventStatus;
 			if (localStorage.eventTitle != 'undefined')
 				localStorage.eventTitlePrevious = localStorage.eventTitle;
 			localStorage.eventStatus = data.split('\n',2)[0];
 			localStorage.eventTitle = data.split('\n',2)[1];
-			fetchLights();
-		}
-	})
-	.fail(function() {
-		if (DEBUG) console.log('failed to fetch event');
-		officeStatus_error();
-	});
+			if (localStorage.eventTitle == '') // empty title?
+				localStorage.eventTitle = 'undefined';
+			fetchLights(); // proceed
+		})
+		.error(function() {
+			officeStatus_error('failed to fetch event');
+		})
+		.complete(function() {
+			localStorage.eventAjax = 'false'; // Unlock
+		});
+	}
+	else
+		if (DEBUG) console.log('event ajax already in progress');
 }
 
 function fetchLights() {
 	// Receives current light intensity from the office: OFF 0-800-1023 ON
-	$.ajax({
-		url: OFFICE_LIGHTS_URL,
-		success: function(data) {
+	if (localStorage.lightAjax != 'true') { // Already in progress?
+		localStorage.lightAjax = 'true'; // Lock
+		$.ajax({
+			url: OFFICE_LIGHTS_URL
+		})
+		.success(function(data) {
 			if (localStorage.officeLightsOn != 'undefined')
 				localStorage.officeLightsOnPrevious = localStorage.officeLightsOn;
 			localStorage.officeLightsOn = data < OFFICE_LIGHTS_BORDER_VALUE;
 			determineLightStatus();
-		}
-	})
-	.fail(function() {
-		if (DEBUG) console.log('failed to fetch lights');
-		officeStatus_error();
-	});
+		})
+		.fail(function() {
+			officeStatus_error('failed to fetch lights');
+		})
+		.complete(function() {
+			localStorage.lightAjax = 'false'; // Unlock
+		});
+	}
+	else
+		if (DEBUG) console.log('light ajax already in progress');
 }
 
 function determineLightStatus() {
-	if (localStorage.officeLightsOn == 'undefined') {
-		if (DEBUG) console.log('ERROR: determineLightStatus ran even though officeLightsOn was '+localStorage.officeLightsOn);
-		officeStatus_error();
-		return;
-	}
 	if (localStorage.officeLightsOn == 'false')
 		officeClosed(localStorage.officeLightsOnPrevious == 'false');
 	else if (localStorage.officeLightsOn == 'true')
 		determineEventStatus();
-	else if (DEBUG) console.log('ERROR: determineLightStatus ran even though officeLightsOn was '+localStorage.officeLightsOn);
+	else
+		officeStatus_error('determineLightStatus ran even though officeLightsOn was '+localStorage.officeLightsOn);
 	localStorage.officeLightsOnPrevious = localStorage.officeLightsOn;
 }
 
 function determineEventStatus() {
 	if (localStorage.eventStatus == 'undefined') {
-		if (DEBUG) console.log('ERROR: determineEventStatus ran even though eventStatus was '+localStorage.eventStatus);
-		officeStatus_error();
+		officeStatus_error('determineEventStatus ran even though eventStatus was '+localStorage.eventStatus);
 		return;
 	}
 	var previous = Number(localStorage.eventStatusPrevious);
@@ -118,8 +130,7 @@ function determineEventStatus() {
 		case 2: officeWaffles(previous == 2); break; // waffles
 		case 3: officeOpen(false); break; // error. false means it'll retry. assuming open office.
 		default: {
-			if (DEBUG) console.log('ERROR: switched on '+localStorage.eventStatus);
-			officeStatus_error();
+			officeStatus_error('switched on '+localStorage.eventStatus);
 		}
 	}
 }
@@ -173,6 +184,7 @@ function setIconAndTitle(icon, title) {
 	chrome.browserAction.setIcon({path:icon});
 	chrome.browserAction.setTitle({title:title});
 }
+
 
 
 

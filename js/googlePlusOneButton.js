@@ -1,4 +1,6 @@
 
+window.___gcfg = {lang: 'no'};
+
 (function() {
 	
 	var po = document.createElement('script');
