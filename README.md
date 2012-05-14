@@ -3,8 +3,6 @@ Online Notifier
 
 This is a Chrome extension for the student organisation Online at NTNU, see http://online.ntnu.no
 
-I (Michael Johansen) made this extension as part of my application for dotKom, although mostly for fun.
-
 Features
 
 - Notifies about news from Online
@@ -24,7 +22,8 @@ Tech
 
 Credz
 
-- Espen Jacobsson for the API-service
-- Roy Sindre Norangshol for the light service
-- Dag Olav Prestegarden for the calendar service
-- René Räisänen for the background image
+- Michael Johansen is the lead coder
+- Espen Jacobsson wrote the API-service
+- Roy Sindre Norangshol wrote the light service
+- Dag Olav Prestegarden wrote the calendar service
+- René Räisänen designed the graphics
