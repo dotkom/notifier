@@ -3,26 +3,24 @@
 
 function cantinaDinner_update() {
 	if (localStorage.showCantinaDinner == 'true')
-		// Bring forth the woman
 		fetchDinners();
 	else if (DEBUG) console.log('user doesn\'t want dinner');
 }
 
 function cantinaDinner_reset() {
 	if (DEBUG) console.log('reset dinner data');
-	localStorage.hangarenDinner = 'undefined';
-	localStorage.hangarenTitle = 'undefined';
-	localStorage.realfagDinner = 'undefined';
-	localStorage.realfagTitle = 'undefined';
+	localStorage.hangarenTitle = 'Hangaren';
+	localStorage.hangarenDinner = CANTINA_CONNECTION_ERROR;
+	localStorage.realfagTitle = 'Realfag';
+	localStorage.realfagDinner = CANTINA_CONNECTION_ERROR;
 }
 
 function cantinaDinner_disable() {
-	localStorage.dinnerInfo = CANTINA_DINNER_ERROR;
 	cantinaDinner_reset();
 }
 
-function cantinaDinner_error() {
-	localStorage.dinnerInfo = CANTINA_DINNER_ERROR;
+function cantinaDinner_error(msg) {
+	if (DEBUG) console.log('Error: '+msg)
 	cantinaDinner_reset();
 }
 
@@ -37,8 +35,7 @@ function fetchDinners() {
 		success: parseDinnerData
 	})
 	.fail(function() {
-		if (DEBUG) console.log('ERROR: failed to fetch dinner from hangaren');
-		cantinaDinner_error();
+		cantinaDinner_error('failed to fetch dinner from hangaren');
 	});
 	
 	// Fetch Realfag
@@ -48,8 +45,7 @@ function fetchDinners() {
 		success: parseDinnerData
 	})
 	.fail(function() {
-		if (DEBUG) console.log('ERROR: failed to fetch dinner from realfag');
-		cantinaDinner_error();
+		cantinaDinner_error('failed to fetch dinner from realfag');
 	});
 }
 
@@ -77,15 +73,24 @@ function parseDinnerData(xml) {
 	// Find todays dinners
 	var today = dayNames[d.getDay()];
 	var dinnerForEachDay = dinnerDescription.split('<b>');
-	var todaysDinners = CANTINA_DINNER_NOT_OPEN;
+	var todaysDinners = CANTINA_NOT_OPEN;
+	// Separate todays dinners
 	for (dinnerDay in dinnerForEachDay) {
 		if (dinnerForEachDay[dinnerDay].lastIndexOf(today, 0) === 0) {
 			todaysDinners = dinnerForEachDay[dinnerDay];
 		}
 	}
-	if (todaysDinners == CANTINA_DINNER_NOT_OPEN) {
-		localStorage.dinnerInfo = CANTINA_DINNER_NOT_OPEN;
-		cantinaDinner_reset();
+	// If no dinners for today were found
+	if (todaysDinners == CANTINA_NOT_OPEN) {
+		if (cantinaTitle.indexOf('Realfag') != -1) {
+			localStorage.realfagTitle = cantinaTitle;
+			localStorage.realfagDinner = CANTINA_NOT_OPEN;
+		}
+		else if (cantinaTitle.indexOf('Hangaren') != -1) {
+			localStorage.hangarenTitle = cantinaTitle;
+			localStorage.hangarenDinner = CANTINA_NOT_OPEN;
+		}
+		return;
 	}
 	
 	// Separate todays dinners
@@ -94,53 +99,82 @@ function parseDinnerData(xml) {
 	// Remove empty or irrelevant information (items: first, last, second last)
 	dinnerList = dinnerList.splice(1,dinnerList.length-3);
 	
-	var B = 50;
+	var DINNERDEBUG = 0;
 	
 	// Shorten relevant information to the bare necessities
 	for (dinner in dinnerList) {
 		
+		if (DINNERDEBUG) dinnerList[dinner] = 'Fredagsbuffet -forsyn deg en gang!:';
+		
 		// Everything after X should be removed...
-		if (dinner==B) console.log('. :: '+dinnerList[dinner]);
+		if (DINNERDEBUG) console.log('. :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('.') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('.')[0];
 		
-		if (dinner==B) console.log(', :: '+dinnerList[dinner]);
+		if (DINNERDEBUG) console.log(', :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf(',') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split(',')[0];
 		
-		if (dinner==B) console.log(': :: '+dinnerList[dinner]);
+		if (DINNERDEBUG) console.log(': :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf(':') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split(':')[0];
 		
-		if (dinner==B) console.log('( :: '+dinnerList[dinner]);
+		if (DINNERDEBUG) console.log('( :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('(') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('(')[0];
 		
-		if (dinner==B) console.log('s :: '+dinnerList[dinner]);
+		if (DINNERDEBUG) console.log('s :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('serveres') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('serveres')[0];
 		
-		if (dinner==B) console.log('S :: '+dinnerList[dinner]);
+		if (DINNERDEBUG) console.log('S :: '+dinnerList[dinner]);
 		if (dinnerList[dinner].indexOf('Serveres') != -1)
 			dinnerList[dinner] = dinnerList[dinner].split('Serveres')[0];
 		
 		// Trim away extra whitespace...
 		
-		if (dinner==B) console.log('_ :: '+dinnerList[dinner]);
+		if (DINNERDEBUG) console.log('_ :: '+dinnerList[dinner]);
 		dinnerList[dinner] = dinnerList[dinner].trim();
 		
-		// Each description should have max 3 words...
+		// If current item is about the buffet, keep the rest intact.
+		// Otherwise:
+		if (dinnerList[dinner].toLowerCase().indexOf('buffet') == -1) {
+			
+			// Each description should have max 4 words...
 		
-		if (dinner==B) console.log('3 :: '+dinnerList[dinner]);
-		if (dinnerList[dinner].split(' ').length > 3)
-			dinnerList[dinner] = dinnerList[dinner].split(' ').splice(0,3).join(' ');
+			if (DINNERDEBUG) console.log('4 :: '+dinnerList[dinner]);
+			if (dinnerList[dinner].split(' ').length > 4)
+				dinnerList[dinner] = dinnerList[dinner].split(' ').splice(0,4).join(' ');
 		
-		// If current item is info about veggie food, shorten...
+			// Description should not end with 'og', 'med' or '&'
+			// Q: Why not just cut any word with 3 chars or less?
+			// A: Because 'ris' is three chars. Kjøttboller med grovkornet ris anyone?
 		
-		if (dinner==B) console.log('V :: '+dinnerList[dinner]);
-		if (dinnerList[dinner].indexOf('INGEN VEGETAR') != -1)
-			dinnerList[dinner] = dinnerList[dinner].split(' ').splice(0,2).join(' ');
+			if (DINNERDEBUG) console.log('& :: '+dinnerList[dinner]);
+			if (endsWith(dinnerList[dinner], '&')) {
+				var pieces = dinnerList[dinner].split(' ');
+				dinnerList[dinner] = pieces.splice(0,pieces.length-1).join(' ');
+			}
 		
+			if (DINNERDEBUG) console.log('og:: '+dinnerList[dinner]);
+			if (endsWith(dinnerList[dinner], 'og')) {
+				var pieces = dinnerList[dinner].split(' ');
+				dinnerList[dinner] = pieces.splice(0,pieces.length-1).join(' ');
+			}
+			
+			if (DINNERDEBUG) console.log('med: '+dinnerList[dinner]);
+			if (endsWith(dinnerList[dinner], 'med')) {
+				var pieces = dinnerList[dinner].split(' ');
+				dinnerList[dinner] = pieces.splice(0,pieces.length-1).join(' ');
+			}
+		
+			// If current item is info about veggie food, shorten...
+		
+			if (DINNERDEBUG) console.log('V :: '+dinnerList[dinner]);
+			if (dinnerList[dinner].indexOf('INGEN VEGETAR') != -1)
+				dinnerList[dinner] = dinnerList[dinner].split(' ').splice(0,2).join(' ');
+				
+		}
 	}
 	
 	// Save respective cantina info to localstorage
@@ -154,6 +188,10 @@ function parseDinnerData(xml) {
 	}
 	else
 		cantinaDinner_error();
+}
+
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
 

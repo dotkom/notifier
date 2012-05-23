@@ -59,12 +59,12 @@ options stuff:
 
 ~~~~future stuff~~~~
 
-[ ] bug: connecting... or retrying... then status won't update
 [ ] update URL at Onlines servers
 [ ] online notifier text in right-click (on icon) menu should go somewhere
 [ ] update to manifest v2 with new security policies
 [ ] light info should be served through static_service
 [ ] remove and reinject ganalytics in background.html on reconnection
+[ ] vise tom RSS-feed om man starter offline
 
 -->
 
@@ -85,16 +85,12 @@ options stuff:
 			return;
 		}
 		
-		// Reset localStorage in dev mode, just reset office status otherwise
+		// Dev mode? Clear localStorage
 		if (DEBUG)
 			localStorage.clear();
-		else {
-			officeStatus_reset(true, true);
-			cantinaDinner_reset();
-		}
 		
-		// Set some values and open options page after install
-		if (localStorage.everConnected != 'true') {
+		// Set default choices and open options page after install
+		if (localStorage.everConnected == undefined) {
 			if (localStorage.showOfficeStatus == undefined)
 				localStorage.showOfficeStatus = 'true';
 			if (localStorage.showNotifications == undefined)
@@ -104,10 +100,13 @@ options stuff:
 			chrome.tabs.create({url: chrome.extension.getURL("options.html"), selected: true});
 		}
 		
+		// Reset vars from last run
+		cantinaDinner_reset();
+		officeStatus_reset();
 		localStorage.everConnected = 'false';
 		localStorage.wasConnected = 'true';
 		var iterationCounter = 1;
-
+		
 		function mainLoop() {
 			if (DEBUG) console.log('\n# '+iterationCounter);
 	

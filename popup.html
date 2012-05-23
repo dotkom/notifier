@@ -6,6 +6,7 @@
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/parseFeed.js"></script>
 	<script src="js/cantinaDinner.js"></script>
+	<script src="js/officeStatus.js"></script>
 	<script>
 	
 		$(function() {
@@ -17,9 +18,12 @@
 			fetchFeed();
 			displayStories(localStorage.lastResponseData);
 			
-			// slight esthetical adjustment for different scrollbars
+			// Slight esthetical adjustment for different scrollbars
 			if (OPERATING_SYSTEM == 'Mac')
 				$('.textwrapper').attr("style","width:250px;");
+			
+			// Update the office status in case user clicked icon to update it
+			officeStatus_update();
 		});
 		
 		function displayStories(xmlstring) {
@@ -90,7 +94,7 @@
 					$('header').append('<div id="cantinadinners">' + hangaren + realfag + '</div>');
 				}
 				else
-					$('header').append('<div id="cantinadinners"><br /><span class="title">' + localStorage.dinnerInfo + '</span></div>');
+					cantinaDinner_error(CANTINA_CONNECTION_ERROR);
 			}
 			else if (DEBUG) console.log('user is not hungry');
 			
@@ -110,7 +114,7 @@
 		
 		function buildCantinaDinnerPost(title, link, dinner) {
 			var dinners = dinner.split(',');
-			var dinnerlist = '<ul id="dinnerlist" style="position:relative;right:15px;">';
+			var dinnerlist = '<ul id="dinnerlist">';
 			for (dinner in dinners)
 				dinnerlist += '<li>' + dinners[dinner] + '</li>';
 			dinnerlist += '</ul>';
@@ -273,6 +277,7 @@
 		#hangaren {
 			position:relative;
 			float:left;
+			width:47%;
 			border:0px solid yellow; /*debug*/
 		}
 		
@@ -280,8 +285,12 @@
 			position:relative;
 			float:right;
 			width:50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
-
 			border:0px solid yellow; /*debug*/
+		}
+		
+		#dinnerlist {
+			position:relative;
+			right:15px;
 		}
 		
 		#dinnerlist li {
@@ -395,7 +404,7 @@
 			<div id="buttons">
 				<a href="options.html" target="_blank"><img class="popupbutton" src="img/popup-options.png" onmouseover="optionsText(true);" onmouseout="optionsText(false);" /></a>
 				<script>document.write('<a href="'+POPUP_IRC_LINK+'" target="_blank"><img class="popupbutton" src="img/popup-irc.png" onmouseover="ircText(true);" onmouseout="ircText(false);" /></a>');</script>
-				<script>document.write('<a href="'+EMAIL+'" target="_blank"><img class="popupbutton" src="img/popup-feedback.png" onmouseover="feedbackText(true);" onmouseout="feedbackText(false);" /></a>');</script>
+				<script>document.write('<a href="'+POPUP_FEEDBACK_EMAIL+'" target="_blank"><img class="popupbutton" src="img/popup-feedback.png" onmouseover="feedbackText(true);" onmouseout="feedbackText(false);" /></a>');</script>
 				<script>document.write('<a href="'+POPUP_MAKE_EXTENSION_LINK+'" target="_blank"><img class="popupbutton" src="img/popup-make-extension.png" onmouseover="makeExtensionText(true);" onmouseout="makeExtensionText(false);" /></a>');</script>
 				<div id="buttontext"></div>
 			</div>

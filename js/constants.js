@@ -28,34 +28,33 @@ var REFRESH_FEED_INTERVAL = 10; // recommended: 10
 var REFRESH_DINNER_INTERVAL = 10; // recommended: 10
 
 // threshold for office status light level, above = lights off, below = lights on
-var OFFICE_LIGHTS_BORDER_VALUE = 800; // 800 is great
+var OFFICE_LIGHTS_BORDER_VALUE = 810; // 800 is great
 
 // messages, links
 
-var OPTIONS_OFFICE = 'Vis kontorets status: Åpent, stengt, møte, gratis vafler';//;'Show office status: Open, closed, meeting, free waffles';
-var OPTIONS_NOTIFICATIONS = 'Vis varsling på skrivebordet når nyheter publiseres / oppdateres';//'Show desktop notifications when news are published / updated';
-var OPTIONS_DINNER = 'Vis dagens middagsmeny fra Hangaren og Realfag';//'Show today\'s dinner menu from Hangaren and Realfag';
+var OPTIONS_OFFICE = 'Vis kontorets status: Åpent, stengt, møte, gratis vafler';
+var OPTIONS_NOTIFICATIONS = 'Vis varsling på skrivebordet når nyheter publiseres / oppdateres';
+var OPTIONS_DINNER = 'Vis dagens middagsmeny fra Hangaren og Realfag';
 var OPTIONS_GITHUB = 'http://github.com/dotkom/online-notifier/';
 
-var DISCONNECTED = 'Kobler til...';//'Connecting...';
-var CONNECTION_ERROR = 'Noe gikk galt, prøver igjen...';//'Something went wrong, retrying...';
-var OFFICE_OPEN = 'Velkommen til kontoret, det er gratis kaffe!';//'Welcome to the office, free coffee! :)';
-var OFFICE_CLOSED = 'Kontoret er stengt';//'The office is closed';
-var OFFICE_UNTITLED_MEETING = 'Møte på kontoret';//'Meeting at the office'; // titled meetings and waffles get names from their respective calendar entries
-
-var POPUP_OPTIONS_BUTTON = 'Innstillinger';//'Go to options';
+var POPUP_OPTIONS_BUTTON = 'Innstillinger';
 var POPUP_IRC_BUTTON = 'Bli med i Onlines chattekanal';
-var POPUP_IRC_LINK = 'http://webchat.freenode.net/?channels=online';
-var POPUP_FEEDBACK_BUTTON = 'Send tilbakemelding';//'Send feedback';
-var POPUP_MAKE_EXTENSION_BUTTON = 'Lag din egen Chrome-utvidelse';//'Make your own extension';
+var POPUP_IRC_LINK = 'http://webchat.freenode.net?channels=online';
+var POPUP_FEEDBACK_BUTTON = 'Send tilbakemelding';
+var POPUP_FEEDBACK_EMAIL_SUBJECT = 'Online Notifier'; // no ampersands!
+var POPUP_FEEDBACK_EMAIL_BODY = '( ros tas godt imot :: bugs må beskrives godt :: ønsker etter nye funksjoner tas gjere imot )'; // no ampersands!
+var POPUP_MAKE_EXTENSION_BUTTON = 'Lag din egen Chrome-utvidelse';
 var POPUP_MAKE_EXTENSION_LINK = 'http://lifehacker.com/5857721/how-to-build-a-chrome-extension';
 
-var CANTINA_DINNER_NOT_OPEN = 'Kantinene er stengt i dag';//'The cantinas are closed today';
-var CANTINA_DINNER_ERROR = 'Klarte ikke å hente middagsmeny, prøv igjen senere';//'Unable to get cantina dinners, come back later';
+var OFFICE_DISCONNECTED = 'Kobler til...';
+var OFFICE_ERROR = 'Noe gikk galt, prøver igjen...';
+var OFFICE_OPEN = 'Velkommen til kontoret, det er gratis kaffe!';
+var OFFICE_CLOSED = 'Kontoret er stengt';
+var OFFICE_UNTITLED_MEETING = 'Møte på kontoret'; // titled meetings and waffles get names from calendar entries
 
-var EMAIL_SUBJECT = 'Online Notifier';//'I wantz to tell u guise sumthing! :3'; // no ampersands!
-var EMAIL_BODY = '( ros tas godt imot :: bugs må beskrives godt :: ønsker etter nye funksjoner tas gjere imot )';
-//'( praise is dearly recieved :: bugs must be described well :: wishes for new features are welcome )'; // no ampersands!
+var CANTINA_NOT_OPEN = 'Stengt';
+var CANTINA_CONNECTION_ERROR = 'Frakoblet';
+
 
 // images and icons
 
@@ -88,12 +87,12 @@ if (navigator.appVersion.indexOf("Mac")!=-1)
 if (CREATOR_NAME.length > 8)
 	warn('CREATOR_NAME contains more than 8 letters, - shorten it or lose style!');
 
-if (EMAIL_SUBJECT.indexOf("&") != -1)
+if (POPUP_FEEDBACK_EMAIL_SUBJECT.indexOf("&") != -1)
 	warn('EMAIL_SUBJECT cannot contain ampersands, - fix it you numbnut!');
-else if (EMAIL_BODY.indexOf("&") != -1)
+else if (POPUP_FEEDBACK_EMAIL_BODY.indexOf("&") != -1)
 	warn('EMAIL_BODY cannot contain ampersands, - fix it you numbnut!');
 else
-	var EMAIL = 'mailto:'+CREATOR_EMAIL+'?subject='+EMAIL_SUBJECT+'&body='+EMAIL_BODY;;
+	var POPUP_FEEDBACK_EMAIL = 'mailto:'+CREATOR_EMAIL+'?subject='+POPUP_FEEDBACK_EMAIL_SUBJECT+'&body='+POPUP_FEEDBACK_EMAIL_BODY;
 
 function warn(msg) {
 	alert('js/constants.js\n'+ msg);
