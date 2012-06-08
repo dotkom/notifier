@@ -1,5 +1,5 @@
 
-var DEBUG = 0;
+var DEBUG = 1;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
@@ -15,6 +15,9 @@ var REALFAG_DINNER_URL = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to
 var OFFICE_LIGHTS_URL = 'http://draug.online.ntnu.no/lys.txt';
 var CALENDAR_URL = 'https://online.ntnu.no/service_static/online_notifier';
 var GOOGLE_ANALYTICS_TRACKING_CODE = 'UA-9905766-3';
+
+// how long to wait for AJAX or JSON requests
+var REQUEST_TIMEOUT = 10000; // 10.000 ms
 
 // how long the desktop notification is visible
 var DESKTOP_NOTIFICATION_TIMEOUT = 5000; // 5.000 ms
@@ -52,8 +55,10 @@ var OFFICE_OPEN = 'Velkommen til kontoret, det er gratis kaffe!';
 var OFFICE_CLOSED = 'Kontoret er stengt';
 var OFFICE_UNTITLED_MEETING = 'Møte på kontoret'; // titled meetings and waffles get names from calendar entries
 
-var CANTINA_NOT_OPEN = 'Stengt';
+var CANTINA_NOT_OPEN = 'Ingen publisert meny i dag';
 var CANTINA_CONNECTION_ERROR = 'Frakoblet';
+var CANTINA_MALFORMED_MENU = 'Galt format på meny';
+var CANTINA_UNSUPPORTED = 'Denne kantinen støttes ikke';
 
 
 // images and icons

@@ -1,6 +1,6 @@
 {
   "name": "Online Notifier",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "manifest_version": 1,
   "offline_enabled": true,
 	
@@ -38,7 +38,7 @@
 
 	"content_scripts": [
     {
-      "matches": ["http://online.ntnu.no/*", "https://online.ntnu.no/*" ],
+      "matches": ["http://online.ntnu.no/*", "https://online.ntnu.no/*", "http://sit.no/*" ],
       "js": ["js/jquery-1.7.2.min.js", "js/onWebsite.js"]
     }
   ]

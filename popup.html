@@ -112,18 +112,23 @@
 				});
 		}
 		
-		function buildCantinaDinnerPost(title, link, dinner) {
-			var dinners = dinner.split(',');
-			var dinnerlist = '<ul id="dinnerlist">';
-			for (dinner in dinners)
-				dinnerlist += '<li>' + dinners[dinner] + '</li>';
-			dinnerlist += '</ul>';
-			post = '<a href="' + link + '">'
-				+ '<div id="' + title + '" onclick="openUrl(\'' + link + '\');window.close();">'
+		function buildCantinaDinnerPost(title, link, storedDinners) {
+			var dinnerObjects = JSON.parse(storedDinners);
+			var dinnerlist = '<div id="dinnerbox">';
+			// dinnerObjects is just a message (yes, a bit hackish, but reduces complexity)
+			if (typeof(dinnerObjects) == 'string') {
+				dinnerlist += '<a onclick=";openUrl(\'' + link + '\');window.close();" href="' + link + '"><li class="dinnerlist">' + dinnerObjects + '</li></a>';
+			}
+			else {
+				dinnerObjects.forEach( function(dinner) {
+					dinnerlist += '<a onclick="localStorage.chosenDinner=' + dinner.index + ';openUrl(\'' + link + '\');window.close();" href="' + link + '"><li class="dinnerlist">' + dinner.price + ',- ' + dinner.text + '</li></a>';
+				});
+			}
+			dinnerlist += '</div>';
+			post = '<div id="' + title + '">'
 					+ '<span class="creator" style="position:relative;top:10px;">' + title + '</span>'
 					+ '<span class="description">' + dinnerlist + '</span>'
-				+ '</div>'
-				+ '</a>';
+				+ '</div>';
 			return post;
 		}
 		
@@ -288,16 +293,22 @@
 			border:0px solid yellow; /*debug*/
 		}
 		
-		#dinnerlist {
+		#dinnerbox {
+			margin-bottom:30px;
+			border:0px solid pink; /*debug*/
+		}
+		
+		li.dinnerlist {
 			position:relative;
-			right:15px;
-		}
-		
-		#dinnerlist li {
+			top:12px;
+			left:10px;
+			width:95%;
+			list-style-type:none;
 			-webkit-transition: text-shadow 0.15s ease-out 0s;
+			border:0px solid lightgreen; /*debug*/
 		}
 		
-		#dinnerlist li:hover {
+		li.dinnerlist:hover {
 			text-shadow:
 				0 0 10px #fff,
 				0 0 15px #fff,

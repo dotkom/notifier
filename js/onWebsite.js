@@ -12,23 +12,31 @@ if (host == 'online.ntnu.no') {
 	chrome.extension.sendRequest({'action' : 'resetCounterWhenOnWebsite'});
 }
 
-// Messing with the Onlinesite
-/*
-function onlinesite() {
-	var bodyStyle = "background:url('https://online.ntnu.no/splash/graphics/splash.jpg') no-repeat fixed center center;";
-	$('body').attr('style', bodyStyle);
-	var menuBacklineStyle = "-webkit-box-shadow: 0px 0px 20px #bbb;";
-	$('#hmbg').attr('style', menuBacklineStyle);
-	var menuFrontlineStyle = "-webkit-box-shadow: 0px 0px 20px #1d487c;";
-	$('#hm').attr('style', menuFrontlineStyle);
-	$("link[rel=stylesheet]").attr({href : "http://informatikk.org/online.css"});
+if (host == 'sit.no') {
 	
-	$('div#hogre').append( $('div.hboks').filter(':first') );
-	$('div#hogre').append( $('div.events') );
-	$('div#venstre').prepend( $('div#hogre').children().eq(0) );
-	$('div#hogre').children().eq(1).detach();
+	// If we're at a dinner info page
+	if (document.URL.indexOf('pa-Hangaren') != -1 || document.URL.indexOf('pa-Realfag') != -1) {
+		
+		// Add a notification in the source about edited code
+		$('html').prepend('<!--\nOnline Notifier:\nThis source code has been edited by Online Notifier.\nTodays dinner menus have been highlighted as well as the dinner you\nclicked to get here if you used Online Notifiers dinner links.\n-->');
+		
+		// Find out which day it is
+		var today = new Date().getDay() - 1;
+		if (today == -1) today = 6;
+		
+		// Highlight day
+		$('#menytable tbody:first tr[valign=top]').eq(today).children(':first').attr("style","background-color:#988d14;color:white;font-weight:bold;");
+		
+		// Highlight chosen dinner (chosen from the popup)
+		chrome.extension.sendRequest({'action' : 'getChosenDinner'}, function(response) {
+			if (response != null) {
+				$('#menytable tbody:first tr[valign=top]').eq(today).children(':last').find('tbody').children().eq(response).children().attr("style","font-weight:bold;");
+				window.scrollTo(0,(230 + 50 * today));
+			}
+		});
+	}
 }
-*/
+
 
 
 

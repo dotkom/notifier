@@ -107,6 +107,9 @@ options stuff:
 		localStorage.wasConnected = 'true';
 		var iterationCounter = 1;
 		
+		// Setting the global timeout for all AJAX and JSON requests
+		$.ajaxSetup({ timeout: REQUEST_TIMEOUT });
+		
 		function mainLoop() {
 			if (DEBUG) console.log('\n# '+iterationCounter);
 	
@@ -162,6 +165,11 @@ options stuff:
 				localStorage.unreadCount = 0;
 				localStorage.mostRecentRead = localStorage.mostRecentUnread;
 				chrome.browserAction.setBadgeText({text:''});
+			}
+			else if (request.action == 'getChosenDinner') {
+				var chosenDinner = localStorage.chosenDinner;
+				localStorage.removeItem("chosenDinner");
+				callback(chosenDinner);
 			}
 			else if (DEBUG) console.log('ERROR: unrecognized request');
 		}
