@@ -105,6 +105,7 @@ options stuff:
 		officeStatus_reset();
 		localStorage.everConnected = 'false';
 		localStorage.wasConnected = 'true';
+		localStorage.mainLoopTimeout = MAIN_LOOP_QUICK_TIMEOUT;
 		var iterationCounter = 1;
 		
 		// Setting the global timeout for all AJAX and JSON requests
@@ -145,6 +146,16 @@ options stuff:
 			iterationCounter++;
 			if (10000 < iterationCounter) // no reason to count to infinity
 				iterationCounter = 1;
+			
+			// Schedule for repetition once a minute (checking connectivity,
+			// feed and office status). Runs every 3rd second if it's offline,
+			// trying to react quickly upon reconnection...
+			var loopTimeout = Number(localStorage.mainLoopTimeout);
+			if (DEBUG || localStorage.wasConnected=='false')
+				loopTimeout = MAIN_LOOP_QUICK_TIMEOUT;
+			setTimeout(function() {
+				mainLoop();
+			}, loopTimeout);
 		}
 		
 		// This page runs continously and will therefore experience downtime.
@@ -179,13 +190,7 @@ options stuff:
 
 		// Document ready, go!
 		$(function() {
-			// Execute once
 			mainLoop();
-			// Schedule for repetition once a minute (checking connectivity,
-			// feed and office status). Runs every 3rd second in DEBUG-mode.
-			setInterval(function() {
-				mainLoop();
-			}, (DEBUG ? 3000 : 60000));
 		});
 
 	</script>

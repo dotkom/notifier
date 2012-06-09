@@ -1,5 +1,5 @@
 
-var DEBUG = 1;
+var DEBUG = 0;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
@@ -15,6 +15,10 @@ var REALFAG_DINNER_URL = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to
 var OFFICE_LIGHTS_URL = 'http://draug.online.ntnu.no/lys.txt';
 var CALENDAR_URL = 'https://online.ntnu.no/service_static/online_notifier';
 var GOOGLE_ANALYTICS_TRACKING_CODE = 'UA-9905766-3';
+
+// the main loop frequency, faster when something is wrong (to fix it quickly)
+var MAIN_LOOP_DEFAULT_TIMEOUT = 60000; // 60.000 ms
+var MAIN_LOOP_QUICK_TIMEOUT = 3000; // 3.000 ms
 
 // how long to wait for AJAX or JSON requests
 var REQUEST_TIMEOUT = 10000; // 10.000 ms

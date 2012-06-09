@@ -81,6 +81,12 @@ function setStatus(msg, icon, title) {
 	else {
 		if (DEBUG) console.log('now '+msg+'!');
 		setIconAndTitle(icon, title);
+		// If the disconnected icon is set then something has gone wrong somewhere.
+		// We should attempt to fix it asap, speed up the mainloop temporarily.
+		if (icon == ICON_DISCONNECTED)
+			localStorage.mainLoopTimeout = MAIN_LOOP_QUICK_TIMEOUT;
+		else
+			localStorage.mainLoopTimeout = MAIN_LOOP_DEFAULT_TIMEOUT;
 	}
 }
 
