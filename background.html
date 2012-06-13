@@ -2,69 +2,55 @@
 
 questions? -> dotkom@online.ntnu.no
 
-~~~~progression list~~~~
+~~~~feature list~~~~
 
 general stuff:
-[x] open options page on first run
-[x] reset vars in localStorage for when the extension is reloaded in dev-mode
+[x] opens options page on first run
+[x] faster updates and frequent clearing of localstorage in dev mode
 [x] separate script containing constants for changeability
-[x] run google analytics on all pages
-[x] in background: inject google analytics on first time online
+[x] fancy html5, css3 and jquery design on all pages
+[x] all known errors and issues are handled
+[x] runs google analytics on all pages
+[x] injects google analytics on first time online
 
-news feed stuff:
-[x] fetch and parse feed from Onlines website
-[x] count unread news and present number in a small badge
-[x] separate between new, updated and read items
-[x] serve desktop notifications on news / updates
-[x] fancy desktop notification design
-[x] popup presenting feed, separate between read and unread items
-[x] fancy css3 design for popup
-[x] fetch images asynchronously from the API and inject only when needed
+news feed:
+[x] fetches and parse feed from Onlines website
+[x] counts unread news and presents unread number in icon badge
+[x] separates between new, updated and read items
+[x] serves desktop notifications on news / updates
+[x] fetch images asynchronously from the API and injects them only when needed
 
-cantina feed stuff:
-[x] fetch and parse feed from SiTs website, both hangaren and realfag
-[x] strip dinner menu down to the bare necessities
-[x] present dinner in a fancy view in the popup
-[x] handle days when the cantinas are not open
+cantina dinners:
+[x] fetches and parses feed from SiTs website, both from Hangaren and Realfag
+[x] strips down dinner menu down to the bare necessities
+[x] presents dinners with pricing in ascending order
 
-light stuff:
-[x] read light value from the arduino connected to draug.online.ntnu.no
-[x] find stable border value, fairly unaffected by sunlight
-[x] read light value every 5 minutes
+light:
+[x] reads light value from the arduino connected to draug.online.ntnu.no
+[x] uses a stable border value, fairly unaffected by sunlight
+[x] reads the light value frequently in order to react quickly to changes
 
 calendar stuff:
-[x] read all this from Onlines own server to be able to handle more requests
-[x] cheap requests, only asking for specifically needed info
+[x] reads events from Onlines own server which again is parsed from GoogleCal
+[x] uses very cheap, low latency requests for event information
 
 icon stuff:
-[x] change icon based on light values
-[x] change icon based on calendar events
-[x] use title text containing the name of the event
+[x] changes icon based on light values and calendar events
+[x] uses title text containing the name of the event, or other appropriate text
 [x] separate icon showing when you're offline or when an error has occured
 
-website stuff:
-[x] detect when user is visiting the Online website
-[x] fetch most recent news from Onlines website upon arrival
-[x] nullify counter badge upon arrival
-
-options stuff:
+options page:
 [x] option for showing office status in the icon
 [x] option for desktop notifications
 [x] option for fetching cantina dinner menu
-[x] fancy css3 design for options page
-[x] fancy checkboxes for options page (old ones hidden)
 [x] google +1 button for Onlines website
-[x] optimize the icons behaviour to react immediately to changes
+[x] fancy github link leading the way to the open repository
+[x] all options react immediately to changes
+[x] contains easter egg
 
-
-~~~~future stuff~~~~
-
-[ ] update URL at Onlines servers
-[ ] online notifier text in right-click (on icon) menu should go somewhere
-[ ] update to manifest v2 with new security policies
-[ ] light info should be served through static_service
-[ ] remove and reinject ganalytics in background.html on reconnection
-[ ] vise tom RSS-feed om man starter offline
+content scritps for websites:
+[x] detects when user is visiting the Online website, nullifying the counter badge
+[x] notices when a user clicks a dinner menu, then opens sit.no and highlights the selected dinner
 
 -->
 
@@ -76,7 +62,7 @@ options stuff:
 	<script src="js/constants.js"></script>
 	<script src="js/parseFeed.js"></script>
 	<script src="js/officeStatus.js"></script>
-	<script src="js/cantinaDinner.js"></script>
+	<script src="js/cantinaMenu.js"></script>
 	<script>
 	
 		// Stop the extension if localStorage is not supported
@@ -101,7 +87,7 @@ options stuff:
 		}
 		
 		// Reset vars from last run
-		cantinaDinner_reset();
+		cantinaMenu_reset();
 		officeStatus_reset();
 		localStorage.everConnected = 'false';
 		localStorage.wasConnected = 'true';
@@ -120,7 +106,7 @@ options stuff:
 				if (localStorage.wasConnected == 'false' || localStorage.everConnected == 'false') {
 					officeStatus_update();
 					fetchFeed(unreadCount);
-					cantinaDinner_update();
+					cantinaMenu_update();
 				}
 				if (localStorage.everConnected == 'false') {
 					connectGoogleAnalytics();
@@ -132,7 +118,7 @@ options stuff:
 					if (iterationCounter % REFRESH_FEED_INTERVAL == 0)
 						fetchFeed(unreadCount);
 					if (iterationCounter % REFRESH_DINNER_INTERVAL == 0)
-						cantinaDinner_update();
+						cantinaMenu_update();
 				}
 				localStorage.everConnected = 'true';
 				localStorage.wasConnected = 'true';

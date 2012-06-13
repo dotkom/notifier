@@ -5,14 +5,14 @@
 	<script src="js/constants.js"></script>
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/parseFeed.js"></script>
-	<script src="js/cantinaDinner.js"></script>
+	<script src="js/cantinaMenu.js"></script>
 	<script src="js/officeStatus.js"></script>
 	<script>
 	
 		$(function() {
 			
 			// Fetching the cantina dinner feed
-			cantinaDinner_update();
+			cantinaMenu_update();
 			
 			// Fetching and displaying the news feed
 			fetchFeed();
@@ -78,25 +78,14 @@
 			
 			// add dinners to the top of the popup
 			if (localStorage.showCantinaDinner == 'true') {
-				
-				// building posts from feed response and appending to header
-				if (localStorage.hangarenDinner != 'undefined' && localStorage.realfagDinner != 'undefined') {
-					var hangaren = buildCantinaDinnerPost(
-						'hangaren',
-						'http://sit.no/content/36444/Ukas-middagsmeny-pa-Hangaren',
-						localStorage.hangarenDinner
-					);
-					var realfag = buildCantinaDinnerPost(
-						'realfag',
-						'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag',
-						localStorage.realfagDinner
-					);
+				if (localStorage.hangarenMenu != 'undefined' && localStorage.realfagMenu != 'undefined') {
+					var hangaren = buildCantinaMenuPost('hangaren', HANGAREN_URL, localStorage.hangarenMenu);
+					var realfag = buildCantinaMenuPost('realfag', REALFAG_URL, localStorage.realfagMenu);
 					$('header').append('<div id="cantinadinners">' + hangaren + realfag + '</div>');
 				}
 				else
-					cantinaDinner_error(CANTINA_CONNECTION_ERROR);
+					cantinaMenu_error(CANTINA_CONNECTION_ERROR);
 			}
-			else if (DEBUG) console.log('user is not hungry');
 			
 			// store list of last viewed items
 			localStorage.lastViewedIdList = JSON.stringify(idsOfLastViewed);
@@ -112,16 +101,16 @@
 				});
 		}
 		
-		function buildCantinaDinnerPost(title, link, storedDinners) {
-			var dinnerObjects = JSON.parse(storedDinners);
+		function buildCantinaMenuPost(title, link, menu) {
+			var dinnerObjects = JSON.parse(menu);
 			var dinnerlist = '<div id="dinnerbox">';
-			// dinnerObjects is just a message (yes, a bit hackish, but reduces complexity)
+			// if dinnerObjects is just a message, not a menu: (yes, a bit hackish, but reduces complexity)
 			if (typeof(dinnerObjects) == 'string') {
 				dinnerlist += '<a onclick=";openUrl(\'' + link + '\');window.close();" href="' + link + '"><li class="dinnerlist">' + dinnerObjects + '</li></a>';
 			}
 			else {
 				dinnerObjects.forEach( function(dinner) {
-					dinnerlist += '<a onclick="localStorage.chosenDinner=' + dinner.index + ';openUrl(\'' + link + '\');window.close();" href="' + link + '"><li class="dinnerlist">' + dinner.price + ',- ' + dinner.text + '</li></a>';
+					dinnerlist += '<a onclick="localStorage.chosenDinner=' + dinner.index + ';openUrl(\'' + link + '\');window.close();" href="' + link + '"><li class="dinnerlist">' + (dinner.price != null ? dinner.price + ',- ' : '' ) + dinner.text + '</li></a>';
 				});
 			}
 			dinnerlist += '</div>';

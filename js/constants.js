@@ -1,5 +1,5 @@
 
-var DEBUG = 0;
+var DEBUG = 1;
 
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
@@ -10,8 +10,10 @@ var FEED_URL = 'https://online.ntnu.no/feeds/news/';
 var API_KEY = 'f5be90e5ec1d2d454ae9';
 var API_ADDRESS = 'https://online.ntnu.no/api/' + API_KEY + '/news_image_by_id/';
 var BACKUP_IMAGE = 'https://online.ntnu.no/media/steria_logo_thumbnail.jpeg';
-var HANGAREN_DINNER_URL = 'http://sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on';
-var REALFAG_DINNER_URL = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on';
+var HANGAREN_RSS = 'http://sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on';
+var HANGAREN_URL = 'http://sit.no/content/36444/Ukas-middagsmeny-pa-Hangaren';
+var REALFAG_RSS = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on';
+var REALFAG_URL = 'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag';
 var OFFICE_LIGHTS_URL = 'http://draug.online.ntnu.no/lys.txt';
 var CALENDAR_URL = 'https://online.ntnu.no/service_static/online_notifier';
 var GOOGLE_ANALYTICS_TRACKING_CODE = 'UA-9905766-3';
@@ -21,7 +23,7 @@ var MAIN_LOOP_DEFAULT_TIMEOUT = 60000; // 60.000 ms
 var MAIN_LOOP_QUICK_TIMEOUT = 3000; // 3.000 ms
 
 // how long to wait for AJAX or JSON requests
-var REQUEST_TIMEOUT = 10000; // 10.000 ms
+var REQUEST_TIMEOUT = 12000; // 10.000 ms
 
 // how long the desktop notification is visible
 var DESKTOP_NOTIFICATION_TIMEOUT = 5000; // 5.000 ms
@@ -80,8 +82,8 @@ var ICON_WAFFLE = 'img/icon-waffle.png';
 
 var OPERATING_SYSTEM = "Unknown";
 if (navigator.appVersion.indexOf("Win")!=-1) OPERATING_SYSTEM="Windows";
-if (navigator.appVersion.indexOf("X11")!=-1) OPERATING_SYSTEM="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OPERATING_SYSTEM="Linux";
+if (navigator.appVersion.indexOf("X11")!=-1) OPERATING_SYSTEM="UNIX";
 if (navigator.appVersion.indexOf("Mac")!=-1)
 	OPERATING_SYSTEM = (navigator.appVersion.indexOf("10_7") != -1 ? "Mac" : "Old Mac");
 

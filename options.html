@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Online notifier options</title>
+	<title>Notifier</title>
 	<meta charset="utf-8">
 	<script src='js/constants.js'></script>
 	<script src='js/jquery-1.7.2.min.js'></script>
 	<script src='js/officeStatus.js'></script>
-	<script src='js/cantinaDinner.js'></script>
+	<script src='js/cantinaMenu.js'></script>
 
 	<!-- begin GL -->
 	
@@ -53,9 +53,9 @@
 			resizeBackground(); // Run once in case window is quite big
 			
 			// Minor esthetical adjustments for OS version
-			if (OPERATING_SYSTEM == 'Mac') {
-				$('#pagefliptext').attr("style","bottom:5px;");
-				$('#pagefliplink').attr("style","bottom:5px;");
+			if (OPERATING_SYSTEM == 'Windows') {
+				$('#pagefliptext').attr("style","bottom:9px;");
+				$('#pagefliplink').attr("style","bottom:9px;");
 			}
 			
 			// Blinking cursor at pageflip
@@ -77,9 +77,9 @@
 					testDesktopNotification();
 				
 				if (this.id == 'showCantinaDinner' && this.checked == false)
-					cantinaDinner_disable();
+					cantinaMenu_disable();
 				else if (this.id == 'showCantinaDinner' && this.checked == true)
-					cantinaDinner_update();
+					cantinaMenu_update();
 				
 				displayNotification();
 			});
@@ -298,7 +298,7 @@
 			width:170px;
 			height:36px;
 			left:5px;
-			bottom:9px;
+			bottom:5px;
 			font:bold 11px monospace;
 			color:#ccf2cc;
 			text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
@@ -318,7 +318,7 @@
 			width:170px;
 			height:36px;
 			left:5px;
-			bottom:9px;
+			bottom:5px;
 			font:bold 11px monospace;
 			color:#ccf2cc;
 			text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
