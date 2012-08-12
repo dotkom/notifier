@@ -1,0 +1,259 @@
+/* Default debugging */
+
+@debug: 0pt;
+.debug_red {
+  border: @debug solid red;
+}
+.debug_yellow {
+  border: @debug solid yellow;
+}
+.debug_pink {
+  border: @debug solid pink;
+}
+.debug_super {
+  border: (@debug*3) solid pink;
+}
+
+/* Default colors */
+
+@online-orange: #ee861f;
+@background-blue: #001429;
+
+/* Default designs */
+
+@color: white;
+@font-family: helvetica;
+
+/* DEFAULTS ABOVE, ORIGINAL FOUND HERE IN OPTIONS.CSS */
+/* Unfortunately a proper defaults file could not be made because of Chromes security policies */
+/* Also: Always use less.watch() in the Chrome console to see live changes. Fucking sweet. */
+
+/* Designs */
+
+// ?
+
+/* Mixins */
+
+// ?
+
+/* Rules */
+
+/* Hierarchy:
+
+body
+  #popup
+    header
+      #buttons
+      #logo
+      #dinners
+    #post (multiple)
+      #item
+        #title
+        #description
+        #creator
+        #date
+*/
+
+/* The popup (and desktop notification) body */
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background: #001429 url('/img/background-popup.png') center center no-repeat;
+  border: 1px solid black;
+  font: bold 9pt helvetica;
+  color: white;
+
+  #popup {
+    width: 400px;
+    height: 400px;
+    overflow-x: hidden;
+    padding: 15px;
+  }
+}
+
+/* Container for non-post items: dinners, buttons, logo */
+
+header {
+  .debug_red;
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+
+  #buttons {
+    .debug_yellow;
+    position: relative;
+    float: left;
+    z-index: 100;
+    height: 50px;
+    width: 200px;
+    margin-left: 5px;
+    margin-top: 5px;
+
+    a .popupbutton {
+      border-radius: 5px;
+      margin-right: 12px;
+      -webkit-transition: all .15s ease-out;
+    }
+
+    a .popupbutton:hover {
+      box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
+    }
+
+    #buttontext {
+      display: none;
+      position: relative;
+      margin-top: 5px;
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+    }
+  }
+
+  #logo {
+    .debug_yellow;
+    position: relative;
+    margin-top: 5px;
+    margin-right: 5px;
+    float: right;
+    cursor: pointer;
+    z-index: 100;
+    right: 0px;
+    width: 150px;
+  }
+
+  #cantinamenus {
+    .debug_super;
+    position: relative;
+    margin-left: 5px;
+    width: 97%;
+    font-weight: normal;
+    line-height: 1.5;
+    z-index: 100;
+  }
+
+  #hangaren {
+    .debug_red;
+    position: relative;
+    margin-top:5pt;
+    float: left;
+    width: 47%;
+  }
+
+  #realfag {
+    .debug_red;
+    position: relative;
+    margin-top:5pt;
+    float: right;
+    width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
+  }
+
+  #dinnerbox {
+    .debug_pink;
+    margin-bottom: 10pt;
+  }
+
+  li.dinnerlist {
+    .debug_yellow;
+    position: relative;
+    width: 95%;
+    list-style-type: none;
+    -webkit-transition: text-shadow 0.15s ease-out 0s;
+  }
+
+  li.dinnerlist:hover {
+    text-shadow: 
+      0 0 10px #fff,
+      0 0 15px #fff,
+      0 0 20px #fff,
+      0 0 30px #fff,
+      0 0 40px #011b36,
+      0 0 40px #011b36,
+      0 0 70px #011b36,
+      0 0 70px #011b36;
+  }
+}
+
+
+/* Each ".post" in the popup contains one ".item" */
+
+.unread {
+  font-size: 8pt;
+  text-shadow: 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 25px #011b36, 0 0 30px #011b36, 0 0 35px #fff, 0 0 40px #011b36, 0 0 45px #011b36;
+  margin-left: 7px;
+}
+
+.read {
+  margin-left: 7px;
+}
+
+.post {
+  .debug_red;
+  width: 100%;
+  position: relative;
+  clear: both;
+}
+
+/* Each ".item" */
+
+.item {
+  width: 96%;
+  min-height: 60px;
+  padding: 7px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-right: 15px;
+  margin-bottom: 8px;
+  -webkit-transition: -webkit-box-shadow 0.3s ease-out 0s;
+  
+  img {
+    float: left;
+    -webkit-box-shadow: 0px 0px 10px #bbb;
+    padding: 5px;
+    background: snow;
+    margin-right: 15px;
+    width: 107px;
+    max-height: 90px;
+  }
+
+  &:hover, &:hover a {
+    box-shadow: inset 0px 0px 2px #bbb, 0px 0px 15px #fff;
+  }
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  outline: none;
+}
+
+.creator {
+  color: @online-orange;
+  text-transform: uppercase;
+  font-size: 8pt;
+  font-weight: bold;
+}
+
+.date {
+  text-transform: uppercase;
+  font-size: 8pt;
+}
+
+.textwrapper {
+  .debug_yellow;
+  position: relative;
+  top: -2px;
+  left: -5px;
+  float: right;
+  width: 235px;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.description {
+  font-weight: normal;
+}
+

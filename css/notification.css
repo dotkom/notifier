@@ -1,0 +1,109 @@
+/* Default debugging */
+
+@debug: 0pt;
+.debug_red {
+  border: @debug solid red;
+}
+.debug_yellow {
+  border: @debug solid yellow;
+}
+.debug_pink {
+  border: @debug solid pink;
+}
+
+/* Default colors */
+
+@online-orange: #ee861f;
+@background-blue: #001429;
+
+/* Default designs */
+
+@color: white;
+@font-family: helvetica;
+
+/* DEFAULTS ABOVE, ORIGINAL FOUND HERE IN OPTIONS.CSS */
+/* Unfortunately a proper defaults file could not be made because of Chromes security policies */
+/* Also: Always use less.watch() in the Chrome console to see live changes. Fucking sweet. */
+
+/* Designs */
+
+@color: black;
+@font-family: helvetica;
+
+/* Mixins */
+
+// ?
+
+/* Rules */
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* The item */
+
+.item {
+  width: 280px;
+  font-family: helvetica;
+  padding: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 8px;
+
+  img {
+    float: left;
+    -webkit-box-shadow: 0px 0px 10px DimGray;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 15px;
+    width: 107px;
+    max-height: 90px;
+  }
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 9pt;
+  font-weight: normal;
+  color: black;
+}
+
+header {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.creator {
+  text-transform: uppercase;
+  font-family: helvetica;
+  font-size: 8pt;
+  margin-left: 5px;
+  font-weight: bold;
+  color: @online-orange;
+}
+
+.date {
+  text-transform: uppercase;
+  font-family: helvetica;
+  font-size: 8pt;
+}
+
+.textwrapper {
+  .debug_red;
+  position: relative;
+  float: right;
+  width: 140px;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.description {
+  /* nothing to see here yet */
+}

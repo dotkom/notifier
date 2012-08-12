@@ -1,10 +1,10 @@
 {
   "name": "Online Notifier",
-  "version": "1.0.15",
-  "manifest_version": 1,
-  "offline_enabled": true,
+  "version": "1.1.0",
+  "manifest_version": 2,
+  "offline_enabled": false,
 	
-  "description": "Retrieves news and office status from Onlines systems.",
+  "description": "Nyheter, kontorstatus, middagsmeny og mer.",
   "update_url": "http://informatikk.org/notifier/updates.xml",
   "homepage_url": "https://online.ntnu.no/",
 
@@ -15,7 +15,7 @@
 
   "browser_action": {
     "default_icon": "img/icon-default.png",
-    "default_title": "Online Notifier",
+    "default_title": "Notifier",
     "default_popup": "popup.html"
   },
 
@@ -24,24 +24,21 @@
     "48" : "img/logo-48.png",
     "128" : "img/logo-128.png"
   },
-
-	//"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 	
   "permissions": [
     "notifications",
-    "http://online.ntnu.no/*",
-    "https://online.ntnu.no/*",
-    "http://draug.online.ntnu.no/lys.txt",
-    "https://online.ntnu.no/service_static/online_notifier",
-		"http://sit.no/*"
+    "*://*.online.ntnu.no/*",
+	  "*://*.sit.no/*"
   ],
 
 	"content_scripts": [
     {
-      "matches": ["http://online.ntnu.no/*", "https://online.ntnu.no/*", "http://sit.no/*" ],
-      "js": ["js/jquery-1.7.2.min.js", "js/onWebsite.js"]
+      "matches": ["*://*.online.ntnu.no/*", "*://*.sit.no/*" ],
+      "js": ["libs/jquery-1.7.2.min.js", "js/on_website.js"]
     }
-  ]
+  ],
+
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com; object-src 'self'"
 }
 
 

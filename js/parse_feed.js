@@ -154,9 +154,9 @@ function getImageUrlForId(id, callback) {
 	});
 }
 
-function openUrl(url) {
-	chrome.tabs.create({url: url});
-}
+// function openUrl(url) {
+// 	chrome.tabs.create({url: url});
+// }
 
 
 

@@ -7,9 +7,9 @@ if (DEBUG) {
 // Public functions
 
 function cantinaMenu_update() {
-	if (localStorage.showCantinaDinner == 'true')
+	if (localStorage.showCantinaMenu == 'true')
 		fetchDinners();
-	else if (DEBUG) console.log('user doesn\'t want dinner');
+	else if (DEBUG) console.log('user does not want dinner');
 }
 
 function cantinaMenu_reset(msg) {
@@ -39,8 +39,8 @@ function fetchDinners() {
 		dataType: 'xml',
 		success: parseDinnerData
 	})
-	.fail(function() {
-		cantinaMenu_error(CANTINA_CONNECTION_ERROR);
+	.error(function(jqXHR, err) {
+		cantinaMenu_error(CANTINA_CONNECTION_ERROR + ': ' + err);
 	});
 	
 	// Fetch Realfag
@@ -49,8 +49,8 @@ function fetchDinners() {
 		dataType: 'xml',
 		success: parseDinnerData
 	})
-	.fail(function() {
-		cantinaMenu_error(CANTINA_CONNECTION_ERROR);
+	.error(function(jqXHR, err) {
+		cantinaMenu_error(CANTINA_CONNECTION_ERROR + ': ' + err);
 	});
 }
 
@@ -67,7 +67,7 @@ function parseDinnerData(xml) {
 			'Unnamed'
 		);
 		
-		// IF menu is missing: stop
+		// If menu is missing: stop
 		if (descriptions[1] == undefined) {
 			saveCantinaMenu(cantinaTitle, CANTINA_NOT_OPEN);
 			return;
@@ -80,32 +80,32 @@ function parseDinnerData(xml) {
 		
 		var today = whichDayIsIt();
 		var dinnerForEachDay = fullWeekDinnerInfo.split('<b>');
-		var todaysDinnerMenu = CANTINA_NOT_OPEN;
-		var mondaysDinnerMenu = '';
+		var todaysCantinaMenu = CANTINA_NOT_OPEN;
+		var mondaysCantinaMenu = '';
 		for (dinnerDay in dinnerForEachDay) {
 			// Find todays dinner menu
 			if (dinnerForEachDay[dinnerDay].lastIndexOf(today, 0) === 0)
-				todaysDinnerMenu = dinnerForEachDay[dinnerDay];
+				todaysCantinaMenu = dinnerForEachDay[dinnerDay];
 			// Mondays menu is kept in case it contains a message
 			if (dinnerForEachDay[dinnerDay].lastIndexOf('Mandag', 0) === 0)
-				mondaysDinnerMenu = dinnerForEachDay[dinnerDay];
+				mondaysCantinaMenu = dinnerForEachDay[dinnerDay];
 		}
 		// If no dinners for today were found (saturday / sunday)
-		if (todaysDinnerMenu == CANTINA_NOT_OPEN) {
+		if (todaysCantinaMenu == CANTINA_NOT_OPEN) {
 			saveCantinaMenu(cantinaTitle, CANTINA_NOT_OPEN);
 			return;
 		}
 		
-		parseTodaysDinnerMenu(cantinaTitle, todaysDinnerMenu, mondaysDinnerMenu);
+		parseTodaysCantinaMenu(cantinaTitle, todaysCantinaMenu, mondaysCantinaMenu);
 	}
 	catch (err) {
 		cantinaMenu_error(CANTINA_MALFORMED_MENU);
 	}
 }
 
-function parseTodaysDinnerMenu(cantinaTitle, todaysDinnerMenu, mondaysDinnerMenu) {
+function parseTodaysCantinaMenu(cantinaTitle, todaysCantinaMenu, mondaysCantinaMenu) {
 	try {
-		var dinnerList = todaysDinnerMenu.split('<br>');
+		var dinnerList = todaysCantinaMenu.split('<br>');
 		
 		// Remove empty or irrelevant information (items: first, last, second last)
 		dinnerList = dinnerList.splice(1,dinnerList.length-3);
@@ -114,14 +114,14 @@ function parseTodaysDinnerMenu(cantinaTitle, todaysDinnerMenu, mondaysDinnerMenu
 		var dinnerObjects = [];
 		var indexCount = 0;
 		dinnerList.forEach( function(dinner) {
-			// Smiley-time, most likely no price information
+			// Smiley-time, most likely a message with no price information
 			if (dinner.indexOf(':-)') != -1 || dinner.indexOf(':)') != -1) {
 				var descriptions = dinner.split(': ');
 				var dinner = descriptions[0];
 				var price = (descriptions[1] == '' ? null : descriptions[1]);
-				var dinnerObject = new dinnerConstructor(dinner, price, indexCount);
-				if (DINNERTEXTDEBUG) console.log('WARNING: smileytime: ' + dinnerObject.text  + ' @ index ' + dinnerObject.index);
-				dinnerObjects.push(dinnerObject);
+				var dinnerObj = new dinnerObject(dinner, price, indexCount);
+				if (DINNERTEXTDEBUG) console.log('WARNING: smileytime: ' + dinnerObj.text  + ' @ index ' + dinnerObject.index);
+				dinnerObjects.push(dinnerObj);
 			}
 			// Find price information
 			else if (dinner.indexOf(':') != -1) {
@@ -133,13 +133,13 @@ function parseTodaysDinnerMenu(cantinaTitle, todaysDinnerMenu, mondaysDinnerMenu
 					var descriptions = description.split('/');
 					var prices = price.split('/');
 					if (DINNERTEXTDEBUG) console.log('WARNING: multiple dinners in one cell: ' + descriptions + ', ' + prices + ', index: ' + index);
-					dinnerObjects.push(new dinnerConstructor(descriptions[0], prices[0], indexCount));
-					dinnerObjects.push(new dinnerConstructor(descriptions[1], prices[1], indexCount));
+					dinnerObjects.push(new dinnerObject(descriptions[0], prices[0], indexCount));
+					dinnerObjects.push(new dinnerObject(descriptions[1], prices[1], indexCount));
 				}
 				else {
-					var dinnerObject = new dinnerConstructor(description, price, indexCount);
-					if (DINNERTEXTDEBUG) console.log(dinnerObject.price + ', ' + dinnerObject.text  + ', ' + dinnerObject.index);
-					dinnerObjects.push(dinnerObject);
+					var dinnerObj = new dinnerObject(description, price, indexCount);
+					if (DINNERTEXTDEBUG) console.log(dinnerObj.price + ', ' + dinnerObj.text  + ', ' + dinnerObj.index);
+					dinnerObjects.push(dinnerObj);
 				}
 				// The dinner.index represents the current dinners index in SiT's dinner lists.
 			}
@@ -171,9 +171,9 @@ function parseTodaysDinnerMenu(cantinaTitle, todaysDinnerMenu, mondaysDinnerMenu
 		
 		// IF no dinner info is found at all, check for unique message at monday
 		// WARNING: recursion going on!
-		if (dinnerObjects.length == 0 && mondaysDinnerMenu != null) {
+		if (dinnerObjects.length == 0 && mondaysCantinaMenu != null) {
 			if (DINNERDEBUG) console.log('WARNING: no dinner menu found today, checking monday');
-			parseTodaysDinnerMenu(cantinaTitle, mondaysDinnerMenu, null);
+			parseTodaysCantinaMenu(cantinaTitle, mondaysCantinaMenu, null);
 			return;
 		}
 		// IF only one or two dinner object are found, keep them entirely
@@ -207,11 +207,12 @@ function parseTodaysDinnerMenu(cantinaTitle, todaysDinnerMenu, mondaysDinnerMenu
 		saveCantinaMenu(cantinaTitle, dinnerObjects);
 	}
 	catch (err) {
+		if (DEBUG) console.log('lUUUUrp');
 		cantinaMenu_error(CANTINA_MALFORMED_MENU);
 	}
 }
 
-function dinnerConstructor(text, price, index) {
+function dinnerObject(text, price, index) {
 	this.text = text;
 	this.price = price;
 	this.index = index;

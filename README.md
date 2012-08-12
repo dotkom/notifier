@@ -1,7 +1,6 @@
-Online Notifier
-===============
+# Online Notifier
 
-This is a Chrome extension for the student organisation Online at NTNU, see http://online.ntnu.no
+This is a Chrome extension for the student organization Online at NTNU, see http://online.ntnu.no
 
 Features
 
@@ -11,7 +10,7 @@ Features
 
 Tech
 
-- Written in HTML5, CSS3 and Javascript/JQuery
+- Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript and jQuery
 - News is fetched through an RSS-feed for general data, API for images
 - Dinner info is fetched through an RSS-feed from sit.no
 - Office status is fetched from multiple sources
@@ -23,7 +22,70 @@ Tech
 Credz
 
 - Michael Johansen is the lead coder
-- Espen Jacobsson wrote the API-service
+- Espen Jacobsson wrote Onlines API-service
 - Roy Sindre Norangshol wrote the light service
 - Dag Olav Prestegarden wrote the calendar service
 - René Räisänen designed the graphics
+- Tri Minh Nguyen created the overlay API for AtB's realtime bus API
+
+# Featurelist
+
+General stuff
+
+- Opens options page on first run
+- Faster updates and frequent clearing of localstorage in dev mode
+- Separate script containing constants, for changeability
+- Fancy HTML5, CSS3 and jQuery design on all pages
+- All known errors and issues are handled
+- Runs google analytics on all pages
+- Detects network status adjusts all affected values accordingly
+
+News feed
+
+- Fetches and parses feed from Onlines website
+- Counts unread news and presents unread number in icon badge
+- Separates between new, updated and read items
+- Serves HTML5 desktop notifications on news / updates
+- Fetches images asynchronously from the API and injects them only when needed
+
+Cantina menus
+
+- Fetches and parses feed from SiTs website, both from Hangaren and Realfag
+- Strips down dinner menu down to the bare necessities
+- Presents dinners with pricing in ascending order
+- Able to handle all known cases of strange formatting for SiT
+
+Light
+
+- Reads light value from the Arduino Uno connected to draug.online.ntnu.no
+- Uses a stable border value, fairly unaffected by sunlight
+- Reads the light value frequently in order to react quickly to changes
+
+Calendar
+
+- Reads events from Onlines systems which in turn is parsed from Onlines Google Calendar
+- Retrieves very lightweight requests with event information
+- Updates often in order to react to changes quickly
+
+Icon
+
+- Icon changes based on light values and calendar events.
+- Uses title text containing the name of the event, or other appropriate text
+- Separate icon showing when you are offline or when an error has occured
+- All states: Default, open, closed, meeting, waffles, disconnected
+
+Options page
+
+- Option for showing office status in the icon
+- Option for desktop notifications
+- Option for fetching cantina menus
+- Option for opening chatter in a background tab on startup
+- Google +1 button for Onlines website
+- Github link to the open source repository
+- All options react immediately to changes
+- May contain easter egg
+
+Content scritps
+
+- Detects when user is visiting the Online website, nullifying the counter badge
+- Opens sit.no and highlights the selected dinner when the user clicks a dinner menu

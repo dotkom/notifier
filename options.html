@@ -1,418 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Notifier</title>
-	<meta charset="utf-8">
-	<script src='js/constants.js'></script>
-	<script src='js/jquery-1.7.2.min.js'></script>
-	<script src='js/officeStatus.js'></script>
-	<script src='js/cantinaMenu.js'></script>
+  <title>Notifier</title>
+  <meta charset="utf-8">
 
-	<!-- begin GL -->
-	
-	<script type="text/javascript" src="gl/glMatrix-0.9.5.min.js"></script>
-	<script type="text/javascript" src="gl/webgl-utils.js"></script>
-	<script id="shader-fs" type="x-shader/x-fragment">
-		precision mediump float;
-		varying vec2 vTextureCoord;
-		uniform sampler2D uSampler;
-		void main(void) {
-			gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-		}
-	</script>
-	<script id="shader-vs" type="x-shader/x-vertex">
-		attribute vec3 aVertexPosition;
-		attribute vec2 aTextureCoord;
-		uniform mat4 uMVMatrix;
-		uniform mat4 uPMatrix;
-		varying vec2 vTextureCoord;
-		void main(void) {
-			gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition * vec3(1,1,1), 1.0); // (something and cube size, zoom)
-			vTextureCoord = aTextureCoord;
-		}
-	</script>
-	<script type="text/javascript" src="gl/cube.js"></script>
-	
-	<!-- end GL -->
-	
-	<script type="text/javascript">
-		
-		// Document ready, go!
-		$(function() {
-			
-			// Restore checks to boxes from localStorage
-			$('input:checkbox').each(function(index) {
-				if (localStorage[this.id] == 'true')
-					this.checked = true;
-				else
-					this.checked = false;
-			});
-			
-			// Bind the windows resize function
-			$(window).bind("resize", resizeBackground);
-			resizeBackground(); // Run once in case window is quite big
-			
-			// Minor esthetical adjustments for OS version
-			if (OPERATING_SYSTEM == 'Windows') {
-				$('#pagefliptext').attr("style","bottom:9px;");
-				$('#pagefliplink').attr("style","bottom:9px;");
-			}
-			
-			// Blinking cursor at pageflip
-		  	setInterval("pageFlipCursorAnimation()",600);
-			
-			// Fade in the +1 button when (probably) ready
-			setTimeout("$('#plusonebutton').fadeIn(150);",350);
-			
-			// Catch new clicks
-			$('input:checkbox').click(function() {
-				localStorage[this.id] = this.checked;
-				
-				if (this.id == 'showOfficeStatus' && this.checked == false)
-					officeStatus_disable();
-				else if (this.id == 'showOfficeStatus' && this.checked == true)
-					officeStatus_update();
-				
-				if (this.id == 'showNotifications' && this.checked == true)
-					testDesktopNotification();
-				
-				if (this.id == 'showCantinaDinner' && this.checked == false)
-					cantinaMenu_disable();
-				else if (this.id == 'showCantinaDinner' && this.checked == true)
-					cantinaMenu_update();
-				
-				displayNotification();
-			});
-		});
-		
-		// Display on-page notification for a short time
-		function displayNotification() {
-			$("#notification").fadeIn(200);
-			setTimeout(function() {
-				$("#notification").fadeOut(200);
-			}, OPTIONS_NOTIFICATION_TIMEOUT);
-		}
-	
-		// Blinking cursor at pageflip
-		function pageFlipCursorAnimation()
-		{
-			$("span.pageflipcursor").animate({
-				opacity: 0
-			}, "fast", "swing").animate({
-				opacity: 1
-			}, "fast", "swing");
-		}
-		
-		// Button for testing desktop notifications (DEBUG only)
-		function testDesktopNotification() {
-			var notification = webkitNotifications.createHTMLNotification('notification.html');
-			notification.show();
-		}
-		
-		// Method to resize background image if the window gets big
-		function resizeBackground() {
-			if (1550 < $(window).width())
-				$('#background').attr("style","background:url('img/background-options-big.png') center center no-repeat;");
-			else
-				$('#background').attr("style","background:url('img/background-options.png') center center no-repeat;");
-		}
-		
-	</script>
+  <!-- CSS Less -->
+  <link rel="stylesheet/less" type="text/css" href="css/options.css" />
+  <script src="libs/less-1.3.0.min.js" type="text/javascript"></script>
 
-	<style>
-	
-		body {
-			background:#001429;
-			font-family: helvetica;
-			color:white;
-			margin:0;
-			padding:0;
-			overflow:hidden;
-		}
-		
-		#background {
-			/* using a div because the background needs to be resized
-			if the display is really big (1500px-2000px in width) */
-			background:url('img/background-options.png') center center no-repeat;
-			position:absolute;
-			left:0;
-			top:0;
-			width:100%;
-			height:100%;
-			z-index:1;
-		}
-		
-		/* this container keeps the content centered */
-		
-		#container {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			width: 800px;
-			height: 350px; /*360px or 270px*/
-			margin-left: -400px; /* half the width */
-			margin-top: -175px; /* half the height */
-			z-index:10;
-		}
-		
-		/* the logo and other content at the left side of the vertical line */
-	
-		header {
-			border:0px solid red;
-			float:left;
-			height:100%;
-			width:280px;
-			color:#fff; /* gradient logo? #e3e2e2 */
-			font-size:30px;
-			font-style:italic;
-			font-weight:bold;
-			text-align:right;
-			vertical-align:middle;
-			padding-top:15px;
-		}
-	
-		/* the menu and other content at the right side of the vertical line */
-	
-		#content {
-			border:0px solid yellow;
-			float:right;
-			height:100%;
-			width:470px;
-			border-left:2px solid #bbb; /* the vertical line */
-			padding: 0px 0px 0px 20px;
-		}
-		#notification {
-			position:absolute;
-			left:60px;
-			top:140px;
-			padding:15px;
-			background:#FFFEA8;
-			font-size:45px;
-			color: #ff44f8;
-			box-shadow:0px 0px 10px #bbb, 0px 0px 20px #bbb, 0px 0px 40px #bbb;
-			border-radius: 20px;
-			display:none;
-		}
-		.item {
-			z-index:2;
-			padding-top:15px;
-			-webkit-transition: all .2s ease-out;
-		}
-		.item:hover {
-			text-shadow:
-				0 0 10px #fff,
-				0 0 15px #fff,
-				0 0 20px #fff,
-				0 0 30px #fff,
-				0 0 40px #011b36,
-				0 0 40px #011b36,
-				0 0 70px #011b36,
-				0 0 70px #011b36;
-		}
-		.item:hover span::before { /* part of the fancy checkboxes */
-			border: solid 1px #aaa;
-			background: white;
-			/*box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff; /* wontfix, srsly, don't try */
-		}
-		.item img {
-			margin:10px 0px 0px 20px;
-			box-shadow:0px 0px 5px #333;
-			border-radius: 5px;
-		}
-		
-		/* fancy checkboxes replacing the boring, ordinary ones */
-	
-		label
-	    {
-	        cursor: pointer;
-		}
-	
-		label input[type="checkbox"] + span::before, /* buttons */
-		label input[type="radio"] + span::before
-		{
-			display: inline-block; /* squish to size */
-			text-indent: -9999px; /* moving the cross the hell outta here :P */
-			width: 12px;
-			height: 12px;
-			text-transform: uppercase;
-			border: 1px solid #000;
-			background: white;
-			margin: 0 4px 0 0;
-			bottom:2px;
-			position:relative;
-			font-size:12px;
-			line-height:12px;
-			font-weight:bold;
-			color:black;
-		}
-	
-		label input[type="checkbox"] + span::before, /* button's cross */
-		label input[type="radio"] + span::before
-		{
-			content: "\2714";
-		}
-	
-		label input[type="checkbox"] + span::before /* round the corners of the radio buttons */
-		{
-			-webkit-border-radius: 3px;
-		}
-	
-		label input[type="radio"] + span::before /* round the corners of the radio buttons */
-		{
-			-webkit-border-radius: 12px;
-		}
-	
-		label input[type="checkbox"]:checked + span::before, /* move cross into position when checked */
-		label input[type="radio"]:checked + span::before
-		{
-			text-indent: 1px;
-		}
-    
-		label input[type="checkbox"], /* hide the real checkbox/radio button */
-		label input[type="radio"]
-		{
-			position: absolute;
-			filter: alpha(opacity=0);
-			-webkit-opacity: 0;
-			opacity: 0;
-			height:20px; /* making the unseen box bigger, makes a nice hitbox */
-			width:40px;
-			margin-left:-10px; /* making hitbox even bigger! :P nice hitbox */
-			margin-top:-1px;
-			cursor:pointer;
-		}
-	
-		/* the pageflip at the bottom */
-	
-		#pageflipbg {
-			position:absolute;
-			left:0px;
-			bottom:0px;
-			background:transparent url('img/options-pageflipbg.png') no-repeat left bottom;
-			width:185px; /*183, 180, 185*/
-			height:98px; /*80, 98*/
-			z-index:5;
-		}
-		#pagefliptext {
-			position:absolute;
-			width:170px;
-			height:36px;
-			left:5px;
-			bottom:5px;
-			font:bold 11px monospace;
-			color:#ccf2cc;
-			text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-			z-index:6;
-		}
-		#pageflip {
-			position:absolute;
-			left:0px;
-			bottom:0px;
-			background:transparent url('img/options-pageflip.png') no-repeat left bottom;
-			width:185px;
-			height:98px;
-			z-index:7;
-		}
-		#pagefliplink {
-			position:absolute;
-			width:170px;
-			height:36px;
-			left:5px;
-			bottom:5px;
-			font:bold 11px monospace;
-			color:#ccf2cc;
-			text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-			z-index:8;
-		}
-		#pagefliplink a {
-			font:bold 11px monospace;
-			color:#ccf2cc;
-			text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-			text-decoration:none;
-		}
-		#pagefliplink a:hover {
-			text-decoration:underline;
-		}
-		
-		/* Google +1 button */
-		
-		#plusonebutton {
-			position:absolute;
-			right:3px;
-			bottom:5px;
-			width:170px;
-			z-index:10;
-		}
-		
-		/* canvas with webGL */
-		
-		canvas {
-			background:transparent;
-			z-index:10;
-		}
-	
-	</style>
-	
-	<!-- Google +1 Button -->
-	<script type="text/javascript" src="js/googlePlusOneButton.js"></script>
-	<!-- Google Analytics -->
-	<script type="text/javascript" src="js/googleAnalytics.js"></script>
-	
+  <!-- JS libs -->
+  <script src="libs/jquery-1.7.2.min.js" type="text/javascript"></script>
+  <script src="libs/coffeescript-1.3.3.min.js" type="text/javascript"></script>
+
+  <!-- JS functions -->
+  <script src="js/constants.js" type="text/javascript"></script>
+  <script src="js/office_status.js" type="text/javascript"></script>
+  <script src="js/cantina_menu.js" type="text/javascript"></script>
+  <script src="js/google_plus_one_button.js" type="text/javascript"></script>
+  <script src="js/google_analytics.js" type="text/javascript"></script>
+
+  <!-- begin GL -->
+  <script type="text/javascript" src="gl/glMatrix-0.9.5.min.js"></script>
+  <script type="text/javascript" src="gl/webgl-utils.js"></script>
+  <script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec2 vTextureCoord;
+    uniform sampler2D uSampler;
+    void main(void) {
+      gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    }
+  </script>
+  <script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    varying vec2 vTextureCoord;
+    void main(void) {
+      gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition * vec3(1,1,1), 1.0); // (something and cube size, zoom)
+      vTextureCoord = aTextureCoord;
+    }
+  </script>
+  <script src="gl/cube.js" type="text/javascript"></script>
+
+  <!-- Document ready sript -->
+  <script src="options.js" type="text/javascript"></script>
 </head>
 
 <body>
-	<div id="background" />
-	<div id="container">
-		<header>
-			<script>document.write('<a href="'+EXTENSION_WEBSITE+'">');</script>
-				<script>document.write('<img src="'+LOGO+'" /><br />');</script>
-			</a>
-			<div style="margin-right:3px;">
-				notifier options
-			</div>
-			<!-- begin GL -->
-			<canvas id="LessonCanvas" width="215px" height="215px" />
-			<!-- end GL -->
-		</header>
-		<div id="content">
-			<div class="item">
-				<label for="showOfficeStatus">
-					<input type="checkbox" name="showOfficeStatus" value="showOfficeStatus" id="showOfficeStatus"><span id="hest"><script>document.write(OPTIONS_OFFICE)</script></span>
-					<br />
-					<img src="/img/options-office-open.png" />
-					<img src="/img/options-office-closed.png" />
-					<img src="/img/options-office-meeting.png" />
-					<img src="/img/options-office-waffle.png" />
-				</label>
-			</div>
-			<div class="item">
-				<label for="showNotifications">
-					<input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications"><span><script>document.write(OPTIONS_NOTIFICATIONS);</script></span><br />
-					<img src="/img/options-desktop-notification.png" />
-				</label>
-			</div>
-			<div class="item">
-				<label for="showCantinaDinner">
-					<input type="checkbox" name="showCantinaDinner" value="showCantinaDinner" id="showCantinaDinner"><span><script>document.write(OPTIONS_DINNER);</script></span><br />
-					<img src="/img/options-cantina-dinner.png" />
-				</label>
-			</div>
-		</div>
-		<!-- "Options saved <3", also GL easter egg -->
-		<div id="notification" onclick="javascript:webGLStart();">Saved &lt;3</div>
-	</div>
-	<!-- "from dotKom with <3" -->
-	<div id="pageflipbg"></div>
-	<div id="pagefliptext">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
-	<div id="pageflip"></div>
-	<div id="pagefliplink">
-		<br />
-		<script>document.write('<a href="'+OPTIONS_GITHUB+'" target="_blank">')</script>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><script>document.write(CREATOR_NAME)</script> with &lt;3<span class="pageflipcursor">_</span></a>
-	</div>
-	<!-- +1 button -->
-	<div id="plusonebutton" style="display:none;">
-		<div class="g-plusone" data-annotation="inline" data-width="170" data-href="https://online.ntnu.no"></div>
-	</div>
+  <div id="background" />
+  <div id="container">
+    <header>
+      <a href="https://online.ntnu.no">
+        <img src="img/logo.png" /><br />
+      </a>
+      <div style="margin-right:3px;">
+        notifier options
+      </div>
+      <!-- begin GL -->
+      <canvas id="LessonCanvas" width="215px" height="215px" style="opacity:0;" />
+      <!-- end GL -->
+    </header>
+    <div id="content">
+      <div class="item">
+        <label for="showOfficeStatus">
+          <input type="checkbox" name="showOfficeStatus" value="showOfficeStatus" id="showOfficeStatus"><span>Vis kontorets status: Åpent, stengt, møte, gratis vafler</span>
+          <br />
+          <img src="/img/options-office-open.png" />
+          <img src="/img/options-office-closed.png" />
+          <img src="/img/options-office-meeting.png" />
+          <img src="/img/options-office-waffle.png" />
+        </label>
+      </div>
+      <div class="item">
+        <label for="showNotifications">
+          <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications"><span>Vis varsling på skrivebordet når nyheter publiseres / oppdateres</span><br />
+          <img src="/img/options-desktop-notification.png" />
+        </label>
+      </div>
+      <div class="item">
+        <label for="showCantinaMenu">
+          <input type="checkbox" name="showCantinaMenu" value="showCantinaMenu" id="showCantinaMenu"><span>Vis dagens middagsmeny fra Hangaren og Realfag</span><br />
+          <img src="/img/options-cantina-menu.png" />
+        </label>
+      </div>
+      <div class="item">
+        <label for="openChatter">
+          <input type="checkbox" name="openChatter" value="openChatter" id="openChatter"><span>Åpne Chatter i bakgrunnen når Chrome starter</span><br />
+          <img src="/img/options-chatter.png" />
+        </label>
+      </div>
+    </div>
+    <!-- "Options saved <3", also GL easter egg -->
+    <div id="notification">Saved &lt;3</div>
+  </div>
+  <!-- "from dotKom with <3" -->
+  <div id="pageflipbg"></div>
+  <div id="pagefliptext">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
+  <div id="pageflip"></div>
+  <div id="pagefliplink">
+    <br />
+    <a href="http://github.com/dotkom/online-notifier/" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />dotKom with &lt;3<span class="pageflipcursor">_</span></a>
+  </div>
+  <!-- +1 button -->
+  <div id="plusonebutton" style="display:none;">
+    <div class="g-plusone" data-annotation="inline" data-width="170" data-href="https://online.ntnu.no"></div>
+  </div>
 </body>
 </html>
 
