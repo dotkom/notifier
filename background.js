@@ -29,7 +29,7 @@
 
   if (localStorage.openChatter === 'true') {
     chrome.tabs.create({
-      url: CHATTER_URL,
+      url: 'http://webchat.freenode.net/?channels=online',
       selected: false
     });
   }

@@ -17,7 +17,7 @@ if localStorage.everConnected is undefined
 
 # Open Chatter if the option is set
 if localStorage.openChatter is 'true'
-    chrome.tabs.create({url: CHATTER_URL, selected: false})
+    chrome.tabs.create({url: 'http://webchat.freenode.net/?channels=online', selected: false})
 
 # Reset vars from last run
 cantinaMenu_reset()

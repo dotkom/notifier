@@ -1,5 +1,5 @@
 
-var DEBUG = 1;
+var DEBUG = 0;
 
 // General
 
