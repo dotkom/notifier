@@ -1,11 +1,10 @@
 {
   "name": "Online Notifier",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "manifest_version": 2,
   "offline_enabled": false,
 	
   "description": "Nyheter, kontorstatus, middagsmeny og mer.",
-  "update_url": "http://informatikk.org/notifier/updates.xml",
   "homepage_url": "https://online.ntnu.no/",
 
   "options_page": "options.html",
