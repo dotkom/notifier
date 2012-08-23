@@ -1,259 +1,332 @@
-/* Default debugging */
+
+// Debugging
 
 @debug: 0pt;
-.debug_red {
+.debugred {
   border: @debug solid red;
 }
-.debug_yellow {
+.debugyellow {
   border: @debug solid yellow;
 }
-.debug_pink {
+.debugpink {
   border: @debug solid pink;
 }
-.debug_super {
-  border: (@debug*3) solid pink;
+.debuglime {
+  border: @debug solid lime;
 }
 
-/* Default colors */
+// Variables
 
-@online-orange: #ee861f;
-@background-blue: #001429;
+@in-post-padding: 5pt;
 
-/* Default designs */
+// Mixins
 
-@color: white;
-@font-family: helvetica;
-
-/* DEFAULTS ABOVE, ORIGINAL FOUND HERE IN OPTIONS.CSS */
-/* Unfortunately a proper defaults file could not be made because of Chromes security policies */
-/* Also: Always use less.watch() in the Chrome console to see live changes. Fucking sweet. */
-
-/* Designs */
-
-// ?
-
-/* Mixins */
-
-// ?
-
-/* Rules */
-
-/* Hierarchy:
-
-body
-  #popup
-    header
-      #buttons
-      #logo
-      #dinners
-    #post (multiple)
-      #item
-        #title
-        #description
-        #creator
-        #date
-*/
-
-/* The popup (and desktop notification) body */
-
-body {
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-  background: #001429 url('/img/background-popup.png') center center no-repeat;
-  border: 1px solid black;
-  font: bold 9pt helvetica;
-  color: white;
-
-  #popup {
-    width: 400px;
-    height: 400px;
-    overflow-x: hidden;
-    padding: 15px;
-  }
-}
-
-/* Container for non-post items: dinners, buttons, logo */
-
-header {
-  .debug_red;
-  position: relative;
+.fullbox {
   width: 100%;
-  margin-bottom: 10px;
-
-  #buttons {
-    .debug_yellow;
-    position: relative;
-    float: left;
-    z-index: 100;
-    height: 50px;
-    width: 200px;
-    margin-left: 5px;
-    margin-top: 5px;
-
-    a .popupbutton {
-      border-radius: 5px;
-      margin-right: 12px;
-      -webkit-transition: all .15s ease-out;
-    }
-
-    a .popupbutton:hover {
-      box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
-    }
-
-    #buttontext {
-      display: none;
-      position: relative;
-      margin-top: 5px;
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
-    }
-  }
-
-  #logo {
-    .debug_yellow;
-    position: relative;
-    margin-top: 5px;
-    margin-right: 5px;
-    float: right;
-    cursor: pointer;
-    z-index: 100;
-    right: 0px;
-    width: 150px;
-  }
-
-  #cantinamenus {
-    .debug_super;
-    position: relative;
-    margin-left: 5px;
-    width: 97%;
-    font-weight: normal;
-    line-height: 1.5;
-    z-index: 100;
-  }
-
-  #hangaren {
-    .debug_red;
-    position: relative;
-    margin-top:5pt;
-    float: left;
-    width: 47%;
-  }
-
-  #realfag {
-    .debug_red;
-    position: relative;
-    margin-top:5pt;
-    float: right;
-    width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
-  }
-
-  #dinnerbox {
-    .debug_pink;
-    margin-bottom: 10pt;
-  }
-
-  li.dinnerlist {
-    .debug_yellow;
-    position: relative;
-    width: 95%;
-    list-style-type: none;
-    -webkit-transition: text-shadow 0.15s ease-out 0s;
-  }
-
-  li.dinnerlist:hover {
-    text-shadow: 
-      0 0 10px #fff,
-      0 0 15px #fff,
-      0 0 20px #fff,
-      0 0 30px #fff,
-      0 0 40px #011b36,
-      0 0 40px #011b36,
-      0 0 70px #011b36,
-      0 0 70px #011b36;
-  }
-}
-
-
-/* Each ".post" in the popup contains one ".item" */
-
-.unread {
-  font-size: 8pt;
-  text-shadow: 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 25px #011b36, 0 0 30px #011b36, 0 0 35px #fff, 0 0 40px #011b36, 0 0 45px #011b36;
-  margin-left: 7px;
-}
-
-.read {
-  margin-left: 7px;
-}
-
-.post {
-  .debug_red;
-  width: 100%;
-  position: relative;
   clear: both;
-}
-
-/* Each ".item" */
-
-.item {
-  width: 96%;
-  min-height: 60px;
-  padding: 7px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  margin-right: 15px;
-  margin-bottom: 8px;
-  -webkit-transition: -webkit-box-shadow 0.3s ease-out 0s;
-  
-  img {
-    float: left;
-    -webkit-box-shadow: 0px 0px 10px #bbb;
-    padding: 5px;
-    background: snow;
-    margin-right: 15px;
-    width: 107px;
-    max-height: 90px;
-  }
-
-  &:hover, &:hover a {
-    box-shadow: inset 0px 0px 2px #bbb, 0px 0px 15px #fff;
-  }
-}
-
-a {
-  color: white;
-  text-decoration: none;
-  outline: none;
-}
-
-.creator {
-  color: @online-orange;
-  text-transform: uppercase;
-  font-size: 8pt;
-  font-weight: bold;
-}
-
-.date {
-  text-transform: uppercase;
-  font-size: 8pt;
-}
-
-.textwrapper {
-  .debug_yellow;
-  position: relative;
-  top: -2px;
-  left: -5px;
-  float: right;
-  width: 235px;
+  padding: 0;
+  margin: 0;
 }
 
 .title {
-  margin-top: 0;
-  margin-bottom: 0;
+  display: block;
+  color: #ee861f;
+  text-transform: uppercase;
+  font-size: 9pt;
   font-weight: bold;
+  margin-top: @in-post-padding;
 }
 
-.description {
-  font-weight: normal;
+.emphasized {
+  font-style: italic;
+  font-size: 9pt;
+  margin-bottom: 5pt;
 }
 
+.index {
+  font-style: italic;
+}
+
+// Rules
+
+body {
+  background: #001429;
+  overflow: hidden;
+  font-family: helvetica;
+  color: white;
+  margin: 0;
+  padding: 0;
+  width: 350pt;
+  height: 400pt;
+  font-size: 9pt;
+}
+
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+  background: url('/img/background-popup.png') center center no-repeat;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* This container keeps the content centered */
+
+#container {
+  .debugpink;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  padding: 15pt;
+  z-index: 10;
+
+  #header {
+    .debugred;
+    .fullbox;
+    min-height: 35pt;
+
+    #buttons {
+      .debuglime;
+      width: 150pt;
+      float: left;
+
+      .popupbutton {
+        border-radius: 5px;
+        margin-right: 12px;
+        cursor: pointer;
+        -webkit-transition: all .15s ease-out;
+      }
+      .popupbutton:hover {
+        box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
+      } 
+    }
+
+    #buttontext {
+      .debugyellow;
+      display: none;
+      position: relative;
+      float: left;
+      font-weight: bold;
+      margin-top: 5px;
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+    }
+    #logo {
+      .debugyellow;
+      float: right;
+      cursor: pointer;
+      width: 140pt;
+    }
+  }
+
+  #cantinas {
+    .debugred;
+    .fullbox;
+    margin-top: @in-post-padding;
+
+    #hangaren {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 46%;
+    }
+    #realfag {
+      .debugpink;
+      position: relative;
+      float: right;
+      width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
+    }
+    #dinnerbox {
+      .debugyellow;
+      margin-top: 3pt;
+    }
+    li.dinnerlist {
+      .debuglime;
+      position: relative;
+      width: 95%;
+      cursor: pointer;
+      line-height: 1.5em;
+      list-style-type: none;
+      -webkit-transition: text-shadow 0.15s ease-out 0s;
+    }
+    li.dinnerlist:hover {
+      text-shadow: 
+        0 0 10px #fff,
+        0 0 15px #fff,
+        0 0 20px #fff,
+        0 0 30px #fff,
+        0 0 40px #011b36,
+        0 0 40px #011b36,
+        0 0 70px #011b36,
+        0 0 70px #011b36;
+    }
+  }
+
+  #bus {
+    .debugred;
+    .fullbox;
+    line-height: 15pt;
+    background-color: #000f1d;
+    height: 50pt;
+    width: 110%;
+    margin-top: 8pt;
+    margin-left: -5%;
+    box-shadow: 0 0 20pt #88b;
+
+    #title {
+      .title;
+      width: 100%;
+      clear: both;
+    }
+    #left {
+      .debuglime;
+      position: relative;
+      float: left;
+      text-align: right;
+      padding-top: 10pt;
+      width: 40%;
+    }
+    #middle {
+      .debuglime;
+      position: relative;
+      float: left;
+      text-align: center;
+      width: 14%;
+      height: 100%;
+      img {
+        margin: 6pt 0;
+        height: 38pt;
+      }
+    }
+    #right {
+      .debuglime;
+      width: 39%;
+      position: relative;
+      padding-top: 10pt;
+      float: left;
+      text-align: left;
+    }
+    .time {
+      font-weight: bold;
+    }
+    .arrow {
+      position:relative;
+      top: 2pt;
+      font-size: 12pt;
+    }
+  }
+
+  #news {
+    .debugred;
+    .fullbox;
+
+    .post {
+      .debugyellow;
+      position: relative;
+      clear: both;
+      padding-top: @in-post-padding;
+
+      .item {
+        .debugyellow;
+        min-height: 30pt;
+        cursor: pointer;
+        padding-right: @in-post-padding;
+        padding-left: @in-post-padding;
+        margin-left: -@in-post-padding;
+        margin-right: -@in-post-padding;
+        padding: @in-post-padding;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-transition: -webkit-box-shadow 0.3s ease-out 0s;
+
+        &:hover {
+          box-shadow: inset 0px 0px 2px #bbb, 0px 0px 15px #fff;
+        }
+        img {
+          float: left;
+          background: snow;
+          width: 70pt;
+          padding: 3pt;
+          -webkit-box-shadow: 0 0 10pt #bbb;
+        }
+        .textwrapper {
+          .debuglime;
+          position: relative;
+          float: left;
+          text-align: left;
+          margin-left: 7pt;
+          width: 70%;
+        }
+      }
+    }
+    .unread {
+      color: white;
+      font-size: 8pt;
+      text-shadow: 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 25px #011b36, 0 0 30px #011b36, 0 0 35px #fff, 0 0 40px #011b36, 0 0 45px #011b36;
+    }
+  }
+
+}
+
+/* the pageflip at the bottom */
+
+/*#pageflipbg {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  background: transparent url('/img/pageflipbg.png') no-repeat left bottom;
+  width: 185px;
+  height: 98px;
+  z-index: 5;
+}
+
+#pagefliptext {
+  position: absolute;
+  width: 170px;
+  height: 36px;
+  left: 5px;
+  bottom: 5px;
+  font: bold 11px monospace;
+  color: #ccf2cc;
+  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  z-index: 6;
+}
+
+#pageflip {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  background: transparent url('/img/pageflip.png') no-repeat left bottom;
+  width: 185px;
+  height: 98px;
+  z-index: 7;
+}
+
+#pagefliplink {
+  position: absolute;
+  width: 170px;
+  height: 36px;
+  left: 5px;
+  bottom: 5px;
+  font: bold 11px monospace;
+  color: #ccf2cc;
+  text-shadow:  0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  z-index: 8;
+}
+
+#pagefliplink a {
+  font: bold 11px monospace;
+  color: #ccf2cc;
+  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  text-decoration: none;
+}
+
+#pagefliplink a:hover {
+  text-decoration: underline;
+}
+*/

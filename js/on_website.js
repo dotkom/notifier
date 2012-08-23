@@ -19,8 +19,8 @@ if (host == 'online.ntnu.no') {
 }
 
 if (host == 'sit.no') {
-	chrome.extension.sendRequest({'action' : 'showCantinaMenu'}, function(showCantinaMenu) {
-		if (showCantinaMenu == 'true') {
+	chrome.extension.sendRequest({'action' : 'showCantina'}, function(showCantina) {
+		if (showCantina == 'true') {
 			
 			// If we're at a dinner info page
 			if (document.URL.indexOf('pa-Hangaren') != -1 || document.URL.indexOf('pa-Realfag') != -1) {
@@ -50,24 +50,31 @@ if (host == 'sit.no') {
 						window.scrollTo(0,(offset));
 					}
 				});
-		
+				
 				// Add a notification in the source about edited code
-				//chrome.extension.sendRequest({'action' : 'getSitMenuNotice'}, function(sitMenuNoticeDismissed) {
-					//if (sitMenuNoticeDismissed == 'false') {
-						chrome.extension.sendRequest({'action' : 'getOptionsLink'}, function(options_page) {
-							chrome.extension.sendRequest({'action' : 'getSmallOnlineLogo'}, function(online_logo) {
-								var msg = '<div id="onlinenotice"><br />'+
-										'<img src="'+online_logo+'" style="float:left;width:1.5em;margin:0em .4em;-webkit-filter:grayscale(50%);">'+
-										'<span style="font-size:.9em;position:relative;top:.2em;color:gray;">'+
-										'<a href="'+options_page+'" style="text-decoration:underline;color:gray;">Notifier</a> '+
-										'har uthevet menyen for deg <3 '+
-										//'<a href="javascript:hideOnlineNotice();" style="text-decoration:underline;cursor:pointer;">OK, dismiss</a>'+
-										'</span><br /></div>';
-								$('#menytable').after(msg);
+				chrome.extension.sendRequest({'action':'dismissedSitNotice'}, function(dismissedSitNotice) {
+					if (dismissedSitNotice != 'true') {
+						var optionsPage = chrome.extension.getURL('options.html');
+						var smallOnlineLogo = chrome.extension.getURL('img/logo-48.png');
+						$('#menytable').after('<div id="onlineNotice"><br />'+
+								'<img src="'+smallOnlineLogo+'" style="float:left;width:1.5em;margin:0em .4em;-webkit-filter:grayscale(50%);">'+
+								'<span style="font-size:.9em;position:relative;top:.2em;color:gray;">'+
+								'<a href="'+optionsPage+'" style="text-decoration:underline;color:gray;">Notifier</a> '+
+								'har uthevet menyen for deg <3 '+
+								'<span id="hideOnlineNotice" style="text-decoration:underline;cursor:pointer;">OK, dismiss</span>'+
+								'</span><br /></div>');
+						$('#hideOnlineNotice').click(function() {
+							chrome.extension.sendRequest({'action':'dismissSitNotice'}, function(success) {
+								if (success) {
+									$('#onlineNotice').fadeOut('slow');
+								}
+								else {
+									$('#hideOnlineNotice').fadeOut('slow');
+								}
 							});
 						});
-					//}
-				//});
+					}
+				});
 			}
 		}
 	});

@@ -20,12 +20,8 @@
 
 @color: white;
 @font-family: helvetica;
-@content-width: 800px;
-@content-height: 430px;
-
-/* DEFAULTS ABOVE, ORIGINAL FOUND HERE IN OPTIONS.CSS */
-/* Unfortunately a proper defaults file could not be made because of Chromes security policies */
-/* Also: Always use less.watch() in the Chrome console to see live changes. Fucking sweet. */
+@content-width: 600pt;
+@content-height: 400pt;
 
 // Mixins
 
@@ -44,13 +40,13 @@ body {
 	#background {
 		/* using a div because the background needs to be resized
 		if the display is really big (1500px-2000px in width or height) */
+  		background: url('/img/background-medium.png') center center no-repeat;
 		position: absolute;
 		left: 0;
 		top: 0;
 		width: 100%;
 		height: 100%;
 		z-index: 1;
-		/* note: bg image is set using jQuery to make Less stop acting up */
 	}
 }
 
@@ -106,6 +102,7 @@ header {
 	.item {
 		z-index: 2;
 		padding-top: 15px;
+		clear: both;
 		-webkit-transition: all .2s ease-out;
 
 		img {
@@ -113,7 +110,9 @@ header {
 			box-shadow: 0px 0px 5px #333;
 			border-radius: 3pt;
 		}
-
+		input {
+			box-shadow: 0px 0px 15px #333;
+		}
 		&:hover {
 			text-shadow:
 				0 0 10px #fff,
@@ -125,11 +124,9 @@ header {
 				0 0 70px #011b36,
 				0 0 70px #011b36;
 		}
-
 		&:hover span::before { /* part of the fancy checkboxes */
 			border: solid 1px #aaa;
 			background: white;
-			/*box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff; /* wontfix, srsly, don't try */
 		}
 	}
 }
@@ -196,36 +193,49 @@ label
 	}
 }
 
+/* Suggestions for bus stops */
+#bus_suggestions {
+	.debug_pink;
+	position: fixed;
+	vertical-align: middle;
+	width: 90pt;
+	overflow: hidden;
+	top: 10pt;
+	right: 10pt;
+	bottom: 10pt;
+	font-size: 10pt;
+}
+
 /* the pageflip at the bottom */
 
 #pageflipbg {
-	position: absolute;
-	left: 0px;
-	bottom: 0px;
-	width: 185px; /*183, 180, 185*/
-	height: 98px; /*80, 98*/
-	z-index: 5;
-	/* note:  image is set using jQuery to make Less stop acting up */
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  background: transparent url('/img/pageflipbg.png') no-repeat left bottom;
+  width: 185px;
+  height: 98px;
+  z-index: 5;
 }
 #pagefliptext {
-	position: absolute;
-	width: 170px;
-	height: 36px;
-	left: 5px;
-	bottom: 5px;
-	font: bold 11px monospace;
-	color: #ccf2cc;
-	text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-	z-index: 6;
+  position: absolute;
+  width: 170px;
+  height: 36px;
+  left: 5px;
+  bottom: 5px;
+  font: bold 11px monospace;
+  color: #ccf2cc;
+  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  z-index: 6;
 }
 #pageflip {
-	position: absolute;
-	left: 0px;
-	bottom: 0px;
-	width: 185px;
-	height: 98px;
-	z-index: 7;
-	/* note: image is set using jQuery to make Less stop acting up */
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  background: transparent url('/img/pageflip.png') no-repeat left bottom;
+  width: 185px;
+  height: 98px;
+  z-index: 7;
 }
 #pagefliplink {
 	position: absolute;

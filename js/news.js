@@ -4,7 +4,7 @@
 // without the callback as we already know the amount of unread posts.
 function fetchFeed(callback) {
 	$.ajax({
-		url: FEED_URL,
+		url: 'https://online.ntnu.no/feeds/news/',
 		dataType: 'text',
 		success: function(xmlstring) {
 			localStorage.lastResponseData = xmlstring;
@@ -119,14 +119,14 @@ function parsePost(item) {
 	}
 	
 	// title + description must not exceed 5 lines
-	var line = 38; // conservative estimation
-	var desclength = line * 4;
+	var line = 50; // conservative estimation
+	var desclength = line * 3;
 	// double line titles will shorten the description by 1 line
 	if (line <= post.title.length)
 		desclength -= line;
 	// triple line titles will be shortened to double line
-	if (line*2 <= post.title.length)
-		post.title = post.title.substr(0, line*2) + '...';
+	// if (line*2 <= post.title.length)
+	// 	post.title = post.title.substr(0, line*2) + '...';
 	// shorten description according to desclength
 	if (desclength < post.description.length)
 		post.description = post.description.substr(0, desclength) + '...';
@@ -153,14 +153,3 @@ function getImageUrlForId(id, callback) {
 		callback(id, image);
 	});
 }
-
-// function openUrl(url) {
-// 	chrome.tabs.create({url: url});
-// }
-
-
-
-
-
-
-

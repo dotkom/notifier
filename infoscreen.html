@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <title>Infoscreen</title>
   <meta charset="utf-8">
   
-  <!-- CSS Less -->
-  <link rel="stylesheet/less" type="text/css" href="css/popup.css" />
-  <script src="libs/less-1.3.0.min.js"></script>
-
-  <!-- JS libs -->
+  <link rel="stylesheet/less" type="text/css" href="css/infoscreen.css" />
+  
   <script src="libs/jquery-1.7.2.min.js"></script>
   <script src="libs/coffeescript-1.3.3.min.js"></script>
+  <script src="libs/less-1.3.0.min.js"></script>
 
-  <!-- JS functions -->
-  <script src="js/google_analytics.js"></script>
   <script src="js/constants.js"></script>
   <script src="js/office.js"></script>
   <script src="js/news.js"></script>
@@ -20,21 +17,51 @@
   <script src="js/bus.js"></script>
 
   <!-- Document ready sript -->
-  <script src="coffee/popup.js"></script>
+  <script src="coffee/infoscreen.js"></script>
 
 </head>
 
 <body>
+  <div id="overlay"></div>
   <div id="background"></div>
   <div id="container">
 
-    <div id="header">
-      <div id="buttons">
-        <img id="options_button" class="popupbutton" src="img/popup-options.png" />
-        <img id="chatter_button" class="popupbutton" src="img/popup-webchat.png" />
+    <div id="office">
+      <img src="" />
+      <div id="subtext"></div>
+    </div>
+    
+    <div id="news">
+    </div>
+
+    <div id="bus">
+      <div id="left">
+        <span class="first">
+          <span class="arrow"></span>
+          <span class="line"></span>
+          <span class="time"></span></span><br />
+        <span class="second">
+          <span class="arrow"></span>
+          <span class="line"></span>
+          <span class="time"></span>
+        </span>
       </div>
-      <img id="logo" src="img/logo.png" />
-      <div id="buttontext"></div>
+      <div id="middle">
+        <img src="img/atb.png" />
+      </div>
+      <div id="right">
+        <span class="first">
+          <span class="line"></span>
+          <span class="time"></span>
+          <span class="arrow"></span>
+        </span>
+        <br />
+        <span class="second">
+          <span class="line"></span>
+          <span class="time"></span>
+          <span class="arrow"></span>
+        </span>
+      </div>
     </div>
     
     <div id="cantinas">
@@ -48,47 +75,22 @@
       </div>
     </div>
 
-    <div id="bus">
-      <div id="left">
-        <span class="first">
-          <!-- <span class="arrow"></span> -->
-          <span class="line"></span>
-          <span class="time"></span></span><br />
-        <span class="second">
-          <!-- <span class="arrow"></span> -->
-          <span class="line"></span>
-          <span class="time"></span>
-        </span>
-      </div>
-      <div id="middle">
-        <img src="img/atb.png" />
-      </div>
-      <div id="right">
-        <span class="first">
-          <span class="line"></span>
-          <span class="time"></span>
-          <!-- <span class="arrow"></span> -->
-        </span>
-        <br />
-        <span class="second">
-          <span class="line"></span>
-          <span class="time"></span>
-          <!-- <span class="arrow"></span> -->
-        </span>
-      </div>
-    </div>
-    
-    <div id="news">
-    </div>
+    <img id="logo" src="img/logo-big.png" />
     
   </div>
   <!-- "from dotKom with <3" -->
-  <!-- <div id="pageflipbg"></div>
+  <div id="pageflipbg"></div>
   <div id="pagefliptext">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
   <div id="pageflip"></div>
   <div id="pagefliplink">
     <br />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />dotKom with &lt;3<span class="pageflipcursor">_</span></a>
-  </div> -->
+  </div>
 </body>
 </html>
+
+
+
+
+
+

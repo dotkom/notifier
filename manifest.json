@@ -1,10 +1,10 @@
 {
   "name": "Online Notifier",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "manifest_version": 2,
   "offline_enabled": false,
 	
-  "description": "Nyheter, kontorstatus, middagsmeny og mer.",
+  "description": "Nyheter, kontorstatus, middagsmeny, bussruter og mer.",
   "homepage_url": "https://online.ntnu.no/",
 
   "options_page": "options.html",
@@ -27,7 +27,8 @@
   "permissions": [
     "notifications",
     "*://*.online.ntnu.no/*",
-	  "*://*.sit.no/*"
+    "*://*.visuweb.no/*",
+    "*://*.sit.no/*"
   ],
 
 	"content_scripts": [
@@ -35,6 +36,11 @@
       "matches": ["*://*.online.ntnu.no/*", "*://*.sit.no/*" ],
       "js": ["libs/jquery-1.7.2.min.js", "js/on_website.js"]
     }
+  ],
+
+  "web_accessible_resources": [
+    "options.html",
+    "img/logo-48.png"
   ],
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com; object-src 'self'"

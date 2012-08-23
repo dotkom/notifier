@@ -4,13 +4,13 @@ This is a Chrome extension for the student organization Online at NTNU, see http
 
 Features
 
-- Notifies about news from Online
-- Displays status information for Onlines office: Open, closed, meeting, free waffles
-- Displays dinner information from cantinas at NTNU Gløshaugen
+- Displays and notifies about news from Online
+- Displays status for Onlines office: Open, closed, meeting, free waffles
+- Displays todays dinner menu from cantinas at NTNU Gløshaugen
 
 Tech
 
-- Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript and jQuery
+- Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript, jQuery and WebGL
 - News is fetched through an RSS-feed for general data, API for images
 - Dinner info is fetched through an RSS-feed from sit.no
 - Office status is fetched from multiple sources
@@ -33,12 +33,12 @@ Credz
 General stuff
 
 - Opens options page on first run
-- Faster updates and frequent clearing of localstorage in dev mode
-- Separate script containing constants, for changeability
+- The popup page keeps itself updated even when open
+- Separate script containing some constants, for changeability
 - Fancy HTML5, CSS3 and jQuery design on all pages
-- All known errors and issues are handled
 - Runs google analytics on all pages
 - Detects network status adjusts all affected values accordingly
+- Dev mode: Faster updates, frequent clearing of localstorage, Less CSS in watch mode
 
 News feed
 
@@ -55,7 +55,7 @@ Cantina menus
 - Presents dinners with pricing in ascending order
 - Able to handle all known cases of strange formatting for SiT
 
-Light
+Light and calendar
 
 - Reads light value from the Arduino Uno connected to draug.online.ntnu.no
 - Uses a stable border value, fairly unaffected by sunlight

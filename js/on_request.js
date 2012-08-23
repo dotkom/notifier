@@ -11,14 +11,15 @@ function onRequest(request, sender, callback) {
     localStorage.removeItem("chosenDinner");
     callback(chosenDinner);
   }
-  else if (request.action == 'getSmallOnlineLogo') {
-    callback(chrome.extension.getURL('img/logo-48.png'));
+  else if (request.action == 'showCantina') {
+    callback(localStorage.showCantina);
   }
-  else if (request.action =='getOptionsLink') {
-    callback(chrome.extension.getURL('options.html'));
+  else if (request.action == 'dismissSitNotice') {
+    localStorage.dismissedSitNotice = 'true';
+    callback(true);
   }
-  else if (request.action == 'showCantinaMenu') {
-    callback(localStorage.showCantinaMenu);
+  else if (request.action == 'dismissedSitNotice') {
+    callback(localStorage.dismissedSitNotice);
   }
   else if (DEBUG) console.log('ERROR: unrecognized request');
 }
