@@ -78,26 +78,30 @@
           <img src="/img/options-desktop-notification.png" />
         </label>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         <label for="showBus">
           <input type="checkbox" name="showBus" value="showBus" id="showBus" /><span>Vis sanntidsbuss fra AtB</span><br />
         </label>
-        <div style="height:45pt; width:210pt; margin:5pt 0 0 15pt; border-radius:3pt; overflow:hidden; border-top:1pt solid white; border-bottom:1pt solid #7a7a7a; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));">
-          <img src="/img/atb.png" width="15%" style="float:left; margin:8pt;" />
-          <div style="float:left; margin-top:6pt; margin-left:1pt;">
-            <input id="first_bus_stop" type="text" style="width:85pt;" value="Gløshaugen Nord"></input>
-            <select id="first_bus_direction" style="width:57pt; margin-left:5pt;">
-              <option>til byen</option>
-              <option>fra byen</option>
-            </select><br />
-            <input id="second_bus_stop" type="text" style="width:85pt;" value="Mun"></input>
-            <select id="second_bus_direction" style="width:57pt; margin-left:5pt;">
-              <option>fra byen</option>
-              <option>til byen</option>
-            </select>
+        <div id="bus_box">
+          <img id="bus_logo" src="/img/atb.png" />
+          <div id="bus_menu">
+            <div id="first_bus">
+              <input class="stop" type="text" value="Dronningens gt."></input>
+              <select class="direction">
+                <option>til byen</option>
+                <option selected="selected">fra byen</option>
+              </select>
+            </div>
+            <div id="second_bus">
+              <input class="stop" type="text" value="Gløshaugen Nord"></input>
+              <select class="direction">
+                <option>til byen</option>
+                <option>fra byen</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="item">
         <label for="showCantina">
           <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" /><span>Vis dagens middagsmeny fra Hangaren og Realfag</span><br />
@@ -110,14 +114,12 @@
           <img src="/img/options-webchat.png" />
         </label>
       </div>
-      <!--
       <div class="item">
         <label for="useInfoscreen">
           <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" /><span>Bruk Notifier som infoskjerm med full-HD skjerm på høykant</span><br />
           <img src="/img/options-infoscreen.png" />
         </label>
       </div>
-      -->
     </div>
     <!-- "Options saved <3", also GL easter egg -->
     <div id="notification">Saved &lt;3</div>

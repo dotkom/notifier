@@ -190,12 +190,9 @@
     if (DEBUG) {
       less.watch();
     }
-    if (DEBUG) {
-      ls.clear();
-    }
     ls.removeItem('mostRecentRead');
-    ls.removeItem('currentIcon');
-    ls.removeItem('currentTitle');
+    ls.removeItem('currentStatus');
+    ls.removeItem('currentStatusTitle');
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
@@ -226,7 +223,6 @@
         return $('#overlay').css('opacity', 0);
       }), 3500);
     }), 1800000);
-    updateAll();
     setInterval((function() {
       return document.location.reload();
     }), 86400000);

@@ -34,7 +34,7 @@ var Office = {
       url: 'http://draug.online.ntnu.no/lys.txt',
     })
     .success(function(data) {
-      if (data > this.LIGHT_LIMIT) {
+      if (data > self.LIGHT_LIMIT) {
         callback('closed', self.MSG_CLOSED);
       }
       else {

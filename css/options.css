@@ -1,27 +1,24 @@
 // Debugging
 
 @debug: 0pt;
-.debug_red {
-	border: @debug solid red;
+.debugred {
+  border: @debug solid red;
 }
-.debug_yellow {
-	border: @debug solid yellow;
+.debugyellow {
+  border: @debug solid yellow;
 }
-.debug_pink {
+.debugpink {
   border: @debug solid pink;
 }
 
-// Colors
+// Variables
 
 @online-orange: #ee861f;
 @background-blue: #001429;
-
-// Variables
-
 @color: white;
 @font-family: helvetica;
-@content-width: 600pt;
-@content-height: 400pt;
+@content-width: 605pt;
+@content-height: 370pt;
 
 // Mixins
 
@@ -30,105 +27,138 @@
 // Rules
 
 body {
-	background: @background-blue;
-	font-family: @font-family;
-	color: @color;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
+  background: @background-blue;
+  font-family: @font-family;
+  color: @color;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 
-	#background {
-		/* using a div because the background needs to be resized
-		if the display is really big (1500px-2000px in width or height) */
-  		background: url('/img/background-medium.png') center center no-repeat;
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-	}
+  #background {
+    /* using a div because the background needs to be resized
+    if the display is really big (1500px-2000px in width or height) */
+    background: url('/img/background-medium.png') center center no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
 }
 
 #container {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	width: @content-width;
-	height: @content-height;
-	margin-left: -(@content-width / 2);
-	margin-top: -(@content-height / 2);
-	z-index: 10;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: @content-width;
+  height: @content-height;
+  margin-left: -(@content-width / 2);
+  margin-top: -(@content-height / 2);
+  z-index: 10;
 }
 
 /* the logo and other content at the left side of the vertical line */
 
 header {
-	.debug_red;
-	float: left;
-	height: 100%;
-	width: 280px;
-	font-size:22.5pt;
-	font-style: italic;
-	font-weight: bold;
-	text-align: right;
-	vertical-align: middle;
-	padding-top: 15px;
+  .debugred;
+  float: left;
+  height: 100%;
+  width: 220pt;
+  font-size: 22.5pt;
+  font-style: italic;
+  font-weight: bold;
+  text-align: right;
+  vertical-align: middle;
+  padding-top: 10pt;
 }
 
 #notification {
-	position: absolute;
-	left: 60px;
-	top: 140px;
-	padding: 15px;
-	background: #FFFEA8;
-	font-size: 45px;
-	color: #ff44f8;
-	box-shadow: 0px 0px 10px #bbb, 0px 0px 20px #bbb, 0px 0px 40px #bbb;
-	border-radius: 20px;
-	display: none;
+  position: absolute;
+  left: 55pt;
+  top: 110pt;
+  padding: 10pt;
+  background: #FFFEA8;
+  font-size: 34pt;
+  color: #ff44f8;
+  box-shadow: 0 0 10pt #bbb, 0 0 15pt #bbb, 0 0 30pt #bbb;
+  border-radius: 20pt;
+  display: none;
 }
 
 /* the menu and other content at the right side of the vertical line */
 
 #content {
-	.debug_yellow;
-	float: right;
-	height: 100%;
-	width: 470px;
-	border-left: 2px solid #bbb; /* the vertical line */
-	padding: 0px 0px 0px 20px;
+  .debugyellow;
+  float: right;
+  height: 100%;
+  width: 470px;
+  border-left: 2px solid #bbb; /* the vertical line */
+  padding: 0 0 0 15pt;
+  font-size: 11pt;
 
-	.item {
-		z-index: 2;
-		padding-top: 15px;
-		clear: both;
-		-webkit-transition: all .2s ease-out;
+  .item {
+    z-index: 2;
+    padding-top: 11pt;
+    clear: both;
+    -webkit-transition: all .2s ease-out;
 
-		img {
-			margin: 10px 0px 0px 20px;
-			box-shadow: 0px 0px 5px #333;
-			border-radius: 3pt;
-		}
-		input {
-			box-shadow: 0px 0px 15px #333;
-		}
-		&:hover {
-			text-shadow:
-				0 0 10px #fff,
-				0 0 15px #fff,
-				0 0 20px #fff,
-				0 0 30px #fff,
-				0 0 40px #011b36,
-				0 0 40px #011b36,
-				0 0 70px #011b36,
-				0 0 70px #011b36;
-		}
-		&:hover span::before { /* part of the fancy checkboxes */
-			border: solid 1px #aaa;
-			background: white;
-		}
-	}
+    img {
+      margin: 6pt 0 0 15pt;
+      box-shadow: 0 0 5px #333;
+      border-radius: 3pt;
+    }
+    input {
+      box-shadow: 0 0 15px #333;
+    }
+    &:hover {
+      text-shadow:
+        0 0 10px #fff,
+        0 0 15px #fff,
+        0 0 20px #fff,
+        0 0 30px #fff,
+        0 0 40px #011b36,
+        0 0 40px #011b36,
+        0 0 70px #011b36,
+        0 0 70px #011b36;
+    }
+    &:hover span::before { /* part of the fancy checkboxes */
+      border: solid 1px #aaa;
+      background: white;
+    }
+
+    #bus_box {
+      width: 210pt;
+      margin: 5pt 0 0 15pt;
+      overflow: hidden;
+      border-top: 1pt solid white;
+      border-bottom: 1pt solid #7a7a7a;
+      border-radius: 3pt;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
+
+      #bus_logo {
+        .debugred;
+        float: left;
+        width: 15%;
+        margin: 6pt 8pt;
+      }
+
+      #bus_menu {
+        .debugred;
+        float: left;
+        margin-top: 5pt;
+
+        .stop {
+          width: 85pt;
+        }
+
+        .direction {
+          width: 58pt;
+          margin-left: 5pt;
+        }
+      }
+    }
+  }
 }
 
 /* fancy checkboxes replacing the boring, ordinary ones */
@@ -137,81 +167,104 @@ label
 {
     cursor: pointer;
 
-	input[type="checkbox"] + span::before, /* buttons */
-	input[type="radio"] + span::before
-	{
-		display: inline-block; /* squish to size */
-		text-indent: -9999px; /* moving the cross the hell outta here :P */
-		width: 12px;
-		height: 12px;
-		text-transform: uppercase;
-		border: 1px solid #000;
-		background: white;
-		margin: 0 4px 0 0;
-		bottom: 2px;
-		position: relative;
-		font-size: 12px;
-		line-height: 12px;
-		font-weight: bold;
-		color: black;
-	}
+  input[type="checkbox"] + span::before, /* buttons */
+  input[type="radio"] + span::before
+  {
+    display: inline-block; /* squish to size */
+    text-indent: -9999px; /* moving the cross the hell outta here :P */
+    width: 12px;
+    height: 12px;
+    text-transform: uppercase;
+    border: 1px solid #000;
+    background: white;
+    margin: 0 4px 0 0;
+    bottom: 2px;
+    position: relative;
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: bold;
+    color: black;
+  }
 
-	input[type="checkbox"] + span::before, /* button's cross */
-	input[type="radio"] + span::before
-	{
-		content: "\2714";
-	}
+  input[type="checkbox"] + span::before, /* button's cross */
+  input[type="radio"] + span::before
+  {
+    content: "\2714";
+  }
 
-	input[type="checkbox"] + span::before /* round the corners of the radio buttons */
-	{
-		border-radius: 3px;
-	}
+  input[type="checkbox"] + span::before /* round the corners of the radio buttons */
+  {
+    border-radius: 3px;
+  }
 
-	input[type="radio"] + span::before /* round the corners of the radio buttons */
-	{
-		border-radius: 12px;
-	}
+  input[type="radio"] + span::before /* round the corners of the radio buttons */
+  {
+    border-radius: 12px;
+  }
 
-	input[type="checkbox"]:checked + span::before, /* move cross into position when checked */
-	input[type="radio"]:checked + span::before
-	{
-		text-indent: 1px;
-	}
+  input[type="checkbox"]:checked + span::before, /* move cross into position when checked */
+  input[type="radio"]:checked + span::before
+  {
+    text-indent: 1px;
+  }
 
-	input[type="checkbox"], /* hide the real checkbox/radio button */
-	input[type="radio"]
-	{
-		position: absolute;
-		filter: alpha(opacity=0);
-		-webkit-opacity: 0;
-		opacity: 0;
-		height: 20px; /* making the unseen box bigger, makes a nice hitbox */
-		width: 40px;
-		margin-left: -10px; /* making hitbox even bigger! :P nice hitbox */
-		margin-top: -1px;
-		cursor: pointer;
-	}
+  input[type="checkbox"], /* hide the real checkbox/radio button */
+  input[type="radio"]
+  {
+    position: absolute;
+    filter: alpha(opacity=0);
+    -webkit-opacity: 0;
+    opacity: 0;
+    height: 20px; /* making the unseen box bigger, makes a nice hitbox */
+    width: 40px;
+    margin-left: -10px; /* making hitbox even bigger! :P nice hitbox */
+    margin-top: -1px;
+    cursor: pointer;
+  }
 }
 
 /* Suggestions for bus stops */
 #bus_suggestions {
-	.debug_pink;
-	position: fixed;
-	vertical-align: middle;
-	width: 90pt;
-	overflow: hidden;
-	top: 10pt;
-	right: 10pt;
-	bottom: 10pt;
-	font-size: 10pt;
+  .debugpink;
+  position: fixed;
+  vertical-align: middle;
+  width: 150pt;
+  overflow: hidden;
+  vertical-align: middle;
+  display: table-cell;
+  padding: 10pt;
+  top: 0pt;
+  left: 0pt;
+  bottom: 0pt;
+  
+  .suggestion {
+    font-size: 10pt;
+    line-height: 1.5;
+    text-shadow:
+      0 0 10px #fff,
+      0 0 15px #fff;
+  }
+  .correct {
+    color: white;
+    font-size: 10pt;
+    font-weight: bold;
+    line-height: 1.5;
+    text-shadow:
+      0 0 10px #fff,
+      0 0 15px #fff,
+      0 0 20px #fff,
+      0 0 30px #fff,
+      0 0 40px #011b36,
+      0 0 40px #011b36;
+  }
 }
 
 /* the pageflip at the bottom */
 
 #pageflipbg {
   position: absolute;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   background: transparent url('/img/pageflipbg.png') no-repeat left bottom;
   width: 185px;
   height: 98px;
@@ -230,49 +283,49 @@ label
 }
 #pageflip {
   position: absolute;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   background: transparent url('/img/pageflip.png') no-repeat left bottom;
   width: 185px;
   height: 98px;
   z-index: 7;
 }
 #pagefliplink {
-	position: absolute;
-	width: 170px;
-	height: 36px;
-	left: 5px;
-	bottom: 5px;
-	font: bold 11px monospace;
-	color: #ccf2cc;
-	text-shadow:  0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-	z-index: 8;
+  position: absolute;
+  width: 170px;
+  height: 36px;
+  left: 5px;
+  bottom: 5px;
+  font: bold 11px monospace;
+  color: #ccf2cc;
+  text-shadow:  0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  z-index: 8;
 }
 #pagefliplink a {
-	font: bold 11px monospace;
-	color: #ccf2cc;
-	text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-	text-decoration: none;
+  font: bold 11px monospace;
+  color: #ccf2cc;
+  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  text-decoration: none;
 }
 #pagefliplink a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Google +1 button */
 
 #plusonebutton {
-	.debug_red;
-	position: absolute;
-	right: 3px;
-	bottom: 5px;
-	width: 170px;
-	z-index: 10;
+  .debugred;
+  position: absolute;
+  right: 3px;
+  bottom: 5px;
+  width: 170px;
+  z-index: 10;
 }
 
 /* canvas with webGL */
 
 canvas {
-	.debug_yellow;
-	background: transparent;
-	z-index: 10;
+  .debugyellow;
+  background: transparent;
+  z-index: 10;
 }

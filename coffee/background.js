@@ -13,11 +13,13 @@
     if (DEBUG) {
       console.log("\n#" + iteration);
     }
-    if (iteration % UPDATE_OFFICE_INTERVAL === 0 || !navigator.onLine) {
-      updateOffice();
-    }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0 && navigator.onLine) {
-      updateNews();
+    if (ls.useInfoscreen !== 'true') {
+      if (iteration % UPDATE_OFFICE_INTERVAL === 0 || !navigator.onLine) {
+        updateOffice();
+      }
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && navigator.onLine) {
+        updateNews();
+      }
     }
     if (10000 < iteration) {
       iteration = 0;
@@ -92,12 +94,21 @@
       if (ls.openChatter === void 0) {
         ls.openChatter = 'false';
       }
+      if (ls.useInfoscreen === void 0) {
+        ls.useInfoscreen = 'false';
+      }
       if (!DEBUG) {
         chrome.tabs.create({
           url: chrome.extension.getURL("options.html"),
           selected: true
         });
       }
+    }
+    if (ls.useInfoscreen === 'true') {
+      chrome.tabs.create({
+        url: chrome.extension.getURL("infoscreen.html"),
+        selected: true
+      });
     }
     if (ls.openChatter === 'true') {
       chrome.tabs.create({

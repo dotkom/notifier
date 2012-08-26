@@ -7,13 +7,11 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  #updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
-  if 10000 < iteration
-    iteration = 0 # no reason to count to infinity
-  else
-    iteration++
+  # No reason to count to infinity
+  if 10000 < iteration then iteration = 0 else iteration++
   
   setTimeout ( ->
     mainLoop()
@@ -62,17 +60,15 @@ clickDinnerLink = (cssSelector, url) ->
 updateBus = ->
   if DEBUG then console.log 'updateBus'
 
-  # first_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.bus_first + '/f6975f3c1a3d838dc69724b9445b3466'
-  # second_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.bus_second + '/f6975f3c1a3d838dc69724b9445b3466'
-  url_mot_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16011333/f6975f3c1a3d838dc69724b9445b3466'
-  url_fra_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16010333/f6975f3c1a3d838dc69724b9445b3466'
+  first_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.first_bus + '/f6975f3c1a3d838dc69724b9445b3466'
+  second_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.second_bus + '/f6975f3c1a3d838dc69724b9445b3466'
   requestedLines =
     '5': 2
     '22': 2
 
-  Bus.get url_mot_byen, requestedLines, (lines) ->
+  Bus.get first_bus_url, requestedLines, (lines) ->
     insertBusInfo lines, '#left'
-  Bus.get url_fra_byen, requestedLines, (lines) ->
+  Bus.get second_bus_url, requestedLines, (lines) ->
     insertBusInfo lines, '#right'
 
   # Private function
@@ -87,7 +83,7 @@ updateBus = ->
 
       # Add the destination
       if lines[i]['destination'] is undefined
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html i+' ...ZZZzzz'
+        $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html i+' zzzZZZzz'
       else
         $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html i+' '+lines[i]['destination']
         # Add the departure times
@@ -131,7 +127,7 @@ displayStories = (xmlstring) ->
   # Add feed items to popup
   items.each (index, element) ->
     
-    if index < 5
+    if index < 3
       post = parsePost(element)
       idsOfLastViewed.push(post.id)
       
@@ -210,19 +206,15 @@ fadeButtonText = (show, msg) ->
 $ ->
   if DEBUG then less.watch()
 
+  # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
+  if ls.useInfoscreen is 'true'
+    chrome.tabs.create {url: 'infoscreen.html'}
+    setTimeout ( ->
+      window.close()
+    ), 250
+
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
-  
-  # # Minor esthetical adjustments for OS version
-  # if OPERATING_SYSTEM == 'Windows'
-  #   $('#pagefliptext').attr "style", "bottom:9px;"
-  #   $('#pagefliplink').attr "style", "bottom:9px;"
-
-  # Blinking cursor at pageflip
-  # setInterval ( ->
-  #   $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
-  #     $(@).animate opacity: 1, "fast", "swing",
-  # ), 600
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

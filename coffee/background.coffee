@@ -6,16 +6,14 @@ iteration = 0
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
-  # Update office status every mainloop if we're offline in order to react quickly when we're back
-  updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 or !navigator.onLine
-
-  # Only update the news when online
-  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine
+  if ls.useInfoscreen isnt 'true'
+    # Update office status every mainloop if we're offline in order to react quickly when we're back
+    updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 or !navigator.onLine
+    # Only update the news when online
+    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine
   
-  if 10000 < iteration
-    iteration = 0 # no reason to count to infinity
-  else
-    iteration++
+  # No reason to count to infinity
+  if 10000 < iteration then iteration = 0 else iteration++
   
   # Schedule for repetition once a minute (checking connectivity,
   # feed and office status). Runs every 3rd second if it's offline,
@@ -70,8 +68,14 @@ $ ->
       ls.showCantina = 'true'
     if ls.openChatter is undefined
       ls.openChatter = 'false'
+    if ls.useInfoscreen is undefined
+      ls.useInfoscreen = 'false'
     if !DEBUG
       chrome.tabs.create {url: chrome.extension.getURL("options.html"), selected: true}
+
+  # Open Infoscreen if the option is set
+  if ls.useInfoscreen is 'true'
+    chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: true}
 
   # Open Chatter if the option is set
   if ls.openChatter is 'true'

@@ -24,53 +24,81 @@ testDesktopNotification = ->
   notification = webkitNotifications.createHTMLNotification('notification.html')
   notification.show()
 
-bindBusFields = (cssSelectors) ->
-  $(cssSelectors).keyup ->
-    nameStart = $(cssSelectors).val()
+bindBusFields = (busField) ->
+  cssSelector = '#' + busField
+  if DEBUG then console.log 'Binding bus fields for ' + cssSelector
+  stop = $(cssSelector + ' .stop');
+  direction = $(cssSelector + ' .direction');
+
+  # Clear stop field on click
+  $(stop).focus ->
+    if DEBUG then console.log '.stop focus'
+    $(stop).val ''
+    $('#bus_suggestions').html ''
+
+  # If focus is lost, check for correct stop name
+  $(stop).focusout ->
+    if DEBUG then console.log '.stop blur'
+    contents = $(stop).val()
+    suggestions = Bus.getPotentialStops contents
+    if suggestions.length is 1
+      correctStop = suggestions[0]
+      $(stop).val correctStop
+      $('#bus_suggestions').html ''
+    else
+      $(stop).val ''
+      $('#bus_suggestions').html ''
+
+  # Suggest stops on keystrokes, save if there's only one suggestion
+  $(stop).keyup ->
+    if DEBUG then console.log '.stop keyup'
+    nameStart = $(stop).val()
 
     if nameStart.length > 0
+      # Suggestions
       suggestions = Bus.getPotentialStops nameStart
-
       $('#bus_suggestions').html ''
       for i of suggestions
-        $('#bus_suggestions').append suggestions[i] + '<br />'
+        suggestion = $('<div class="suggestion">' + suggestions[i] + '</div>').hide()
+        $('#bus_suggestions').append suggestion
+        $(suggestion).fadeIn()
 
       # Only one suggestion? Inject it
       if suggestions.length is 1
-        busStop = suggestions[0]
-        $(cssSelectors).val busStop
-        $(cssSelectors).blur()
+        correctStop = suggestions[0]
+        $(stop).val correctStop
+        $(stop).blur()
         $('#bus_suggestions').html ''
+        suggestion = $('<div class="correct">' + correctStop + '</div>').hide()
+        $('#bus_suggestions').append suggestion
+        $(suggestion).fadeIn()
+        setTimeout ( ->
+          $('#bus_suggestions .correct').fadeOut(200)
+          setTimeout ( ->
+            $('#bus_suggestions').html ''
+          ), 300
+        ), 1200
 
-        # Get and inject possible directions for the given stop
-        # NOE
+        # Get and inject possible directions for correct stop
+        directions = Bus.getDirections correctStop
+        $(direction).html ''
+        for i of directions
+          $(direction).append '<option>' + directions[i] + '</option>'
+        saveBus busField
 
-        # Get the requested direction for the bus stop
-        stopNumbers = Bus.getStopNumbers suggestions[0]
-        console.log 'stopnumbers: ', stopNumbers
-        requestedDirection = $(cssSelectors).siblings(cssSelectors+'_direction').val()
-        console.log 'direction: ', requestedDirection
-        if requestedDirection is 'til byen'
-          for i of stopNumbers
-            console.log 'checking stopnumbers for 0: ', i
-            if stopNumbers[i].charAt 5 is 0
-              stopId = stopNumbers[i]
-        else if requestedDirection is 'fra byen'
-          for i of stopNumbers
-            console.log 'checking stopnumbers for 1: ', i
-            if stopNumbers[i].charAt 5 is 1
-              stopId = stopNumbers[i]
-        else
-          console.log 'ERROR: No direction found' if DEBUG
+  # Save bus line if user changes the direction field
+  $(direction).change ->
+    if DEBUG then console.log '.direction change'
+    saveBus busField
 
-        # Save the users selection
-        ls.cssSelectors = stopId
-        console.log 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/'+stopId+'/f6975f3c1a3d838dc69724b9445b3466'
-        displayOnPageNotification()
-
-bindBusSelectors = (cssSelectors) ->
-  $(cssSelectors).change ->
-    alert $(cssSelectors).val()
+saveBus = (busField) ->
+  cssSelector = '#' + busField
+  stop = $(cssSelector + ' .stop').val();
+  direction = $(cssSelector + ' .direction').val();
+  busStopId = Bus.getStop stop, direction
+  ls[busField] = busStopId
+  displayOnPageNotification()
+  if DEBUG then console.log 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
 
 fadeInCanvas = ->
   webGLStart();
@@ -117,21 +145,12 @@ $ ->
   $('#notification').click ->
     fadeInCanvas()
 
-  # Give user suggestions for autocomplete of home bus stop
-  bindBusFields '#bus_first'
-  bindBusFields '#bus_second'
-  bindBusSelectors '#bus_first_direction'
-  bindBusSelectors '#bus_second_direction'
+  # Give user suggestions for autocomplete of bus stops
+  bindBusFields 'first_bus'
+  bindBusFields 'second_bus'
 
   # Catch new clicks
   $('input:checkbox').click ->
-
-    # if $(this).siblings('#bus_home').is(':focus')
-    #   # If the field for choosing bus stop was clicked we'll pretend the checkbox didn't change ^^
-    #   _revert = !$(this).attr 'checked'
-    #   $(this).attr 'checked', _revert
-    #   # Also, clear the bus_home field in case the user wants to choose a new bus_home
-    #   $('#bus_home').val('');
 
     # else
     ls[this.id] = this.checked;

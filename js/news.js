@@ -1,4 +1,6 @@
 
+var MAX_NEWS_AMOUNT = 3;
+
 // Fetchfeed is called by background.html periodically, with unreadCount as
 // callback. Fetchfeed is also called by popup.html when requested, but
 // without the callback as we already know the amount of unread posts.
@@ -50,12 +52,12 @@ function unreadCount(xmlstring) {
 				if (DEBUG) console.log('no new posts');
 				chrome.browserAction.setBadgeText({text:''});
 			}
-			else if (unread_count >= 9) {
-				if (DEBUG) console.log('9+ unread posts');
-				chrome.browserAction.setBadgeText({text:'9+'});
+			else if (unread_count >= MAX_NEWS_AMOUNT) {
+				if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts');
+				chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
 			}
 			else {
-				if (DEBUG) console.log('1-8 unread posts');
+				if (DEBUG) console.log('1-' + (MAX_NEWS_AMOUNT - 1) + ' unread posts');
 				chrome.browserAction.setBadgeText({text:String(unread_count)});
 			}
 			localStorage.unreadCount = unread_count;
@@ -64,10 +66,10 @@ function unreadCount(xmlstring) {
 		}
 		
 		// Stop counting if unread number is greater than 9
-		if (index > 8) { // Remember index is counting 0
-			if (DEBUG) console.log('9+ unread posts (stopped counting)');
-			chrome.browserAction.setBadgeText({text:'9+'});
-			localStorage.unreadCount = 9;
+		if (index > (MAX_NEWS_AMOUNT - 1)) { // Remember index is counting 0
+			if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts (stopped counting)');
+			chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
+			localStorage.unreadCount = MAX_NEWS_AMOUNT;
 			// New or updated?
 			storeMostRecentIds(idList); // New || Updated
 			return false;

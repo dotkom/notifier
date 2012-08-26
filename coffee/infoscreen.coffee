@@ -11,10 +11,8 @@ mainLoop = ->
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0
   
-  if 10000 < iteration
-    iteration = 0 # no reason to count to infinity
-  else
-    iteration++
+  # No reason to count to infinity
+  if 10000 < iteration then iteration = 0 else iteration++
   
   setTimeout ( ->
     mainLoop()
@@ -153,10 +151,9 @@ $ ->
   if DEBUG then less.watch()
   
   # Clear all previous thoughts
-  if DEBUG then ls.clear()
   ls.removeItem 'mostRecentRead'
-  ls.removeItem 'currentIcon'
-  ls.removeItem 'currentTitle'
+  ls.removeItem 'currentStatus'
+  ls.removeItem 'currentStatusTitle'
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'
@@ -179,8 +176,6 @@ $ ->
       $('#overlay').css 'opacity', 0
     ), 3500
   ), 1800000
-  
-  updateAll()
 
   # Reload the page once every day
   setInterval ( ->

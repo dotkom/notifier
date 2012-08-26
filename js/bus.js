@@ -20,6 +20,30 @@ var Bus = {
     });
   },
 
+  getStop: function(stopName, direction) {
+    var foundStops = this.getStopIds(stopName);
+    if (direction == 'til byen') {
+      for (i in foundStops) {
+        var currentId = foundStops[i] + '';
+        if (currentId.charAt(4) == '1') {
+          return currentId;
+        }
+      }
+    }
+    else if (direction == 'fra byen') {
+      for (i in foundStops) {
+        var currentId = foundStops[i] + '';
+        if (currentId.charAt(4) == '0') {
+          return currentId;
+        }
+      }
+    }
+    else {
+      console.log('ERROR: Invalid direction');
+      return -1;
+    }
+  },
+  
   getPotentialStops: function(nameStart) {
     nameStart = nameStart.toLowerCase();
     var foundStops = [];
@@ -35,7 +59,7 @@ var Bus = {
     return foundStops;
   },
 
-  getStopNumbers: function(stopName) {
+  getStopIds: function(stopName) {
     var foundStops = [];
     for (id in this.stops) {
       var currentStop = this.stops[id];
@@ -44,6 +68,42 @@ var Bus = {
       }
     }
     return foundStops;
+  },
+
+  getDirections: function(stopName) {
+    var foundStops = this.getStopIds(stopName);
+    var toTown = false;
+    var fromTown = false;
+    for (i in foundStops) {
+      var currentId = foundStops[i] + '';
+      if (currentId.charAt(4) == '1') {
+        toTown = true;
+      }
+      else if (currentId.charAt(4) == '0') {
+        fromTown = true;
+      }
+    }
+    if (toTown && fromTown) {
+      return ['til byen', 'fra byen'];
+    }
+    else if (toTown) {
+      return ['til byen'];
+    }
+    else if (fromTown) {
+      return ['fra byen'];
+    }
+    else {
+      return [];
+    }
+  },
+
+  getStopName: function(stopId) {
+    return this.stops[stopId];
+  },
+
+  getStopLines: function(stopId) {
+    // TODO tmn
+    return [5,22];
   },
 
   // Private

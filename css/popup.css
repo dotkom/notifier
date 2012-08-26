@@ -18,6 +18,7 @@
 // Variables
 
 @in-post-padding: 5pt;
+@online-orange: #ee861f;
 
 // Mixins
 
@@ -30,7 +31,7 @@
 
 .title {
   display: block;
-  color: #ee861f;
+  color: @online-orange;
   text-transform: uppercase;
   font-size: 9pt;
   font-weight: bold;
@@ -83,6 +84,7 @@ body {
   bottom: 0;
   left: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 15pt;
   z-index: 10;
 
@@ -170,12 +172,14 @@ body {
   #bus {
     .debugred;
     .fullbox;
+    position: relative;
+    top: 12pt;
     line-height: 15pt;
     background-color: #000f1d;
     height: 50pt;
     width: 110%;
-    margin-top: 8pt;
     margin-left: -5%;
+    margin-bottom: 15pt;
     box-shadow: 0 0 20pt #88b;
 
     #title {
@@ -205,7 +209,7 @@ body {
     }
     #right {
       .debuglime;
-      width: 39%;
+      width: 43%;
       position: relative;
       padding-top: 10pt;
       float: left;
@@ -272,61 +276,3 @@ body {
   }
 
 }
-
-/* the pageflip at the bottom */
-
-/*#pageflipbg {
-  position: absolute;
-  left: 0px;
-  bottom: 0px;
-  background: transparent url('/img/pageflipbg.png') no-repeat left bottom;
-  width: 185px;
-  height: 98px;
-  z-index: 5;
-}
-
-#pagefliptext {
-  position: absolute;
-  width: 170px;
-  height: 36px;
-  left: 5px;
-  bottom: 5px;
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 6;
-}
-
-#pageflip {
-  position: absolute;
-  left: 0px;
-  bottom: 0px;
-  background: transparent url('/img/pageflip.png') no-repeat left bottom;
-  width: 185px;
-  height: 98px;
-  z-index: 7;
-}
-
-#pagefliplink {
-  position: absolute;
-  width: 170px;
-  height: 36px;
-  left: 5px;
-  bottom: 5px;
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow:  0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 8;
-}
-
-#pagefliplink a {
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  text-decoration: none;
-}
-
-#pagefliplink a:hover {
-  text-decoration: underline;
-}
-*/

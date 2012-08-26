@@ -16,9 +16,6 @@
     if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
       updateCantinas();
     }
-    if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
-      updateBus();
-    }
     if (iteration % UPDATE_NEWS_INTERVAL === 0) {
       updateNews();
     }
@@ -87,20 +84,20 @@
   };
 
   updateBus = function() {
-    var insertBusInfo, requestedLines, url_fra_byen, url_mot_byen;
+    var first_bus_url, insertBusInfo, requestedLines, second_bus_url;
     if (DEBUG) {
       console.log('updateBus');
     }
-    url_mot_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16011333/f6975f3c1a3d838dc69724b9445b3466';
-    url_fra_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16010333/f6975f3c1a3d838dc69724b9445b3466';
+    first_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.first_bus + '/f6975f3c1a3d838dc69724b9445b3466';
+    second_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.second_bus + '/f6975f3c1a3d838dc69724b9445b3466';
     requestedLines = {
       '5': 2,
       '22': 2
     };
-    Bus.get(url_mot_byen, requestedLines, function(lines) {
+    Bus.get(first_bus_url, requestedLines, function(lines) {
       return insertBusInfo(lines, '#left');
     });
-    Bus.get(url_fra_byen, requestedLines, function(lines) {
+    Bus.get(second_bus_url, requestedLines, function(lines) {
       return insertBusInfo(lines, '#right');
     });
     return insertBusInfo = function(lines, cssIdentificator) {
@@ -112,7 +109,7 @@
         arrow = cssIdentificator === '#left' ? '&larr;' : '&rarr;';
         $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .arrow').html(arrow);
         if (lines[i]['destination'] === void 0) {
-          $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html(i + ' ...ZZZzzz');
+          $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html(i + ' zzzZZZzz');
         } else {
           $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html(i + ' ' + lines[i]['destination']);
           times = '';
@@ -157,7 +154,7 @@
     idsOfLastViewed = [];
     items.each(function(index, element) {
       var item, post, _ref;
-      if (index < 5) {
+      if (index < 3) {
         post = parsePost(element);
         idsOfLastViewed.push(post.id);
         item = '<div class="post"><div class="title">';
@@ -250,6 +247,14 @@
   $(function() {
     if (DEBUG) {
       less.watch();
+    }
+    if (ls.useInfoscreen === 'true') {
+      chrome.tabs.create({
+        url: 'infoscreen.html'
+      });
+      setTimeout((function() {
+        return window.close();
+      }), 250);
     }
     if (ls.showCantina !== 'true') {
       $('#cantinas').hide();
