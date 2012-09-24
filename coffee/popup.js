@@ -49,9 +49,8 @@
   };
 
   listDinners = function(menu, url) {
-    var dinner, dinnerlist, index, price, _i, _len;
+    var dinner, dinnerlist, price, _i, _len;
     dinnerlist = '';
-    index = 0;
     if (typeof menu === 'string') {
       ls.noDinnerInfo = 'true';
       dinnerlist += '<li class="dinnerlist">' + menu + '</li>';
@@ -64,8 +63,7 @@
         } else {
           price = '';
         }
-        dinnerlist += '<li class="dinnerlist" id="' + index + '">' + price + dinner.text + '</li>';
-        index++;
+        dinnerlist += '<li class="dinnerlist" id="' + dinner.index + '">' + price + dinner.text + '</li>';
       }
     }
     return dinnerlist;
@@ -84,43 +82,28 @@
   };
 
   updateBus = function() {
-    var first_bus_url, insertBusInfo, requestedLines, second_bus_url;
+    var amountOfLines, first_stop_name, insertBusInfo, second_stop_name;
     if (DEBUG) {
       console.log('updateBus');
     }
-    first_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.first_bus + '/f6975f3c1a3d838dc69724b9445b3466';
-    second_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.second_bus + '/f6975f3c1a3d838dc69724b9445b3466';
-    requestedLines = {
-      '5': 2,
-      '22': 2
-    };
-    Bus.get(first_bus_url, requestedLines, function(lines) {
-      return insertBusInfo(lines, '#left');
+    first_stop_name = ls.first_bus_name;
+    second_stop_name = ls.second_bus_name;
+    amountOfLines = 3;
+    Bus.getAnyLines(ls.first_bus, amountOfLines, function(lines) {
+      return insertBusInfo(lines, first_stop_name, '#left');
     });
-    Bus.get(second_bus_url, requestedLines, function(lines) {
-      return insertBusInfo(lines, '#right');
+    Bus.getAnyLines(ls.second_bus, amountOfLines, function(lines) {
+      return insertBusInfo(lines, second_stop_name, '#right');
     });
-    return insertBusInfo = function(lines, cssIdentificator) {
-      var arrow, counter, i, j, spans, times, _results;
-      spans = ['.first', '.second'];
+    return insertBusInfo = function(lines, stopName, cssIdentificator) {
+      var counter, i, spans, _results;
+      $('#bus ' + cssIdentificator + ' .name').html(stopName);
+      spans = ['.first', '.second', '.third'];
       counter = 0;
       _results = [];
-      for (i in lines) {
-        arrow = cssIdentificator === '#left' ? '&larr;' : '&rarr;';
-        $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .arrow').html(arrow);
-        if (lines[i]['destination'] === void 0) {
-          $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html(i + ' zzzZZZzz');
-        } else {
-          $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html(i + ' ' + lines[i]['destination']);
-          times = '';
-          for (j in lines[i]['departures']) {
-            if (j !== '0') {
-              times += ', ';
-            }
-            times += lines[i]['departures'][j];
-          }
-          $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .time').html(times);
-        }
+      for (i in lines['departures']) {
+        $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html(lines['destination'][i] + ' ');
+        $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .time').html(lines['departures'][i]);
         _results.push(counter++);
       }
       return _results;
@@ -154,7 +137,7 @@
     idsOfLastViewed = [];
     items.each(function(index, element) {
       var item, post, _ref;
-      if (index < 3) {
+      if (index < 4) {
         post = parsePost(element);
         idsOfLastViewed.push(post.id);
         item = '<div class="post"><div class="title">';
@@ -166,7 +149,7 @@
           }
         }
         item += post.title + '</div>\
-          <div class="item" id="' + post.id + '">\
+          <div class="item" id="' + post.link + '">\
             <img id="' + post.id + '" src="' + post.image + '" width="107" />\
             <div class="textwrapper">\
               <div class="emphasized">- Av ' + post.creator + ', skrevet ' + post.date + '</div>\
@@ -184,7 +167,7 @@
     ls.unreadCount = 0;
     $('.item').click(function() {
       chrome.tabs.create({
-        url: 'https://online.ntnu.no/news/' + $(this).attr('id')
+        url: $(this).attr('id')
       });
       return window.close();
     });
@@ -291,6 +274,12 @@
     });
     $('#chatter_button').mouseleave(function() {
       return chatterText(false);
+    });
+    $('#bus #middle img').click(function() {
+      chrome.tabs.create({
+        url: 'http://www.atb.no'
+      });
+      return window.close();
     });
     return mainLoop();
   });

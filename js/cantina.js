@@ -157,7 +157,7 @@ var Cantina = {
       else {
         dinnerObjects.forEach( function(dinner) {
           var text = dinner.text;
-          text = self.removePartsAfter(['.',',','(','/','serveres','Serveres'], text);
+          text = self.removePartsAfter(['.',',','(','serveres','Serveres'], text); // removed: '/'
           text = text.trim();
         
           // If current item is NOT about the buffet, continue with:
@@ -172,8 +172,7 @@ var Cantina = {
         });
       }
       
-      // Uncommented because the returned list should have the same order as the
-      // list on SiTs website.
+      /* Uncommented because the returned list should have the same order as the list on SiTs website. */
       // // Sort dinnerobjects by price
       // if (dinnerObjects[0].price != null)
       //   dinnerObjects.sort(function(a,b){return(a.price>b.price)?1:((b.price>a.price)?-1:0);});

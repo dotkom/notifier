@@ -18,17 +18,14 @@
 @color: white;
 @font-family: helvetica;
 @content-width: 605pt;
-@content-height: 370pt;
-
-// Mixins
-
-
+@content-height: 420pt;
 
 // Rules
 
 body {
-  background: @background-blue;
+  background: @background-blue; /*url('/img/options-jitter.png') left top no-repeat;*/
   font-family: @font-family;
+  border: 1pt solid black;
   color: @color;
   margin: 0;
   padding: 0;
@@ -48,6 +45,7 @@ body {
 }
 
 #container {
+  .debugpink;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -104,9 +102,20 @@ header {
     -webkit-transition: all .2s ease-out;
 
     img {
-      margin: 6pt 0 0 15pt;
-      box-shadow: 0 0 5px #333;
-      border-radius: 3pt;
+      margin: 5pt 0 0 5pt;
+    }
+    .icon {
+      position: relative;
+      margin: 0;
+      top: 2.5pt;
+    }
+    .logo {
+      box-shadow: 0 0 10pt 0pt #333;
+    }
+    .image {
+      box-shadow: 0 0 10pt 0pt #333, 0 0 20pt 2pt #333;
+      margin-left: 15pt;
+      border-radius: 4pt;
     }
     input {
       box-shadow: 0 0 15px #333;
@@ -157,6 +166,10 @@ header {
           margin-left: 5pt;
         }
       }
+    }
+
+    #infoscreen_preview {
+      display: none;
     }
   }
 }
@@ -320,6 +333,45 @@ label
   bottom: 5px;
   width: 170px;
   z-index: 10;
+}
+
+/* The Avgrund dialog */
+
+.avgrund_image {
+  float: left;
+  border: 3pt solid white;
+  box-shadow: 0 0 5pt 5pt #ccc;
+}
+
+.avgrund_content {
+  color: black;
+  border: 1pt solid red;
+  text-align: center;
+  margin: 40pt 10pt 10pt 0pt;
+  padding-left: 10pt;
+  font: 11pt @font-family;
+}
+
+.button {
+  margin-left: 20pt;
+  padding: 6pt;
+  border: 1pt solid gray;
+  border-radius: 3pt;
+  text-transform: uppercase;
+  font: 9pt bold @font-family;
+}
+
+.yesbutton {
+  background-color: lightgreen;
+}
+
+.nobutton {
+  background-color: lightgray;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
 
 /* canvas with webGL */

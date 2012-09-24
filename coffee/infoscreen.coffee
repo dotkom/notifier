@@ -20,12 +20,12 @@ mainLoop = ->
 
 updateOffice = ->
   if DEBUG then console.log 'updateOffice'
-  Office.get (status, title) ->
-    if ls.currentStatus isnt status or ls.currentStatusTitle isnt title
+  Office.get (status, title, message) ->
+    if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       $('#office img').attr 'src', 'img/status-'+status+'.png'
-      $('#office #subtext').html title
+      $('#office #subtext').html message
       ls.currentStatus = status
-      ls.currentStatusTitle = title
+      ls.currentStatusMessage = message
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
@@ -85,15 +85,15 @@ updateNews = ->
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
-  url_mot_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16011333/f6975f3c1a3d838dc69724b9445b3466'
-  url_fra_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16010333/f6975f3c1a3d838dc69724b9445b3466'
+  url_mot_byen = '16011333'
+  url_fra_byen = '16010333'
   requestedLines =
     '5': 2
     '22': 2
 
-  Bus.get url_mot_byen, requestedLines, (lines) ->
+  Bus.getRequestedLines url_mot_byen, requestedLines, (lines) ->
     insertBusInfo lines, '#left'
-  Bus.get url_fra_byen, requestedLines, (lines) ->
+  Bus.getRequestedLines url_fra_byen, requestedLines, (lines) ->
     insertBusInfo lines, '#right'
 
   # Private function
@@ -153,7 +153,7 @@ $ ->
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'
   ls.removeItem 'currentStatus'
-  ls.removeItem 'currentStatusTitle'
+  ls.removeItem 'currentStatusMessage'
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'

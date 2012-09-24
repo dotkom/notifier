@@ -1,5 +1,6 @@
 
-var MAX_NEWS_AMOUNT = 3;
+// Note: This is how many news items we'll fetch, not how many we'll display!
+var MAX_NEWS_AMOUNT = 4;
 
 // Fetchfeed is called by background.html periodically, with unreadCount as
 // callback. Fetchfeed is also called by popup.html when requested, but
@@ -108,7 +109,13 @@ function parsePost(item) {
 	post.date = $(item).find("pubDate").text().substr(5, 11);
 	post.id = $(item).find("guid").text().split('/')[4];
 	post.image = BACKUP_IMAGE;
-	
+
+	// check for more direct link in the description
+	var directLink = post.description.match(/(http.:\/\/)?online.ntnu.no\/event\/\d+(\/)?/g)[0]
+	if (directLink != undefined) {
+		post.link = directLink;
+	}
+
 	// remove excessive whitespace and ludicrous formatting from description
 	post.description = $.trim($(post.description).text());
 	

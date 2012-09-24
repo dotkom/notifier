@@ -40,16 +40,21 @@
     if (DEBUG) {
       console.log('updateOffice');
     }
-    return Office.get(function(status, title) {
-      if (ls.currentStatus !== status || ls.currentStatusTitle !== title) {
+    return Office.get(function(status, title, message) {
+      if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         chrome.browserAction.setIcon({
           path: 'img/icon-' + status + '.png'
         });
-        chrome.browserAction.setTitle({
-          title: title
-        });
         ls.currentStatus = status;
-        return ls.currentStatusTitle = title;
+        return Office.getTodaysEvents(function(meetingPlan) {
+          var today;
+          meetingPlan = $.trim(meetingPlan);
+          today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetingPlan;
+          chrome.browserAction.setTitle({
+            title: today
+          });
+          return ls.currentStatusMessage = message;
+        });
       }
     });
   };
@@ -77,7 +82,7 @@
       ls.clear();
     }
     ls.removeItem('currentStatus');
-    ls.removeItem('currentStatusTitle');
+    ls.removeItem('currentStatusMessage');
     if (ls.everConnected === void 0) {
       if (ls.showOffice === void 0) {
         ls.showOffice = 'true';
@@ -87,6 +92,12 @@
       }
       if (ls.showBus === void 0) {
         ls.showBus = 'true';
+        ls.first_bus = 16010103;
+        ls.first_bus_name = 'Dragvoll';
+        ls.first_bus_direction = 'til byen';
+        ls.second_bus = 16010333;
+        ls.second_bus_name = 'Gløshaugen Nord';
+        ls.second_bus_direction = 'fra byen';
       }
       if (ls.showCantina === void 0) {
         ls.showCantina = 'true';

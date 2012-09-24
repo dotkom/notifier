@@ -20,6 +20,16 @@ pageFlipCursorBlinking = ->
   $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
     $(@).animate opacity: 1, "fast", "swing",
 
+updateOfficeStatus = ->
+  Office.get (status, title, message) ->
+    chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
+    ls.currentStatus = status
+    Office.getTodaysEvents (meetingPlan) ->
+      meetingPlan = $.trim meetingPlan
+      today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetingPlan
+      chrome.browserAction.setTitle {title: today}
+      ls.currentStatusMessage = message
+
 testDesktopNotification = ->
   notification = webkitNotifications.createHTMLNotification('notification.html')
   notification.show()
@@ -29,6 +39,9 @@ bindBusFields = (busField) ->
   if DEBUG then console.log 'Binding bus fields for ' + cssSelector
   stop = $(cssSelector + ' .stop');
   direction = $(cssSelector + ' .direction');
+
+  # Load users saved buses
+  loadBus busField
 
   # Clear stop field on click
   $(stop).focus ->
@@ -59,7 +72,11 @@ bindBusFields = (busField) ->
       suggestions = Bus.getPotentialStops nameStart
       $('#bus_suggestions').html ''
       for i of suggestions
-        suggestion = $('<div class="suggestion">' + suggestions[i] + '</div>').hide()
+        _text = suggestions[i]
+        for char, index in nameStart
+          _text = _text.replace char, '<b>'+char+'</b>'
+        suggestion = $('<div class="suggestion">' + _text + '</div>').hide()
+
         $('#bus_suggestions').append suggestion
         $(suggestion).fadeIn()
 
@@ -97,11 +114,78 @@ saveBus = (busField) ->
   direction = $(cssSelector + ' .direction').val();
   busStopId = Bus.getStop stop, direction
   ls[busField] = busStopId
+  ls[busField + '_name'] = stop
+  ls[busField + '_direction'] = direction
   displayOnPageNotification()
   if DEBUG then console.log 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
 
+loadBus = (busField) ->
+  cssSelector = '#' + busField
+  $(cssSelector + ' .stop').val ls[busField + '_name']
+  $(cssSelector + ' .direction').val ls[busField + '_direction']
+
+toggleInfoscreen = (activate) -> # Welcome to callback hell, - be glad it's well commented
+  id = 'useInfoscreen'
+  if activate
+    $('#'+id).attr 'checked', false
+    $('#logo_subtext').fadeOut()
+    $('#infoscreen_slider').slideUp 400, ->
+      $('#infoscreen_preview').fadeIn 400, ->
+        # New logo subtext
+        $('#logo_subtext').html 'infoscreen&nbsp;&nbsp;&nbsp;&nbsp;'
+        $('#logo_subtext').fadeIn ->
+          if confirm 'Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen åpnes hver gang Chrome starter\n- Infoskjerm åpnes nå!'
+            # Enable, and check the checkbox
+            ls[id] = 'true'
+            $('#'+id).attr 'checked', true
+            # Reset icon, icon title and icon badge
+            chrome.browserAction.setIcon {path: 'img/icon-default.png'}
+            chrome.browserAction.setTitle {title: 'Online Infoscreen'}
+            chrome.browserAction.setBadgeText {text: ''}
+            # Create Infoscreen in a new tab
+            chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: false}
+          else
+            setTimeout ( ->
+              $('#logo_subtext').fadeOut()
+              $('#infoscreen_preview').fadeOut 200, ->
+                $('#infoscreen_slider').slideDown 400, ->
+                  # New logo subtext
+                  $('#logo_subtext').html 'notifier options'
+                  $('#logo_subtext').fadeIn()
+            ), 200
+  else
+    # Disable
+    ls[id] = 'false'
+    # Close any open Infoscreen tabs
+    # closeInfoscreenTabs()
+    # Refresh office status
+    updateOfficeStatus()
+    # Animations
+    $('#logo_subtext').fadeOut()
+    $('#infoscreen_preview').fadeOut 400, ->
+      $('#infoscreen_slider').slideDown 400, ->
+        # Notify user
+        $('#logo_subtext').html 'notifier options'
+        $('#logo_subtext').fadeIn()
+
+# COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
+# closeInfoscreenTabs = ->
+#   chrome.windows.getAll
+#     populate: true,
+#     (window_list) ->
+#       list = []
+#       for win of window_list
+#         tabs = window_list[win].tabs
+#         for tab of tabs
+#           tab = tabs[tab]
+#           titleIndex = tab.title.indexOf "Infoscreen"
+#           urlIndex = tab.url.indexOf "infoscreen.html"
+#           if titleIndex >= 0
+#             if urlIndex >= 0
+#               chrome.tabs.remove tab.id
+
 fadeInCanvas = ->
-  webGLStart();
+  webGLStart()
   $('#LessonCanvas').animate
     opacity:1,
     1300,
@@ -121,6 +205,12 @@ $ ->
   # Restore checks to boxes from ls
   $('input:checkbox').each (index, element) ->
     element.checked = ls[element.id] is "true"
+
+  # If useInfoscreen is on, slide away the rest of the options and switch the logo subtext
+  if ls.useInfoscreen is 'true'
+    $('#logo_subtext').html 'infoscreen&nbsp;&nbsp;&nbsp;&nbsp;'
+    $('#infoscreen_slider').hide()
+    $('#infoscreen_preview').show()
 
   # Bind the windows resize function
   $(window).bind "resize", resizeBackgroundImage
@@ -149,26 +239,46 @@ $ ->
   bindBusFields 'first_bus'
   bindBusFields 'second_bus'
 
+  # Bind the infoscreen option to an avgrund.js modal dialog
+  # $('#useInfoscreen').avgrund
+  #   width: 540,
+  #   height: 330,
+  #   holderClass: 'custom',
+  #   showClose: true,
+  #   showCloseText: 'Avbryt',
+  #   enableStackAnimation: true,
+  #   onBlurContainer: '#avgrund',
+  #   template: '
+  #     <img class="avgrund_image" src="/img/options-infoscreen-preview.png" />
+  #     <div class="avgrund_content">
+  #       <b>Sikker på at du vil skru på infoskjerm?</b>
+  #       <ul style="text-align:left;">
+  #         <li>Popupknappen vil åpne infoskjerm</li>
+  #         <li>Infoskjerm åpnes i fullscreen ved oppstart</li>
+  #         <li>Infoskjermen vil åpnes nå!</li>
+  #       </ul>
+  #       <a href="#" class="button yesbutton" onclick="">Skru på infoskjerm</a>
+  #       <a href="#" class="button nobutton">Avbryt</a>
+  #     </div>'
+
   # Catch new clicks
   $('input:checkbox').click ->
+    
+    # Special case for 'useInfoscreen'
+    if this.id is 'useInfoscreen'
+      toggleInfoscreen( this.checked )
 
-    # else
-    ls[this.id] = this.checked;
-    
-    if this.id is 'showOffice' and this.checked is false
-      chrome.browserAction.setIcon {path: 'img/icon-default.png'}
-      chrome.browserAction.setTitle {title: EXTENSION_NAME}
-    else if this.id is 'showOffice' and this.checked is true
-      Office.get (status, title) ->
-        chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
-        chrome.browserAction.setTitle {title: title}
-        ls.currentStatus = status
-        ls.currentStatusTitle = title
-    
-    if this.id is 'showNotifications' and this.checked is true
-      testDesktopNotification()
-    
-    if this.id is 'useInfoscreen' and this.checked is true
-      chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: false}
+    # All the other checkboxes (not Infoscreen)
+    else
+      ls[this.id] = this.checked;
+      
+      if this.id is 'showOffice' and this.checked is false
+        chrome.browserAction.setIcon {path: 'img/icon-default.png'}
+        chrome.browserAction.setTitle {title: EXTENSION_NAME}
+      else if this.id is 'showOffice' and this.checked is true
+        updateOfficeStatus()
+      
+      if this.id is 'showNotifications' and this.checked is true
+        testDesktopNotification()
 
-    displayOnPageNotification()
+      displayOnPageNotification()

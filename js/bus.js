@@ -1,23 +1,17 @@
 var Bus = {
   stops: {},
+  api: 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/',
+  apikey: '/f6975f3c1a3d838dc69724b9445b3466',
+  stopNames: undefined,
 
   // Public
 
-  get: function(url, requestedLines, callback) {
-    if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
+  getAnyLines: function(stopId, amountOfLines, callback) {
+    this.ajax(this.api + stopId + this.apikey, this.parseForAnyLines, amountOfLines, callback);
+  },
 
-    var self = this;
-    $.ajax({
-      url: url,
-      dataType: 'json',
-      success: function(json) {
-        self.parseResults(json, requestedLines, callback);
-      },
-      fail: self.handleError,
-    });
+  getRequestedLines: function(stopId, requestedLines, callback) {
+    this.ajax(this.api + stopId + this.apikey, this.parseForRequestedLines, requestedLines, callback);
   },
 
   getStop: function(stopName, direction) {
@@ -45,18 +39,34 @@ var Bus = {
   },
   
   getPotentialStops: function(nameStart) {
-    nameStart = nameStart.toLowerCase();
-    var foundStops = [];
-    var i = 0;
-    for (id in this.stops) {
-      var currentStop = this.stops[id];
-      if (currentStop.toLowerCase().indexOf(nameStart) == 0) {
-        if (foundStops.indexOf(currentStop) == -1) {
-          foundStops.push(currentStop);
-        }
+    // Make a list of all the stopnames the first time
+    if (this.stopNames == undefined) {
+      this.stopNames = [];
+      for (i in this.stops) {
+        this.stopNames.push(this.stops[i]);
       }
     }
-    return foundStops;
+
+    // Fuzzy match the list of stopnames
+    var reg = new RegExp(nameStart.split('').join('\\w*').replace(/\W/, ""), 'i');
+    return this.stopNames.filter(function(busStop) {
+      if (busStop.match(reg)) {
+        return busStop;
+      }
+    });
+
+    // nameStart = nameStart.toLowerCase();
+    // var foundStops = [];
+    // var i = 0;
+    // for (id in this.stops) {
+    //   var currentStop = this.stops[id];
+    //   if (currentStop.toLowerCase().indexOf(nameStart) == 0) {
+    //     if (foundStops.indexOf(currentStop) == -1) {
+    //       foundStops.push(currentStop);
+    //     }
+    //   }
+    // }
+    // return foundStops;
   },
 
   getStopIds: function(stopName) {
@@ -108,7 +118,97 @@ var Bus = {
 
   // Private
 
-  parseResults: function(json, requestedLines, callback) {
+  ajax: function(url, parser, requestedType, callback) {
+    if (callback == undefined) {
+      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+
+    var self = this;
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      success: function(json) {
+        parser(json, requestedType, callback);
+      },
+      fail: self.handleError,
+    });
+  },
+
+  parseForAnyLines: function(json, amountOfLines, callback) {
+
+    // Create a map with an array of departures for each bus line
+    var lines = {};
+    lines['destination'] = [];
+    lines['departures'] = [];
+
+    // Loop through departures from GET request
+    var departures = json['departures'];
+
+    var count = 0;
+    for (i in departures) {
+
+      if (count >= amountOfLines)
+        break;
+      else
+        count++;
+
+      var line = departures[i]['line'];
+      var realtime = departures[i]['registeredDepartureTime'];
+      var scheduled = departures[i]['scheduledDepartureTime'];
+      var isRealtime = departures[i]['isRealtimeData'];
+      var destination = departures[i]['destination'].trim();
+      if (destination.indexOf('Munkegata') != -1 || destination.indexOf('Dronningens gt') != -1) {
+        destination = "Sentrum";
+      }
+
+      // Add destination
+      lines['destination'].push(line + ' ' + destination);
+
+      // Add departure
+
+      // We only need the time, the date is always today
+      // Format is "2012-06-29T20:10:00.000"
+      var time;
+      if (isRealtime) {
+        time = realtime.split("T")[1].split(":");
+      }
+      else {
+        time = scheduled.split("T")[1].split(":");
+      }
+      time[2] = time[2].split(".")[0];
+
+      // Set the two dates
+      var now = new Date();
+      var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1], time[2]);
+      var one_minute = 1000 * 60;
+
+      // Calculate difference between the two dates, and convert to minutes
+      var diff = Math.floor(( then.getTime() - now.getTime() ) / one_minute);
+
+      // Create a proper time string from all the minutes
+      var calculatedTime;
+      if (-1 <= diff && diff <= 0) {
+        calculatedTime = isRealtime?'nå':'ca nå';
+      }
+      else if (1 <= diff && diff <= 119) {
+        calculatedTime = (isRealtime?'':'ca ') + diff+" min";
+      }
+      else if (120 <= diff) {
+        calculatedTime = time[0] + ':' + time[1];
+      }
+
+      lines['departures'].push(calculatedTime);
+    }
+
+    // lines: {
+    //   'destination': ['5 Dragvoll', '22 Vestlia', '5 Dragvoll'],
+    //   'departures': ['2 min', '26 min', 'ca 50 min']
+    // }
+    callback(lines);
+  },
+
+  parseForRequestedLines: function(json, requestedLines, callback) {
 
     // Create a map with an array of departures for each bus line
     var lines = {};

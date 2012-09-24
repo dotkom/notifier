@@ -174,18 +174,21 @@ body {
     .fullbox;
     position: relative;
     top: 12pt;
-    line-height: 15pt;
+    line-height: 11.5pt;
     background-color: #000f1d;
-    height: 50pt;
+    height: 65pt;
     width: 110%;
     margin-left: -5%;
     margin-bottom: 15pt;
     box-shadow: 0 0 20pt #88b;
 
-    #title {
-      .title;
-      width: 100%;
-      clear: both;
+    .name {
+      color: white;
+      margin-bottom: 3pt;
+      text-transform: uppercase;
+      text-decoration: underline;
+      font-size: 8pt;
+      font-weight: bold;
     }
     #left {
       .debuglime;
@@ -200,16 +203,17 @@ body {
       position: relative;
       float: left;
       text-align: center;
-      width: 14%;
+      width: 18%;
       height: 100%;
       img {
-        margin: 6pt 0;
-        height: 38pt;
+        cursor: pointer;
+        margin: 10pt 0;
+        height: 46pt;
       }
     }
     #right {
       .debuglime;
-      width: 43%;
+      width: 40%;
       position: relative;
       padding-top: 10pt;
       float: left;
@@ -217,11 +221,6 @@ body {
     }
     .time {
       font-weight: bold;
-    }
-    .arrow {
-      position:relative;
-      top: 2pt;
-      font-size: 12pt;
     }
   }
 

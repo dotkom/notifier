@@ -29,12 +29,18 @@ mainLoop = ->
 
 updateOffice = ->
   if DEBUG then console.log 'updateOffice'
-  Office.get (status, title) ->
-    if ls.currentStatus isnt status or ls.currentStatusTitle isnt title
+  # status: "open"
+  # title: "Åpent"
+  # message: "Finn et komitemedlem for å åpne opp"
+  Office.get (status, title, message) ->
+    if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
-      chrome.browserAction.setTitle {title: title}
       ls.currentStatus = status
-      ls.currentStatusTitle = title
+      Office.getTodaysEvents (meetingPlan) ->
+        meetingPlan = $.trim meetingPlan
+        today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetingPlan
+        chrome.browserAction.setTitle {title: today}
+        ls.currentStatusMessage = message
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
@@ -54,7 +60,7 @@ $ ->
   # Clear previous thoughts
   if DEBUG then ls.clear()
   ls.removeItem 'currentStatus'
-  ls.removeItem 'currentStatusTitle'
+  ls.removeItem 'currentStatusMessage'
   
   # Set default choices and open options page after install
   if ls.everConnected is undefined
@@ -64,6 +70,12 @@ $ ->
       ls.showNotifications = 'true'
     if ls.showBus is undefined
       ls.showBus = 'true'
+      ls.first_bus = 16010103
+      ls.first_bus_name = 'Dragvoll'
+      ls.first_bus_direction = 'til byen'
+      ls.second_bus = 16010333
+      ls.second_bus_name = 'Gløshaugen Nord'
+      ls.second_bus_direction = 'fra byen'
     if ls.showCantina is undefined
       ls.showCantina = 'true'
     if ls.openChatter is undefined

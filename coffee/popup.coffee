@@ -7,7 +7,7 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-  #updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  # updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
   # No reason to count to infinity
@@ -33,7 +33,7 @@ updateCantinas = ->
 
 listDinners = (menu, url) ->
   dinnerlist = ''
-  index = 0
+  # index = 0 # SLETT MEG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if typeof menu is 'string'
     ls.noDinnerInfo = 'true'
@@ -45,8 +45,8 @@ listDinners = (menu, url) ->
         price = dinner.price + ',- '
       else
         price = ''
-      dinnerlist += '<li class="dinnerlist" id="' + index + '">' + price + dinner.text + '</li>'
-      index++
+      dinnerlist += '<li class="dinnerlist" id="' + dinner.index + '">' + price + dinner.text + '</li>'
+      # index++ # SLETT MEG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   return dinnerlist
 
 clickDinnerLink = (cssSelector, url) ->
@@ -60,38 +60,25 @@ clickDinnerLink = (cssSelector, url) ->
 updateBus = ->
   if DEBUG then console.log 'updateBus'
 
-  first_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.first_bus + '/f6975f3c1a3d838dc69724b9445b3466'
-  second_bus_url = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + ls.second_bus + '/f6975f3c1a3d838dc69724b9445b3466'
-  requestedLines =
-    '5': 2
-    '22': 2
+  first_stop_name = ls.first_bus_name
+  second_stop_name = ls.second_bus_name
+  amountOfLines = 3;
 
-  Bus.get first_bus_url, requestedLines, (lines) ->
-    insertBusInfo lines, '#left'
-  Bus.get second_bus_url, requestedLines, (lines) ->
-    insertBusInfo lines, '#right'
+  Bus.getAnyLines ls.first_bus, amountOfLines, (lines) ->
+    insertBusInfo lines, first_stop_name, '#left'
+  Bus.getAnyLines ls.second_bus, amountOfLines, (lines) ->
+    insertBusInfo lines, second_stop_name, '#right'
 
   # Private function
-  insertBusInfo = (lines, cssIdentificator) ->
-    spans = ['.first', '.second']
+  insertBusInfo = (lines, stopName, cssIdentificator) ->
+    $('#bus '+cssIdentificator+' .name').html stopName
+    spans = ['.first', '.second', '.third']
     counter = 0
     
-    for i of lines
-      # Add the arrows
-      arrow = if cssIdentificator is '#left' then '&larr;' else '&rarr;'
-      $('#bus '+cssIdentificator+' '+spans[counter]+' .arrow').html arrow
-
-      # Add the destination
-      if lines[i]['destination'] is undefined
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html i+' zzzZZZzz'
-      else
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html i+' '+lines[i]['destination']
-        # Add the departure times
-        times = ''
-        for j of lines[i]['departures']
-          times += ', ' unless j is '0'
-          times += lines[i]['departures'][j]
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .time').html times
+    for i of lines['departures']
+      # Add the current line
+      $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
+      $('#bus '+cssIdentificator+' '+spans[counter]+' .time').html lines['departures'][i]
       counter++
 
 updateNews = ->
@@ -127,7 +114,7 @@ displayStories = (xmlstring) ->
   # Add feed items to popup
   items.each (index, element) ->
     
-    if index < 3
+    if index < 4
       post = parsePost(element)
       idsOfLastViewed.push(post.id)
       
@@ -139,7 +126,7 @@ displayStories = (xmlstring) ->
           item += '<span class="unread">NEW <b>::</b> </span>'
       
       item += post.title + '</div>
-          <div class="item" id="' + post.id + '">
+          <div class="item" id="' + post.link + '">
             <img id="' + post.id + '" src="' + post.image + '" width="107" />
             <div class="textwrapper">
               <div class="emphasized">- Av ' + post.creator + ', skrevet ' + post.date + '</div>
@@ -158,7 +145,9 @@ displayStories = (xmlstring) ->
 
   # Make news items open extension website while closing popup
   $('.item').click ->
-    chrome.tabs.create {url: 'https://online.ntnu.no/news/' + $(this).attr('id')}
+    # The link is embedded as the ID of the element, we don't want to use
+    # <a> anchors because it creates an ugly box marking the focus element
+    chrome.tabs.create {url: $(this).attr('id')}
     window.close()
 
   # Finally, fetch news post images from the API async synchronously
@@ -239,6 +228,10 @@ $ ->
     chatterText true
   $('#chatter_button').mouseleave ->
     chatterText false
+
+  $('#bus #middle img').click ->
+    chrome.tabs.create {url: 'http://www.atb.no'}
+    window.close()
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

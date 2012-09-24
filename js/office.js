@@ -1,4 +1,9 @@
 var Office = {
+  TITLE_ERROR: 'Oops',
+  TITLE_OPEN: 'Åpent',
+  TITLE_CLOSED: 'Lukket',
+  TITLE_MEETING: 'Møte',
+  TITLE_WAFFLES: 'Vafler',
   MSG_ERROR: 'Noe gikk galt, prøver igjen...',
   MSG_OPEN: 'Gratis kaffe og te til alle!',
   MSG_CLOSED: 'Finn et komitemedlem for å åpne opp.',
@@ -12,38 +17,13 @@ var Office = {
     }
 
     var self = this;
-    this.getLightData( function(status, title) {
-      if (status == undefined) {
-        self.getEventData(callback);
+    this.getEventData( function(status, title, message) {
+      if (status == 'open') {
+        self.getLightData(callback);
       }
       else {
-        callback(status, title);
+        callback(status, title, message);
       }
-    });
-  },
-
-  getLightData: function(callback) {
-    if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
-
-    // Receives current light intensity from the office: OFF 0-800-1023 ON
-    var self = this;
-    $.ajax({
-      url: 'http://draug.online.ntnu.no/lys.txt',
-    })
-    .success(function(data) {
-      if (data > self.LIGHT_LIMIT) {
-        callback('closed', self.MSG_CLOSED);
-      }
-      else {
-        callback();
-      }
-    })
-    .fail(function(jqXHR, err) {
-      if (DEBUG) console.log('ERROR: Failed to get light data.');
-      callback('error', self.MSG_ERROR);
     });
   },
 
@@ -70,16 +50,60 @@ var Office = {
 
       // set the status from fetched data
       switch(Number(status)) {
-        case 0: callback('open', self.MSG_OPEN); break;
-        case 1: callback('meeting', title); break;
-        case 2: callback('waffle', title); break;
-        case 3: callback('error', 'eventStatus was 3 (error)'); break;
-        default: officeStatus_error('error', 'determineEventStatus switched on '+Number(status));
+        case 0: callback('open', self.TITLE_OPEN, self.MSG_OPEN); break;
+        case 1: callback('meeting', self.TITLE_MEETING, title); break;
+        case 2: callback('waffle', self.TITLE_WAFFLES, title); break;
+        default: callback('error', self.TITLE_ERROR, 'eventStatus was "'+status+'"');
       }
     })
     .fail(function(jqXHR, err) {
       if (DEBUG) console.log('ERROR: Failed to get event data.');
-      callback('error', self.MSG_ERROR);
+      callback('error', self.TITLE_ERROR, self.MSG_ERROR);
+    });
+  },
+
+  getLightData: function(callback) {
+    if (callback == undefined) {
+      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+
+    // Receives current light intensity from the office: OFF 0-800-1023 ON
+    var self = this;
+    $.ajax({
+      url: 'http://draug.online.ntnu.no/lys.txt',
+    })
+    .success(function(data) {
+      if (data > self.LIGHT_LIMIT) {
+        callback('closed', self.TITLE_CLOSED, self.MSG_CLOSED);
+      }
+      else {
+        callback('open', self.TITLE_OPEN, self.MSG_OPEN);
+      }
+    })
+    .fail(function(jqXHR, err) {
+      if (DEBUG) console.log('ERROR: Failed to get light data.');
+      callback('error', self.TITLE_ERROR, self.MSG_ERROR);
+    });
+  },
+
+  getTodaysEvents: function(callback) {
+    if (callback == undefined) {
+      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+
+    // Receives the meeting plan for today
+    var self = this;
+    $.ajax({
+      url: 'https://online.ntnu.no/service_static/online_notifier2',
+    })
+    .success(function(data) {
+      callback(data);
+    })
+    .fail(function(jqXHR, err) {
+      if (DEBUG) console.log('ERROR: Failed to get todays meeting plan.');
+      callback();
     });
   },
 

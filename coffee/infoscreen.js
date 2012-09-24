@@ -38,12 +38,12 @@
     if (DEBUG) {
       console.log('updateOffice');
     }
-    return Office.get(function(status, title) {
-      if (ls.currentStatus !== status || ls.currentStatusTitle !== title) {
+    return Office.get(function(status, title, message) {
+      if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         $('#office img').attr('src', 'img/status-' + status + '.png');
-        $('#office #subtext').html(title);
+        $('#office #subtext').html(message);
         ls.currentStatus = status;
-        return ls.currentStatusTitle = title;
+        return ls.currentStatusMessage = message;
       }
     });
   };
@@ -112,16 +112,16 @@
     if (DEBUG) {
       console.log('updateBus');
     }
-    url_mot_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16011333/f6975f3c1a3d838dc69724b9445b3466';
-    url_fra_byen = 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/16010333/f6975f3c1a3d838dc69724b9445b3466';
+    url_mot_byen = '16011333';
+    url_fra_byen = '16010333';
     requestedLines = {
       '5': 2,
       '22': 2
     };
-    Bus.get(url_mot_byen, requestedLines, function(lines) {
+    Bus.getRequestedLines(url_mot_byen, requestedLines, function(lines) {
       return insertBusInfo(lines, '#left');
     });
-    Bus.get(url_fra_byen, requestedLines, function(lines) {
+    Bus.getRequestedLines(url_fra_byen, requestedLines, function(lines) {
       return insertBusInfo(lines, '#right');
     });
     return insertBusInfo = function(lines, cssIdentificator) {
@@ -192,7 +192,7 @@
     }
     ls.removeItem('mostRecentRead');
     ls.removeItem('currentStatus');
-    ls.removeItem('currentStatusTitle');
+    ls.removeItem('currentStatusMessage');
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");

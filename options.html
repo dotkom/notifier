@@ -10,6 +10,8 @@
 
   <!-- JS libs -->
   <script src="libs/jquery-1.7.2.min.js"></script>
+  <script src="libs/jquery.avgrund.js"></script>
+  <link rel="stylesheet" type="text/css" href="libs/avgrund.css" />
   <script src="libs/coffeescript-1.3.3.min.js"></script>
 
   <!-- JS functions -->
@@ -48,95 +50,121 @@
 </head>
 
 <body>
-  <div id="background" />
-  <div id="container">
-    <header>
-      <a href="https://online.ntnu.no">
-        <img src="img/logo.png" /><br />
-      </a>
-      <div style="margin-right:3px;">
-        notifier options
-      </div>
-      <!-- begin GL -->
-      <canvas id="LessonCanvas" width="215px" height="215px" style="opacity:0;" />
-      <!-- end GL -->
-    </header>
-    <div id="content">
-      <div class="item">
-        <label for="showOffice">
-          <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" /><span>Vis kontorets status: Åpent, stengt, møte, gratis vafler</span>
-          <br />
-          <img src="/img/options-office-open.png" />
-          <img src="/img/options-office-closed.png" />
-          <img src="/img/options-office-meeting.png" />
-          <img src="/img/options-office-waffle.png" />
-        </label>
-      </div>
-      <div class="item">
-        <label for="showNotifications">
-          <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" /><span>Vis varsling på skrivebordet når nyheter publiseres / oppdateres</span><br />
-          <img src="/img/options-desktop-notification.png" />
-        </label>
-      </div>
-      <!-- <div class="item">
-        <label for="showBus">
-          <input type="checkbox" name="showBus" value="showBus" id="showBus" /><span>Vis sanntidsbuss fra AtB</span><br />
-        </label>
-        <div id="bus_box">
-          <img id="bus_logo" src="/img/atb.png" />
-          <div id="bus_menu">
-            <div id="first_bus">
-              <input class="stop" type="text" value="Dronningens gt."></input>
-              <select class="direction">
-                <option>til byen</option>
-                <option selected="selected">fra byen</option>
-              </select>
-            </div>
-            <div id="second_bus">
-              <input class="stop" type="text" value="Gløshaugen Nord"></input>
-              <select class="direction">
-                <option>til byen</option>
-                <option>fra byen</option>
-              </select>
-            </div>
-          </div>
+  <div id="avgrund">
+    <div id="background" />
+    <div id="container">
+      <header>
+        <a href="https://online.ntnu.no">
+          <img src="img/logo.png" /><br />
+        </a>
+        <div id="logo_subtext" style="margin-right:3px;">
+          notifier options
         </div>
-      </div> -->
-      <div class="item">
-        <label for="showCantina">
-          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" /><span>Vis dagens middagsmeny fra Hangaren og Realfag</span><br />
-          <img src="/img/options-cantina-menu.png" />
-        </label>
+        <!-- begin GL -->
+        <canvas id="LessonCanvas" width="215px" height="215px" style="opacity:0;" />
+        <!-- end GL -->
+      </header>
+      <div id="content">
+
+        <div id="infoscreen_slider">
+
+          <div class="item">
+            <label for="showOffice">
+              <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
+              <span>Vis kontorets status:
+                <img class="icon" src="/img/icon-open.png" />Åpent
+                <img class="icon" src="/img/icon-closed.png" />Lukket
+                <img class="icon" src="/img/icon-meeting.png" />Møte
+                <img class="icon" src="/img/icon-waffle.png"/>
+                <span style="position:relative; left:-4pt;">
+                  Vafler
+                </span>
+              </span>
+              <br />
+              <!--
+              <img class="image" src="/img/options-office-open.png" />
+              <img class="image" src="/img/options-office-closed.png" />
+              <img class="image" src="/img/options-office-meeting.png" />
+              <img class="image" src="/img/options-office-waffle.png" />
+              -->
+              <img class="image" src="/img/options-office-plan.png" />
+            </label>
+          </div>
+
+          <div class="item">
+            <label for="showNotifications">
+              <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" /><span>Vis varsling på skrivebordet når nyheter publiseres / oppdateres</span><br />
+              <img class="image" src="/img/options-desktop-notification.png" />
+            </label>
+          </div>
+
+          <!-- <div class="item">
+            <label for="showBus">
+              <input type="checkbox" name="showBus" value="showBus" id="showBus" /><span>Vis sanntidsbuss fra AtB</span><br />
+            </label>
+            <div id="bus_box">
+              <img id="bus_logo" class="logo" src="/img/atb.png" />
+              <div id="bus_menu">
+                <div id="first_bus">
+                  <input class="stop" type="text"></input>
+                  <select class="direction">
+                    <option>til byen</option>
+                    <option selected="selected">fra byen</option>
+                  </select>
+                </div>
+                <div id="second_bus">
+                  <input class="stop" type="text"></input>
+                  <select class="direction">
+                    <option>til byen</option>
+                    <option>fra byen</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="item">
+            <label for="showCantina">
+              <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" /><span>Vis dagens middagsmeny fra Hangaren og Realfag</span><br />
+              <img class="image" src="/img/options-cantina-menu.png" />
+            </label>
+          </div>
+
+          <div class="item">
+            <label for="openChatter">
+              <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" /><span>Åpne WebChat i bakgrunnen når Chrome starter</span><br />
+              <img class="image" src="/img/options-webchat.png" />
+            </label>
+          </div>
+
+        </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
+
+        <div class="item">
+          <label for="useInfoscreen">
+            <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" /><span>Skru av Notifier, skru på Infoscreen</span><br />
+            <img class="image" src="/img/options-infoscreen.png" /><br />
+            <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
+          </label>
+        </div>
       </div>
-      <div class="item">
-        <label for="openChatter">
-          <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" /><span>Åpne WebChat i bakgrunnen når Chrome starter</span><br />
-          <img src="/img/options-webchat.png" />
-        </label>
-      </div>
-      <div class="item">
-        <label for="useInfoscreen">
-          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" /><span>Bruk Notifier som infoskjerm med full-HD skjerm på høykant</span><br />
-          <img src="/img/options-infoscreen.png" />
-        </label>
-      </div>
+
+      <!-- "Options saved <3", also GL easter egg -->
+      <div id="notification">Saved &lt;3</div>
     </div>
-    <!-- "Options saved <3", also GL easter egg -->
-    <div id="notification">Saved &lt;3</div>
-  </div>
-  <!-- Suggestions for bus stops -->
-  <div id="bus_suggestions"></div>
-  <!-- "from dotKom with <3" -->
-  <div id="pageflipbg"></div>
-  <div id="pagefliptext">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
-  <div id="pageflip"></div>
-  <div id="pagefliplink">
-    <br />
-    <a href="http://github.com/dotkom/online-notifier/" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />dotKom with &lt;3<span class="pageflipcursor">_</span></a>
-  </div>
-  <!-- +1 button -->
-  <div id="plusonebutton" style="display:none;">
-    <div class="g-plusone" data-annotation="inline" data-width="170" data-href="https://online.ntnu.no"></div>
+    <!-- Suggestions for bus stops -->
+    <div id="bus_suggestions"></div>
+    <!-- "from dotKom with <3" -->
+    <div id="pageflipbg"></div>
+    <div id="pagefliptext">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
+    <div id="pageflip"></div>
+    <div id="pagefliplink">
+      <br />
+      <a href="http://github.com/dotkom/online-notifier/" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />dotKom with &lt;3<span class="pageflipcursor">_</span></a>
+    </div>
+    <!-- +1 button -->
+    <div id="plusonebutton" style="display:none;">
+      <div class="g-plusone" data-annotation="inline" data-width="170" data-href="https://online.ntnu.no"></div>
+    </div>
   </div>
 </body>
 </html>

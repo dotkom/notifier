@@ -56,7 +56,7 @@ if (host == 'sit.no') {
 					if (dismissedSitNotice != 'true') {
 						var optionsPage = chrome.extension.getURL('options.html');
 						var smallOnlineLogo = chrome.extension.getURL('img/logo-48.png');
-						$('#menytable').after('<div id="onlineNotice"><br />'+
+						$('#menytable').after('<div id="onlineNotice" style="border:1pt solid #ddd;padding:0 0 16pt 10pt;"><br />'+
 								'<img src="'+smallOnlineLogo+'" style="float:left;width:1.5em;margin:0em .4em;-webkit-filter:grayscale(50%);">'+
 								'<span style="font-size:.9em;position:relative;top:.2em;color:gray;">'+
 								'<a href="'+optionsPage+'" style="text-decoration:underline;color:gray;">Notifier</a> '+
@@ -66,10 +66,10 @@ if (host == 'sit.no') {
 						$('#hideOnlineNotice').click(function() {
 							chrome.extension.sendRequest({'action':'dismissSitNotice'}, function(success) {
 								if (success) {
-									$('#onlineNotice').fadeOut('slow');
+									$('#onlineNotice').slideUp('slow');
 								}
 								else {
-									$('#hideOnlineNotice').fadeOut('slow');
+									$('#hideOnlineNotice').text('Oops, cannot contact Notifier :(');
 								}
 							});
 						});
