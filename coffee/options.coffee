@@ -202,9 +202,10 @@ fadeInCanvas = ->
 $ ->
   if DEBUG then less.watch()
 
-  # Restore checks to boxes from ls
+  # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
-    element.checked = ls[element.id] is "true"
+    if ls[element.id] is 'true'
+      element.checked = true
 
   # If useInfoscreen is on, slide away the rest of the options and switch the logo subtext
   if ls.useInfoscreen is 'true'

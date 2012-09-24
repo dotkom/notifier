@@ -232,7 +232,9 @@
       less.watch();
     }
     $('input:checkbox').each(function(index, element) {
-      return element.checked = ls[element.id] === "true";
+      if (ls[element.id] === 'true') {
+        return element.checked = true;
+      }
     });
     if (ls.useInfoscreen === 'true') {
       $('#logo_subtext').html('infoscreen&nbsp;&nbsp;&nbsp;&nbsp;');
