@@ -110,10 +110,17 @@ function parsePost(item) {
 	post.id = $(item).find("guid").text().split('/')[4];
 	post.image = BACKUP_IMAGE;
 
+	// Shorten 'bedriftspresentasjon' to 'bedpres'
+	post.title = post.title.replace(/edrift(s)?presentasjon/g, 'edpres');
+	post.description = post.description.replace(/edrift(s)?presentasjon/g, 'edpres');
+
 	// check for more direct link in the description
-	var directLink = post.description.match(/(http.:\/\/)?online.ntnu.no\/event\/\d+(\/)?/g)[0]
-	if (directLink != undefined) {
-		post.link = directLink;
+	var directLink = post.description.match(/(http.:\/\/)?online.ntnu.no\/event\/\d+(\/)?/g)
+	if (directLink != null) {
+		directLink = directLink[0];
+		if (directLink != undefined) {
+			post.link = directLink;
+		}
 	}
 
 	// remove excessive whitespace and ludicrous formatting from description

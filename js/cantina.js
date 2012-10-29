@@ -22,7 +22,7 @@ var Cantina = {
       },
     })
     .error(function(jqXHR, err) {
-      callback(self.msg_connection_error + ': ' + err);
+      callback(self.msg_connection_error);
     });
   },
 
@@ -163,7 +163,7 @@ var Cantina = {
           // If current item is NOT about the buffet, continue with:
           if (text.toLowerCase().indexOf('buffet') == -1) {
             text = self.limitNumberOfWords(4, text);
-            text = self.removeLastWords(['&','og','med'], text);
+            text = self.removeLastWords(['i','&','og','med'], text);
             text = self.shortenVeggieWarning(text);
             text = text.trim();
           }

@@ -8,9 +8,6 @@ setNotification = ->
   creator = ls.notificationCreator
   title = ls.notificationTitle
   description = ls.notificationDescription
-
-  # Shorten to bedpres
-  description = description.replace(/bedriftspresentasjon/g, 'bedpres');
   
   # Shorten title and description to fit nicely
   maxlength = 90

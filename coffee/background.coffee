@@ -7,9 +7,8 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
-    # Update office status every mainloop if we're offline in order to react quickly when we're back
-    updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 or !navigator.onLine
-    # Only update the news when online
+    updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0
+    # Only fetch news if we're online
     updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine
   
   # No reason to count to infinity
@@ -18,7 +17,7 @@ mainLoop = ->
   # Schedule for repetition once a minute (checking connectivity,
   # feed and office status). Runs every 3rd second if it's offline,
   # trying to react quickly upon reconnection...
-  if DEBUG or !navigator.onLine
+  if DEBUG or !navigator.onLine or ls.currentStatus is 'error'
     loopTimeout = BACKGROUND_LOOP_QUICK
   else
     loopTimeout = BACKGROUND_LOOP
@@ -63,19 +62,19 @@ $ ->
   ls.removeItem 'currentStatusMessage'
   
   # Set default choices and open options page after install
+  if ls.first_bus is undefined
+    ls.showBus = 'true'
+    ls.first_bus = 16011476
+    ls.first_bus_name = 'Studentersamfundet'
+    ls.first_bus_direction = 'til byen'
+    ls.second_bus = 16011333
+    ls.second_bus_name = 'Gløshaugen Nord'
+    ls.second_bus_direction = 'til byen'
   if ls.everConnected is undefined
     if ls.showOffice is undefined
       ls.showOffice = 'true'
     if ls.showNotifications is undefined
       ls.showNotifications = 'true'
-    if ls.showBus is undefined
-      ls.showBus = 'true'
-      ls.first_bus = 16010103
-      ls.first_bus_name = 'Dragvoll'
-      ls.first_bus_direction = 'til byen'
-      ls.second_bus = 16010333
-      ls.second_bus_name = 'Gløshaugen Nord'
-      ls.second_bus_direction = 'fra byen'
     if ls.showCantina is undefined
       ls.showCantina = 'true'
     if ls.openChatter is undefined

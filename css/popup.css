@@ -182,6 +182,17 @@ body {
     margin-bottom: 15pt;
     box-shadow: 0 0 20pt #88b;
 
+    .loading_left {
+      position: relative;
+      width: 80px;
+      top: 18pt;
+      -webkit-transform: scaleX(-1);
+    }
+    .loading_right {
+      position: relative;
+      width: 80px;
+      top: 18pt;
+    }
     .name {
       color: white;
       margin-bottom: 3pt;

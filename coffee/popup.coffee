@@ -7,7 +7,7 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-  # updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
   # No reason to count to infinity
@@ -33,7 +33,6 @@ updateCantinas = ->
 
 listDinners = (menu, url) ->
   dinnerlist = ''
-  # index = 0 # SLETT MEG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if typeof menu is 'string'
     ls.noDinnerInfo = 'true'
@@ -46,7 +45,6 @@ listDinners = (menu, url) ->
       else
         price = ''
       dinnerlist += '<li class="dinnerlist" id="' + dinner.index + '">' + price + dinner.text + '</li>'
-      # index++ # SLETT MEG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   return dinnerlist
 
 clickDinnerLink = (cssSelector, url) ->
@@ -60,26 +58,40 @@ clickDinnerLink = (cssSelector, url) ->
 updateBus = ->
   if DEBUG then console.log 'updateBus'
 
-  first_stop_name = ls.first_bus_name
-  second_stop_name = ls.second_bus_name
-  amountOfLines = 3;
+  if !navigator.onLine
+    $('#bus #left .name').html ls.first_bus_name
+    $('#bus #right .name').html ls.second_bus_name
+    $('#bus #left .first .line').html 'Frakoblet'
+    $('#bus #right .first .line').html 'Frakoblet'
 
-  Bus.getAnyLines ls.first_bus, amountOfLines, (lines) ->
-    insertBusInfo lines, first_stop_name, '#left'
-  Bus.getAnyLines ls.second_bus, amountOfLines, (lines) ->
-    insertBusInfo lines, second_stop_name, '#right'
+  else
+    first_stop_name = ls.first_bus_name
+    second_stop_name = ls.second_bus_name
+    amountOfLines = 3;
 
-  # Private function
-  insertBusInfo = (lines, stopName, cssIdentificator) ->
+    Bus.getAnyLines ls.first_bus, amountOfLines, (lines) ->
+      insertBusInfo lines, first_stop_name, '#left'
+    Bus.getAnyLines ls.second_bus, amountOfLines, (lines) ->
+      insertBusInfo lines, second_stop_name, '#right'
+
+insertBusInfo = (lines, stopName, cssIdentificator) ->
+  if typeof lines is 'string'
+    # lines is an error message
+    $('#bus '+cssIdentificator+' .name').html stopName
+    $('#bus '+cssIdentificator+' .first .line').html lines
+  else
     $('#bus '+cssIdentificator+' .name').html stopName
     spans = ['.first', '.second', '.third']
     counter = 0
-    
-    for i of lines['departures']
-      # Add the current line
-      $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
-      $('#bus '+cssIdentificator+' '+spans[counter]+' .time').html lines['departures'][i]
-      counter++
+
+    if lines['departures'].length is 0
+      $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html '<i>....zzzZZZzzz....</i>'
+    else
+      for i of lines['departures']
+        # Add the current line
+        $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
+        $('#bus '+cssIdentificator+' '+spans[counter]+' .time').html lines['departures'][i]
+        counter++
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'

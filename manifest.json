@@ -1,10 +1,10 @@
 {
   "name": "Online Notifier",
-  "version": "1.2.9",
+  "version": "1.3.3",
   "manifest_version": 2,
   "offline_enabled": false,
 	
-  "description": "Nyheter, kontorstatus, middagsmeny og mer.",
+  "description": "Nyheter, kontorstatus, sanntidsbuss, middagsmeny og mer.",
   "homepage_url": "https://online.ntnu.no/",
 
   "options_page": "options.html",

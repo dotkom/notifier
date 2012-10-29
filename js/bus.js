@@ -7,11 +7,11 @@ var Bus = {
   // Public
 
   getAnyLines: function(stopId, amountOfLines, callback) {
-    this.ajax(this.api + stopId + this.apikey, this.parseForAnyLines, amountOfLines, callback);
+    this.ajax(stopId, this.parseForAnyLines, amountOfLines, callback);
   },
 
   getRequestedLines: function(stopId, requestedLines, callback) {
-    this.ajax(this.api + stopId + this.apikey, this.parseForRequestedLines, requestedLines, callback);
+    this.ajax(stopId, this.parseForRequestedLines, requestedLines, callback);
   },
 
   getStop: function(stopName, direction) {
@@ -39,6 +39,9 @@ var Bus = {
   },
   
   getPotentialStops: function(nameStart) {
+    if (typeof nameStart != 'string') {
+      console.log('ERROR: nameStart has to be a string');
+    }
     // Make a list of all the stopnames the first time
     if (this.stopNames == undefined) {
       this.stopNames = [];
@@ -47,32 +50,37 @@ var Bus = {
       }
     }
 
-    // Fuzzy match the list of stopnames
-    var reg = new RegExp(nameStart.split('').join('\\w*').replace(/\W/, ""), 'i');
-    return this.stopNames.filter(function(busStop) {
-      if (busStop.match(reg)) {
-        return busStop;
-      }
-    });
-
-    // nameStart = nameStart.toLowerCase();
-    // var foundStops = [];
-    // var i = 0;
-    // for (id in this.stops) {
-    //   var currentStop = this.stops[id];
-    //   if (currentStop.toLowerCase().indexOf(nameStart) == 0) {
-    //     if (foundStops.indexOf(currentStop) == -1) {
-    //       foundStops.push(currentStop);
-    //     }
+    // // Fuzzy match the list of stopnames
+    // var reg = new RegExp(nameStart.split('').join('\\w*').replace(/\W/, ""), 'i');
+    // return this.stopNames.filter(function(busStop) {
+    //   if (busStop.match(reg)) {
+    //     return busStop;
     //   }
-    // }
-    // return foundStops;
+    // });
+
+    nameStart = nameStart.toLowerCase();
+    var foundStops = [];
+    var i = 0;
+    for (id in this.stops) {
+      var currentStop = this.stops[id];
+      if (currentStop.toLowerCase().indexOf(nameStart) == 0) {
+        if (foundStops.indexOf(currentStop) == -1) {
+          foundStops.push(currentStop);
+        }
+      }
+    }
+    return foundStops;
   },
 
   getStopIds: function(stopName) {
+    if (typeof stopName != 'string') {
+      console.log('ERROR: stopName has to be a string');
+    }
+    // Using all lowercase, just in case the user has been inconsistent with casing
+    stopName = stopName.trim().toLowerCase();
     var foundStops = [];
     for (id in this.stops) {
-      var currentStop = this.stops[id];
+      var currentStop = this.stops[id].toLowerCase();
       if (currentStop == stopName) {
         foundStops.push(id);
       }
@@ -81,6 +89,9 @@ var Bus = {
   },
 
   getDirections: function(stopName) {
+    if (typeof stopName != 'string') {
+      console.log('ERROR: stopName has to be a string');
+    }
     var foundStops = this.getStopIds(stopName);
     var toTown = false;
     var fromTown = false;
@@ -118,7 +129,7 @@ var Bus = {
 
   // Private
 
-  ajax: function(url, parser, requestedType, callback) {
+  ajax: function(stopId, parser, requestedType, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
@@ -126,12 +137,14 @@ var Bus = {
 
     var self = this;
     $.ajax({
-      url: url,
+      url: self.api + stopId + self.apikey,
       dataType: 'json',
       success: function(json) {
         parser(json, requestedType, callback);
       },
-      fail: self.handleError,
+      fail: function(jqXHR, err) {
+        callback('Frakoblet fra api.visuweb.no');
+      },
     });
   },
 
@@ -144,6 +157,12 @@ var Bus = {
 
     // Loop through departures from GET request
     var departures = json['departures'];
+
+    if (typeof departures == 'string') {
+      // Change the API-key, response is most likely "{departures: unauthorized}"
+      callback('Feil i tilkobling');
+      return;
+    }
 
     var count = 0;
     for (i in departures) {
@@ -297,10 +316,6 @@ var Bus = {
     //   },
     // }
     callback(lines);
-  },
-
-  handleError: function(jqXHR, err) {
-    console.log('failed to retrieve realtime bus info: ' + err);
   },
 
 }

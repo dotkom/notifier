@@ -21,10 +21,10 @@ var BACKGROUND_LOOP_QUICK = 3000; // 3s, fix it quickly when something has gone 
 var PAGE_LOOP = 20000; // every 20th second
 
 // update stuff at every X intervals.
-var UPDATE_OFFICE_INTERVAL = 3; // recommended: 3
+var UPDATE_OFFICE_INTERVAL = 1; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 30; // recommended: 30
 var UPDATE_BUS_INTERVAL = 1; // recommended: 1
-var UPDATE_CANTINAS_INTERVAL = 30; // recommended: 30
+var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
 
 // OS detection
 

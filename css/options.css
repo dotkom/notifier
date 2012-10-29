@@ -7,25 +7,27 @@
 .debugyellow {
   border: @debug solid yellow;
 }
-.debugpink {
-  border: @debug solid pink;
+.debuglime {
+  border: @debug solid lime;
 }
 
 // Variables
 
 @online-orange: #ee861f;
-@background-blue: #001429;
+@background-blue: #002343;
+@background-dark: #001429;
 @color: white;
 @font-family: helvetica;
-@content-width: 605pt;
-@content-height: 420pt;
+@header-height: 50pt;
+@header-padding: 10pt;
+@content-width: 600pt;
+@content-height: 260pt;
 
 // Rules
 
 body {
-  background: @background-blue; /*url('/img/options-jitter.png') left top no-repeat;*/
+  background: @background-dark; /*url('/img/options-jitter.png') left top no-repeat;*/
   font-family: @font-family;
-  border: 1pt solid black;
   color: @color;
   margin: 0;
   padding: 0;
@@ -35,142 +37,185 @@ body {
     /* using a div because the background needs to be resized
     if the display is really big (1500px-2000px in width or height) */
     background: url('/img/background-medium.png') center center no-repeat;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: -100;
   }
 }
 
+/* the logo, subtext and saved notifcations */
+
+header {
+  .debugred;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  padding: @header-padding;
+  width: @content-width - (@header-padding * 2);
+  max-height: @header-height;
+  margin-left: -(@content-width / 2);
+  margin-top: -(@content-height / 2) - (@header-height) - 5pt;
+  text-align: center;
+  border-bottom: 1pt solid #eee;
+  z-index: 1;
+
+  #logo {
+    .debugyellow;
+    position: relative;
+    float: left;
+    margin-left: 25pt;
+  }
+
+  #logo_subtext {
+    .debugyellow;
+    position: absolute;
+    float: left;
+    margin-top: 1pt;
+    margin-left: 215pt;
+    font-size: 44pt;
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  #notification {
+    position: absolute;
+    left: 8pt;
+    top: 7.5pt;
+    padding: 3pt 15pt 2pt 10pt;
+    background: @background-dark;
+    font-size: 44pt;
+    font-style: italic;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 0 10pt @background-dark, 0 0 15pt @background-dark, 0 0 30pt @background-dark;
+    border-radius: 20pt;
+    display: none;
+    .heart {
+      color: #ff44f8;
+    }
+    .saved {
+      color: #FFFEA8;
+    }
+  }
+}
+
+/* all the options, main content */
+
 #container {
-  .debugpink;
-  position: absolute;
+  .debuglime;
+  position: fixed;
   left: 50%;
   top: 50%;
   width: @content-width;
   height: @content-height;
   margin-left: -(@content-width / 2);
-  margin-top: -(@content-height / 2);
+  margin-top: -(@content-height / 2) + (@header-height / 2);
   z-index: 10;
+
+  .side {
+    float: left;
+    z-index: 20;
+    padding-left: 10pt;
+    font-size: 11pt;
+    white-space: nowrap;
+  }
+
+  #left {
+    .debugyellow;
+    width: 54%;
+    padding-top: 5pt;
+  }
+
+  #right {
+    .debugred;
+    width: 42%;
+    /*padding-top: 9pt;*/
+    padding-top: 5pt;
+  }
 }
 
-/* the logo and other content at the left side of the vertical line */
+/* An option item */
 
-header {
-  .debugred;
-  float: left;
-  height: 100%;
-  width: 220pt;
-  font-size: 22.5pt;
-  font-style: italic;
-  font-weight: bold;
-  text-align: right;
-  vertical-align: middle;
-  padding-top: 10pt;
-}
+.item {
+  .debuglime;
+  z-index: 2;
+  padding-bottom: 11pt;
+  clear: both;
+  -webkit-transition: all .2s ease-out;
 
-#notification {
-  position: absolute;
-  left: 55pt;
-  top: 110pt;
-  padding: 10pt;
-  background: #FFFEA8;
-  font-size: 34pt;
-  color: #ff44f8;
-  box-shadow: 0 0 10pt #bbb, 0 0 15pt #bbb, 0 0 30pt #bbb;
-  border-radius: 20pt;
-  display: none;
-}
+  /* for icon images */
+  .icon {
+    position: relative;
+    margin: 0;
+    top: 3pt;
+  }
+  /* for logo images */
+  .logo {
+    box-shadow: 0 0 10pt 0pt #333;
+    margin: 5pt 0 0 5pt;
+  }
+  /* for regular size images */
+  .image {
+    box-shadow: 0 0 5pt 0pt black;
+    margin: 5pt 0 0 15pt;
+    border-radius: 4pt;
+  }
 
-/* the menu and other content at the right side of the vertical line */
+  input {
+    box-shadow: 0 0 15px #333;
+  }
 
-#content {
-  .debugyellow;
-  float: right;
-  height: 100%;
-  width: 470px;
-  border-left: 2px solid #bbb; /* the vertical line */
-  padding: 0 0 0 15pt;
-  font-size: 11pt;
+  &:hover {
+    text-shadow:
+      0 0 10px #fff,
+      0 0 15px #fff,
+      0 0 20px #fff,
+      0 0 30px #fff,
+      0 0 40px #011b36,
+      0 0 40px #011b36,
+      0 0 70px #011b36,
+      0 0 70px #011b36;
+  }
+  &:hover span::before { /* part of the fancy checkboxes */
+    border: solid 1px #aaa;
+    background: white;
+  }
 
-  .item {
-    z-index: 2;
-    padding-top: 11pt;
-    clear: both;
-    -webkit-transition: all .2s ease-out;
+  #bus_box {
+    width: 260pt;
+    height: 34pt;
+    margin: 5pt 0 0 15pt;
+    overflow: hidden;
+    border-top: 1pt solid white;
+    border-bottom: 1pt solid #7a7a7a;
+    border-radius: 3pt;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
+    padding: 6pt 8pt;
+    white-space: nowrap;
 
-    img {
-      margin: 5pt 0 0 5pt;
-    }
-    .icon {
-      position: relative;
-      margin: 0;
-      top: 2.5pt;
-    }
-    .logo {
-      box-shadow: 0 0 10pt 0pt #333;
-    }
-    .image {
-      box-shadow: 0 0 10pt 0pt #333, 0 0 20pt 2pt #333;
-      margin-left: 15pt;
-      border-radius: 4pt;
-    }
-    input {
-      box-shadow: 0 0 15px #333;
-    }
-    &:hover {
-      text-shadow:
-        0 0 10px #fff,
-        0 0 15px #fff,
-        0 0 20px #fff,
-        0 0 30px #fff,
-        0 0 40px #011b36,
-        0 0 40px #011b36,
-        0 0 70px #011b36,
-        0 0 70px #011b36;
-    }
-    &:hover span::before { /* part of the fancy checkboxes */
-      border: solid 1px #aaa;
-      background: white;
-    }
-
-    #bus_box {
-      width: 210pt;
-      margin: 5pt 0 0 15pt;
-      overflow: hidden;
-      border-top: 1pt solid white;
-      border-bottom: 1pt solid #7a7a7a;
-      border-radius: 3pt;
-      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
-
-      #bus_logo {
-        .debugred;
-        float: left;
-        width: 15%;
-        margin: 6pt 8pt;
+    .bus_stop {
+      float: left;
+      white-space: nowrap;
+      input {
+        width: 100pt;
       }
-
-      #bus_menu {
-        .debugred;
-        float: left;
-        margin-top: 5pt;
-
-        .stop {
-          width: 85pt;
-        }
-
-        .direction {
-          width: 58pt;
-          margin-left: 5pt;
-        }
+      select {
+        width: 104pt;
       }
     }
-
-    #infoscreen_preview {
-      display: none;
+    #bus_logo {
+      float: left;
+      white-space: nowrap;
+      width: 33pt;
+      margin: 0 8pt;
     }
+  }
+
+  #infoscreen_preview {
+    display: none;
   }
 }
 
@@ -224,7 +269,7 @@ label
   input[type="checkbox"], /* hide the real checkbox/radio button */
   input[type="radio"]
   {
-    position: absolute;
+    position: fixed;
     filter: alpha(opacity=0);
     -webkit-opacity: 0;
     opacity: 0;
@@ -237,8 +282,9 @@ label
 }
 
 /* Suggestions for bus stops */
+
 #bus_suggestions {
-  .debugpink;
+  .debuglime;
   position: fixed;
   vertical-align: middle;
   width: 150pt;
@@ -253,9 +299,22 @@ label
   .suggestion {
     font-size: 10pt;
     line-height: 1.5;
-    text-shadow:
-      0 0 10px #fff,
-      0 0 15px #fff;
+    letter-spacing: .7pt;
+    -webkit-transition: all .1s ease-out;
+    &:hover {
+      cursor: pointer;
+      text-shadow:
+        0 0 10pt #bbb,
+        0 0 15pt #bbb,
+        0 0 20pt #fff,
+        0 0 40pt #fff,
+        0 0 15pt #fff,
+        0 0 10pt #fff,
+        0 0 20pt #fff;
+    }
+    .matched_character {
+      font-weight: bold;
+    }
   }
   .correct {
     color: white;
@@ -275,7 +334,7 @@ label
 /* the pageflip at the bottom */
 
 #pageflipbg {
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   background: transparent url('/img/pageflipbg.png') no-repeat left bottom;
@@ -284,7 +343,7 @@ label
   z-index: 5;
 }
 #pagefliptext {
-  position: absolute;
+  position: fixed;
   width: 170px;
   height: 36px;
   left: 5px;
@@ -295,7 +354,7 @@ label
   z-index: 6;
 }
 #pageflip {
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   background: transparent url('/img/pageflip.png') no-repeat left bottom;
@@ -304,7 +363,7 @@ label
   z-index: 7;
 }
 #pagefliplink {
-  position: absolute;
+  position: fixed;
   width: 170px;
   height: 36px;
   left: 5px;
@@ -324,18 +383,17 @@ label
   text-decoration: underline;
 }
 
-/* Google +1 button */
+/* google +1 button */
 
 #plusonebutton {
-  .debugred;
-  position: absolute;
+  position: fixed;
   right: 3px;
   bottom: 5px;
   width: 170px;
-  z-index: 10;
+  z-index: 1;
 }
 
-/* The Avgrund dialog */
+/* the Avgrund dialog */
 
 .avgrund_image {
   float: left;
@@ -379,5 +437,6 @@ a {
 canvas {
   .debugyellow;
   background: transparent;
+  opacity: 0;
   z-index: 10;
 }

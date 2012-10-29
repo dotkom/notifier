@@ -13,7 +13,6 @@
     creator = ls.notificationCreator;
     title = ls.notificationTitle;
     description = ls.notificationDescription;
-    description = description.replace(/bedriftspresentasjon/g, 'bedpres');
     maxlength = 90;
     if (maxlength < description.length) {
       description = description.substring(0, maxlength) + '...';
