@@ -50,6 +50,10 @@
 
 // Rules
 
+html {
+  cursor: none;
+}
+
 body {
   background: #001429;
   font-family: helvetica;

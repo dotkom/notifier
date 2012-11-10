@@ -268,7 +268,7 @@
               return $('#container').animate({
                 'top': '40%'
               }, speed, function() {
-                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen åpnes hver gang Chrome starter\n- Infoskjermen åpnes nå!')) {
+                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang Chrome starter\n- Infoskjermen åpnes nå!')) {
                   ls[id] = 'true';
                   $('#' + id).attr('checked', true);
                   chrome.browserAction.setIcon({

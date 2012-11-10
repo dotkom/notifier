@@ -187,19 +187,24 @@ var Bus = {
       // Add departure
 
       // We only need the time, the date is always today
+      // Format is "10.11.2012 12:07"
+      // EDIT: REMOVE LINE BELOW IF API IS CONSTANT
       // Format is "2012-06-29T20:10:00.000"
       var time;
       if (isRealtime) {
-        time = realtime.split("T")[1].split(":");
+        time = realtime.split(" ")[1].split(":");
       }
       else {
-        time = scheduled.split("T")[1].split(":");
+        time = scheduled.split(" ")[1].split(":");
       }
-      time[2] = time[2].split(".")[0];
+      // EDIT: REMOVE LINE BELOW IF API IS CONSTANT
+      // time[2] = time[2].split(".")[0];
 
       // Set the two dates
       var now = new Date();
-      var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1], time[2]);
+      // EDIT: REMOVE LINE BELOW IF API IS CONSTANT
+      // var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1], time[2]);
+      var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1]);
       var one_minute = 1000 * 60;
 
       // Calculate difference between the two dates, and convert to minutes
@@ -270,19 +275,18 @@ var Bus = {
           // Add departure
 
           // We only need the time, the date is always today
-          // Format is "2012-06-29T20:10:00.000"
+          // Format is "10.11.2012 12:07"
           var time;
           if (isRealtime) {
-            time = realtime.split("T")[1].split(":");
+            time = realtime.split(" ")[1].split(":");
           }
           else {
-            time = scheduled.split("T")[1].split(":");
+            time = scheduled.split(" ")[1].split(":");
           }
-          time[2] = time[2].split(".")[0];
 
           // Set the two dates
           var now = new Date();
-          var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1], time[2]);
+          var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1]);
           var one_minute = 1000 * 60;
 
           // Calculate difference between the two dates, and convert to minutes
