@@ -64,12 +64,12 @@ $ ->
   # Set default choices and open options page after install
   if ls.first_bus is undefined
     ls.showBus = 'true'
-    ls.first_bus = 16011476
-    ls.first_bus_name = 'Studentersamfundet'
+    ls.first_bus = 16011333
+    ls.first_bus_name = 'Gløshaugen Nord'
     ls.first_bus_direction = 'til byen'
-    ls.second_bus = 16011333
+    ls.second_bus = 16010333
     ls.second_bus_name = 'Gløshaugen Nord'
-    ls.second_bus_direction = 'til byen'
+    ls.second_bus_direction = 'fra byen'
   if ls.everConnected is undefined
     if ls.showOffice is undefined
       ls.showOffice = 'true'

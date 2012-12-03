@@ -6,7 +6,9 @@ Features
 
 - Displays and notifies about news from Online
 - Displays status for Onlines office: Open, closed, meeting, free waffles
+- Displays bus data from AtB in real time
 - Displays todays dinner menu from cantinas at NTNU Gløshaugen
+- Can be used as an infoscreen (full HD vertical screen) for continous use
 
 Tech
 

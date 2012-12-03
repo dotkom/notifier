@@ -116,7 +116,7 @@ body {
       top: -80pt;
       min-height: 50pt;
       max-height: 50pt;
-      font-size: 36pt;
+      font-size: 32pt;
       font-weight: bold;
       text-align: center;
       text-shadow: 0 0 15pt black, 0 0 20pt black;
@@ -167,7 +167,7 @@ body {
     .debugred;
     .fullbox;
     font-size: 18pt;
-    line-height: 30pt;
+    line-height: 24pt;
     background-color: #000f1d;
     height: 144pt;
     width: 110%;
@@ -175,17 +175,30 @@ body {
     margin-left: -5%;
     box-shadow: 0 0 20pt #88b;
 
-    #title {
-      .title;
-      width: 100%;
-      clear: both;
+    .loading_left {
+      position: relative;
+      width: 160px;
+      top: 18pt;
+      -webkit-transform: scaleX(-1);
+    }
+    .loading_right {
+      position: relative;
+      width: 160px;
+      top: 18pt;
+    }
+    .name {
+      color: white;
+      margin-bottom: 3pt;
+      text-transform: uppercase;
+      text-decoration: underline;
+      font-weight: bold;
     }
     #left {
       .debuglime;
       position: relative;
       float: left;
       text-align: right;
-      padding-top: 30pt;
+      padding-top: 12pt;
       width: 40%;
     }
     #middle {
@@ -196,25 +209,20 @@ body {
       width: 19%;
       height: 100%;
       img {
-        margin: 12pt 0;
-        height: 120pt;
+        margin: 14pt 0;
+        height: 116pt;
       }
     }
     #right {
       .debuglime;
       width: 39%;
       position: relative;
-      padding-top: 30pt;
+      padding-top: 12pt;
       float: left;
       text-align: left;
     }
     .time {
       font-weight: bold;
-    }
-    .arrow {
-      position:relative;
-      top:8pt;
-      font-size: 48pt;
     }
   }
 
@@ -253,51 +261,51 @@ body {
     position: absolute;
     right: 0;
     bottom: 0;
-    width: 400pt;
+    width: 300pt;
   }
 }
 
 /* the pageflip at the bottom */
 
 #pageflipbg {
-  position: absolute;
+  position: fixed;
   left: 0px;
   bottom: 0px;
   background: transparent url('/img/pageflip-infoscreen-bg.png') no-repeat left bottom;
-  width: 419px;
-  height: 213px;
+  width: 356px;
+  height: 181px;
   z-index: 5;
 }
 
 #pagefliptext {
-  position: absolute;
+  position: fixed;
   width: 300px;
-  height: 83px;
+  height: 76px;
   left: 8px;
   bottom: 5px;
-  font: bold 24px monospace;
+  font: bold 22px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 6;
 }
 
 #pageflip {
-  position: absolute;
+  position: fixed;
   left: 0px;
   bottom: 0px;
   background: transparent url('/img/pageflip-infoscreen.png') no-repeat left bottom;
-  width: 419px;
-  height: 213px;
+  width: 356px;
+  height: 181px;
   z-index: 7;
 }
 
 #pagefliplink {
-  position: absolute;
+  position: fixed;
   width: 300px;
-  height: 83px;
+  height: 76px;
   left: 8px;
   bottom: 5px;
-  font: bold 24px monospace;
+  font: bold 22px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 8;
