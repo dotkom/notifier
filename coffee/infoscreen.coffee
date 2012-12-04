@@ -186,7 +186,7 @@ updateCantinas = ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then less.watch()
+  # if DEBUG then less.watch() # not needed when using CodeKit
   
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'

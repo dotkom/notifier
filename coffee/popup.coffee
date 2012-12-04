@@ -205,7 +205,7 @@ fadeButtonText = (show, msg) ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then less.watch()
+  # if DEBUG then less.watch() # not needed when using CodeKit
 
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'

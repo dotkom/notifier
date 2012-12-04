@@ -35,7 +35,7 @@ setNotification = ->
 
 # show the html5 notification with timeout when the document is ready
 $ ->
-  if DEBUG then less.watch()
+  # if DEBUG then less.watch() # not needed when using CodeKit
   
   setNotification()
   setTimeout ( ->

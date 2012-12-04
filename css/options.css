@@ -331,6 +331,21 @@ label
   }
 }
 
+/* debug links in the the top right corner, only shown in debug mode */
+
+#debug_links {
+  display: none;
+  position: fixed;
+  top: 10pt;
+  right: 10pt;
+  text-align: right;
+  font-weight: bold;
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
 /* the pageflip at the bottom */
 
 #pageflipbg {
