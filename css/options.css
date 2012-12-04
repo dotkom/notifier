@@ -331,6 +331,21 @@ label
   }
 }
 
+/* debug links in the the top right corner, only shown in debug mode */
+
+#debug_links {
+  display: none;
+  position: fixed;
+  top: 10pt;
+  right: 10pt;
+  text-align: right;
+  font-weight: bold;
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
 /* the pageflip at the bottom */
 
 #pageflipbg {
@@ -340,7 +355,7 @@ label
   background: transparent url('/img/pageflipbg.png') no-repeat left bottom;
   width: 185px;
   height: 98px;
-  z-index: 5;
+  z-index: 105;
 }
 #pagefliptext {
   position: fixed;
@@ -351,7 +366,7 @@ label
   font: bold 11px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 6;
+  z-index: 106;
 }
 #pageflip {
   position: fixed;
@@ -360,7 +375,7 @@ label
   background: transparent url('/img/pageflip.png') no-repeat left bottom;
   width: 185px;
   height: 98px;
-  z-index: 7;
+  z-index: 107;
 }
 #pagefliplink {
   position: fixed;
@@ -371,7 +386,7 @@ label
   font: bold 11px monospace;
   color: #ccf2cc;
   text-shadow:  0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 8;
+  z-index: 108;
 }
 #pagefliplink a {
   font: bold 11px monospace;
