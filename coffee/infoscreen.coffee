@@ -103,7 +103,6 @@ updateBus = ->
       insertBusInfo lines, second_stop_name, '#right'
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
-  console.log 'cssIdentificator'
   if typeof lines is 'string'
     # lines is an error message
     $('#bus '+cssIdentificator+' .name').html stopName
