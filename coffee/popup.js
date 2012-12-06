@@ -92,8 +92,8 @@
     if (!navigator.onLine) {
       $('#bus #left .name').html(ls.first_bus_name);
       $('#bus #right .name').html(ls.second_bus_name);
-      $('#bus #left .first .line').html('Frakoblet');
-      return $('#bus #right .first .line').html('Frakoblet');
+      $('#bus #left .first .line').html('Frakoblet fra api.visuweb.no');
+      return $('#bus #right .first .line').html('Frakoblet fra api.visuweb.no');
     } else {
       first_stop_name = ls.first_bus_name;
       second_stop_name = ls.second_bus_name;
@@ -139,7 +139,7 @@
     if (response !== void 0) {
       return displayStories(response);
     } else {
-      return $('#news').append('<div class="post"><div class="title">No news</div><div class="item">Klarte ikke hente nyheter fra online.ntnu.no</div></div>');
+      return $('#news').append('<div class="post"><div class="title">No news</div><div class="item">Frakoblet fra online.ntnu.no</div></div>');
     }
   };
 

@@ -17,6 +17,7 @@ function fetchFeed(callback) {
 	})
 	.fail(function() {
 		if (DEBUG) console.log('ERROR: failed to fetch news feed');
+		callback();
 	});
 }
 

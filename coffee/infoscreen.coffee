@@ -32,10 +32,10 @@ updateNews = ->
   # Fetching and displaying the news feed
   fetchFeed ->
     response = ls.lastResponseData
-    if response != null
+    if response != undefined
       displayStories response
     else
-      console.log 'ERROR: response was null'
+      $('#news').append '<div class="post"><div class="title">No news</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
   
   # Private function
   displayStories = (xmlstring) ->
@@ -89,8 +89,8 @@ updateBus = ->
   if !navigator.onLine
     $('#bus #left .name').html ls.first_bus_name
     $('#bus #right .name').html ls.second_bus_name
-    $('#bus #left .first .line').html 'Frakoblet'
-    $('#bus #right .first .line').html 'Frakoblet'
+    $('#bus #left .first .line').html 'Frakoblet fra api.visuweb.no'
+    $('#bus #right .first .line').html 'Frakoblet fra api.visuweb.no'
 
   else
     first_stop_name = ls.first_bus_name
