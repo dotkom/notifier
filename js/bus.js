@@ -140,7 +140,6 @@ var Bus = {
       url: self.api + stopId + self.apikey,
       dataType: 'json',
       success: function(json) {
-        if (DEBUG) console.log(json); ///////////////////////////////////////////////
         parser(json, requestedType, callback);
       },
       fail: function(jqXHR, err) {

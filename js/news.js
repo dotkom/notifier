@@ -115,7 +115,7 @@ function parsePost(item) {
 	post.title = post.title.replace(/edrift(s)?presentasjon/g, 'edpres');
 	post.description = post.description.replace(/edrift(s)?presentasjon/g, 'edpres');
 
-	// check for more direct link in the description
+	// Check for more direct link in the description
 	var directLink = post.description.match(/(http.:\/\/)?online.ntnu.no\/event\/\d+(\/)?/g)
 	if (directLink != null) {
 		directLink = directLink[0];
@@ -124,10 +124,10 @@ function parsePost(item) {
 		}
 	}
 
-	// remove excessive whitespace and ludicrous formatting from description
+	// Remove excessive whitespace and ludicrous formatting from description
 	post.description = $.trim($(post.description).text());
 	
-	// in case browser does not grok tags with colons, stupid browser
+	// In case browser does not grok tags with colons, stupid browser
 	if (post.creator == '') {
 		var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
 		$(item).find(tag).each(function(){

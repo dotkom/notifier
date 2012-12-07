@@ -4,7 +4,7 @@ var Office = {
   TITLE_CLOSED: 'Lukket',
   TITLE_MEETING: 'Møte',
   TITLE_WAFFLES: 'Vafler',
-  MSG_ERROR: 'Noe gikk galt, prøver igjen...',
+  MSG_ERROR: 'Klarte ikke hente kontorstatus',
   MSG_OPEN: 'Gratis kaffe og te til alle!',
   MSG_CLOSED: 'Finn et komitemedlem for å åpne opp.',
   MSG_UNTITLED_MEETING: 'Kontoret er opptatt', // titled meetings and waffles get names from calendar entries
