@@ -265,6 +265,7 @@ body {
           float: left;
           background: snow;
           width: 70pt;
+          max-height: 70pt;
           padding: 3pt;
           -webkit-box-shadow: 0 0 10pt #bbb;
         }
