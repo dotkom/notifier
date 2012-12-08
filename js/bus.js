@@ -1,7 +1,8 @@
 var Bus = {
   stops: {},
-  api: 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/',
-  apikey: '/f6975f3c1a3d838dc69724b9445b3466',
+  realtimeApi: 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/',
+  routeApi: 'http://api.visuweb.no/bybussen/1.0/Departure/Route/',
+  apiKey: '/f6975f3c1a3d838dc69724b9445b3466',
   stopNames: undefined,
 
   // Public
@@ -122,9 +123,24 @@ var Bus = {
     return this.stops[stopId];
   },
 
-  getStopLines: function(stopId) {
-    // TODO tmn
-    return [5,22];
+  getStopLines: function(stopId, callback) {
+    if (callback == undefined) {
+      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+
+    var self = this;
+    $.ajax({
+      url: self.routeApi + stopId + self.apiKey,
+      dataType: 'json',
+      success: function(json) {
+        callback(json);
+        // parser(json, requestedType, callback);
+      },
+      fail: function(jqXHR, err) {
+        callback('Frakoblet fra api.visuweb.no');
+      },
+    });
   },
 
   // Private
@@ -137,7 +153,7 @@ var Bus = {
 
     var self = this;
     $.ajax({
-      url: self.api + stopId + self.apikey,
+      url: self.realtimeApi + stopId + self.apiKey,
       dataType: 'json',
       success: function(json) {
         parser(json, requestedType, callback);

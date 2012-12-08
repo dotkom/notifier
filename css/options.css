@@ -1,6 +1,6 @@
 // Debugging
 
-@debug: 0pt;
+@debug: 1pt;
 .debugred {
   border: @debug solid red;
 }
@@ -185,8 +185,8 @@ header {
   }
 
   #bus_box {
-    width: 260pt;
-    height: 34pt;
+    width: 265pt; /*260pt*/
+    height: 90pt; /*34pt*/
     margin: 5pt 0 0 15pt;
     overflow: hidden;
     border-top: 1pt solid white;
@@ -197,6 +197,7 @@ header {
     white-space: nowrap;
 
     .bus_stop {
+      .debugred;
       float: left;
       white-space: nowrap;
       input {
@@ -204,6 +205,27 @@ header {
       }
       select {
         width: 104pt;
+      }
+      .lines {
+        .debuglime;
+        max-width: 104pt;
+        height: 50pt;
+        margin-top: 1pt;
+        white-space: normal;
+        overflow-wrap: break-word;
+        text-align: center;
+        font-weight: bold;
+        font-size: 12pt;
+        text-shadow: 0 0 0px white;
+        .active {
+          color: #bdba3c;
+          text-decoration: underline;
+          text-shadow: 0 0 1px black, 0 0 3px black, 0 0 5px black;
+        }
+        .inactive {
+          color: gray;
+          text-decoration: underline;
+        }
       }
     }
     #bus_logo {

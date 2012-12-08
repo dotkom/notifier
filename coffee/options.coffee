@@ -39,8 +39,9 @@ bindBusFields = (busField) ->
   if DEBUG then console.log 'Binding bus fields for ' + cssSelector
   fadeTime = 50
 
-  stop = $(cssSelector + ' input');
-  direction = $(cssSelector + ' select');
+  stop = $(cssSelector + ' input')
+  direction = $(cssSelector + ' select')
+  lines = $(cssSelector + ' .lines .line') # array of spans with bus lines
 
   # Load users saved buses
   loadBus busField
@@ -71,7 +72,9 @@ bindBusFields = (busField) ->
       correctStop = suggestions[0]
       $(stop).val correctStop
       $('#bus_suggestions').html ''
-      getDirectionsAndSave busField, correctStop
+      getDirections busField, correctStop
+      getLines busField
+      saveBus busField
     # Several suggestions, allow the user to see them and click them for a short while
     else if suggestions.length > 1
       if DEBUG then console.log 'focusout - several suggestions, remove them'
@@ -88,7 +91,9 @@ bindBusFields = (busField) ->
       #     correctStop = suggestions[i]
       #     $(stop).val correctStop
       #     $('#bus_suggestions').html ''
-      #     getDirectionsAndSave busField, correctStop
+      #     getDirections busField, correctStop
+      #     getLines busField
+      #     saveBus busField
       #     foundOne = true
       # if foundOne is false
       #   if ls.busStopClickedAway isnt null
@@ -124,7 +129,9 @@ bindBusFields = (busField) ->
           ), 300
         ), 1200
         # and of course, save and get directions
-        getDirectionsAndSave busField, realStopName
+        getDirections busField, realStopName
+        getLines busField
+        saveBus busField
 
     # If anything else is clicked, get suggestions
     else
@@ -163,7 +170,9 @@ bindBusFields = (busField) ->
               $('#bus_suggestions').html ''
             ), 300
           ), 1200
-          getDirectionsAndSave busField, correctStop
+          getDirections busField, correctStop
+          getLines busField
+          saveBus busField
       # All characters removed, remove suggestions
       else
         $('#bus_suggestions .suggestion').fadeOut fadeTime, ->
@@ -172,25 +181,46 @@ bindBusFields = (busField) ->
       bindSuggestions()
 
   $(direction).change ->
-    
+
     # Save bus line if user changes the direction field
     saveBus busField
 
-# GOOD FUCKING SHIT YEAH
-getDirectionsAndSave = (busField, correctStop) ->
+  $(lines).click ->
+
+    # WAT is dis
+    console.log this
+
+getDirections = (busField, correctStop) ->
   cssSelector = '#' + busField
   stopName = $(cssSelector + ' input')
   direction = $(cssSelector + ' select')
   # Get and inject possible directions for correct stop
   allDirections = Bus.getDirections correctStop
   $(direction).html ''
-  for i of allDirections
-    $(direction).append '<option>' + allDirections[i] + '</option>'
-  # $(direction).removeAttr 'disabled'
-  # if DEBUG then console.log 'enabled the direction field for '+busField
-  saveBus busField
+  for i in allDirections
+    $(direction).append '<option>' + i + '</option>'
 
-# ALL GOOOD FUNKER FUCK YEAHHH
+getLines = (busField) ->
+  cssSelector = '#' + busField
+  stopName = $(cssSelector + ' input').val()
+  direction = $(cssSelector + ' select').val()
+  busStopId = Bus.getStop stopName, direction
+  # Get and inject possible lines for correct stop
+  busStopId = Bus.getStop stopName, direction
+  lines = Bus.getStopLines busStopId, (json) ->
+    # Remove duplicate lines
+    arrayOfLines = []
+    for item in json.lines
+      if -1 is arrayOfLines.indexOf String(item.line)
+        arrayOfLines.push item.line
+    # Sort lines
+    arrayOfLines = arrayOfLines.sort()
+    arrayOfLines = arrayOfLines.reverse()
+    # Add lines to bus stop
+    $(cssSelector + ' .lines').html ''
+    for line in arrayOfLines
+      $(cssSelector + ' .lines').append '<span class="line active">'+line+'</span>&nbsp;&nbsp;'
+
 saveBus = (busField) ->
   cssSelector = '#' + busField
   stopName = $(cssSelector + ' input').val()
@@ -202,7 +232,6 @@ saveBus = (busField) ->
   displayOnPageNotification()
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
 
-# ALL GOOD FUNKER YEAH
 loadBus = (busField) ->
   cssSelector = '#' + busField
   stopName = ls[busField + '_name']
@@ -217,7 +246,9 @@ bindSuggestions = ->
     if ls.busInFocus isnt undefined
       text = $(this).text()
       $('#' + ls.busInFocus + ' input').val text
-      getDirectionsAndSave ls.busInFocus, text
+      getDirections ls.busInFocus, text
+      getLines ls.busInFocus
+      saveBus ls.busInFocus
       $('#bus_suggestions .suggestion').fadeOut 50, ->
         $('#bus_suggestions').html ''
 
@@ -324,7 +355,7 @@ fadeInCanvas = ->
 
 # Document ready, go!
 $ ->
-  # if DEBUG then less.watch() # not needed when using CodeKit
+  if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
 
   # Restore checks to boxes from localStorage
@@ -360,10 +391,6 @@ $ ->
   # Bind a click function to the on-page notification for the canvas
   # $('#notification').click ->
   #   fadeInCanvas()
-
-  # Fill in the select boxes for bus stops
-  # configureBusFields 'first_bus'
-  # configureBusFields 'second_bus'
 
   # Give user suggestions for autocomplete of bus stops
   bindBusFields 'first_bus'
