@@ -226,6 +226,15 @@ header {
           color: gray;
           text-decoration: underline;
         }
+        .loading_left {
+          position: relative;
+          width: 80px;
+          -webkit-transform: scaleX(-1);
+        }
+        .loading_right {
+          position: relative;
+          width: 80px;
+        }
       }
     }
     #bus_logo {

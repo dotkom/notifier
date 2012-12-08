@@ -210,6 +210,7 @@
   getLines = function(busField) {
     var busStopId, cssSelector, direction, lines, stopName;
     cssSelector = '#' + busField;
+    $(cssSelector + ' .lines').html('<img class="loading_left" src="img/loading.gif" />');
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Bus.getStop(stopName, direction);
@@ -230,21 +231,37 @@
       _results = [];
       for (_j = 0, _len1 = arrayOfLines.length; _j < _len1; _j++) {
         line = arrayOfLines[_j];
-        _results.push($(cssSelector + ' .lines').append('<span class="line active">' + line + '</span>&nbsp;&nbsp;'));
+        _results.push($(cssSelector + ' .lines').append('<span class="active">' + line + '</span>&nbsp;&nbsp;'));
       }
       return _results;
     });
   };
 
   saveBus = function(busField) {
-    var busStopId, cssSelector, direction, stopName;
+    var activeLines, busStopId, cssSelector, direction, inactiveLines, stopName;
     cssSelector = '#' + busField;
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Bus.getStop(stopName, direction);
+    activeLines = [];
+    $(cssSelector + ' .lines .active').each(function() {
+      return activeLines.push($(this).text());
+    });
+    inactiveLines = [];
+    $(cssSelector + ' .lines .inactive').each(function() {
+      return inactiveLines.push($(this).text());
+    });
     ls[busField] = busStopId;
     ls[busField + '_name'] = stopName;
     ls[busField + '_direction'] = direction;
+    ls[busField + '_active_lines'] = activeLines;
+    ls[busField + '_inactive_lines'] = inactiveLines;
+    if (DEBUG) {
+      alert('activeLines', activeLines);
+    }
+    if (DEBUG) {
+      alert('inactiveLines', inactiveLines);
+    }
     displayOnPageNotification();
     if (DEBUG) {
       return console.log('saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466');
@@ -252,16 +269,30 @@
   };
 
   loadBus = function(busField) {
-    var cssSelector, direction, stopName;
+    var activeLines, cssSelector, direction, inactiveLines, line, lines, stopName, _i, _j, _len, _len1;
     cssSelector = '#' + busField;
     stopName = ls[busField + '_name'];
     direction = ls[busField + '_direction'];
+    activeLines = ls[busField + '_active_lines'];
+    inactiveLines = ls[busField + '_inactive_lines'];
     if (stopName !== void 0 && direction !== void 0) {
       $(cssSelector + ' input').val(stopName);
       $(cssSelector + ' select').val(direction);
       if (DEBUG) {
-        return console.log('loaded ' + stopName + ' to ' + busField);
+        console.log('loaded ' + stopName + ' to ' + busField);
       }
+    }
+    if (activeLines !== void 0 && inactiveLines !== void 0) {
+      lines = {};
+      for (_i = 0, _len = activeLines.length; _i < _len; _i++) {
+        line = activeLines[_i];
+        lines[line] = true;
+      }
+      for (_j = 0, _len1 = inactiveLines.length; _j < _len1; _j++) {
+        line = inactiveLines[_j];
+        lines[line] = false;
+      }
+      return alert('all lines for ', cssSelector, lines);
     }
   };
 

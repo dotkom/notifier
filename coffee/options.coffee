@@ -202,6 +202,9 @@ getDirections = (busField, correctStop) ->
 
 getLines = (busField) ->
   cssSelector = '#' + busField
+  # Loading gif
+  $(cssSelector + ' .lines').html '<img class="loading_left" src="img/loading.gif" />'
+  # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
   busStopId = Bus.getStop stopName, direction
@@ -219,16 +222,29 @@ getLines = (busField) ->
     # Add lines to bus stop
     $(cssSelector + ' .lines').html ''
     for line in arrayOfLines
-      $(cssSelector + ' .lines').append '<span class="line active">'+line+'</span>&nbsp;&nbsp;'
+      $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
+  # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
   busStopId = Bus.getStop stopName, direction
+  # Get active/inactive lines
+  activeLines = []
+  $(cssSelector + ' .lines .active').each ->
+    activeLines.push $(this).text()
+  inactiveLines = []
+  $(cssSelector + ' .lines .inactive').each ->
+    inactiveLines.push $(this).text()
+  # Save all to localStorage
   ls[busField] = busStopId
   ls[busField + '_name'] = stopName
   ls[busField + '_direction'] = direction
+  ls[busField + '_active_lines'] = activeLines
+  ls[busField + '_inactive_lines'] = inactiveLines
+  if DEBUG then alert 'activeLines', activeLines ######################################
+  if DEBUG then alert 'inactiveLines', inactiveLines ######################################
   displayOnPageNotification()
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
 
@@ -236,10 +252,26 @@ loadBus = (busField) ->
   cssSelector = '#' + busField
   stopName = ls[busField + '_name']
   direction = ls[busField + '_direction']
+  activeLines = ls[busField + '_active_lines']
+  inactiveLines = ls[busField + '_inactive_lines']
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
     if DEBUG then console.log 'loaded ' + stopName + ' to ' + busField
+  if activeLines isnt undefined and inactiveLines isnt undefined
+    # Sort lines
+    lines = {}
+    for line in activeLines
+      lines[line] = true
+    for line in inactiveLines
+      lines[line] = false
+    alert 'all lines for ', cssSelector, lines
+
+    # Add lines to bus stop
+    # $(cssSelector + ' .lines').html ''
+    # for line in arrayOfLines
+    #   $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
+
 
 bindSuggestions = ->
   $('.suggestion').click ->
