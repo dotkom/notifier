@@ -210,30 +210,39 @@
   getLines = function(busField) {
     var busStopId, cssSelector, direction, lines, stopName;
     cssSelector = '#' + busField;
-    $(cssSelector + ' .lines').html('<img class="loading_left" src="img/loading.gif" />');
+    if (typeof busField.contains === "function" ? busField.contains('first') : void 0) {
+      $(cssSelector + ' .lines').html('<img class="loading_left" src="img/loading.gif" />');
+    } else if (typeof busField.contains === "function" ? busField.contains('second') : void 0) {
+      $(cssSelector + ' .lines').html('<img class="loading_right" src="img/loading.gif" />');
+    }
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Bus.getStop(stopName, direction);
     busStopId = Bus.getStop(stopName, direction);
     return lines = Bus.getStopLines(busStopId, function(json) {
       var arrayOfLines, item, line, _i, _j, _len, _len1, _ref, _results;
-      arrayOfLines = [];
-      _ref = json.lines;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
-        if (-1 === arrayOfLines.indexOf(String(item.line))) {
-          arrayOfLines.push(item.line);
+      if (typeof json === 'string') {
+        console.log('appending error msg');
+        return $(cssSelector + ' .lines').html('<span class="error">' + line + '</span>&nbsp;&nbsp;');
+      } else {
+        arrayOfLines = [];
+        _ref = json.lines;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          item = _ref[_i];
+          if (-1 === arrayOfLines.indexOf(String(item.line))) {
+            arrayOfLines.push(item.line);
+          }
         }
+        arrayOfLines = arrayOfLines.sort();
+        arrayOfLines = arrayOfLines.reverse();
+        $(cssSelector + ' .lines').html('');
+        _results = [];
+        for (_j = 0, _len1 = arrayOfLines.length; _j < _len1; _j++) {
+          line = arrayOfLines[_j];
+          _results.push($(cssSelector + ' .lines').append('<span class="active">' + line + '</span>&nbsp;&nbsp;'));
+        }
+        return _results;
       }
-      arrayOfLines = arrayOfLines.sort();
-      arrayOfLines = arrayOfLines.reverse();
-      $(cssSelector + ' .lines').html('');
-      _results = [];
-      for (_j = 0, _len1 = arrayOfLines.length; _j < _len1; _j++) {
-        line = arrayOfLines[_j];
-        _results.push($(cssSelector + ' .lines').append('<span class="active">' + line + '</span>&nbsp;&nbsp;'));
-      }
-      return _results;
     });
   };
 
@@ -257,10 +266,10 @@
     ls[busField + '_active_lines'] = activeLines;
     ls[busField + '_inactive_lines'] = inactiveLines;
     if (DEBUG) {
-      alert('activeLines', activeLines);
+      console.log('saving activeLines for ' + busField, '"', activeLines, '"');
     }
     if (DEBUG) {
-      alert('inactiveLines', inactiveLines);
+      console.log('saving inactiveLines ' + busField, '"', inactiveLines, '"');
     }
     displayOnPageNotification();
     if (DEBUG) {
@@ -275,24 +284,32 @@
     direction = ls[busField + '_direction'];
     activeLines = ls[busField + '_active_lines'];
     inactiveLines = ls[busField + '_inactive_lines'];
+    console.log('lol "' + activeLines + '"');
+    console.log('rofl "' + inactiveLines + '"');
     if (stopName !== void 0 && direction !== void 0) {
       $(cssSelector + ' input').val(stopName);
       $(cssSelector + ' select').val(direction);
       if (DEBUG) {
-        console.log('loaded ' + stopName + ' to ' + busField);
+        console.log('loaded "' + stopName + '" to "' + busField + '"');
       }
     }
     if (activeLines !== void 0 && inactiveLines !== void 0) {
-      lines = {};
-      for (_i = 0, _len = activeLines.length; _i < _len; _i++) {
-        line = activeLines[_i];
-        lines[line] = true;
+      if (activeLines !== '' && inactiveLines !== '') {
+        activeLines = JSON.parse(activeLines);
+        inactiveLines = JSON.parse(inactiveLines);
+        console.log('lmao "' + activeLines + '"');
+        console.log('durr "' + inactiveLines + '"');
+        lines = {};
+        for (_i = 0, _len = activeLines.length; _i < _len; _i++) {
+          line = activeLines[_i];
+          lines[line] = true;
+        }
+        for (_j = 0, _len1 = inactiveLines.length; _j < _len1; _j++) {
+          line = inactiveLines[_j];
+          lines[line] = false;
+        }
+        return console.log('all lines for ' + cssSelector + lines);
       }
-      for (_j = 0, _len1 = inactiveLines.length; _j < _len1; _j++) {
-        line = inactiveLines[_j];
-        lines[line] = false;
-      }
-      return alert('all lines for ', cssSelector, lines);
     }
   };
 

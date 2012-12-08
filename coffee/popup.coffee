@@ -100,7 +100,7 @@ updateNews = ->
   if response != undefined
     displayStories response
   else
-    $('#news').append '<div class="post"><div class="title">No news</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
+    $('#news').append '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
   
 # Private function
 displayStories = (xmlstring) ->

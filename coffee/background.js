@@ -89,9 +89,13 @@
         ls.first_bus = 16011333;
         ls.first_bus_name = 'Gløshaugen Nord';
         ls.first_bus_direction = 'til byen';
+        ls.first_bus_active_lines = JSON.stringify([5, 22]);
+        ls.first_bus_inactive_lines = JSON.stringify([169]);
         ls.second_bus = 16010333;
         ls.second_bus_name = 'Gløshaugen Nord';
         ls.second_bus_direction = 'fra byen';
+        ls.second_bus_active_lines = JSON.stringify([5, 22]);
+        ls.second_bus_inactive_lines = JSON.stringify([169]);
       }
       if (ls.showOffice === void 0) {
         ls.showOffice = 'true';

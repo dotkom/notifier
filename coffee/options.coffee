@@ -188,7 +188,7 @@ bindBusFields = (busField) ->
   $(lines).click ->
 
     # WAT is dis
-    console.log this
+    console.log this ################################################################
 
 getDirections = (busField, correctStop) ->
   cssSelector = '#' + busField
@@ -203,7 +203,10 @@ getDirections = (busField, correctStop) ->
 getLines = (busField) ->
   cssSelector = '#' + busField
   # Loading gif
-  $(cssSelector + ' .lines').html '<img class="loading_left" src="img/loading.gif" />'
+  if busField.contains? 'first'
+    $(cssSelector + ' .lines').html '<img class="loading_left" src="img/loading.gif" />'
+  else if busField.contains? 'second'
+    $(cssSelector + ' .lines').html '<img class="loading_right" src="img/loading.gif" />'
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
@@ -211,18 +214,23 @@ getLines = (busField) ->
   # Get and inject possible lines for correct stop
   busStopId = Bus.getStop stopName, direction
   lines = Bus.getStopLines busStopId, (json) ->
-    # Remove duplicate lines
-    arrayOfLines = []
-    for item in json.lines
-      if -1 is arrayOfLines.indexOf String(item.line)
-        arrayOfLines.push item.line
-    # Sort lines
-    arrayOfLines = arrayOfLines.sort()
-    arrayOfLines = arrayOfLines.reverse()
-    # Add lines to bus stop
-    $(cssSelector + ' .lines').html ''
-    for line in arrayOfLines
-      $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
+    # Is result an error message?
+    if typeof json is 'string'
+      console.log 'appending error msg'
+      $(cssSelector + ' .lines').html '<span class="error">'+line+'</span>&nbsp;&nbsp;'
+    else
+      # Remove duplicate lines
+      arrayOfLines = []
+      for item in json.lines
+        if -1 is arrayOfLines.indexOf String(item.line)
+          arrayOfLines.push item.line
+      # Sort lines
+      arrayOfLines = arrayOfLines.sort()
+      arrayOfLines = arrayOfLines.reverse()
+      # Add lines to bus stop
+      $(cssSelector + ' .lines').html ''
+      for line in arrayOfLines
+        $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
@@ -243,8 +251,8 @@ saveBus = (busField) ->
   ls[busField + '_direction'] = direction
   ls[busField + '_active_lines'] = activeLines
   ls[busField + '_inactive_lines'] = inactiveLines
-  if DEBUG then alert 'activeLines', activeLines ######################################
-  if DEBUG then alert 'inactiveLines', inactiveLines ######################################
+  if DEBUG then console.log 'saving activeLines for '+busField, '"', activeLines, '"' ######################################
+  if DEBUG then console.log 'saving inactiveLines '+busField, '"', inactiveLines, '"' ######################################
   displayOnPageNotification()
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
 
@@ -254,23 +262,33 @@ loadBus = (busField) ->
   direction = ls[busField + '_direction']
   activeLines = ls[busField + '_active_lines']
   inactiveLines = ls[busField + '_inactive_lines']
+  console.log 'lol "' + activeLines+'"'
+  console.log 'rofl "' + inactiveLines+'"'
+  
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
-    if DEBUG then console.log 'loaded ' + stopName + ' to ' + busField
+    if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
+  
   if activeLines isnt undefined and inactiveLines isnt undefined
-    # Sort lines
-    lines = {}
-    for line in activeLines
-      lines[line] = true
-    for line in inactiveLines
-      lines[line] = false
-    alert 'all lines for ', cssSelector, lines
+    if activeLines isnt '' and inactiveLines isnt ''
 
-    # Add lines to bus stop
-    # $(cssSelector + ' .lines').html ''
-    # for line in arrayOfLines
-    #   $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
+      activeLines = JSON.parse activeLines # stringified array
+      inactiveLines = JSON.parse inactiveLines # stringified array
+      console.log 'lmao "' + activeLines + '"'
+      console.log 'durr "' + inactiveLines + '"'
+      # Sort lines
+      lines = {}
+      for line in activeLines
+        lines[line] = true
+      for line in inactiveLines
+        lines[line] = false
+      console.log 'all lines for '+ cssSelector+ lines
+
+      # Add lines to bus stop
+      # $(cssSelector + ' .lines').html ''
+      # for line in arrayOfLines
+      #   $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
 
 
 bindSuggestions = ->

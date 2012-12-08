@@ -226,6 +226,10 @@ header {
           color: gray;
           text-decoration: underline;
         }
+        .error {
+          color: red;
+          font-weight: normal;
+        }
         .loading_left {
           position: relative;
           width: 80px;

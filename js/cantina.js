@@ -3,7 +3,7 @@ var Cantina = {
   msg_not_open: 'Ingen publisert meny i dag',
   msg_connection_error: 'Frakoblet fra sit.no',
   msg_malformed_menu: 'Galt format på meny',
-  dinner_word_limit: 4, // 4-7 is good
+  dinner_word_limit: 4, // 4-7 is good, depends on screen size
   DINNERDEBUG: 0, // General debugging
   DINNERTEXTDEBUG: 0, // Deep debugging of dinner texts
   // Required format of DINNERDEBUGITEM: "Seirett med ris (G): 36 kroner"
@@ -23,10 +23,10 @@ var Cantina = {
       success: function(xml) {
         self.parseXml(xml, callback);
       },
+      error: function(jqXHR, err) {
+        callback(self.msg_connection_error);
+      },
     })
-    .error(function(jqXHR, err) {
-      callback(self.msg_connection_error);
-    });
   },
 
   // Private

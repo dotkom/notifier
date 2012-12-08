@@ -13,7 +13,7 @@ function fetchFeed(callback) {
 			localStorage.lastResponseData = xmlstring;
 			if (callback != undefined)
 				callback(xmlstring);
-		}
+		},
 	})
 	.fail(function() {
 		if (DEBUG) console.log('ERROR: failed to fetch news feed');
