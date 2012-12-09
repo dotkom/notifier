@@ -1,6 +1,6 @@
 // Debugging
 
-@debug: 1pt;
+@debug: 0pt;
 .debugred {
   border: @debug solid red;
 }
@@ -202,12 +202,18 @@ header {
       float: left;
       white-space: nowrap;
       input {
+        z-index: 10; /* allows the down-arrow to be painted behind this */
+        position: relative; /* allows the down-arrow to be painted behind this */
         width: 102pt;
       }
       select {
+        z-index: 10; /* allows the down-arrow to be painted behind this */
+        position: relative; /* allows the down-arrow to be painted behind this */
         width: 106pt;
       }
       .lines {
+        z-index: 10; /* allows the down-arrow to be painted behind this */
+        position: relative; /* allows the down-arrow to be painted behind this */
         width: 96pt;
         margin-top: 1pt;
         background-color: silver;
@@ -216,20 +222,26 @@ header {
         text-align: left;
         font-weight: bold;
         font-size: 12pt;
+        letter-spacing: 2pt;
         text-shadow: 0 0 0px white;
         .active {
           color: #bdba3c;
+          cursor: pointer;
+          letter-spacing: 0pt;
           text-decoration: underline;
           text-shadow: 0 0 1px black, 0 0 3px black, 0 0 5px black;
         }
         .inactive {
           color: gray;
+          cursor: pointer;
+          letter-spacing: 0pt;
           text-decoration: underline;
         }
         .error {
           color: red;
           font-size: 8pt;
           font-weight: normal;
+          letter-spacing: 0pt;
         }
         .loading_left {
           position: relative;
@@ -243,10 +255,21 @@ header {
       }
     }
     #bus_logo {
+      position: relative; /* allows the down-arrow to be painted behind this */
+      z-index: 10; /* allows the down-arrow to be painted behind this */
       float: left;
       white-space: nowrap;
       width: 33pt;
       margin: 0 8pt;
+    }
+    #arrow_down {
+      position: relative; /* paint behind other stuff */
+      z-index: 2;  /* paint behind other stuff */
+      left: -135pt;
+      top: 30pt;
+      img {
+        width: 9pt;
+      }
     }
   }
 

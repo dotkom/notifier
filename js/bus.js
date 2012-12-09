@@ -123,7 +123,7 @@ var Bus = {
     return this.stops[stopId];
   },
 
-  getStopLines: function(stopId, callback) {
+  getLines: function(stopId, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;

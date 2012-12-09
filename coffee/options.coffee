@@ -72,7 +72,7 @@ bindBusFields = (busField) ->
       $(stop).val correctStop
       $('#bus_suggestions').html ''
       getDirections busField, correctStop
-      getLines busField
+      getFavoriteLines busField
       saveBus busField
     # Several suggestions, allow the user to see them and click them for a short while
     else if suggestions.length > 1
@@ -91,7 +91,7 @@ bindBusFields = (busField) ->
       #     $(stop).val correctStop
       #     $('#bus_suggestions').html ''
       #     getDirections busField, correctStop
-      #     getLines busField
+      #     getFavoriteLines busField
       #     saveBus busField
       #     foundOne = true
       # if foundOne is false
@@ -129,7 +129,7 @@ bindBusFields = (busField) ->
         ), 1200
         # and of course, save and get directions
         getDirections busField, realStopName
-        getLines busField
+        getFavoriteLines busField
         saveBus busField
 
     # If anything else is clicked, get suggestions
@@ -170,7 +170,7 @@ bindBusFields = (busField) ->
             ), 300
           ), 1200
           getDirections busField, correctStop
-          getLines busField
+          getFavoriteLines busField
           saveBus busField
       # All characters removed, remove suggestions
       else
@@ -184,7 +184,7 @@ bindBusFields = (busField) ->
     # Save bus line if user changes the direction field
     saveBus busField
 
-  bindFavoriteBusLines(busField)
+  bindFavoriteBusLines busField
 
 bindFavoriteBusLines = (busField) ->
   cssSelector = '#' + busField
@@ -211,51 +211,66 @@ getDirections = (busField, correctStop) ->
   for i in allDirections
     $(direction).append '<option>' + i + '</option>'
 
-getLines = (busField) ->
+getFavoriteLines = (busField) ->
   cssSelector = '#' + busField
   # Loading gif
-  if busField.contains? 'first'
-    $(cssSelector + ' .lines').html '<img class="loading_left" src="img/loading.gif" />'
-  else if busField.contains? 'second'
-    $(cssSelector + ' .lines').html '<img class="loading_right" src="img/loading.gif" />'
+  if -1 isnt busField.indexOf 'first'
+    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loading_left" src="img/loading-atb.gif" /></div>'
+  else if -1 isnt busField.indexOf 'second'
+    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loading_right" src="img/loading-atb.gif" /></div>'
+
+  # Show it
+  $('#bus_box .lines').slideDown()
+
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
   busStopId = Bus.getStop stopName, direction
+
   # Get and inject possible lines for correct stop
   busStopId = Bus.getStop stopName, direction
-  lines = Bus.getStopLines busStopId, (json) ->
+  lines = Bus.getLines busStopId, (json) ->
+
     # Is result an error message?
     if typeof json is 'string'
       console.log 'appending error msg'
-      $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>&nbsp;&nbsp;'
+      $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>&nbsp;'
     else
-      # Remove duplicate lines
+      # Sort lines and remove duplicates
       arrayOfLines = []
       for item in json.lines
-        if -1 is arrayOfLines.indexOf String(item.line)
-          arrayOfLines.push item.line
-      # Sort lines
-      arrayOfLines = arrayOfLines.sort()
-      arrayOfLines = arrayOfLines.reverse()
+        if -1 is arrayOfLines.indexOf Number item.line
+          # Casting strings to numbers to make them easily sortable
+          arrayOfLines.push Number item.line
+      arrayOfLines = arrayOfLines.sort (a,b) -> return a-b
+      
       # Add lines to bus stop
       $(cssSelector + ' .lines').html ''
       for line in arrayOfLines
         $(cssSelector + ' .lines').append '<span class="line active">'+line+'</span>&nbsp;&nbsp;'
 
+      # Save the newly added lines
+      saveBus busField
+
+      # Make the bus lines clickable
+      bindFavoriteBusLines busField
+
 saveBus = (busField) ->
   cssSelector = '#' + busField
+  
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
   busStopId = Bus.getStop stopName, direction
+  
   # Get active/inactive lines
   activeLines = []
   $(cssSelector + ' .lines .active').each ->
-    activeLines.push $(this).text()
+    activeLines.push Number $(this).text()
   inactiveLines = []
   $(cssSelector + ' .lines .inactive').each ->
-    inactiveLines.push $(this).text()
+    inactiveLines.push Number $(this).text()
+  
   # Save all to localStorage
   ls[busField] = busStopId
   ls[busField + '_name'] = stopName
@@ -282,7 +297,10 @@ loadBus = (busField) ->
   
   # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
-    if activeLines isnt '' and inactiveLines isnt ''
+    # If the page just opened and there are no favorite lines then get some
+    if activeLines is '' and inactiveLines is ''
+      getFavoriteLines busField
+    else
       activeLines = JSON.parse activeLines # stringified array
       inactiveLines = JSON.parse inactiveLines # stringified array
       # Collect active and inactive lines to a single dict
@@ -319,7 +337,7 @@ bindSuggestions = ->
       text = $(this).text()
       $('#' + ls.busInFocus + ' input').val text
       getDirections ls.busInFocus, text
-      getLines ls.busInFocus
+      getFavoriteLines ls.busInFocus
       saveBus ls.busInFocus
       $('#bus_suggestions .suggestion').fadeOut 50, ->
         $('#bus_suggestions').html ''
@@ -427,7 +445,7 @@ fadeInCanvas = ->
 
 # Document ready, go!
 $ ->
-  # if DEBUG then less.watch() # not needed when using CodeKit
+  if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
 
   # Restore checks to boxes from localStorage
