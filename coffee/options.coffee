@@ -41,8 +41,6 @@ bindBusFields = (busField) ->
 
   stop = $(cssSelector + ' input')
   direction = $(cssSelector + ' select')
-  activeLines = $(cssSelector + ' .lines .active') # array of spans with bus lines
-  inactiveLines = $(cssSelector + ' .lines .inactive') # array of spans with bus lines
 
   # Load users saved buses
   loadBus busField
@@ -186,15 +184,16 @@ bindBusFields = (busField) ->
     # Save bus line if user changes the direction field
     saveBus busField
 
-  $(activeLines).click ->
+  $(cssSelector + ' .lines .line').click ->
 
-    # WAT is dis
-    console.log 'activelines', this ################################################################
-
-  $(inactiveLines).click ->
-
-    # AND DIS
-    console.log 'inactivelines?', this ################################################################
+    # Switch status and save
+    if $(this).hasClass 'active'
+      $(this).attr 'class', 'inactive'
+    else if $(this).hasClass 'inactive'
+      $(this).attr 'class', 'active'
+    else
+      console.log 'ERROR: faulty favorite bus line <span>, lacking both CSS classes "active" and "inactive"'
+    saveBus busField
 
 getDirections = (busField, correctStop) ->
   cssSelector = '#' + busField
@@ -236,7 +235,7 @@ getLines = (busField) ->
       # Add lines to bus stop
       $(cssSelector + ' .lines').html ''
       for line in arrayOfLines
-        $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
+        $(cssSelector + ' .lines').append '<span class="line active">'+line+'</span>&nbsp;&nbsp;'
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
@@ -255,12 +254,12 @@ saveBus = (busField) ->
   ls[busField] = busStopId
   ls[busField + '_name'] = stopName
   ls[busField + '_direction'] = direction
-  ls[busField + '_active_lines'] = activeLines
-  ls[busField + '_inactive_lines'] = inactiveLines
-  if DEBUG then console.log 'saving activeLines for '+busField, '"', activeLines, '"' ######################################
-  if DEBUG then console.log 'saving inactiveLines '+busField, '"', inactiveLines, '"' ######################################
-  displayOnPageNotification()
+  ls[busField + '_active_lines'] = JSON.stringify activeLines
+  ls[busField + '_inactive_lines'] = JSON.stringify inactiveLines
+  if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"' ######################################
+  if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"' ######################################
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
+  displayOnPageNotification()
 
 loadBus = (busField) ->
   cssSelector = '#' + busField
@@ -278,23 +277,25 @@ loadBus = (busField) ->
   # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
     if activeLines isnt '' and inactiveLines isnt ''
-
       activeLines = JSON.parse activeLines # stringified array
       inactiveLines = JSON.parse inactiveLines # stringified array
-
-      # Sort lines
+      # Collect active and inactive lines to a single dict
       lines = {}
       for line in activeLines
         lines[line] = true
       for line in inactiveLines
         lines[line] = false
-      console.log 'all lines for '+ cssSelector, lines
-
+      # Sort the dict by keys (bus line numbers sorted in ascending order)
+      keys = []
+      for i of lines
+        keys.push i
+      keys = keys.sort (a,b) ->
+        return a - b
       # Add lines to bus stop
-      # $(cssSelector + ' .lines').html ''
-      # for line in arrayOfLines
-      #   $(cssSelector + ' .lines').append '<span class="active">'+line+'</span>&nbsp;&nbsp;'
-
+      $(cssSelector + ' .lines').html ''
+      for i in keys
+        status = if lines[i] is true then 'active' else 'inactive'
+        $(cssSelector + ' .lines').append '<span class="line '+status+'">'+i+'</span>&nbsp;&nbsp;'
 
 bindSuggestions = ->
   $('.suggestion').click ->

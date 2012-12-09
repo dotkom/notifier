@@ -59,7 +59,7 @@
   };
 
   bindBusFields = function(busField) {
-    var activeLines, cssSelector, direction, fadeTime, inactiveLines, stop;
+    var cssSelector, direction, fadeTime, stop;
     cssSelector = '#' + busField;
     if (DEBUG) {
       console.log('Binding bus fields for ' + cssSelector);
@@ -67,8 +67,6 @@
     fadeTime = 50;
     stop = $(cssSelector + ' input');
     direction = $(cssSelector + ' select');
-    activeLines = $(cssSelector + ' .lines .active');
-    inactiveLines = $(cssSelector + ' .lines .inactive');
     loadBus(busField);
     $(stop).focus(function() {
       if (DEBUG) {
@@ -188,11 +186,15 @@
     $(direction).change(function() {
       return saveBus(busField);
     });
-    $(activeLines).click(function() {
-      return console.log('activelines', this);
-    });
-    return $(inactiveLines).click(function() {
-      return console.log('inactivelines?', this);
+    return $(cssSelector + ' .lines .line').click(function() {
+      if ($(this).hasClass('active')) {
+        $(this).attr('class', 'inactive');
+      } else if ($(this).hasClass('inactive')) {
+        $(this).attr('class', 'active');
+      } else {
+        console.log('ERROR: faulty favorite bus line <span>, lacking both CSS classes "active" and "inactive"');
+      }
+      return saveBus(busField);
     });
   };
 
@@ -243,7 +245,7 @@
         _results = [];
         for (_j = 0, _len1 = arrayOfLines.length; _j < _len1; _j++) {
           line = arrayOfLines[_j];
-          _results.push($(cssSelector + ' .lines').append('<span class="active">' + line + '</span>&nbsp;&nbsp;'));
+          _results.push($(cssSelector + ' .lines').append('<span class="line active">' + line + '</span>&nbsp;&nbsp;'));
         }
         return _results;
       }
@@ -267,29 +269,27 @@
     ls[busField] = busStopId;
     ls[busField + '_name'] = stopName;
     ls[busField + '_direction'] = direction;
-    ls[busField + '_active_lines'] = activeLines;
-    ls[busField + '_inactive_lines'] = inactiveLines;
+    ls[busField + '_active_lines'] = JSON.stringify(activeLines);
+    ls[busField + '_inactive_lines'] = JSON.stringify(inactiveLines);
     if (DEBUG) {
-      console.log('saving activeLines for ' + busField, '"', activeLines, '"');
+      console.log('saved activeLines for ' + busField, '"', activeLines, '"');
     }
     if (DEBUG) {
-      console.log('saving inactiveLines ' + busField, '"', inactiveLines, '"');
+      console.log('saved inactiveLines ' + busField, '"', inactiveLines, '"');
     }
-    displayOnPageNotification();
     if (DEBUG) {
-      return console.log('saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466');
+      console.log('saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466');
     }
+    return displayOnPageNotification();
   };
 
   loadBus = function(busField) {
-    var activeLines, cssSelector, direction, inactiveLines, line, lines, stopName, _i, _j, _len, _len1;
+    var activeLines, cssSelector, direction, i, inactiveLines, keys, line, lines, status, stopName, _i, _j, _k, _len, _len1, _len2, _results;
     cssSelector = '#' + busField;
     stopName = ls[busField + '_name'];
     direction = ls[busField + '_direction'];
     activeLines = ls[busField + '_active_lines'];
     inactiveLines = ls[busField + '_inactive_lines'];
-    console.log('lol "' + activeLines + '"');
-    console.log('rofl "' + inactiveLines + '"');
     if (stopName !== void 0 && direction !== void 0) {
       $(cssSelector + ' input').val(stopName);
       $(cssSelector + ' select').val(direction);
@@ -301,8 +301,6 @@
       if (activeLines !== '' && inactiveLines !== '') {
         activeLines = JSON.parse(activeLines);
         inactiveLines = JSON.parse(inactiveLines);
-        console.log('lmao "' + activeLines + '"');
-        console.log('durr "' + inactiveLines + '"');
         lines = {};
         for (_i = 0, _len = activeLines.length; _i < _len; _i++) {
           line = activeLines[_i];
@@ -312,7 +310,21 @@
           line = inactiveLines[_j];
           lines[line] = false;
         }
-        return console.log('all lines for ' + cssSelector, lines);
+        keys = [];
+        for (i in lines) {
+          keys.push(i);
+        }
+        keys = keys.sort(function(a, b) {
+          return a - b;
+        });
+        $(cssSelector + ' .lines').html('');
+        _results = [];
+        for (_k = 0, _len2 = keys.length; _k < _len2; _k++) {
+          i = keys[_k];
+          status = lines[i] === true ? 'active' : 'inactive';
+          _results.push($(cssSelector + ' .lines').append('<span class="line ' + status + '">' + i + '</span>&nbsp;&nbsp;'));
+        }
+        return _results;
       }
     }
   };

@@ -185,8 +185,7 @@ header {
   }
 
   #bus_box {
-    width: 265pt; /*260pt*/
-    height: 90pt; /*34pt*/
+    width: 280pt; /*260pt*/
     margin: 5pt 0 0 15pt;
     overflow: hidden;
     border-top: 1pt solid white;
@@ -201,15 +200,14 @@ header {
       float: left;
       white-space: nowrap;
       input {
-        width: 100pt;
+        width: 50pt;
       }
       select {
-        width: 104pt;
+        width: 55pt;
       }
       .lines {
         .debuglime;
         max-width: 104pt;
-        height: 50pt;
         margin-top: 1pt;
         white-space: normal;
         overflow-wrap: break-word;
