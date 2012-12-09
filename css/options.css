@@ -34,7 +34,7 @@ body {
   overflow: hidden;
 
   #background {
-    /* using a div because the background needs to be resized
+    /* using a div for bg image because the background needs to be resized
     if the display is really big (1500px-2000px in width or height) */
     background: url('/img/background-medium.png') center center no-repeat;
     position: fixed;
@@ -46,7 +46,7 @@ body {
   }
 }
 
-/* the logo, subtext and saved notifcations */
+/* the logo, subtext and saved notifcation */
 
 header {
   .debugred;
@@ -137,7 +137,7 @@ header {
   }
 }
 
-/* An option item */
+/* an option item */
 
 .item {
   .debuglime;
@@ -184,8 +184,10 @@ header {
     background: white;
   }
 
+  /* the bus option in particular */
+
   #bus_box {
-    width: 280pt; /*260pt*/
+    width: 265pt; /*260pt*/
     margin: 5pt 0 0 15pt;
     overflow: hidden;
     border-top: 1pt solid white;
@@ -194,24 +196,24 @@ header {
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
     padding: 6pt 8pt;
     white-space: nowrap;
+    word-wrap: break-word;
 
     .bus_stop {
-      .debugred;
       float: left;
       white-space: nowrap;
       input {
-        width: 50pt;
+        width: 102pt;
       }
       select {
-        width: 55pt;
+        width: 106pt;
       }
       .lines {
-        .debuglime;
-        max-width: 104pt;
+        width: 96pt;
         margin-top: 1pt;
+        background-color: silver;
+        padding: 0 5pt 3pt 5pt;
         white-space: normal;
-        overflow-wrap: break-word;
-        text-align: center;
+        text-align: left;
         font-weight: bold;
         font-size: 12pt;
         text-shadow: 0 0 0px white;
@@ -247,6 +249,8 @@ header {
       margin: 0 8pt;
     }
   }
+
+  /* the infoscreen option in particular */
 
   #infoscreen_preview {
     display: none;

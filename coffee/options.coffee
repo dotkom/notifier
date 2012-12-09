@@ -184,6 +184,12 @@ bindBusFields = (busField) ->
     # Save bus line if user changes the direction field
     saveBus busField
 
+  bindFavoriteBusLines(busField)
+
+bindFavoriteBusLines = (busField) ->
+  cssSelector = '#' + busField
+
+  # Switch status on click
   $(cssSelector + ' .lines .line').click ->
 
     # Switch status and save
@@ -192,7 +198,7 @@ bindBusFields = (busField) ->
     else if $(this).hasClass 'inactive'
       $(this).attr 'class', 'active'
     else
-      console.log 'ERROR: faulty favorite bus line <span>, lacking both CSS classes "active" and "inactive"'
+      console.log 'ERROR: favorite bus line <span> with neither .active nor .inactive'
     saveBus busField
 
 getDirections = (busField, correctStop) ->
@@ -296,6 +302,16 @@ loadBus = (busField) ->
       for i in keys
         status = if lines[i] is true then 'active' else 'inactive'
         $(cssSelector + ' .lines').append '<span class="line '+status+'">'+i+'</span>&nbsp;&nbsp;'
+
+slideFavoriteBusLines = ->
+  # Hide the favorite bus line spans from the start
+  $('#bus_box .lines').slideUp()
+
+  # Show favorite bus line spans when hovering
+  $('#bus_box').mouseenter ->
+    $('#bus_box .lines').slideDown()
+  $('#bus_box').mouseleave ->
+    $('#bus_box .lines').slideUp()
 
 bindSuggestions = ->
   $('.suggestion').click ->
@@ -411,7 +427,7 @@ fadeInCanvas = ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then less.watch() # not needed when using CodeKit
+  # if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
 
   # Restore checks to boxes from localStorage
@@ -451,6 +467,9 @@ $ ->
   # Give user suggestions for autocomplete of bus stops
   bindBusFields 'first_bus'
   bindBusFields 'second_bus'
+
+  # Slide away favorite bus lines when not needed to conserve space
+  slideFavoriteBusLines()
 
   # Bind the infoscreen option to an avgrund.js modal dialog
   # $('#useInfoscreen').avgrund
