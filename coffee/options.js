@@ -255,7 +255,12 @@
           $(cssSelector + ' .lines').append('<span class="line active">' + line + '</span>&nbsp;&nbsp;');
         }
         saveBus(busField);
-        return bindFavoriteBusLines(busField);
+        bindFavoriteBusLines(busField);
+        return setTimeout((function() {
+          if (!$('#bus_box').is(':hover')) {
+            return $('#bus_box .lines').slideUp();
+          }
+        }), 2500);
       }
     });
   };
@@ -340,12 +345,23 @@
   };
 
   slideFavoriteBusLines = function() {
-    $('#bus_box .lines').slideUp();
+    setTimeout((function() {
+      if (!$('#bus_box').is(':hover')) {
+        return $('#bus_box .lines').slideUp();
+      }
+    }), 1500);
     $('#bus_box').mouseenter(function() {
+      clearTimeout($(this).data('timeoutId'));
       return $('#bus_box .lines').slideDown();
     });
     return $('#bus_box').mouseleave(function() {
-      return $('#bus_box .lines').slideUp();
+      var timeoutId;
+      timeoutId = setTimeout((function() {
+        if ($('#bus_box .lines img').length === 0) {
+          return $('#bus_box .lines').slideUp();
+        }
+      }), 750);
+      return $('#bus_box').data('timeoutId', timeoutId);
     });
   };
 
@@ -476,9 +492,6 @@
   };
 
   $(function() {
-    if (DEBUG) {
-      less.watch();
-    }
     if (DEBUG) {
       $('#debug_links').show();
     }

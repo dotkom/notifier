@@ -256,10 +256,10 @@ getFavoriteLines = (busField) ->
       bindFavoriteBusLines busField
 
       # Hide the favorite lines after a short timeout
-      # setTimeout ( ->
-      #   if 
-      #   $('#bus_box .lines').slideDown()
-      # ), 3500
+      setTimeout ( ->
+        if not $('#bus_box').is ':hover'
+          $('#bus_box .lines').slideUp()
+      ), 2500
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
@@ -329,13 +329,22 @@ loadBus = (busField) ->
 
 slideFavoriteBusLines = ->
   # Hide the favorite bus line spans from the start
-  $('#bus_box .lines').slideUp()
+  setTimeout (->
+    if not $('#bus_box').is ':hover'
+      $('#bus_box .lines').slideUp()
+  ), 1500
 
   # Show favorite bus line spans when hovering
   $('#bus_box').mouseenter ->
+    clearTimeout $(this).data 'timeoutId'
     $('#bus_box .lines').slideDown()
   $('#bus_box').mouseleave ->
-    $('#bus_box .lines').slideUp()
+    timeoutId = setTimeout (->
+      if $('#bus_box .lines img').length is 0 # currently displaying loading gifs?
+        $('#bus_box .lines').slideUp()
+    ), 750
+    # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
+    $('#bus_box').data 'timeoutId', timeoutId
 
 bindSuggestions = ->
   $('.suggestion').click ->
@@ -451,7 +460,7 @@ fadeInCanvas = ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then less.watch() # not needed when using CodeKit
+  # if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
 
   # Restore checks to boxes from localStorage
