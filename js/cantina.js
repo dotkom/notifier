@@ -23,7 +23,7 @@ var Cantina = {
       success: function(xml) {
         self.parseXml(xml, callback);
       },
-      error: function(jqXHR, err) {
+      error: function(jqXHR, text, err) {
         callback(self.msg_connection_error);
       },
     })

@@ -228,6 +228,7 @@ header {
         }
         .error {
           color: red;
+          font-size: 8pt;
           font-weight: normal;
         }
         .loading_left {

@@ -137,7 +137,7 @@ var Bus = {
         callback(json);
         // parser(json, requestedType, callback);
       },
-      error: function(jqXHR, err) {
+      error: function(jqXHR, text, err) {
         callback('Frakoblet fra api.visuweb.no');
       },
     });
@@ -158,7 +158,7 @@ var Bus = {
       success: function(json) {
         parser(json, requestedType, callback);
       },
-      error: function(jqXHR, err) {
+      error: function(jqXHR, text, err) {
         callback('Frakoblet fra api.visuweb.no');
       },
     });

@@ -14,10 +14,10 @@ function fetchFeed(callback) {
 			if (callback != undefined)
 				callback(xmlstring);
 		},
-	})
-	.fail(function() {
-		if (DEBUG) console.log('ERROR: failed to fetch news feed');
-		callback();
+		error: function(jqXHR, text, err) {
+			if (DEBUG) console.log('ERROR: failed to fetch news feed');
+			callback();
+		},
 	});
 }
 

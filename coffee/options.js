@@ -59,7 +59,7 @@
   };
 
   bindBusFields = function(busField) {
-    var cssSelector, direction, fadeTime, lines, stop;
+    var activeLines, cssSelector, direction, fadeTime, inactiveLines, stop;
     cssSelector = '#' + busField;
     if (DEBUG) {
       console.log('Binding bus fields for ' + cssSelector);
@@ -67,7 +67,8 @@
     fadeTime = 50;
     stop = $(cssSelector + ' input');
     direction = $(cssSelector + ' select');
-    lines = $(cssSelector + ' .lines .line');
+    activeLines = $(cssSelector + ' .lines .active');
+    inactiveLines = $(cssSelector + ' .lines .inactive');
     loadBus(busField);
     $(stop).focus(function() {
       if (DEBUG) {
@@ -187,8 +188,11 @@
     $(direction).change(function() {
       return saveBus(busField);
     });
-    return $(lines).click(function() {
-      return console.log(this);
+    $(activeLines).click(function() {
+      return console.log('activelines', this);
+    });
+    return $(inactiveLines).click(function() {
+      return console.log('inactivelines?', this);
     });
   };
 
@@ -223,7 +227,7 @@
       var arrayOfLines, item, line, _i, _j, _len, _len1, _ref, _results;
       if (typeof json === 'string') {
         console.log('appending error msg');
-        return $(cssSelector + ' .lines').html('<span class="error">' + line + '</span>&nbsp;&nbsp;');
+        return $(cssSelector + ' .lines').html('<span class="error">' + json + '</span>&nbsp;&nbsp;');
       } else {
         arrayOfLines = [];
         _ref = json.lines;
@@ -308,7 +312,7 @@
           line = inactiveLines[_j];
           lines[line] = false;
         }
-        return console.log('all lines for ' + cssSelector + lines);
+        return console.log('all lines for ' + cssSelector, lines);
       }
     }
   };

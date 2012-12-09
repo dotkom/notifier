@@ -41,7 +41,8 @@ bindBusFields = (busField) ->
 
   stop = $(cssSelector + ' input')
   direction = $(cssSelector + ' select')
-  lines = $(cssSelector + ' .lines .line') # array of spans with bus lines
+  activeLines = $(cssSelector + ' .lines .active') # array of spans with bus lines
+  inactiveLines = $(cssSelector + ' .lines .inactive') # array of spans with bus lines
 
   # Load users saved buses
   loadBus busField
@@ -185,10 +186,15 @@ bindBusFields = (busField) ->
     # Save bus line if user changes the direction field
     saveBus busField
 
-  $(lines).click ->
+  $(activeLines).click ->
 
     # WAT is dis
-    console.log this ################################################################
+    console.log 'activelines', this ################################################################
+
+  $(inactiveLines).click ->
+
+    # AND DIS
+    console.log 'inactivelines?', this ################################################################
 
 getDirections = (busField, correctStop) ->
   cssSelector = '#' + busField
@@ -217,7 +223,7 @@ getLines = (busField) ->
     # Is result an error message?
     if typeof json is 'string'
       console.log 'appending error msg'
-      $(cssSelector + ' .lines').html '<span class="error">'+line+'</span>&nbsp;&nbsp;'
+      $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>&nbsp;&nbsp;'
     else
       # Remove duplicate lines
       arrayOfLines = []
@@ -262,28 +268,27 @@ loadBus = (busField) ->
   direction = ls[busField + '_direction']
   activeLines = ls[busField + '_active_lines']
   inactiveLines = ls[busField + '_inactive_lines']
-  console.log 'lol "' + activeLines+'"'
-  console.log 'rofl "' + inactiveLines+'"'
-  
+
+  # Add stopname and direction to busfields
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
     if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
   
+  # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
     if activeLines isnt '' and inactiveLines isnt ''
 
       activeLines = JSON.parse activeLines # stringified array
       inactiveLines = JSON.parse inactiveLines # stringified array
-      console.log 'lmao "' + activeLines + '"'
-      console.log 'durr "' + inactiveLines + '"'
+
       # Sort lines
       lines = {}
       for line in activeLines
         lines[line] = true
       for line in inactiveLines
         lines[line] = false
-      console.log 'all lines for '+ cssSelector+ lines
+      console.log 'all lines for '+ cssSelector, lines
 
       # Add lines to bus stop
       # $(cssSelector + ' .lines').html ''
