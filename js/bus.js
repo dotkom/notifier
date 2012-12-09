@@ -135,10 +135,9 @@ var Bus = {
       dataType: 'json',
       success: function(json) {
         callback(json);
-        // parser(json, requestedType, callback);
       },
       error: function(jqXHR, text, err) {
-        callback('Frakoblet fra api.visuweb.no');
+        callback('Frakoblet :(');
       },
     });
   },
@@ -176,7 +175,7 @@ var Bus = {
 
     if (typeof departures == 'string') {
       // Change the API-key, response is most likely "{departures: unauthorized}"
-      callback('Feil i tilkobling');
+      callback('Tilkoblingsfeil :(');
       return;
     }
 
@@ -254,7 +253,7 @@ var Bus = {
 
     if (typeof departures == 'string') {
       // Change the API-key, response is most likely "{departures: unauthorized}"
-      callback('Feil i tilkobling');
+      callback('En feil oppsto');
       return;
     }
 

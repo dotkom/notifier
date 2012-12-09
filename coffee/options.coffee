@@ -221,6 +221,7 @@ getFavoriteLines = (busField) ->
 
   # Show it
   $('#bus_box .lines').slideDown()
+  $('#bus_box #arrow_down').fadeOut()
 
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
@@ -233,7 +234,6 @@ getFavoriteLines = (busField) ->
 
     # Is result an error message?
     if typeof json is 'string'
-      console.log 'appending error msg'
       $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>&nbsp;'
     else
       # Sort lines and remove duplicates
@@ -255,11 +255,12 @@ getFavoriteLines = (busField) ->
       # Make the bus lines clickable
       bindFavoriteBusLines busField
 
-      # Hide the favorite lines after a short timeout
-      setTimeout ( ->
-        if not $('#bus_box').is ':hover'
-          $('#bus_box .lines').slideUp()
-      ), 2500
+    # Hide the favorite lines after a short timeout
+    setTimeout ( ->
+      if not $('#bus_box').is ':hover'
+        $('#bus_box .lines').slideUp()
+        $('#bus_box #arrow_down').fadeIn()
+    ), 2500
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
@@ -332,16 +333,19 @@ slideFavoriteBusLines = ->
   setTimeout (->
     if not $('#bus_box').is ':hover'
       $('#bus_box .lines').slideUp()
+      $('#bus_box #arrow_down').fadeIn()
   ), 1500
 
   # Show favorite bus line spans when hovering
   $('#bus_box').mouseenter ->
     clearTimeout $(this).data 'timeoutId'
     $('#bus_box .lines').slideDown()
+    $('#bus_box #arrow_down').fadeOut()
   $('#bus_box').mouseleave ->
     timeoutId = setTimeout (->
       if $('#bus_box .lines img').length is 0 # currently displaying loading gifs?
         $('#bus_box .lines').slideUp()
+        $('#bus_box #arrow_down').fadeIn()
     ), 500
     # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
     $('#bus_box').data 'timeoutId', timeoutId

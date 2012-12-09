@@ -237,10 +237,11 @@ header {
           text-decoration: underline;
         }
         .error {
-          color: red;
-          font-size: 8pt;
-          font-weight: normal;
+          color: black;
+          font-weight: bold;
+          font-size: 10pt;
           letter-spacing: 0pt;
+          text-align: center;
         }
         .loading_left {
           position: relative;

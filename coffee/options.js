@@ -228,6 +228,7 @@
       $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loading_right" src="img/loading-atb.gif" /></div>');
     }
     $('#bus_box .lines').slideDown();
+    $('#bus_box #arrow_down').fadeOut();
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Bus.getStop(stopName, direction);
@@ -235,8 +236,7 @@
     return lines = Bus.getLines(busStopId, function(json) {
       var arrayOfLines, item, line, _i, _j, _len, _len1, _ref;
       if (typeof json === 'string') {
-        console.log('appending error msg');
-        return $(cssSelector + ' .lines').html('<span class="error">' + json + '</span>&nbsp;');
+        $(cssSelector + ' .lines').html('<span class="error">' + json + '</span>&nbsp;');
       } else {
         arrayOfLines = [];
         _ref = json.lines;
@@ -256,12 +256,13 @@
         }
         saveBus(busField);
         bindFavoriteBusLines(busField);
-        return setTimeout((function() {
-          if (!$('#bus_box').is(':hover')) {
-            return $('#bus_box .lines').slideUp();
-          }
-        }), 2500);
       }
+      return setTimeout((function() {
+        if (!$('#bus_box').is(':hover')) {
+          $('#bus_box .lines').slideUp();
+          return $('#bus_box #arrow_down').fadeIn();
+        }
+      }), 2500);
     });
   };
 
@@ -347,18 +348,21 @@
   slideFavoriteBusLines = function() {
     setTimeout((function() {
       if (!$('#bus_box').is(':hover')) {
-        return $('#bus_box .lines').slideUp();
+        $('#bus_box .lines').slideUp();
+        return $('#bus_box #arrow_down').fadeIn();
       }
     }), 1500);
     $('#bus_box').mouseenter(function() {
       clearTimeout($(this).data('timeoutId'));
-      return $('#bus_box .lines').slideDown();
+      $('#bus_box .lines').slideDown();
+      return $('#bus_box #arrow_down').fadeOut();
     });
     return $('#bus_box').mouseleave(function() {
       var timeoutId;
       timeoutId = setTimeout((function() {
         if ($('#bus_box .lines img').length === 0) {
-          return $('#bus_box .lines').slideUp();
+          $('#bus_box .lines').slideUp();
+          return $('#bus_box #arrow_down').fadeIn();
         }
       }), 500);
       return $('#bus_box').data('timeoutId', timeoutId);
