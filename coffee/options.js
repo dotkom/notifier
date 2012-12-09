@@ -360,7 +360,7 @@
         if ($('#bus_box .lines img').length === 0) {
           return $('#bus_box .lines').slideUp();
         }
-      }), 750);
+      }), 500);
       return $('#bus_box').data('timeoutId', timeoutId);
     });
   };

@@ -215,7 +215,8 @@ header {
         width: 96pt;
         margin-top: 1pt;
         background-color: silver;
-        padding: 0 5pt 3pt 5pt;
+        border-radius: 3pt;
+        padding: 3pt 5pt 3pt 5pt;
         white-space: normal;
         text-align: left;
         font-weight: bold;

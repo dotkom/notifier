@@ -342,7 +342,7 @@ slideFavoriteBusLines = ->
     timeoutId = setTimeout (->
       if $('#bus_box .lines img').length is 0 # currently displaying loading gifs?
         $('#bus_box .lines').slideUp()
-    ), 750
+    ), 500
     # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
     $('#bus_box').data 'timeoutId', timeoutId
 
