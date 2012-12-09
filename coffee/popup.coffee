@@ -55,42 +55,62 @@ clickDinnerLink = (cssSelector, url) ->
     chrome.tabs.create({url: url})
     window.close()
 
+
 updateBus = ->
   if DEBUG then console.log 'updateBus'
 
   if !navigator.onLine
-    $('#bus #left .name').html ls.first_bus_name
-    $('#bus #right .name').html ls.second_bus_name
-    $('#bus #left .first .line').html 'Frakoblet fra api.visuweb.no'
-    $('#bus #right .first .line').html 'Frakoblet fra api.visuweb.no'
-
+    $('#bus #first_bus .name').html ls.first_bus_name
+    $('#bus #second_bus .name').html ls.second_bus_name
+    $('#bus #first_bus .first .line').html 'Frakoblet fra api.visuweb.no'
+    $('#bus #second_bus .first .line').html 'Frakoblet fra api.visuweb.no'
+  
   else
-    first_stop_name = ls.first_bus_name
-    second_stop_name = ls.second_bus_name
-    amountOfLines = 3;
+    createBusDataRequest('first_bus', '#first_bus')
+    createBusDataRequest('second_bus', '#second_bus')
 
-    Bus.getAnyLines ls.first_bus, amountOfLines, (lines) ->
-      insertBusInfo lines, first_stop_name, '#left'
-    Bus.getAnyLines ls.second_bus, amountOfLines, (lines) ->
-      insertBusInfo lines, second_stop_name, '#right'
+createBusDataRequest = (bus, cssIdentificator) ->
+  amountOfLines = 3 # only 3 lines per bus stop in the popup
+  activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
+  
+  # Get requested lines
+  if activeLines isnt undefined and activeLines isnt '' # empty string if user deactivated all bus lines like an idiot, or if bus stop is unused
+    activeLines = JSON.parse activeLines
+    # requestedLines = {}
+    # for line in activeLines
+    #   requestedLines[line] = amountOfLines
+    Bus.getRequestedLines ls[bus], activeLines, (lines) ->
+      insertBusInfo lines, ls[bus+'_name'], cssIdentificator
+  # Get any lines
+  if activeLines is undefined or activeLines is ''
+    Bus.getAnyLines ls[bus], amountOfLines, (lines) ->
+      insertBusInfo lines, ls[bus+'_name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
+  console.log lines
+  ls.LOL = JSON.stringify lines
+  busStop = $('#bus '+cssIdentificator)
+  
   if typeof lines is 'string'
     # lines is an error message
-    $('#bus '+cssIdentificator+' .name').html stopName
-    $('#bus '+cssIdentificator+' .first .line').html lines
+    $(busStop+' .name').html stopName
+    $(busStop+' .line').html ''
+    $(busStop+' .time').html ''
+    $(busStop+' .first .line').html lines
   else
-    $('#bus '+cssIdentificator+' .name').html stopName
+    $(busStop+' .name').html stopName
     spans = ['.first', '.second', '.third']
     counter = 0
 
     if lines['departures'].length is 0
-      $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html '<i>....zzzZZZzzz....</i>'
+      $(busStop+' .line').html ''
+      $(busStop+' .time').html ''
+      $(busStop+' '+spans[0]+' .line').html '<i>....zzzZZZzzz....</i>'
     else
       for i of lines['departures']
         # Add the current line
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .time').html lines['departures'][i]
+        $(busStop+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
+        $(busStop+' '+spans[counter]+' .time').html lines['departures'][i]
         counter++
 
 updateNews = ->

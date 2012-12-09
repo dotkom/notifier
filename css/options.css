@@ -1,6 +1,6 @@
 // Debugging
 
-@debug: 0pt;
+@debug: 1pt;
 .debugred {
   border: @debug solid red;
 }
@@ -123,17 +123,12 @@ header {
     white-space: nowrap;
   }
 
-  #left {
+  #first_bus {
     .debugyellow;
-    width: 54%;
-    padding-top: 5pt;
   }
 
-  #right {
+  #second_bus {
     .debugred;
-    width: 42%;
-    /*padding-top: 9pt;*/
-    padding-top: 5pt;
   }
 }
 
