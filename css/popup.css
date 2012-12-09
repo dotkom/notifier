@@ -1,7 +1,7 @@
 
 // Debugging
 
-@debug: 1pt;
+@debug: 0pt;
 .debugred {
   border: @debug solid red;
 }

@@ -1,6 +1,6 @@
 // Debugging
 
-@debug: 1pt;
+@debug: 0pt;
 .debugred {
   border: @debug solid red;
 }
@@ -123,12 +123,17 @@ header {
     white-space: nowrap;
   }
 
-  #first_bus {
+  #left {
     .debugyellow;
+    width: 54%;
+    padding-top: 5pt;
   }
 
-  #second_bus {
+  #right {
     .debugred;
+    width: 42%;
+    /*padding-top: 9pt;*/
+    padding-top: 5pt;
   }
 }
 
@@ -197,8 +202,6 @@ header {
       float: left;
       white-space: nowrap;
       input {
-        z-index: 10; /* allows the down-arrow to be painted behind this */
-        position: relative; /* allows the down-arrow to be painted behind this */
         width: 102pt;
       }
       select {
@@ -261,7 +264,7 @@ header {
       position: relative; /* paint behind other stuff */
       z-index: 2;  /* paint behind other stuff */
       left: -135pt;
-      top: 30pt;
+      top: 28pt;
       img {
         width: 9pt;
       }

@@ -7,12 +7,12 @@ var Bus = {
 
   // Public
 
-  getAnyLines: function(stopId, amountOfLines, callback) {
-    this.ajax(stopId, this.parseForAnyLines, amountOfLines, callback);
+  getAnyLines: function(stopId, nLines, callback) {
+    this.ajax(this.parseForAnyLines, stopId, nLines, callback);
   },
 
-  getRequestedLines: function(stopId, requestedLines, callback) {
-    this.ajax(stopId, this.parseForRequestedLines, requestedLines, callback);
+  getFavoriteLines: function(stopId, favoriteLines, callback) {
+    this.ajax(this.parseForFavoriteLines, stopId, favoriteLines, callback);
   },
 
   getStop: function(stopName, direction) {
@@ -145,7 +145,7 @@ var Bus = {
 
   // Private
 
-  ajax: function(stopId, parser, requestedType, callback) {
+  ajax: function(parser, stopId, requestedType, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
@@ -164,7 +164,7 @@ var Bus = {
     });
   },
 
-  parseForAnyLines: function(json, amountOfLines, callback) {
+  parseForAnyLines: function(json, nLines, callback) {
 
     // Create a map with an array of departures for each bus line
     var lines = {};
@@ -183,7 +183,7 @@ var Bus = {
     var count = 0;
     for (i in departures) {
 
-      if (count >= amountOfLines)
+      if (count >= nLines)
         break;
       else
         count++;
@@ -204,8 +204,6 @@ var Bus = {
 
       // We only need the time, the date is always today
       // Format is "10.11.2012 12:07"
-      // EDIT: REMOVE LINE BELOW IF API IS CONSTANT
-      // Format is "2012-06-29T20:10:00.000"
       var time;
       if (isRealtime) {
         time = realtime.split(" ")[1].split(":");
@@ -213,13 +211,9 @@ var Bus = {
       else {
         time = scheduled.split(" ")[1].split(":");
       }
-      // EDIT: REMOVE LINE BELOW IF API IS CONSTANT
-      // time[2] = time[2].split(".")[0];
 
       // Set the two dates
       var now = new Date();
-      // EDIT: REMOVE LINE BELOW IF API IS CONSTANT
-      // var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1], time[2]);
       var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1]);
       var one_minute = 1000 * 60;
 
@@ -248,6 +242,85 @@ var Bus = {
     callback(lines);
   },
 
+  parseForFavoriteLines: function(json, favoriteLines, callback) {
+
+    // Create a map with an array of departures for each bus line
+    var lines = {};
+    lines['destination'] = [];
+    lines['departures'] = [];
+
+    // Loop through departures from GET request
+    var departures = json['departures'];
+
+    if (typeof departures == 'string') {
+      // Change the API-key, response is most likely "{departures: unauthorized}"
+      callback('Feil i tilkobling');
+      return;
+    }
+
+    var count = 0;
+    for (i in departures) {
+
+      var line = departures[i]['line'];
+      if (favoriteLines.indexOf(Number(line)) != -1) {
+        
+        var realtime = departures[i]['registeredDepartureTime'];
+        var scheduled = departures[i]['scheduledDepartureTime'];
+        var isRealtime = departures[i]['isRealtimeData'];
+        var destination = departures[i]['destination'].trim();
+        if (destination.indexOf('Munkegata') != -1 || destination.indexOf('Dronningens gt') != -1) {
+          destination = "Sentrum";
+        }
+
+        // Add destination
+        lines['destination'].push(line + ' ' + destination);
+
+        // Add departure
+
+        // We only need the time, the date is always today
+        // Format is "10.11.2012 12:07"
+        var time;
+        if (isRealtime) {
+          time = realtime.split(" ")[1].split(":");
+        }
+        else {
+          time = scheduled.split(" ")[1].split(":");
+        }
+
+        // Set the two dates
+        var now = new Date();
+        var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1]);
+        var one_minute = 1000 * 60;
+
+        // Calculate difference between the two dates, and convert to minutes
+        var diff = Math.floor(( then.getTime() - now.getTime() ) / one_minute);
+
+        // Create a proper time string from all the minutes
+        var calculatedTime;
+        if (-1 <= diff && diff <= 0) {
+          calculatedTime = isRealtime?'nå':'ca nå';
+        }
+        else if (1 <= diff && diff <= 119) {
+          calculatedTime = (isRealtime?'':'ca ') + diff+" min";
+        }
+        else if (120 <= diff) {
+          calculatedTime = time[0] + ':' + time[1];
+        }
+
+        lines['departures'].push(calculatedTime);
+
+        count++;
+      }
+    }
+
+    // lines: {
+    //   'destination': ['5 Dragvoll', '22 Vestlia', '5 Dragvoll'],
+    //   'departures': ['2 min', '26 min', 'ca 50 min']
+    // }
+    callback(lines);
+  },
+
+  // NOT IN USE ANYMORE! Might be used in future infoscreen redesign
   parseForRequestedLines: function(json, requestedLines, callback) {
 
     // Create a map with an array of departures for each bus line

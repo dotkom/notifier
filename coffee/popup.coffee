@@ -73,13 +73,10 @@ createBusDataRequest = (bus, cssIdentificator) ->
   amountOfLines = 3 # only 3 lines per bus stop in the popup
   activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
   
-  # Get requested lines
+  # Get favorite lines
   if activeLines isnt undefined and activeLines isnt '' # empty string if user deactivated all bus lines like an idiot, or if bus stop is unused
     activeLines = JSON.parse activeLines
-    # requestedLines = {}
-    # for line in activeLines
-    #   requestedLines[line] = amountOfLines
-    Bus.getRequestedLines ls[bus], activeLines, (lines) ->
+    Bus.getFavoriteLines ls[bus], activeLines, (lines) ->
       insertBusInfo lines, ls[bus+'_name'], cssIdentificator
   # Get any lines
   if activeLines is undefined or activeLines is ''
@@ -87,9 +84,7 @@ createBusDataRequest = (bus, cssIdentificator) ->
       insertBusInfo lines, ls[bus+'_name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
-  console.log lines
-  ls.LOL = JSON.stringify lines
-  busStop = $('#bus '+cssIdentificator)
+  busStop = '#bus '+cssIdentificator
   
   if typeof lines is 'string'
     # lines is an error message

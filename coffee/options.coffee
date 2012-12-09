@@ -255,6 +255,12 @@ getFavoriteLines = (busField) ->
       # Make the bus lines clickable
       bindFavoriteBusLines busField
 
+      # Hide the favorite lines after a short timeout
+      # setTimeout ( ->
+      #   if 
+      #   $('#bus_box .lines').slideDown()
+      # ), 3500
+
 saveBus = (busField) ->
   cssSelector = '#' + busField
   

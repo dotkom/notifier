@@ -105,7 +105,7 @@
     activeLines = ls[bus + '_active_lines'];
     if (activeLines !== void 0 && activeLines !== '') {
       activeLines = JSON.parse(activeLines);
-      Bus.getRequestedLines(ls[bus], activeLines, function(lines) {
+      Bus.getFavoriteLines(ls[bus], activeLines, function(lines) {
         return insertBusInfo(lines, ls[bus + '_name'], cssIdentificator);
       });
     }
@@ -118,9 +118,7 @@
 
   insertBusInfo = function(lines, stopName, cssIdentificator) {
     var busStop, counter, i, spans, _results;
-    console.log(lines);
-    ls.LOL = JSON.stringify(lines);
-    busStop = $('#bus ' + cssIdentificator);
+    busStop = '#bus ' + cssIdentificator;
     if (typeof lines === 'string') {
       $(busStop + ' .name').html(stopName);
       $(busStop + ' .line').html('');
