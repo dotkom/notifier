@@ -87,10 +87,10 @@ updateBus = ->
   if DEBUG then console.log 'updateBus'
 
   if !navigator.onLine
-    $('#bus #left .name').html ls.first_bus_name
-    $('#bus #right .name').html ls.second_bus_name
-    $('#bus #left .first .line').html 'Frakoblet fra api.visuweb.no'
-    $('#bus #right .first .line').html 'Frakoblet fra api.visuweb.no'
+    $('#bus #first_bus .name').html ls.first_bus_name
+    $('#bus #second_bus .name').html ls.second_bus_name
+    $('#bus #first_bus .first .line').html 'Frakoblet fra api.visuweb.no'
+    $('#bus #second_bus .first .line').html 'Frakoblet fra api.visuweb.no'
 
   else
     first_stop_name = ls.first_bus_name
@@ -98,63 +98,34 @@ updateBus = ->
     amountOfLines = 4;
 
     Bus.getAnyLines ls.first_bus, amountOfLines, (lines) ->
-      insertBusInfo lines, first_stop_name, '#left'
+      insertBusInfo lines, first_stop_name, '#first_bus'
     Bus.getAnyLines ls.second_bus, amountOfLines, (lines) ->
-      insertBusInfo lines, second_stop_name, '#right'
+      insertBusInfo lines, second_stop_name, '#second_bus'
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
+  busStop = '#bus '+cssIdentificator
+
   if typeof lines is 'string'
     # lines is an error message
-    $('#bus '+cssIdentificator+' .name').html stopName
-    $('#bus '+cssIdentificator+' .first .line').html lines
+    $(busStop+' .name').html stopName
+    $(busStop+' .line').html ''
+    $(busStop+' .time').html ''
+    $(busStop+' .first .line').html lines
   else
-    $('#bus '+cssIdentificator+' .name').html stopName
-    spans = ['.first', '.second', '.third', '.fourth', '.fifth']
+    $(busStop+' .name').html stopName
+    spans = ['.first', '.second', '.third', '.fourth']
     counter = 0
 
     if lines['departures'].length is 0
-      $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html '<i>....zzzZZZzzz....</i>'
+      $(busStop+' .line').html ''
+      $(busStop+' .time').html ''
+      $(busStop+' '+spans[0]+' .line').html '<i>....zzzZZZzzz....</i>'
     else
       for i of lines['departures']
         # Add the current line
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
-        $('#bus '+cssIdentificator+' '+spans[counter]+' .time').html lines['departures'][i]
+        $(busStop+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
+        $(busStop+' '+spans[counter]+' .time').html lines['departures'][i]
         counter++
-
-  # if DEBUG then console.log 'updateBus'
-  # url_mot_byen = '16011333'
-  # url_fra_byen = '16010333'
-  # requestedLines =
-  #   '5': 2
-  #   '22': 2
-
-  # Bus.getRequestedLines url_mot_byen, requestedLines, (lines) ->
-  #   insertBusInfo lines, '#left'
-  # Bus.getRequestedLines url_fra_byen, requestedLines, (lines) ->
-  #   insertBusInfo lines, '#right'
-
-  # # Private function
-  # insertBusInfo = (lines, cssIdentificator) ->
-  #   spans = ['.first', '.second']
-  #   counter = 0
-    
-  #   for i of lines
-  #     # Add the arrows
-  #     arrow = if cssIdentificator is '#left' then '&larr;' else '&rarr;'
-  #     $('#bus '+cssIdentificator+' '+spans[counter]+' .arrow').html arrow
-
-  #     # Add the destination
-  #     if lines[i]['destination'] is undefined
-  #       $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html i+' ...zzZZzz...'
-  #     else
-  #       $('#bus '+cssIdentificator+' '+spans[counter]+' .line').html i+' '+lines[i]['destination']
-  #       # Add the departure times
-  #       times = ''
-  #       for j of lines[i]['departures']
-  #         times += ', ' unless j is '0'
-  #         times += lines[i]['departures'][j]
-  #       $('#bus '+cssIdentificator+' '+spans[counter]+' .time').html times
-  #     counter++
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'

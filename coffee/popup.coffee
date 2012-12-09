@@ -55,7 +55,6 @@ clickDinnerLink = (cssSelector, url) ->
     chrome.tabs.create({url: url})
     window.close()
 
-
 updateBus = ->
   if DEBUG then console.log 'updateBus'
 
@@ -70,7 +69,6 @@ updateBus = ->
     createBusDataRequest('second_bus', '#second_bus')
 
 createBusDataRequest = (bus, cssIdentificator) ->
-  amountOfLines = 3 # only 3 lines per bus stop in the popup
   activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
   
   # Get favorite lines
@@ -80,6 +78,7 @@ createBusDataRequest = (bus, cssIdentificator) ->
       insertBusInfo lines, ls[bus+'_name'], cssIdentificator
   # Get any lines
   if activeLines is undefined or activeLines is ''
+    amountOfLines = 3 # only 3 lines per bus stop in the popup
     Bus.getAnyLines ls[bus], amountOfLines, (lines) ->
       insertBusInfo lines, ls[bus+'_name'], cssIdentificator
 

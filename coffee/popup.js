@@ -101,7 +101,6 @@
 
   createBusDataRequest = function(bus, cssIdentificator) {
     var activeLines, amountOfLines;
-    amountOfLines = 3;
     activeLines = ls[bus + '_active_lines'];
     if (activeLines !== void 0 && activeLines !== '') {
       activeLines = JSON.parse(activeLines);
@@ -110,6 +109,7 @@
       });
     }
     if (activeLines === void 0 || activeLines === '') {
+      amountOfLines = 3;
       return Bus.getAnyLines(ls[bus], amountOfLines, function(lines) {
         return insertBusInfo(lines, ls[bus + '_name'], cssIdentificator);
       });

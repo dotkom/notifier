@@ -113,39 +113,44 @@
       console.log('updateBus');
     }
     if (!navigator.onLine) {
-      $('#bus #left .name').html(ls.first_bus_name);
-      $('#bus #right .name').html(ls.second_bus_name);
-      $('#bus #left .first .line').html('Frakoblet fra api.visuweb.no');
-      return $('#bus #right .first .line').html('Frakoblet fra api.visuweb.no');
+      $('#bus #first_bus .name').html(ls.first_bus_name);
+      $('#bus #second_bus .name').html(ls.second_bus_name);
+      $('#bus #first_bus .first .line').html('Frakoblet fra api.visuweb.no');
+      return $('#bus #second_bus .first .line').html('Frakoblet fra api.visuweb.no');
     } else {
       first_stop_name = ls.first_bus_name;
       second_stop_name = ls.second_bus_name;
       amountOfLines = 4;
       Bus.getAnyLines(ls.first_bus, amountOfLines, function(lines) {
-        return insertBusInfo(lines, first_stop_name, '#left');
+        return insertBusInfo(lines, first_stop_name, '#first_bus');
       });
       return Bus.getAnyLines(ls.second_bus, amountOfLines, function(lines) {
-        return insertBusInfo(lines, second_stop_name, '#right');
+        return insertBusInfo(lines, second_stop_name, '#second_bus');
       });
     }
   };
 
   insertBusInfo = function(lines, stopName, cssIdentificator) {
-    var counter, i, spans, _results;
+    var busStop, counter, i, spans, _results;
+    busStop = '#bus ' + cssIdentificator;
     if (typeof lines === 'string') {
-      $('#bus ' + cssIdentificator + ' .name').html(stopName);
-      return $('#bus ' + cssIdentificator + ' .first .line').html(lines);
+      $(busStop + ' .name').html(stopName);
+      $(busStop + ' .line').html('');
+      $(busStop + ' .time').html('');
+      return $(busStop + ' .first .line').html(lines);
     } else {
-      $('#bus ' + cssIdentificator + ' .name').html(stopName);
-      spans = ['.first', '.second', '.third', '.fourth', '.fifth'];
+      $(busStop + ' .name').html(stopName);
+      spans = ['.first', '.second', '.third', '.fourth'];
       counter = 0;
       if (lines['departures'].length === 0) {
-        return $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html('<i>....zzzZZZzzz....</i>');
+        $(busStop + ' .line').html('');
+        $(busStop + ' .time').html('');
+        return $(busStop + ' ' + spans[0] + ' .line').html('<i>....zzzZZZzzz....</i>');
       } else {
         _results = [];
         for (i in lines['departures']) {
-          $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .line').html(lines['destination'][i] + ' ');
-          $('#bus ' + cssIdentificator + ' ' + spans[counter] + ' .time').html(lines['departures'][i]);
+          $(busStop + ' ' + spans[counter] + ' .line').html(lines['destination'][i] + ' ');
+          $(busStop + ' ' + spans[counter] + ' .time').html(lines['departures'][i]);
           _results.push(counter++);
         }
         return _results;
