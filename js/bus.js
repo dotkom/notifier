@@ -137,7 +137,7 @@ var Bus = {
         callback(json);
       },
       error: function(jqXHR, text, err) {
-        callback('Frakoblet :(');
+        callback('Oops, noe gikk galt...');
       },
     });
   },
