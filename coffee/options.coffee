@@ -81,23 +81,6 @@ bindBusFields = (busField) ->
         $('#bus_suggestions .suggestion').fadeOut ->
           $('#bus_suggestions').html ''
       ), 5000
-      # # Check if any of them match the partial stop exactly
-      # partialStop = partialStop.toLowerCase()
-      # foundOne = false
-      # for i of suggestions
-      #   possibleStop = suggestions[i].toLowerCase()
-      #   if possibleStop is partialStop
-      #     correctStop = suggestions[i]
-      #     $(stop).val correctStop
-      #     $('#bus_suggestions').html ''
-      #     getDirections busField, correctStop
-      #     getFavoriteLines busField
-      #     saveBus busField
-      #     foundOne = true
-      # if foundOne is false
-      #   if ls.busStopClickedAway isnt null
-      #     $(stop).val ls.busStopClickedAway
-      #   $('#bus_suggestions').html ''
     else
       if DEBUG then console.log 'focusout - nothing to do'
 
@@ -146,9 +129,6 @@ bindBusFields = (busField) ->
         $('#bus_suggestions').html ''
         for i of suggestions
           _text = suggestions[i]
-          # # Highlight matched characters
-          # for char, index in nameStart
-          #   _text = _text.replace char, '<span class="matched_character">'+char+'</span>'
           suggestion = $('<div class="suggestion">' + _text + '</div>').hide()
 
           $('#bus_suggestions').append suggestion
@@ -336,8 +316,6 @@ loadBus = (busField) ->
         status = if lines[i] is true then 'active' else 'inactive'
         $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+i+'</td>'
         counter = counter + 1
-      # RECONSIDER THIS ############################################
-      if counter is 3 then $(cssSelector + ' .lines table tr:last').append '<td>&nbsp;</td>'
       $(cssSelector + ' .lines').append '</tr></table>'
 
 addFavoriteBusLines = (cssSelector) ->

@@ -350,9 +350,6 @@
           $(cssSelector + ' .lines table tr:last').append('<td class="line active">' + i + '</td>');
           counter = counter + 1;
         }
-        if (counter === 3) {
-          $(cssSelector + ' .lines table tr:last').append('<td>&nbsp;</td>');
-        }
         return $(cssSelector + ' .lines').append('</tr></table>');
       }
     }
