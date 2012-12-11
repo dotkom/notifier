@@ -1,6 +1,6 @@
 // Debugging
 
-@debug: 0pt;
+@debug: 1pt;
 .debugred {
   border: @debug solid red;
 }
@@ -212,36 +212,42 @@ header {
       .lines {
         z-index: 10; /* allows the down-arrow to be painted behind this */
         position: relative; /* allows the down-arrow to be painted behind this */
+        display: none;
         width: 96pt;
         margin-top: 1pt;
         background-color: silver;
         border-radius: 3pt;
         padding: 3pt 5pt 3pt 5pt;
-        white-space: normal;
         text-align: left;
         font-weight: bold;
         font-size: 12pt;
-        letter-spacing: 2pt;
         text-shadow: 0 0 0px white;
+
+        table {
+          .debugred;
+          width: 100%;
+          text-align: center;
+          td {
+            .debugyellow;
+            padding: 1pt 0;
+          }
+        }
         .active {
           color: #bdba3c;
           cursor: pointer;
-          letter-spacing: 0pt;
           text-decoration: underline;
           text-shadow: 0 0 1px black, 0 0 3px black, 0 0 5px black;
         }
         .inactive {
           color: gray;
           cursor: pointer;
-          letter-spacing: 0pt;
           text-decoration: underline;
         }
         .error {
           color: black;
-          font-weight: bold;
-          font-size: 9pt;
-          letter-spacing: 0pt;
           text-align: center;
+          font-size: 9pt;
+          font-weight: bold;
         }
         .loading_left {
           position: relative;

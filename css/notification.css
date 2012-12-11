@@ -42,7 +42,7 @@ body {
 
   img {
     float: left;
-    -webkit-box-shadow: 0px 0px 10px DimGray;
+    box-shadow: 0px 0px 10px DimGray;
     padding: 5px;
     margin-left: 3pt;
     margin-right: 3pt;

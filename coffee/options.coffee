@@ -230,11 +230,11 @@ getFavoriteLines = (busField) ->
 
   # Get and inject possible lines for correct stop
   busStopId = Bus.getStop stopName, direction
-  lines = Bus.getLines busStopId, (json) ->
+  Bus.getLines busStopId, (json) ->
 
     # Is result an error message?
     if typeof json is 'string'
-      $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>&nbsp;'
+      $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>'
     else
       # Sort lines and remove duplicates
       arrayOfLines = []
@@ -245,9 +245,14 @@ getFavoriteLines = (busField) ->
       arrayOfLines = arrayOfLines.sort (a,b) -> return a-b
       
       # Add lines to bus stop
-      $(cssSelector + ' .lines').html ''
+      $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
+      counter = 0
       for line in arrayOfLines
-        $(cssSelector + ' .lines').append '<span class="line active">'+line+'</span>&nbsp;&nbsp;'
+        if counter % 4 == 0
+          $(cssSelector + ' .lines table').append '</tr><tr>'
+        $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+line+'</td>'
+        counter = counter + 1
+      $(cssSelector + ' .lines').append '</tr></table>'
 
       # Save the newly added lines
       saveBus busField
@@ -323,10 +328,20 @@ loadBus = (busField) ->
       keys = keys.sort (a,b) ->
         return a - b
       # Add lines to bus stop
-      $(cssSelector + ' .lines').html ''
+      $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
+      counter = 0
       for i in keys
+        if counter % 4 == 0
+          $(cssSelector + ' .lines table').append '</tr><tr>'
         status = if lines[i] is true then 'active' else 'inactive'
-        $(cssSelector + ' .lines').append '<span class="line '+status+'">'+i+'</span>&nbsp;&nbsp;'
+        $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+i+'</td>'
+        counter = counter + 1
+      # RECONSIDER THIS ############################################
+      if counter is 3 then $(cssSelector + ' .lines table tr:last').append '<td>&nbsp;</td>'
+      $(cssSelector + ' .lines').append '</tr></table>'
+
+addFavoriteBusLines = (cssSelector) ->
+  console.log 'implement this'
 
 slideFavoriteBusLines = ->
   # Hide the favorite bus line spans from the start

@@ -256,7 +256,7 @@ body {
         padding: @in-post-padding;
         text-overflow: ellipsis;
         overflow: hidden;
-        -webkit-transition: -webkit-box-shadow 0.3s ease-out 0s;
+        -webkit-transition: box-shadow 0.3s ease-out 0s;
 
         &:hover {
           box-shadow: inset 0px 0px 2px #bbb, 0px 0px 15px #fff;
@@ -267,7 +267,7 @@ body {
           width: 70pt;
           max-height: 70pt;
           padding: 3pt;
-          -webkit-box-shadow: 0 0 10pt #bbb;
+          box-shadow: 0 0 10pt #bbb;
         }
         .textwrapper {
           .debuglime;

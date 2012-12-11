@@ -144,7 +144,7 @@ body {
           width: 170pt;
           max-height: 140pt;
           padding: 5px;
-          -webkit-box-shadow: 0px 0px 10px #bbb;
+          box-shadow: 0px 0px 10px #bbb;
         }
 
         .textwrapper {
