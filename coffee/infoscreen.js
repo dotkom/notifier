@@ -63,10 +63,11 @@
       }
     });
     return displayStories = function(xmlstring) {
-      var $xml, idsOfLastViewed, index, items, value, xmldoc, _guid, _mostRecent, _results, _text;
+      var $xml, idsOfLastViewed, index, items, lolRememberThis, value, whatsthis, xmldoc, _guid, _mostRecent, _results, _text;
       xmldoc = $.parseXML(xmlstring);
       $xml = $(xmldoc);
       items = $xml.find("item");
+      lolRememberThis = ls.mostRecentRead;
       _guid = $(items[0]).find("guid");
       _text = $(_guid).text();
       _mostRecent = _text.split('/')[4];
@@ -96,6 +97,16 @@
           return $('#news').append(item);
         }
       });
+      whatsthis = $('#news').html();
+      whatsthis = whatsthis.trim();
+      if (whatsthis === '') {
+        alert('TRAP TRIGGERED!');
+        console.log('TRAPPED!');
+        console.log('items', typeof items, items);
+        console.log('#news', $('#news').html());
+        console.log('ls.mostRecentRead was', typeof lolRememberThis, lolRememberThis);
+        console.log('_mostRecent is', typeof _mostRecent, _mostRecent);
+      }
       _results = [];
       for (index in idsOfLastViewed) {
         value = idsOfLastViewed[index];

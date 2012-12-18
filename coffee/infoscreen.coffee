@@ -44,6 +44,9 @@ updateNews = ->
     xmldoc = $.parseXML xmlstring
     $xml = $(xmldoc)
     items = $xml.find "item"
+
+    ################################# BUG TRAP ################################
+    lolRememberThis = ls.mostRecentRead
     
     # Find most recent post
     _guid = $(items[0]).find "guid"
@@ -51,6 +54,7 @@ updateNews = ->
     _mostRecent = _text.split('/')[4]
     return if ls.mostRecentRead is _mostRecent
     ls.mostRecentRead = _mostRecent
+
     $('#news').html ''
     
     # Build list of last viewed for the next time the popup opens
@@ -77,6 +81,17 @@ updateNews = ->
             </div>
           </div>'
         $('#news').append item
+
+    ################################# BUG TRAP ################################
+    whatsthis = $('#news').html()
+    whatsthis = whatsthis.trim()
+    if whatsthis is ''
+      alert 'TRAP TRIGGERED!'
+      console.log 'TRAPPED!'
+      console.log 'items', typeof items, items
+      console.log '#news', $('#news').html()
+      console.log 'ls.mostRecentRead was', typeof lolRememberThis, lolRememberThis
+      console.log '_mostRecent is', typeof _mostRecent, _mostRecent
     
     # Finally, fetch news post images from the API async synchronously
     for index, value of idsOfLastViewed
