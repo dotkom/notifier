@@ -457,7 +457,7 @@ fadeInCanvas = ->
 
 # Document ready, go!
 $ ->
-  # if DEBUG then less.watch() # not needed when using CodeKit
+  if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
 
   # Restore checks to boxes from localStorage

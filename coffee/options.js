@@ -511,6 +511,9 @@
 
   $(function() {
     if (DEBUG) {
+      less.watch();
+    }
+    if (DEBUG) {
       $('#debug_links').show();
     }
     $('input:checkbox').each(function(index, element) {

@@ -215,17 +215,19 @@ header {
         display: none;
         width: 96pt;
         margin-top: 1pt;
-        background-color: silver;
+        border-top: 1pt solid white;
+        box-shadow: 0 1pt 2pt #888;
         border-radius: 3pt;
-        padding: 3pt 5pt 3pt 5pt;
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e8e8e8), color-stop(1, #c0c0c0));
+        padding: 2pt 5pt 1pt 5pt;
         text-align: left;
-        font-weight: bold;
-        font-size: 12pt;
-        text-shadow: 0 0 0px white;
+        font-size: 9pt;
+        text-shadow: 0 0 0 white; /* resets inhertied value from parent element */
 
         table {
           .debugred;
           width: 100%;
+          table-layout: fixed;
           text-align: center;
           td {
             .debugyellow;
@@ -233,15 +235,18 @@ header {
           }
         }
         .active {
-          color: #bdba3c;
           cursor: pointer;
-          text-decoration: underline;
-          text-shadow: 0 0 1px black, 0 0 3px black, 0 0 5px black;
+          color: black;
+          &:hover {
+            font-weight: bold;
+          }
         }
         .inactive {
-          color: gray;
           cursor: pointer;
-          text-decoration: underline;
+          color: gray;
+          &:hover {
+            font-weight: bold;
+          }
         }
         .error {
           color: black;
