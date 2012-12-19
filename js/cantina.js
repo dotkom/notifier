@@ -180,6 +180,10 @@ var Cantina = {
             if (self.DINNERDEBUG) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
             dinner.text = text;
           }
+          else {
+            // Even messages (like " God sommer ") needs trimming
+            dinner.text = text.trim();
+          }
         });
       }
       
@@ -249,7 +253,7 @@ var Cantina = {
   },
 
   whichDayIsIt: function() {
-    var dayNames=["Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag"];
+    var dayNames = ["Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag"];
     var today = dayNames[new Date().getDay()];
     localStorage.today = today;
     return today;
