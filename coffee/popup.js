@@ -42,31 +42,31 @@
     hangaren_url = 'http://sit.no/content/36444/Ukas-middagsmeny-pa-Hangaren';
     realfag_url = 'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag';
     Cantina.get(hangaren_rss, function(menu) {
-      $('#cantinas #hangaren #dinnerbox').html(listDinners(menu, hangaren_url));
+      $('#cantinas #hangaren #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #hangaren #dinnerbox .dinnerlist', hangaren_url);
     });
     return Cantina.get(realfag_rss, function(menu) {
-      $('#cantinas #realfag #dinnerbox').html(listDinners(menu, realfag_url));
+      $('#cantinas #realfag #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #realfag #dinnerbox .dinnerlist', realfag_url);
     });
   };
 
-  listDinners = function(menu, url) {
-    var dinner, dinnerlist, price, _i, _len;
+  listDinners = function(menu) {
+    var dinner, dinnerlist, _i, _len;
     dinnerlist = '';
     if (typeof menu === 'string') {
       ls.noDinnerInfo = 'true';
-      dinnerlist += '<li class="dinnerlist">' + menu + '</li>';
+      dinnerlist += '<li>' + menu + '</li>';
     } else {
       ls.noDinnerInfo = 'false';
       for (_i = 0, _len = menu.length; _i < _len; _i++) {
         dinner = menu[_i];
         if (dinner.price !== null) {
-          price = dinner.price + ',- ';
+          dinner.price = dinner.price + ',- ';
+          dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>';
         } else {
-          price = '';
+          dinnerlist += '<li class="message" id="' + dinner.index + '">- "' + dinner.text + '"</li>';
         }
-        dinnerlist += '<li class="dinnerlist" id="' + dinner.index + '">' + price + dinner.text + '</li>';
       }
     }
     return dinnerlist;

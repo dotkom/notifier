@@ -25,26 +25,26 @@ updateCantinas = ->
   realfag_url = 'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag'
 
   Cantina.get hangaren_rss, (menu) ->
-    $('#cantinas #hangaren #dinnerbox').html listDinners(menu, hangaren_url)
+    $('#cantinas #hangaren #dinnerbox').html listDinners(menu)
     clickDinnerLink '#cantinas #hangaren #dinnerbox .dinnerlist', hangaren_url
   Cantina.get realfag_rss, (menu) ->
-    $('#cantinas #realfag #dinnerbox').html listDinners(menu, realfag_url)
+    $('#cantinas #realfag #dinnerbox').html listDinners(menu)
     clickDinnerLink '#cantinas #realfag #dinnerbox .dinnerlist', realfag_url
 
-listDinners = (menu, url) ->
+listDinners = (menu) ->
   dinnerlist = ''
   # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if typeof menu is 'string'
     ls.noDinnerInfo = 'true'
-    dinnerlist += '<li class="dinnerlist">' + menu + '</li>'
+    dinnerlist += '<li>' + menu + '</li>'
   else
     ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        price = dinner.price + ',- '
+        dinner.price = dinner.price + ',- '
+        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>'
       else
-        price = ''
-      dinnerlist += '<li class="dinnerlist" id="' + dinner.index + '">' + price + dinner.text + '</li>'
+        dinnerlist += '<li class="message" id="' + dinner.index + '">- "' + dinner.text + '"</li>'
   return dinnerlist
 
 clickDinnerLink = (cssSelector, url) ->

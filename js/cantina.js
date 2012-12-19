@@ -155,27 +155,31 @@ var Cantina = {
         self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
         return;
       }
-      // IF only one or two dinner object are found, keep them entirely
-      else if (dinnerObjects.length === 1 || dinnerObjects.length === 2) {
+      // IF only one or two dinner object are found keep them entirely, - unless we're debugging texts
+      else if ((dinnerObjects.length === 1 || dinnerObjects.length === 2) && !self.DINNERTEXTDEBUG) {
         // in other words: do nothing!
-        if (self.DINNERDEBUG) console.log('only one or two dinner menus found, let\'s keep them');
+        if (self.DINNERDEBUG) console.log('only one or two dinner menus found, let\'s keep them intact');
       }
       // Shorten dinner descriptions
       else {
         dinnerObjects.forEach( function(dinner) {
           var text = dinner.text;
-          text = self.removePartsAfter(['.'/*,','*/,'(','serveres','Serveres'], text); // removed: '/'
-          text = text.trim();
-        
-          // If current item is NOT about the buffet, continue with:
-          if (text.toLowerCase().indexOf('buffet') === -1) {
-            text = self.limitNumberOfWords(self.dinner_word_limit, text);
-            text = self.removeLastWords([' i',' &',' og',' med'], text);
-            text = self.shortenVeggieWarning(text);
+
+          // Unless it's a message (dinner without a price) we'll shorten it
+          if (dinner.price != undefined) {
+            text = self.removePartsAfter(['.','(','serveres','Serveres'], text); // don't use: '/', ','
             text = text.trim();
+          
+            // If current item is NOT about the buffet, continue with:
+            if (text.toLowerCase().indexOf('buffet') === -1) {
+              text = self.limitNumberOfWords(self.dinner_word_limit, text);
+              text = self.removeLastWords([' i',' &',' og',' med'], text);
+              text = self.shortenVeggieWarning(text);
+              text = text.trim();
+            }
+            if (self.DINNERDEBUG) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
+            dinner.text = text;
           }
-          if (self.DINNERDEBUG) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
-          dinner.text = text;
         });
       }
       
@@ -201,10 +205,17 @@ var Cantina = {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
   },
 
-  limitNumberOfWords: function(limit, text) {
-    if (this.DINNERTEXTDEBUG) console.log(limit + ' :: ' + text);
-    if (text.split(' ').length > limit)
+  limitNumberOfWords: function(limit, originalText) {
+    if (this.DINNERTEXTDEBUG) console.log(limit + ' :: ' + originalText);
+    var text = originalText;
+    if (text.split(' ').length > limit) {
       text = text.split(' ').splice(0,limit).join(' ');
+      // Surprisingly accurate check to see if we're ending the sentence with a verb
+      // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt"
+      if (this.endsWith('te', text) || this.endsWith('de', text) || this.endsWith('kt', text))
+        // In that case, return the noun as well (heighten limit by 1)
+        return originalText.split(' ').splice(0,limit+1).join(' ');
+    }
     return text;
   },
 

@@ -152,22 +152,21 @@ updateCantinas = ->
   Cantina.get realfag_rss, (menu) ->
     $('#cantinas #realfag #dinnerbox').html listDinners(menu)
   
-  # Private function
-  listDinners = (menu) ->
-    dinnerlist = ''
-    # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
-    if typeof menu is 'string'
-      ls.noDinnerInfo = 'true'
-      dinnerlist += '<li class="dinnerlist">' + menu + '</li>'
-    else
-      ls.noDinnerInfo = 'false'
-      for dinner in menu
-        if dinner.price != null
-          price = dinner.price + ',- '
-        else
-          price = ''
-        dinnerlist += '<li class="dinnerlist">' + price + dinner.text + '</li>'
-    return dinnerlist
+listDinners = (menu) ->
+  dinnerlist = ''
+  # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
+  if typeof menu is 'string'
+    ls.noDinnerInfo = 'true'
+    dinnerlist += '<li>' + menu + '</li>'
+  else
+    ls.noDinnerInfo = 'false'
+    for dinner in menu
+      if dinner.price != null
+        dinner.price = dinner.price + ',- '
+        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>'
+      else
+        dinnerlist += '<li class="message" id="' + dinner.index + '">- "' + dinner.text + '"</li>'
+  return dinnerlist
 
 # Document ready, go!
 $ ->
