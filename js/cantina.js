@@ -159,6 +159,10 @@ var Cantina = {
       else if ((dinnerObjects.length === 1 || dinnerObjects.length === 2) && !self.DINNERTEXTDEBUG) {
         // in other words: do nothing!
         if (self.DINNERDEBUG) console.log('only one or two dinner menus found, let\'s keep them intact');
+        // except of course for a little trimming
+        dinnerObjects.forEach( function(dinner) {
+          dinner.text = dinner.text.trim();
+        });
       }
       // Shorten dinner descriptions
       else {
