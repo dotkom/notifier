@@ -43,11 +43,11 @@
     realfag_url = 'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag';
     Cantina.get(hangaren_rss, function(menu) {
       $('#cantinas #hangaren #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #hangaren #dinnerbox .dinnerlist', hangaren_url);
+      return clickDinnerLink('#cantinas #hangaren #dinnerbox li', hangaren_url);
     });
     return Cantina.get(realfag_rss, function(menu) {
       $('#cantinas #realfag #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #realfag #dinnerbox .dinnerlist', realfag_url);
+      return clickDinnerLink('#cantinas #realfag #dinnerbox li', realfag_url);
     });
   };
 

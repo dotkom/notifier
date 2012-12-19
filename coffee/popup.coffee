@@ -26,10 +26,10 @@ updateCantinas = ->
 
   Cantina.get hangaren_rss, (menu) ->
     $('#cantinas #hangaren #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #hangaren #dinnerbox .dinnerlist', hangaren_url
+    clickDinnerLink '#cantinas #hangaren #dinnerbox li', hangaren_url
   Cantina.get realfag_rss, (menu) ->
     $('#cantinas #realfag #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #realfag #dinnerbox .dinnerlist', realfag_url
+    clickDinnerLink '#cantinas #realfag #dinnerbox li', realfag_url
 
 listDinners = (menu) ->
   dinnerlist = ''
