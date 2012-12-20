@@ -126,7 +126,7 @@
       return $(busStop + ' .first .line').html(lines);
     } else {
       $(busStop + ' .name').html(stopName);
-      spans = ['.first', '.second', '.third'];
+      spans = ['.first', '.second', '.third', '.fourth'];
       counter = 0;
       if (lines['departures'].length === 0) {
         $(busStop + ' .line').html('');
@@ -276,6 +276,20 @@
     if (ls.showBus !== 'true') {
       $('#bus').hide();
     }
+    setInterval((function() {
+      var hours, minutes, _d;
+      _d = new Date();
+      minutes = _d.getMinutes();
+      hours = _d.getHours();
+      if (minutes < 10) {
+        minutes = '0' + minutes;
+      }
+      if (hours < 10) {
+        hours = '0' + hours;
+      }
+      $("#bus #clock #minutes").html(minutes);
+      return $("#bus #clock #hours").html(hours);
+    }), 1000);
     $('#logo').click(function() {
       chrome.tabs.create({
         url: EXTENSION_WEBSITE

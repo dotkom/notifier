@@ -106,7 +106,7 @@ body {
       }
       .popupbutton:hover {
         box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
-      } 
+      }
     }
 
     #buttontext {
@@ -157,7 +157,7 @@ body {
       -webkit-transition: text-shadow 0.15s ease-out 0s;
     }
     li:hover {
-      text-shadow: 
+      text-shadow:
         0 0 10px #fff,
         0 0 15px #fff,
         0 0 20px #fff,
@@ -179,7 +179,7 @@ body {
     top: 12pt;
     line-height: 11.5pt;
     background-color: #000f1d;
-    height: 65pt;
+    height: 75pt;
     width: 110%;
     margin-left: -5%;
     margin-bottom: 15pt;
@@ -204,37 +204,74 @@ body {
       font-size: 8pt;
       font-weight: bold;
     }
+    .time {
+      font-weight: bold;
+    }
     #first_bus {
       .debuglime;
       position: relative;
       float: left;
       text-align: right;
       padding-top: 10pt;
-      width: 40%;
+      width: 41%;
+    }
+    #second_bus {
+      .debuglime;
+      width: 41%;
+      position: relative;
+      padding-top: 10pt;
+      float: left;
+      text-align: left;
     }
     #middle {
       .debuglime;
       position: relative;
       float: left;
       text-align: center;
-      width: 18%;
+      width: 16%;
       height: 100%;
-      img {
+      #logo {
+        display: block;
+        margin: 3pt auto 0 auto;
         cursor: pointer;
-        margin: 10pt 0;
-        height: 46pt;
+        height: 38pt;
       }
-    }
-    #second_bus {
-      .debuglime;
-      width: 40%;
-      position: relative;
-      padding-top: 10pt;
-      float: left;
-      text-align: left;
-    }
-    .time {
-      font-weight: bold;
+      #clock {
+        .debugpink;
+        margin: 12pt auto 0 auto;
+        text-align: center;
+        color: #fff;
+        overflow: visible;
+        li {
+          .debugyellow;
+          display: inline;
+          font-family: Helvetica;
+          font-size: 15pt;
+          list-style: none;
+          text-align: center;
+          text-shadow: 0 0 5pt #00c6ff;
+        }
+        #point {
+          position: relative;
+          left: -.5pt;
+          -moz-animation: mymove 1s ease infinite;
+          -webkit-animation: mymove 1s ease infinite;
+          @-webkit-keyframes mymove {
+            0% {
+              opacity:1.0;
+              text-shadow: 0 0 20pt #00c6ff;
+            }
+            50% {
+              opacity:0;
+              text-shadow: none;
+            }
+            100% {
+              opacity:1.0;
+              text-shadow: 0 0 20pt #00c6ff;
+            }
+          }
+        }
+      }
     }
   }
 
