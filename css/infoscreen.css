@@ -195,36 +195,79 @@ body {
       text-decoration: underline;
       font-weight: bold;
     }
+    .time {
+      font-weight: bold;
+    }
     #first_bus {
       .debuglime;
       position: relative;
       float: left;
       text-align: right;
       padding-top: 12pt;
-      width: 40%;
-    }
-    #middle {
-      .debuglime;
-      position: relative;
-      float: left;
-      text-align: center;
-      width: 19%;
-      height: 100%;
-      img {
-        margin: 14pt 0;
-        height: 116pt;
-      }
+      width: 42%;
     }
     #second_bus {
       .debuglime;
-      width: 39%;
+      width: 42%;
       position: relative;
       padding-top: 12pt;
       float: left;
       text-align: left;
     }
-    .time {
-      font-weight: bold;
+    #middle {
+      .debuglime;
+      float: left;
+      position: relative;
+      height: 100%;
+      width: 14%;
+      text-align: center;
+      #atb_logo {
+        .debuglime;
+        height: 85pt;
+        margin-top: 2pt;
+      }
+      #clock {
+        .debugpink;
+        color: #fff;
+        margin-top: 15pt;
+        text-align: center;
+        li {
+          .debugyellow;
+          display: inline-block;
+          font-family: helvetica;
+          font-size: 30pt;
+          list-style: none;
+          text-shadow: 0 0 5pt #00c6ff;
+        }
+        #hours {
+          position: relative;
+          left: 4pt;
+        }
+        #minutes {
+          position: relative;
+          left: -4pt;
+        }
+        #point {
+          position: relative;
+          left: -.5pt;
+          -moz-animation: mymove 1s ease infinite;
+          -webkit-animation: mymove 1s ease infinite;
+          @-webkit-keyframes mymove {
+            0% {
+              opacity:1.0;
+              text-shadow: 0 0 20pt #00c6ff;
+            }
+            50% {
+              opacity:0;
+              text-shadow: none;
+            }
+            100% {
+              opacity:1.0;
+              text-shadow: 0 0 20pt #00c6ff;
+            }
+          }
+        }
+      }
     }
   }
 

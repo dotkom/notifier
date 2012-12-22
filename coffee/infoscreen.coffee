@@ -170,7 +170,7 @@ listDinners = (menu) ->
 
 # Document ready, go!
 $ ->
-  # if DEBUG then less.watch() # not needed when using CodeKit
+  if DEBUG then less.watch() # not needed when using CodeKit
   
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'
@@ -187,6 +187,21 @@ $ ->
     $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
       $(@).animate opacity: 1, "fast", "swing",
   ), 600
+
+  # Start the clock in #bus
+  # From: http://www.alessioatzeni.com/blog/css3-digital-clock-with-jquery/
+  setInterval ( ->
+    _d = new Date()
+    minutes = _d.getMinutes()
+    hours = _d.getHours()
+    # Pad the number with a zero if less than 10
+    if minutes < 10 then minutes = '0' + minutes
+    if hours < 10 then hours = '0' + hours
+    $("#bus #clock #minutes").html minutes
+    $("#bus #clock #hours").html hours
+  ), 1000
+
+  $('#news').hide() ############################# REMOVE
 
   # Prevent image burn-in by fading to black every half hour
   setInterval ( ->

@@ -206,6 +206,9 @@
   };
 
   $(function() {
+    if (DEBUG) {
+      less.watch();
+    }
     ls.removeItem('mostRecentRead');
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
@@ -222,6 +225,21 @@
         }, "fast", "swing");
       });
     }), 600);
+    setInterval((function() {
+      var hours, minutes, _d;
+      _d = new Date();
+      minutes = _d.getMinutes();
+      hours = _d.getHours();
+      if (minutes < 10) {
+        minutes = '0' + minutes;
+      }
+      if (hours < 10) {
+        hours = '0' + hours;
+      }
+      $("#bus #clock #minutes").html(minutes);
+      return $("#bus #clock #hours").html(hours);
+    }), 1000);
+    $('#news').hide();
     setInterval((function() {
       var linebreaks, num, random;
       random = Math.ceil(Math.random() * 25);

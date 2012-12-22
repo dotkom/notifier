@@ -93,7 +93,7 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
     $(busStop+' .first .line').html lines
   else
     $(busStop+' .name').html stopName
-    spans = ['.first', '.second', '.third', '.fourth']
+    spans = ['.first', '.second', '.third']
     counter = 0
 
     if lines['departures'].length is 0
@@ -230,19 +230,6 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  # Start the clock in #bus
-  # From: http://www.alessioatzeni.com/blog/css3-digital-clock-with-jquery/
-  setInterval ( ->
-    _d = new Date()
-    minutes = _d.getMinutes()
-    hours = _d.getHours()
-    # Pad the number with a zero if less than 10
-    if minutes < 10 then minutes = '0' + minutes
-    if hours < 10 then hours = '0' + hours
-    $("#bus #clock #minutes").html minutes
-    $("#bus #clock #hours").html hours
-  ), 1000
-
   # Make logo open extension website while closing popup
   $('#logo').click ->
     chrome.tabs.create {url: EXTENSION_WEBSITE}
@@ -267,7 +254,7 @@ $ ->
   $('#chatter_button').mouseleave ->
     chatterText false
 
-  $('#bus #middle img').click ->
+  $('#bus #atb_logo').click ->
     chrome.tabs.create {url: 'http://www.atb.no'}
     window.close()
 
