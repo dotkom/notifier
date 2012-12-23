@@ -46,10 +46,10 @@
           path: 'img/icon-' + status + '.png'
         });
         ls.currentStatus = status;
-        return Office.getTodaysEvents(function(meetingPlan) {
+        return Office.getTodaysMeetings(function(meetings) {
           var today;
-          meetingPlan = $.trim(meetingPlan);
-          today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetingPlan;
+          meetings = $.trim(meetings);
+          today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
           chrome.browserAction.setTitle({
             title: today
           });
