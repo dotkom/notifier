@@ -1,7 +1,7 @@
 
 // Debugging
 
-@debug: 0pt;
+@debug: 1pt;
 .debugred {
   border: @debug solid red;
 }
@@ -121,6 +121,30 @@ body {
       font-weight: bold;
       text-align: center;
       text-shadow: 0 0 15pt black, 0 0 20pt black;
+    }
+  }
+
+  #todays {
+    #left {
+      .debugyellow;
+      position: relative;
+      float: left;
+      width: 47%;
+      #office_servant {
+        .debugpink;
+      }
+      #coffee_pot {
+        .debugpink;
+      }
+    }
+    #right {
+      .debugyellow;
+      position: relative;
+      float: left;
+      width: 50%;
+      #office_events {
+        .debugpink;
+      }
     }
   }
 
@@ -314,7 +338,6 @@ body {
     }
     #dinnerbox {
       .debugyellow;
-      font-size: 20pt;
     }
     li {
       .debuglime;
