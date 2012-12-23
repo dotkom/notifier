@@ -20,8 +20,11 @@ var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_QUICK = 3000; // 3s, fix it quickly when something has gone wrong
 var PAGE_LOOP = 20000; // every 20th second
 
-// update stuff at every X intervals.
+// Update stuff at every X intervals
 var UPDATE_OFFICE_INTERVAL = 1; // recommended: 1
+var UPDATE_SERVANT_INTERVAL = 10; // recommended: 10
+var UPDATE_COFFEE_INTERVAL = 1; // recommended: 1
+var UPDATE_EVENTS_INTERVAL = 10; // recommended: 10
 var UPDATE_NEWS_INTERVAL = 30; // recommended: 30
 var UPDATE_BUS_INTERVAL = 1; // recommended: 1
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
@@ -34,7 +37,7 @@ if (navigator.appVersion.indexOf("Linux")!==-1) OPERATING_SYSTEM="Linux";
 if (navigator.appVersion.indexOf("X11")!==-1) OPERATING_SYSTEM="UNIX";
 if (navigator.appVersion.indexOf("Mac")!==-1) {
 	OPERATING_SYSTEM = "Old Mac";
-	if (navigator.appVersion.indexOf("10_7")!== -1||navigator.appVersion.indexOf("10_8")!==-1) {
+	if (navigator.appVersion.indexOf("10_7")!==-1||navigator.appVersion.indexOf("10_8")!==-1) {
 		OPERATING_SYSTEM = "Mac";
 	}
 }

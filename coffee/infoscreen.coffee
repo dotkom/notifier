@@ -7,6 +7,7 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0
+  updateTodays() if iteration % UPDATE_TODAYS_INTERVAL is 0
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0
@@ -26,6 +27,16 @@ updateOffice = ->
       $('#office #subtext').html message
       ls.currentStatus = status
       ls.currentStatusMessage = message
+
+updateTodays = ->
+  if DEBUG then console.log 'updateTodays'
+  # Update office servant
+  # ...................
+  # Update coffee pot
+  # ...................
+  # Update todays events
+  Office.getTodaysEvents (events) ->
+    $('#todays #office_events').html events
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
