@@ -76,7 +76,7 @@
 
   $(function() {
     $.ajaxSetup({
-      timeout: 15000
+      timeout: 6000
     });
     if (DEBUG) {
       ls.clear();

@@ -224,10 +224,10 @@ var Bus = {
       if (-1 <= diff && diff <= 0) {
         calculatedTime = isRealtime?'nå':'ca nå';
       }
-      else if (1 <= diff && diff <= 119) {
+      else if (1 <= diff && diff <= 59) {
         calculatedTime = (isRealtime?'':'ca ') + diff+" min";
       }
-      else if (120 <= diff) {
+      else if (60 <= diff) {
         calculatedTime = time[0] + ':' + time[1];
       }
 
@@ -299,10 +299,10 @@ var Bus = {
         if (-1 <= diff && diff <= 0) {
           calculatedTime = isRealtime?'nå':'ca nå';
         }
-        else if (1 <= diff && diff <= 119) {
+        else if (1 <= diff && diff <= 59) {
           calculatedTime = (isRealtime?'':'ca ') + diff+" min";
         }
-        else if (120 <= diff) {
+        else if (60 <= diff) {
           calculatedTime = time[0] + ':' + time[1];
         }
 

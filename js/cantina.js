@@ -24,6 +24,7 @@ var Cantina = {
         self.parseXml(xml, callback);
       },
       error: function(jqXHR, text, err) {
+        if (DEBUG) console.log('ERROR: could not connect to api.visuweb.no');
         callback(self.msg_connection_error);
       },
     })
@@ -69,6 +70,7 @@ var Cantina = {
       self.parseTodaysMenu(todaysMenu, mondaysCantinaMenu, callback);
     }
     catch (err) {
+      if (DEBUG) console.log('ERROR: problems during parsing of dinner xml');
       callback(self.msg_malformed_menu + ': ' + err);
     }
   },
@@ -122,6 +124,7 @@ var Cantina = {
           }
         }
         else {
+          if (DEBUG) console.log('ERROR: problems during initial parsing of todays dinner');
           callback(self.msg_malformed_menu);
           return;
         }
@@ -199,6 +202,7 @@ var Cantina = {
       callback(dinnerObjects);
     }
     catch (err) {
+      if (DEBUG) console.log('ERROR: problems during deep parsing of todays dinner');
       callback(self.msg_malformed_menu);
     }
   },

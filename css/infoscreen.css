@@ -195,8 +195,33 @@ body {
       text-decoration: underline;
       font-weight: bold;
     }
-    .time {
+    .lines {
+      .debugyellow;
+      text-align: left;
+      .line {
+        /*nothing to do here yet*/
+      }
+      .error {
+        font-style: italic;
+      }
+    }
+    .times {
+      .debugred;
       font-weight: bold;
+      text-align: right;
+      .time {
+        padding-left: 15pt;
+      }
+    }
+    .left {
+      display: inline-block;
+      float: right;
+      position: relative;
+    }
+    .right {
+      display: inline-block;
+      float: left;
+      position: relative;
     }
     #first_bus {
       .debuglime;
@@ -249,7 +274,7 @@ body {
         }
         #point {
           position: relative;
-          left: -.5pt;
+          left: -1pt;
           -moz-animation: mymove 1s ease infinite;
           -webkit-animation: mymove 1s ease infinite;
           @-webkit-keyframes mymove {

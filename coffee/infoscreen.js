@@ -126,8 +126,10 @@
     if (!navigator.onLine) {
       $('#bus #first_bus .name').html(ls.first_bus_name);
       $('#bus #second_bus .name').html(ls.second_bus_name);
-      $('#bus #first_bus .first .line').html('Frakoblet fra api.visuweb.no');
-      return $('#bus #second_bus .first .line').html('Frakoblet fra api.visuweb.no');
+      $('#bus #first_bus .lines').html('<div class="line error">Frakoblet fra api.visuweb.no</div>');
+      $('#bus #second_bus .lines').html('<div class="line error">Frakoblet fra api.visuweb.no</div>');
+      $('#bus #first_bus .times').html('');
+      return $('#bus #second_bus .times').html('');
     } else {
       first_stop_name = ls.first_bus_name;
       second_stop_name = ls.second_bus_name;
@@ -144,24 +146,23 @@
   insertBusInfo = function(lines, stopName, cssIdentificator) {
     var busStop, counter, i, spans, _results;
     busStop = '#bus ' + cssIdentificator;
+    $(busStop + ' .name').html(stopName);
     if (typeof lines === 'string') {
-      $(busStop + ' .name').html(stopName);
-      $(busStop + ' .line').html('');
-      $(busStop + ' .time').html('');
-      return $(busStop + ' .first .line').html(lines);
+      $(busStop + ' .lines').html('<div class="line error">' + lines + '</div>');
+      return $(busStop + ' .times').html('');
     } else {
-      $(busStop + ' .name').html(stopName);
-      spans = ['.first', '.second', '.third', '.fourth'];
-      counter = 0;
       if (lines['departures'].length === 0) {
-        $(busStop + ' .line').html('');
-        $(busStop + ' .time').html('');
-        return $(busStop + ' ' + spans[0] + ' .line').html('<i>....zzzZZZzzz....</i>');
+        $(busStop + ' .lines').html('<div class="line error">....zzzZZZzzz....</div>');
+        return $(busStop + ' .times').html('');
       } else {
+        spans = ['first', 'second', 'third', 'fourth'];
+        counter = 0;
+        $(busStop + ' .lines').html('');
+        $(busStop + ' .times').html('');
         _results = [];
         for (i in lines['departures']) {
-          $(busStop + ' ' + spans[counter] + ' .line').html(lines['destination'][i] + ' ');
-          $(busStop + ' ' + spans[counter] + ' .time').html(lines['departures'][i]);
+          $(busStop + ' .lines').append('<div class="line ' + spans[counter] + '">' + lines['destination'][i] + '</div>');
+          $(busStop + ' .times').append('<div class="time ' + spans[counter] + '">' + lines['departures'][i] + '</div>');
           _results.push(counter++);
         }
         return _results;
@@ -208,6 +209,8 @@
   $(function() {
     if (DEBUG) {
       less.watch();
+      $('html').css('cursor', 'auto');
+      $('#overlay').hide();
     }
     ls.removeItem('mostRecentRead');
     ls.removeItem('currentStatus');
@@ -239,7 +242,6 @@
       $("#bus #clock #minutes").html(minutes);
       return $("#bus #clock #hours").html(hours);
     }), 1000);
-    $('#news').hide();
     setInterval((function() {
       var linebreaks, num, random;
       random = Math.ceil(Math.random() * 25);

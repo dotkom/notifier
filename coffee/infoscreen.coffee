@@ -104,8 +104,10 @@ updateBus = ->
   if !navigator.onLine
     $('#bus #first_bus .name').html ls.first_bus_name
     $('#bus #second_bus .name').html ls.second_bus_name
-    $('#bus #first_bus .first .line').html 'Frakoblet fra api.visuweb.no'
-    $('#bus #second_bus .first .line').html 'Frakoblet fra api.visuweb.no'
+    $('#bus #first_bus .lines').html '<div class="line error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #second_bus .lines').html '<div class="line error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #first_bus .times').html ''
+    $('#bus #second_bus .times').html ''
 
   else
     first_stop_name = ls.first_bus_name
@@ -120,26 +122,27 @@ updateBus = ->
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator
 
+  $(busStop+' .name').html stopName
+  
   if typeof lines is 'string'
     # lines is an error message
-    $(busStop+' .name').html stopName
-    $(busStop+' .line').html ''
-    $(busStop+' .time').html ''
-    $(busStop+' .first .line').html lines
+    $(busStop+' .lines').html '<div class="line error">'+lines+'</div>'
+    $(busStop+' .times').html ''
   else
-    $(busStop+' .name').html stopName
-    spans = ['.first', '.second', '.third', '.fourth']
-    counter = 0
-
+    # no lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .line').html ''
-      $(busStop+' .time').html ''
-      $(busStop+' '+spans[0]+' .line').html '<i>....zzzZZZzzz....</i>'
+      $(busStop+' .lines').html '<div class="line error">....zzzZZZzzz....</div>'
+      $(busStop+' .times').html ''
     else
+      # display line for line with according times
+      spans = ['first', 'second', 'third', 'fourth']
+      counter = 0
+      $(busStop+' .lines').html ''
+      $(busStop+' .times').html ''
       for i of lines['departures']
         # Add the current line
-        $(busStop+' '+spans[counter]+' .line').html lines['destination'][i] + ' '
-        $(busStop+' '+spans[counter]+' .time').html lines['departures'][i]
+        $(busStop+' .lines').append '<div class="line '+spans[counter]+'">'+lines['destination'][i]+'</div>'
+        $(busStop+' .times').append '<div class="time '+spans[counter]+'">'+lines['departures'][i]+'</div>'
         counter++
 
 updateCantinas = ->
@@ -170,7 +173,13 @@ listDinners = (menu) ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then less.watch() # not needed when using CodeKit
+  if DEBUG
+    # not needed when using CodeKit
+    less.watch()
+    # show the cursor and remove the overlay
+    # (allows DOM inspection with the mouse)
+    $('html').css 'cursor', 'auto'
+    $('#overlay').hide()
   
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'
@@ -200,8 +209,6 @@ $ ->
     $("#bus #clock #minutes").html minutes
     $("#bus #clock #hours").html hours
   ), 1000
-
-  $('#news').hide() ############################# REMOVE
 
   # Prevent image burn-in by fading to black every half hour
   setInterval ( ->
