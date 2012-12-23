@@ -1,7 +1,7 @@
 
 // Debugging
 
-@debug: 1pt;
+@debug: 0pt;
 .debugred {
   border: @debug solid red;
 }
@@ -35,8 +35,8 @@
   text-transform: uppercase;
   font-size: 24pt;
   font-weight: bold;
-  margin-top: 25pt;
-  margin-bottom: @in-post-padding;
+  padding-top: 25pt;
+  padding-bottom: @in-post-padding;
 }
 
 .emphasized {
@@ -125,26 +125,28 @@ body {
   }
 
   #todays {
-    #left {
-      .debugyellow;
+    .debugyellow;
+    .fullbox;
+
+    #office_servant {
+      .debugpink;
       position: relative;
       float: left;
-      width: 47%;
-      #office_servant {
-        .debugpink;
-      }
-      #coffee_pot {
-        .debugpink;
-      }
+      width: 33%;
     }
-    #right {
-      .debugyellow;
+    #coffee_pot {
+      .debugpink;
       position: relative;
       float: left;
-      width: 50%;
-      #office_meetings {
-        .debugpink;
-      }
+      width: 32%;
+      padding-left: 15pt;
+    }
+    #office_meetings {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 31%;
+      padding-left: 15pt;
     }
   }
 

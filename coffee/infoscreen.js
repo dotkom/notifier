@@ -74,7 +74,7 @@
       console.log('updateMeetings');
     }
     return Office.getTodaysMeetings(function(meetings) {
-      return $('#todays #office_meetings').html(meetings);
+      return $('#todays #office_meetings #meetings').html(meetings);
     });
   };
 
