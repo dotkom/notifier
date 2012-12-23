@@ -115,7 +115,7 @@ updateNews = ->
   if response != undefined
     displayStories response
   else
-    $('#news').append '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
+    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
 
 displayStories = (xmlstring) ->
   # Parse the feed
