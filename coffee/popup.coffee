@@ -155,7 +155,7 @@ displayStories = (xmlstring) ->
           <div class="item" id="' + post.link + '">
             <img id="' + post.id + '" src="' + post.image + '" width="107" />
             <div class="textwrapper">
-              <div class="emphasized">- Av ' + post.creator + ', skrevet ' + post.date + '</div>
+              <div class="emphasized">- Skrevet av ' + post.creator + ' den ' + post.date + '</div>
               ' + post.description + '
             </div>
           </div>
