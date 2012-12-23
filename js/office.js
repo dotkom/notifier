@@ -8,7 +8,7 @@ var Office = {
   MSG_OPEN: 'Gratis kaffe og te til alle!',
   MSG_CLOSED: 'Finn et komitemedlem for å åpne opp.',
   MSG_UNTITLED_MEETING: 'Kontoret er opptatt', // titled meetings and waffles get names from calendar entries
-  LIGHT_LIMIT: 840,
+  LIGHT_LIMIT: 860,
 
   get: function(callback) {
     if (callback == undefined) {
