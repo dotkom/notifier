@@ -204,8 +204,33 @@ body {
       font-size: 8pt;
       font-weight: bold;
     }
-    .time {
+    .lines {
+      .debugyellow;
+      text-align: left;
+      .line {
+        /*nothing to do here yet*/
+      }
+      .error {
+        font-style: italic;
+      }
+    }
+    .times {
+      .debugred;
       font-weight: bold;
+      text-align: right;
+      .time {
+        padding-left: 5pt;
+      }
+    }
+    .left {
+      display: inline-block;
+      float: right;
+      position: relative;
+    }
+    .right {
+      display: inline-block;
+      float: left;
+      position: relative;
     }
     #first_bus {
       .debuglime;

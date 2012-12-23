@@ -136,14 +136,12 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
     else
       # display line for line with according times
       spans = ['first', 'second', 'third', 'fourth']
-      counter = 0
       $(busStop+' .lines').html ''
       $(busStop+' .times').html ''
-      for i of lines['departures']
+      for i of spans
         # Add the current line
-        $(busStop+' .lines').append '<div class="line '+spans[counter]+'">'+lines['destination'][i]+'</div>'
-        $(busStop+' .times').append '<div class="time '+spans[counter]+'">'+lines['departures'][i]+'</div>'
-        counter++
+        $(busStop+' .lines').append '<div class="line '+spans[i]+'">'+lines['destination'][i]+'</div>'
+        $(busStop+' .times').append '<div class="time '+spans[i]+'">'+lines['departures'][i]+'</div>'
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'

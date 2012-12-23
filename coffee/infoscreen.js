@@ -144,7 +144,7 @@
   };
 
   insertBusInfo = function(lines, stopName, cssIdentificator) {
-    var busStop, counter, i, spans, _results;
+    var busStop, i, spans, _results;
     busStop = '#bus ' + cssIdentificator;
     $(busStop + ' .name').html(stopName);
     if (typeof lines === 'string') {
@@ -156,14 +156,12 @@
         return $(busStop + ' .times').html('');
       } else {
         spans = ['first', 'second', 'third', 'fourth'];
-        counter = 0;
         $(busStop + ' .lines').html('');
         $(busStop + ' .times').html('');
         _results = [];
-        for (i in lines['departures']) {
-          $(busStop + ' .lines').append('<div class="line ' + spans[counter] + '">' + lines['destination'][i] + '</div>');
-          $(busStop + ' .times').append('<div class="time ' + spans[counter] + '">' + lines['departures'][i] + '</div>');
-          _results.push(counter++);
+        for (i in spans) {
+          $(busStop + ' .lines').append('<div class="line ' + spans[i] + '">' + lines['destination'][i] + '</div>');
+          _results.push($(busStop + ' .times').append('<div class="time ' + spans[i] + '">' + lines['departures'][i] + '</div>'));
         }
         return _results;
       }
