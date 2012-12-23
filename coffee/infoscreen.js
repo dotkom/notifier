@@ -59,7 +59,7 @@
       if (response !== void 0) {
         return displayStories(response);
       } else {
-        return $('#news').append('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>');
+        return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>');
       }
     });
     return displayStories = function(xmlstring) {
@@ -89,7 +89,7 @@
             <div class="item">\
               <img id="' + post.id + '" src="' + post.image + '" width="107" />\
               <div class="textwrapper">\
-                <div class="emphasized">- Av ' + post.creator + ', skrevet ' + post.date + '</div>\
+                <div class="emphasized">- Skrevet av ' + post.creator + ' den ' + post.date + '</div>\
                 ' + post.description + '\
               </div>\
             </div>\

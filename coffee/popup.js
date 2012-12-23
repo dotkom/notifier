@@ -152,7 +152,7 @@
     if (response !== void 0) {
       return displayStories(response);
     } else {
-      return $('#news').append('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>');
+      return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>');
     }
   };
 
