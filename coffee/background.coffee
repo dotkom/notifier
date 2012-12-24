@@ -41,7 +41,7 @@ updateCoffee = ->
   # IMPLEMENT THIS
   if DEBUG then console.log 'updateCoffee'
   Coffee.get (pots, age) ->
-    console.log pots, age
+    console.log 'IMPLEMENT THIS', pots, age
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'

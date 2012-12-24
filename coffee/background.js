@@ -66,7 +66,7 @@
       console.log('updateCoffee');
     }
     return Coffee.get(function(pots, age) {
-      return console.log(pots, age);
+      return console.log('IMPLEMENT THIS', pots, age);
     });
   };
 
