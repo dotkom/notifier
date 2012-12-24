@@ -22,6 +22,9 @@ var Office = {
         self.getLightData(callback);
       }
       else {
+        // status: "closed"
+        // title: "Lukket"
+        // message: "Finn et komitemedlem for å åpne opp"
         callback(status, title, message);
       }
     });

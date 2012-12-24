@@ -7,20 +7,20 @@ var Servant = {
       return;
     }
 
-    return 'David Storjord';
+    callback('David Storjord');
 
-    // Receives the meeting plan for today
-    var self = this;
-    $.ajax({
-      url: 'https://online.ntnu.no/service_static/online_notifier2',
-      success: function(data) {
-        callback(data);
-      },
-      error: function(jqXHR, text, err) {
-        if (DEBUG) console.log('ERROR: Failed to get current servant.');
-        callback(self.MSG_ERROR);
-      },
-    });
+    // // Receives the meeting plan for today
+    // var self = this;
+    // $.ajax({
+    //   url: 'https://online.ntnu.no/service_static/online_notifier2',
+    //   success: function(servant) {
+    //     callback(servant);
+    //   },
+    //   error: function(jqXHR, text, err) {
+    //     if (DEBUG) console.log('ERROR: Failed to get current servant.');
+    //     callback(self.MSG_ERROR);
+    //   },
+    // });
   },
 
 }

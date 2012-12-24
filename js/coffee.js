@@ -7,20 +7,20 @@ var Coffee = {
       return;
     }
 
-    return 'Dagens 5. kanne er laget<br />for 56 minutter siden'
+    callback('5', '0:56');
 
-    // Receives the meeting plan for today
-    var self = this;
-    $.ajax({
-      url: 'https://online.ntnu.no/service_static/online_notifier2',
-      success: function(data) {
-        callback(data);
-      },
-      error: function(jqXHR, text, err) {
-        if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
-        callback(self.MSG_ERROR);
-      },
-    });
+    // // Receives the meeting plan for today
+    // var self = this;
+    // $.ajax({
+    //   url: 'https://online.ntnu.no/service_static/online_notifier2',
+    //   success: function(data) {
+    //     callback(data);
+    //   },
+    //   error: function(jqXHR, text, err) {
+    //     if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
+    //     callback(self.MSG_ERROR);
+    //   },
+    // });
   },
 
 }
