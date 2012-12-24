@@ -41,7 +41,10 @@ updateCoffee = ->
   # IMPLEMENT THIS
   if DEBUG then console.log 'updateCoffee'
   Coffee.get (pots, age) ->
+    ls.coffeePots = pots
+    ls.coffeeAge = age
     console.log 'IMPLEMENT THIS', pots, age
+    # Notify user if a new pot of coffee is cooking
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
@@ -62,6 +65,8 @@ $ ->
   if DEBUG then ls.clear()
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
+  ls.removeItem 'coffeePots'
+  ls.removeItem 'coffeeAge'
   
   # Set default choices and open options page after install
   if ls.everConnected is undefined

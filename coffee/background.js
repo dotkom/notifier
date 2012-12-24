@@ -66,6 +66,8 @@
       console.log('updateCoffee');
     }
     return Coffee.get(function(pots, age) {
+      ls.coffeePots = pots;
+      ls.coffeeAge = age;
       return console.log('IMPLEMENT THIS', pots, age);
     });
   };
@@ -94,6 +96,8 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
+    ls.removeItem('coffeePots');
+    ls.removeItem('coffeeAge');
     if (ls.everConnected === void 0) {
       if (ls.first_bus === void 0) {
         ls.showBus = 'true';
