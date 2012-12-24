@@ -150,6 +150,9 @@ body {
       width: 30%;
       padding-left: 10pt;
     }
+    .content {
+      margin-top: @in-post-padding;
+    }
   }
 
   #cantinas {

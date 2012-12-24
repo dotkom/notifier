@@ -247,9 +247,7 @@ $ ->
     ), 250
 
   # Hide stuff the user does not want to see
-  if ls.coffeeSubscription isnt 'true'
-    $('#coffee').hide()
-    $('#meetings').css 'width', '50%'
+  $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 

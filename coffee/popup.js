@@ -308,9 +308,8 @@
         return window.close();
       }), 250);
     }
-    if (ls.coffeeSubscription !== 'true') {
-      $('#coffee').hide();
-      $('#meetings').css('width', '50%');
+    if (ls.showOffice !== 'true') {
+      $('#todays').hide();
     }
     if (ls.showCantina !== 'true') {
       $('#cantinas').hide();
