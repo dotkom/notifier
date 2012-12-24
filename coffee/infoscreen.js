@@ -71,7 +71,7 @@
       console.log('updateCoffee');
     }
     return Coffee.get(function(pots, age) {
-      return $('#todays #coffee .content').html(pots + ' kanner i dag, tid siden sist kanne ble laget: ' + age);
+      return $('#todays #coffee .content').html('Kanna er ' + age + ' gammel<br />' + pots + ' kanner i dag');
     });
   };
 
