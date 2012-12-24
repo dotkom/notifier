@@ -133,7 +133,6 @@ body {
       position: relative;
       float: left;
       width: 33%;
-      padding-left: 15pt;
     }
     #coffee {
       .debugpink;
@@ -147,6 +146,7 @@ body {
       position: relative;
       float: left;
       width: 31%;
+      padding-left: 15pt;
     }
   }
 
