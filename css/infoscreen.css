@@ -132,21 +132,21 @@ body {
       .debugpink;
       position: relative;
       float: left;
-      width: 33%;
+      width: 32%;
     }
     #coffee {
       .debugpink;
       position: relative;
       float: left;
-      width: 32%;
-      padding-left: 15pt;
+      width: 31%;
+      padding-left: 20pt;
     }
     #servant {
       .debugpink;
       position: relative;
       float: left;
-      width: 31%;
-      padding-left: 15pt;
+      width: 30%;
+      padding-left: 20pt;
     }
   }
 
