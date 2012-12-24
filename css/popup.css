@@ -158,7 +158,7 @@ body {
   #cantinas {
     .debugred;
     .fullbox;
-    margin-top: @in-post-padding;
+    padding-top: @in-post-padding;
 
     #hangaren {
       .debugpink;
