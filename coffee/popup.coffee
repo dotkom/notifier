@@ -7,7 +7,7 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
-  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
+  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
   updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
@@ -23,17 +23,17 @@ mainLoop = ->
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'
   Meetings.get (meetings) ->
-    console.log meetings
-
-updateServant = ->
-  if DEBUG then console.log 'updateServant'
-  Servant.get (servant) ->
-    console.log servant
+    $('#todays #meetings .content').html meetings
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
   Coffee.get (pots, age) ->
-    console.log pots, age
+    $('#todays #coffee .content').html pots + ' kanner i dag, tid siden sist kanne ble laget: ' + age
+
+updateServant = ->
+  if DEBUG then console.log 'updateServant'
+  Servant.get (servant) ->
+    $('#todays #servant .content').html servant
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
@@ -237,7 +237,7 @@ fadeButtonText = (show, msg) ->
 
 # Document ready, go!
 $ ->
-  # if DEBUG then less.watch() # not needed when using CodeKit
+  if DEBUG then less.watch() # not needed when using CodeKit
 
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
@@ -245,7 +245,9 @@ $ ->
     setTimeout ( ->
       window.close()
     ), 250
-
+  
+  # Hide stuff the user does not want to see
+  $('#coffee').hide() if ls.coffeeSubscription isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 

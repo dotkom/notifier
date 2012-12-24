@@ -16,7 +16,7 @@
     if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
       updateMeetings();
     }
-    if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
+    if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
       updateCoffee();
     }
     if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
@@ -46,16 +46,7 @@
       console.log('updateMeetings');
     }
     return Meetings.get(function(meetings) {
-      return console.log(meetings);
-    });
-  };
-
-  updateServant = function() {
-    if (DEBUG) {
-      console.log('updateServant');
-    }
-    return Servant.get(function(servant) {
-      return console.log(servant);
+      return $('#todays #meetings .content').html(meetings);
     });
   };
 
@@ -64,7 +55,16 @@
       console.log('updateCoffee');
     }
     return Coffee.get(function(pots, age) {
-      return console.log(pots, age);
+      return $('#todays #coffee .content').html(pots + ' kanner i dag, tid siden sist kanne ble laget: ' + age);
+    });
+  };
+
+  updateServant = function() {
+    if (DEBUG) {
+      console.log('updateServant');
+    }
+    return Servant.get(function(servant) {
+      return $('#todays #servant .content').html(servant);
     });
   };
 
@@ -297,6 +297,9 @@
   };
 
   $(function() {
+    if (DEBUG) {
+      less.watch();
+    }
     if (ls.useInfoscreen === 'true') {
       chrome.tabs.create({
         url: 'infoscreen.html'
@@ -304,6 +307,9 @@
       setTimeout((function() {
         return window.close();
       }), 250);
+    }
+    if (ls.coffeeSubscription !== 'true') {
+      $('#coffee').hide();
     }
     if (ls.showCantina !== 'true') {
       $('#cantinas').hide();
