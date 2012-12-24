@@ -32,13 +32,13 @@ updateOffice = ->
 
 updateServant = ->
   if DEBUG then console.log 'updateServant'
-  # Implement
-  return 'David Storjord'
+  Servant.get (servant) ->
+    $('#todays #office_servant #servant').html servant
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
-  # Implement
-  return 'Dagens 5. kanne er laget<br />for 56 minutter siden'
+  Coffee.get (coffee) ->
+    $('#todays #coffee_pot #pot').html coffee
 
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'

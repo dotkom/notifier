@@ -46,6 +46,9 @@
           path: 'img/icon-' + status + '.png'
         });
         ls.currentStatus = status;
+        if (DEBUG) {
+          console.log('updateMeetings');
+        }
         return Meetings.get(function(meetings) {
           var today;
           meetings = $.trim(meetings);

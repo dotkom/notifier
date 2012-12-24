@@ -59,14 +59,20 @@
 
   updateServant = function() {
     if (DEBUG) {
-      return console.log('updateServant');
+      console.log('updateServant');
     }
+    return Servant.get(function(servant) {
+      return $('#todays #office_servant #servant').html(servant);
+    });
   };
 
   updateCoffee = function() {
     if (DEBUG) {
-      return console.log('updateCoffee');
+      console.log('updateCoffee');
     }
+    return Coffee.get(function(coffee) {
+      return $('#todays #coffee_pot #pot').html(coffee);
+    });
   };
 
   updateMeetings = function() {
