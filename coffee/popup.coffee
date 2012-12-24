@@ -6,6 +6,9 @@ iteration = 0
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
+  updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
+  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
+  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
@@ -16,6 +19,21 @@ mainLoop = ->
   setTimeout ( ->
     mainLoop()
   ), PAGE_LOOP
+
+updateMeetings = ->
+  if DEBUG then console.log 'updateMeetings'
+  Meetings.get (meetings) ->
+    console.log meetings
+
+updateServant = ->
+  if DEBUG then console.log 'updateServant'
+  Servant.get (servant) ->
+    console.log servant
+
+updateCoffee = ->
+  if DEBUG then console.log 'updateCoffee'
+  Coffee.get (pots, age) ->
+    console.log pots, age
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
