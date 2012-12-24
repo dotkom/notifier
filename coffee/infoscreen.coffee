@@ -33,10 +33,12 @@ updateOffice = ->
 updateServant = ->
   if DEBUG then console.log 'updateServant'
   # Implement
+  return 'David Storjord'
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
   # Implement
+  return 'Dagens 5. kanne er laget<br />for 56 minutter siden'
 
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'

@@ -27,10 +27,10 @@ mainLoop = ->
   ), loopTimeout
 
 updateOffice = ->
-  if DEBUG then console.log 'updateOffice'
   # status: "open"
   # title: "Åpent"
   # message: "Finn et komitemedlem for å åpne opp"
+  if DEBUG then console.log 'updateOffice'
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
