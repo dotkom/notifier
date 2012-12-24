@@ -115,7 +115,7 @@
       idsOfLastViewed = [];
       items.each(function(index, element) {
         var item, limit, post;
-        limit = ls.noDinnerInfo === 'true' ? 4 : 3;
+        limit = ls.noDinnerInfo === 'true' ? 3 : 2;
         if (index < limit) {
           post = parsePost(element);
           idsOfLastViewed.push(post.id);

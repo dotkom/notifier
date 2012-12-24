@@ -81,7 +81,7 @@ updateNews = ->
     # Add feed items to popup
     items.each (index, element) ->
       
-      limit = if ls.noDinnerInfo is 'true' then 4 else 3
+      limit = if ls.noDinnerInfo is 'true' then 3 else 2
       if index < limit
         post = parsePost(element)
         idsOfLastViewed.push(post.id)
