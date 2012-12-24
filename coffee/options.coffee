@@ -34,6 +34,11 @@ testDesktopNotification = ->
   notification = webkitNotifications.createHTMLNotification('notification.html')
   notification.show()
 
+testCoffeeSubscription = ->
+  notification = webkitNotifications.createHTMLNotification('notification.html')
+  notification.show()
+  # TODO: Implement this.
+
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
   if DEBUG then console.log 'Binding bus fields for ' + cssSelector
@@ -542,5 +547,8 @@ $ ->
       
       if this.id is 'showNotifications' and this.checked is true
         testDesktopNotification()
+      
+      if this.id is 'coffeeSubscription' and this.checked is true
+        testCoffeeSubscription()
 
       displayOnPageNotification()
