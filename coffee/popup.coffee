@@ -7,7 +7,7 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
-  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
+  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
   updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'

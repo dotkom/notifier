@@ -16,7 +16,7 @@
     if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
       updateMeetings();
     }
-    if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
+    if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
       updateCoffee();
     }
     if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
