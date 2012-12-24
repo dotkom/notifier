@@ -300,7 +300,7 @@ body {
         }
         #point {
           position: relative;
-          left: -1pt;
+          left: -.5pt;
           -moz-animation: mymove 1s ease infinite;
           -webkit-animation: mymove 1s ease infinite;
           @-webkit-keyframes mymove {
