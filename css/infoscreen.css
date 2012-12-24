@@ -128,20 +128,20 @@ body {
     .debugyellow;
     .fullbox;
 
-    #office_servant {
+    #servant {
       .debugpink;
       position: relative;
       float: left;
       width: 33%;
     }
-    #coffee_pot {
+    #coffee {
       .debugpink;
       position: relative;
       float: left;
       width: 32%;
       padding-left: 15pt;
     }
-    #office_meetings {
+    #meetings {
       .debugpink;
       position: relative;
       float: left;
