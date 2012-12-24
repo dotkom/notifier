@@ -7,9 +7,9 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
-    updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0
-    # Only fetch news if we're online
-    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine
+    updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0
+    updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0
+    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -26,22 +26,22 @@ mainLoop = ->
     mainLoop()
   ), loopTimeout
 
-updateOffice = ->
-  # status: "open"
-  # title: "Åpent"
-  # message: "Finn et komitemedlem for å åpne opp"
+updateOfficeAndMeetings = ->
   if DEBUG then console.log 'updateOffice'
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
       ls.currentStatus = status
-      
-      if DEBUG then console.log 'updateMeetings'
       Meetings.get (meetings) ->
-        meetings = $.trim meetings
         today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
         chrome.browserAction.setTitle {title: today}
         ls.currentStatusMessage = message
+
+updateCoffee = ->
+  # IMPLEMENT THIS
+  if DEBUG then console.log 'updateCoffee'
+  Coffee.get (pots, age) ->
+    console.log pots, age
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
