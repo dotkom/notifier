@@ -310,6 +310,7 @@
     }
     if (ls.coffeeSubscription !== 'true') {
       $('#coffee').hide();
+      $('#meetings').css('width', '50%');
     }
     if (ls.showCantina !== 'true') {
       $('#cantinas').hide();

@@ -245,9 +245,11 @@ $ ->
     setTimeout ( ->
       window.close()
     ), 250
-  
+
   # Hide stuff the user does not want to see
-  $('#coffee').hide() if ls.coffeeSubscription isnt 'true'
+  if ls.coffeeSubscription isnt 'true'
+    $('#coffee').hide()
+    $('#meetings').css 'width', '50%'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
