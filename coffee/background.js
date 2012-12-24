@@ -14,10 +14,10 @@
       console.log("\n#" + iteration);
     }
     if (ls.useInfoscreen !== 'true') {
-      if (iteration % UPDATE_OFFICE_INTERVAL === 0) {
+      if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
         updateOfficeAndMeetings();
       }
-      if (iteration % UPDATE_COFFEE_INTERVAL === 0) {
+      if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
         updateCoffee();
       }
       if (iteration % UPDATE_NEWS_INTERVAL === 0 && navigator.onLine) {
@@ -41,7 +41,7 @@
 
   updateOfficeAndMeetings = function() {
     if (DEBUG) {
-      console.log('updateOffice');
+      console.log('updateOfficeAndMeetings');
     }
     return Office.get(function(status, title, message) {
       if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {

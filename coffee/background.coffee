@@ -7,8 +7,8 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
-    updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0
-    updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0
+    updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
+    updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
     updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online
   
   # No reason to count to infinity
@@ -27,7 +27,7 @@ mainLoop = ->
   ), loopTimeout
 
 updateOfficeAndMeetings = ->
-  if DEBUG then console.log 'updateOffice'
+  if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
