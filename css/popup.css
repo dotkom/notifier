@@ -129,6 +129,7 @@ body {
   #todays {
     .debugyellow;
     .fullbox;
+    padding-top: @in-post-padding;
 
     #meetings {
       .debugpink;
@@ -248,7 +249,7 @@ body {
       font-weight: bold;
       text-align: right;
       .time {
-        padding-left: 5pt;
+        padding-left: 15pt;
       }
     }
     .left {
