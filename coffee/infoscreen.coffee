@@ -37,8 +37,8 @@ updateServant = ->
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
-  Coffee.get (coffee) ->
-    $('#todays #coffee_pot #pot').html coffee
+  Coffee.get (pots, age) ->
+    $('#todays #coffee_pot #pot').html pots + ' kanner i dag, tid siden sist kanne ble laget: ' + age
 
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'

@@ -70,8 +70,8 @@
     if (DEBUG) {
       console.log('updateCoffee');
     }
-    return Coffee.get(function(coffee) {
-      return $('#todays #coffee_pot #pot').html(coffee);
+    return Coffee.get(function(pots, age) {
+      return $('#todays #coffee_pot #pot').html(pots + ' kanner i dag, tid siden sist kanne ble laget: ' + age);
     });
   };
 
