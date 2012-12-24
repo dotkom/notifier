@@ -126,6 +126,32 @@ body {
     }
   }
 
+  #todays {
+    .debugyellow;
+    .fullbox;
+
+    #meetings {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 33%;
+      padding-left: 10pt;
+    }
+    #coffee {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 32%;
+      padding-left: 10pt;
+    }
+    #servant {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 31%;
+    }
+  }
+
   #cantinas {
     .debugred;
     .fullbox;

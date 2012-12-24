@@ -128,11 +128,12 @@ body {
     .debugyellow;
     .fullbox;
 
-    #servant {
+    #meetings {
       .debugpink;
       position: relative;
       float: left;
       width: 33%;
+      padding-left: 15pt;
     }
     #coffee {
       .debugpink;
@@ -141,12 +142,11 @@ body {
       width: 32%;
       padding-left: 15pt;
     }
-    #meetings {
+    #servant {
       .debugpink;
       position: relative;
       float: left;
       width: 31%;
-      padding-left: 15pt;
     }
   }
 
