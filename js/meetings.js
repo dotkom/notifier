@@ -11,8 +11,9 @@ var Meetings = {
     var self = this;
     $.ajax({
       url: 'https://online.ntnu.no/service_static/online_notifier2',
-      success: function(data) {
-        callback(data);
+      success: function(meetings) {
+        meetings = meetings.trim()
+        callback(meetings);
       },
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: Failed to get todays meeting plan.');
