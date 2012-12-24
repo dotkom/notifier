@@ -15,14 +15,14 @@
     if (iteration % UPDATE_OFFICE_INTERVAL === 0) {
       updateOffice();
     }
-    if (iteration % UPDATE_SERVANT_INTERVAL === 0) {
-      updateServant();
+    if (iteration % UPDATE_MEETINGS_INTERVAL === 0) {
+      updateMeetings();
     }
     if (iteration % UPDATE_COFFEE_INTERVAL === 0) {
       updateCoffee();
     }
-    if (iteration % UPDATE_MEETINGS_INTERVAL === 0) {
-      updateMeetings();
+    if (iteration % UPDATE_SERVANT_INTERVAL === 0) {
+      updateServant();
     }
     if (iteration % UPDATE_NEWS_INTERVAL === 0) {
       updateNews();
@@ -57,12 +57,12 @@
     });
   };
 
-  updateServant = function() {
+  updateMeetings = function() {
     if (DEBUG) {
-      console.log('updateServant');
+      console.log('updateMeetings');
     }
-    return Servant.get(function(servant) {
-      return $('#todays #office_servant #servant').html(servant);
+    return Meetings.get(function(meetings) {
+      return $('#todays #meetings .content').html(meetings);
     });
   };
 
@@ -71,16 +71,16 @@
       console.log('updateCoffee');
     }
     return Coffee.get(function(pots, age) {
-      return $('#todays #coffee_pot #pot').html(pots + ' kanner i dag, tid siden sist kanne ble laget: ' + age);
+      return $('#todays #coffee .content').html(pots + ' kanner i dag, tid siden sist kanne ble laget: ' + age);
     });
   };
 
-  updateMeetings = function() {
+  updateServant = function() {
     if (DEBUG) {
-      console.log('updateMeetings');
+      console.log('updateServant');
     }
-    return Meetings.get(function(meetings) {
-      return $('#todays #office_meetings #meetings').html(meetings);
+    return Servant.get(function(servant) {
+      return $('#todays #servant .content').html(servant);
     });
   };
 
