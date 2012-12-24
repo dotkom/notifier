@@ -40,7 +40,7 @@ updateCoffee = ->
 
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'
-  Office.getTodaysMeetings (meetings) ->
+  Meetings.get (meetings) ->
     $('#todays #office_meetings #meetings').html meetings
 
 updateNews = ->

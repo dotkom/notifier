@@ -73,7 +73,7 @@
     if (DEBUG) {
       console.log('updateMeetings');
     }
-    return Office.getTodaysMeetings(function(meetings) {
+    return Meetings.get(function(meetings) {
       return $('#todays #office_meetings #meetings').html(meetings);
     });
   };

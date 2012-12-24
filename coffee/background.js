@@ -46,7 +46,7 @@
           path: 'img/icon-' + status + '.png'
         });
         ls.currentStatus = status;
-        return Office.getTodaysMeetings(function(meetings) {
+        return Meetings.get(function(meetings) {
           var today;
           meetings = $.trim(meetings);
           today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
