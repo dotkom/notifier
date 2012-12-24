@@ -35,7 +35,7 @@
   text-transform: uppercase;
   font-size: 9pt;
   font-weight: bold;
-  margin-top: @in-post-padding;
+  padding-top: @in-post-padding;
 }
 
 .emphasized {
@@ -134,20 +134,20 @@ body {
       .debugpink;
       position: relative;
       float: left;
-      width: 33%;
+      width: 32%;
     }
     #coffee {
       .debugpink;
       position: relative;
       float: left;
-      width: 32%;
+      width: 31%;
       padding-left: 10pt;
     }
     #servant {
       .debugpink;
       position: relative;
       float: left;
-      width: 31%;
+      width: 30%;
       padding-left: 10pt;
     }
   }
