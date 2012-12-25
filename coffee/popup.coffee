@@ -10,6 +10,7 @@ mainLoop = ->
   updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
   updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+  updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
@@ -72,6 +73,13 @@ clickDinnerLink = (cssSelector, url) ->
     ls.chosenDinner = _id
     chrome.tabs.create({url: url})
     window.close()
+
+updateHours = ->
+  if DEBUG then console.log 'updateHours'
+  Hours.get 'hangaren', (hours) ->
+    $('#cantinas #hangaren .hours').html hours
+  Hours.get 'realfag', (hours) ->
+    $('#cantinas #realfag .hours').html hours
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'

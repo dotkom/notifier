@@ -13,6 +13,7 @@ mainLoop = ->
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0
+  updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -186,6 +187,13 @@ listDinners = (menu) ->
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">- "' + dinner.text + '"</li>'
   return dinnerlist
+
+updateHours = ->
+  if DEBUG then console.log 'updateHours'
+  Hours.get 'hangaren', (hours) ->
+    $('#cantinas #hangaren .hours').html hours
+  Hours.get 'realfag', (hours) ->
+    $('#cantinas #realfag .hours').html hours
 
 # Document ready, go!
 $ ->
