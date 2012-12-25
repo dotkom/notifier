@@ -1,5 +1,5 @@
 var Hours = {
-  var EXAM_PERIOD_LINK = 'http://www.sit.no/content/24363/Eksamensapent',
+  EXAM_PERIOD_LINK: 'http://www.sit.no/content/24363/Eksamensapent',
   
   /* This file: Opening Hours for the SiT cantinas */
 
@@ -21,19 +21,19 @@ var Hours = {
     var weekNumber = Math.ceil((((new Date() - _onejan) / 86400000) + _onejan.getDay()+1)/7);
 
     // Check if the cantina is supported
-    if (cantina !== 'hangaren' && cantina !== 'realfag' && cantina !=== 'storkiosk') {
+    if (cantina !== 'hangaren' && cantina !== 'realfag' && cantina !== 'storkiosk') {
       callback('Feil: Kantinen '+cantina+' støttes ikke');
     }
     else {
       // Is it the weekend?
       if (day === 0 || day === 6) {
         // Is it fall exam period?
-        if ((month === 10 && 15 <== dayOfMonth) || (month === 11 && dayOfMonth <== 21)) {
+        if ((month === 10 && 15 <= dayOfMonth) || (month === 11 && dayOfMonth <= 21)) {
           // Show the exam period notice all day long
           callback('Eksamensåpent? Sjekk <span class="link" data="'+this.EXAM_PERIOD_LINK+'">sit.no</span>');
         }
         // Is it spring exam period?
-        if ((month === 4 && 15 <== dayOfMonth) || (month === 5 && dayOfMonth <== 8)) {
+        if ((month === 4 && 15 <= dayOfMonth) || (month === 5 && dayOfMonth <= 8)) {
           // Show the exam period notice all day long
           callback('Eksamensåpent? Sjekk <span class="link" data="'+this.EXAM_PERIOD_LINK+'">sit.no</span>');
         }
@@ -78,7 +78,7 @@ var Hours = {
             callback('Lunsjmeny til kl 14');
           }
           else if (14 <= hour && (hour <= closingHour && minute < closingMinute)) {
-            var str = (closingMinute != 0 ? ':'+closingMinute : '');
+            var str = (closingMinute !== 0 ? ':'+closingMinute : '');
             callback('Middagsmeny til '+closingHour+str);
           }
           else {
@@ -87,7 +87,7 @@ var Hours = {
         }
         // Realfag is summer closed in weeks 27-31
         else if (cantina === 'realfag') {
-          if (27 <= weekNumber && weekNumber <== 31) {
+          if (27 <= weekNumber && weekNumber <= 31) {
             callback('Sommerstengt');
           }
           else {
@@ -103,7 +103,7 @@ var Hours = {
               callback('Åpner kl 10');
             }
             else if (10 <= hour && (hour <= closingHour && minute < closingMinute)) {
-              var str = (closingMinute != 0 ? ':'+closingMinute : '');
+              var str = (closingMinute !== 0 ? ':'+closingMinute : '');
               callback('Middagsmeny til '+closingHour+str);
             }
             else {
