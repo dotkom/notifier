@@ -326,6 +326,12 @@ body {
     .debugred;
     .fullbox;
 
+    .hours {
+      color: white;
+      font-weight: normal;
+      padding-left: 10pt;
+      text-transform: none;
+    }
     #hangaren {
       .debugpink;
       position: relative;

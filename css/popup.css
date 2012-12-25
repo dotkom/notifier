@@ -161,6 +161,12 @@ body {
     .fullbox;
     padding-top: @in-post-padding;
 
+    .hours {
+      color: white;
+      font-weight: normal;
+      padding-left: 5pt;
+      text-transform: none;
+    }
     #hangaren {
       .debugpink;
       position: relative;
