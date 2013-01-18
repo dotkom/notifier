@@ -133,8 +133,10 @@ body {
 
     .hours {
       color: white;
+      padding-top: 2pt;
+      padding-bottom: 3pt;
       font-weight: normal;
-      padding-left: 5pt;
+      font-style: italic;
       text-transform: none;
     }
     #hangaren {
