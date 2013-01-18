@@ -3,8 +3,8 @@ var Hours = {
 
   // SiTs new format for ajaxing hours:
 
-  // "diner=2532"
   // https://www.sit.no/ajaxdiner/get
+  // POST: "diner=2532"
   // 1593 = SiT Kafe Dragvoll
   // 2379 = SiT Kafe administrasjon
   // 2393 = SiT Storkiosk Dragvoll

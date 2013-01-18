@@ -20,8 +20,8 @@ var Cantina = {
   // SiTs new format for ajaxing dinner:
   // NOT used, so far it's just saved here for the sake of interest
 
-  // "diner=realfag&trigger=week"
   // https://www.sit.no/ajaxdinner/get
+  // POST: "diner=realfag&trigger=week"
   // dragvoll
   // hangaren
   // realfag
