@@ -1,7 +1,7 @@
 
 // Debugging
 
-@debug: 1pt;
+@debug: 0pt;
 .debugred {
   border: @debug solid red;
 }
@@ -267,7 +267,7 @@ body {
           font-family: helvetica;
           font-size: 30pt;
           list-style: none;
-          text-shadow: 0 0 5pt #00c6ff;
+          /*text-shadow: 0 0 5pt #00c6ff;*/
         }
         #hours {
           position: relative;
@@ -285,7 +285,7 @@ body {
           @-webkit-keyframes mymove {
             0% {
               opacity:1.0;
-              text-shadow: 0 0 20pt #00c6ff;
+              /*text-shadow: 0 0 20pt #00c6ff;*/
             }
             50% {
               opacity:0;
@@ -293,7 +293,7 @@ body {
             }
             100% {
               opacity:1.0;
-              text-shadow: 0 0 20pt #00c6ff;
+              /*text-shadow: 0 0 20pt #00c6ff;*/
             }
           }
         }
@@ -307,7 +307,9 @@ body {
 
     .hours {
       color: white;
+      padding-bottom: 3pt;
       font-weight: normal;
+      font-style: italic;
       text-transform: none;
     }
     #hangaren {
