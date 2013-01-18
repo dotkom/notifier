@@ -39,7 +39,7 @@ var Hours = {
 
     cantina = cantina.toLowerCase();
     var postString = 'diner='+this.cantinas[cantina];
-
+    
     var self = this;
     $.ajax({
       type: 'POST',
@@ -50,13 +50,18 @@ var Hours = {
         if (self.debugHours) console.log('Untreated JSON:', json);
 
         // Strip away JSON and HTML
-        allOpeningHours = self.stripJsonAndHtml(json);
-        if (self.debugHours) console.log('Entire string:', allOpeningHours);
+        allHours = self.stripJsonAndHtml(json);
+        if (self.debugHours) console.log('Entire string:', allHours);
 
         // Find todays hours
-        todaysOpeningHours = self.findTodaysOpeningHours(allOpeningHours);
-        if (self.debugHours) console.log('Todays hours:', todaysOpeningHours);
-        callback(todaysOpeningHours);
+        todaysHours = self.findTodaysHours(allHours);
+        if (self.debugHours) console.log('Todays hours:', todaysHours);
+
+        // Prettify todays hours
+        prettyHours = self.prettifyTodaysHours(todaysHours);
+        if (self.debugHours) console.log('Pretty hours:', prettyHours);
+
+        callback(prettyHours);
       },
       error: function(jqXHR, text, err) {
         callback('Klarte ikke koble til sit.no/ajax');
@@ -69,9 +74,9 @@ var Hours = {
     return htmlString.replace(/<(?:.|\n)*?>/gm, '');
   },
 
-  findTodaysOpeningHours: function(allOpeningHours) {
+  findTodaysHours: function(allHours) {
     var day = new Date().getDay();
-    var pieces = allOpeningHours.split('\n');
+    var pieces = allHours.split('\n');
     if (1 <= day && day <= 4) {
       return pieces[0];
     }
@@ -85,6 +90,16 @@ var Hours = {
       console.log('ERROR: How in the world did you get here?');
       return '';
     }
+  },
+
+  prettifyTodaysHours: function(todays) {
+    // All dots to colons
+    todays = todays.replace(/\./gm,':');
+    // Remove unnecessarily specific time info :00
+    todays = todays.replace(/:00/gm, '');
+    // Remove colon after day names
+    todays = todays.replace(/: /gm, ' ');
+    return todays;
   },
 
 }
