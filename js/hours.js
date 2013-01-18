@@ -37,6 +37,7 @@ var Hours = {
 
     cantina = cantina.toLowerCase();
 
+    /*
     var date = new Date();
     var minute = date.getMinutes();
     var hour = date.getHours();
@@ -142,6 +143,7 @@ var Hours = {
         }
       }
     }
+    */
     /* Div eksamensåpent info:
                             November      Desember          Klokken
     Hangaren selger middag         24-25, 1-2, 8-9, 15-16   14-16
