@@ -205,7 +205,7 @@ updateHours = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    # not needed when using CodeKit
+    # not needed if using CodeKit
     less.watch()
     # show the cursor and remove the overlay
     # (allows DOM inspection with the mouse)

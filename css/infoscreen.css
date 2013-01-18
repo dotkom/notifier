@@ -1,7 +1,7 @@
 
 // Debugging
 
-@debug: 0pt;
+@debug: 1pt;
 .debugred {
   border: @debug solid red;
 }
@@ -308,7 +308,6 @@ body {
     .hours {
       color: white;
       font-weight: normal;
-      padding-left: 10pt;
       text-transform: none;
     }
     #hangaren {
