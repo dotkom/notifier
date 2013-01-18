@@ -1,5 +1,32 @@
 var Hours = {
   EXAM_PERIOD_LINK: 'http://www.sit.no/content/24363/Eksamensapent',
+
+  // SiTs new format for ajaxing hours:
+
+  // "diner=2532"
+  // https://www.sit.no/ajaxdiner/get
+  // 1593 = SiT Kafe Dragvoll
+  // 2379 = SiT Kafe administrasjon
+  // 2393 = SiT Storkiosk Dragvoll
+  // 2517 = SiT Kafe Dragvoll Idrettssenter
+  // 2518 = SiT Kafe Elektro
+  // 2519 = SiT Kafe Hangaren
+  // 2520 = SiT Kafe Kjelhuset
+  // 2521 = SiT Kafe Realfag
+  // 2522 = Cafe-sito Realfag
+  // 2523 = Cafe-sito Stripa
+  // 2524 = SiT Storkiosk Gløshaugen
+  // 2525 = SiT Kafe Tyholt
+  // 2526 = SiT Kafe MTFS
+  // 2527 = SiT Kafe Øya
+  // 2528 = SiT Storkiosk Øya
+  // 2529 = SiT Kafe Kalvskinnet
+  // 2530 = SiT Kafe Moholt
+  // 2531 = SiT Kafe Ranheimsveien
+  // 2532 = SiT Kafe Rotvoll
+  // 2533 = SiT Kafe Tunga
+  // 2534 =  SiT Kafe DMMH
+  // 2602 = Cafe-sito Dragvoll
   
   /* This file: Opening Hours for the SiT cantinas */
 
