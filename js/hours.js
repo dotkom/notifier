@@ -1,6 +1,7 @@
 var Hours = {
-  EXAM_PERIOD_LINK: 'http://www.sit.no/content/24363/Eksamensapent',
-
+  examPeriodLink: 'http://www.sit.no/content/24363/Eksamensapent',
+  
+  // This file contains Opening Hours for the SiT cantinas.
   // SiTs new format for ajaxing hours:
 
   // https://www.sit.no/ajaxdiner/get
@@ -25,10 +26,8 @@ var Hours = {
   // 2531 = SiT Kafe Ranheimsveien
   // 2532 = SiT Kafe Rotvoll
   // 2533 = SiT Kafe Tunga
-  // 2534 =  SiT Kafe DMMH
+  // 2534 = SiT Kafe DMMH
   // 2602 = Cafe-sito Dragvoll
-  
-  /* This file: Opening Hours for the SiT cantinas */
 
   get: function (cantina, callback) {
     if (callback === undefined) {
@@ -57,12 +56,12 @@ var Hours = {
         // Is it fall exam period?
         if ((month === 10 && 15 <= dayOfMonth) || (month === 11 && dayOfMonth <= 21)) {
           // Show the exam period notice all day long
-          callback('Eksamensåpent? Sjekk <span class="link" data="'+this.EXAM_PERIOD_LINK+'">sit.no</span>');
+          callback('Eksamensåpent? Sjekk <span class="link" data="'+this.examPeriodLink+'">sit.no</span>');
         }
         // Is it spring exam period?
         if ((month === 4 && 15 <= dayOfMonth) || (month === 5 && dayOfMonth <= 8)) {
           // Show the exam period notice all day long
-          callback('Eksamensåpent? Sjekk <span class="link" data="'+this.EXAM_PERIOD_LINK+'">sit.no</span>');
+          callback('Eksamensåpent? Sjekk <span class="link" data="'+this.examPeriodLink+'">sit.no</span>');
         }
         // It's probably closed
         else {
@@ -104,7 +103,7 @@ var Hours = {
           else if (10 <= hour && hour <= 13) {
             callback('Lunsjmeny til kl 14');
           }
-          else if (14 <= hour && (hour <= closingHour && minute < closingMinute)) {
+          else if ((14 <= hour && hour <= closingHour) || (hour == closingHour && minute < closingMinute)) {
             var str = (closingMinute !== 0 ? ':'+closingMinute : '');
             callback('Middagsmeny til '+closingHour+str);
           }
@@ -129,7 +128,7 @@ var Hours = {
             if (hour < 10) {
               callback('Åpner kl 10');
             }
-            else if (10 <= hour && (hour <= closingHour && minute < closingMinute)) {
+            else if ((10 <= hour && hour <= closingHour) || (hour == closingHour && minute < closingMinute)) {
               var str = (closingMinute !== 0 ? ':'+closingMinute : '');
               callback('Middagsmeny til '+closingHour+str);
             }
