@@ -1,13 +1,39 @@
 var Cantina = {
 
-  msg_not_open: 'Ingen publisert meny i dag',
-  msg_connection_error: 'Frakoblet fra sit.no',
-  msg_malformed_menu: 'Galt format på meny',
-  dinner_word_limit: 4, // 4-7 is good, depends on screen size
-  DINNERDEBUG: 0, // General debugging
-  DINNERTEXTDEBUG: 0, // Deep debugging of dinner texts
-  // Required format of DINNERDEBUGITEM: "Seirett med ris (G): 36 kroner"
-  DINNERDEBUGITEM: 'Seirett med ris (G): 36 kroner', // DINNERTEXTDEBUG must be true
+  msgNotOpen: 'Ingen publisert meny i dag',
+  msgConnectionError: 'Frakoblet fra sit.no',
+  msgMalformedMenu: 'Galt format på meny',
+  dinnerWordLimit: 4, // 4-7 is good, depends on screen size
+  dinnerDebug: 0, // General debugging
+  dinnerDebugText: 0, // Deep debugging of dinner strings
+  dinnerDebugString: 'Seirett med ris (G): 36 kroner', // dinnerDebugText must be true
+  // Required format of dinnerDebugString: "Seirett med ris (G): 36 kroner"
+
+  // Feeds
+  dragvoll_rss: 'https://www.sit.no/rss.ap?thisId=36441&ma=on&ti=on&on=on&to=on&fr=on',
+  hangaren_rss: 'http://www.sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on',
+  kalvskinnet_rss: 'https://www.sit.no/rss.ap?thisId=36453&ma=on&ti=on&on=on&to=on&fr=on',
+  moholt_rss: 'https://www.sit.no/rss.ap?thisId=36456&ma=on&ti=on&on=on&to=on&fr=on',
+  realfag_rss: 'http://www.sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on',
+  tyholt_rss: 'http://www.sit.no/rss.ap?thisId=36450&ma=on&ti=on&on=on&to=on&fr=on',
+
+  // SiTs new format for ajaxing dinner:
+  // NOT used, so far it's just saved here for the sake of interest
+
+  // "diner=realfag&trigger=week"
+  // https://www.sit.no/ajaxdinner/get
+  // dragvoll
+  // hangaren
+  // realfag
+  // kjel
+  // elektro
+  // tyholt
+  // kalvskinnet
+  // moholt
+  // dmmh
+  // oya
+  // rotvoll
+  // ranheimsveien
 
   // Public
 
@@ -25,7 +51,7 @@ var Cantina = {
       },
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: could not connect to api.visuweb.no');
-        callback(self.msg_connection_error);
+        callback(self.msgConnectionError);
       },
     })
   },
@@ -40,7 +66,7 @@ var Cantina = {
       
       // If menu is missing: stop
       if (descriptions[1] === undefined) {
-        callback(self.msg_not_open);
+        callback(self.msgNotOpen);
         return;
       }
       
@@ -51,7 +77,7 @@ var Cantina = {
       
       var today = self.whichDayIsIt();
       var dinnerForEachDay = fullWeekDinnerInfo.split('<b>');
-      var todaysMenu = self.msg_not_open;
+      var todaysMenu = self.msgNotOpen;
       var mondaysCantinaMenu = '';
       for (dinnerDay in dinnerForEachDay) {
         // Find todays dinner menu
@@ -62,8 +88,8 @@ var Cantina = {
           mondaysCantinaMenu = dinnerForEachDay[dinnerDay];
       }
       // If no dinners for today were found (saturday / sunday)
-      if (todaysMenu === self.msg_not_open) {
-        callback(self.msg_not_open);
+      if (todaysMenu === self.msgNotOpen) {
+        callback(self.msgNotOpen);
         return;
       }
       
@@ -71,7 +97,7 @@ var Cantina = {
     }
     catch (err) {
       if (DEBUG) console.log('ERROR: problems during parsing of dinner xml');
-      callback(self.msg_malformed_menu + ': ' + err);
+      callback(self.msgMalformedMenu + ': ' + err);
     }
   },
 
@@ -88,8 +114,8 @@ var Cantina = {
       var indexCount = 0;
       dinnerList.forEach( function(dinner) {
 
-        if (self.DINNERTEXTDEBUG) {
-          dinner = self.DINNERDEBUGITEM;
+        if (self.dinnerDebugText) {
+          dinner = self.dinnerDebugString;
         }
         
         // Smiley-time, most likely no price information
@@ -98,7 +124,7 @@ var Cantina = {
           var dinner = descriptions[0];
           var price = (descriptions[1] === '' ? null : descriptions[1]);
           var singleDinner = new self.dinnerObject(dinner, price, indexCount);
-          if (self.DINNERTEXTDEBUG) console.log('WARNING: smileytime: ' + singleDinner.text  + ' @ index ' + singleDinner.index);
+          if (self.dinnerDebugText) console.log('WARNING: smileytime: ' + singleDinner.text  + ' @ index ' + singleDinner.index);
           dinnerObjects.push(singleDinner);
         }
 
@@ -112,20 +138,20 @@ var Cantina = {
           if ((description.indexOf('/') !== -1) && (price.indexOf('/') !== -1)) {
             var descriptions = description.split('/');
             var prices = price.split('/');
-            if (self.DINNERTEXTDEBUG) console.log('WARNING: multiple dinners in one cell: ' + descriptions + ', ' + prices + ', index: ' + index);
+            if (self.dinnerDebugText) console.log('WARNING: multiple dinners in one cell: ' + descriptions + ', ' + prices + ', index: ' + index);
             dinnerObjects.push(new self.dinnerObject(descriptions[0], prices[0], indexCount));
             dinnerObjects.push(new self.dinnerObject(descriptions[1], prices[1], indexCount));
           }
 
           else {
             var singleDinner = new self.dinnerObject(description, price, indexCount);
-            if (self.DINNERTEXTDEBUG) console.log(singleDinner.price + ', ' + singleDinner.text  + ', ' + singleDinner.index);
+            if (self.dinnerDebugText) console.log(singleDinner.price + ', ' + singleDinner.text  + ', ' + singleDinner.index);
             dinnerObjects.push(singleDinner);
           }
         }
         else {
           if (DEBUG) console.log('ERROR: problems during initial parsing of todays dinner');
-          callback(self.msg_malformed_menu);
+          callback(self.msgMalformedMenu);
           return;
         }
         // The dinner.index represents the current dinners index in SiT's dinner lists.
@@ -141,11 +167,11 @@ var Cantina = {
             var price1 = price.split('/')[0].match(/\d+/g);
             var price2 = price.split('/')[1].match(/\d+/g);
             price = ( Number(price1) < Number(price2) ? price1 : price2 );
-            if (self.DINNERDEBUG) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
+            if (self.dinnerDebug) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
           }
           else {
             price = price.match(/\d+/g); // Find the number, toss the rest
-            if (self.DINNERDEBUG) console.log('Price from "'+dinner.price+'" to "'+price+'"');
+            if (self.dinnerDebug) console.log('Price from "'+dinner.price+'" to "'+price+'"');
           }
           dinner.price = price;
         }
@@ -154,14 +180,14 @@ var Cantina = {
       // IF no dinner info is found at all, check for unique message at monday
       // WARNING: recursion going on!
       if (dinnerObjects.length === 0 && mondaysCantinaMenu !== null) {
-        if (self.DINNERDEBUG) console.log('WARNING: no dinner menu found today, checking monday');
+        if (self.dinnerDebug) console.log('WARNING: no dinner menu found today, checking monday');
         self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
         return;
       }
       // IF only one or two dinner object are found keep them entirely, - unless we're debugging texts
-      else if ((dinnerObjects.length === 1 || dinnerObjects.length === 2) && !self.DINNERTEXTDEBUG) {
+      else if ((dinnerObjects.length === 1 || dinnerObjects.length === 2) && !self.dinnerDebugText) {
         // in other words: do nothing!
-        if (self.DINNERDEBUG) console.log('only one or two dinner menus found, let\'s keep them intact');
+        if (self.dinnerDebug) console.log('only one or two dinner menus found, let\'s keep them intact');
         // except of course for a little trimming
         dinnerObjects.forEach( function(dinner) {
           dinner.text = dinner.text.trim();
@@ -179,12 +205,12 @@ var Cantina = {
           
             // If current item is NOT about the buffet, continue with:
             if (text.toLowerCase().indexOf('buffet') === -1) {
-              text = self.limitNumberOfWords(self.dinner_word_limit, text);
+              text = self.limitNumberOfWords(self.dinnerWordLimit, text);
               text = self.removeLastWords([' i',' &',' og',' med'], text);
               text = self.shortenVeggieWarning(text);
               text = text.trim();
             }
-            if (self.DINNERDEBUG) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
+            if (self.dinnerDebug) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
             dinner.text = text;
           }
           else {
@@ -203,7 +229,7 @@ var Cantina = {
     }
     catch (err) {
       if (DEBUG) console.log('ERROR: problems during deep parsing of todays dinner');
-      callback(self.msg_malformed_menu);
+      callback(self.msgMalformedMenu);
     }
   },
 
@@ -218,7 +244,7 @@ var Cantina = {
   },
 
   limitNumberOfWords: function(limit, originalText) {
-    if (this.DINNERTEXTDEBUG) console.log(limit + ' :: ' + originalText);
+    if (this.dinnerDebugText) console.log(limit + ' :: ' + originalText);
     var text = originalText;
     if (text.split(' ').length > limit) {
       text = text.split(' ').splice(0,limit).join(' ');
@@ -234,7 +260,7 @@ var Cantina = {
   removeLastWords: function(keys, text) {
     var self = this;
     for (key in keys) {
-      if (self.DINNERTEXTDEBUG) console.log(keys[key] + ' :: ' + text);
+      if (self.dinnerDebugText) console.log(keys[key] + ' :: ' + text);
       if (self.endsWith(keys[key], text)) {
         var pieces = text.split(' ');
         text = pieces.splice(0,pieces.length-1).join(' ');
@@ -246,7 +272,7 @@ var Cantina = {
   removePartsAfter: function(keys, text) {
     var self = this;
     for (key in keys) {
-      if (self.DINNERTEXTDEBUG) console.log(keys[key] + ' :: ' + text);
+      if (self.dinnerDebugText) console.log(keys[key] + ' :: ' + text);
       if (text.indexOf(keys[key]) !== -1)
         text = text.split(keys[key])[0];
     }
@@ -254,7 +280,7 @@ var Cantina = {
   },
 
   shortenVeggieWarning: function(text) {
-    if (this.DINNERTEXTDEBUG) console.log('V :: ' + text);
+    if (this.dinnerDebugText) console.log('V :: ' + text);
     if (text.toLowerCase().indexOf('ingen vegetar') !== -1 || text.toLowerCase().indexOf('ikke vegetar') !== -1)
       text = text.split(' ').splice(0,2).join(' ');
     return text;
