@@ -36,7 +36,7 @@
   font-size: 9pt;
   font-weight: bold;
   padding-top: 10pt;
-  padding-bottom: 3pt;
+  padding-bottom: 2pt;
 }
 
 .emphasized {
@@ -124,24 +124,6 @@ body {
       float: right;
       cursor: pointer;
       width: 140pt;
-    }
-  }
-
-  #todays {
-    .debugyellow;
-    .fullbox;
-
-    #schedule {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 48%;
-    }
-    #coffee {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 50%;
     }
   }
 
@@ -274,6 +256,24 @@ body {
       z-index: 1000;
       width: 80px;
       bottom: 3pt;
+    }
+  }
+
+  #todays {
+    .debugyellow;
+    .fullbox;
+
+    #schedule {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 50%;
+    }
+    #coffee {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 48%;
     }
   }
 
