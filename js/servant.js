@@ -12,7 +12,7 @@ var Servant = {
     // // Receives the meeting plan for today
     // var self = this;
     // $.ajax({
-    //   url: 'https://online.ntnu.no/service_static/online_notifier2',
+    //   url: 'https://online.ntnu.no/service_static/online_notifier3',
     //   success: function(servant) {
     //     callback(servant);
     //   },

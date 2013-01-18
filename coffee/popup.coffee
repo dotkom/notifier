@@ -87,10 +87,10 @@ updateBus = ->
   if !navigator.onLine
     $('#bus #first_bus .name').html ls.first_bus_name
     $('#bus #second_bus .name').html ls.second_bus_name
-    $('#bus #first_bus .lines').html '<div class="line error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #second_bus .lines').html '<div class="line error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #first_bus .times').html ''
-    $('#bus #second_bus .times').html ''
+    $('#bus #first_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #second_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    # $('#bus #first_bus .times').html ''
+    # $('#bus #second_bus .times').html ''
   
   else
     createBusDataRequest('first_bus', '#first_bus')
@@ -112,27 +112,28 @@ createBusDataRequest = (bus, cssIdentificator) ->
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator
+  spans = ['first', 'second', 'third']
 
   $(busStop+' .name').html stopName
+
+  # Reset spans
+  for i of spans
+    $(busStop+' .'+spans[i]+' .line').html ''
+    $(busStop+' .'+spans[i]+' .time').html ''
   
   if typeof lines is 'string'
-    # lines is an error message
-    $(busStop+' .lines').html '<div class="line error">'+lines+'</div>'
-    $(busStop+' .times').html ''
+    # Lines is an error message
+    $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
   else
-    # no lines to display, busstop is sleeping
+    # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .lines').html '<div class="line error">....zzzZZZzzz....</div>'
-      $(busStop+' .times').html ''
+      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....</div>'
     else
-      # display line for line with according times
-      spans = ['first', 'second', 'third']
-      $(busStop+' .lines').html ''
-      $(busStop+' .times').html ''
+      # Display line for line with according times
       for i of spans
         # Add the current line
-        $(busStop+' .lines').append '<div class="line '+spans[i]+'">'+lines['destination'][i]+'</div>'
-        $(busStop+' .times').append '<div class="time '+spans[i]+'">'+lines['departures'][i]+'</div>'
+        $(busStop+' .'+spans[i]+' .line').append lines['destination'][i]
+        $(busStop+' .'+spans[i]+' .time').append lines['departures'][i]
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
