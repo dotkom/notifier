@@ -253,9 +253,10 @@ $ ->
   ), 1800000
 
   # Reload the page once every day
-  setInterval ( ->
-    document.location.reload()
-  ), 86400000
+  unless DEBUG
+    setInterval ( ->
+      document.location.reload()
+    ), 86400000
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()
