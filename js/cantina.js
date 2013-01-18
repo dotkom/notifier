@@ -7,19 +7,20 @@ var Cantina = {
   dinnerDebug: 0, // General debugging
   dinnerDebugText: 0, // Deep debugging of dinner strings
   dinnerDebugString: 'Seirett med ris (G): 36 kroner', // dinnerDebugText must be true
-  // Required format of dinnerDebugString: "Seirett med ris (G): 36 kroner"
+  // Required format of dinnerDebugString: "Seirett med ris (G): 36 kroner" -> "food : price"
 
   // Feeds
-  dragvoll_rss: 'https://www.sit.no/rss.ap?thisId=36441&ma=on&ti=on&on=on&to=on&fr=on',
-  hangaren_rss: 'http://www.sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on',
-  kalvskinnet_rss: 'https://www.sit.no/rss.ap?thisId=36453&ma=on&ti=on&on=on&to=on&fr=on',
-  moholt_rss: 'https://www.sit.no/rss.ap?thisId=36456&ma=on&ti=on&on=on&to=on&fr=on',
-  realfag_rss: 'http://www.sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on',
-  tyholt_rss: 'http://www.sit.no/rss.ap?thisId=36450&ma=on&ti=on&on=on&to=on&fr=on',
+  feeds: {
+    'dragvoll': 'https://www.sit.no/rss.ap?thisId=36441&ma=on&ti=on&on=on&to=on&fr=on',
+    'hangaren': 'http://www.sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on',
+    'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453&ma=on&ti=on&on=on&to=on&fr=on',
+    'moholt': 'https://www.sit.no/rss.ap?thisId=36456&ma=on&ti=on&on=on&to=on&fr=on',
+    'realfag': 'http://www.sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on',
+    'tyholt': 'http://www.sit.no/rss.ap?thisId=36450&ma=on&ti=on&on=on&to=on&fr=on',
+  },
 
   // SiTs new format for ajaxing dinner:
   // NOT used, so far it's just saved here for the sake of interest
-
   // https://www.sit.no/ajaxdinner/get
   // POST: "diner=realfag&trigger=week"
   // dragvoll
@@ -37,11 +38,19 @@ var Cantina = {
 
   // Public
 
-  get: function (rssUrl, callback) {
+  get: function (cantina, callback) {
     if (callback === undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
+    if (this.feeds[cantina] === undefined) {
+      console.log('ERROR: Unsupported/unknown cantina.');
+      callback('ERROR: Unsupported/unknown cantina.');
+      return;
+    }
+
+    cantina = cantina.toLowerCase();
+    var rssUrl = this.feeds[cantina];
 
     var self = this;
     $.ajax({
