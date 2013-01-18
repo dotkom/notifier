@@ -1,11 +1,11 @@
 var Hours = {
-  api: 'https://www.sit.no/ajaxdiner/get',
-  examPeriodLink: 'http://www.sit.no/content/24363/Eksamensapent',
-  debugHours: 0,
   
   // This file contains Opening Hours for the SiT cantinas.
   // SiTs new format for ajaxing hours is a POST api:
   // curl --data "diner=2532" https://www.sit.no/ajaxdiner/get
+
+  api: 'https://www.sit.no/ajaxdiner/get',
+  debugHours: 0,
 
   cantinas: {
     'administrasjon': 2379,
@@ -65,120 +65,6 @@ var Hours = {
         callback('Klarte ikke koble til sit.no/ajax');
       },
     });
-
-    /*
-    var date = new Date();
-    var minute = date.getMinutes();
-    var hour = date.getHours();
-    var day = date.getDay();
-    var month = date.getMonth();
-    var dayOfMonth = date.getDate();
-    var _onejan = new Date(date.getFullYear(),0,1);
-    var weekNumber = Math.ceil((((new Date() - _onejan) / 86400000) + _onejan.getDay()+1)/7);
-
-    // Check if the cantina is supported
-    if (cantina !== 'hangaren' && cantina !== 'realfag' && cantina !== 'storkiosk') {
-      callback('Feil: Kantinen '+cantina+' støttes ikke');
-    }
-    else {
-      // Is it the weekend?
-      if (day === 0 || day === 6) {
-        // Is it fall exam period?
-        if ((month === 10 && 15 <= dayOfMonth) || (month === 11 && dayOfMonth <= 21)) {
-          // Show the exam period notice all day long
-          callback('Eksamensåpent? Sjekk <span class="link" data="'+this.examPeriodLink+'">sit.no</span>');
-        }
-        // Is it spring exam period?
-        if ((month === 4 && 15 <= dayOfMonth) || (month === 5 && dayOfMonth <= 8)) {
-          // Show the exam period notice all day long
-          callback('Eksamensåpent? Sjekk <span class="link" data="'+this.examPeriodLink+'">sit.no</span>');
-        }
-        // It's probably closed
-        else {
-          callback('Stengt');
-        }
-      }
-      // It's a regular day
-      else {
-        // Gløshaugen Storkiosk is open all year around
-        if (cantina === 'storkiosk') {
-          var closingHour = 18;
-          // Closing an hour earlier on fridays
-          if (day === 5) {
-            closingHour = 17;
-          }
-          // Check hour and minutes
-          if (hour < 8) {
-            callback('Åpner kl 8');
-          }
-          else if (10 <= hour && hour <= closingHour) {
-            callback('Åpent til kl '+closingHour);
-          }
-          else {
-            callback('Stengt');
-          }
-        }
-        // Hangaren is open all year around
-        else if (cantina === 'hangaren') {
-          var closingHour = 17;
-          var closingMinute = 30;
-          // Closing an hour earlier on fridays
-          if (day === 5) {
-            closingHour = 16;
-          }
-          // Check hour and minutes
-          if (hour < 10) {
-            callback('Åpner kl 10');
-          }
-          else if (10 <= hour && hour <= 13) {
-            callback('Lunsjmeny til kl 14');
-          }
-          else if ((14 <= hour && hour <= closingHour) || (hour == closingHour && minute < closingMinute)) {
-            var str = (closingMinute !== 0 ? ':'+closingMinute : '');
-            callback('Middagsmeny til kl '+closingHour+str);
-          }
-          else {
-            callback('Stengt');
-          }
-        }
-        // Realfag is summer closed in weeks 27-31
-        else if (cantina === 'realfag') {
-          if (27 <= weekNumber && weekNumber <= 31) {
-            callback('Sommerstengt');
-          }
-          else {
-            var closingHour = 17;
-            var closingMinute = 30;
-            // Closing an hour earlier on fridays
-            if (day === 5) {
-              closingHour = 14;
-              closingMinute = 0;
-            }
-            // Check hour and minutes
-            if (hour < 10) {
-              callback('Åpner kl 10');
-            }
-            else if ((10 <= hour && hour <= closingHour) || (hour == closingHour && minute < closingMinute)) {
-              var str = (closingMinute !== 0 ? ':'+closingMinute : '');
-              callback('Middagsmeny til kl '+closingHour+str);
-            }
-            else {
-              callback('Stengt');
-            }
-          }
-        }
-        else {
-          console.log('ERROR: How in the world did you get here?');
-        }
-      }
-    }
-    */
-    /* Div eksamensåpent info:
-                            November      Desember          Klokken
-    Hangaren selger middag         24-25, 1-2, 8-9, 15-16   14-16
-    Dragvoll selger middag                1-2, 8-9          15-17
-    Storkiosk Gløs er åpen  17-18, 24-25, 1-2, 8-9, 15-16   10-15
-    */
   },
 
   stripJsonAndHtml: function(data) {
