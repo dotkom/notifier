@@ -18,6 +18,7 @@ if (host == 'online.ntnu.no') {
 	chrome.extension.sendRequest({'action' : 'resetCounterWhenOnWebsite'});
 }
 
+/*
 if (host == 'sit.no') {
 	chrome.extension.sendRequest({'action' : 'showCantina'}, function(showCantina) {
 		if (showCantina == 'true') {
@@ -79,7 +80,7 @@ if (host == 'sit.no') {
 		}
 	});
 }
-
+*/
 
 
 
