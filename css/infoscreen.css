@@ -195,7 +195,7 @@ body {
     .debugred;
     .fullbox;
     font-size: 18pt;
-    line-height: 24pt;
+    line-height: 25pt;
     background-color: #000f1d;
     height: 144pt;
     width: 110%;
@@ -203,67 +203,54 @@ body {
     margin-left: -5%;
     box-shadow: 0 0 20pt #88b;
 
-    .loading_left {
-      position: relative;
-      width: 160px;
-      top: 18pt;
-      -webkit-transform: scaleX(-1);
-    }
-    .loading_right {
-      position: relative;
-      width: 160px;
-      top: 18pt;
-    }
     .name {
       color: white;
       margin-bottom: 3pt;
-      text-transform: uppercase;
       text-decoration: underline;
       font-weight: bold;
-    }
-    .lines {
-      .debugyellow;
-      text-align: left;
-      .line {
-        /*nothing to do here yet*/
-      }
-      .error {
-        font-style: italic;
-      }
-    }
-    .times {
-      .debugred;
-      font-weight: bold;
-      text-align: right;
-      .time {
-        padding-left: 15pt;
-      }
-    }
-    .left {
-      display: inline-block;
-      float: right;
-      position: relative;
-    }
-    .right {
-      display: inline-block;
-      float: left;
-      position: relative;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     #first_bus {
       .debuglime;
       position: relative;
       float: left;
       text-align: right;
-      padding-top: 12pt;
+      padding-top: 10pt;
       width: 42%;
     }
     #second_bus {
       .debuglime;
       width: 42%;
       position: relative;
-      padding-top: 12pt;
+      padding-top: 10pt;
       float: left;
       text-align: left;
+    }
+    .loading_left {
+      position: relative;
+      width: 160px;
+      bottom: 16pt;
+      -webkit-transform: scaleX(-1);
+    }
+    .loading_right {
+      position: relative;
+      width: 160px;
+      bottom: 16pt;
+    }
+    .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
+      .debugred;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .time {
+      font-weight: bold;
+    }
+    .error {
+      font-style: italic;
     }
     #middle {
       .debuglime;
