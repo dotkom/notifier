@@ -29,6 +29,37 @@ var Hours = {
   // 2534 = SiT Kafe DMMH
   // 2602 = Cafe-sito Dragvoll
 
+  cantinas: [
+    // 2379: 'SiT Kafe Administrasjon',
+    // 2534: 'SiT Kafe DMMH',
+    1593: 'SiT Kafe Dragvoll',
+    // 2517: 'SiT Kafe Dragvoll Idrettssenter',
+    // 2518: 'SiT Kafe Elektro',
+    2519: 'SiT Kafe Hangaren',
+    2529: 'SiT Kafe Kalvskinnet',
+    // 2520: 'SiT Kafe Kjelhuset',
+    2530: 'SiT Kafe Moholt',
+    // 2526: 'SiT Kafe MTFS',
+    // 2531: 'SiT Kafe Ranheimsveien',
+    2521: 'SiT Kafe Realfag',
+    // 2532: 'SiT Kafe Rotvoll',
+    // 2533: 'SiT Kafe Tunga',
+    2525: 'SiT Kafe Tyholt',
+    // 2527: 'SiT Kafe Øya',
+  ],
+  
+  kiosks: [
+    2393: 'SiT Storkiosk Dragvoll',
+    2524: 'SiT Storkiosk Gløshaugen',
+    2528: 'SiT Storkiosk Øya',
+  ],
+
+  cafes: [
+    2602: 'Cafe-sito Dragvoll',
+    2522: 'Cafe-sito Realfag',
+    2523: 'Cafe-sito Stripa',
+  ],
+
   get: function (cantina, callback) {
     if (callback === undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
