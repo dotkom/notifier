@@ -171,12 +171,10 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
-  hangaren_rss = 'http://sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on'
-  realfag_rss = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on'
 
-  Cantina.get hangaren_rss, (menu) ->
+  Cantina.get 'hangaren', (menu) ->
     $('#cantinas #hangaren #dinnerbox').html listDinners(menu)
-  Cantina.get realfag_rss, (menu) ->
+  Cantina.get 'realfag', (menu) ->
     $('#cantinas #realfag #dinnerbox').html listDinners(menu)
   
 listDinners = (menu) ->

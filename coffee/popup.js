@@ -72,21 +72,16 @@
   };
 
   updateCantinas = function() {
-    var hangaren_rss, hangaren_url, realfag_rss, realfag_url;
     if (DEBUG) {
       console.log('updateCantinas');
     }
-    hangaren_rss = 'http://sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on';
-    realfag_rss = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on';
-    hangaren_url = 'http://sit.no/content/36444/Ukas-middagsmeny-pa-Hangaren';
-    realfag_url = 'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag';
-    Cantina.get(hangaren_rss, function(menu) {
+    Cantina.get('hangaren', function(menu) {
       $('#cantinas #hangaren #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #hangaren #dinnerbox li', hangaren_url);
+      return clickDinnerLink('#cantinas #hangaren #dinnerbox li');
     });
-    return Cantina.get(realfag_rss, function(menu) {
+    return Cantina.get('realfag', function(menu) {
       $('#cantinas #realfag #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #realfag #dinnerbox li', realfag_url);
+      return clickDinnerLink('#cantinas #realfag #dinnerbox li');
     });
   };
 
@@ -111,13 +106,10 @@
     return dinnerlist;
   };
 
-  clickDinnerLink = function(cssSelector, url) {
+  clickDinnerLink = function(cssSelector) {
     return $(cssSelector).click(function() {
-      var _id;
-      _id = $(this).attr('id');
-      ls.chosenDinner = _id;
       chrome.tabs.create({
-        url: url
+        url: Cantina.url
       });
       return window.close();
     });

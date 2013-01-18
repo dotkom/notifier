@@ -1,5 +1,6 @@
 var Cantina = {
 
+  url: 'https://www.sit.no/middag',
   msgNotOpen: 'Ingen publisert meny i dag',
   msgConnectionError: 'Frakoblet fra sit.no',
   msgMalformedMenu: 'Galt format på meny',

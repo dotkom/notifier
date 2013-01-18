@@ -215,16 +215,13 @@
   };
 
   updateCantinas = function() {
-    var hangaren_rss, realfag_rss;
     if (DEBUG) {
       console.log('updateCantinas');
     }
-    hangaren_rss = 'http://sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on';
-    realfag_rss = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on';
-    Cantina.get(hangaren_rss, function(menu) {
+    Cantina.get('hangaren', function(menu) {
       return $('#cantinas #hangaren #dinnerbox').html(listDinners(menu));
     });
-    return Cantina.get(realfag_rss, function(menu) {
+    return Cantina.get('realfag', function(menu) {
       return $('#cantinas #realfag #dinnerbox').html(listDinners(menu));
     });
   };

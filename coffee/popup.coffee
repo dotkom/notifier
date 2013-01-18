@@ -38,17 +38,13 @@ updateCoffee = ->
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
-  hangaren_rss = 'http://sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on'
-  realfag_rss = 'http://sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on'
-  hangaren_url = 'http://sit.no/content/36444/Ukas-middagsmeny-pa-Hangaren'
-  realfag_url = 'http://sit.no/content/36447/Ukas-middagsmeny-pa-Realfag'
 
-  Cantina.get hangaren_rss, (menu) ->
+  Cantina.get 'hangaren', (menu) ->
     $('#cantinas #hangaren #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #hangaren #dinnerbox li', hangaren_url
-  Cantina.get realfag_rss, (menu) ->
+    clickDinnerLink '#cantinas #hangaren #dinnerbox li'
+  Cantina.get 'realfag', (menu) ->
     $('#cantinas #realfag #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #realfag #dinnerbox li', realfag_url
+    clickDinnerLink '#cantinas #realfag #dinnerbox li'
 
 listDinners = (menu) ->
   dinnerlist = ''
@@ -66,12 +62,9 @@ listDinners = (menu) ->
         dinnerlist += '<li class="message" id="' + dinner.index + '">- "' + dinner.text + '"</li>'
   return dinnerlist
 
-clickDinnerLink = (cssSelector, url) ->
-  # Remember index of clicked dinner menu and open SiTs site
+clickDinnerLink = (cssSelector) ->
   $(cssSelector).click ->
-    _id = $(this).attr('id')
-    ls.chosenDinner = _id
-    chrome.tabs.create({url: url})
+    chrome.tabs.create({url: Cantina.url})
     window.close()
 
 updateHours = ->
