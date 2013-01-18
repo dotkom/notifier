@@ -13,14 +13,14 @@
     if (DEBUG) {
       console.log("\n#" + iteration);
     }
+    if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
+      updateServant();
+    }
     if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
       updateMeetings();
     }
     if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
       updateCoffee();
-    }
-    if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
-      updateServant();
     }
     if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
       updateCantinas();
@@ -44,12 +44,21 @@
     }), PAGE_LOOP);
   };
 
+  updateServant = function() {
+    if (DEBUG) {
+      console.log('updateServant');
+    }
+    return Servant.get(function(servant) {
+      return $('#todays #schedule #servant').html(servant);
+    });
+  };
+
   updateMeetings = function() {
     if (DEBUG) {
       console.log('updateMeetings');
     }
     return Meetings.get(function(meetings) {
-      return $('#todays #meetings .content').html(meetings);
+      return $('#todays #schedule #meetings').html(meetings);
     });
   };
 
@@ -58,16 +67,7 @@
       console.log('updateCoffee');
     }
     return Coffee.get(function(pots, age) {
-      return $('#todays #coffee .content').html('Kanna er ' + age + ' gammel<br />' + pots + ' kanner i dag');
-    });
-  };
-
-  updateServant = function() {
-    if (DEBUG) {
-      console.log('updateServant');
-    }
-    return Servant.get(function(servant) {
-      return $('#todays #servant .content').html(servant);
+      return $('#todays #coffee #pot').html('Kanna er ' + age + ' gammel<br />' + pots + ' kanner i dag');
     });
   };
 

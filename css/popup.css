@@ -35,7 +35,8 @@
   text-transform: uppercase;
   font-size: 9pt;
   font-weight: bold;
-  padding-top: @in-post-padding;
+  padding-top: 10pt;
+  padding-bottom: 3pt;
 }
 
 .emphasized {
@@ -129,37 +130,24 @@ body {
   #todays {
     .debugyellow;
     .fullbox;
-    padding-top: @in-post-padding;
 
-    #meetings {
+    #schedule {
       .debugpink;
       position: relative;
       float: left;
-      width: 30%;
+      width: 48%;
     }
     #coffee {
       .debugpink;
       position: relative;
       float: left;
-      width: 30%;
-      padding-left: 10pt;
-    }
-    #servant {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 30%;
-      padding-left: 10pt;
-    }
-    .content {
-      margin-top: @in-post-padding;
+      width: 50%;
     }
   }
 
   #cantinas {
     .debugred;
     .fullbox;
-    padding-top: @in-post-padding;
 
     .hours {
       color: white;
@@ -171,7 +159,7 @@ body {
       .debugpink;
       position: relative;
       float: left;
-      width: 46%;
+      width: 48%;
     }
     #realfag {
       .debugpink;
@@ -181,7 +169,6 @@ body {
     }
     #dinnerbox {
       .debugyellow;
-      margin-top: 3pt;
     }
     li {
       .debuglime;
@@ -211,6 +198,7 @@ body {
   #bus {
     .debugred;
     .fullbox;
+
     position: relative;
     top: 12pt;
     line-height: 11.5pt;
@@ -297,7 +285,6 @@ body {
       .debugyellow;
       position: relative;
       clear: both;
-      padding-top: @in-post-padding;
 
       .item {
         .debugyellow;

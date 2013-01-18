@@ -6,9 +6,9 @@ iteration = 0
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
+  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
   updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
   updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
-  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
@@ -21,20 +21,20 @@ mainLoop = ->
     mainLoop()
   ), PAGE_LOOP
 
+updateServant = ->
+  if DEBUG then console.log 'updateServant'
+  Servant.get (servant) ->
+    $('#todays #schedule #servant').html servant
+
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'
   Meetings.get (meetings) ->
-    $('#todays #meetings .content').html meetings
+    $('#todays #schedule #meetings').html meetings
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
   Coffee.get (pots, age) ->
-    $('#todays #coffee .content').html 'Kanna er '+age+' gammel<br />'+pots+' kanner i dag'
-
-updateServant = ->
-  if DEBUG then console.log 'updateServant'
-  Servant.get (servant) ->
-    $('#todays #servant .content').html servant
+    $('#todays #coffee #pot').html 'Kanna er '+age+' gammel<br />'+pots+' kanner i dag'
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
@@ -89,8 +89,6 @@ updateBus = ->
     $('#bus #second_bus .name').html ls.second_bus_name
     $('#bus #first_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
     $('#bus #second_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    # $('#bus #first_bus .times').html ''
-    # $('#bus #second_bus .times').html ''
   
   else
     createBusDataRequest('first_bus', '#first_bus')
