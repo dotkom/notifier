@@ -1,5 +1,7 @@
 var Hours = {
+  api: 'https://www.sit.no/ajaxdiner/get',
   examPeriodLink: 'http://www.sit.no/content/24363/Eksamensapent',
+  debugHours: 0,
   
   // This file contains Opening Hours for the SiT cantinas.
   // SiTs new format for ajaxing hours:
@@ -29,36 +31,32 @@ var Hours = {
   // 2534 = SiT Kafe DMMH
   // 2602 = Cafe-sito Dragvoll
 
-  cantinas: [
-    // 2379: 'SiT Kafe Administrasjon',
-    // 2534: 'SiT Kafe DMMH',
-    1593: 'SiT Kafe Dragvoll',
-    // 2517: 'SiT Kafe Dragvoll Idrettssenter',
-    // 2518: 'SiT Kafe Elektro',
-    2519: 'SiT Kafe Hangaren',
-    2529: 'SiT Kafe Kalvskinnet',
-    // 2520: 'SiT Kafe Kjelhuset',
-    2530: 'SiT Kafe Moholt',
-    // 2526: 'SiT Kafe MTFS',
-    // 2531: 'SiT Kafe Ranheimsveien',
-    2521: 'SiT Kafe Realfag',
-    // 2532: 'SiT Kafe Rotvoll',
-    // 2533: 'SiT Kafe Tunga',
-    2525: 'SiT Kafe Tyholt',
-    // 2527: 'SiT Kafe Øya',
-  ],
-  
-  kiosks: [
-    2393: 'SiT Storkiosk Dragvoll',
-    2524: 'SiT Storkiosk Gløshaugen',
-    2528: 'SiT Storkiosk Øya',
-  ],
+  cantinas: {
+    // 'administrasjon': 2379,
+    // 'dmmh': 2534,
+    'dragvoll': 1593,
+    // 'dragvoll idrettssenter': 2517,
+    // 'elektro': 2518,
+    'hangaren': 2519,
+    'kalvskinnet': 2529,
+    // 'kjelhuset': 2520,
+    'moholt': 2530,
+    // 'mtfs': 2526,
+    // 'ranheimsveien': 2531,
+    'realfag': 2521,
+    // 'rotvoll': 2532,
+    // 'tunga': 2533,
+    'tyholt': 2525,
+    // 'øya': 2527,
 
-  cafes: [
-    2602: 'Cafe-sito Dragvoll',
-    2522: 'Cafe-sito Realfag',
-    2523: 'Cafe-sito Stripa',
-  ],
+    // 'storkiosk dragvoll': 2393,
+    // 'storkiosk gløshaugen': 2524,
+    // 'storkiosk øya': 2528,
+
+    // 'sito dragvoll': 2602,
+    // 'sito realfag': 2522,
+    // 'sito stripa': 2523,
+  },
 
   get: function (cantina, callback) {
     if (callback === undefined) {
@@ -67,6 +65,30 @@ var Hours = {
     }
 
     cantina = cantina.toLowerCase();
+    var postString = 'diner='+this.cantinas[cantina];
+
+    var self = this;
+    $.ajax({
+      type: 'POST',
+      data: postString,
+      url: self.api,
+      dataType: 'json',
+      success: function(json) {
+        if (self.debugHours) console.log('Untreated JSON:', json);
+
+        // Strip away JSON and HTML
+        allOpeningHours = self.stripJsonAndHtml(json);
+        if (self.debugHours) console.log('Entire string:', allOpeningHours);
+
+        // Find todays hours
+        todaysOpeningHours = self.findTodaysOpeningHours(allOpeningHours);
+        if (self.debugHours) console.log('Todays hours:', todaysOpeningHours);
+        callback(todaysOpeningHours);
+      },
+      error: function(jqXHR, text, err) {
+        callback('Klarte ikke koble til sit.no/ajax');
+      },
+    });
 
     /*
     var date = new Date();
@@ -181,6 +203,30 @@ var Hours = {
     Dragvoll selger middag                1-2, 8-9          15-17
     Storkiosk Gløs er åpen  17-18, 24-25, 1-2, 8-9, 15-16   10-15
     */
+  },
+
+  stripJsonAndHtml: function(data) {
+    var htmlString = data.html;
+    // Strip away HTML tags
+    return htmlString.replace(/<(?:.|\n)*?>/gm, '');
+  },
+
+  findTodaysOpeningHours: function(allOpeningHours) {
+    var day = new Date().getDay();
+    var pieces = allOpeningHours.split('\n');
+    if (1 <= day && day <= 4) {
+      return pieces[0];
+    }
+    else if (day == 5) {
+      return pieces[1];
+    }
+    else if (day == 0 || day == 6) {
+      return 'Stengt';
+    }
+    else {
+      console.log('ERROR: How in the world did you get here?');
+      return '';
+    }
   },
 
 }
