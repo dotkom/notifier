@@ -105,7 +105,7 @@ var Hours = {
           }
           else if ((14 <= hour && hour <= closingHour) || (hour == closingHour && minute < closingMinute)) {
             var str = (closingMinute !== 0 ? ':'+closingMinute : '');
-            callback('Middagsmeny til '+closingHour+str);
+            callback('Middagsmeny til kl '+closingHour+str);
           }
           else {
             callback('Stengt');
@@ -130,7 +130,7 @@ var Hours = {
             }
             else if ((10 <= hour && hour <= closingHour) || (hour == closingHour && minute < closingMinute)) {
               var str = (closingMinute !== 0 ? ':'+closingMinute : '');
-              callback('Middagsmeny til '+closingHour+str);
+              callback('Middagsmeny til kl '+closingHour+str);
             }
             else {
               callback('Stengt');
