@@ -32,30 +32,30 @@ var Hours = {
   // 2602 = Cafe-sito Dragvoll
 
   cantinas: {
-    // 'administrasjon': 2379,
-    // 'dmmh': 2534,
-    'dragvoll': 1593,
-    // 'dragvoll idrettssenter': 2517,
-    // 'elektro': 2518,
-    'hangaren': 2519,
-    'kalvskinnet': 2529,
-    // 'kjelhuset': 2520,
-    'moholt': 2530,
-    // 'mtfs': 2526,
-    // 'ranheimsveien': 2531,
-    'realfag': 2521,
-    // 'rotvoll': 2532,
-    // 'tunga': 2533,
-    'tyholt': 2525,
-    // 'øya': 2527,
+    'administrasjon': 2379,
+    'dmmh': 2534,
+    'dragvoll': 1593, // got dinner info
+    'dragvoll idrettssenter': 2517,
+    'elektro': 2518,
+    'hangaren': 2519, // got dinner info
+    'kalvskinnet': 2529, // got dinner info
+    'kjelhuset': 2520,
+    'moholt': 2530, // got dinner info
+    'mtfs': 2526,
+    'ranheimsveien': 2531,
+    'realfag': 2521, // got dinner info
+    'rotvoll': 2532,
+    'tunga': 2533,
+    'tyholt': 2525, // got dinner info
+    'øya': 2527,
 
-    // 'storkiosk dragvoll': 2393,
-    // 'storkiosk gløshaugen': 2524,
-    // 'storkiosk øya': 2528,
+    'storkiosk dragvoll': 2393,
+    'storkiosk gløshaugen': 2524,
+    'storkiosk øya': 2528,
 
-    // 'sito dragvoll': 2602,
-    // 'sito realfag': 2522,
-    // 'sito stripa': 2523,
+    'sito dragvoll': 2602,
+    'sito realfag': 2522,
+    'sito stripa': 2523,
   },
 
   get: function (cantina, callback) {
