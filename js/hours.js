@@ -6,7 +6,6 @@ var Hours = {
 
   api: 'https://www.sit.no/ajaxdiner/get',
   debugHours: 0,
-
   cantinas: {
     'administrasjon': 2379,
     'dmmh': 2534,
@@ -24,11 +23,9 @@ var Hours = {
     'tunga': 2533,
     'tyholt': 2525, // got dinner info
     'øya': 2527,
-
     'storkiosk dragvoll': 2393,
     'storkiosk gløshaugen': 2524,
     'storkiosk øya': 2528,
-
     'sito dragvoll': 2602,
     'sito realfag': 2522,
     'sito stripa': 2523,
@@ -69,7 +66,6 @@ var Hours = {
 
   stripJsonAndHtml: function(data) {
     var htmlString = data.html;
-    // Strip away HTML tags
     return htmlString.replace(/<(?:.|\n)*?>/gm, '');
   },
 
@@ -79,10 +75,10 @@ var Hours = {
     if (1 <= day && day <= 4) {
       return pieces[0];
     }
-    else if (day == 5) {
+    else if (day === 5) {
       return pieces[1];
     }
-    else if (day == 0 || day == 6) {
+    else if (day === 0 || day === 6) {
       return 'Stengt';
     }
     else {
