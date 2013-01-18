@@ -1,7 +1,7 @@
 
 // Debugging
 
-@debug: 0pt;
+@debug: 1pt;
 .debugred {
   border: @debug solid red;
 }
@@ -128,25 +128,17 @@ body {
     .debugyellow;
     .fullbox;
 
-    #meetings {
+    #schedule {
       .debugpink;
       position: relative;
       float: left;
-      width: 32%;
+      width: 48%;
     }
     #coffee {
       .debugpink;
       position: relative;
       float: left;
-      width: 31%;
-      padding-left: 20pt;
-    }
-    #servant {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 30%;
-      padding-left: 20pt;
+      width: 50%;
     }
   }
 
@@ -323,7 +315,7 @@ body {
       .debugpink;
       position: relative;
       float: left;
-      width: 47%;
+      width: 48%;
     }
     #realfag {
       .debugpink;

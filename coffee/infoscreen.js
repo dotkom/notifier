@@ -15,14 +15,14 @@
     if (iteration % UPDATE_OFFICE_INTERVAL === 0) {
       updateOffice();
     }
+    if (iteration % UPDATE_SERVANT_INTERVAL === 0) {
+      updateServant();
+    }
     if (iteration % UPDATE_MEETINGS_INTERVAL === 0) {
       updateMeetings();
     }
     if (iteration % UPDATE_COFFEE_INTERVAL === 0) {
       updateCoffee();
-    }
-    if (iteration % UPDATE_SERVANT_INTERVAL === 0) {
-      updateServant();
     }
     if (iteration % UPDATE_NEWS_INTERVAL === 0) {
       updateNews();
@@ -60,12 +60,21 @@
     });
   };
 
+  updateServant = function() {
+    if (DEBUG) {
+      console.log('updateServant');
+    }
+    return Servant.get(function(servant) {
+      return $('#todays #schedule #servant').html(servant);
+    });
+  };
+
   updateMeetings = function() {
     if (DEBUG) {
       console.log('updateMeetings');
     }
     return Meetings.get(function(meetings) {
-      return $('#todays #meetings .content').html(meetings);
+      return $('#todays #schedule #meetings').html(meetings);
     });
   };
 
@@ -74,16 +83,7 @@
       console.log('updateCoffee');
     }
     return Coffee.get(function(pots, age) {
-      return $('#todays #coffee .content').html('Kanna er ' + age + ' gammel<br />' + pots + ' kanner i dag');
-    });
-  };
-
-  updateServant = function() {
-    if (DEBUG) {
-      console.log('updateServant');
-    }
-    return Servant.get(function(servant) {
-      return $('#todays #servant .content').html(servant);
+      return $('#todays #coffee #pot').html('Kanna er ' + age + ' gammel<br />' + pots + ' kanner i dag');
     });
   };
 

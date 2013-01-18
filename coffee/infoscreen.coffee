@@ -7,9 +7,9 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0
+  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0
   updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0
   updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0
-  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0
@@ -31,20 +31,20 @@ updateOffice = ->
       ls.currentStatus = status
       ls.currentStatusMessage = message
 
+updateServant = ->
+  if DEBUG then console.log 'updateServant'
+  Servant.get (servant) ->
+    $('#todays #schedule #servant').html servant
+
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'
   Meetings.get (meetings) ->
-    $('#todays #meetings .content').html meetings
+    $('#todays #schedule #meetings').html meetings
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
   Coffee.get (pots, age) ->
-    $('#todays #coffee .content').html 'Kanna er '+age+' gammel<br />'+pots+' kanner i dag'
-
-updateServant = ->
-  if DEBUG then console.log 'updateServant'
-  Servant.get (servant) ->
-    $('#todays #servant .content').html servant
+    $('#todays #coffee #pot').html 'Kanna er '+age+' gammel<br />'+pots+' kanner i dag'
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
