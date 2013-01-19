@@ -57,7 +57,7 @@ header {
   width: @content-width - (@header-padding * 2);
   max-height: @header-height;
   margin-left: -(@content-width / 2);
-  margin-top: -(@content-height / 2) - (@header-height) - 5pt;
+  margin-top: -(@content-height / 2) - (@header-height) - 15pt;
   text-align: center;
   border-bottom: 1pt solid #eee;
   z-index: 1;
@@ -112,7 +112,7 @@ header {
   width: @content-width;
   height: @content-height;
   margin-left: -(@content-width / 2);
-  margin-top: -(@content-height / 2) + (@header-height / 2);
+  margin-top: -(@content-height / 2) + (@header-height / 2) - 10pt;
   z-index: 10;
 
   .side {
