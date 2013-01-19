@@ -139,13 +139,13 @@ body {
       font-style: italic;
       text-transform: none;
     }
-    #hangaren {
+    #left {
       .debugpink;
       position: relative;
       float: left;
       width: 48%;
     }
-    #realfag {
+    #right {
       .debugpink;
       position: relative;
       float: right;
