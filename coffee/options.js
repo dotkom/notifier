@@ -40,7 +40,7 @@
         path: 'img/icon-' + status + '.png'
       });
       ls.currentStatus = status;
-      return Office.getTodaysEvents(function(meetingPlan) {
+      return Meetings.get(function(meetingPlan) {
         var today;
         meetingPlan = $.trim(meetingPlan);
         today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetingPlan;
