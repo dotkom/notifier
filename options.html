@@ -125,7 +125,25 @@
 
       <div class="item">
         <label for="showCantina">
-          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" /><span>Vis dagens middagsmeny fra Hangaren og Realfag</span><br />
+          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" /><span>Vis dagens middagsmeny fra
+          <select id="leftCantina" name="leftCantina">
+            <option value="dragvoll">dragvoll</option>
+            <option value="hangaren">hangaren</option>
+            <option value="kalvskinnet">kalvskinnet</option>
+            <option value="moholt">moholt</option>
+            <option value="realfag">realfag</option>
+            <option value="tyholt">tyholt</option>
+          </select>
+          og
+          <select id="rightCantina" name="rightCantina">
+            <option value="dragvoll">dragvoll</option>
+            <option value="hangaren">hangaren</option>
+            <option value="kalvskinnet">kalvskinnet</option>
+            <option value="moholt">moholt</option>
+            <option value="realfag">realfag</option>
+            <option value="tyholt">tyholt</option>
+          </select>
+          </span><br />
           <img class="image" src="/img/options-cantina-menu.png" />
         </label>
       </div>

@@ -38,7 +38,6 @@ updateCoffee = ->
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
-
   Cantina.get 'hangaren', (menu) ->
     $('#cantinas #hangaren #dinnerbox').html listDinners(menu)
     clickDinnerLink '#cantinas #hangaren #dinnerbox li'
