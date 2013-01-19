@@ -121,11 +121,11 @@
     if (DEBUG) {
       console.log('updateHours');
     }
-    Hours.get('hangaren', function(hours) {
-      return $('#cantinas #hangaren .hours').html(hours);
+    Hours.get(ls.left_cantina, function(hours) {
+      return $('#cantinas #left .hours').html(hours);
     });
-    return Hours.get('realfag', function(hours) {
-      return $('#cantinas #realfag .hours').html(hours);
+    return Hours.get(ls.right_cantina, function(hours) {
+      return $('#cantinas #right .hours').html(hours);
     });
   };
 

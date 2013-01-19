@@ -70,10 +70,10 @@ clickDinnerLink = (cssSelector) ->
 
 updateHours = ->
   if DEBUG then console.log 'updateHours'
-  Hours.get 'hangaren', (hours) ->
-    $('#cantinas #hangaren .hours').html hours
-  Hours.get 'realfag', (hours) ->
-    $('#cantinas #realfag .hours').html hours
+  Hours.get ls.left_cantina, (hours) ->
+    $('#cantinas #left .hours').html hours
+  Hours.get ls.right_cantina, (hours) ->
+    $('#cantinas #right .hours').html hours
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
