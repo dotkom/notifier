@@ -78,13 +78,13 @@ var Hours = {
     var day = new Date().getDay();
     var pieces = allHours.split('\n');
     if (1 <= day && day <= 4) {
-      return pieces[0];
+      return '- ' + pieces[0];
     }
     else if (day === 5) {
-      return pieces[1];
+      return '- ' + pieces[1];
     }
     else if (day === 0 || day === 6) {
-      return 'Stengt';
+      return '- Kantinen er stengt';
     }
     else {
       console.log('ERROR: How in the world did you get here?');
