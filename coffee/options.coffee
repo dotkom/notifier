@@ -39,6 +39,11 @@ testCoffeeSubscription = ->
   notification.show()
   # TODO: Implement this.
 
+bindCantinaSelector = (selector) ->
+  $('#' + selector).change ->
+    ls[selector] = $(this).val()
+    alert ls[selector] + ' is saved! :)'
+
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
   if DEBUG then console.log 'Binding bus fields for ' + cssSelector
@@ -498,6 +503,10 @@ $ ->
   # Bind a click function to the on-page notification for the canvas
   # $('#notification').click ->
   #   fadeInCanvas()
+
+  # Allow user to select cantinas
+  bindCantinaSelector 'left_cantina'
+  bindCantinaSelector 'right_cantina'
 
   # Give user suggestions for autocomplete of bus stops
   bindBusFields 'first_bus'
