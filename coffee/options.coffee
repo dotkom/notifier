@@ -24,9 +24,9 @@ updateOfficeStatus = ->
   Office.get (status, title, message) ->
     chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
     ls.currentStatus = status
-    Meetings.get (meetingPlan) ->
-      meetingPlan = $.trim meetingPlan
-      today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetingPlan
+    Meetings.get (meetings) ->
+      meetings = $.trim meetings
+      today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
       chrome.browserAction.setTitle {title: today}
       ls.currentStatusMessage = message
 
