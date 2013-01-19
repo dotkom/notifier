@@ -288,6 +288,8 @@ header {
 
   .cantina_selector {
     width: 70pt;
+    background-color: transparent;
+    color: white;
   }
 
   /* the infoscreen option in particular */
