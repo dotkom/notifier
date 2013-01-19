@@ -284,6 +284,12 @@ header {
     }
   }
 
+  /* the cantina option in particular */
+
+  .cantina_selector {
+    width: 70pt;
+  }
+
   /* the infoscreen option in particular */
 
   #infoscreen_preview {
