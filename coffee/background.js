@@ -117,6 +117,8 @@
       }
       if (ls.showCantina === void 0) {
         ls.showCantina = 'true';
+        ls.left_cantina = 'hangaren';
+        ls.right_cantina = 'realfag';
       }
       if (ls.showNotifications === void 0) {
         ls.showNotifications = 'true';

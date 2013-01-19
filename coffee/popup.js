@@ -75,13 +75,13 @@
     if (DEBUG) {
       console.log('updateCantinas');
     }
-    Cantina.get('hangaren', function(menu) {
-      $('#cantinas #hangaren #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #hangaren #dinnerbox li');
+    Cantina.get(ls.left_cantina, function(menu) {
+      $('#cantinas #left #dinnerbox').html(listDinners(menu));
+      return clickDinnerLink('#cantinas #left #dinnerbox li');
     });
-    return Cantina.get('realfag', function(menu) {
-      $('#cantinas #realfag #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #realfag #dinnerbox li');
+    return Cantina.get(ls.right_cantina, function(menu) {
+      $('#cantinas #right #dinnerbox').html(listDinners(menu));
+      return clickDinnerLink('#cantinas #right #dinnerbox li');
     });
   };
 

@@ -87,6 +87,8 @@ $ ->
       ls.showOffice = 'true'
     if ls.showCantina is undefined
       ls.showCantina = 'true'
+      ls.left_cantina = 'hangaren'
+      ls.right_cantina = 'realfag'
     
     if ls.showNotifications is undefined
       ls.showNotifications = 'true'
