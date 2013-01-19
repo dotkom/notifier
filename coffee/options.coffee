@@ -40,9 +40,11 @@ testCoffeeSubscription = ->
   # TODO: Implement this.
 
 bindCantinaSelector = (selector) ->
+  # Default values
+  $('#' + selector).val ls.selector
+  # React to change
   $('#' + selector).change ->
     ls[selector] = $(this).val()
-    alert ls[selector] + ' is saved! :)'
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField

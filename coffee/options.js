@@ -65,9 +65,9 @@
   };
 
   bindCantinaSelector = function(selector) {
+    $('#' + selector).val(ls.selector);
     return $('#' + selector).change(function() {
-      ls[selector] = $(this).val();
-      return alert(ls[selector] + ' is saved! :)');
+      return ls[selector] = $(this).val();
     });
   };
 
