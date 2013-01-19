@@ -65,7 +65,7 @@
   };
 
   bindCantinaSelector = function(selector) {
-    $('#' + selector).val(ls.selector);
+    $('#' + selector).val(ls[selector]);
     return $('#' + selector).change(function() {
       return ls[selector] = $(this).val();
     });

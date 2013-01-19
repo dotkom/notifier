@@ -41,7 +41,7 @@ testCoffeeSubscription = ->
 
 bindCantinaSelector = (selector) ->
   # Default values
-  $('#' + selector).val ls.selector
+  $('#' + selector).val ls[selector]
   # React to change
   $('#' + selector).change ->
     ls[selector] = $(this).val()
