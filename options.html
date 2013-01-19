@@ -73,6 +73,13 @@
     <div id="left" class="side">
 
       <div class="item">
+        <label for="membership">
+          <input type="checkbox" name="membership" value="membership" id="membership" /><span>Åpne WebChat i bakgrunnen når Chrome starter</span><br />
+          <img class="image" src="/img/options-webchat.png" />
+        </label>
+      </div>
+
+      <div class="item">
         <label for="showBus">
           <input type="checkbox" name="showBus" value="showBus" id="showBus" /><span>Vis sanntidsbuss fra AtB</span><br />
         </label>
@@ -84,7 +91,8 @@
               <option selected="selected">fra byen</option>
             </select>
             <div class="lines">
-              <!-- a wrapping div makes the slide animation smooth for the table that's injected here -->
+              <!-- a wrapping div makes the slide animation smooth for when
+              the table with favorite bus lines is injected here -->
             </div>
           </div>
           <label for="showBus">
@@ -126,7 +134,7 @@
       <div class="item">
         <label for="showCantina">
           <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
-          <span>Vis middagsmeny fra
+          <span>Vis meny/åpningstider fra
           <select class="cantina_selector" id="left_cantina">
             <option value="dragvoll">dragvoll</option>
             <option value="hangaren">hangaren</option>
@@ -149,12 +157,12 @@
         </label>
       </div>
 
-      <div class="item">
+      <!-- <div class="item">
         <label for="openChatter">
           <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" /><span>Åpne WebChat i bakgrunnen når Chrome starter</span><br />
           <img class="image" src="/img/options-webchat.png" />
         </label>
-      </div>
+      </div> -->
 
     </div>
     <div id="right" class="side">
