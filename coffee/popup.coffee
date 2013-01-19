@@ -39,9 +39,11 @@ updateCoffee = ->
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
   Cantina.get ls.left_cantina, (menu) ->
+    $('#cantinas #left .title').html ls.left_cantina
     $('#cantinas #left #dinnerbox').html listDinners(menu)
     clickDinnerLink '#cantinas #left #dinnerbox li'
   Cantina.get ls.right_cantina, (menu) ->
+    $('#cantinas #right .title').html ls.right_cantina
     $('#cantinas #right #dinnerbox').html listDinners(menu)
     clickDinnerLink '#cantinas #right #dinnerbox li'
 

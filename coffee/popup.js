@@ -76,10 +76,12 @@
       console.log('updateCantinas');
     }
     Cantina.get(ls.left_cantina, function(menu) {
+      $('#cantinas #left .title').html(ls.left_cantina);
       $('#cantinas #left #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #left #dinnerbox li');
     });
     return Cantina.get(ls.right_cantina, function(menu) {
+      $('#cantinas #right .title').html(ls.right_cantina);
       $('#cantinas #right #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #right #dinnerbox li');
     });

@@ -171,10 +171,12 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
-  Cantina.get 'hangaren', (menu) ->
-    $('#cantinas #hangaren #dinnerbox').html listDinners(menu)
-  Cantina.get 'realfag', (menu) ->
-    $('#cantinas #realfag #dinnerbox').html listDinners(menu)
+  Cantina.get ls.left_cantina, (menu) ->
+    $('#cantinas #left .title').html ls.left_cantina
+    $('#cantinas #left #dinnerbox').html listDinners(menu)
+  Cantina.get ls.right_cantina, (menu) ->
+    $('#cantinas #right .title').html ls.right_cantina
+    $('#cantinas #right #dinnerbox').html listDinners(menu)
   
 listDinners = (menu) ->
   dinnerlist = ''

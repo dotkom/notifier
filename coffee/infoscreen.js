@@ -218,11 +218,13 @@
     if (DEBUG) {
       console.log('updateCantinas');
     }
-    Cantina.get('hangaren', function(menu) {
-      return $('#cantinas #hangaren #dinnerbox').html(listDinners(menu));
+    Cantina.get(ls.left_cantina, function(menu) {
+      $('#cantinas #left .title').html(ls.left_cantina);
+      return $('#cantinas #left #dinnerbox').html(listDinners(menu));
     });
-    return Cantina.get('realfag', function(menu) {
-      return $('#cantinas #realfag #dinnerbox').html(listDinners(menu));
+    return Cantina.get(ls.right_cantina, function(menu) {
+      $('#cantinas #right .title').html(ls.right_cantina);
+      return $('#cantinas #right #dinnerbox').html(listDinners(menu));
     });
   };
 
