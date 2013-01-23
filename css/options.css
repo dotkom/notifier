@@ -288,8 +288,10 @@ header {
 
   .cantina_selector {
     width: 70pt;
+    /* fancypants select menus:
     background-color: transparent;
     color: white;
+    */
   }
 
   /* the infoscreen option in particular */
