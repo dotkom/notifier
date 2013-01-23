@@ -11,17 +11,23 @@ var Cantina = {
   // Required format of dinnerDebugString: "Seirett med ris (G): 36 kroner" -> "food : price"
 
   // Feeds
+  // To single out days use 'https://www.sit.no/rss.ap?thisId=36441&ma=on' - gives 'mandag' alone
   feeds: {
-    'dragvoll': 'https://www.sit.no/rss.ap?thisId=36441&ma=on&ti=on&on=on&to=on&fr=on',
-    'hangaren': 'http://www.sit.no/rss.ap?thisId=36444&ma=on&ti=on&on=on&to=on&fr=on',
-    'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453&ma=on&ti=on&on=on&to=on&fr=on',
-    'moholt': 'https://www.sit.no/rss.ap?thisId=36456&ma=on&ti=on&on=on&to=on&fr=on',
-    'realfag': 'http://www.sit.no/rss.ap?thisId=36447&ma=on&ti=on&on=on&to=on&fr=on',
-    'tyholt': 'http://www.sit.no/rss.ap?thisId=36450&ma=on&ti=on&on=on&to=on&fr=on',
+    'dmmh': 'https://www.sit.no/rss.ap?thisId=38798',
+    'dragvoll': 'https://www.sit.no/rss.ap?thisId=36441',
+    'elektro': 'https://www.sit.no/rss.ap?thisId=40227',
+    'hangaren': 'http://www.sit.no/rss.ap?thisId=36444',
+    'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453',
+    'kjelhuset': 'https://www.sit.no/rss.ap?thisId=31681',
+    'moholt': 'https://www.sit.no/rss.ap?thisId=36456',
+    'ranheimsveien': 'https://www.sit.no/rss.ap?thisId=38753',
+    'realfag': 'http://www.sit.no/rss.ap?thisId=36447',
+    'rotvoll': 'https://www.sit.no/rss.ap?thisId=38910',
+    'tyholt': 'http://www.sit.no/rss.ap?thisId=36450',
   },
 
   // SiTs new format for ajaxing dinner:
-  // NOT used, so far it's just saved here for the sake of interest
+  // NOT used, we use RSS instead, so far this is just saved here for the sake of interest
   // https://www.sit.no/ajaxdinner/get
   // POST: "diner=realfag&trigger=week"
   // dragvoll
