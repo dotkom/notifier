@@ -35,9 +35,12 @@ Chronological Credz
 - René Räisänen designed the graphics
 - Tri Minh Nguyen created the overlay API for AtB's realtime bus API
 - Jonas Svarvaa wrote all the subsequent revisions of calendar services
+- Roy Sindre Norangshol helped with several maintenance issues
 - Magnus Dysthe has been working on hardware for the infoscreen
 - Tor Håkon Bonsaksen helped with several hardware issues
-- Nils Herde set up the hardware for the light sensor and maintains it
+- Kristoffer Dalby hacked up scripts that fixed ubuntu screen-to-black issues
+- Jim Frode Hoff made the coffee button, attached to an Arduino
+- Nils Herde fixed hardware issues, kept the infoscreen running and installed the coffee button
 
 # Featurelist
 
