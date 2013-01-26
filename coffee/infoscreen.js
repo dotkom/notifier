@@ -74,6 +74,7 @@
       console.log('updateMeetings');
     }
     return Meetings.get(function(meetings) {
+      meetings = meetings.replace(/\n/g, '<br />');
       return $('#todays #schedule #meetings').html(meetings);
     });
   };

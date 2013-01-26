@@ -39,6 +39,7 @@ updateServant = ->
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'
   Meetings.get (meetings) ->
+    meetings = meetings.replace /\n/g, '<br />'
     $('#todays #schedule #meetings').html meetings
 
 updateCoffee = ->
