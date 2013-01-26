@@ -214,7 +214,7 @@ var Cantina = {
             // If current item is NOT about the buffet, continue with:
             if (text.toLowerCase().indexOf('buffet') === -1) {
               text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-              text = self.removeLastWords([' i',' &',' og',' med'], text);
+              text = self.removeLastWords([' i',' &',' og',' med', ' m'], text);
               text = self.shortenVeggieWarning(text);
               text = text.trim();
             }
