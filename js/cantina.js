@@ -94,7 +94,7 @@ var Cantina = {
           mondaysCantinaMenu = dinnerForEachDay[dinnerDay];
       }
       // If no dinners for today were found (saturday / sunday)
-      if (todaysMenu === self.msgNotOpen && self.dinnerDebugText === false) {
+      if (todaysMenu === self.msgNotOpen && !self.dinnerDebugText) {
         callback(self.msgNotOpen);
         return;
       }
