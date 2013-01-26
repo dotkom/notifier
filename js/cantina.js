@@ -1,7 +1,7 @@
 var Cantina = {
 
   url: 'https://www.sit.no/middag',
-  msgNotOpen: 'Ingen publisert meny i dag',
+  msgClosed: 'Ingen publisert meny i dag',
   msgConnectionError: 'Frakoblet fra sit.no',
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
@@ -72,7 +72,7 @@ var Cantina = {
       
       // If menu is missing: stop
       if (descriptions[1] === undefined) {
-        callback(self.msgNotOpen);
+        callback(self.msgClosed);
         return;
       }
       
@@ -83,7 +83,7 @@ var Cantina = {
       
       var today = self.whichDayIsIt();
       var dinnerForEachDay = fullWeekDinnerInfo.split('<b>');
-      var todaysMenu = self.msgNotOpen;
+      var todaysMenu = self.msgClosed;
       var mondaysCantinaMenu = '';
       for (dinnerDay in dinnerForEachDay) {
         // Find todays dinner menu
@@ -94,8 +94,8 @@ var Cantina = {
           mondaysCantinaMenu = dinnerForEachDay[dinnerDay];
       }
       // If no dinners for today were found (saturday / sunday)
-      if (todaysMenu === self.msgNotOpen && !self.dinnerDebugText) {
-        callback(self.msgNotOpen);
+      if (todaysMenu === self.msgClosed && !self.dinnerDebugText) {
+        callback(self.msgClosed);
         return;
       }
       
