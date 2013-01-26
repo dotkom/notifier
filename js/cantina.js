@@ -5,10 +5,10 @@ var Cantina = {
   msgConnectionError: 'Frakoblet fra sit.no',
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
-  dinnerDebug: 1, // General debugging
-  dinnerDebugText: 1, // Deep debugging of dinner strings (even in weekends)
-  dinnerDebugString: 'Seirett med ris (G): 36,00 kroner', // dinnerDebugText must be true
-  // Required format of dinnerDebugString: "Seirett med ris (G): 36 kroner" -> "food : price"
+  dinnerDebug: 0, // General debugging
+  dinnerDebugText: 0, // Deep debugging of dinner strings (even in weekends)
+  dinnerDebugString: 'Seirett med ris (G): 36 kroner', // dinnerDebugText must be true
+  // Expected format of dinnerDebugString: "Seirett med ris (G): 36 kroner" -> "food : price"
 
   // Feeds
   // To single out days use 'https://www.sit.no/rss.ap?thisId=36441&ma=on' - gives 'mandag' alone
@@ -30,18 +30,8 @@ var Cantina = {
   // NOT used, we use RSS instead, so far this is just saved here for the sake of interest
   // https://www.sit.no/ajaxdinner/get
   // POST: "diner=realfag&trigger=week"
-  // dragvoll
-  // hangaren
-  // realfag
-  // kjel
-  // elektro
-  // tyholt
-  // kalvskinnet
-  // moholt
-  // dmmh
-  // oya
-  // rotvoll
-  // ranheimsveien
+  // diner = "dragvoll | hangaren | realfag | kjel | elektro | tyholt
+  //    | kalvskinnet | moholt | dmmh | oya | rotvoll | ranheimsveien"
 
   // Public
 
