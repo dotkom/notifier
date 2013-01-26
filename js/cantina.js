@@ -215,6 +215,7 @@ var Cantina = {
             if (text.toLowerCase().indexOf('buffet') === -1) {
               text = self.limitNumberOfWords(self.dinnerWordLimit, text);
               text = self.removeLastWords([' i',' &',' og',' med', ' m'], text);
+              text = self.removePunctuationAtEndOfLine(text);
               text = self.shortenVeggieWarning(text);
               text = text.trim();
             }
@@ -285,6 +286,11 @@ var Cantina = {
         text = text.split(keys[key])[0];
     }
     return text;
+  },
+
+  removePunctuationAtEndOfLine: function(text) {
+    if (this.debugDinnerText) console.log(',;.- :: ' + text);
+    return text.replace(/[,;.-]$/gm, '');
   },
 
   shortenVeggieWarning: function(text) {
