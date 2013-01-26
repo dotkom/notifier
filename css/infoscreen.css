@@ -63,6 +63,7 @@ body {
   padding: 0;
   overflow: hidden;
   font-size: 20pt;
+  line-height: 22pt;
 }
 
 #overlay {
@@ -137,7 +138,7 @@ body {
     #coffee {
       .debugpink;
       position: relative;
-      float: left;
+      float: right;
       width: 50%;
     }
   }
@@ -331,7 +332,6 @@ body {
       .debuglime;
       position: relative;
       width: 95%;
-      line-height: 1.5em;
       list-style-type: none;
       -webkit-transition: text-shadow 0.15s ease-out 0s;
     }
