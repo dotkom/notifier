@@ -58,7 +58,6 @@
       console.log('updateMeetings');
     }
     return Meetings.get(function(meetings) {
-      meetings = 'dotKom 10-100\nlolKom100-1000000';
       meetings = meetings.replace(/\n/g, '<br />');
       return $('#todays #schedule #meetings').html(meetings);
     });
