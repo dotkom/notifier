@@ -5,10 +5,10 @@ var Cantina = {
   msgConnectionError: 'Frakoblet fra sit.no',
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
-  dinnerDebug: 0, // General debugging
-  dinnerDebugText: 0, // Deep debugging of dinner strings (even in weekends)
-  dinnerDebugString: 'Seirett med ris (G): 36 kroner', // dinnerDebugText must be true
-  // Expected format of dinnerDebugString: "Seirett med ris (G): 36 kroner" -> "food : price"
+  debugDinner: 0, // General debugging
+  debugDinnerText: 0, // Deep debugging of dinner strings (even in weekends)
+  debugDinnerString: 'Seirett med ris (G): 36 kroner', // debugDinnerText must be true
+  // Expected format of debugDinnerString: "Seirett med ris (G): 36 kroner" -> "food : price"
 
   // Feeds
   // To single out days use 'https://www.sit.no/rss.ap?thisId=36441&ma=on' - gives 'mandag' alone
@@ -94,7 +94,7 @@ var Cantina = {
           mondaysCantinaMenu = dinnerForEachDay[dinnerDay];
       }
       // If no dinners for today were found (saturday / sunday)
-      if (todaysMenu === self.msgClosed && !self.dinnerDebugText) {
+      if (todaysMenu === self.msgClosed && !self.debugDinnerText) {
         callback(self.msgClosed);
         return;
       }
@@ -120,8 +120,8 @@ var Cantina = {
       var indexCount = 0;
       dinnerList.forEach( function(dinner) {
 
-        if (self.dinnerDebugText) {
-          dinner = self.dinnerDebugString;
+        if (self.debugDinnerText) {
+          dinner = self.debugDinnerString;
         }
         
         // Smiley-time, most likely no price information
@@ -130,7 +130,7 @@ var Cantina = {
           var dinner = descriptions[0];
           var price = (descriptions[1] === '' ? null : descriptions[1]);
           var singleDinner = new self.dinnerObject(dinner, price, indexCount);
-          if (self.dinnerDebugText) console.log('WARNING: smileytime: ' + singleDinner.text  + ' @ index ' + singleDinner.index);
+          if (self.debugDinnerText) console.log('WARNING: smileytime: ' + singleDinner.text  + ' @ index ' + singleDinner.index);
           dinnerObjects.push(singleDinner);
         }
 
@@ -144,14 +144,14 @@ var Cantina = {
           if ((description.indexOf('/') !== -1) && (price.indexOf('/') !== -1)) {
             var descriptions = description.split('/');
             var prices = price.split('/');
-            if (self.dinnerDebugText) console.log('WARNING: multiple dinners in one cell: ' + descriptions + ', ' + prices + ', index: ' + index);
+            if (self.debugDinnerText) console.log('WARNING: multiple dinners in one cell: ' + descriptions + ', ' + prices + ', index: ' + index);
             dinnerObjects.push(new self.dinnerObject(descriptions[0], prices[0], indexCount));
             dinnerObjects.push(new self.dinnerObject(descriptions[1], prices[1], indexCount));
           }
 
           else {
             var singleDinner = new self.dinnerObject(description, price, indexCount);
-            if (self.dinnerDebugText) console.log(singleDinner.price + ', ' + singleDinner.text  + ', ' + singleDinner.index);
+            if (self.debugDinnerText) console.log(singleDinner.price + ', ' + singleDinner.text  + ', ' + singleDinner.index);
             dinnerObjects.push(singleDinner);
           }
         }
@@ -175,11 +175,11 @@ var Cantina = {
             var price1 = price.split('/')[0].match(/\d+/g);
             var price2 = price.split('/')[1].match(/\d+/g);
             price = ( Number(price1) < Number(price2) ? price1 : price2 );
-            if (self.dinnerDebug) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
+            if (self.debugDinner) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
           }
           else {
             price = price.match(/\d+/g); // Find the number, toss the rest
-            if (self.dinnerDebug) console.log('Price from "'+dinner.price+'" to "'+price+'"');
+            if (self.debugDinner) console.log('Price from "'+dinner.price+'" to "'+price+'"');
           }
           dinner.price = price;
         }
@@ -188,14 +188,14 @@ var Cantina = {
       // IF no dinner info is found at all, check for unique message at monday
       // WARNING: recursion going on!
       if (dinnerObjects.length === 0 && mondaysCantinaMenu !== null) {
-        if (self.dinnerDebug) console.log('WARNING: no dinner menu found today, checking monday');
+        if (self.debugDinner) console.log('WARNING: no dinner menu found today, checking monday');
         self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
         return;
       }
       // IF only one or two dinner object are found keep them entirely, - unless we're debugging texts
-      else if ((dinnerObjects.length === 1 || dinnerObjects.length === 2) && !self.dinnerDebugText) {
+      else if ((dinnerObjects.length === 1 || dinnerObjects.length === 2) && !self.debugDinnerText) {
         // in other words: do nothing!
-        if (self.dinnerDebug) console.log('only one or two dinner menus found, let\'s keep them intact');
+        if (self.debugDinner) console.log('only one or two dinner menus found, let\'s keep them intact');
         // except of course for a little trimming
         dinnerObjects.forEach( function(dinner) {
           dinner.text = dinner.text.trim();
@@ -218,7 +218,7 @@ var Cantina = {
               text = self.shortenVeggieWarning(text);
               text = text.trim();
             }
-            if (self.dinnerDebug) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
+            if (self.debugDinner) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
             dinner.text = text;
           }
           else {
@@ -252,7 +252,7 @@ var Cantina = {
   },
 
   limitNumberOfWords: function(limit, originalText) {
-    if (this.dinnerDebugText) console.log(limit + ' :: ' + originalText);
+    if (this.debugDinnerText) console.log(limit + ' :: ' + originalText);
     var text = originalText;
     if (text.split(' ').length > limit) {
       text = text.split(' ').splice(0,limit).join(' ');
@@ -268,7 +268,7 @@ var Cantina = {
   removeLastWords: function(keys, text) {
     var self = this;
     for (key in keys) {
-      if (self.dinnerDebugText) console.log(keys[key] + ' :: ' + text);
+      if (self.debugDinnerText) console.log(keys[key] + ' :: ' + text);
       if (self.endsWith(keys[key], text)) {
         var pieces = text.split(' ');
         text = pieces.splice(0,pieces.length-1).join(' ');
@@ -280,7 +280,7 @@ var Cantina = {
   removePartsAfter: function(keys, text) {
     var self = this;
     for (key in keys) {
-      if (self.dinnerDebugText) console.log(keys[key] + ' :: ' + text);
+      if (self.debugDinnerText) console.log(keys[key] + ' :: ' + text);
       if (text.indexOf(keys[key]) !== -1)
         text = text.split(keys[key])[0];
     }
@@ -288,7 +288,7 @@ var Cantina = {
   },
 
   shortenVeggieWarning: function(text) {
-    if (this.dinnerDebugText) console.log('V :: ' + text);
+    if (this.debugDinnerText) console.log('V :: ' + text);
     if (text.toLowerCase().indexOf('ingen vegetar') !== -1 || text.toLowerCase().indexOf('ikke vegetar') !== -1)
       text = text.split(' ').splice(0,2).join(' ');
     return text;
