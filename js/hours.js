@@ -5,12 +5,12 @@ var Hours = {
   // curl --data "diner=2532" https://www.sit.no/ajaxdiner/get
 
   api: 'https://www.sit.no/ajaxdiner/get',
-  msgClosed: 'Kantinen er nok stengt',
-  msgConnectionError: 'Frakoblet fra sit.no/ajax',
-  msgMalformedHours: 'Galt format på åpningstider',
-  debugHours: 1, // General debugging
-  debugHoursText: 1, // Deep debugging of a specific string, insert below
-  debugHoursString: 'Mandag - torsdag 10.00 - 17.30\nFredag 10.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugHoursText must be true
+  msgClosed: '- Kantinen er nok stengt',
+  msgConnectionError: '- Frakoblet fra sit.no/ajax',
+  msgMalformedHours: '- Galt format på åpningstider',
+  debugHours: 0, // General debugging
+  debugHoursText: 0, // Deep debugging of a specific string, insert below
+  debugHoursString: 'Mandag- Torsdag 10.00 -17.30\nFredag 08.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugHoursText must be true
   // debugHoursString is expected to be pre-stripped of JSON and HTML, otherwise intact
   cantinas: {
     'administrasjon': 2379,
@@ -42,6 +42,8 @@ var Hours = {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
+
+    if (this.debugHoursText) console.log('NOTE: Currently debugging a particular string');
 
     cantina = cantina.toLowerCase();
     var postString = 'diner='+this.cantinas[cantina];
@@ -86,14 +88,17 @@ var Hours = {
   findTodaysHours: function(allHours) {
     var day = new Date().getDay();
     var pieces = allHours.split('\n');
-    if (1 <= day && day <= 4) {
+    if (this.debugHoursText) {
+      return '- ' + pieces[0] + '<br />- ' + pieces[1];
+    }
+    else if (1 <= day && day <= 4) {
       return '- ' + pieces[0];
     }
     else if (day === 5) {
       return '- ' + pieces[1];
     }
     else if (day === 0 || day === 6) {
-      return '- ' + this.msgClosed;
+      return this.msgClosed;
     }
     else {
       console.log('ERROR: How in the world did you get here?');
@@ -104,11 +109,26 @@ var Hours = {
   prettifyTodaysHours: function(todays) {
     // All dots to colons
     todays = todays.replace(/\./gm,':');
-    // Remove unnecessarily specific time info :00
+    // Remove unnecessarily specific time info 10:00 -> 10
     todays = todays.replace(/:00/gm, '');
+    // Trim unnecessary zero in time 08 -> 8
+    todays = todays.replace(/0(\d)/gm, '$1');
     // Remove colon after day names
     todays = todays.replace(/: /gm, ' ');
+    // Change '-' between days to 'til'
+    todays = todays.replace(/(dag) ?- ?([a-zA-Z])/gm, "$1" + " til " + "$2");
+    // Add a space if needed, e.g. "10- 16:30" -> "10 - 16:30"
+    todays = todays.replace(/(\d) ?- ?(\d)/gm, "$1" + " - " + "$2");
+    // Only first letter should be capitalized
+    todays = this.capitalizeFirstLetterOnly(todays);
     return todays;
+  },
+
+  capitalizeFirstLetterOnly: function(string) {
+    string = string.toLowerCase();
+    var regex = /[a-z]/;
+    var firstLetter = String(string.match(regex)).toUpperCase();
+    return string.replace(regex, firstLetter);
   },
 
 }
