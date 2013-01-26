@@ -5,9 +5,9 @@ var Cantina = {
   msgConnectionError: 'Frakoblet fra sit.no',
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
-  dinnerDebug: 0, // General debugging
-  dinnerDebugText: 0, // Deep debugging of dinner strings
-  dinnerDebugString: 'Seirett med ris (G): 36 kroner', // dinnerDebugText must be true
+  dinnerDebug: 1, // General debugging
+  dinnerDebugText: 1, // Deep debugging of dinner strings (even in weekends)
+  dinnerDebugString: 'Seirett med ris (G): 36,00 kroner', // dinnerDebugText must be true
   // Required format of dinnerDebugString: "Seirett med ris (G): 36 kroner" -> "food : price"
 
   // Feeds
@@ -104,7 +104,7 @@ var Cantina = {
           mondaysCantinaMenu = dinnerForEachDay[dinnerDay];
       }
       // If no dinners for today were found (saturday / sunday)
-      if (todaysMenu === self.msgNotOpen) {
+      if (todaysMenu === self.msgNotOpen && self.dinnerDebugText === false) {
         callback(self.msgNotOpen);
         return;
       }
@@ -178,6 +178,8 @@ var Cantina = {
       dinnerObjects.forEach( function(dinner) {
         if (dinner.price !== null) {
           var price = dinner.price;
+          // Remove 'øre' if shown
+          price = price.replace(/((,|[.])00)/g, '');
           // Two price classes? Choose the cheapest
           if (price.indexOf('/') !== -1) {
             var price1 = price.split('/')[0].match(/\d+/g);
