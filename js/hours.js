@@ -5,7 +5,13 @@ var Hours = {
   // curl --data "diner=2532" https://www.sit.no/ajaxdiner/get
 
   api: 'https://www.sit.no/ajaxdiner/get',
-  debugHours: 0,
+  msgClosed: 'Kantinen er nok stengt',
+  msgConnectionError: 'Frakoblet fra sit.no/ajax',
+  msgMalformedHours: 'Galt format på åpningstider',
+  debugHours: 1, // General debugging
+  debugHoursText: 1, // Deep debugging of a specific string, insert below
+  debugHoursString: 'Mandag - torsdag 10.00 - 17.30\nFredag 10.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugHoursText must be true
+  // debugHoursString is expected to be pre-stripped of JSON and HTML, otherwise intact
   cantinas: {
     'administrasjon': 2379,
     'dmmh': 2534,
@@ -53,6 +59,9 @@ var Hours = {
         allHours = self.stripJsonAndHtml(json);
         if (self.debugHours) console.log('Entire string:', allHours);
 
+        // Debugging a particular string now?
+        if (self.debugHoursText) allHours = self.debugHoursString;
+
         // Find todays hours
         todaysHours = self.findTodaysHours(allHours);
         if (self.debugHours) console.log('Todays hours:', todaysHours);
@@ -64,7 +73,7 @@ var Hours = {
         callback(prettyHours);
       },
       error: function(jqXHR, text, err) {
-        callback('Klarte ikke koble til sit.no/ajax');
+        callback(self.msgConnectionError);
       },
     });
   },
@@ -84,11 +93,11 @@ var Hours = {
       return '- ' + pieces[1];
     }
     else if (day === 0 || day === 6) {
-      return '- Kantinen er stengt';
+      return '- ' + this.msgClosed;
     }
     else {
       console.log('ERROR: How in the world did you get here?');
-      return '';
+      return this.msgMalformedHours;
     }
   },
 
