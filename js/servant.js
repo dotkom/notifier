@@ -7,7 +7,7 @@ var Servant = {
       return;
     }
 
-    callback('Kontortjener: <b>David Storjord</b>');
+    callback('Tjener: <b>David Storjord</b>');
 
     // // Receives the meeting plan for today
     // var self = this;
