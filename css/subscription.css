@@ -1,6 +1,6 @@
 // Debugging
 
-@debug: 0pt;
+@debug: 1pt;
 .debugred {
   border: @debug solid red;
 }
@@ -16,5 +16,6 @@ body {
 }
 
 #subscription {
-  
+  .debugred;
+
 }
