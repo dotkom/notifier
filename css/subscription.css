@@ -1,6 +1,6 @@
 // Debugging
 
-@debug: 1pt;
+@debug: 0pt;
 .debugred {
   border: @debug solid red;
 }
@@ -8,6 +8,7 @@
 // Rules
 
 body {
+	height: 200pt;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
@@ -17,5 +18,6 @@ body {
 
 #subscription {
   .debugred;
-
+  margin: 0;
+  padding: 0;
 }
