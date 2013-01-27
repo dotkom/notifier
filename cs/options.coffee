@@ -519,28 +519,6 @@ $ ->
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
 
-  # Bind the infoscreen option to an avgrund.js modal dialog
-  # $('#useInfoscreen').avgrund
-  #   width: 540,
-  #   height: 330,
-  #   holderClass: 'custom',
-  #   showClose: true,
-  #   showCloseText: 'Avbryt',
-  #   enableStackAnimation: true,
-  #   onBlurContainer: '#avgrund',
-  #   template: '
-  #     <img class="avgrund_image" src="/img/options-infoscreen-preview.png" />
-  #     <div class="avgrund_content">
-  #       <b>Sikker på at du vil skru på infoskjerm?</b>
-  #       <ul style="text-align:left;">
-  #         <li>Popupknappen vil åpne infoskjerm</li>
-  #         <li>Infoskjerm åpnes i fullscreen ved oppstart</li>
-  #         <li>Infoskjermen vil åpnes nå!</li>
-  #       </ul>
-  #       <a href="#" class="button yesbutton" onclick="">Skru på infoskjerm</a>
-  #       <a href="#" class="button nobutton">Avbryt</a>
-  #     </div>'
-
   # Catch new clicks
   $('input:checkbox').click ->
     
