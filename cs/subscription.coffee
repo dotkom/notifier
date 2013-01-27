@@ -20,7 +20,7 @@ setSubscription = ->
     '/meme/to_do_or_not.jpg'
   ]
   random = Math.floor Math.random() * images.length
-  
+
   # Capture clicks
   $('#subscription').click ->
     chrome.tabs.create {url: 'https://', selected: true}
