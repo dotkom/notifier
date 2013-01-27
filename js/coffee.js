@@ -1,4 +1,5 @@
 var Coffee = {
+  api: 'http://draug.online.ntnu.no/coffee.txt',
   msgConnectionError: 'Frakoblet fra kaffeknappen',
 
   get: function(callback) {
@@ -10,7 +11,7 @@ var Coffee = {
     // Receives the status for the coffee pot
     var self = this;
     $.ajax({
-      url: 'http://draug.online.ntnu.no/coffee.txt',
+      url: self.api,
       success: function(data) {
 
         // Split into pot number and age of last pot
@@ -48,6 +49,27 @@ var Coffee = {
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
         callback(self.msgConnectionError);
+      },
+    });
+  },
+
+  getPots: function(callback) {
+    if (callback == undefined) {
+      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+    var self = this;
+    $.ajax({
+      url: self.api,
+      success: function(data) {
+        // Find amount of pots today, convert to number
+        var pieces = data.split(/:(.+)/);
+        var pots = Number(pieces[0]);
+        callback(pots);
+      },
+      error: function(jqXHR, text, err) {
+        if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
+        callback(-1);
       },
     });
   },
