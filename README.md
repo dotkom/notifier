@@ -41,6 +41,8 @@ Chronological Credz
 - Kristoffer Dalby hacked up scripts that fixed ubuntu screen-to-black issues
 - Jim Frode Hoff made the coffee button, attached to an Arduino
 - Nils Herde fixed hardware issues, kept the infoscreen running and installed the coffee button
+- The following made coffee memes:
+	- Thomas Gautvedt
 
 # Featurelist
 
