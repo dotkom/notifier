@@ -4,8 +4,8 @@ $ = jQuery
 setSubscription = ->
   
   # Capture clicks
-  $('#notification').click ->
-    chrome.tabs.create {url: link, selected: true}
+  $('#subscription').click ->
+    chrome.tabs.create {url: 'https://', selected: true}
     window.close
 
   # Create the HTML

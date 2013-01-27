@@ -65,10 +65,12 @@
     if (DEBUG) {
       console.log('updateCoffee');
     }
-    return Coffee.get(function(pots, age) {
-      ls.coffeePots = pots;
-      ls.coffeeAge = age;
-      return console.log('IMPLEMENT THIS', pots, age);
+    return Coffee.getPots(function(pots) {
+      var storedPots;
+      storedPots = Number(ls.coffeePots);
+      if (storedPots < pots) {
+        return Coffee.showNotification(function(pots) {});
+      }
     });
   };
 
@@ -97,7 +99,6 @@
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
     ls.removeItem('coffeePots');
-    ls.removeItem('coffeeAge');
     if (ls.everConnected === void 0) {
       if (ls.first_bus === void 0) {
         ls.showBus = 'true';
@@ -119,6 +120,9 @@
         ls.showCantina = 'true';
         ls.left_cantina = 'hangaren';
         ls.right_cantina = 'realfag';
+      }
+      if (ls.coffeePots === void 0) {
+        ls.coffeePots = 0;
       }
       if (ls.showNotifications === void 0) {
         ls.showNotifications = 'true';
