@@ -74,4 +74,9 @@ var Coffee = {
     });
   },
 
+  showNotification: function(pots) {
+    var notification = webkitNotifications.createHTMLNotification('subscription.html');
+    notification.show(); // HTML5-style
+  },
+
 }
