@@ -12,6 +12,9 @@ var API_KEY = 'f5be90e5ec1d2d454ae9';
 var API_ADDRESS = 'https://online.ntnu.no/api/' + API_KEY + '/news_image_by_id/';
 var BACKUP_IMAGE = 'https://online.ntnu.no/media/steria_logo_thumbnail.jpeg';
 
+// AJAX and JSON timeout
+var AJAX_TIMEOUT = 5000;
+
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_QUICK = 3000; // 3s, fix it quickly when something has gone wrong

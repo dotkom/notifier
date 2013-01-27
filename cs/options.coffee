@@ -470,6 +470,9 @@ fadeInCanvas = ->
 $ ->
   if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
+  
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup timeout: AJAX_TIMEOUT
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->

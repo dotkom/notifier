@@ -212,6 +212,9 @@ $ ->
     $('html').css 'cursor', 'auto'
     $('#overlay').hide()
   
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup timeout: AJAX_TIMEOUT
+  
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'
   ls.removeItem 'currentStatus'

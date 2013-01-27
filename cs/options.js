@@ -529,6 +529,9 @@
     if (DEBUG) {
       $('#debug_links').show();
     }
+    $.ajaxSetup({
+      timeout: AJAX_TIMEOUT
+    });
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;

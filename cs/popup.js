@@ -308,6 +308,9 @@
     if (DEBUG) {
       less.watch();
     }
+    $.ajaxSetup({
+      timeout: AJAX_TIMEOUT
+    });
     if (ls.useInfoscreen === 'true') {
       chrome.tabs.create({
         url: 'infoscreen.html'

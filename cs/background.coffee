@@ -57,8 +57,8 @@ updateNews = ->
 
 # Document ready, go!
 $ ->
-  # Setting the global timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: 6000
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup timeout: AJAX_TIMEOUT
   
   # Clear previous thoughts
   if DEBUG then ls.clear()
