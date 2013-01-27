@@ -6,17 +6,17 @@
 
   setSubscription = function() {
     var images, random, width;
-    images = ['/meme/darth_roast_coffee.jpg', '/meme/darth_vader_mug.jpg', '/meme/deadline_tomorrow.jpg', '/meme/drink_coffee_you_must.png', '/meme/early_morning.jpg', '/meme/get_him_some_coffee.jpg', '/meme/it_must_be_strong.png', '/meme/lack_of_caffeine.png', '/meme/lack_of_coffee.jpg', '/meme/love_it_i_do.jpg', '/meme/star_wars_coffee.png', '/meme/star-wars-coffee.jpeg', '/meme/to_do_or_not.jpg'];
+    images = ['/meme/1.jpg', '/meme/2.png'];
     random = Math.floor(Math.random() * images.length);
     $('#subscription').click(function() {
       chrome.tabs.create({
-        url: 'https://',
+        url: 'options.html',
         selected: true
       });
       return window.close;
     });
     width = $('#subscription').width();
-    return $('#subscription').html('<img src="' + images[random] + '" width="' + width + '" />');
+    return $('#subscription').html('<img src="' + images[random] + '" />');
   };
 
   $(function() {

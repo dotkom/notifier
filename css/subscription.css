@@ -7,9 +7,13 @@
 
 // Rules
 
+::-webkit-scrollbar { 
+    display: none; 
+}
+
 body {
-	height: 200pt;
-  overflow-x: hidden;
+  overflow: hidden;
+
   margin: 0;
   padding: 0;
   font-family: helvetica;
