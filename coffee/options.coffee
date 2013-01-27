@@ -35,9 +35,8 @@ testDesktopNotification = ->
   notification.show()
 
 testCoffeeSubscription = ->
-  notification = webkitNotifications.createHTMLNotification('notification.html')
-  notification.show()
-  # TODO: Implement this.
+  subscription = webkitNotifications.createHTMLNotification('subscription.html')
+  subscription.show()
 
 bindCantinaSelector = (selector) ->
   # Default values

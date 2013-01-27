@@ -59,9 +59,9 @@
   };
 
   testCoffeeSubscription = function() {
-    var notification;
-    notification = webkitNotifications.createHTMLNotification('notification.html');
-    return notification.show();
+    var subscription;
+    subscription = webkitNotifications.createHTMLNotification('subscription.html');
+    return subscription.show();
   };
 
   bindCantinaSelector = function(selector) {
