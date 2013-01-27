@@ -44,8 +44,8 @@ updateMeetings = ->
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
-  Coffee.get (pots, age) ->
-    $('#todays #coffee #pot').html 'Kanna er '+age+' gammel<br />'+pots+' kanner i dag'
+  Coffee.get (coffee) ->
+    $('#todays #coffee #pot').html coffee
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
@@ -211,6 +211,9 @@ $ ->
     # (allows DOM inspection with the mouse)
     $('html').css 'cursor', 'auto'
     $('#overlay').hide()
+  
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup timeout: AJAX_TIMEOUT
   
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'

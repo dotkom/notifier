@@ -34,8 +34,8 @@ updateMeetings = ->
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
-  Coffee.get (pots, age) ->
-    $('#todays #coffee #pot').html 'Kanna er '+age+' gammel<br />'+pots+' kanner i dag'
+  Coffee.get (coffee) ->
+    $('#todays #coffee #pot').html coffee
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
@@ -240,6 +240,9 @@ fadeButtonText = (show, msg) ->
 # Document ready, go!
 $ ->
   if DEBUG then less.watch() # not needed when using CodeKit
+  
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup timeout: AJAX_TIMEOUT
 
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'

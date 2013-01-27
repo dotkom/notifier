@@ -12,6 +12,9 @@ var API_KEY = 'f5be90e5ec1d2d454ae9';
 var API_ADDRESS = 'https://online.ntnu.no/api/' + API_KEY + '/news_image_by_id/';
 var BACKUP_IMAGE = 'https://online.ntnu.no/media/steria_logo_thumbnail.jpeg';
 
+// AJAX and JSON timeout
+var AJAX_TIMEOUT = 5000;
+
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_QUICK = 3000; // 3s, fix it quickly when something has gone wrong
@@ -21,7 +24,7 @@ var PAGE_LOOP = 20000; // every 20th second
 var UPDATE_OFFICE_INTERVAL = 1; // recommended: 1
 var UPDATE_SERVANT_INTERVAL = 10; // recommended: 10
 var UPDATE_MEETINGS_INTERVAL = 10; // recommended: 10
-var UPDATE_COFFEE_INTERVAL = 1; // recommended: 1
+var UPDATE_COFFEE_INTERVAL = 10; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 30; // recommended: 30
 var UPDATE_BUS_INTERVAL = 1; // recommended: 1
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60

@@ -35,9 +35,8 @@ testDesktopNotification = ->
   notification.show()
 
 testCoffeeSubscription = ->
-  notification = webkitNotifications.createHTMLNotification('notification.html')
-  notification.show()
-  # TODO: Implement this.
+  subscription = webkitNotifications.createHTMLNotification('subscription.html')
+  subscription.show()
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -471,6 +470,9 @@ fadeInCanvas = ->
 $ ->
   if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
+  
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup timeout: AJAX_TIMEOUT
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->

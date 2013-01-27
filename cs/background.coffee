@@ -38,13 +38,12 @@ updateOfficeAndMeetings = ->
         ls.currentStatusMessage = message
 
 updateCoffee = ->
-  # IMPLEMENT THIS
   if DEBUG then console.log 'updateCoffee'
-  Coffee.get (pots, age) ->
+  Coffee.getPots (pots) ->
+    storedPots = Number(ls.coffeePots);
+    if storedPots < pots
+      Coffee.showNotification (pots)
     ls.coffeePots = pots
-    ls.coffeeAge = age
-    console.log 'IMPLEMENT THIS', pots, age
-    # Notify user if a new pot of coffee is cooking
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
@@ -58,18 +57,18 @@ updateNews = ->
 
 # Document ready, go!
 $ ->
-  # Setting the global timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: 6000
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup timeout: AJAX_TIMEOUT
   
   # Clear previous thoughts
   if DEBUG then ls.clear()
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
   ls.removeItem 'coffeePots'
-  ls.removeItem 'coffeeAge'
   
   # Set default choices and open options page after install
   if ls.everConnected is undefined
+
     
     if ls.first_bus is undefined
       ls.showBus = 'true'
@@ -90,6 +89,8 @@ $ ->
       ls.left_cantina = 'hangaren'
       ls.right_cantina = 'realfag'
     
+    if ls.coffeePots is undefined
+      ls.coffeePots = 0
     if ls.showNotifications is undefined
       ls.showNotifications = 'true'
     if ls.openChatter is undefined

@@ -59,9 +59,9 @@
   };
 
   testCoffeeSubscription = function() {
-    var notification;
-    notification = webkitNotifications.createHTMLNotification('notification.html');
-    return notification.show();
+    var subscription;
+    subscription = webkitNotifications.createHTMLNotification('subscription.html');
+    return subscription.show();
   };
 
   bindCantinaSelector = function(selector) {
@@ -529,6 +529,9 @@
     if (DEBUG) {
       $('#debug_links').show();
     }
+    $.ajaxSetup({
+      timeout: AJAX_TIMEOUT
+    });
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;

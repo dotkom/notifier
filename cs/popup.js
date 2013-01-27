@@ -67,8 +67,8 @@
     if (DEBUG) {
       console.log('updateCoffee');
     }
-    return Coffee.get(function(pots, age) {
-      return $('#todays #coffee #pot').html('Kanna er ' + age + ' gammel<br />' + pots + ' kanner i dag');
+    return Coffee.get(function(coffee) {
+      return $('#todays #coffee #pot').html(coffee);
     });
   };
 
@@ -308,6 +308,9 @@
     if (DEBUG) {
       less.watch();
     }
+    $.ajaxSetup({
+      timeout: AJAX_TIMEOUT
+    });
     if (ls.useInfoscreen === 'true') {
       chrome.tabs.create({
         url: 'infoscreen.html'
