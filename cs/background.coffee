@@ -42,9 +42,8 @@ updateCoffee = ->
   Coffee.getPots (pots) ->
     storedPots = Number(ls.coffeePots);
     if storedPots < pots
-      Coffee.showNotification (pots) ->
-        
-        # Notify user that a new pot of coffee has been made
+      Coffee.showNotification (pots)
+    ls.coffeePots = pots
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'

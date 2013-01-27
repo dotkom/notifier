@@ -69,8 +69,9 @@
       var storedPots;
       storedPots = Number(ls.coffeePots);
       if (storedPots < pots) {
-        return Coffee.showNotification(function(pots) {});
+        Coffee.showNotification(pots);
       }
+      return ls.coffeePots = pots;
     });
   };
 
