@@ -42,7 +42,7 @@ var Coffee = {
         pots = '<b>'+(pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner')+'</b>';
 
         // Make a string worthy of returning
-        var coffee = ageString+'.<br />'+pots+' i dag.'
+        var coffee = ageString+'<br />'+pots+' i dag'
 
         callback(coffee);
       },
