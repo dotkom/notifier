@@ -230,10 +230,9 @@ var Cantina = {
         });
       }
       
-      /* Uncommented because the returned list should have the same order as the list on SiTs website. */
-      // // Sort dinnerobjects by price
-      // if (dinnerObjects[0].price !== null)
-      //   dinnerObjects.sort(function(a,b){return(a.price>b.price)?1:((b.price>a.price)?-1:0);});
+      // Sort dinnerobjects by price
+      if (dinnerObjects[0].price !== null)
+        dinnerObjects.sort(function(a,b){return(a.price>b.price)?1:((b.price>a.price)?-1:0);});
       
       callback(dinnerObjects);
     }
