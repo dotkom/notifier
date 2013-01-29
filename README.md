@@ -43,6 +43,7 @@ Chronological Credz
 - Nils Herde fixed hardware issues, kept the infoscreen running and installed the coffee button
 - The following made coffee memes:
 	- Thomas Gautvedt
+	- Aleksander Skraastad
 
 # Featurelist
 
