@@ -2,7 +2,7 @@ var Cantina = {
 
   url: 'https://www.sit.no/middag',
   msgClosed: 'Ingen publisert meny i dag',
-  msgConnectionError: 'Frakoblet fra sit.no',
+  msgConnectionError: 'Frakoblet fra sit.no/rss',
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
   debugDinner: 0, // General debugging
