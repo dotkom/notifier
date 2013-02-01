@@ -15,6 +15,7 @@ setSubscription = ->
     '/meme/8.jpg',
     '/meme/9.jpg',
     '/meme/10.jpg',
+    '/meme/11.jpg',
   ]
   random = Math.floor Math.random() * images.length
 

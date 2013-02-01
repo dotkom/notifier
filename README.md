@@ -44,6 +44,7 @@ Chronological Credz
 - The following made coffee memes:
 	- Thomas Gautvedt
 	- Aleksander Skraastad
+	- John Hanssen Kolstad
 
 # Featurelist
 
