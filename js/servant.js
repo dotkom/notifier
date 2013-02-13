@@ -1,5 +1,5 @@
 var Servant = {
-  MSG_ERROR: 'Klarte ikke sjekke kalender med kontorvakter',
+  MSG_ERROR: 'Frakoblet fra kontorvaktkalender',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -7,20 +7,18 @@ var Servant = {
       return;
     }
 
-    callback('Tjener: <b>David Storjord</b>');
-
-    // // Receives the meeting plan for today
-    // var self = this;
-    // $.ajax({
-    //   url: 'https://online.ntnu.no/service_static/online_notifier3',
-    //   success: function(servant) {
-    //     callback(servant);
-    //   },
-    //   error: function(jqXHR, text, err) {
-    //     if (DEBUG) console.log('ERROR: Failed to get current servant.');
-    //     callback(self.MSG_ERROR);
-    //   },
-    // });
+    // Receives the meeting plan for today
+    var self = this;
+    $.ajax({
+      url: 'https://online.ntnu.no/service_static/online_notifier3',
+      success: function(servant) {
+        callback(servant);
+      },
+      error: function(jqXHR, text, err) {
+        if (DEBUG) console.log('ERROR: Failed to get current servant.');
+        callback(self.MSG_ERROR);
+      },
+    });
   },
 
 }
