@@ -34,7 +34,7 @@ updateOffice = ->
 updateServant = ->
   if DEBUG then console.log 'updateServant'
   Servant.get (servant) ->
-    $('#todays #schedule #servant').html servant
+    $('#todays #schedule #servant').html 'Vakt: <b>'+servant+'</b>'
 
 updateMeetings = ->
   if DEBUG then console.log 'updateMeetings'
