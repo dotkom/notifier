@@ -3,6 +3,7 @@ var Cantina = {
   url: 'https://www.sit.no/middag',
   msgClosed: 'Ingen publisert meny i dag',
   msgConnectionError: 'Frakoblet fra sit.no/rss',
+  msgUnsupportedCantina: 'Kantinen støttes ikke',
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
   debugDinner: 0, // General debugging
@@ -41,8 +42,8 @@ var Cantina = {
       return;
     }
     if (this.feeds[cantina] === undefined) {
-      console.log('ERROR: Unsupported/unknown cantina.');
-      callback('ERROR: Unsupported/unknown cantina.');
+      console.log('ERROR: '+this.msgUnsupportedCantina);
+      callback(this.msgUnsupportedCantina);
       return;
     }
 
@@ -56,7 +57,7 @@ var Cantina = {
         self.parseXml(xml, callback);
       },
       error: function(jqXHR, text, err) {
-        if (DEBUG) console.log('ERROR: could not connect to api.visuweb.no');
+        if (DEBUG) console.log('ERROR: '+self.msgConnectionError);
         callback(self.msgConnectionError);
       },
     })
