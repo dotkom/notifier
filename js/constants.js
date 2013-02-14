@@ -10,7 +10,7 @@ var CREATOR_EMAIL = 'dotkom@online.ntnu.no';
 // Online News API
 var API_KEY = 'f5be90e5ec1d2d454ae9';
 var API_ADDRESS = 'https://online.ntnu.no/api/' + API_KEY + '/news_image_by_id/';
-var BACKUP_IMAGE = 'https://online.ntnu.no/media/steria_logo_thumbnail.jpeg';
+var BACKUP_IMAGE = 'img/logo-sponsor-placeholder.png';
 
 // AJAX and JSON timeout
 var AJAX_TIMEOUT = 5000;
