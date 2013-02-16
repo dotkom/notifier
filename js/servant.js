@@ -1,5 +1,5 @@
 var Servant = {
-  MSG_ERROR: 'Frakoblet fra kontorvaktkalender',
+  MSG_ERROR: 'Frakoblet',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -12,7 +12,19 @@ var Servant = {
     $.ajax({
       url: 'https://online.ntnu.no/service_static/online_notifier3',
       success: function(servant) {
-        callback(servant);
+        servantList = servant.split("\n");
+        currentServant = servantList[0];
+        // If it's an actual servant with a time slot like this:
+        // 12:00-13:00: Michael Johansen
+        if (currentServant.match(/\d+:\d+\-\d+:\d+/)) {
+          // Match out the name from the line
+          callback(currentServant.match(/(\d+:\d+\-\d+:\d+: )([a-zA-ZæøåÆØÅ ]+)/)[2]);
+        }
+        else {
+          // Probably no servant at the moment, value is "Ingen"
+          // ...or an error message, either way we'll return it
+          callback(currentServant);
+        }
       },
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: Failed to get current servant.');
