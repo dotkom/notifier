@@ -72,11 +72,15 @@ updateNews = ->
     _guid = $(items[0]).find "guid"
     _text = $(_guid).text()
     _mostRecent = _text.split('/')[4]
-    return if ls.mostRecentRead is _mostRecent
+    if ls.mostRecentRead is _mostRecent
+      if DEBUG then console.log 'RETURNED EARLY' #####
+      return
     ls.mostRecentRead = _mostRecent
 
+    if DEBUG then console.log 'CLEARING HTML'
     $('#news').html ''
     
+    if DEBUG then console.log 'BUILDING HTML'
     # Build list of last viewed for the next time the popup opens
     idsOfLastViewed = []
     
@@ -84,6 +88,9 @@ updateNews = ->
     items.each (index, element) ->
       
       limit = if ls.noDinnerInfo is 'true' then 3 else 2
+      if DEBUG then console.log 'LIMIT IS "'+limit+'", typeof '+typeof limit
+      if DEBUG then console.log 'INDEX IS "'+index+'", typeof '+typeof index
+      if DEBUG then console.log 'index < limit :: '+(index < limit)
       if index < limit
         post = parsePost(element)
         idsOfLastViewed.push(post.id)

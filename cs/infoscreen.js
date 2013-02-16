@@ -112,14 +112,32 @@
       _text = $(_guid).text();
       _mostRecent = _text.split('/')[4];
       if (ls.mostRecentRead === _mostRecent) {
+        if (DEBUG) {
+          console.log('RETURNED EARLY');
+        }
         return;
       }
       ls.mostRecentRead = _mostRecent;
+      if (DEBUG) {
+        console.log('CLEARING HTML');
+      }
       $('#news').html('');
+      if (DEBUG) {
+        console.log('BUILDING HTML');
+      }
       idsOfLastViewed = [];
       items.each(function(index, element) {
         var item, limit, post;
         limit = ls.noDinnerInfo === 'true' ? 3 : 2;
+        if (DEBUG) {
+          console.log('LIMIT IS "' + limit + '", typeof ' + typeof limit);
+        }
+        if (DEBUG) {
+          console.log('INDEX IS "' + index + '", typeof ' + typeof index);
+        }
+        if (DEBUG) {
+          console.log('index < limit :: ' + (index < limit));
+        }
         if (index < limit) {
           post = parsePost(element);
           idsOfLastViewed.push(post.id);
