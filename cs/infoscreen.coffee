@@ -87,6 +87,7 @@ updateNews = ->
     # Add feed items to popup
     items.each (index, element) ->
       
+      limit = 3
       limit = if ls.noDinnerInfo is 'true' then 3 else 2
       if DEBUG then console.log 'LIMIT IS "'+limit+'", typeof '+typeof limit
       if DEBUG then console.log 'INDEX IS "'+index+'", typeof '+typeof index
@@ -266,7 +267,7 @@ $ ->
   unless DEBUG
     setInterval ( ->
       document.location.reload()
-    ), 86400000
+    ), 3600000 # KILLBUG: set to once every hour for now in order to keep #news alive, set to 86400000 later
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

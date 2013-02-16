@@ -128,6 +128,7 @@
       idsOfLastViewed = [];
       items.each(function(index, element) {
         var item, limit, post;
+        limit = 3;
         limit = ls.noDinnerInfo === 'true' ? 3 : 2;
         if (DEBUG) {
           console.log('LIMIT IS "' + limit + '", typeof ' + typeof limit);
@@ -339,7 +340,7 @@
     if (!DEBUG) {
       setInterval((function() {
         return document.location.reload();
-      }), 86400000);
+      }), 3600000);
     }
     return mainLoop();
   });
