@@ -1,4 +1,5 @@
 var Office = {
+  API: 'https://online.ntnu.no/service_static/office_status',
   TITLE_ERROR: 'Oops',
   TITLE_OPEN: 'Åpent',
   TITLE_CLOSED: 'Lukket',
@@ -41,7 +42,7 @@ var Office = {
     // Møte: dotKom   // event title or 'No title'-meeting or nothing
     var self = this;
     $.ajax({
-      url: 'https://online.ntnu.no/service_static/online_notifier',
+      url: self.API,
       success: function(data) {
         var status = data.split('\n',2)[0];
         var title = data.split('\n',2)[1];

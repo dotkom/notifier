@@ -1,4 +1,5 @@
 var Servant = {
+  API: 'https://online.ntnu.no/service_static/servant_list',
   MSG_ERROR: 'Frakoblet fra kalender',
 
   get: function(callback) {
@@ -10,7 +11,7 @@ var Servant = {
     // Receives the meeting plan for today
     var self = this;
     $.ajax({
-      url: 'https://online.ntnu.no/service_static/online_notifier3',
+      url: self.API,
       success: function(servant) {
         servantList = servant.split("\n");
         currentServant = servantList[0];
