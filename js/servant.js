@@ -1,5 +1,5 @@
 var Servant = {
-  MSG_ERROR: 'Frakoblet',
+  MSG_ERROR: 'Frakoblet fra kalender',
 
   get: function(callback) {
     if (callback == undefined) {
