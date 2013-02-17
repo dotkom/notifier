@@ -1,6 +1,6 @@
 var Meetings = {
-  API: 'https://online.ntnu.no/service_static/meeting_plan',
-  MSG_ERROR: 'Frakoblet fra møteplan',
+  api: 'https://online.ntnu.no/service_static/meeting_plan',
+  msgError: 'Frakoblet fra møteplan',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -11,14 +11,14 @@ var Meetings = {
     // Receives the meeting plan for today
     var self = this;
     $.ajax({
-      url: self.API,
+      url: self.api,
       success: function(meetings) {
         meetings = meetings.trim()
         callback(meetings);
       },
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: Failed to get todays meeting plan.');
-        callback(self.MSG_ERROR);
+        callback(self.msgError);
       },
     });
   },

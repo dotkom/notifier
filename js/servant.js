@@ -1,6 +1,6 @@
 var Servant = {
-  API: 'https://online.ntnu.no/service_static/servant_list',
-  MSG_ERROR: 'Frakoblet fra kalender',
+  api: 'https://online.ntnu.no/service_static/servant_list',
+  msgError: 'Frakoblet fra kalender',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -11,7 +11,7 @@ var Servant = {
     // Receives the meeting plan for today
     var self = this;
     $.ajax({
-      url: self.API,
+      url: self.api,
       success: function(servant) {
         servantList = servant.split("\n");
         currentServant = servantList[0];
@@ -29,7 +29,7 @@ var Servant = {
       },
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: Failed to get current servant.');
-        callback(self.MSG_ERROR);
+        callback(self.msgError);
       },
     });
   },
