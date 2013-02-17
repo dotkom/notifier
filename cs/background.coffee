@@ -68,7 +68,6 @@ $ ->
   
   # Set default choices and open options page after install
   if ls.everConnected is undefined
-
     
     if ls.first_bus is undefined
       ls.showBus = 'true'
@@ -93,6 +92,8 @@ $ ->
       ls.coffeePots = 0
     if ls.showNotifications is undefined
       ls.showNotifications = 'true'
+    if ls.coffeeSubscription is undefined
+      ls.coffeeSubscription = 'true'
     if ls.openChatter is undefined
       ls.openChatter = 'false'
     if ls.useInfoscreen is undefined
