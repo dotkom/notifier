@@ -8,6 +8,25 @@
 
   iteration = 0;
 
+  if (BROWSER === "Opera") {
+    window.addEventListener("load", function() {
+      theButton;
+
+      var ToolbarUIItemProperties, theButton;
+      ToolbarUIItemProperties = {
+        title: "Online Notifier",
+        icon: "img/logo-18.png",
+        popup: {
+          href: "popup.html",
+          width: 400,
+          height: 500
+        }
+      };
+      theButton = opera.contexts.toolbar.createItem(ToolbarUIItemProperties);
+      return opera.contexts.toolbar.addItem(theButton);
+    }, false);
+  }
+
   mainLoop = function() {
     var loopTimeout;
     if (DEBUG) {
@@ -45,16 +64,24 @@
     }
     return Office.get(function(status, title, message) {
       if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
-        chrome.browserAction.setIcon({
-          path: 'img/icon-' + status + '.png'
-        });
+        if (BROWSER === "Chrome") {
+          chrome.browserAction.setIcon({
+            path: 'img/icon-' + status + '.png'
+          });
+        } else if (BROWSER === "Opera") {
+          console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        }
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
           var today;
           today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
-          chrome.browserAction.setTitle({
-            title: today
-          });
+          if (BROWSER === "Chrome") {
+            chrome.browserAction.setTitle({
+              title: today
+            });
+          } else if (BROWSER === "Opera") {
+            console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+          }
           return ls.currentStatusMessage = message;
         });
       }
@@ -128,6 +155,9 @@
       if (ls.showNotifications === void 0) {
         ls.showNotifications = 'true';
       }
+      if (ls.coffeeSubscription === void 0) {
+        ls.coffeeSubscription = 'true';
+      }
       if (ls.openChatter === void 0) {
         ls.openChatter = 'false';
       }
@@ -135,23 +165,35 @@
         ls.useInfoscreen = 'false';
       }
       if (!DEBUG) {
-        chrome.tabs.create({
-          url: chrome.extension.getURL("options.html"),
-          selected: true
-        });
+        if (BROWSER === "Chrome") {
+          chrome.tabs.create({
+            url: chrome.extension.getURL("options.html"),
+            selected: true
+          });
+        } else if (BROWSER === "Opera") {
+          console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        }
       }
     }
     if (ls.useInfoscreen === 'true') {
-      chrome.tabs.create({
-        url: chrome.extension.getURL("infoscreen.html"),
-        selected: true
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: chrome.extension.getURL("infoscreen.html"),
+          selected: true
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+      }
     }
     if (ls.openChatter === 'true') {
-      chrome.tabs.create({
-        url: 'http://webchat.freenode.net/?channels=online',
-        selected: false
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: 'http://webchat.freenode.net/?channels=online',
+          selected: false
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+      }
     }
     ls.everConnected = ls.wasConnected = 'false';
     setInterval((function() {

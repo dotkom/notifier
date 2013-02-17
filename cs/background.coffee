@@ -3,6 +3,23 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
+# If this is an opera extension, add the popup icon
+if BROWSER is "Opera"
+  window.addEventListener "load", ->
+    theButton
+    ToolbarUIItemProperties = {
+      title: "Online Notifier",
+      icon: "img/logo-18.png",
+      popup: {
+        href: "popup.html",
+        width: 400,
+        height: 500
+      }
+    }
+    theButton = opera.contexts.toolbar.createItem ToolbarUIItemProperties
+    opera.contexts.toolbar.addItem theButton
+  , false
+
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
@@ -30,11 +47,17 @@ updateOfficeAndMeetings = ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
-      chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
+      if BROWSER is "Chrome"
+        chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
+      else if BROWSER is "Opera"
+        console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       ls.currentStatus = status
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
-        chrome.browserAction.setTitle {title: today}
+        if BROWSER is "Chrome"
+          chrome.browserAction.setTitle {title: today}
+        else if BROWSER is "Opera"
+          console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         ls.currentStatusMessage = message
 
 updateCoffee = ->
@@ -100,15 +123,24 @@ $ ->
       ls.useInfoscreen = 'false'
 
     if !DEBUG
-      chrome.tabs.create {url: chrome.extension.getURL("options.html"), selected: true}
+      if BROWSER is "Chrome"
+        chrome.tabs.create {url: chrome.extension.getURL("options.html"), selected: true}
+      else if BROWSER is "Opera"
+        console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
-    chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: true}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: true}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
-    chrome.tabs.create {url: 'http://webchat.freenode.net/?channels=online', selected: false}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: 'http://webchat.freenode.net/?channels=online', selected: false}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
   # Set default vars for main loop
   ls.everConnected = ls.wasConnected = 'false'
