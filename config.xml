@@ -5,6 +5,8 @@
 	<description>Nyheter, kontorstatus, sanntidsbuss, kaffeabonnement, middagsmeny og mer.</description>
   	<author href="https://online.ntnu.no" email="dotkom@online.ntnu.no">Michael Johansen</author>
   	
+  	<content src="background.html" />
+
 	<icon src="img/logo-64.png" />
     <icon src="img/logo-18.png" />
 
