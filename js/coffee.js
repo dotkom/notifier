@@ -15,7 +15,7 @@ var Coffee = {
       success: function(data) {
 
         // Split into pot number and age of last pot
-        var pieces = data.split(/:(.+)/);
+        var pieces = data.split("\n");
         var pots = pieces[0];
         var age = pieces[1];
 
@@ -35,7 +35,7 @@ var Coffee = {
           ageString = 'Kaffen ble laget for <b>'+diff+' min</b> siden';
         }
         else if (60 <= diff) {
-          ageString = 'Kaffen er <b>'+time[0]+':'+time[1]+'</b> gammel';
+          ageString = 'Kaffen ble laget kl <b>'+time[0]+':'+time[1]+'</b>';
         }
 
         // Add 'kanner' to pots-string
