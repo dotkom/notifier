@@ -1,5 +1,5 @@
 var Meetings = {
-  MSG_ERROR: 'Klarte ikke hente møteplan',
+  MSG_ERROR: 'Frakoblet fra møteplan',
 
   get: function(callback) {
     if (callback == undefined) {
