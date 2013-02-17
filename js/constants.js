@@ -56,6 +56,8 @@ else {
 }
 
 // Production detection
-if (chrome.i18n.getMessage('@@extension_id') === "hfgffimlnajpbenfpaofmmffcdmgkllf") {
-	DEBUG = 0;
+if (BROWSER == "Chrome") {
+	if (chrome.i18n.getMessage('@@extension_id') === "hfgffimlnajpbenfpaofmmffcdmgkllf") {
+		DEBUG = 0;
+	}
 }
