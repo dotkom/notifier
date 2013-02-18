@@ -21,7 +21,10 @@ setSubscription = ->
 
   # Capture clicks
   $('#subscription').click ->
-    chrome.tabs.create {url: 'options.html', selected: true}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: 'options.html', selected: true}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA subscription"
     window.close
 
   # Create the HTML

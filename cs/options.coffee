@@ -22,12 +22,18 @@ pageFlipCursorBlinking = ->
 
 updateOfficeStatus = ->
   Office.get (status, title, message) ->
-    chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
+    if BROWSER is "Chrome"
+      chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
     ls.currentStatus = status
     Meetings.get (meetings) ->
       meetings = $.trim meetings
       today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
-      chrome.browserAction.setTitle {title: today}
+      if BROWSER is "Chrome"
+        chrome.browserAction.setTitle {title: today}
+      else if BROWSER is "Opera"
+        console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
       ls.currentStatusMessage = message
 
 testDesktopNotification = ->
@@ -389,16 +395,23 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
             # Move all content a bit up
             $('header').animate {'top':'40%'}, speed
             $('#container').animate {'top':'40%'}, speed, ->
-              if force or confirm 'Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang Chrome starter\n- Infoskjermen åpnes nå!'
+              if force or confirm 'Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
                 # Enable, and check the checkbox
                 ls[id] = 'true'
                 $('#'+id).attr 'checked', true
                 # Reset icon, icon title and icon badge
-                chrome.browserAction.setIcon {path: 'img/icon-default.png'}
-                chrome.browserAction.setTitle {title: 'Online Infoscreen'}
-                chrome.browserAction.setBadgeText {text: ''}
+                if BROWSER is "Chrome"
+                  chrome.browserAction.setIcon {path: 'img/icon-default.png'}
+                  chrome.browserAction.setTitle {title: 'Online Infoscreen'}
+                  chrome.browserAction.setBadgeText {text: ''}
+                else if BROWSER is "Opera"
+                  console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
                 # Create Infoscreen in a new tab
-                if not force then chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: false}
+                if not force
+                  if BROWSER is "Chrome"
+                    chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: false}
+                  else if BROWSER is "Opera"
+                    console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
               else
                 revertInfoscreen()
   else
@@ -438,7 +451,7 @@ revertInfoscreen = ->
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
-#   chrome.windows.getAll
+#   chrome.windows.getAll # OPERA?
 #     populate: true,
 #     (window_list) ->
 #       list = []
@@ -450,7 +463,7 @@ revertInfoscreen = ->
 #           urlIndex = tab.url.indexOf "infoscreen.html"
 #           if titleIndex >= 0
 #             if urlIndex >= 0
-#               chrome.tabs.remove tab.id
+#               chrome.tabs.remove tab.id # OPERA?
 
 fadeInCanvas = ->
   webGLStart()
@@ -531,8 +544,11 @@ $ ->
       ls[this.id] = this.checked;
       
       if this.id is 'showOffice' and this.checked is false
-        chrome.browserAction.setIcon {path: 'img/icon-default.png'}
-        chrome.browserAction.setTitle {title: EXTENSION_NAME}
+        if BROWSER is "Chrome"
+          chrome.browserAction.setIcon {path: 'img/icon-default.png'}
+          chrome.browserAction.setTitle {title: EXTENSION_NAME}
+        else if BROWSER is "Opera"
+          console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
       else if this.id is 'showOffice' and this.checked is true
         updateOfficeStatus()
       

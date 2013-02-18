@@ -16,7 +16,10 @@ setNotification = ->
   
   # Capture clicks
   $('#notification').click ->
-    chrome.tabs.create {url: link, selected: true}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: link, selected: true}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA notification"
     window.close
 
   # Asynchronously fetch the image

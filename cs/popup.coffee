@@ -66,7 +66,10 @@ listDinners = (menu) ->
 
 clickDinnerLink = (cssSelector) ->
   $(cssSelector).click ->
-    chrome.tabs.create({url: Cantina.url})
+    if BROWSER is "Chrome"
+      chrome.tabs.create({url: Cantina.url})
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
     window.close()
 
 updateHours = ->
@@ -186,14 +189,20 @@ displayStories = (xmlstring) ->
   ls.lastViewedIdList = JSON.stringify idsOfLastViewed
   
   # All items are now considered read :)
-  chrome.browserAction.setBadgeText {text:''}
+  if BROWSER is "Chrome"
+    chrome.browserAction.setBadgeText {text:''}
+  else if BROWSER is "Opera"
+    console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
   ls.unreadCount = 0
 
   # Make news items open extension website while closing popup
   $('.item').click ->
     # The link is embedded as the ID of the element, we don't want to use
     # <a> anchors because it creates an ugly box marking the focus element
-    chrome.tabs.create {url: $(this).attr('id')}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: $(this).attr('id')}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
     window.close()
 
   # Finally, fetch news post images from the API async synchronously
@@ -246,7 +255,10 @@ $ ->
 
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
-    chrome.tabs.create {url: 'infoscreen.html'}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: 'infoscreen.html'}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
     setTimeout ( ->
       window.close()
     ), 250
@@ -258,15 +270,24 @@ $ ->
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
-    chrome.tabs.create {url: EXTENSION_WEBSITE}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: EXTENSION_WEBSITE}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
     window.close()
 
   $('#options_button').click ->
-    chrome.tabs.create {url: 'options.html'}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: 'options.html'}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
     window.close()
 
   $('#chatter_button').click ->
-    chrome.tabs.create {url: 'http://webchat.freenode.net/?channels=online'}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: 'http://webchat.freenode.net/?channels=online'}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
     window.close()
 
   # Bind buttons to hovertext
@@ -281,7 +302,10 @@ $ ->
     chatterText false
 
   $('#bus #atb_logo').click ->
-    chrome.tabs.create {url: 'http://www.atb.no'}
+    if BROWSER is "Chrome"
+      chrome.tabs.create {url: 'http://www.atb.no'}
+    else if BROWSER is "Opera"
+      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
     window.close()
 
   # Enter main loop, keeping everything up-to-date

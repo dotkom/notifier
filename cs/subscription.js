@@ -9,10 +9,14 @@
     images = ['/meme/1.jpg', '/meme/2.jpg', '/meme/3.jpg', '/meme/4.jpg', '/meme/5.jpg', '/meme/6.jpg', '/meme/7.jpg', '/meme/8.jpg', '/meme/9.jpg', '/meme/10.jpg', '/meme/11.jpg'];
     random = Math.floor(Math.random() * images.length);
     $('#subscription').click(function() {
-      chrome.tabs.create({
-        url: 'options.html',
-        selected: true
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: 'options.html',
+          selected: true
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA subscription");
+      }
       return window.close;
     });
     width = $('#subscription').width();

@@ -111,9 +111,13 @@
 
   clickDinnerLink = function(cssSelector) {
     return $(cssSelector).click(function() {
-      chrome.tabs.create({
-        url: Cantina.url
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: Cantina.url
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+      }
       return window.close();
     });
   };
@@ -238,14 +242,22 @@
       }
     });
     ls.lastViewedIdList = JSON.stringify(idsOfLastViewed);
-    chrome.browserAction.setBadgeText({
-      text: ''
-    });
+    if (BROWSER === "Chrome") {
+      chrome.browserAction.setBadgeText({
+        text: ''
+      });
+    } else if (BROWSER === "Opera") {
+      console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+    }
     ls.unreadCount = 0;
     $('.item').click(function() {
-      chrome.tabs.create({
-        url: $(this).attr('id')
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: $(this).attr('id')
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+      }
       return window.close();
     });
     _results = [];
@@ -312,9 +324,13 @@
       timeout: AJAX_TIMEOUT
     });
     if (ls.useInfoscreen === 'true') {
-      chrome.tabs.create({
-        url: 'infoscreen.html'
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: 'infoscreen.html'
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+      }
       setTimeout((function() {
         return window.close();
       }), 250);
@@ -329,21 +345,33 @@
       $('#bus').hide();
     }
     $('#logo').click(function() {
-      chrome.tabs.create({
-        url: EXTENSION_WEBSITE
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: EXTENSION_WEBSITE
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+      }
       return window.close();
     });
     $('#options_button').click(function() {
-      chrome.tabs.create({
-        url: 'options.html'
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: 'options.html'
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+      }
       return window.close();
     });
     $('#chatter_button').click(function() {
-      chrome.tabs.create({
-        url: 'http://webchat.freenode.net/?channels=online'
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: 'http://webchat.freenode.net/?channels=online'
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+      }
       return window.close();
     });
     $('#options_button').mouseenter(function() {
@@ -359,9 +387,13 @@
       return chatterText(false);
     });
     $('#bus #atb_logo').click(function() {
-      chrome.tabs.create({
-        url: 'http://www.atb.no'
-      });
+      if (BROWSER === "Chrome") {
+        chrome.tabs.create({
+          url: 'http://www.atb.no'
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+      }
       return window.close();
     });
     return mainLoop();

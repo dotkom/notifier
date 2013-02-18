@@ -36,17 +36,25 @@
 
   updateOfficeStatus = function() {
     return Office.get(function(status, title, message) {
-      chrome.browserAction.setIcon({
-        path: 'img/icon-' + status + '.png'
-      });
+      if (BROWSER === "Chrome") {
+        chrome.browserAction.setIcon({
+          path: 'img/icon-' + status + '.png'
+        });
+      } else if (BROWSER === "Opera") {
+        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options");
+      }
       ls.currentStatus = status;
       return Meetings.get(function(meetings) {
         var today;
         meetings = $.trim(meetings);
         today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
-        chrome.browserAction.setTitle({
-          title: today
-        });
+        if (BROWSER === "Chrome") {
+          chrome.browserAction.setTitle({
+            title: today
+          });
+        } else if (BROWSER === "Opera") {
+          console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options");
+        }
         return ls.currentStatusMessage = message;
       });
     });
@@ -442,23 +450,31 @@
               return $('#container').animate({
                 'top': '40%'
               }, speed, function() {
-                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang Chrome starter\n- Infoskjermen åpnes nå!')) {
+                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
                   ls[id] = 'true';
                   $('#' + id).attr('checked', true);
-                  chrome.browserAction.setIcon({
-                    path: 'img/icon-default.png'
-                  });
-                  chrome.browserAction.setTitle({
-                    title: 'Online Infoscreen'
-                  });
-                  chrome.browserAction.setBadgeText({
-                    text: ''
-                  });
-                  if (!force) {
-                    return chrome.tabs.create({
-                      url: chrome.extension.getURL("infoscreen.html"),
-                      selected: false
+                  if (BROWSER === "Chrome") {
+                    chrome.browserAction.setIcon({
+                      path: 'img/icon-default.png'
                     });
+                    chrome.browserAction.setTitle({
+                      title: 'Online Infoscreen'
+                    });
+                    chrome.browserAction.setBadgeText({
+                      text: ''
+                    });
+                  } else if (BROWSER === "Opera") {
+                    console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options");
+                  }
+                  if (!force) {
+                    if (BROWSER === "Chrome") {
+                      return chrome.tabs.create({
+                        url: chrome.extension.getURL("infoscreen.html"),
+                        selected: false
+                      });
+                    } else if (BROWSER === "Opera") {
+                      return console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options");
+                    }
                   }
                 } else {
                   return revertInfoscreen();
@@ -565,12 +581,16 @@
       } else {
         ls[this.id] = this.checked;
         if (this.id === 'showOffice' && this.checked === false) {
-          chrome.browserAction.setIcon({
-            path: 'img/icon-default.png'
-          });
-          chrome.browserAction.setTitle({
-            title: EXTENSION_NAME
-          });
+          if (BROWSER === "Chrome") {
+            chrome.browserAction.setIcon({
+              path: 'img/icon-default.png'
+            });
+            chrome.browserAction.setTitle({
+              title: EXTENSION_NAME
+            });
+          } else if (BROWSER === "Opera") {
+            console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options");
+          }
         } else if (this.id === 'showOffice' && this.checked === true) {
           updateOfficeStatus();
         }
