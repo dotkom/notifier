@@ -10,9 +10,11 @@
 	<icon src="img/logo-64.png" />
     <icon src="img/logo-18.png" />
 
-  	<access origin="*://*.online.ntnu.no/*" />
-  	<access origin="*://*.visuweb.no/*" />
-  	<access origin="*://*.sit.no/*" />
+    <access origin="https://ssl.google-analytics.com" />
+  	<access origin="https://online.ntnu.no" />
+  	<access origin="http://draug.online.ntnu.no" />
+  	<access origin="http://visuweb.no" />
+  	<access origin="http://sit.no" />
 
 <!-- 	<access origin="http://atb.no" />
 	<access origin="http://www.atb.no" /> -->
