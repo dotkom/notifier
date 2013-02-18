@@ -1,4 +1,3 @@
-
 window.___gcfg = {lang: 'no'};
 
 (function() {
@@ -12,8 +11,3 @@ window.___gcfg = {lang: 'no'};
 	s.parentNode.insertBefore(po, s);
 	
 })();
-
-
-
-
-
