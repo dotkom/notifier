@@ -4,7 +4,10 @@ function onRequest(request, sender, callback) {
   if (request.action == 'resetCounterWhenOnWebsite') {
     localStorage.unreadCount = 0;
     localStorage.mostRecentRead = localStorage.mostRecentUnread;
-    chrome.browserAction.setBadgeText({text:''});
+    if (BROWSER == "Chrome")
+      chrome.browserAction.setBadgeText({text:''});
+    else if (BROWSER == "Opera")
+      console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA onRequest");
   }
   else if (request.action == 'getChosenDinner') {
     var chosenDinner = localStorage.chosenDinner;
@@ -25,4 +28,7 @@ function onRequest(request, sender, callback) {
 }
 
 // wire up the onRequest listener function
-chrome.extension.onRequest.addListener(onRequest);
+if (BROWSER == "Chrome")
+  chrome.extension.onRequest.addListener(onRequest);
+else if (BROWSER == "Opera")
+  console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA onRequest");
