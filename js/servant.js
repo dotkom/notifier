@@ -19,7 +19,7 @@ var Servant = {
         // 12:00-13:00: Michael Johansen
         if (currentServant.match(/\d+:\d+\-\d+:\d+/)) {
           // Match out the name from the line
-          callback(currentServant.match(/(\d+:\d+\-\d+:\d+: )([a-zA-ZæøåÆØÅ ]+)/)[2]);
+          callback(currentServant.match(/(\d+:\d+\-\d+:\d+ )([a-zA-ZæøåÆØÅ ]+)/)[2]);
         }
         else {
           // Probably no servant at the moment, value is "Ingen"
