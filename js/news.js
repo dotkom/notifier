@@ -55,21 +55,21 @@ function unreadCount(xmlstring) {
 				if (BROWSER == "Chrome")
 					chrome.browserAction.setBadgeText({text:''});
 				else if (BROWSER == "Opera")
-					console.log("OPERAAAAAAAAAAAAA onwebsite")
+					console.log("OPERAAAAAAAAAAAAA news")
 			}
 			else if (unread_count >= MAX_NEWS_AMOUNT) {
 				if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts');
 				if (BROWSER == "Chrome")
 					chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
 				else if (BROWSER == "Opera")
-					console.log("OPERAAAAAAAAAAAAA onwebsite")
+					console.log("OPERAAAAAAAAAAAAA news")
 			}
 			else {
 				if (DEBUG) console.log('1-' + (MAX_NEWS_AMOUNT - 1) + ' unread posts');
 				if (BROWSER == "Chrome")
 					chrome.browserAction.setBadgeText({text:String(unread_count)});
 				else if (BROWSER == "Opera")
-					console.log("OPERAAAAAAAAAAAAA onwebsite")
+					console.log("OPERAAAAAAAAAAAAA news")
 			}
 			localStorage.unreadCount = unread_count;
 			storeMostRecentIds(idList); // New || Updated
@@ -82,7 +82,7 @@ function unreadCount(xmlstring) {
 			if (BROWSER == "Chrome")
 				chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
 			else if (BROWSER == "Opera")
-				console.log("OPERAAAAAAAAAAAAA onwebsite")
+				console.log("OPERAAAAAAAAAAAAA news")
 			localStorage.unreadCount = MAX_NEWS_AMOUNT;
 			// New or updated?
 			storeMostRecentIds(idList); // New || Updated
