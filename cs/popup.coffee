@@ -281,6 +281,7 @@ $ ->
       chrome.tabs.create {url: 'options.html'}
     else if BROWSER is "Opera"
       console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
+      tab = opera.extension.tabs.create {url: 'options.html'}
     window.close()
 
   $('#chatter_button').click ->

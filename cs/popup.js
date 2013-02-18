@@ -355,12 +355,16 @@
       return window.close();
     });
     $('#options_button').click(function() {
+      var tab;
       if (BROWSER === "Chrome") {
         chrome.tabs.create({
           url: 'options.html'
         });
       } else if (BROWSER === "Opera") {
         console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
+        tab = opera.extension.tabs.create({
+          url: 'options.html'
+        });
       }
       return window.close();
     });
