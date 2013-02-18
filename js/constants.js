@@ -42,7 +42,7 @@ else if (navigator.appVersion.indexOf("Mac")!==-1) {
 	}
 }
 else {
-	console.log("ERROR: Unsupported operating system");
+	console.log("ERROR: Potentially unsupported operating system");
 }
 
 // Browser detection
@@ -52,7 +52,7 @@ if (typeof chrome != "undefined")
 else if (typeof opera != "undefined")
 	BROWSER = "Opera";
 else {
-	console.log("ERROR: Unsupported browser");
+	console.log("ERROR: Potentially unsupported browser");
 }
 
 // Production detection
