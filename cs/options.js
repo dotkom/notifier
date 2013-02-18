@@ -62,14 +62,22 @@
 
   testDesktopNotification = function() {
     var notification;
-    notification = webkitNotifications.createHTMLNotification('notification.html');
-    return notification.show();
+    if (BROWSER === "Chrome") {
+      notification = webkitNotifications.createHTMLNotification('notification.html');
+      return notification.show();
+    } else if (BROWSER === "Opera") {
+      return console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    }
   };
 
   testCoffeeSubscription = function() {
     var subscription;
-    subscription = webkitNotifications.createHTMLNotification('subscription.html');
-    return subscription.show();
+    if (BROWSER === "Chrome") {
+      subscription = webkitNotifications.createHTMLNotification('subscription.html');
+      return subscription.show();
+    } else if (BROWSER === "Opera") {
+      return console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    }
   };
 
   bindCantinaSelector = function(selector) {

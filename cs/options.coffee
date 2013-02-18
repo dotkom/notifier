@@ -37,12 +37,18 @@ updateOfficeStatus = ->
       ls.currentStatusMessage = message
 
 testDesktopNotification = ->
-  notification = webkitNotifications.createHTMLNotification('notification.html')
-  notification.show()
+  if BROWSER is "Chrome"
+    notification = webkitNotifications.createHTMLNotification('notification.html')
+    notification.show()
+  else if BROWSER is "Opera"
+    console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
 testCoffeeSubscription = ->
-  subscription = webkitNotifications.createHTMLNotification('subscription.html')
-  subscription.show()
+  if BROWSER is "Chrome"
+    subscription = webkitNotifications.createHTMLNotification('subscription.html')
+    subscription.show()
+  else if BROWSER is "Opera"
+    console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
 bindCantinaSelector = (selector) ->
   # Default values

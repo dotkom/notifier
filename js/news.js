@@ -108,8 +108,13 @@ function showNotification(element) {
 		localStorage.notificationDate = post.date;
 		localStorage.notificationId = post.id;
 		localStorage.notificationImage = BACKUP_IMAGE;
-		var notification = webkitNotifications.createHTMLNotification('notification.html');
-		notification.show(); // HTML5-style
+	    if (BROWSER == "Chrome") {
+			var notification = webkitNotifications.createHTMLNotification('notification.html');
+			notification.show(); // HTML5-style
+		}
+	    else if (BROWSER == "Opera") {
+	    	console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA news, webkitNotifications");
+	    }
 	}
 }
 
