@@ -7,12 +7,13 @@
   	
   	<content src="background.html" />
 
-	<icon src="img/logo-64.png" />
+  	<icon src="img/logo-64.png" />
     <icon src="img/logo-18.png" />
 
     <access origin="https://ssl.google-analytics.com" />
   	<access origin="https://online.ntnu.no" />
-  	<access origin="http://draug.online.ntnu.no" />
+    <access origin="http://online.ntnu.no" />
+    <access origin="http://draug.online.ntnu.no" />
   	<access origin="http://visuweb.no" />
   	<access origin="http://sit.no" />
 
