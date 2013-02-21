@@ -45,6 +45,7 @@ Chronological Credz
 	- Thomas Gautvedt
 	- Aleksander Skraastad
 	- John Hanssen Kolstad
+	- Magnus Dysthe
 
 # Featurelist
 
