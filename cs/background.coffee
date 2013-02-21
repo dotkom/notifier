@@ -12,8 +12,8 @@ if BROWSER is "Opera"
       icon: "img/logo-18.png",
       popup: {
         href: "popup.html",
-        width: 400,
-        height: 500
+        width: 482,
+        height: 534
       }
     }
     theButton = opera.contexts.toolbar.createItem ToolbarUIItemProperties
