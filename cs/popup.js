@@ -317,9 +317,6 @@
   };
 
   $(function() {
-    if (DEBUG) {
-      less.watch();
-    }
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });

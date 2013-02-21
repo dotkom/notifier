@@ -248,8 +248,6 @@ fadeButtonText = (show, msg) ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then less.watch() # not needed when using CodeKit
-  
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup timeout: AJAX_TIMEOUT
 

@@ -24,9 +24,6 @@
   };
 
   $(function() {
-    if (DEBUG) {
-      less.watch();
-    }
     setSubscription();
     return setTimeout((function() {
       return window.close();

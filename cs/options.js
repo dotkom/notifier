@@ -548,9 +548,6 @@
 
   $(function() {
     if (DEBUG) {
-      less.watch();
-    }
-    if (DEBUG) {
       $('#debug_links').show();
     }
     $.ajaxSetup({
