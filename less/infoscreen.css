@@ -1,0 +1,393 @@
+.debugred {
+  border: 0pt solid #ff0000;
+}
+.debugyellow {
+  border: 0pt solid #ffff00;
+}
+.debugpink {
+  border: 0pt solid #ffc0cb;
+}
+.debuglime {
+  border: 0pt solid #00ff00;
+}
+.fullbox {
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+.title {
+  display: block;
+  color: #ee861f;
+  text-transform: uppercase;
+  font-size: 24pt;
+  font-weight: bold;
+  padding-top: 25pt;
+  padding-bottom: 7pt;
+}
+.emphasized {
+  font-style: italic;
+  font-size: 14pt;
+  margin-bottom: 8pt;
+}
+.index {
+  font-style: italic;
+}
+html {
+  cursor: none;
+}
+body {
+  background: #001429;
+  font-family: helvetica;
+  color: white;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 20pt;
+  line-height: 22pt;
+}
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background-color: black;
+  opacity: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+
+  background: url('/img/background-large-vertical.png') center center no-repeat;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+/* This container keeps the content centered */
+#container {
+  border: 0pt solid #ffc0cb;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 30pt;
+  z-index: 10;
+}
+#container #office {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+  margin-bottom: -60pt;
+  text-align: center;
+}
+#container #office img {
+  border: 0pt solid #00ff00;
+  width: 90%;
+}
+#container #office #subtext {
+  border: 0pt solid #ffff00;
+  position: relative;
+  top: -80pt;
+  min-height: 50pt;
+  max-height: 50pt;
+  font-size: 32pt;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 15pt black, 0 0 20pt black;
+}
+#container #todays {
+  border: 0pt solid #ffff00;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+#container #todays #schedule {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: left;
+  width: 48%;
+}
+#container #todays #coffee {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+}
+#container #news {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+#container #news .post {
+  border: 0pt solid #ffff00;
+  position: relative;
+  clear: both;
+}
+#container #news .post .item {
+  border: 0pt solid #ffff00;
+  min-height: 40pt;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#container #news .post .item img {
+  float: left;
+  background: snow;
+  width: 170pt;
+  max-height: 140pt;
+  padding: 5px;
+  box-shadow: 0px 0px 10px #bbb;
+}
+#container #news .post .item .textwrapper {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: left;
+  margin-left: 14pt;
+  width: 73%;
+}
+#container #news .post .item .textwrapper .date {
+  text-transform: uppercase;
+  font-size: 24pt;
+}
+#container #bus {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+  font-size: 18pt;
+  line-height: 25pt;
+  background-color: #000f1d;
+  height: 144pt;
+  width: 110%;
+  margin-top: 25pt;
+  margin-left: -5%;
+  box-shadow: 0 0 20pt #88b;
+}
+#container #bus .name {
+  color: white;
+  margin-bottom: 3pt;
+  text-decoration: underline;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container #bus #first_bus {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: right;
+  padding-top: 10pt;
+  width: 42%;
+}
+#container #bus #second_bus {
+  border: 0pt solid #00ff00;
+  width: 42%;
+  position: relative;
+  padding-top: 10pt;
+  float: left;
+  text-align: left;
+}
+#container #bus .loading_left {
+  position: relative;
+  width: 160px;
+  bottom: 16pt;
+  -webkit-transform: scaleX(-1);
+}
+#container #bus .loading_right {
+  position: relative;
+  width: 160px;
+  bottom: 16pt;
+}
+#container #bus .first,
+#container #bus .second,
+#container #bus .third,
+#container #bus .fourth,
+#container #bus .fifth,
+#container #bus .sixth,
+#container #bus .seventh,
+#container #bus .eighth,
+#container #bus .nineth,
+#container #bus .tenth {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container #bus .time {
+  font-weight: bold;
+}
+#container #bus .error {
+  font-style: italic;
+}
+#container #bus #middle {
+  border: 0pt solid #00ff00;
+  float: left;
+  position: relative;
+  height: 100%;
+  width: 14%;
+  text-align: center;
+}
+#container #bus #middle #atb_logo {
+  border: 0pt solid #00ff00;
+  height: 85pt;
+  margin-top: 2pt;
+}
+#container #bus #middle #clock {
+  border: 0pt solid #ffc0cb;
+  color: #fff;
+  margin-top: 15pt;
+  text-align: center;
+}
+#container #bus #middle #clock li {
+  border: 0pt solid #ffff00;
+  display: inline-block;
+  font-family: helvetica;
+  font-size: 30pt;
+  list-style: none;
+  /*text-shadow: 0 0 5pt #00c6ff;*/
+
+}
+#container #bus #middle #clock #hours {
+  position: relative;
+  left: 4pt;
+}
+#container #bus #middle #clock #minutes {
+  position: relative;
+  left: -4pt;
+}
+#container #bus #middle #clock #point {
+  position: relative;
+  left: -0.5pt;
+  -moz-animation: mymove 1s ease infinite;
+  -webkit-animation: mymove 1s ease infinite;
+}
+@-webkit-keyframes mymove {
+  0% {
+    opacity: 1.0;
+    /*text-shadow: 0 0 20pt #00c6ff;*/
+  
+  }
+  50% {
+    opacity: 0;
+    text-shadow: none;
+  }
+  100% {
+    opacity: 1.0;
+    /*text-shadow: 0 0 20pt #00c6ff;*/
+  
+  }
+}
+#container #cantinas {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+#container #cantinas .hours {
+  color: white;
+  padding-bottom: 3pt;
+  font-weight: normal;
+  font-style: italic;
+  text-transform: none;
+}
+#container #cantinas #left {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: left;
+  width: 48%;
+}
+#container #cantinas #right {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+  /* when the right box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #cantinas #dinnerbox {
+  border: 0pt solid #ffff00;
+}
+#container #cantinas li {
+  border: 0pt solid #00ff00;
+  position: relative;
+  width: 95%;
+  list-style-type: none;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
+}
+#container #cantinas li.message {
+  font-style: italic;
+}
+#container #logo {
+  border: 0pt solid #ff0000;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 300pt;
+}
+/* the pageflip at the bottom */
+#pageflipbg {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  background: transparent url('/img/pageflip-infoscreen-bg.png') no-repeat left bottom;
+  width: 356px;
+  height: 181px;
+  z-index: 105;
+}
+#pagefliptext {
+  position: fixed;
+  width: 300px;
+  height: 76px;
+  left: 8px;
+  bottom: 5px;
+  font: bold 22px monospace;
+  color: #ccf2cc;
+  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  z-index: 106;
+}
+#pageflip {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  background: transparent url('/img/pageflip-infoscreen.png') no-repeat left bottom;
+  width: 356px;
+  height: 181px;
+  z-index: 107;
+}
+#pagefliplink {
+  position: fixed;
+  width: 300px;
+  height: 76px;
+  left: 8px;
+  bottom: 5px;
+  font: bold 22px monospace;
+  color: #ccf2cc;
+  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  z-index: 108;
+}
+#pagefliplink a {
+  font: bold 11px monospace;
+  color: #ccf2cc;
+  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  text-decoration: none;
+}
+#pagefliplink a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,18 @@
+.debugred {
+  border: 0pt solid #ff0000;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: helvetica;
+  color: black;
+}
+#subscription {
+  border: 0pt solid #ff0000;
+  margin: 0;
+  padding: 0;
+}
