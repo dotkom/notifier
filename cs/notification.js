@@ -18,14 +18,7 @@
       description = description.substring(0, maxlength) + '...';
     }
     $('#notification').click(function() {
-      if (BROWSER === "Chrome") {
-        chrome.tabs.create({
-          url: link,
-          selected: true
-        });
-      } else if (BROWSER === "Opera") {
-        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA notification");
-      }
+      Browser.openTab(link);
       return window.close;
     });
     return getImageUrlForId(id, function(id, image) {
