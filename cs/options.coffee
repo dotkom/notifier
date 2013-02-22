@@ -434,7 +434,6 @@ revertInfoscreen = ->
             $('#logo_subtext').html 'notifier options'
             $('#logo_subtext').fadeIn()
 
-
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
 #   chrome.windows.getAll # OPERA?
