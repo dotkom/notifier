@@ -1,29 +1,29 @@
 var Browser = {
 
-  addPopupIcon: function() {
-    if (BROWSER == 'Chrome') {
-      console.log('LOLLLOLLOLOL NOTHING TO DO, CHROME ROX, browser.js')
-    }
-    else if (BROWSER == 'Opera') {
-      window.addEventListener("load", function() {
-        var theButton;
-        var ToolbarUIItemProperties = {
-          title: EXTENSION_NAME,
-          icon: "img/logo-18.png",
-          popup: {
-            href: "popup.html",
-            width: 482,
-            height: 534
-          }
-        }
-        theButton = opera.contexts.toolbar.createItem(ToolbarUIItemProperties);
-        opera.contexts.toolbar.addItem(theButton);
-      }, false);
-    }
-    else {
-      console.log('ERROR: Unsupported browser');
-    }    
-  },
+  // addPopupIcon: function() {
+  //   if (BROWSER == 'Chrome') {
+  //     console.log('LOLLLOLLOLOL NOTHING TO DO, CHROME ROX, browser.js')
+  //   }
+  //   else if (BROWSER == 'Opera') {
+  //     window.addEventListener("load", function() {
+  //       var theButton;
+  //       var ToolbarUIItemProperties = {
+  //         title: EXTENSION_NAME,
+  //         icon: "img/logo-18.png",
+  //         popup: {
+  //           href: "popup.html",
+  //           width: 482,
+  //           height: 534
+  //         }
+  //       }
+  //       theButton = opera.contexts.toolbar.createItem(ToolbarUIItemProperties);
+  //       opera.contexts.toolbar.addItem(theButton);
+  //     }, false);
+  //   }
+  //   else {
+  //     console.log('ERROR: Unsupported browser');
+  //   }    
+  // },
 
   openTab: function(url) {
     if (BROWSER == 'Chrome') {
@@ -68,7 +68,10 @@ var Browser = {
       chrome.browserAction.setTitle({title: title});
     }
     else if (BROWSER == 'Opera') {
-      console.log('BROWSER.JS: setTitle');
+      var theButton = JSON.parse(localStorage.operaButton);
+      theButton.title = title;
+
+      console.log('BROWSER.JS: setTitle'); //////////////////////
     }
     else {
       console.log('ERROR: Unsupported browser');
@@ -80,7 +83,10 @@ var Browser = {
       chrome.browserAction.setBadgeText({text: text});
     }
     else if (BROWSER == 'Opera') {
-      console.log('BROWSER.JS: setBadgeText');
+      var theButton = JSON.parse(localStorage.operaButton);
+      theButton.badge.textContent = text;
+
+      console.log('BROWSER.JS: setBadgeText'); ////////////////////////
     }
     else {
       console.log('ERROR: Unsupported browser');
