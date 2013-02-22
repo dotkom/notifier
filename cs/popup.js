@@ -352,15 +352,13 @@
       return window.close();
     });
     $('#options_button').click(function() {
-      var tab;
       if (BROWSER === "Chrome") {
-        chrome.tabs.create({
-          url: 'options.html'
-        });
+        Browser.openTab('options.html', true);
       } else if (BROWSER === "Opera") {
         console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup");
-        tab = opera.extension.tabs.create({
-          url: 'options.html'
+        opera.extension.tabs.create({
+          url: 'options.html',
+          focused: true
         });
       }
       return window.close();

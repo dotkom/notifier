@@ -276,10 +276,11 @@ $ ->
 
   $('#options_button').click ->
     if BROWSER is "Chrome"
-      chrome.tabs.create {url: 'options.html'}
+      Browser.openTab 'options.html', true
+      # chrome.tabs.create {url: 'options.html'}
     else if BROWSER is "Opera"
       console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA popup"
-      tab = opera.extension.tabs.create {url: 'options.html'}
+      opera.extension.tabs.create({url: 'options.html', focused: true});
     window.close()
 
   $('#chatter_button').click ->
