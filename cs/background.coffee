@@ -4,21 +4,7 @@ ls = localStorage
 iteration = 0
 
 # If this is an opera extension, add the popup icon
-if BROWSER is "Opera"
-  window.addEventListener "load", ->
-    theButton
-    ToolbarUIItemProperties = {
-      title: "Online Notifier",
-      icon: "img/logo-18.png",
-      popup: {
-        href: "popup.html",
-        width: 482,
-        height: 534
-      }
-    }
-    theButton = opera.contexts.toolbar.createItem ToolbarUIItemProperties
-    opera.contexts.toolbar.addItem theButton
-  , false
+Browser.addPopupIcon()
 
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
@@ -47,17 +33,11 @@ updateOfficeAndMeetings = ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
-      if BROWSER is "Chrome"
-        chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
-      else if BROWSER is "Opera"
-        console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      Browser.setIcon 'img/icon-'+status+'.png'
       ls.currentStatus = status
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
-        if BROWSER is "Chrome"
-          chrome.browserAction.setTitle {title: today}
-        else if BROWSER is "Opera"
-          console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        Browser.setTitle today
         ls.currentStatusMessage = message
 
 updateCoffee = ->
@@ -123,24 +103,15 @@ $ ->
       ls.useInfoscreen = 'false'
 
     if !DEBUG
-      if BROWSER is "Chrome"
-        chrome.tabs.create {url: chrome.extension.getURL("options.html"), selected: true}
-      else if BROWSER is "Opera"
-        console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      Browser.openTab 'options.html'
 
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
-    if BROWSER is "Chrome"
-      chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: true}
-    else if BROWSER is "Opera"
-      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    Browser.openTab 'infoscreen.html'
 
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
-    if BROWSER is "Chrome"
-      chrome.tabs.create {url: 'http://webchat.freenode.net/?channels=online', selected: false}
-    else if BROWSER is "Opera"
-      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
 
   # Set default vars for main loop
   ls.everConnected = ls.wasConnected = 'false'

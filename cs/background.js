@@ -8,24 +8,7 @@
 
   iteration = 0;
 
-  if (BROWSER === "Opera") {
-    window.addEventListener("load", function() {
-      theButton;
-
-      var ToolbarUIItemProperties, theButton;
-      ToolbarUIItemProperties = {
-        title: "Online Notifier",
-        icon: "img/logo-18.png",
-        popup: {
-          href: "popup.html",
-          width: 482,
-          height: 534
-        }
-      };
-      theButton = opera.contexts.toolbar.createItem(ToolbarUIItemProperties);
-      return opera.contexts.toolbar.addItem(theButton);
-    }, false);
-  }
+  Browser.addPopupIcon();
 
   mainLoop = function() {
     var loopTimeout;
@@ -64,24 +47,12 @@
     }
     return Office.get(function(status, title, message) {
       if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
-        if (BROWSER === "Chrome") {
-          chrome.browserAction.setIcon({
-            path: 'img/icon-' + status + '.png'
-          });
-        } else if (BROWSER === "Opera") {
-          console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        }
+        Browser.setIcon('img/icon-' + status + '.png');
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
           var today;
           today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
-          if (BROWSER === "Chrome") {
-            chrome.browserAction.setTitle({
-              title: today
-            });
-          } else if (BROWSER === "Opera") {
-            console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-          }
+          Browser.setTitle(today);
           return ls.currentStatusMessage = message;
         });
       }
@@ -165,35 +136,14 @@
         ls.useInfoscreen = 'false';
       }
       if (!DEBUG) {
-        if (BROWSER === "Chrome") {
-          chrome.tabs.create({
-            url: chrome.extension.getURL("options.html"),
-            selected: true
-          });
-        } else if (BROWSER === "Opera") {
-          console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        }
+        Browser.openTab('options.html');
       }
     }
     if (ls.useInfoscreen === 'true') {
-      if (BROWSER === "Chrome") {
-        chrome.tabs.create({
-          url: chrome.extension.getURL("infoscreen.html"),
-          selected: true
-        });
-      } else if (BROWSER === "Opera") {
-        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-      }
+      Browser.openTab('infoscreen.html');
     }
     if (ls.openChatter === 'true') {
-      if (BROWSER === "Chrome") {
-        chrome.tabs.create({
-          url: 'http://webchat.freenode.net/?channels=online',
-          selected: false
-        });
-      } else if (BROWSER === "Opera") {
-        console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-      }
+      Browser.openBackgroundTab('http://webchat.freenode.net/?channels=online');
     }
     ls.everConnected = ls.wasConnected = 'false';
     setInterval((function() {
