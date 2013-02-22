@@ -28,12 +28,61 @@ var Browser = {
     }
   },
 
+  setIcon: function(path) {
+    if (this.name == 'Chrome') {
+      chrome.browserAction.setIcon({path: path});
+    }
+    else if (this.name == 'Opera') {
+      console.log('BROWSER.JS: setIcon');
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }
+  },
+
+  setTitle: function(title) {
+    if (this.name == 'Chrome') {
+      chrome.browserAction.setTitle({title: title});
+    }
+    else if (this.name == 'Opera') {
+      console.log('BROWSER.JS: setTitle');
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }
+  },
+
   setBadgeText: function(text) {
     if (this.name == 'Chrome') {
       chrome.browserAction.setBadgeText({text: text});
     }
     else if (this.name == 'Opera') {
       console.log('BROWSER.JS: setBadgeText');
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }
+  },
+
+  createNotification: function(path) {
+    if (this.name == 'Chrome') {
+      notification = webkitNotifications.createHTMLNotification(path);
+      notification.show();
+    }
+    else if (this.name == 'Opera') {
+      console.log('BROWSER.JS: createNotification');
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }
+  },
+
+  getUrl: function(path) {
+    if (this.name == 'Chrome') {
+      return chrome.extension.getURL(path);
+    }
+    else if (this.name == 'Opera') {
+      console.log('BROWSER.JS: getUrl');
     }
     else {
       console.log('ERROR: Unsupported browser');
