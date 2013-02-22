@@ -22,33 +22,19 @@ pageFlipCursorBlinking = ->
 
 updateOfficeStatus = ->
   Office.get (status, title, message) ->
-    if BROWSER is "Chrome"
-      chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
-    else if BROWSER is "Opera"
-      console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
+    Browser.setIcon 'img/icon-'+status+'.png'
     ls.currentStatus = status
     Meetings.get (meetings) ->
       meetings = $.trim meetings
       today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
-      if BROWSER is "Chrome"
-        chrome.browserAction.setTitle {title: today}
-      else if BROWSER is "Opera"
-        console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
+      Browser.setTitle today
       ls.currentStatusMessage = message
 
 testDesktopNotification = ->
-  if BROWSER is "Chrome"
-    notification = webkitNotifications.createHTMLNotification('notification.html')
-    notification.show()
-  else if BROWSER is "Opera"
-    console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  Browser.createNotification 'notification.html'
 
 testCoffeeSubscription = ->
-  if BROWSER is "Chrome"
-    subscription = webkitNotifications.createHTMLNotification('subscription.html')
-    subscription.show()
-  else if BROWSER is "Opera"
-    console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  Browser.createNotification 'subscription.html'
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -406,18 +392,12 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
                 ls[id] = 'true'
                 $('#'+id).attr 'checked', true
                 # Reset icon, icon title and icon badge
-                if BROWSER is "Chrome"
-                  chrome.browserAction.setIcon {path: 'img/icon-default.png'}
-                  chrome.browserAction.setTitle {title: 'Online Infoscreen'}
-                  chrome.browserAction.setBadgeText {text: ''}
-                else if BROWSER is "Opera"
-                  console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
+                Browser.setIcon 'img/icon-default.png'
+                Browser.setTitle 'Online Infoscreen'
+                Browser.setBadgeText ''
                 # Create Infoscreen in a new tab
                 if not force
-                  if BROWSER is "Chrome"
-                    chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: false}
-                  else if BROWSER is "Opera"
-                    console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
+                  Browser.openBackgroundTab 'infoscreen.html'
               else
                 revertInfoscreen()
   else
@@ -549,11 +529,9 @@ $ ->
       ls[this.id] = this.checked;
       
       if this.id is 'showOffice' and this.checked is false
-        if BROWSER is "Chrome"
-          chrome.browserAction.setIcon {path: 'img/icon-default.png'}
-          chrome.browserAction.setTitle {title: EXTENSION_NAME}
-        else if BROWSER is "Opera"
-          console.log "OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA options"
+        Browser.setIcon 'img/icon-default.png'
+        Browser.setTitle EXTENSION_NAME
+
       else if this.id is 'showOffice' and this.checked is true
         updateOfficeStatus()
       
