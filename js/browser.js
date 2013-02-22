@@ -1,12 +1,10 @@
 var Browser = {
 
-  name: 'Chrome',
-
   addPopupIcon: function() {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       console.log('LOLLLOLLOLOL NOTHING TO DO, CHROME ROX, browser.js')
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       window.addEventListener("load", function() {
         var theButton;
         var ToolbarUIItemProperties = {
@@ -28,10 +26,10 @@ var Browser = {
   },
 
   openTab: function(url) {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       chrome.tabs.create({url: url});
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: openTab');
       opera.extension.tabs.create({url: url});
     }
@@ -41,10 +39,10 @@ var Browser = {
   },
 
   openBackgroundTab: function(url) {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       chrome.tabs.create({url: url, selected: false});
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: openBackgroundTab');
       opera.extension.tabs.create({url: url, focused: false});
     }
@@ -54,10 +52,10 @@ var Browser = {
   },
 
   setIcon: function(path) {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       chrome.browserAction.setIcon({path: path});
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: setIcon');
     }
     else {
@@ -66,10 +64,10 @@ var Browser = {
   },
 
   setTitle: function(title) {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       chrome.browserAction.setTitle({title: title});
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: setTitle');
     }
     else {
@@ -78,10 +76,10 @@ var Browser = {
   },
 
   setBadgeText: function(text) {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       chrome.browserAction.setBadgeText({text: text});
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: setBadgeText');
     }
     else {
@@ -90,11 +88,11 @@ var Browser = {
   },
 
   createNotification: function(path) {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       notification = webkitNotifications.createHTMLNotification(path);
       notification.show();
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: createNotification');
     }
     else {
@@ -103,10 +101,10 @@ var Browser = {
   },
 
   getUrl: function(path) {
-    if (this.name == 'Chrome') {
+    if (BROWSER == 'Chrome') {
       return chrome.extension.getURL(path);
     }
-    else if (this.name == 'Opera') {
+    else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: getUrl');
     }
     else {
