@@ -2,6 +2,31 @@ var Browser = {
 
   name: 'Chrome',
 
+  addPopupIcon: function() {
+    if (this.name == 'Chrome') {
+      console.log('LOLLLOLLOLOL NOTHING TO DO, CHROME ROX, browser.js')
+    }
+    else if (this.name == 'Opera') {
+      window.addEventListener("load", function() {
+        var theButton;
+        var ToolbarUIItemProperties = {
+          title: EXTENSION_NAME,
+          icon: "img/logo-18.png",
+          popup: {
+            href: "popup.html",
+            width: 482,
+            height: 534
+          }
+        }
+        theButton = opera.contexts.toolbar.createItem(ToolbarUIItemProperties);
+        opera.contexts.toolbar.addItem(theButton);
+      }, false);
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }    
+  },
+
   openTab: function(url) {
     if (this.name == 'Chrome') {
       chrome.tabs.create({url: url});
