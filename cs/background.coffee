@@ -3,9 +3,6 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
-# If this is an opera extension, add the popup icon
-Browser.addPopupIcon()
-
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 

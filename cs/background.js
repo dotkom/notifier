@@ -8,8 +8,6 @@
 
   iteration = 0;
 
-  Browser.addPopupIcon();
-
   mainLoop = function() {
     var loopTimeout;
     if (DEBUG) {
