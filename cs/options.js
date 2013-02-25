@@ -436,7 +436,7 @@
               }, speed, function() {
                 if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
                   ls[id] = 'true';
-                  $('#' + id).attr('checked', true);
+                  $('#' + id).prop('checked', true);
                   Browser.setIcon('img/icon-default.png');
                   Browser.setTitle('Online Infoscreen');
                   Browser.setBadgeText('');
