@@ -1,3 +1,4 @@
+// WARNING: This file must only be called from background.html
 var OPERA_BUTTON = null;
 
 // If this is an opera extension, add the popup icon
