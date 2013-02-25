@@ -160,12 +160,17 @@ header {
   /* for regular size images */
   .image {
     box-shadow: 0 0 5pt 0pt black;
-    margin: 5pt 0 0 15pt;
+    margin: 5pt 0 0 17pt;
     border-radius: 4pt;
   }
 
   input {
     box-shadow: 0 0 15px #333;
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
   }
 
   &:hover {
@@ -304,67 +309,6 @@ header {
   #infoscreen_preview {
     display: none;
   }
-}
-
-/* fancy checkboxes replacing the boring, ordinary ones */
-
-label
-{
-  cursor: pointer;
-
-  /*
-  input[type="checkbox"] + span::before, / * buttons * /
-  input[type="radio"] + span::before
-  {
-    display: inline-block; / * squish to size * /
-    text-indent: -9999px; / * moving the cross the hell outta here :P * /
-    width: 12px;
-    height: 12px;
-    text-transform: uppercase;
-    border: 1px solid #000;
-    background: white;
-    margin: 0 4px 0 0;
-    bottom: 2px;
-    position: relative;
-    font-size: 12px;
-    line-height: 12px;
-    font-weight: bold;
-    color: black;
-  }
-
-  input[type="checkbox"] + span::before, / * button's cross * /
-  input[type="radio"] + span::before
-  {
-    content: "\2714";
-  }
-
-  input[type="checkbox"] + span::before / * round the corners of the radio buttons * /
-  {
-    border-radius: 3px;
-  }
-
-  input[type="radio"] + span::before / * round the corners of the radio buttons * /
-  {
-    border-radius: 12px;
-  }
-
-  input[type="checkbox"]:checked + span::before, / * move cross into position when checked * /
-  input[type="radio"]:checked + span::before
-  {
-    text-indent: 1px;
-  }
-
-  input[type="checkbox"], / * hide the real checkbox/radio button * /
-  input[type="radio"]
-  {
-    position: fixed;
-    opacity: 0;
-    height: 20px; / * making the unseen box bigger, makes a nice hitbox * /
-    width: 40px;
-    margin-left: -10px; / * making hitbox even bigger! :P nice hitbox * /
-    margin-top: -1px;
-    cursor: pointer;
-  }*/
 }
 
 /* Suggestions for bus stops */
