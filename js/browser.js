@@ -1,29 +1,61 @@
 var Browser = {
 
-  // addPopupIcon: function() {
-  //   if (BROWSER == 'Chrome') {
-  //     console.log('LOLLLOLLOLOL NOTHING TO DO, CHROME ROX, browser.js')
-  //   }
-  //   else if (BROWSER == 'Opera') {
-  //     window.addEventListener("load", function() {
-  //       var theButton;
-  //       var ToolbarUIItemProperties = {
-  //         title: EXTENSION_NAME,
-  //         icon: "img/logo-18.png",
-  //         popup: {
-  //           href: "popup.html",
-  //           width: 482,
-  //           height: 534
-  //         }
-  //       }
-  //       theButton = opera.contexts.toolbar.createItem(ToolbarUIItemProperties);
-  //       opera.contexts.toolbar.addItem(theButton);
-  //     }, false);
-  //   }
-  //   else {
-  //     console.log('ERROR: Unsupported browser');
-  //   }    
-  // },
+  setIcon: function(path) {
+    if (BROWSER == 'Chrome') {
+      chrome.browserAction.setIcon({path: path});
+    }
+    else if (BROWSER == 'Opera') {
+      // If this is the background page
+      if (OPERA_BUTTON != null) {
+        OPERA_BUTTON.icon = path;
+      }
+      // If this is another page reference button through background process
+      else {
+        opera.extension.bgProcess.OPERA_BUTTON.icon = path;
+      }
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }
+  },
+
+  setTitle: function(title) {
+    if (BROWSER == 'Chrome') {
+      chrome.browserAction.setTitle({title: title});
+    }
+    else if (BROWSER == 'Opera') {
+      // If this is the background page
+      if (OPERA_BUTTON != null) {
+        OPERA_BUTTON.title = title;
+      }
+      // If this is another page reference button through background process
+      else {
+        opera.extension.bgProcess.OPERA_BUTTON.title = title;
+      }
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }
+  },
+
+  setBadgeText: function(text) {
+    if (BROWSER == 'Chrome') {
+      chrome.browserAction.setBadgeText({text: text});
+    }
+    else if (BROWSER == 'Opera') {
+      // If this is the background page
+      if (OPERA_BUTTON != null) {
+        OPERA_BUTTON.badge.textContent = text;
+      }
+      // If this is another page reference button through background process
+      else {
+        opera.extension.bgProcess.OPERA_BUTTON.badge.textContent = text;
+      }
+    }
+    else {
+      console.log('ERROR: Unsupported browser');
+    }
+  },
 
   openTab: function(url) {
     if (BROWSER == 'Chrome') {
@@ -45,48 +77,6 @@ var Browser = {
     else if (BROWSER == 'Opera') {
       console.log('BROWSER.JS: openBackgroundTab');
       opera.extension.tabs.create({url: url, focused: false});
-    }
-    else {
-      console.log('ERROR: Unsupported browser');
-    }
-  },
-
-  setIcon: function(path) {
-    if (BROWSER == 'Chrome') {
-      chrome.browserAction.setIcon({path: path});
-    }
-    else if (BROWSER == 'Opera') {
-      console.log('BROWSER.JS: setIcon');
-    }
-    else {
-      console.log('ERROR: Unsupported browser');
-    }
-  },
-
-  setTitle: function(title) {
-    if (BROWSER == 'Chrome') {
-      chrome.browserAction.setTitle({title: title});
-    }
-    else if (BROWSER == 'Opera') {
-      var theButton = JSON.parse(localStorage.operaButton);
-      theButton.title = title;
-
-      console.log('BROWSER.JS: setTitle'); //////////////////////
-    }
-    else {
-      console.log('ERROR: Unsupported browser');
-    }
-  },
-
-  setBadgeText: function(text) {
-    if (BROWSER == 'Chrome') {
-      chrome.browserAction.setBadgeText({text: text});
-    }
-    else if (BROWSER == 'Opera') {
-      var theButton = JSON.parse(localStorage.operaButton);
-      theButton.badge.textContent = text;
-
-      console.log('BROWSER.JS: setBadgeText'); ////////////////////////
     }
     else {
       console.log('ERROR: Unsupported browser');
