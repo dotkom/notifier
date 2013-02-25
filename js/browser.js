@@ -59,11 +59,22 @@ var Browser = {
 
   openTab: function(url) {
     if (BROWSER == 'Chrome') {
-      chrome.tabs.create({url: url});
+      chrome.tabs.create({url: url, selected: true});
     }
     else if (BROWSER == 'Opera') {
-      console.log('BROWSER.JS: openTab');
-      opera.extension.tabs.create({url: url});
+      // If this is the background page
+      if (typeof OPERA_BUTTON != "undefined") {
+        if (opera.extension.tabs) {
+          opera.extension.tabs.create({url: url, focused: true});
+        }
+        else {
+          console.log('ERROR: Opera tab creation not avaliable');
+        }
+      }
+      // Recurse to the background page
+      else {
+        opera.extension.bgProcess.Browser.openTab(url);
+      }
     }
     else {
       console.log('ERROR: Unsupported browser');
@@ -75,13 +86,26 @@ var Browser = {
       chrome.tabs.create({url: url, selected: false});
     }
     else if (BROWSER == 'Opera') {
-      console.log('BROWSER.JS: openBackgroundTab');
-      opera.extension.tabs.create({url: url, focused: false});
+      // If this is the background page
+      if (typeof OPERA_BUTTON != "undefined") {
+        if (opera.extension.tabs) {
+          opera.extension.tabs.create({url: url, focused: false});
+        }
+        else {
+          console.log('ERROR: Opera tab creation not avaliable');
+        }
+      }
+      // Recurse to the background page
+      else {
+        opera.extension.bgProcess.Browser.openBackgroundTab(url);
+      }
     }
     else {
       console.log('ERROR: Unsupported browser');
     }
   },
+
+  // ABOVE WORKS
 
   createNotification: function(path) {
     if (BROWSER == 'Chrome') {
