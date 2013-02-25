@@ -173,7 +173,18 @@ header #notification .saved {
   border-top: 1pt solid white;
   border-bottom: 1pt solid #7a7a7a;
   border-radius: 3pt;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e6e5e5), color-stop(1, #cececf));
+  background: #e6e5e5;
+  /* Old browsers */
+
+  background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Opera 11.10+ */
+
+  background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
+  /* W3C */
+
   padding: 6pt 8pt;
   white-space: nowrap;
   word-wrap: break-word;
@@ -203,7 +214,15 @@ header #notification .saved {
   border-top: 1pt solid white;
   box-shadow: 0 1pt 2pt #888;
   border-radius: 3pt;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e8e8e8), color-stop(1, #c0c0c0));
+  background: -webkit-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
+  /* Opera 11.10+ */
+
+  background: linear-gradient(to bottom, #e8e8e8 0%, #c0c0c0 100%);
+  /* W3C */
+
   padding: 2pt 5pt 1pt 5pt;
   text-align: left;
   font-size: 9pt;
@@ -285,57 +304,60 @@ header #notification .saved {
 /* fancy checkboxes replacing the boring, ordinary ones */
 label {
   cursor: pointer;
-}
-label input[type="checkbox"] + span::before,
-label input[type="radio"] + span::before {
-  display: inline-block;
-  /* squish to size */
+  /*
+  input[type="checkbox"] + span::before, / * buttons * /
+  input[type="radio"] + span::before
+  {
+    display: inline-block; / * squish to size * /
+    text-indent: -9999px; / * moving the cross the hell outta here :P * /
+    width: 12px;
+    height: 12px;
+    text-transform: uppercase;
+    border: 1px solid #000;
+    background: white;
+    margin: 0 4px 0 0;
+    bottom: 2px;
+    position: relative;
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: bold;
+    color: black;
+  }
 
-  text-indent: -9999px;
-  /* moving the cross the hell outta here :P */
+  input[type="checkbox"] + span::before, / * button's cross * /
+  input[type="radio"] + span::before
+  {
+    content: "\2714";
+  }
 
-  width: 12px;
-  height: 12px;
-  text-transform: uppercase;
-  border: 1px solid #000;
-  background: white;
-  margin: 0 4px 0 0;
-  bottom: 2px;
-  position: relative;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: bold;
-  color: black;
-}
-label input[type="checkbox"] + span::before,
-label input[type="radio"] + span::before {
-  content: "\2714";
-}
-label input[type="checkbox"] + span::before {
-  border-radius: 3px;
-}
-label input[type="radio"] + span::before {
-  border-radius: 12px;
-}
-label input[type="checkbox"]:checked + span::before,
-label input[type="radio"]:checked + span::before {
-  text-indent: 1px;
-}
-label input[type="checkbox"],
-label input[type="radio"] {
-  position: fixed;
-  filter: alpha(opacity=0);
-  -webkit-opacity: 0;
-  opacity: 0;
-  height: 20px;
-  /* making the unseen box bigger, makes a nice hitbox */
+  input[type="checkbox"] + span::before / * round the corners of the radio buttons * /
+  {
+    border-radius: 3px;
+  }
 
-  width: 40px;
-  margin-left: -10px;
-  /* making hitbox even bigger! :P nice hitbox */
+  input[type="radio"] + span::before / * round the corners of the radio buttons * /
+  {
+    border-radius: 12px;
+  }
 
-  margin-top: -1px;
-  cursor: pointer;
+  input[type="checkbox"]:checked + span::before, / * move cross into position when checked * /
+  input[type="radio"]:checked + span::before
+  {
+    text-indent: 1px;
+  }
+
+  input[type="checkbox"], / * hide the real checkbox/radio button * /
+  input[type="radio"]
+  {
+    position: fixed;
+    opacity: 0;
+    height: 20px; / * making the unseen box bigger, makes a nice hitbox * /
+    width: 40px;
+    margin-left: -10px; / * making hitbox even bigger! :P nice hitbox * /
+    margin-top: -1px;
+    cursor: pointer;
+  }*/
+
 }
 /* Suggestions for bus stops */
 #bus_suggestions {
