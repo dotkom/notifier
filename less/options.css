@@ -162,12 +162,6 @@ header #notification .saved {
       0 0 70px #011b36,
       0 0 70px #011b36;
 }
-.item:hover span::before {
-  /* part of the fancy checkboxes */
-
-  border: solid 1px #aaa;
-  background: white;
-}
 .item #bus_box {
   width: 265pt;
   /*260pt*/
@@ -349,7 +343,7 @@ header #notification .saved {
       0 0 40px #011b36,
       0 0 40px #011b36;
 }
-/* debug links in the the top right corner, only shown in debug mode */
+/* Debug links in the the top right corner, only shown in debug mode */
 #debug_links {
   display: none;
   position: fixed;
@@ -362,7 +356,7 @@ header #notification .saved {
   color: white;
   text-decoration: underline;
 }
-/* the pageflip at the bottom */
+/* The pageflip at the bottom */
 #pageflipbg {
   position: fixed;
   left: 0;
@@ -412,7 +406,7 @@ header #notification .saved {
 #pagefliplink a:hover {
   text-decoration: underline;
 }
-/* google +1 button */
+/* Google +1 button */
 #plusonebutton {
   position: fixed;
   right: 3px;
@@ -420,7 +414,7 @@ header #notification .saved {
   width: 170px;
   z-index: 1;
 }
-/* canvas with webGL */
+/* Canvas with webGL */
 canvas {
   border: 0pt solid #ffff00;
   background: transparent;
