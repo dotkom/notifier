@@ -1,6 +1,6 @@
 var Servant = {
   api: 'https://online.ntnu.no/service_static/servant_list',
-  msgError: 'Frakoblet fra kalender',
+  msgError: 'Frakoblet fra vaktplan',
 
   get: function(callback) {
     if (callback == undefined) {
