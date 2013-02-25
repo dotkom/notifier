@@ -6,7 +6,7 @@ var Browser = {
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
-      if (OPERA_BUTTON != null) {
+      if (typeof OPERA_BUTTON != "undefined") {
         OPERA_BUTTON.icon = path;
       }
       // If this is another page reference button through background process
@@ -25,7 +25,7 @@ var Browser = {
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
-      if (OPERA_BUTTON != null) {
+      if (typeof OPERA_BUTTON != "undefined") {
         OPERA_BUTTON.title = title;
       }
       // If this is another page reference button through background process
@@ -44,7 +44,7 @@ var Browser = {
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
-      if (OPERA_BUTTON != null) {
+      if (typeof OPERA_BUTTON != "undefined") {
         OPERA_BUTTON.badge.textContent = text;
       }
       // If this is another page reference button through background process
