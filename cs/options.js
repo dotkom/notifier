@@ -506,6 +506,7 @@
   };
 
   $(function() {
+    var text;
     if (DEBUG) {
       $('#debug_links').show();
     }
@@ -539,6 +540,17 @@
     bindBusFields('first_bus');
     bindBusFields('second_bus');
     slideFavoriteBusLines();
+    if (BROWSER === 'Opera') {
+      $('input#showNotifications').prop("disabled", "disabled");
+      $('input#showNotifications').prop("checked", "false");
+      text = 'Vis varsel når nyheter publiseres';
+      $('label[for=showNotifications] span').html('<del>' + text + '</del> (støttes ikke)');
+      $('input#coffeeSubscription').prop("disabled", "disabled");
+      $('input#coffeeSubscription').prop("checked", "false");
+      text = $('label[for=coffeeSubscription] span').text();
+      text = text.trim();
+      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> (støttes ikke)');
+    }
     return $('input:checkbox').click(function() {
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);

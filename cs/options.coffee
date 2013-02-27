@@ -516,6 +516,22 @@ $ ->
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
 
+  # If Opera, disable and redesign features related to desktop notifications
+  if (BROWSER == 'Opera')
+    # The actual features doesn't need to be turned off, they aren't working
+    # anyway, so just uncheck the option to make the user understand it too
+    # Turn off showNotifications feature
+    $('input#showNotifications').prop "disabled", "disabled"
+    $('input#showNotifications').prop "checked", "false"
+    text = 'Vis varsel når nyheter publiseres'
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> (støttes ikke)')
+    # Turn off coffeeSubscription feature
+    $('input#coffeeSubscription').prop "disabled", "disabled"
+    $('input#coffeeSubscription').prop "checked", "false"
+    text = $('label[for=coffeeSubscription] span').text()
+    text = text.trim()
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> (støttes ikke)')
+
   # Catch new clicks
   $('input:checkbox').click ->
     
