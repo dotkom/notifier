@@ -193,6 +193,7 @@ header #notification .saved {
 }
 .item #bus_box .bus_stop input {
   width: 102pt;
+  box-shadow: 0 0 0px black;
 }
 .item #bus_box .bus_stop select {
   z-index: 10;
