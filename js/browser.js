@@ -121,16 +121,16 @@ var Browser = {
     }
   },
 
-  getUrl: function(path) {
-    if (BROWSER == 'Chrome') {
-      return chrome.extension.getURL(path);
-    }
-    else if (BROWSER == 'Opera') {
-      console.log('BROWSER.JS: getUrl');
-    }
-    else {
-      console.log('ERROR: Unsupported browser');
-    }
-  },
+  // getUrl: function(path) {
+  //   if (BROWSER == 'Chrome') {
+  //     return chrome.extension.getURL(path);
+  //   }
+  //   else if (BROWSER == 'Opera') {
+  //     console.log('BROWSER.JS: getUrl');
+  //   }
+  //   else {
+  //     console.log('ERROR: Unsupported browser');
+  //   }
+  // },
 
 }
