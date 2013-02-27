@@ -11,6 +11,7 @@
     <icon src="img/logo-18.png" />
 
     <access origin="https://ssl.google-analytics.com/" subdomains="true" />
+    <access origin="https://plusone.google.com/" subdomains="true" />
     <access origin="https://apis.google.com/" subdomains="true" />
   	<access origin="https://online.ntnu.no/" subdomains="true" />
     <access origin="http://draug.online.ntnu.no/" subdomains="true" />
