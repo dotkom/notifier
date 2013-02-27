@@ -105,7 +105,7 @@ var Browser = {
     }
   },
 
-  // ABOVE WORKS
+  // FUNCTIONS BELOW ARE NOT YET FULLY IMPLEMENTED
 
   createNotification: function(path) {
     if (BROWSER == 'Chrome') {
