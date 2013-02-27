@@ -517,7 +517,7 @@ $ ->
   slideFavoriteBusLines()
 
   # If Opera, disable and redesign features related to desktop notifications
-  if (BROWSER == 'Opera')
+  if BROWSER is 'Opera'
     # The actual features doesn't need to be turned off, they aren't working
     # anyway, so just uncheck the option to make the user understand it too
     # Turn off showNotifications feature
@@ -531,6 +531,11 @@ $ ->
     text = $('label[for=coffeeSubscription] span').text()
     text = text.trim()
     $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
+
+  # CSS tweaks for Opera until they start using WebKit
+  if BROWSER is 'Opera'
+    $('#logo_subtext').css 'margin-top', '7pt'
+    $('#notification').css 'top', '14.5pt'
 
   # Adding a hover class to #bus_box whenever the mouse is hovering over it
   $('#bus_box').hover ->
