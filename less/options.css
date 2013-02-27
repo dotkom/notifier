@@ -55,10 +55,13 @@ header #logo_subtext {
   position: absolute;
   float: left;
   margin-top: 1pt;
-  margin-left: 215pt;
+  margin-left: 218pt;
   font-size: 44pt;
-  font-style: italic;
   font-weight: bold;
+  /* more precise than italic, the Online logo is skewered exactly 15 degrees */
+
+  -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+  transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
 }
 header #notification {
   position: absolute;
@@ -67,8 +70,11 @@ header #notification {
   padding: 3pt 15pt 2pt 10pt;
   background: #001429;
   font-size: 44pt;
-  font-style: italic;
   font-weight: bold;
+  /* more precise than italic, the Online logo is skewered exactly 15 degrees */
+
+  -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+  transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
   color: white;
   box-shadow: 0 0 10pt #001429, 0 0 15pt #001429, 0 0 30pt #001429;
   border-radius: 20pt;
