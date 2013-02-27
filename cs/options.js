@@ -269,7 +269,7 @@
         bindFavoriteBusLines(busField);
       }
       return setTimeout((function() {
-        if (!$('#bus_box').is(':hover')) {
+        if (!$('#bus_box').hasClass('hover')) {
           $('#bus_box .lines').slideUp();
           return $('#bus_box #arrow_down').fadeIn();
         }
@@ -366,7 +366,7 @@
 
   slideFavoriteBusLines = function() {
     setTimeout((function() {
-      if (!$('#bus_box').is(':hover')) {
+      if (!$('#bus_box').hasClass('hover')) {
         $('#bus_box .lines').slideUp();
         return $('#bus_box #arrow_down').fadeIn();
       }
@@ -543,14 +543,19 @@
     if (BROWSER === 'Opera') {
       $('input#showNotifications').prop("disabled", "disabled");
       $('input#showNotifications').prop("checked", "false");
-      text = 'Vis varsel når nyheter publiseres';
-      $('label[for=showNotifications] span').html('<del>' + text + '</del> (støttes ikke)');
+      text = 'Varsle om nyheter';
+      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
       $('input#coffeeSubscription').prop("disabled", "disabled");
       $('input#coffeeSubscription').prop("checked", "false");
       text = $('label[for=coffeeSubscription] span').text();
       text = text.trim();
-      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> (støttes ikke)');
+      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
     }
+    $('#bus_box').hover(function() {
+      return $(this).addClass('hover');
+    }, function() {
+      return $(this).removeClass('hover');
+    });
     return $('input:checkbox').click(function() {
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);

@@ -251,7 +251,7 @@ getFavoriteLines = (busField) ->
 
     # Hide the favorite lines after a short timeout
     setTimeout ( ->
-      if not $('#bus_box').is ':hover'
+      if not $('#bus_box').hasClass 'hover'
         $('#bus_box .lines').slideUp()
         $('#bus_box #arrow_down').fadeIn()
     ), 2500
@@ -333,7 +333,7 @@ addFavoriteBusLines = (cssSelector) ->
 slideFavoriteBusLines = ->
   # Hide the favorite bus line spans from the start
   setTimeout (->
-    if not $('#bus_box').is ':hover'
+    if not $('#bus_box').hasClass 'hover'
       $('#bus_box .lines').slideUp()
       $('#bus_box #arrow_down').fadeIn()
   ), 1500
@@ -523,14 +523,20 @@ $ ->
     # Turn off showNotifications feature
     $('input#showNotifications').prop "disabled", "disabled"
     $('input#showNotifications').prop "checked", "false"
-    text = 'Vis varsel når nyheter publiseres'
-    $('label[for=showNotifications] span').html('<del>'+text+'</del> (støttes ikke)')
+    text = 'Varsle om nyheter'
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
     # Turn off coffeeSubscription feature
     $('input#coffeeSubscription').prop "disabled", "disabled"
     $('input#coffeeSubscription').prop "checked", "false"
     text = $('label[for=coffeeSubscription] span').text()
     text = text.trim()
-    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> (støttes ikke)')
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
+
+  # Adding a hover class to #bus_box whenever the mouse is hovering over it
+  $('#bus_box').hover ->
+    $(this).addClass 'hover'
+  , ->
+    $(this).removeClass 'hover'
 
   # Catch new clicks
   $('input:checkbox').click ->
