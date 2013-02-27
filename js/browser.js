@@ -113,7 +113,8 @@ var Browser = {
       notification.show();
     }
     else if (BROWSER == 'Opera') {
-      console.log('BROWSER.JS: createNotification');
+      // Desktop Notifications will be available in Opera 12.50
+      console.log('BROWSER.JS: createNotification, will not be avaliable in Opera until 12.50');
     }
     else {
       console.log('ERROR: Unsupported browser');
