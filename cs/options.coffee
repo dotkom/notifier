@@ -22,21 +22,19 @@ pageFlipCursorBlinking = ->
 
 updateOfficeStatus = ->
   Office.get (status, title, message) ->
-    chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
+    Browser.setIcon 'img/icon-'+status+'.png'
     ls.currentStatus = status
     Meetings.get (meetings) ->
       meetings = $.trim meetings
       today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
-      chrome.browserAction.setTitle {title: today}
+      Browser.setTitle today
       ls.currentStatusMessage = message
 
 testDesktopNotification = ->
-  notification = webkitNotifications.createHTMLNotification('notification.html')
-  notification.show()
+  Browser.createNotification 'notification.html'
 
 testCoffeeSubscription = ->
-  subscription = webkitNotifications.createHTMLNotification('subscription.html')
-  subscription.show()
+  Browser.createNotification 'subscription.html'
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -253,7 +251,7 @@ getFavoriteLines = (busField) ->
 
     # Hide the favorite lines after a short timeout
     setTimeout ( ->
-      if not $('#bus_box').is ':hover'
+      if not $('#bus_box').hasClass 'hover'
         $('#bus_box .lines').slideUp()
         $('#bus_box #arrow_down').fadeIn()
     ), 2500
@@ -335,7 +333,7 @@ addFavoriteBusLines = (cssSelector) ->
 slideFavoriteBusLines = ->
   # Hide the favorite bus line spans from the start
   setTimeout (->
-    if not $('#bus_box').is ':hover'
+    if not $('#bus_box').hasClass 'hover'
       $('#bus_box .lines').slideUp()
       $('#bus_box #arrow_down').fadeIn()
   ), 1500
@@ -389,16 +387,17 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
             # Move all content a bit up
             $('header').animate {'top':'40%'}, speed
             $('#container').animate {'top':'40%'}, speed, ->
-              if force or confirm 'Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang Chrome starter\n- Infoskjermen åpnes nå!'
+              if force or confirm 'Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
                 # Enable, and check the checkbox
                 ls[id] = 'true'
-                $('#'+id).attr 'checked', true
+                $('#'+id).prop 'checked', true
                 # Reset icon, icon title and icon badge
-                chrome.browserAction.setIcon {path: 'img/icon-default.png'}
-                chrome.browserAction.setTitle {title: 'Online Infoscreen'}
-                chrome.browserAction.setBadgeText {text: ''}
+                Browser.setIcon 'img/icon-default.png'
+                Browser.setTitle 'Online Infoscreen'
+                Browser.setBadgeText ''
                 # Create Infoscreen in a new tab
-                if not force then chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: false}
+                if not force
+                  Browser.openBackgroundTab 'infoscreen.html'
               else
                 revertInfoscreen()
   else
@@ -435,10 +434,9 @@ revertInfoscreen = ->
             $('#logo_subtext').html 'notifier options'
             $('#logo_subtext').fadeIn()
 
-
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
-#   chrome.windows.getAll
+#   chrome.windows.getAll # OPERA?
 #     populate: true,
 #     (window_list) ->
 #       list = []
@@ -450,7 +448,7 @@ revertInfoscreen = ->
 #           urlIndex = tab.url.indexOf "infoscreen.html"
 #           if titleIndex >= 0
 #             if urlIndex >= 0
-#               chrome.tabs.remove tab.id
+#               chrome.tabs.remove tab.id # OPERA?
 
 fadeInCanvas = ->
   webGLStart()
@@ -468,7 +466,6 @@ fadeInCanvas = ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then less.watch() # not needed when using CodeKit
   if DEBUG then $('#debug_links').show()
   
   # Setting the timeout for all AJAX and JSON requests
@@ -519,6 +516,33 @@ $ ->
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
 
+  # If Opera, disable and redesign features related to desktop notifications
+  if BROWSER is 'Opera'
+    # The actual features doesn't need to be turned off, they aren't working
+    # anyway, so just uncheck the option to make the user understand it too
+    # Turn off showNotifications feature
+    $('input#showNotifications').prop "disabled", "disabled"
+    $('input#showNotifications').prop "checked", "false"
+    text = 'Varsle om nyheter'
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
+    # Turn off coffeeSubscription feature
+    $('input#coffeeSubscription').prop "disabled", "disabled"
+    $('input#coffeeSubscription').prop "checked", "false"
+    text = $('label[for=coffeeSubscription] span').text()
+    text = text.trim()
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
+
+  # CSS tweaks for Opera until they start using WebKit
+  if BROWSER is 'Opera'
+    $('#logo_subtext').css 'margin-top', '7pt'
+    $('#notification').css 'top', '14.5pt'
+
+  # Adding a hover class to #bus_box whenever the mouse is hovering over it
+  $('#bus_box').hover ->
+    $(this).addClass 'hover'
+  , ->
+    $(this).removeClass 'hover'
+
   # Catch new clicks
   $('input:checkbox').click ->
     
@@ -531,8 +555,9 @@ $ ->
       ls[this.id] = this.checked;
       
       if this.id is 'showOffice' and this.checked is false
-        chrome.browserAction.setIcon {path: 'img/icon-default.png'}
-        chrome.browserAction.setTitle {title: EXTENSION_NAME}
+        Browser.setIcon 'img/icon-default.png'
+        Browser.setTitle EXTENSION_NAME
+
       else if this.id is 'showOffice' and this.checked is true
         updateOfficeStatus()
       

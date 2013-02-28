@@ -18,10 +18,7 @@
       description = description.substring(0, maxlength) + '...';
     }
     $('#notification').click(function() {
-      chrome.tabs.create({
-        url: link,
-        selected: true
-      });
+      Browser.openTab(link);
       return window.close;
     });
     return getImageUrlForId(id, function(id, image) {

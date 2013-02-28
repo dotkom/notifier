@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.example.org/helloworld" version="1.3.9"><!-- id="extensions:onlinenotifier" -->
+	
+	<name>Online Notifier</name>
+	<description>Nyheter, kontorstatus, sanntidsbuss, kaffeabonnement, middagsmeny og mer.</description>
+  	<author href="https://online.ntnu.no" email="dotkom@online.ntnu.no">Online :: dotKom :: Michael Johansen</author>
+  	
+  	<content src="background.html" />
+
+  	<icon src="img/logo-64.png" />
+    <icon src="img/logo-18.png" />
+
+    <access origin="https://ssl.google-analytics.com/" subdomains="true" />
+    <access origin="https://plusone.google.com/" subdomains="true" />
+    <access origin="https://apis.google.com/" subdomains="true" />
+  	<access origin="https://online.ntnu.no/" subdomains="true" />
+    <access origin="http://draug.online.ntnu.no/" subdomains="true" />
+    <access origin="http://api.visuweb.no/" subdomains="true" />
+    <access origin="https://www.sit.no/" subdomains="true" />
+
+</widget>

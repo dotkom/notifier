@@ -9,10 +9,7 @@
     images = ['/meme/1.jpg', '/meme/2.jpg', '/meme/3.jpg', '/meme/4.jpg', '/meme/5.jpg', '/meme/6.jpg', '/meme/7.jpg', '/meme/8.jpg', '/meme/9.jpg', '/meme/10.jpg', '/meme/11.jpg', '/meme/12.jpg'];
     random = Math.floor(Math.random() * images.length);
     $('#subscription').click(function() {
-      chrome.tabs.create({
-        url: 'options.html',
-        selected: true
-      });
+      Browser.openTab('options.html');
       return window.close;
     });
     width = $('#subscription').width();
@@ -20,9 +17,6 @@
   };
 
   $(function() {
-    if (DEBUG) {
-      less.watch();
-    }
     setSubscription();
     return setTimeout((function() {
       return window.close();

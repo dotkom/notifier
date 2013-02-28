@@ -36,32 +36,24 @@
 
   updateOfficeStatus = function() {
     return Office.get(function(status, title, message) {
-      chrome.browserAction.setIcon({
-        path: 'img/icon-' + status + '.png'
-      });
+      Browser.setIcon('img/icon-' + status + '.png');
       ls.currentStatus = status;
       return Meetings.get(function(meetings) {
         var today;
         meetings = $.trim(meetings);
         today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
-        chrome.browserAction.setTitle({
-          title: today
-        });
+        Browser.setTitle(today);
         return ls.currentStatusMessage = message;
       });
     });
   };
 
   testDesktopNotification = function() {
-    var notification;
-    notification = webkitNotifications.createHTMLNotification('notification.html');
-    return notification.show();
+    return Browser.createNotification('notification.html');
   };
 
   testCoffeeSubscription = function() {
-    var subscription;
-    subscription = webkitNotifications.createHTMLNotification('subscription.html');
-    return subscription.show();
+    return Browser.createNotification('subscription.html');
   };
 
   bindCantinaSelector = function(selector) {
@@ -277,7 +269,7 @@
         bindFavoriteBusLines(busField);
       }
       return setTimeout((function() {
-        if (!$('#bus_box').is(':hover')) {
+        if (!$('#bus_box').hasClass('hover')) {
           $('#bus_box .lines').slideUp();
           return $('#bus_box #arrow_down').fadeIn();
         }
@@ -374,7 +366,7 @@
 
   slideFavoriteBusLines = function() {
     setTimeout((function() {
-      if (!$('#bus_box').is(':hover')) {
+      if (!$('#bus_box').hasClass('hover')) {
         $('#bus_box .lines').slideUp();
         return $('#bus_box #arrow_down').fadeIn();
       }
@@ -442,23 +434,14 @@
               return $('#container').animate({
                 'top': '40%'
               }, speed, function() {
-                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang Chrome starter\n- Infoskjermen åpnes nå!')) {
+                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
                   ls[id] = 'true';
-                  $('#' + id).attr('checked', true);
-                  chrome.browserAction.setIcon({
-                    path: 'img/icon-default.png'
-                  });
-                  chrome.browserAction.setTitle({
-                    title: 'Online Infoscreen'
-                  });
-                  chrome.browserAction.setBadgeText({
-                    text: ''
-                  });
+                  $('#' + id).prop('checked', true);
+                  Browser.setIcon('img/icon-default.png');
+                  Browser.setTitle('Online Infoscreen');
+                  Browser.setBadgeText('');
                   if (!force) {
-                    return chrome.tabs.create({
-                      url: chrome.extension.getURL("infoscreen.html"),
-                      selected: false
-                    });
+                    return Browser.openBackgroundTab('infoscreen.html');
                   }
                 } else {
                   return revertInfoscreen();
@@ -523,9 +506,7 @@
   };
 
   $(function() {
-    if (DEBUG) {
-      less.watch();
-    }
+    var text;
     if (DEBUG) {
       $('#debug_links').show();
     }
@@ -559,18 +540,34 @@
     bindBusFields('first_bus');
     bindBusFields('second_bus');
     slideFavoriteBusLines();
+    if (BROWSER === 'Opera') {
+      $('input#showNotifications').prop("disabled", "disabled");
+      $('input#showNotifications').prop("checked", "false");
+      text = 'Varsle om nyheter';
+      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
+      $('input#coffeeSubscription').prop("disabled", "disabled");
+      $('input#coffeeSubscription').prop("checked", "false");
+      text = $('label[for=coffeeSubscription] span').text();
+      text = text.trim();
+      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
+    }
+    if (BROWSER === 'Opera') {
+      $('#logo_subtext').css('margin-top', '7pt');
+      $('#notification').css('top', '14.5pt');
+    }
+    $('#bus_box').hover(function() {
+      return $(this).addClass('hover');
+    }, function() {
+      return $(this).removeClass('hover');
+    });
     return $('input:checkbox').click(function() {
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);
       } else {
         ls[this.id] = this.checked;
         if (this.id === 'showOffice' && this.checked === false) {
-          chrome.browserAction.setIcon({
-            path: 'img/icon-default.png'
-          });
-          chrome.browserAction.setTitle({
-            title: EXTENSION_NAME
-          });
+          Browser.setIcon('img/icon-default.png');
+          Browser.setTitle(EXTENSION_NAME);
         } else if (this.id === 'showOffice' && this.checked === true) {
           updateOfficeStatus();
         }

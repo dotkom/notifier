@@ -33,16 +33,34 @@ var UPDATE_HOURS_INTERVAL = 1; // recommended: 1
 // OS detection
 var OPERATING_SYSTEM = "Unknown";
 if (navigator.appVersion.indexOf("Win")!==-1) OPERATING_SYSTEM="Windows";
-if (navigator.appVersion.indexOf("Linux")!==-1) OPERATING_SYSTEM="Linux";
-if (navigator.appVersion.indexOf("X11")!==-1) OPERATING_SYSTEM="UNIX";
-if (navigator.appVersion.indexOf("Mac")!==-1) {
+else if (navigator.appVersion.indexOf("Linux")!==-1) OPERATING_SYSTEM="Linux";
+else if (navigator.appVersion.indexOf("X11")!==-1) OPERATING_SYSTEM="UNIX";
+else if (navigator.appVersion.indexOf("Mac")!==-1) {
 	OPERATING_SYSTEM = "Old Mac";
 	if (navigator.appVersion.indexOf("10_7")!==-1||navigator.appVersion.indexOf("10_8")!==-1) {
 		OPERATING_SYSTEM = "Mac";
 	}
 }
+else {
+	console.log("ERROR: Potentially unsupported operating system");
+}
+
+// Browser detection
+var BROWSER = "Unknown";
+if (typeof chrome != "undefined")
+	BROWSER = "Chrome";
+else if (typeof opera != "undefined")
+	BROWSER = "Opera";
+else {
+	console.log("ERROR: Potentially unsupported browser");
+}
 
 // Production detection
-if (chrome.i18n.getMessage('@@extension_id') === "hfgffimlnajpbenfpaofmmffcdmgkllf") {
-	DEBUG = 0;
+if (BROWSER == "Chrome") {
+	if (chrome.i18n.getMessage('@@extension_id') === "hfgffimlnajpbenfpaofmmffcdmgkllf") {
+		DEBUG = 0;
+	}
+}
+else if (BROWSER == "Opera") {
+	console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA prod. detection");
 }

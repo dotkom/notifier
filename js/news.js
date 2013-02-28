@@ -52,15 +52,24 @@ function unreadCount(xmlstring) {
 		else {
 			if (unread_count == 0) {
 				if (DEBUG) console.log('no new posts');
-				chrome.browserAction.setBadgeText({text:''});
+				if (BROWSER == "Chrome")
+					chrome.browserAction.setBadgeText({text:''});
+				else if (BROWSER == "Opera")
+					console.log("OPERAAAAAAAAAAAAA news")
 			}
 			else if (unread_count >= MAX_NEWS_AMOUNT) {
 				if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts');
-				chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
+				if (BROWSER == "Chrome")
+					chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
+				else if (BROWSER == "Opera")
+					console.log("OPERAAAAAAAAAAAAA news")
 			}
 			else {
 				if (DEBUG) console.log('1-' + (MAX_NEWS_AMOUNT - 1) + ' unread posts');
-				chrome.browserAction.setBadgeText({text:String(unread_count)});
+				if (BROWSER == "Chrome")
+					chrome.browserAction.setBadgeText({text:String(unread_count)});
+				else if (BROWSER == "Opera")
+					console.log("OPERAAAAAAAAAAAAA news")
 			}
 			localStorage.unreadCount = unread_count;
 			storeMostRecentIds(idList); // New || Updated
@@ -70,7 +79,10 @@ function unreadCount(xmlstring) {
 		// Stop counting if unread number is greater than 9
 		if (index > (MAX_NEWS_AMOUNT - 1)) { // Remember index is counting 0
 			if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts (stopped counting)');
-			chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
+			if (BROWSER == "Chrome")
+				chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
+			else if (BROWSER == "Opera")
+				console.log("OPERAAAAAAAAAAAAA news")
 			localStorage.unreadCount = MAX_NEWS_AMOUNT;
 			// New or updated?
 			storeMostRecentIds(idList); // New || Updated
@@ -96,8 +108,13 @@ function showNotification(element) {
 		localStorage.notificationDate = post.date;
 		localStorage.notificationId = post.id;
 		localStorage.notificationImage = BACKUP_IMAGE;
-		var notification = webkitNotifications.createHTMLNotification('notification.html');
-		notification.show(); // HTML5-style
+	    if (BROWSER == "Chrome") {
+			var notification = webkitNotifications.createHTMLNotification('notification.html');
+			notification.show(); // HTML5-style
+		}
+	    else if (BROWSER == "Opera") {
+	    	console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA news, webkitNotifications");
+	    }
 	}
 }
 

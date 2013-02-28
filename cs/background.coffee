@@ -30,11 +30,11 @@ updateOfficeAndMeetings = ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
-      chrome.browserAction.setIcon {path: 'img/icon-'+status+'.png'}
+      Browser.setIcon 'img/icon-'+status+'.png'
       ls.currentStatus = status
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
-        chrome.browserAction.setTitle {title: today}
+        Browser.setTitle today
         ls.currentStatusMessage = message
 
 updateCoffee = ->
@@ -68,7 +68,6 @@ $ ->
   
   # Set default choices and open options page after install
   if ls.everConnected is undefined
-
     
     if ls.first_bus is undefined
       ls.showBus = 'true'
@@ -93,21 +92,23 @@ $ ->
       ls.coffeePots = 0
     if ls.showNotifications is undefined
       ls.showNotifications = 'true'
+    if ls.coffeeSubscription is undefined
+      ls.coffeeSubscription = 'true'
     if ls.openChatter is undefined
       ls.openChatter = 'false'
     if ls.useInfoscreen is undefined
       ls.useInfoscreen = 'false'
 
     if !DEBUG
-      chrome.tabs.create {url: chrome.extension.getURL("options.html"), selected: true}
+      Browser.openTab 'options.html'
 
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
-    chrome.tabs.create {url: chrome.extension.getURL("infoscreen.html"), selected: true}
+    Browser.openTab 'infoscreen.html'
 
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
-    chrome.tabs.create {url: 'http://webchat.freenode.net/?channels=online', selected: false}
+    Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
 
   # Set default vars for main loop
   ls.everConnected = ls.wasConnected = 'false'

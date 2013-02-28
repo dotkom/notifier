@@ -111,9 +111,7 @@
 
   clickDinnerLink = function(cssSelector) {
     return $(cssSelector).click(function() {
-      chrome.tabs.create({
-        url: Cantina.url
-      });
+      Browser.openTab(Cantina.url);
       return window.close();
     });
   };
@@ -238,14 +236,10 @@
       }
     });
     ls.lastViewedIdList = JSON.stringify(idsOfLastViewed);
-    chrome.browserAction.setBadgeText({
-      text: ''
-    });
+    Browser.setBadgeText('');
     ls.unreadCount = 0;
     $('.item').click(function() {
-      chrome.tabs.create({
-        url: $(this).attr('id')
-      });
+      Browser.openTab($(this).attr('id'));
       return window.close();
     });
     _results = [];
@@ -305,16 +299,11 @@
   };
 
   $(function() {
-    if (DEBUG) {
-      less.watch();
-    }
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
     if (ls.useInfoscreen === 'true') {
-      chrome.tabs.create({
-        url: 'infoscreen.html'
-      });
+      Browser.openTab('infoscreen.html');
       setTimeout((function() {
         return window.close();
       }), 250);
@@ -329,21 +318,15 @@
       $('#bus').hide();
     }
     $('#logo').click(function() {
-      chrome.tabs.create({
-        url: EXTENSION_WEBSITE
-      });
+      Browser.openTab(EXTENSION_WEBSITE);
       return window.close();
     });
     $('#options_button').click(function() {
-      chrome.tabs.create({
-        url: 'options.html'
-      });
+      Browser.openTab('options.html');
       return window.close();
     });
     $('#chatter_button').click(function() {
-      chrome.tabs.create({
-        url: 'http://webchat.freenode.net/?channels=online'
-      });
+      Browser.openTab('http://webchat.freenode.net/?channels=online');
       return window.close();
     });
     $('#options_button').mouseenter(function() {
@@ -359,9 +342,7 @@
       return chatterText(false);
     });
     $('#bus #atb_logo').click(function() {
-      chrome.tabs.create({
-        url: 'http://www.atb.no'
-      });
+      Browser.openTab('http://www.atb.no');
       return window.close();
     });
     return mainLoop();

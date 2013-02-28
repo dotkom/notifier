@@ -1,0 +1,323 @@
+.debugred {
+  border: 0pt solid #ff0000;
+}
+.debugyellow {
+  border: 0pt solid #ffff00;
+}
+.debugpink {
+  border: 0pt solid #ffc0cb;
+}
+.debuglime {
+  border: 0pt solid #00ff00;
+}
+.fullbox {
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+.title {
+  display: block;
+  color: #ee861f;
+  text-transform: uppercase;
+  font-size: 9pt;
+  font-weight: bold;
+  padding-top: 10pt;
+  padding-bottom: 2pt;
+}
+.emphasized {
+  font-style: italic;
+  font-size: 9pt;
+  margin-bottom: 5pt;
+}
+.index {
+  font-style: italic;
+}
+body {
+  background: #001429;
+  overflow: hidden;
+  font-family: helvetica;
+  color: white;
+  margin: 0;
+  padding: 0;
+  width: 350pt;
+  height: 400pt;
+  font-size: 9pt;
+  line-height: 11.5pt;
+}
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+
+  background: url('/img/background-popup.png') center center no-repeat;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+/* This container keeps the content centered */
+#container {
+  border: 0pt solid #ffc0cb;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 15pt;
+  z-index: 10;
+}
+#container #header {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+  min-height: 35pt;
+  padding-bottom: 4pt;
+}
+#container #header #buttons {
+  border: 0pt solid #00ff00;
+  width: 150pt;
+  float: left;
+}
+#container #header #buttons .popupbutton {
+  border-radius: 5px;
+  margin-right: 12px;
+  cursor: pointer;
+  -webkit-transition: all 0.15s ease-out;
+}
+#container #header #buttons .popupbutton:hover {
+  box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
+}
+#container #header #buttontext {
+  border: 0pt solid #ffff00;
+  display: none;
+  position: relative;
+  float: left;
+  font-weight: bold;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+}
+#container #header #logo {
+  border: 0pt solid #ffff00;
+  float: right;
+  cursor: pointer;
+  width: 140pt;
+}
+#container #todays {
+  border: 0pt solid #ffff00;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+#container #todays #schedule {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: left;
+  width: 48%;
+}
+#container #todays #coffee {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #cantinas {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+#container #cantinas .hours {
+  color: white;
+  padding-bottom: 2pt;
+  font-weight: normal;
+  font-style: italic;
+  text-transform: none;
+}
+#container #cantinas #left {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: left;
+  width: 48%;
+}
+#container #cantinas #right {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #cantinas #dinnerbox {
+  border: 0pt solid #ffff00;
+}
+#container #cantinas li {
+  border: 0pt solid #00ff00;
+  position: relative;
+  width: 95%;
+  cursor: pointer;
+  list-style-type: none;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
+}
+#container #cantinas li:hover {
+  text-shadow: 0 0 10px #fff,
+        0 0 15px #fff,
+        0 0 20px #fff,
+        0 0 30px #fff,
+        0 0 40px #011b36,
+        0 0 40px #011b36,
+        0 0 70px #011b36,
+        0 0 70px #011b36;
+}
+#container #cantinas li.message {
+  font-style: italic;
+}
+#container #bus {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  top: 12pt;
+  line-height: 11.5pt;
+  background-color: #000f1d;
+  height: 65pt;
+  width: 110%;
+  margin-left: -5%;
+  margin-bottom: 15pt;
+  box-shadow: 0 0 20pt #88b;
+}
+#container #bus .name {
+  color: white;
+  margin-bottom: 4pt;
+  text-decoration: underline;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container #bus #first_bus {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: right;
+  padding-top: 10pt;
+  width: 40%;
+}
+#container #bus #middle {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: center;
+  width: 18%;
+  height: 100%;
+}
+#container #bus #middle #atb_logo {
+  position: relative;
+  left: -0.5pt;
+  margin: 11pt auto;
+  height: 46pt;
+  cursor: pointer;
+}
+#container #bus #second_bus {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: left;
+  padding-top: 10pt;
+  width: 40%;
+}
+#container #bus .first,
+#container #bus .second,
+#container #bus .third,
+#container #bus .fourth,
+#container #bus .fifth,
+#container #bus .sixth,
+#container #bus .seventh,
+#container #bus .eighth,
+#container #bus .nineth,
+#container #bus .tenth {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container #bus .time {
+  font-weight: bold;
+}
+#container #bus .error {
+  font-style: italic;
+}
+#container #bus .loading_left {
+  position: relative;
+  z-index: 1000;
+  width: 80px;
+  bottom: 3pt;
+  -webkit-transform: scaleX(-1);
+}
+#container #bus .loading_right {
+  position: relative;
+  z-index: 1000;
+  width: 80px;
+  bottom: 3pt;
+}
+#container #news {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  clear: both;
+  padding: 0;
+  margin: 0;
+}
+#container #news .post {
+  border: 0pt solid #ffff00;
+  position: relative;
+  clear: both;
+}
+#container #news .post .item {
+  border: 0pt solid #ffff00;
+  margin-top: -4pt;
+  min-height: 30pt;
+  cursor: pointer;
+  padding-right: 5pt;
+  padding-left: 5pt;
+  margin-left: -5pt;
+  margin-right: -5pt;
+  padding: 5pt;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-transition: box-shadow 0.3s ease-out 0s;
+}
+#container #news .post .item:hover {
+  box-shadow: inset 0px 0px 2px #bbb, 0px 0px 15px #fff;
+}
+#container #news .post .item img {
+  float: left;
+  background: snow;
+  width: 70pt;
+  max-height: 70pt;
+  padding: 3pt;
+  box-shadow: 0 0 10pt #bbb;
+}
+#container #news .post .item .textwrapper {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: left;
+  margin-left: 7pt;
+  width: 70%;
+}
+#container #news .unread {
+  color: white;
+  font-size: 8pt;
+  text-shadow: 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 25px #011b36, 0 0 30px #011b36, 0 0 35px #fff, 0 0 40px #011b36, 0 0 45px #011b36;
+}

@@ -4,7 +4,7 @@
   "manifest_version": 2,
   "offline_enabled": false,
 	
-  "description": "Nyheter, kontorstatus, sanntidsbuss, middagsmeny og mer.",
+  "description": "Nyheter, kontorstatus, sanntidsbuss, kaffeabonnement, middagsmeny og mer.",
   "homepage_url": "https://online.ntnu.no/",
   
   "options_page": "options.html",
@@ -34,7 +34,7 @@
 	"content_scripts": [
     {
       "matches": ["*://*.online.ntnu.no/*", "*://*.sit.no/*" ],
-      "js": ["libs/jquery-1.8.2.min.js", "js/on_website.js"]
+      "js": ["libs/jquery-1.9.1.min.js", "includes/on_website.js"]
     }
   ],
 

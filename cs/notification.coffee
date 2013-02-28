@@ -16,7 +16,7 @@ setNotification = ->
   
   # Capture clicks
   $('#notification').click ->
-    chrome.tabs.create {url: link, selected: true}
+    Browser.openTab link
     window.close
 
   # Asynchronously fetch the image
@@ -35,8 +35,6 @@ setNotification = ->
 
 # show the html5 notification with timeout when the document is ready
 $ ->
-  # if DEBUG then less.watch() # not needed when using CodeKit
-  
   setNotification()
   setTimeout ( ->
     window.close()

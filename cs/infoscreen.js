@@ -283,7 +283,6 @@
 
   $(function() {
     if (DEBUG) {
-      less.watch();
       $('html').css('cursor', 'auto');
       $('#overlay').hide();
     }

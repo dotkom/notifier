@@ -45,16 +45,12 @@
     }
     return Office.get(function(status, title, message) {
       if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
-        chrome.browserAction.setIcon({
-          path: 'img/icon-' + status + '.png'
-        });
+        Browser.setIcon('img/icon-' + status + '.png');
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
           var today;
           today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
-          chrome.browserAction.setTitle({
-            title: today
-          });
+          Browser.setTitle(today);
           return ls.currentStatusMessage = message;
         });
       }
@@ -128,6 +124,9 @@
       if (ls.showNotifications === void 0) {
         ls.showNotifications = 'true';
       }
+      if (ls.coffeeSubscription === void 0) {
+        ls.coffeeSubscription = 'true';
+      }
       if (ls.openChatter === void 0) {
         ls.openChatter = 'false';
       }
@@ -135,23 +134,14 @@
         ls.useInfoscreen = 'false';
       }
       if (!DEBUG) {
-        chrome.tabs.create({
-          url: chrome.extension.getURL("options.html"),
-          selected: true
-        });
+        Browser.openTab('options.html');
       }
     }
     if (ls.useInfoscreen === 'true') {
-      chrome.tabs.create({
-        url: chrome.extension.getURL("infoscreen.html"),
-        selected: true
-      });
+      Browser.openTab('infoscreen.html');
     }
     if (ls.openChatter === 'true') {
-      chrome.tabs.create({
-        url: 'http://webchat.freenode.net/?channels=online',
-        selected: false
-      });
+      Browser.openBackgroundTab('http://webchat.freenode.net/?channels=online');
     }
     ls.everConnected = ls.wasConnected = 'false';
     setInterval((function() {

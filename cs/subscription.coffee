@@ -22,7 +22,7 @@ setSubscription = ->
 
   # Capture clicks
   $('#subscription').click ->
-    chrome.tabs.create {url: 'options.html', selected: true}
+    Browser.openTab 'options.html'
     window.close
 
   # Create the HTML
@@ -32,8 +32,6 @@ setSubscription = ->
 
 # show the html5 notification with timeout when the document is ready
 $ ->
-  if DEBUG then less.watch() # not needed when using CodeKit
-  
   setSubscription()
   setTimeout ( ->
     window.close()

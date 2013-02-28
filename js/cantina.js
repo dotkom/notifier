@@ -17,14 +17,14 @@ var Cantina = {
     'dmmh': 'https://www.sit.no/rss.ap?thisId=38798',
     'dragvoll': 'https://www.sit.no/rss.ap?thisId=36441',
     'elektro': 'https://www.sit.no/rss.ap?thisId=40227',
-    'hangaren': 'http://www.sit.no/rss.ap?thisId=36444',
+    'hangaren': 'https://www.sit.no/rss.ap?thisId=36444',
     'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453',
     'kjelhuset': 'https://www.sit.no/rss.ap?thisId=31681',
     'moholt': 'https://www.sit.no/rss.ap?thisId=36456',
     'ranheimsveien': 'https://www.sit.no/rss.ap?thisId=38753',
-    'realfag': 'http://www.sit.no/rss.ap?thisId=36447',
+    'realfag': 'https://www.sit.no/rss.ap?thisId=36447',
     'rotvoll': 'https://www.sit.no/rss.ap?thisId=38910',
-    'tyholt': 'http://www.sit.no/rss.ap?thisId=36450',
+    'tyholt': 'https://www.sit.no/rss.ap?thisId=36450',
   },
 
   // SiTs new format for ajaxing dinner:

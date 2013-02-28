@@ -74,10 +74,12 @@ header {
     position: absolute;
     float: left;
     margin-top: 1pt;
-    margin-left: 215pt;
+    margin-left: 218pt;
     font-size: 44pt;
-    font-style: italic;
     font-weight: bold;
+    /* more precise than italic, the Online logo is skewered exactly 15 degrees */
+    -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
   }
 
   #notification {
@@ -87,8 +89,10 @@ header {
     padding: 3pt 15pt 2pt 10pt;
     background: @background-dark;
     font-size: 44pt;
-    font-style: italic;
     font-weight: bold;
+    /* more precise than italic, the Online logo is skewered exactly 15 degrees */
+    -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
     color: white;
     box-shadow: 0 0 10pt @background-dark, 0 0 15pt @background-dark, 0 0 30pt @background-dark;
     border-radius: 20pt;
@@ -160,12 +164,17 @@ header {
   /* for regular size images */
   .image {
     box-shadow: 0 0 5pt 0pt black;
-    margin: 5pt 0 0 15pt;
+    margin: 5pt 0 0 17pt;
     border-radius: 4pt;
   }
 
   input {
     box-shadow: 0 0 15px #333;
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
   }
 
   &:hover {
@@ -179,10 +188,6 @@ header {
       0 0 70px #011b36,
       0 0 70px #011b36;
   }
-  &:hover span::before { /* part of the fancy checkboxes */
-    border: solid 1px #aaa;
-    background: white;
-  }
 
   /* the bus option in particular */
 
@@ -193,7 +198,10 @@ header {
     border-top: 1pt solid white;
     border-bottom: 1pt solid #7a7a7a;
     border-radius: 3pt;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
+    background: #e6e5e5; /* Old browsers */
+    background: -webkit-linear-gradient(top, #e6e5e5 0%,#cececf 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #e6e5e5 0%,#cececf 100%); /* Opera 11.10+ */
+    background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%); /* W3C */
     padding: 6pt 8pt;
     white-space: nowrap;
     word-wrap: break-word;
@@ -203,6 +211,7 @@ header {
       white-space: nowrap;
       input {
         width: 102pt;
+        box-shadow: 0 0 0px black;
       }
       select {
         z-index: 10; /* allows the down-arrow to be painted behind this */
@@ -218,7 +227,9 @@ header {
         border-top: 1pt solid white;
         box-shadow: 0 1pt 2pt #888;
         border-radius: 3pt;
-        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e8e8e8), color-stop(1, #c0c0c0));
+        background: -webkit-linear-gradient(top, #e8e8e8 0%,#c0c0c0 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #e8e8e8 0%,#c0c0c0 100%); /* Opera 11.10+ */
+        background: linear-gradient(to bottom, #e8e8e8 0%,#c0c0c0 100%); /* W3C */
         padding: 2pt 5pt 1pt 5pt;
         text-align: left;
         font-size: 9pt;
@@ -301,68 +312,6 @@ header {
   }
 }
 
-/* fancy checkboxes replacing the boring, ordinary ones */
-
-label
-{
-    cursor: pointer;
-
-  input[type="checkbox"] + span::before, /* buttons */
-  input[type="radio"] + span::before
-  {
-    display: inline-block; /* squish to size */
-    text-indent: -9999px; /* moving the cross the hell outta here :P */
-    width: 12px;
-    height: 12px;
-    text-transform: uppercase;
-    border: 1px solid #000;
-    background: white;
-    margin: 0 4px 0 0;
-    bottom: 2px;
-    position: relative;
-    font-size: 12px;
-    line-height: 12px;
-    font-weight: bold;
-    color: black;
-  }
-
-  input[type="checkbox"] + span::before, /* button's cross */
-  input[type="radio"] + span::before
-  {
-    content: "\2714";
-  }
-
-  input[type="checkbox"] + span::before /* round the corners of the radio buttons */
-  {
-    border-radius: 3px;
-  }
-
-  input[type="radio"] + span::before /* round the corners of the radio buttons */
-  {
-    border-radius: 12px;
-  }
-
-  input[type="checkbox"]:checked + span::before, /* move cross into position when checked */
-  input[type="radio"]:checked + span::before
-  {
-    text-indent: 1px;
-  }
-
-  input[type="checkbox"], /* hide the real checkbox/radio button */
-  input[type="radio"]
-  {
-    position: fixed;
-    filter: alpha(opacity=0);
-    -webkit-opacity: 0;
-    opacity: 0;
-    height: 20px; /* making the unseen box bigger, makes a nice hitbox */
-    width: 40px;
-    margin-left: -10px; /* making hitbox even bigger! :P nice hitbox */
-    margin-top: -1px;
-    cursor: pointer;
-  }
-}
-
 /* Suggestions for bus stops */
 
 #bus_suggestions {
@@ -413,7 +362,7 @@ label
   }
 }
 
-/* debug links in the the top right corner, only shown in debug mode */
+/* Debug links in the the top right corner, only shown in debug mode */
 
 #debug_links {
   display: none;
@@ -428,7 +377,7 @@ label
   }
 }
 
-/* the pageflip at the bottom */
+/* The pageflip at the bottom */
 
 #pageflipbg {
   position: fixed;
@@ -480,7 +429,7 @@ label
   text-decoration: underline;
 }
 
-/* google +1 button */
+/* Google +1 button */
 
 #plusonebutton {
   position: fixed;
@@ -490,46 +439,7 @@ label
   z-index: 1;
 }
 
-/* the Avgrund dialog */
-
-.avgrund_image {
-  float: left;
-  border: 3pt solid white;
-  box-shadow: 0 0 5pt 5pt #ccc;
-}
-
-.avgrund_content {
-  color: black;
-  border: 1pt solid red;
-  text-align: center;
-  margin: 40pt 10pt 10pt 0pt;
-  padding-left: 10pt;
-  font: 11pt @font-family;
-}
-
-.button {
-  margin-left: 20pt;
-  padding: 6pt;
-  border: 1pt solid gray;
-  border-radius: 3pt;
-  text-transform: uppercase;
-  font: 9pt bold @font-family;
-}
-
-.yesbutton {
-  background-color: lightgreen;
-}
-
-.nobutton {
-  background-color: lightgray;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-/* canvas with webGL */
+/* Canvas with webGL */
 
 canvas {
   .debugyellow;
