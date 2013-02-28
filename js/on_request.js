@@ -1,29 +1,27 @@
 // Recieve all requests from parts of the extension that cannot access
 // localStorage or the rest of the codebase. Example: A content script.
 function onRequest(request, sender, callback) {
-  if (request.action == 'resetCounterWhenOnWebsite') {
+  console.log(request)
+  if (request == 'resetCounterWhenOnWebsite' || request.action == 'resetCounterWhenOnWebsite') {
     localStorage.unreadCount = 0;
     localStorage.mostRecentRead = localStorage.mostRecentUnread;
-    if (BROWSER == "Chrome")
-      chrome.browserAction.setBadgeText({text:''});
-    else if (BROWSER == "Opera")
-      console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA onRequest");
+    Browser.setBadgeText('');
   }
-  else if (request.action == 'getChosenDinner') {
-    var chosenDinner = localStorage.chosenDinner;
-    localStorage.removeItem("chosenDinner");
-    callback(chosenDinner);
-  }
-  else if (request.action == 'showCantina') {
-    callback(localStorage.showCantina);
-  }
-  else if (request.action == 'dismissSitNotice') {
-    localStorage.dismissedSitNotice = 'true';
-    callback(true);
-  }
-  else if (request.action == 'dismissedSitNotice') {
-    callback(localStorage.dismissedSitNotice);
-  }
+  // else if (request.action == 'getChosenDinner') {
+  //   var chosenDinner = localStorage.chosenDinner;
+  //   localStorage.removeItem("chosenDinner");
+  //   callback(chosenDinner);
+  // }
+  // else if (request.action == 'showCantina') {
+  //   callback(localStorage.showCantina);
+  // }
+  // else if (request.action == 'dismissSitNotice') {
+  //   localStorage.dismissedSitNotice = 'true';
+  //   callback(true);
+  // }
+  // else if (request.action == 'dismissedSitNotice') {
+  //   callback(localStorage.dismissedSitNotice);
+  // }
   else if (DEBUG) console.log('ERROR: unrecognized request');
 }
 
@@ -31,4 +29,12 @@ function onRequest(request, sender, callback) {
 if (BROWSER == "Chrome")
   chrome.extension.onRequest.addListener(onRequest);
 else if (BROWSER == "Opera")
-  console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA onRequest");
+  opera.extension.onmessage = function(event) {
+    window.opera.postError('Received message from base.js');
+    // got the URL from the injected script
+    if (event.data == 'resetCounterWhenOnWebsite') {
+      Browser.setBadgeText('!!');
+    }
+    var message = event.data;
+    onRequest({'action':message});
+  };
