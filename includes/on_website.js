@@ -1,5 +1,8 @@
+// ==UserScript==
+// @include https://online.ntnu.no/*
+// ==/UserScript==
 
-// This is a content script.
+// This is a injected script.
 
 // That means the script is called when any page is loaded. This script does
 // not have access to the rest of the extension's stuff, like localStorage.
@@ -8,8 +11,8 @@
 
 // It is important to just use regular javascript here, at most some jQuery.
 // Remember that the environment you are in here is NOT the extension, it
-// might be an old, insecure website. Except, of course, we are visiting the
-// Online website which is secured by our most paranoid guy, Rockj ;)
+// might be an old, insecure website. Except, of course, if we are visiting
+// the Online website which is secured by our most paranoid guy, Rockj ;)
 
 var host = window.location.host;
 
