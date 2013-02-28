@@ -14,37 +14,65 @@ var Coffee = {
       url: self.api,
       success: function(data) {
 
-        // Split into pot number and age of last pot
-        var pieces = data.split("\n");
-        var pots = pieces[0];
-        var age = pieces[1];
+        // Test data
+        // if (DEBUG) {
+        //   data = "200\n27. February 21:20:371";
+        //   // data = "what";
+        // }
 
-        // Calulate the age of the last pot better
-        var time = String(age.match(/\d+:\d+:\d+/)).split(':');
-        var now = new Date();
-        var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), time[0], time[1]);
-        var one_minute = 1000 * 60;
-        // Calculate difference between the two dates, and convert to minutes
-        var diff = Math.floor(( then.getTime() - now.getTime() ) / one_minute);
-        // Create a proper time string from all the minutes
-        var ageString;
-        if (-1 <= diff && diff <= 0) {
-          ageString = 'Kaffen ble <b>nettopp laget</b>';
+        try {
+          // Split into pot number and age of last pot
+          var pieces = data.split("\n");
+          var pots = pieces[0];
+          var age = pieces[1];
+
+          // Get now
+          var now = new Date();
+
+          // Check if the coffee pots were made today
+          var coffeeDate = new Date(age.match(/\d+\. [a-zA-Z]+/));
+          if (coffeeDate.getDate() == now.getDate()) {
+
+            // Calulate the age of the last pot better
+            var coffeeTime = String(age.match(/\d+:\d+:\d+/)).split(':');
+            var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
+            var one_minute = 1000 * 60;
+
+            // Calculate difference between the two dates, and convert to minutes
+            var diff = Math.floor(( now.getTime() - then.getTime() ) / one_minute);
+            
+            // Create a proper time string from all the minutes
+            var ageString;
+            if (-1 <= diff && diff <= 9) {
+              ageString = 'Kaffen ble <b>nettopp laget</b>';
+            }
+            else if (10 <= diff && diff <= 59) {
+              ageString = 'Kaffen ble laget for '+diff+' min siden';
+            }
+            else if (60 <= diff) {
+              ageString = 'Kaffen ble laget kl '+coffeeTime[0]+':'+coffeeTime[1];
+            }
+            else {
+              ageString = 'Har noen laget kaffe i fremtiden?!'
+            }
+
+            // Add 'kanner' to pots-string
+            pots = (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
+
+            // Make a complete string
+            var coffee = ageString+'<br />'+pots
+            callback(coffee);
+          }
+          else {
+            // Coffee was not made today
+            var coffee = 'Kaffen har ikke blitt satt på<br />Ingen kanner i dag';
+            callback(coffee);
+          }
+        } catch (err) {
+          // Coffee format is wrong
+          var coffee = 'Feil i kaffeformat...<br />Det er sikkert kaffe!';
+          callback(coffee);
         }
-        else if (1 <= diff && diff <= 59) {
-          ageString = 'Kaffen ble laget for <b>'+diff+' min</b> siden';
-        }
-        else if (60 <= diff) {
-          ageString = 'Kaffen ble laget kl <b>'+time[0]+':'+time[1]+'</b>';
-        }
-
-        // Add 'kanner' to pots-string
-        pots = '<b>'+(pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner')+'</b>';
-
-        // Make a string worthy of returning
-        var coffee = ageString+'<br />'+pots+' i dag'
-
-        callback(coffee);
       },
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
