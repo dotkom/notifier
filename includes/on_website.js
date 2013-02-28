@@ -16,7 +16,9 @@ var host = window.location.host;
 if (host == 'online.ntnu.no') {
 	$('#install_notifier').hide();
 	if (typeof chrome != "undefined")
-		chrome.extension.sendRequest({'action' : 'resetCounterWhenOnWebsite'});
-	else if (typeof opera != "undefined")
-		console.log("OPERAAAAAAAAAAAAA onwebsite")
+		chrome.extension.sendRequest({'action':'resetCounterWhenOnWebsite'});
+	else if (typeof opera != "undefined") {
+		opera.extension.postMessage('resetCounterWhenOnWebsite');
+		alert('yep, go!');
+	}
 }
