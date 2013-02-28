@@ -34,7 +34,7 @@
 	"content_scripts": [
     {
       "matches": ["*://*.online.ntnu.no/*", "*://*.sit.no/*" ],
-      "js": ["libs/jquery-1.9.1.min.js", "js/on_website.js"]
+      "js": ["libs/jquery-1.9.1.min.js", "includes/on_website.js"]
     }
   ],
 
