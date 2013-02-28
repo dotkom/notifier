@@ -17,11 +17,14 @@
 var host = window.location.host;
 
 if (host == 'online.ntnu.no') {
-	$('#install_notifier').hide();
-	if (typeof chrome != "undefined")
+	if (typeof chrome != "undefined") {
+		// Reset badge counter
 		chrome.extension.sendRequest({'action':'resetCounterWhenOnWebsite'});
+		// Hide Notifier install button
+		$('#install_notifier').hide();
+	}
 	else if (typeof opera != "undefined") {
+		// Reset badge counter
 		opera.extension.postMessage('resetCounterWhenOnWebsite');
-		alert('yep, go!');
 	}
 }
