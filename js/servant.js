@@ -1,5 +1,6 @@
 var Servant = {
   api: 'https://online.ntnu.no/service_static/servant_list',
+  msgNone: 'Ingen kontorvakt nå',
   msgError: 'Frakoblet fra vaktplan',
 
   get: function(callback) {
@@ -20,12 +21,12 @@ var Servant = {
         if (currentServant.match(/\d+:\d+\-\d+:\d+/)) {
           // Match out the name from the line
           var servantName = currentServant.match(/(\d+:\d+\-\d+:\d+ )([a-zA-ZæøåÆØÅ ]+)/)[2];
-          callback(servantName);
+          callback('Vakt: '+servantName);
         }
         else {
-          // Probably no servant at the moment, value is "Ingen"
-          // ...or an error message, either way we'll return it
-          callback(currentServant);
+          // Probably no servant at the moment, value is "Ingen",
+          // however we'll return our own "no servant" message
+          callback(self.msgNone);
         }
       },
       error: function(jqXHR, text, err) {

@@ -65,7 +65,7 @@
       console.log('updateServant');
     }
     return Servant.get(function(servant) {
-      return $('#todays #schedule #servant').html('Vakt: ' + servant);
+      return $('#todays #schedule #servant').html(servant);
     });
   };
 
