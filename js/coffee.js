@@ -1,6 +1,8 @@
 var Coffee = {
   api: 'http://draug.online.ntnu.no/coffee.txt',
   msgConnectionError: 'Frakoblet fra kaffeknappen',
+  debugCoffee: 0,
+  debugCoffeeString: "200\n28. February 22:28:371",
 
   get: function(callback) {
     if (callback == undefined) {
@@ -14,11 +16,10 @@ var Coffee = {
       url: self.api,
       success: function(data) {
 
-        // Test data
-        // if (DEBUG) {
-        //   data = "200\n27. February 21:20:371";
-        //   // data = "what";
-        // }
+        // If coffee debugging is enabled
+        if (self.debugCoffee) {
+          data = self.debugCoffeeString;
+        }
 
         try {
           // Split into pot number and age of last pot
