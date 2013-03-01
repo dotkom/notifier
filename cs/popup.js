@@ -67,8 +67,9 @@
     if (DEBUG) {
       console.log('updateCoffee');
     }
-    return Coffee.get(function(coffee) {
-      return $('#todays #coffee #pot').html(coffee);
+    return Coffee.get(function(pots, age) {
+      $('#todays #coffee #pots').html('- ' + pots);
+      return $('#todays #coffee #age').html(age);
     });
   };
 
