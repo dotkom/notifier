@@ -49,7 +49,7 @@
       console.log('updateServant');
     }
     return Servant.get(function(servant) {
-      return $('#todays #schedule #servant').html(servant);
+      return $('#todays #schedule #servant').html('- ' + servant);
     });
   };
 
