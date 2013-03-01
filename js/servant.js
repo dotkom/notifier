@@ -2,6 +2,8 @@ var Servant = {
   api: 'https://online.ntnu.no/service_static/servant_list',
   msgNone: 'Ingen kontorvakt nå',
   msgError: 'Frakoblet fra vaktplan',
+  debugServant: 0,
+  debugServantString: '12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -14,18 +16,50 @@ var Servant = {
     $.ajax({
       url: self.api,
       success: function(servant) {
+
+        // If servant debugging is enabled
+        if (self.debugServant) {
+          servant = self.debugServantString;
+        }
+
         servantList = servant.split("\n");
         currentServant = servantList[0];
+
         // If it's an actual servant with a time slot like this:
         // 12:00-13:00: Michael Johansen
         if (currentServant.match(/\d+:\d+\-\d+:\d+/)) {
           // Match out the name from the line
-          var servantName = currentServant.match(/(\d+:\d+\-\d+:\d+ )([a-zA-ZæøåÆØÅ ]+)/)[2];
-          callback('Vakt: '+servantName);
+          var pieces = currentServant.match(/(\d+:\d+\-\d+:\d+) ([a-zA-ZæøåÆØÅ ]+)/);
+          var timeSlot = pieces[1];
+          var servantName = pieces[2];
+
+          // If we are currently within the specified timeslot
+          if () {
+
+            // If the servantname is quite long...
+            if (servantName.length >= 25) {
+              if (servantName.split(" ").length >= 3) {
+                names = servantName.split(" ");
+                // ...we'll shorten all middle names to one letter
+                for (var i = names.length - 2; i >= 1; i--) {
+                  names[i] = names[i].charAt(0).toUpperCase()+'.';
+                }
+                servantName = '';
+                for (i in names) {
+                  servantName += names[i] + " ";
+                }
+              }
+            }
+
+            callback('Vakt: '+servantName);
+          }
+          else {
+            // No servant in this timeslot
+            callback(self.msgNone);
+          }
         }
         else {
-          // Probably no servant at the moment, value is "Ingen",
-          // however we'll return our own "no servant" message
+          // No more servants today
           callback(self.msgNone);
         }
       },
@@ -35,5 +69,4 @@ var Servant = {
       },
     });
   },
-
 }
