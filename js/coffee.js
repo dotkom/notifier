@@ -5,7 +5,7 @@ var Coffee = {
   msgFormatError: 'Feil i kaffeformat',
   msgConnectionError: 'Frakoblet fra kaffeknappen',
   msgComforting: 'Det er sikkert kaffe!',
-  debugCoffee: 1,
+  debugCoffee: 0,
   debugCoffeeString: "200\n1. March 14:28:371",
 
   get: function(callback) {
