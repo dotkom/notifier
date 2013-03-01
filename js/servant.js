@@ -3,7 +3,7 @@ var Servant = {
   msgNone: 'Ingen kontorvakt nå',
   msgError: 'Frakoblet fra vaktplan',
   debugServant: 0,
-  debugServantString: '12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
+  debugServantString: '11:00-12:00 Steinar Hagen\n12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
 
   get: function(callback) {
     if (callback == undefined) {
