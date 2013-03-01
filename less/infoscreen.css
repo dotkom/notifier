@@ -118,11 +118,21 @@ body {
   float: left;
   width: 48%;
 }
+#container #todays #schedule #servant {
+  font-style: italic;
+  margin-bottom: 2pt;
+}
 #container #todays #coffee {
   border: 0pt solid #ffc0cb;
   position: relative;
   float: right;
   width: 50%;
+  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #todays #coffee #pots {
+  font-style: italic;
+  margin-bottom: 2pt;
 }
 #container #news {
   border: 0pt solid #ff0000;
