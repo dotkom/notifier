@@ -52,24 +52,15 @@ function unreadCount(xmlstring) {
 		else {
 			if (unread_count == 0) {
 				if (DEBUG) console.log('no new posts');
-				if (BROWSER == "Chrome")
-					chrome.browserAction.setBadgeText({text:''});
-				else if (BROWSER == "Opera")
-					console.log("OPERAAAAAAAAAAAAA news")
+				Browser.setBadgeText('');
 			}
 			else if (unread_count >= MAX_NEWS_AMOUNT) {
 				if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts');
-				if (BROWSER == "Chrome")
-					chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
-				else if (BROWSER == "Opera")
-					console.log("OPERAAAAAAAAAAAAA news")
+				Browser.setBadgeText(MAX_NEWS_AMOUNT + '+');
 			}
 			else {
 				if (DEBUG) console.log('1-' + (MAX_NEWS_AMOUNT - 1) + ' unread posts');
-				if (BROWSER == "Chrome")
-					chrome.browserAction.setBadgeText({text:String(unread_count)});
-				else if (BROWSER == "Opera")
-					console.log("OPERAAAAAAAAAAAAA news")
+				Browser.setBadgeText(String(unread_count));
 			}
 			localStorage.unreadCount = unread_count;
 			storeMostRecentIds(idList); // New || Updated
@@ -79,10 +70,7 @@ function unreadCount(xmlstring) {
 		// Stop counting if unread number is greater than 9
 		if (index > (MAX_NEWS_AMOUNT - 1)) { // Remember index is counting 0
 			if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts (stopped counting)');
-			if (BROWSER == "Chrome")
-				chrome.browserAction.setBadgeText({text:MAX_NEWS_AMOUNT + '+'});
-			else if (BROWSER == "Opera")
-				console.log("OPERAAAAAAAAAAAAA news")
+			Browser.setBadgeText(MAX_NEWS_AMOUNT + '+');
 			localStorage.unreadCount = MAX_NEWS_AMOUNT;
 			// New or updated?
 			storeMostRecentIds(idList); // New || Updated
@@ -98,9 +86,9 @@ function storeMostRecentIds(idList) {
 function showNotification(element) {
 	if (localStorage.showNotifications == 'true') {
 		var post = parsePost(element);
-		// remember this
+		// Remember this
 		localStorage.lastNotified = post.id;
-		// get content
+		// Get content
 		localStorage.notificationTitle = post.title;
 		localStorage.notificationLink = post.link;
 		localStorage.notificationDescription = post.description;
@@ -108,13 +96,8 @@ function showNotification(element) {
 		localStorage.notificationDate = post.date;
 		localStorage.notificationId = post.id;
 		localStorage.notificationImage = BACKUP_IMAGE;
-	    if (BROWSER == "Chrome") {
-			var notification = webkitNotifications.createHTMLNotification('notification.html');
-			notification.show(); // HTML5-style
-		}
-	    else if (BROWSER == "Opera") {
-	    	console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA news, webkitNotifications");
-	    }
+		// Show desktop notification
+		Browser.createNotification('notification.html');
 	}
 }
 
