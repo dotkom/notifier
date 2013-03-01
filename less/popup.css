@@ -28,7 +28,7 @@
 .emphasized {
   font-style: italic;
   font-size: 9pt;
-  margin-bottom: 5pt;
+  margin-bottom: 3pt;
 }
 .index {
   font-style: italic;
@@ -119,6 +119,10 @@ body {
   position: relative;
   float: left;
   width: 48%;
+}
+#container #todays #schedule #servant {
+  font-style: italic;
+  margin-bottom: 1pt;
 }
 #container #todays #coffee {
   border: 0pt solid #ffc0cb;
