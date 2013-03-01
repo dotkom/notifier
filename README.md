@@ -1,6 +1,6 @@
 # Online Notifier
 
-This is a Chrome extension for the student organization Online at NTNU, see http://online.ntnu.no
+This is a Chrome/Opera extension for the student organization Online at NTNU, see http://online.ntnu.no
 
 Features
 
