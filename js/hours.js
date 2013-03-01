@@ -91,11 +91,19 @@ var Hours = {
     if (this.debugHoursText) {
       return '- ' + pieces[0] + '<br />- ' + pieces[1];
     }
+    // Monday - Thursday on the first line
     else if (1 <= day && day <= 4) {
       return '- ' + pieces[0];
     }
+    // Friday on the second line
     else if (day === 5) {
-      return '- ' + pieces[1];
+      if (pieces[1].match(/[a-zA-Z]+dag/) != null) {
+        return '- ' + pieces[1];
+      }
+      else {
+        // Some cantinas have just one opening hour for monday - friday
+        return '- ' + pieces[0];
+      }
     }
     else if (day === 0 || day === 6) {
       return this.msgClosed;
