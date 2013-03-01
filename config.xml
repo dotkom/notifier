@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.example.org/helloworld" version="1.3.9"><!-- id="extensions:onlinenotifier" -->
+<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.example.org/helloworld" version="2.0.0"><!-- id="extensions:onlinenotifier" -->
 	
 	<name>Online Notifier</name>
 	<description>Nyheter, kontorstatus, sanntidsbuss, kaffeabonnement, middagsmeny og mer.</description>
-  	<author href="https://online.ntnu.no" email="dotkom@online.ntnu.no">Online :: dotKom :: Michael Johansen</author>
+  	<author href="https://online.ntnu.no" email="dotkom@online.ntnu.no">dotKom</author>
   	
   	<content src="background.html" />
 
