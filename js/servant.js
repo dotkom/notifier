@@ -2,7 +2,7 @@ var Servant = {
   api: 'https://online.ntnu.no/service_static/servant_list',
   msgNone: 'Ingen kontorvakt nå',
   msgError: 'Frakoblet fra vaktplan',
-  debugServant: 0,
+  debugServant: 1,
   debugServantString: '12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
 
   get: function(callback) {
@@ -33,8 +33,19 @@ var Servant = {
           var timeSlot = pieces[1];
           var servantName = pieces[2];
 
-          // If we are currently within the specified timeslot
-          if () {
+          // If we are currently within the specified timeslot "12:00-13:00"
+          var timePieces = timeSlot.split("-"); // ["12:00", "13:00"]
+          var startTime = timePieces[0].split(":"); // ["12", "00"]
+          var endTime = timePieces[1].split(":"); // ["13", "00"]
+          var now = new Date();
+          var start = new Date();
+          start.setHours(startTime[0]);
+          start.setMinutes(startTime[1]);
+          var end = new Date();
+          end.setHours(endTime[0]);
+          end.setMinutes(endTime[1]);
+          
+          if (start <= now && now <= end) {
 
             // If the servantname is quite long...
             if (servantName.length >= 25) {
