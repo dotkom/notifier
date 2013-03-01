@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.example.org/helloworld" version="2.0.0"><!-- id="extensions:onlinenotifier" -->
+<widget xmlns="http://www.w3.org/ns/widgets" id="extensions:onlinenotifier" version="2.0.0">
 	
-	<name>Online Notifier</name>
-	<description>Nyheter, kontorstatus, sanntidsbuss, kaffeabonnement, middagsmeny og mer.</description>
-  	<author href="https://online.ntnu.no" email="dotkom@online.ntnu.no">dotKom</author>
-  	
-  	<content src="background.html" />
+  <name short="Notifier">
+    Online Notifier
+  </name>
+	<description>
+    Nyheter, kontorstatus, sanntidsbuss, kaffeabonnement, middagsmeny og mer.
+  </description>
+	<author href="https://online.ntnu.no" email="dotkom@online.ntnu.no">
+    dotKom
+  </author>
+	<license href="http://www.opensource.org/licenses/mit-license.php">
+    Licensed under the MIT license
+  </license>
 
-  	<icon src="img/logo-64.png" />
-    <icon src="img/logo-18.png" />
+  <icon src="img/logo-18.png" width="18" height="18" />
+	<icon src="img/logo-64.png" width="64" height="64" />
+  
+  <content src="background.html" type="text/html" encoding="utf-8" />
 
-    <access origin="https://ssl.google-analytics.com/" subdomains="true" />
-    <access origin="https://plusone.google.com/" subdomains="true" />
-    <access origin="https://apis.google.com/" subdomains="true" />
-  	<access origin="https://online.ntnu.no/" subdomains="true" />
-    <access origin="http://draug.online.ntnu.no/" subdomains="true" />
-    <access origin="http://api.visuweb.no/" subdomains="true" />
-    <access origin="https://www.sit.no/" subdomains="true" />
+  <access origin="https://ssl.google-analytics.com/" subdomains="true" />
+  <access origin="https://plusone.google.com/" subdomains="true" />
+  <access origin="https://apis.google.com/" subdomains="true" />
+	<access origin="https://online.ntnu.no/" subdomains="true" />
+  <access origin="http://draug.online.ntnu.no/" subdomains="true" />
+  <access origin="http://api.visuweb.no/" subdomains="true" />
+  <access origin="https://www.sit.no/" subdomains="true" />
 
 </widget>
