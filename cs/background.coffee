@@ -8,8 +8,8 @@ mainLoop = ->
 
   if ls.useInfoscreen isnt 'true'
     updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
-    updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
-    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online
+    updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
+    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -37,12 +37,12 @@ updateOfficeAndMeetings = ->
         Browser.setTitle today
         ls.currentStatusMessage = message
 
-updateCoffee = ->
-  if DEBUG then console.log 'updateCoffee'
+updateCoffeeSubscription = ->
+  if DEBUG then console.log 'updateCoffeeSubscription'
   Coffee.getPots (pots) ->
     storedPots = Number(ls.coffeePots);
     if storedPots < pots
-      Coffee.showNotification (pots)
+      Coffee.showNotification(pots)
     ls.coffeePots = pots
 
 updateNews = ->
