@@ -62,5 +62,5 @@ if (BROWSER == "Chrome") {
 	}
 }
 else if (BROWSER == "Opera") {
-	console.log("OPERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA prod. detection");
+	// TODO: Implement this
 }
