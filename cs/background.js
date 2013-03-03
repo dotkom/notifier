@@ -96,6 +96,11 @@
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
     ls.removeItem('coffeePots');
+    if (ls.left_cantina === void 0) {
+      ls.showCantina = 'true';
+      ls.left_cantina = 'hangaren';
+      ls.right_cantina = 'realfag';
+    }
     if (ls.everConnected === void 0) {
       if (ls.first_bus === void 0) {
         ls.showBus = 'true';
