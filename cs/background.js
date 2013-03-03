@@ -96,51 +96,68 @@
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
     ls.removeItem('coffeePots');
-    if (ls.left_cantina === void 0) {
+    if (showBus === void 0) {
+      ls.showBus = 'true';
+    }
+    if (first_bus === void 0) {
+      ls.first_bus = 16011333;
+    }
+    if (first_bus_name === void 0) {
+      ls.first_bus_name = 'Gløshaugen Nord';
+    }
+    if (first_bus_direction === void 0) {
+      ls.first_bus_direction = 'til byen';
+    }
+    if (first_bus_active_lines === void 0) {
+      ls.first_bus_active_lines = JSON.stringify([5, 22]);
+    }
+    if (first_bus_inactive_lines === void 0) {
+      ls.first_bus_inactive_lines = JSON.stringify([169]);
+    }
+    if (second_bus === void 0) {
+      ls.second_bus = 16010333;
+    }
+    if (second_bus_name === void 0) {
+      ls.second_bus_name = 'Gløshaugen Nord';
+    }
+    if (second_bus_direction === void 0) {
+      ls.second_bus_direction = 'fra byen';
+    }
+    if (second_bus_active_lines === void 0) {
+      ls.second_bus_active_lines = JSON.stringify([5, 22]);
+    }
+    if (second_bus_inactive_lines === void 0) {
+      ls.second_bus_inactive_lines = JSON.stringify([169]);
+    }
+    if (ls.showOffice === void 0) {
+      ls.showOffice = 'true';
+    }
+    if (ls.showCantina === void 0) {
       ls.showCantina = 'true';
+    }
+    if (left_cantina === void 0) {
       ls.left_cantina = 'hangaren';
+    }
+    if (right_cantina === void 0) {
       ls.right_cantina = 'realfag';
     }
-    if (ls.everConnected === void 0) {
-      if (ls.first_bus === void 0) {
-        ls.showBus = 'true';
-        ls.first_bus = 16011333;
-        ls.first_bus_name = 'Gløshaugen Nord';
-        ls.first_bus_direction = 'til byen';
-        ls.first_bus_active_lines = JSON.stringify([5, 22]);
-        ls.first_bus_inactive_lines = JSON.stringify([169]);
-        ls.second_bus = 16010333;
-        ls.second_bus_name = 'Gløshaugen Nord';
-        ls.second_bus_direction = 'fra byen';
-        ls.second_bus_active_lines = JSON.stringify([5, 22]);
-        ls.second_bus_inactive_lines = JSON.stringify([169]);
-      }
-      if (ls.showOffice === void 0) {
-        ls.showOffice = 'true';
-      }
-      if (ls.showCantina === void 0) {
-        ls.showCantina = 'true';
-        ls.left_cantina = 'hangaren';
-        ls.right_cantina = 'realfag';
-      }
-      if (ls.coffeePots === void 0) {
-        ls.coffeePots = 0;
-      }
-      if (ls.showNotifications === void 0) {
-        ls.showNotifications = 'true';
-      }
-      if (ls.coffeeSubscription === void 0) {
-        ls.coffeeSubscription = 'true';
-      }
-      if (ls.openChatter === void 0) {
-        ls.openChatter = 'false';
-      }
-      if (ls.useInfoscreen === void 0) {
-        ls.useInfoscreen = 'false';
-      }
-      if (!DEBUG) {
-        Browser.openTab('options.html');
-      }
+    if (ls.openChatter === void 0) {
+      ls.openChatter = 'false';
+    }
+    if (ls.showNotifications === void 0) {
+      ls.showNotifications = 'true';
+    }
+    if (ls.coffeeSubscription === void 0) {
+      ls.coffeeSubscription = 'true';
+    }
+    if (ls.coffeePots === void 0) {
+      ls.coffeePots = 0;
+    }
+    if (ls.useInfoscreen === void 0) {
+      ls.useInfoscreen = 'false';
+    }
+    if (ls.everConnected === void 0 && !DEBUG) {
+      Browser.openTab('options.html');
     }
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
