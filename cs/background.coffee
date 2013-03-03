@@ -68,27 +68,27 @@ $ ->
   
   # Set default choices if undefined, in the same order as on the options page
 
-  if showBus is undefined
+  if ls.showBus is undefined
     ls.showBus = 'true'
-  if first_bus is undefined
+  if ls.first_bus is undefined
     ls.first_bus = 16011333
-  if first_bus_name is undefined
+  if ls.first_bus_name is undefined
     ls.first_bus_name = 'Gløshaugen Nord'
-  if first_bus_direction is undefined
+  if ls.first_bus_direction is undefined
     ls.first_bus_direction = 'til byen'
-  if first_bus_active_lines is undefined
+  if ls.first_bus_active_lines is undefined
     ls.first_bus_active_lines = JSON.stringify [5, 22]
-  if first_bus_inactive_lines is undefined
+  if ls.first_bus_inactive_lines is undefined
     ls.first_bus_inactive_lines = JSON.stringify [169]
-  if second_bus is undefined
+  if ls.second_bus is undefined
     ls.second_bus = 16010333
-  if second_bus_name is undefined
+  if ls.second_bus_name is undefined
     ls.second_bus_name = 'Gløshaugen Nord'
-  if second_bus_direction is undefined
+  if ls.second_bus_direction is undefined
     ls.second_bus_direction = 'fra byen'
-  if second_bus_active_lines is undefined
+  if ls.second_bus_active_lines is undefined
     ls.second_bus_active_lines = JSON.stringify [5, 22]
-  if second_bus_inactive_lines is undefined
+  if ls.second_bus_inactive_lines is undefined
     ls.second_bus_inactive_lines = JSON.stringify [169]
   
   if ls.showOffice is undefined
@@ -96,9 +96,9 @@ $ ->
   
   if ls.showCantina is undefined
     ls.showCantina = 'true'
-  if left_cantina is undefined
+  if ls.left_cantina is undefined
     ls.left_cantina = 'hangaren'
-  if right_cantina is undefined
+  if ls.right_cantina is undefined
     ls.right_cantina = 'realfag'
   
   if ls.openChatter is undefined
