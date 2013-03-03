@@ -96,37 +96,37 @@
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
     ls.removeItem('coffeePots');
-    if (showBus === void 0) {
+    if (ls.showBus === void 0) {
       ls.showBus = 'true';
     }
-    if (first_bus === void 0) {
+    if (ls.first_bus === void 0) {
       ls.first_bus = 16011333;
     }
-    if (first_bus_name === void 0) {
+    if (ls.first_bus_name === void 0) {
       ls.first_bus_name = 'Gløshaugen Nord';
     }
-    if (first_bus_direction === void 0) {
+    if (ls.first_bus_direction === void 0) {
       ls.first_bus_direction = 'til byen';
     }
-    if (first_bus_active_lines === void 0) {
+    if (ls.first_bus_active_lines === void 0) {
       ls.first_bus_active_lines = JSON.stringify([5, 22]);
     }
-    if (first_bus_inactive_lines === void 0) {
+    if (ls.first_bus_inactive_lines === void 0) {
       ls.first_bus_inactive_lines = JSON.stringify([169]);
     }
-    if (second_bus === void 0) {
+    if (ls.second_bus === void 0) {
       ls.second_bus = 16010333;
     }
-    if (second_bus_name === void 0) {
+    if (ls.second_bus_name === void 0) {
       ls.second_bus_name = 'Gløshaugen Nord';
     }
-    if (second_bus_direction === void 0) {
+    if (ls.second_bus_direction === void 0) {
       ls.second_bus_direction = 'fra byen';
     }
-    if (second_bus_active_lines === void 0) {
+    if (ls.second_bus_active_lines === void 0) {
       ls.second_bus_active_lines = JSON.stringify([5, 22]);
     }
-    if (second_bus_inactive_lines === void 0) {
+    if (ls.second_bus_inactive_lines === void 0) {
       ls.second_bus_inactive_lines = JSON.stringify([169]);
     }
     if (ls.showOffice === void 0) {
@@ -135,10 +135,10 @@
     if (ls.showCantina === void 0) {
       ls.showCantina = 'true';
     }
-    if (left_cantina === void 0) {
+    if (ls.left_cantina === void 0) {
       ls.left_cantina = 'hangaren';
     }
-    if (right_cantina === void 0) {
+    if (ls.right_cantina === void 0) {
       ls.right_cantina = 'realfag';
     }
     if (ls.openChatter === void 0) {
