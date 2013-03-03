@@ -170,7 +170,8 @@ bindBusFields = (busField) ->
 
   $(direction).change ->
 
-    # Save bus line if user changes the direction field
+    # Get new favorite lines in case they are different, and save changes ofc
+    getFavoriteLines busField
     saveBus busField
 
   bindFavoriteBusLines busField

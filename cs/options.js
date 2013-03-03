@@ -189,6 +189,7 @@
       }
     });
     $(direction).change(function() {
+      getFavoriteLines(busField);
       return saveBus(busField);
     });
     return bindFavoriteBusLines(busField);
