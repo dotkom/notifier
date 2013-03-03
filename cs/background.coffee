@@ -65,47 +65,59 @@ $ ->
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
   ls.removeItem 'coffeePots'
+  
+  # Set default choices if undefined, in the same order as on the options page
 
-  # REMOVE this one day
-  if ls.left_cantina is undefined
+  if showBus is undefined
+    ls.showBus = 'true'
+  if first_bus is undefined
+    ls.first_bus = 16011333
+  if first_bus_name is undefined
+    ls.first_bus_name = 'Gløshaugen Nord'
+  if first_bus_direction is undefined
+    ls.first_bus_direction = 'til byen'
+  if first_bus_active_lines is undefined
+    ls.first_bus_active_lines = JSON.stringify [5, 22]
+  if first_bus_inactive_lines is undefined
+    ls.first_bus_inactive_lines = JSON.stringify [169]
+  if second_bus is undefined
+    ls.second_bus = 16010333
+  if second_bus_name is undefined
+    ls.second_bus_name = 'Gløshaugen Nord'
+  if second_bus_direction is undefined
+    ls.second_bus_direction = 'fra byen'
+  if second_bus_active_lines is undefined
+    ls.second_bus_active_lines = JSON.stringify [5, 22]
+  if second_bus_inactive_lines is undefined
+    ls.second_bus_inactive_lines = JSON.stringify [169]
+  
+  if ls.showOffice is undefined
+    ls.showOffice = 'true'
+  
+  if ls.showCantina is undefined
     ls.showCantina = 'true'
+  if left_cantina is undefined
     ls.left_cantina = 'hangaren'
+  if right_cantina is undefined
     ls.right_cantina = 'realfag'
   
-  # Set default choices and open options page after install
-  if ls.everConnected is undefined
-    
-    if ls.first_bus is undefined
-      ls.showBus = 'true'
-      ls.first_bus = 16011333
-      ls.first_bus_name = 'Gløshaugen Nord'
-      ls.first_bus_direction = 'til byen'
-      ls.first_bus_active_lines = JSON.stringify [5, 22]
-      ls.first_bus_inactive_lines = JSON.stringify [169]
-      ls.second_bus = 16010333
-      ls.second_bus_name = 'Gløshaugen Nord'
-      ls.second_bus_direction = 'fra byen'
-      ls.second_bus_active_lines = JSON.stringify [5, 22]
-      ls.second_bus_inactive_lines = JSON.stringify [169]
-    if ls.showOffice is undefined
-      ls.showOffice = 'true'
-    if ls.showCantina is undefined
-      ls.showCantina = 'true'
-      ls.left_cantina = 'hangaren'
-      ls.right_cantina = 'realfag'
-    if ls.coffeePots is undefined
-      ls.coffeePots = 0
-    if ls.showNotifications is undefined
-      ls.showNotifications = 'true'
-    if ls.coffeeSubscription is undefined
-      ls.coffeeSubscription = 'true'
-    if ls.openChatter is undefined
-      ls.openChatter = 'false'
-    if ls.useInfoscreen is undefined
-      ls.useInfoscreen = 'false'
+  if ls.openChatter is undefined
+    ls.openChatter = 'false'
+  
+  if ls.showNotifications is undefined
+    ls.showNotifications = 'true'
+  
+  if ls.coffeeSubscription is undefined
+    ls.coffeeSubscription = 'true'
+  if ls.coffeePots is undefined
+    ls.coffeePots = 0
+  
+  if ls.useInfoscreen is undefined
+    ls.useInfoscreen = 'false'
 
-    if !DEBUG
-      Browser.openTab 'options.html'
+  # Open options page after install
+  if ls.everConnected is undefined and !DEBUG
+    Browser.openTab 'options.html'
 
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
