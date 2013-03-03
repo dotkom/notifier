@@ -65,6 +65,12 @@ $ ->
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
   ls.removeItem 'coffeePots'
+
+  # REMOVE this one day
+  if ls.left_cantina is undefined
+    ls.showCantina = 'true'
+    ls.left_cantina = 'hangaren'
+    ls.right_cantina = 'realfag'
   
   # Set default choices and open options page after install
   if ls.everConnected is undefined
@@ -87,7 +93,6 @@ $ ->
       ls.showCantina = 'true'
       ls.left_cantina = 'hangaren'
       ls.right_cantina = 'realfag'
-    
     if ls.coffeePots is undefined
       ls.coffeePots = 0
     if ls.showNotifications is undefined
