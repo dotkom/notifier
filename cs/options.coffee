@@ -492,6 +492,10 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
 
+  # Minor esthetical adjustmenst for Browser
+  html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  $('label[for=openChatter] span').html html
+
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()

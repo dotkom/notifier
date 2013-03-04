@@ -507,7 +507,7 @@
   };
 
   $(function() {
-    var text;
+    var html, text;
     if (DEBUG) {
       $('#debug_links').show();
     }
@@ -530,6 +530,8 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
+    html = $('label[for=openChatter] span').html().replace(/__nettleseren__/g, BROWSER);
+    $('label[for=openChatter] span').html(html);
     setInterval((function() {
       return pageFlipCursorBlinking();
     }), 600);
