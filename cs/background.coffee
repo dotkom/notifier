@@ -41,8 +41,12 @@ updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
   Coffee.getPots (pots) ->
     storedPots = Number(ls.coffeePots);
+    # New pot?
     if storedPots < pots
-      Coffee.showNotification(pots)
+      # Not a meeting?
+      if ls.currentStatus isnt 'meeting'
+        # Notify everyone with a coffee subscription :D
+        Coffee.showNotification(pots)
     ls.coffeePots = pots
 
 updateNews = ->
