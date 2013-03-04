@@ -40,14 +40,18 @@ updateOfficeAndMeetings = ->
 updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
   Coffee.getPots (pots) ->
-    storedPots = Number(ls.coffeePots);
-    # New pot?
-    if storedPots < pots
-      # Not a meeting?
-      if ls.currentStatus isnt 'meeting'
-        # Notify everyone with a coffee subscription :D
-        Coffee.showNotification(pots)
-    ls.coffeePots = pots
+    pots = Number pots
+    # Error messages will be NaN here
+    if not isNaN pots
+      storedPots = Number ls.coffeePots
+      # New pot?
+      if storedPots < pots
+        # Not a meeting?
+        if ls.currentStatus isnt 'meeting'
+          # Notify everyone with a coffee subscription :D
+          Coffee.showNotification pots
+      # And remember to update localStorage
+      ls.coffeePots = pots
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
@@ -68,7 +72,6 @@ $ ->
   if DEBUG then ls.clear()
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
-  ls.removeItem 'coffeePots'
   
   # Set default choices if undefined, in the same order as on the options page
 

@@ -63,13 +63,16 @@
     }
     return Coffee.getPots(function(pots) {
       var storedPots;
-      storedPots = Number(ls.coffeePots);
-      if (storedPots < pots) {
-        if (ls.currentStatus !== 'meeting') {
-          Coffee.showNotification(pots);
+      pots = Number(pots);
+      if (!isNaN(pots)) {
+        storedPots = Number(ls.coffeePots);
+        if (storedPots < pots) {
+          if (ls.currentStatus !== 'meeting') {
+            Coffee.showNotification(pots);
+          }
         }
+        return ls.coffeePots = pots;
       }
-      return ls.coffeePots = pots;
     });
   };
 
@@ -97,7 +100,6 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
-    ls.removeItem('coffeePots');
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
     }
