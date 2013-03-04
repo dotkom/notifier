@@ -35,4 +35,4 @@ $ ->
   setSubscription()
   setTimeout ( ->
     window.close()
-  ), 5000
+  ), 6000
