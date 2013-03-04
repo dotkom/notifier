@@ -40,10 +40,18 @@ updateOfficeAndMeetings = ->
 updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
   Coffee.getPots (pots) ->
-    storedPots = Number(ls.coffeePots);
-    if storedPots < pots
-      Coffee.showNotification(pots)
-    ls.coffeePots = pots
+    pots = Number pots
+    # Error messages will be NaN here
+    if not isNaN pots
+      storedPots = Number ls.coffeePots
+      # New pot?
+      if storedPots < pots
+        # Not a meeting?
+        if ls.currentStatus isnt 'meeting'
+          # Notify everyone with a coffee subscription :D
+          Coffee.showNotification pots
+      # And remember to update localStorage
+      ls.coffeePots = pots
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
@@ -64,7 +72,6 @@ $ ->
   if DEBUG then ls.clear()
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
-  ls.removeItem 'coffeePots'
   
   # Set default choices if undefined, in the same order as on the options page
 
@@ -78,6 +85,15 @@ $ ->
     ls.first_bus_direction = 'til byen'
   if ls.first_bus_active_lines is undefined
     ls.first_bus_active_lines = JSON.stringify [5, 22]
+    # hack
+    ls.first_bus = 16011333
+    ls.first_bus_name = 'Gløshaugen Nord'
+    ls.first_bus_direction = 'til byen'
+    ls.second_bus = 16010333
+    ls.second_bus_name = 'Gløshaugen Nord'
+    ls.second_bus_direction = 'fra byen'
+    ls.second_bus_active_lines = JSON.stringify [5, 22]
+    # /hack
   if ls.first_bus_inactive_lines is undefined
     ls.first_bus_inactive_lines = JSON.stringify [169]
   if ls.second_bus is undefined

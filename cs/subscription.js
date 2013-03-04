@@ -20,7 +20,7 @@
     setSubscription();
     return setTimeout((function() {
       return window.close();
-    }), 5000);
+    }), 6000);
   });
 
 }).call(this);

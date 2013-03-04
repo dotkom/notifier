@@ -63,11 +63,16 @@
     }
     return Coffee.getPots(function(pots) {
       var storedPots;
-      storedPots = Number(ls.coffeePots);
-      if (storedPots < pots) {
-        Coffee.showNotification(pots);
+      pots = Number(pots);
+      if (!isNaN(pots)) {
+        storedPots = Number(ls.coffeePots);
+        if (storedPots < pots) {
+          if (ls.currentStatus !== 'meeting') {
+            Coffee.showNotification(pots);
+          }
+        }
+        return ls.coffeePots = pots;
       }
-      return ls.coffeePots = pots;
     });
   };
 
@@ -95,7 +100,6 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
-    ls.removeItem('coffeePots');
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
     }
@@ -110,6 +114,13 @@
     }
     if (ls.first_bus_active_lines === void 0) {
       ls.first_bus_active_lines = JSON.stringify([5, 22]);
+      ls.first_bus = 16011333;
+      ls.first_bus_name = 'Gløshaugen Nord';
+      ls.first_bus_direction = 'til byen';
+      ls.second_bus = 16010333;
+      ls.second_bus_name = 'Gløshaugen Nord';
+      ls.second_bus_direction = 'fra byen';
+      ls.second_bus_active_lines = JSON.stringify([5, 22]);
     }
     if (ls.first_bus_inactive_lines === void 0) {
       ls.first_bus_inactive_lines = JSON.stringify([169]);
