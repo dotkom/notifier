@@ -18,7 +18,7 @@ var AJAX_TIMEOUT = 5000;
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_QUICK = 3000; // 3s, fix it quickly when something has gone wrong
-var PAGE_LOOP = 20000; // every 20th second
+var PAGE_LOOP = 10000; // every 10th second
 
 // Update stuff at every X intervals
 var UPDATE_OFFICE_INTERVAL = 1; // recommended: 1
