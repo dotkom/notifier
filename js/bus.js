@@ -192,9 +192,7 @@ var Bus = {
       var scheduled = departures[i]['scheduledDepartureTime'];
       var isRealtime = departures[i]['isRealtimeData'];
       var destination = departures[i]['destination'].trim();
-      if (destination.indexOf('Munkegata') != -1 || destination.indexOf('Dronningens gt') != -1) {
-        destination = "Sentrum";
-      }
+      destination = Bus.prettifyDestination(destination);
 
       // Add destination
       lines['destination'].push(line + ' ' + destination);
@@ -242,7 +240,7 @@ var Bus = {
   },
 
   parseForFavoriteLines: function(json, favoriteLines, callback) {
-
+    
     // Create a map with an array of departures for each bus line
     var lines = {};
     lines['destination'] = [];
@@ -267,9 +265,7 @@ var Bus = {
         var scheduled = departures[i]['scheduledDepartureTime'];
         var isRealtime = departures[i]['isRealtimeData'];
         var destination = departures[i]['destination'].trim();
-        if (destination.indexOf('Munkegata') != -1 || destination.indexOf('Dronningens gt') != -1) {
-          destination = "Sentrum";
-        }
+        destination = Bus.prettifyDestination(destination);
 
         // Add destination
         lines['destination'].push(line + ' ' + destination);
@@ -351,9 +347,7 @@ var Bus = {
           var scheduled = departures[i]['scheduledDepartureTime'];
           var isRealtime = departures[i]['isRealtimeData'];
           var destination = departures[i]['destination'].trim();
-          if (destination.indexOf('Munkegata') != -1 || destination.indexOf('Dronningens gt') != -1) {
-            destination = "Sentrum";
-          }
+          destination = Bus.prettifyDestination(destination);
 
           // Set destination
           if (lines[line]['destination'] == undefined) {
@@ -408,6 +402,17 @@ var Bus = {
     //   },
     // }
     callback(lines);
+  },
+
+  prettifyDestination: function(destination) {
+    if (destination.indexOf('Munkegata') != -1 || destination.indexOf('Dronningens gt') != -1) {
+      destination = "Sentrum";
+    }
+    // Quick hack for annyoingly long destination name "Lohove snuplass"
+    if (destination.indexOf('Lohove snuplass') != -1) {
+      destination = "Lohove";
+    }
+    return destination;
   },
 
 }
