@@ -18,13 +18,13 @@ var AJAX_TIMEOUT = 5000;
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_QUICK = 3000; // 3s, fix it quickly when something has gone wrong
-var PAGE_LOOP = 20000; // every 20th second
+var PAGE_LOOP = 10000; // every 10th second
 
 // Update stuff at every X intervals
 var UPDATE_OFFICE_INTERVAL = 1; // recommended: 1
 var UPDATE_SERVANT_INTERVAL = 10; // recommended: 10
 var UPDATE_MEETINGS_INTERVAL = 10; // recommended: 10
-var UPDATE_COFFEE_INTERVAL = 10; // recommended: 1
+var UPDATE_COFFEE_INTERVAL = 1; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 30; // recommended: 30
 var UPDATE_BUS_INTERVAL = 1; // recommended: 1
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
