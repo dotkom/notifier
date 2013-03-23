@@ -510,6 +510,20 @@
     var html, text;
     if (DEBUG) {
       $('#debug_links').show();
+      $('#open_dinner_feeds').click(function() {
+        console.log('Opening SiTs RSS feeds...');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=38798');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=36441');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=40227');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=36444');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=36453');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=31681');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=36456');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=38753');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=36447');
+        Browser.openTab('https://www.sit.no/rss.ap?thisId=38910');
+        return Browser.openTab('https://www.sit.no/rss.ap?thisId=36450');
+      });
     }
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
