@@ -10,6 +10,8 @@ var Hours = {
   msgMalformedHours: '- Galt format på åpningstider',
   
   debug: 0, // General debugging
+  debugDay: 0, // Whether or not to debug a particular day
+  debugThisDay: '1', // Number corresponding to day of week, 0 is sunday
   debugText: 0, // Deep debugging of a specific string, insert below
   debugThisText: 'Mandag- Torsdag 10.00 -17.30\nFredag 08.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugText must be true
   // debugThisText is expected to be pre-stripped of JSON and HTML, otherwise intact
@@ -18,7 +20,6 @@ var Hours = {
     'administrasjon': 2379,
     'dmmh': 2534,
     'dragvoll': 1593,
-    'dragvoll idrettssenter': 2517,
     'elektro': 2518,
     'hangaren': 2519,
     'kalvskinnet': 2529,
@@ -37,6 +38,7 @@ var Hours = {
     'sito dragvoll': 2602,
     'sito realfag': 2522,
     'sito stripa': 2523,
+    'idretts. dragvoll': 2517,
   },
 
   get: function (cantina, callback) {
@@ -89,6 +91,8 @@ var Hours = {
 
   findTodaysHours: function(allHours) {
     var day = new Date().getDay();
+    if (this.debugDay)
+      day = this.debugThisDay;
     var pieces = allHours.split('\n');
     if (this.debugText) {
       return '- ' + pieces[0] + '<br />- ' + pieces[1];
@@ -117,16 +121,20 @@ var Hours = {
   },
 
   prettifyTodaysHours: function(todays) {
+    // All en-dashes and em-dashes to regular dashes
+    todays = todays.replace(/\u2013|\u2014/gm, '-');
     // All dots to colons
     todays = todays.replace(/\./gm,':');
+    // Add colons where missing 1600 -> 16:00
+    todays = todays.replace(/(\d\d)(\d\d)/gm, '$1:$2');
     // Remove unnecessarily specific time info 10:00 -> 10
     todays = todays.replace(/:00/gm, '');
     // Trim unnecessary zero in time 08 -> 8
     todays = todays.replace(/0(\d)/gm, '$1');
     // Remove colon after day names
     todays = todays.replace(/: /gm, ' ');
-    // Change '-' between days to 'til'
-    todays = todays.replace(/(dag) ?- ?([a-zA-Z])/gm, "$1" + " til " + "$2");
+    // Change any dash or the likes between days to 'til'
+    todays = todays.replace(/(dag) ?. ?([a-zA-ZæøåÆØÅ]+dag)/gm, "$1" + " til " + "$2");
     // Add a space if needed, e.g. "10- 16:30" -> "10 - 16:30"
     todays = todays.replace(/(\d) ?- ?(\d)/gm, "$1" + " - " + "$2");
     // Only first letter should be capitalized
