@@ -470,7 +470,6 @@ $ ->
   if DEBUG
     $('#debug_links').show()
     $('button.feed').click ->
-      console.log 'lolwat'
       Browser.openTab $(this).attr 'data'
   
   # Setting the timeout for all AJAX and JSON requests

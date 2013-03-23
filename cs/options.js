@@ -511,7 +511,6 @@
     if (DEBUG) {
       $('#debug_links').show();
       $('button.feed').click(function() {
-        console.log('lolwat');
         return Browser.openTab($(this).attr('data'));
       });
     }
