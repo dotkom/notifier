@@ -5,7 +5,7 @@ var Hours = {
   // curl --data "diner=2532" https://www.sit.no/ajaxdiner/get
 
   api: 'https://www.sit.no/ajaxdiner/get',
-  msgClosed: '- Kantinen er nok stengt',
+  msgClosed: '- Det er nok stengt',
   msgConnectionError: '- Frakoblet fra sit.no/ajax',
   msgMalformedHours: '- Galt format på åpningstider',
   
