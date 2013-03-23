@@ -510,7 +510,7 @@
     var html, text;
     if (DEBUG) {
       $('#debug_links').show();
-      $('button.feed').click(function() {
+      $('button.debug').click(function() {
         return Browser.openTab($(this).attr('data'));
       });
     }

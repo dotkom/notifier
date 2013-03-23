@@ -350,18 +350,17 @@ header #notification .saved {
       0 0 40px #011b36,
       0 0 40px #011b36;
 }
-/* Debug links in the the top right corner, only shown in debug mode */
+/* Debug toolbox in the the top right corner, only shown in debug mode */
 #debug_links {
   display: none;
   position: fixed;
   top: 10pt;
   right: 10pt;
   text-align: right;
-  font-weight: bold;
 }
-#debug_links a {
-  color: white;
-  text-decoration: underline;
+#debug_links button {
+  /* nothing here yet */
+
 }
 /* The pageflip at the bottom */
 #pageflipbg {
