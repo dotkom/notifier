@@ -200,7 +200,7 @@ var Cantina = {
       dinnerObjects.forEach( function(dinner) {
         var text = dinner.text;
 
-        // Extract all food flags first
+        // Extract any food flags first
         dinner.flags = self.getFoodFlags(text);
 
         // If it's a message (dinner without a price) we'll just trim it
@@ -248,6 +248,8 @@ var Cantina = {
     }
   },
 
+  // The actual Dinner object
+
   dinnerObject: function(text, price, index) {
     this.text = text;
     this.price = price;
@@ -255,23 +257,10 @@ var Cantina = {
     this.flags = null;
   },
 
-  endsWith: function(suffix, str) {
-    // Faster than regex matching
-    return str.indexOf(suffix, str.length - suffix.length) !== -1;
-  },
+  // Welcome to the department of simple functions, HELLO!
 
-  limitNumberOfWords: function(limit, originalText) {
-    if (this.debugText) console.log(limit + '\t\t:: ' + originalText);
-    var text = originalText;
-    if (text.split(' ').length > limit) {
-      text = text.split(' ').splice(0,limit).join(' ');
-      // Surprisingly accurate check to see if we're ending the sentence with a verb
-      // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget"
-      if (text.match(/(te|de|kt|laget)$/))
-        // In that case, return the expected noun as well (heighten limit by 1)
-        return originalText.split(' ').splice(0,limit+1).join(' ');
-    }
-    return text;
+  endsWith: function(suffix, str) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1; // Faster than regex matching
   },
 
   whichDayIsIt: function() {
@@ -336,6 +325,20 @@ var Cantina = {
     // Shortening "Ingen vegetar i dag" to "Ingen vegetar"
     if (text.match(/^(ingen|ikke) vegetar/i) != null)
       text = text.split(' ').splice(0,2).join(' ');
+    return text;
+  },
+
+  limitNumberOfWords: function(limit, originalText) {
+    if (this.debugText) console.log(limit + '\t\t:: ' + originalText);
+    var text = originalText;
+    if (text.split(' ').length > limit) {
+      text = text.split(' ').splice(0,limit).join(' ');
+      // Surprisingly accurate check to see if we're ending the sentence with a verb
+      // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget"
+      if (text.match(/(te|de|kt|laget)$/))
+        // In that case, return the expected noun as well (heighten limit by 1)
+        return originalText.split(' ').splice(0,limit+1).join(' ');
+    }
     return text;
   },
 
