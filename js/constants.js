@@ -25,10 +25,10 @@ var UPDATE_OFFICE_INTERVAL = 1; // recommended: 1
 var UPDATE_SERVANT_INTERVAL = 10; // recommended: 10
 var UPDATE_MEETINGS_INTERVAL = 10; // recommended: 10
 var UPDATE_COFFEE_INTERVAL = 1; // recommended: 1
-var UPDATE_NEWS_INTERVAL = 30; // recommended: 30
-var UPDATE_BUS_INTERVAL = 1; // recommended: 1
+var UPDATE_HOURS_INTERVAL = 60; // recommended: 60
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
-var UPDATE_HOURS_INTERVAL = 1; // recommended: 1
+var UPDATE_BUS_INTERVAL = 1; // recommended: 1
+var UPDATE_NEWS_INTERVAL = 30; // recommended: 30
 
 // OS detection
 var OPERATING_SYSTEM = "Unknown";

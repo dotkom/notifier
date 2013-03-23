@@ -342,7 +342,8 @@ body {
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas li.message {
-  font-style: italic;
+  /*font-style: italic;*/
+
 }
 #container #logo {
   border: 0pt solid #ff0000;

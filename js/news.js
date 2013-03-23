@@ -134,6 +134,8 @@ function parsePost(item) {
 			post.creator = $(this).text();
 		});
 	}
+	// Abbreviate creators middle names if name is very long
+	post.creator = abbreviateMiddleNames(post.creator);
 	
 	// title + description must not exceed 5 lines
 	var line = 50; // conservative estimation
@@ -141,14 +143,29 @@ function parsePost(item) {
 	// double line titles will shorten the description by 1 line
 	if (line <= post.title.length)
 		desclength -= line;
-	// triple line titles will be shortened to double line
-	// if (line*2 <= post.title.length)
-	// 	post.title = post.title.substr(0, line*2) + '...';
 	// shorten description according to desclength
 	if (desclength < post.description.length)
 		post.description = post.description.substr(0, desclength) + '...';
 	
 	return post;
+}
+
+function abbreviateMiddleNames(oldName) {
+	// Abbreviate middle names if name is long
+	if (18 < oldName.length) {
+		var pieces = oldName.split(' ');
+		if (2 < pieces.length) {
+			// Add first name
+			var newName = pieces[0];
+			// Add one letter per middle name
+			for (var i = 1; i < pieces.length - 1; i++)
+				newName += ' ' + pieces[i].charAt(0).toUpperCase() + '.';
+			// Add last name
+			newName += ' ' + pieces[pieces.length-1];
+			return newName;
+		}
+	}
+	return oldName;
 }
 
 function getImageUrlForId(id, callback) {

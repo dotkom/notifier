@@ -467,7 +467,10 @@ fadeInCanvas = ->
 
 # Document ready, go!
 $ ->
-  if DEBUG then $('#debug_links').show()
+  if DEBUG
+    $('#debug_links').show()
+    $('button.debug').click ->
+      Browser.openTab $(this).attr 'data'
   
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup timeout: AJAX_TIMEOUT

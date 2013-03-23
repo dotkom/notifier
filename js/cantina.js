@@ -6,10 +6,14 @@ var Cantina = {
   msgUnsupportedCantina: 'Kantinen støttes ikke',
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
-  debugDinner: 0, // General debugging
-  debugDinnerText: 0, // Deep debugging of dinner strings (even in weekends)
-  debugDinnerString: 'Seirett med ris (G): 36 kroner', // debugDinnerText must be true
-  // Expected format of debugDinnerString: "Seirett med ris (G): 36 kroner" -> "food : price"
+  
+  debug: 0, // General debugging
+  debugDay: 0, // Whether or not to debug a particular day
+  debugThisDay: 'Fredag', // The day in question
+  debugText: 0, // Whether or not to deep debug dinner strings (even in weekends)
+  debugThisText: 'Vårruller. Servert med ris og salat: 1000,-', // debugText must be true
+  // Expected format of debugThisText: "Seirett med ris (G): 8 kroner" -> "food: price"
+  // Note1: Set the price of debugThisText low to show it first cuz the list is sorted by price
 
   // Feeds
   // To single out days use 'https://www.sit.no/rss.ap?thisId=36441&ma=on' - gives 'mandag' alone
@@ -19,12 +23,14 @@ var Cantina = {
     'elektro': 'https://www.sit.no/rss.ap?thisId=40227',
     'hangaren': 'https://www.sit.no/rss.ap?thisId=36444',
     'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453',
-    'kjelhuset': 'https://www.sit.no/rss.ap?thisId=31681',
+    // 'kjelhuset': 'https://www.sit.no/rss.ap?thisId=31681', // Har aldri innhold
     'moholt': 'https://www.sit.no/rss.ap?thisId=36456',
+    // 'mtfs': '...', // Mangler
     'ranheimsveien': 'https://www.sit.no/rss.ap?thisId=38753',
     'realfag': 'https://www.sit.no/rss.ap?thisId=36447',
     'rotvoll': 'https://www.sit.no/rss.ap?thisId=38910',
     'tyholt': 'https://www.sit.no/rss.ap?thisId=36450',
+    // 'øya': '...', // Mangler
   },
 
   // SiTs new format for ajaxing dinner:
@@ -42,8 +48,8 @@ var Cantina = {
       return;
     }
     if (this.feeds[cantina] === undefined) {
-      console.log('ERROR: '+this.msgUnsupportedCantina);
-      callback(this.msgUnsupportedCantina);
+      if (this.debug) console.log('ERROR: '+this.msgUnsupportedCantina);
+      callback('');
       return;
     }
 
@@ -83,6 +89,8 @@ var Cantina = {
       fullWeekDinnerInfo = $.trim(fullWeekDinnerInfo.replace(/[\s\n\r]+/g,' '));
       
       var today = self.whichDayIsIt();
+      if (self.debugDay)
+        today = self.debugThisDay;
       var dinnerForEachDay = fullWeekDinnerInfo.split('<b>');
       var todaysMenu = self.msgClosed;
       var mondaysCantinaMenu = '';
@@ -95,7 +103,7 @@ var Cantina = {
           mondaysCantinaMenu = dinnerForEachDay[dinnerDay];
       }
       // If no dinners for today were found (saturday / sunday)
-      if (todaysMenu === self.msgClosed && !self.debugDinnerText) {
+      if (todaysMenu === self.msgClosed && !self.debugText) {
         callback(self.msgClosed);
         return;
       }
@@ -121,38 +129,27 @@ var Cantina = {
       var indexCount = 0;
       dinnerList.forEach( function(dinner) {
 
-        if (self.debugDinnerText) {
-          dinner = self.debugDinnerString;
+        if (self.debugText && indexCount === 0) {
+          dinner = self.debugThisText;
         }
         
-        // Smiley-time, most likely no price information
-        if (dinner.indexOf(':-)') !== -1 || dinner.indexOf(':)') !== -1) {
-          var descriptions = dinner.split(': ');
-          var dinner = descriptions[0];
-          var price = (descriptions[1] === '' ? null : descriptions[1]);
-          var singleDinner = new self.dinnerObject(dinner, price, indexCount);
-          if (self.debugDinnerText) console.log('WARNING: smileytime: ' + singleDinner.text  + ' @ index ' + singleDinner.index);
-          dinnerObjects.push(singleDinner);
-        }
+        if (dinner.indexOf(': ') !== -1) {
+          var description = dinner.substring(0, dinner.lastIndexOf(': '));
+          var price = dinner.substring(dinner.lastIndexOf(': ') + 2);
 
-        // Find price information
-        else if (dinner.indexOf(':') !== -1) {
-          var description = dinner.split(':')[0];
-          var price = dinner.split(':')[1];
-
-          // if both dinner and price contains a '/' there might be two dinners
-          // lodged into one cell, try to separate the siamese dinners!
+          // If both dinner and price contains a '/' there might be two dinners
+          // Lodged into one cell, try to separate the siamese dinners!
           if ((description.indexOf('/') !== -1) && (price.indexOf('/') !== -1)) {
             var descriptions = description.split('/');
             var prices = price.split('/');
-            if (self.debugDinnerText) console.log('WARNING: multiple dinners in one cell: ' + descriptions + ', ' + prices + ', index: ' + index);
+            if (self.debugText) console.log('WARNING: multiple dinners in one cell: ' + descriptions + ', ' + prices + ', index: ' + index);
             dinnerObjects.push(new self.dinnerObject(descriptions[0], prices[0], indexCount));
             dinnerObjects.push(new self.dinnerObject(descriptions[1], prices[1], indexCount));
           }
 
           else {
             var singleDinner = new self.dinnerObject(description, price, indexCount);
-            if (self.debugDinnerText) console.log(singleDinner.price + ', ' + singleDinner.text  + ', ' + singleDinner.index);
+            if (self.debug) console.log(singleDinner.price + ', ' + singleDinner.text  + ', ' + singleDinner.index);
             dinnerObjects.push(singleDinner);
           }
         }
@@ -161,7 +158,7 @@ var Cantina = {
           callback(self.msgMalformedMenu);
           return;
         }
-        // The dinner.index represents the current dinners index in SiT's dinner lists.
+        // The dinner.index represents the current dinners index in SiT's RSS feeds
         indexCount++;
       });
       
@@ -169,100 +166,122 @@ var Cantina = {
       dinnerObjects.forEach( function(dinner) {
         if (dinner.price !== null) {
           var price = dinner.price;
-          // Remove 'øre' if shown
-          price = price.replace(/((,|[.])00)/g, '');
+          
+          price = price.replace(/((,|[.])00)/g, ''); // Remove 'øre' if shown
+          price = price.trim();
+
           // Two price classes? Choose the cheapest
-          if (price.indexOf('/') !== -1) {
-            var price1 = price.split('/')[0].match(/\d+/g);
-            var price2 = price.split('/')[1].match(/\d+/g);
+          if (price.match(/ |\//) != null) { // Split by space or slash
+            // Find delimiter
+            var delimiter = '/'; // Assume split by slash
+            if (price.indexOf(' ') !== -1)
+              delimiter = ' '; // Use split by space instead
+            // Split and compare prices
+            var price1 = price.split(delimiter)[0].match(/\d+/g);
+            var price2 = price.split(delimiter)[1].match(/\d+/g);
             price = ( Number(price1) < Number(price2) ? price1 : price2 );
-            if (self.debugDinner) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
+            if (self.debug) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
           }
           else {
-            price = price.match(/\d+/g); // Find the number, toss the rest
-            if (self.debugDinner) console.log('Price from "'+dinner.price+'" to "'+price+'"');
+            price = price.match(/\d+/g);
+            if (self.debug) console.log('Price from "'+dinner.price+'" to "'+price+'"');
           }
           dinner.price = price;
         }
       });
       
-      // IF no dinner info is found at all, check for unique message at monday
+      // If no dinner info is found at all, check for unique message at monday
       // WARNING: recursion going on!
       if (dinnerObjects.length === 0 && mondaysCantinaMenu !== null) {
-        if (self.debugDinner) console.log('WARNING: no dinner menu found today, checking monday');
+        if (self.debug) console.log('WARNING: no dinner menu found today, checking monday');
         self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
         return;
       }
-      // IF only one or two dinner object are found keep them entirely, - unless we're debugging texts
-      else if ((dinnerObjects.length === 1 || dinnerObjects.length === 2) && !self.debugDinnerText) {
-        // in other words: do nothing!
-        if (self.debugDinner) console.log('only one or two dinner menus found, let\'s keep them intact');
-        // except of course for a little trimming and removing parentheses
-        dinnerObjects.forEach( function(dinner) {
-          dinner.text = dinner.text.trim();
-          dinner.text = self.removePartsAfter(['('], dinner.text);
-        });
-      }
-      // Shorten dinner descriptions
-      else {
-        dinnerObjects.forEach( function(dinner) {
-          var text = dinner.text;
 
-          // Unless it's a message (dinner without a price) we'll shorten it
-          if (dinner.price != undefined) {
-            text = self.removePartsAfter(['.','(','serveres','Serveres'], text); // don't use: '/', ','
-            text = text.trim();
+      // Prettify dinner descriptions, this is where the real magic happens
+      dinnerObjects.forEach( function(dinner) {
+        var text = dinner.text;
+
+        // Extract any food flags first
+        dinner.flags = self.getFoodFlags(text);
+
+        // If it's a message (dinner without a price) we'll just trim it
+        if (dinner.price == null) {
+          // Even messages (like " God sommer ") needs trimming
+          text = text.trim();
+        }
+        else {
+          text = self.removeFoodFlags(text);
+          text = self.addMissingSpaces(text);
+          text = self.shortenFoodServedWith(text);
+          text = self.shortenFoodWithATasteOf(text);
+          text = self.removeFoodHomeMade(text);
+          text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
+          text = text.trim();
           
-            // If current item is NOT about the buffet, continue with:
-            if (text.toLowerCase().indexOf('buffet') === -1) {
-              text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-              text = self.removeLastWords([' i',' &',' og',' med', ' m'], text);
-              text = self.removePunctuationAtEndOfLine(text);
-              text = self.shortenVeggieWarning(text);
-              text = text.trim();
-            }
-            if (self.debugDinner) console.log('Text from: "'+dinner.text+'"\nText to: "'+text+'"');
-            dinner.text = text;
+          // If current item is NOT about the buffet, continue with:
+          if (text.toLowerCase().indexOf('buffet') === -1) {
+            text = self.limitNumberOfWords(self.dinnerWordLimit, text);
+            text = self.removeLastWords([' i',' &',' og',' med', ' m'], text);
+            text = self.removePunctuationAtEndOfLine(text);
+            text = self.shortenVeggieWarning(text);
+            text = text.trim();
           }
-          else {
-            // Even messages (like " God sommer ") needs trimming
-            dinner.text = text.trim();
-          }
+        }
+        if (self.debug) console.log('\nFrom\t"'+dinner.text+'"\nTo\t\t"'+text+'"\n');
+        // Add flags
+        if (dinner.flags !== null)
+          text += ' ' + dinner.flags;
+        // Save
+        dinner.text = text;
+      });
+      
+      // Turn prices into Number vars and sort dinnerobjects by price
+      if (dinnerObjects[0].price !== null) {
+        dinnerObjects.sort(function(a,b){
+          a.price = Number(a.price);
+          b.price = Number(b.price);
+          return(a.price>b.price)?1:((b.price>a.price)?-1:0);
         });
       }
-      
-      // Sort dinnerobjects by price
-      if (dinnerObjects[0].price !== null)
-        dinnerObjects.sort(function(a,b){return(a.price>b.price)?1:((b.price>a.price)?-1:0);});
       
       callback(dinnerObjects);
     }
     catch (err) {
-      if (DEBUG) console.log('ERROR: problems during deep parsing of todays dinner');
+      if (DEBUG) console.log('ERROR: problems during deep parsing of todays dinners');
       callback(self.msgMalformedMenu);
     }
   },
+
+  // The actual Dinner object
 
   dinnerObject: function(text, price, index) {
     this.text = text;
     this.price = price;
     this.index = index;
+    this.flags = null;
   },
+
+  // Welcome to the department of simple functions, HELLO!
 
   endsWith: function(suffix, str) {
-    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    return str.indexOf(suffix, str.length - suffix.length) !== -1; // Faster than regex matching
   },
 
-  limitNumberOfWords: function(limit, originalText) {
-    if (this.debugDinnerText) console.log(limit + ' :: ' + originalText);
-    var text = originalText;
-    if (text.split(' ').length > limit) {
-      text = text.split(' ').splice(0,limit).join(' ');
-      // Surprisingly accurate check to see if we're ending the sentence with a verb
-      // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt"
-      if (this.endsWith('te', text) || this.endsWith('de', text) || this.endsWith('kt', text))
-        // In that case, return the noun as well (heighten limit by 1)
-        return originalText.split(' ').splice(0,limit+1).join(' ');
+  whichDayIsIt: function() {
+    var dayNames = ["Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag"];
+    var today = dayNames[new Date().getDay()];
+    return today;
+  },
+
+  // Welcome to the department of key removal, how may we help you?
+
+  removePartsAfter: function(keys, text) {
+    var self = this;
+    for (key in keys) {
+      if (self.debugText) console.log(keys[key] + (keys[key].length<4?'\t\t':'\t') + ':: ' + text);
+      if (text.indexOf(keys[key]) !== -1)
+        text = text.split(keys[key])[0];
     }
     return text;
   },
@@ -270,7 +289,7 @@ var Cantina = {
   removeLastWords: function(keys, text) {
     var self = this;
     for (key in keys) {
-      if (self.debugDinnerText) console.log(keys[key] + ' :: ' + text);
+      if (self.debugText) console.log(keys[key] + (keys[key].length<4?'\t\t':'\t') + ':: ' + text);
       if (self.endsWith(keys[key], text)) {
         var pieces = text.split(' ');
         text = pieces.splice(0,pieces.length-1).join(' ');
@@ -279,33 +298,77 @@ var Cantina = {
     return text;
   },
 
-  removePartsAfter: function(keys, text) {
-    var self = this;
-    for (key in keys) {
-      if (self.debugDinnerText) console.log(keys[key] + ' :: ' + text);
-      if (text.indexOf(keys[key]) !== -1)
-        text = text.split(keys[key])[0];
-    }
-    return text;
+  // Welcome to the department of regular expressions, how may we (help|do) you\?
+
+  getFoodFlags: function(text) {
+    var matches = text.match(/\b[VGL]+(?![æøåÆØÅ])\b/g);
+    return (matches !== null ? '(' + matches.join('') + ')' : null);
+    // TODO: Both getFoodFlags and removeFoodFlags suffer from a lacking implementation
+    // of the regex flag 'word boundary'. Add the flag /i to both and make sure they
+    // can handle æøåÆØÅ on both sides of food flags, especially in words like
+    // Vårruller, Blomkål, etc. For now these functions rely on the fact that flags
+    // are always shown in uppercase.
+  },
+
+  removeFoodFlags: function(text) {
+    if (this.debugText) console.log('Flags\t:: ' + text);
+    // Removes food flags like V,G,L in all known forms. Seriously. All known forms. Don't.
+    return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/g, '');
+    // Note: æøåÆØÅ is wrongly matched as word boundary, bug report has been submitted to
+    // the Chromium team. A case sensitive fix is implemented via negative lookahead.
+  },
+
+  addMissingSpaces: function(text) {
+    if (this.debugText) console.log('Spaces\t:: ' + text);
+    // Add spaces where missing, like "smør,brød,sopp" to "smør, brød, sopp"
+    return text.replace(/([a-zA-Z0-9æøåÆØÅ])(,)([a-zA-Z0-9æøåÆØÅ])/gi, '$1, $3');
+  },
+
+  shortenFoodServedWith: function(text) {
+    if (this.debugText) console.log('Served\t:: ' + text);
+    // Replace wordings like 'servert med' to just 'med'
+    return text.replace(/[,|\.]?\s?(ser(e)?ver\w*(t|es)?)?\s?med\s/gi, ' med ');
+  },
+
+  shortenFoodWithATasteOf: function(text) {
+    if (this.debugText) console.log('TasteOf\t:: ' + text);
+    // Replace wordings like 'med en liten smak av' to just 'med'
+    return text.replace(/[,|\.]?\s?(med)?\s?(en|et)?\s?(liten?)?\s?(smak|hint|dæsj|tøtsj)\s?(av)?\s/gi, ' med ');
+  },
+
+  removeFoodHomeMade: function(text) {
+    if (this.debugText) console.log('Home\t:: ' + text);
+    // Replace wordings like 'Hjemmelagde kjøttkaker' to just 'Kjøttkaker'
+    text = text.replace(/^\s?hjemmelag(et|de)\s/gi, '');
+    return text.charAt(0).toUpperCase() + text.slice(1);
   },
 
   removePunctuationAtEndOfLine: function(text) {
-    if (this.debugDinnerText) console.log(',;.- :: ' + text);
+    if (this.debugText) console.log(',;.-\t:: ' + text);
+    // Removing use of punctuation at EOL in lists, like: "39,- Pasta bolognaise."
     return text.replace(/[,;.-]$/gm, '');
   },
 
   shortenVeggieWarning: function(text) {
-    if (this.debugDinnerText) console.log('V :: ' + text);
-    if (text.toLowerCase().indexOf('ingen vegetar') !== -1 || text.toLowerCase().indexOf('ikke vegetar') !== -1)
+    if (this.debugText) console.log('Vegwarn\t:: ' + text);
+    // Shortening "Ingen vegetar i dag" to "Ingen vegetar"
+    if (text.match(/^(ingen|ikke) vegetar/i) != null)
       text = text.split(' ').splice(0,2).join(' ');
     return text;
   },
 
-  whichDayIsIt: function() {
-    var dayNames = ["Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag"];
-    var today = dayNames[new Date().getDay()];
-    localStorage.today = today;
-    return today;
+  limitNumberOfWords: function(limit, originalText) {
+    if (this.debugText) console.log(limit + '\t\t:: ' + originalText);
+    var text = originalText;
+    if (text.split(' ').length > limit) {
+      text = text.split(' ').splice(0,limit).join(' ');
+      // Surprisingly accurate check to see if we're ending the sentence with a verb
+      // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget"
+      if (text.match(/(te|de|kt|laget)$/))
+        // In that case, return the expected noun as well (heighten limit by 1)
+        return originalText.split(' ').splice(0,limit+1).join(' ');
+    }
+    return text;
   },
 
 }

@@ -510,6 +510,9 @@
     var html, text;
     if (DEBUG) {
       $('#debug_links').show();
+      $('button.debug').click(function() {
+        return Browser.openTab($(this).attr('data'));
+      });
     }
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
