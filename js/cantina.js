@@ -8,8 +8,8 @@ var Cantina = {
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
   
   debug: 0, // General debugging
-  debugDay: 1, // Whether or not to debug a particular day
-  debugThisDay: 'Torsdag', // The day in question
+  debugDay: 0, // Whether or not to debug a particular day
+  debugThisDay: 'Fredag', // The day in question
   debugText: 0, // Whether or not to deep debug dinner strings (even in weekends)
   debugThisText: 'Vårruller. Servert med ris og salat: 1000,-', // debugText must be true
   // Expected format of debugThisText: "Seirett med ris (G): 8 kroner" -> "food: price"
@@ -210,7 +210,10 @@ var Cantina = {
         }
         else {
           text = self.removeFoodFlags(text);
+          text = self.addMissingSpaces(text);
           text = self.shortenFoodServedWith(text);
+          text = self.shortenFoodWithATasteOf(text);
+          text = self.removeFoodHomeMade(text);
           text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
           text = text.trim();
           
@@ -296,22 +299,46 @@ var Cantina = {
   // Welcome to the department of regular expressions, how may we (help|do) you\?
 
   getFoodFlags: function(text) {
-    var matches = text.match(/\b[VGL]+(?![æøåÆØÅ])\b/gi);
+    var matches = text.match(/\b[VGL]+(?![æøåÆØÅ])\b/g);
     return (matches !== null ? '(' + matches.join('') + ')' : null);
+    // TODO: Both getFoodFlags and removeFoodFlags suffer from a lacking implementation
+    // of the regex flag 'word boundary'. Add the flag /i to both and make sure they
+    // can handle æøåÆØÅ on both sides of food flags, especially in words like
+    // Vårruller, Blomkål, etc. For now these functions rely on the fact that flags
+    // are always shown in uppercase.
   },
 
   removeFoodFlags: function(text) {
     if (this.debugText) console.log('Flags\t:: ' + text);
     // Removes food flags like V,G,L in all known forms. Seriously. All known forms. Don't.
-    return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/gi, '');
+    return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/g, '');
     // Note: æøåÆØÅ is wrongly matched as word boundary, bug report has been submitted to
-    // the Chromium team. Fix (case sensitive) is implemented via negative lookahead.
+    // the Chromium team. A case sensitive fix is implemented via negative lookahead.
+  },
+
+  addMissingSpaces: function(text) {
+    if (this.debugText) console.log('Spaces\t:: ' + text);
+    // Add spaces where missing, like "smør,brød,sopp" to "smør, brød, sopp"
+    return text.replace(/([a-zA-Z0-9æøåÆØÅ])(,)([a-zA-Z0-9æøåÆØÅ])/gi, '$1, $3');
   },
 
   shortenFoodServedWith: function(text) {
     if (this.debugText) console.log('Served\t:: ' + text);
     // Replace wordings like 'servert med' to just 'med'
     return text.replace(/[,|\.]?\s?(ser(e)?ver\w*(t|es)?)?\s?med\s/gi, ' med ');
+  },
+
+  shortenFoodWithATasteOf: function(text) {
+    if (this.debugText) console.log('TasteOf\t:: ' + text);
+    // Replace wordings like 'med en liten smak av' to just 'med'
+    return text.replace(/[,|\.]?\s?(med)?\s?(en|et)?\s?(liten?)?\s?(smak|hint|dæsj|tøtsj)\s?(av)?\s/gi, ' med ');
+  },
+
+  removeFoodHomeMade: function(text) {
+    if (this.debugText) console.log('Home\t:: ' + text);
+    // Replace wordings like 'Hjemmelagde kjøttkaker' to just 'Kjøttkaker'
+    text = text.replace(/^\s?hjemmelag(et|de)\s/gi, '');
+    return text.charAt(0).toUpperCase() + text.slice(1);
   },
 
   removePunctuationAtEndOfLine: function(text) {
