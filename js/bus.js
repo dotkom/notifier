@@ -1,7 +1,7 @@
 var Bus = {
   stops: {},
-  realtimeApi: 'http://api.visuweb.no/bybussen/1.0/Departure/Realtime/',
-  routeApi: 'http://api.visuweb.no/bybussen/1.0/Departure/Route/',
+  realtimeApi: 'http://api.visuweb.no/bybussen/3.0/Departure/Realtime/',
+  routeApi: 'http://api.visuweb.no/bybussen/3.0/Departure/Route/',
   apiKey: '/f6975f3c1a3d838dc69724b9445b3466',
   stopNames: undefined,
 
@@ -188,9 +188,9 @@ var Bus = {
         count++;
 
       var line = departures[i]['line'];
-      var realtime = departures[i]['registeredDepartureTime'];
-      var scheduled = departures[i]['scheduledDepartureTime'];
-      var isRealtime = departures[i]['isRealtimeData'];
+      var realtime = departures[i]['regTime'];
+      var scheduled = departures[i]['schedTime'];
+      var isRealtime = departures[i]['isRealtime'];
       var destination = departures[i]['destination'].trim();
       destination = Bus.prettifyDestination(destination);
 
@@ -261,9 +261,9 @@ var Bus = {
       var line = departures[i]['line'];
       if (favoriteLines.indexOf(Number(line)) != -1) {
         
-        var realtime = departures[i]['registeredDepartureTime'];
-        var scheduled = departures[i]['scheduledDepartureTime'];
-        var isRealtime = departures[i]['isRealtimeData'];
+        var realtime = departures[i]['regTime'];
+        var scheduled = departures[i]['schedTime'];
+        var isRealtime = departures[i]['isRealtime'];
         var destination = departures[i]['destination'].trim();
         destination = Bus.prettifyDestination(destination);
 
@@ -343,9 +343,9 @@ var Bus = {
 
         // Parse the bus line object
         if (notDoneWithThisLine) {
-          var realtime = departures[i]['registeredDepartureTime'];
-          var scheduled = departures[i]['scheduledDepartureTime'];
-          var isRealtime = departures[i]['isRealtimeData'];
+          var realtime = departures[i]['regTime'];
+          var scheduled = departures[i]['schedTime'];
+          var isRealtime = departures[i]['isRealtime'];
           var destination = departures[i]['destination'].trim();
           destination = Bus.prettifyDestination(destination);
 
