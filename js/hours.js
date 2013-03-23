@@ -122,21 +122,21 @@ var Hours = {
 
   prettifyTodaysHours: function(todays) {
     // All en-dashes and em-dashes to regular dashes
-    todays = todays.replace(/\u2013|\u2014/gm, '-');
+    todays = todays.replace(/\u2013|\u2014/g, '-');
     // All dots to colons
-    todays = todays.replace(/\./gm,':');
+    todays = todays.replace(/\./g,':');
     // Add colons where missing 1600 -> 16:00
-    todays = todays.replace(/(\d\d)(\d\d)/gm, '$1:$2');
+    todays = todays.replace(/(\d\d)(\d\d)/g, '$1:$2');
     // Remove unnecessarily specific time info 10:00 -> 10
-    todays = todays.replace(/:00/gm, '');
+    todays = todays.replace(/:00/g, '');
     // Trim unnecessary zero in time 08 -> 8
-    todays = todays.replace(/0(\d)/gm, '$1');
+    todays = todays.replace(/0(\d)/g, '$1');
     // Remove colon after day names
-    todays = todays.replace(/: /gm, ' ');
+    todays = todays.replace(/: /g, ' ');
     // Change any dash or the likes between days to 'til'
-    todays = todays.replace(/(dag) ?. ?([a-zA-ZæøåÆØÅ]+dag)/gm, "$1" + " til " + "$2");
+    todays = todays.replace(/(dag) ?. ?([a-zA-ZæøåÆØÅ]+dag)/g, '$1 til $2');
     // Add a space if needed, e.g. "10- 16:30" -> "10 - 16:30"
-    todays = todays.replace(/(\d) ?- ?(\d)/gm, "$1" + " - " + "$2");
+    todays = todays.replace(/(\d) ?- ?(\d)/g, '$1 - $2');
     // Only first letter should be capitalized
     todays = this.capitalizeFirstLetterOnly(todays);
     return todays;
