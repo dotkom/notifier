@@ -8,26 +8,28 @@ var Hours = {
   msgClosed: '- Kantinen er nok stengt',
   msgConnectionError: '- Frakoblet fra sit.no/ajax',
   msgMalformedHours: '- Galt format på åpningstider',
-  debugHours: 0, // General debugging
-  debugHoursText: 0, // Deep debugging of a specific string, insert below
-  debugHoursString: 'Mandag- Torsdag 10.00 -17.30\nFredag 08.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugHoursText must be true
-  // debugHoursString is expected to be pre-stripped of JSON and HTML, otherwise intact
+  
+  debug: 0, // General debugging
+  debugText: 0, // Deep debugging of a specific string, insert below
+  debugThisText: 'Mandag- Torsdag 10.00 -17.30\nFredag 08.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugText must be true
+  // debugThisText is expected to be pre-stripped of JSON and HTML, otherwise intact
+  
   cantinas: {
     'administrasjon': 2379,
     'dmmh': 2534,
-    'dragvoll': 1593, // got dinner info
+    'dragvoll': 1593,
     'dragvoll idrettssenter': 2517,
     'elektro': 2518,
-    'hangaren': 2519, // got dinner info
-    'kalvskinnet': 2529, // got dinner info
+    'hangaren': 2519,
+    'kalvskinnet': 2529,
     'kjelhuset': 2520,
-    'moholt': 2530, // got dinner info
+    'moholt': 2530,
     'mtfs': 2526,
     'ranheimsveien': 2531,
-    'realfag': 2521, // got dinner info
+    'realfag': 2521,
     'rotvoll': 2532,
     'tunga': 2533,
-    'tyholt': 2525, // got dinner info
+    'tyholt': 2525,
     'øya': 2527,
     'storkiosk dragvoll': 2393,
     'storkiosk gløshaugen': 2524,
@@ -43,7 +45,7 @@ var Hours = {
       return;
     }
 
-    if (this.debugHoursText) console.log('NOTE: Currently debugging a particular string');
+    if (this.debugText) console.log('NOTE: Currently debugging a particular string');
 
     cantina = cantina.toLowerCase();
     var postString = 'diner='+this.cantinas[cantina];
@@ -55,22 +57,22 @@ var Hours = {
       url: self.api,
       dataType: 'json',
       success: function(json) {
-        if (self.debugHours) console.log('Untreated JSON:', json);
+        if (self.debug) console.log('Untreated JSON:', json);
 
         // Strip away JSON and HTML
         allHours = self.stripJsonAndHtml(json);
-        if (self.debugHours) console.log('Entire string:', allHours);
+        if (self.debug) console.log('Entire string:', allHours);
 
         // Debugging a particular string now?
-        if (self.debugHoursText) allHours = self.debugHoursString;
+        if (self.debugText) allHours = self.debugThisText;
 
         // Find todays hours
         todaysHours = self.findTodaysHours(allHours);
-        if (self.debugHours) console.log('Todays hours:', todaysHours);
+        if (self.debug) console.log('Todays hours:', todaysHours);
 
         // Prettify todays hours
         prettyHours = self.prettifyTodaysHours(todaysHours);
-        if (self.debugHours) console.log('Pretty hours:', prettyHours);
+        if (self.debug) console.log('Pretty hours:', prettyHours);
 
         callback(prettyHours);
       },
@@ -88,7 +90,7 @@ var Hours = {
   findTodaysHours: function(allHours) {
     var day = new Date().getDay();
     var pieces = allHours.split('\n');
-    if (this.debugHoursText) {
+    if (this.debugText) {
       return '- ' + pieces[0] + '<br />- ' + pieces[1];
     }
     // Monday - Thursday on the first line
