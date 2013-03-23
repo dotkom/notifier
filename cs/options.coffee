@@ -469,19 +469,9 @@ fadeInCanvas = ->
 $ ->
   if DEBUG
     $('#debug_links').show()
-    $('#open_dinner_feeds').click ->
-      console.log 'Opening SiTs RSS feeds...'
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=38798' # dmmh
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=36441' # dragvoll
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=40227' # elektro
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=36444' # hangaren
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=36453' # kalvskinnet
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=31681' # kjelhuset
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=36456' # moholt
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=38753' # ranheimsveien
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=36447' # realfag
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=38910' # rotvoll
-      Browser.openTab 'https://www.sit.no/rss.ap?thisId=36450' # tyholt
+    $('button.feed').click ->
+      console.log 'lolwat'
+      Browser.openTab $(this).attr 'data'
   
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup timeout: AJAX_TIMEOUT
