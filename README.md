@@ -1,6 +1,12 @@
 # Online Notifier
 
-This is a Chrome/Opera extension for the student organization Online at NTNU, see http://online.ntnu.no
+This is a Chrome/Opera extension from the student organization Online at NTNU, see http://online.ntnu.no
+
+# Terms of use
+
+Use this program entirely on your own risk. We do not take any responsibility for consequences that might arise from using this program in any way imaginable.
+
+# Features overview
 
 Features
 

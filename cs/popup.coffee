@@ -62,7 +62,7 @@ listDinners = (menu) ->
         dinner.price = dinner.price + ',- '
         dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>'
       else
-        dinnerlist += '<li class="message" id="' + dinner.index + '">- "' + dinner.text + '"</li>'
+        dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist
 
 clickDinnerLink = (cssSelector) ->
