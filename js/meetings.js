@@ -1,8 +1,11 @@
 var Meetings = {
   api: 'https://online.ntnu.no/service_static/meeting_plan',
   msgError: 'Frakoblet fra møteplan',
-  debugMeetings: 0,
-  debugMeetingsString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 dotKom',
+  
+  debugApi: 1,
+  debugThisApi: 'https://online.ntnu.no/service_static/dev_meeting_plan',
+  debugString: 0,
+  debugThisString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 dotKom',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -13,12 +16,12 @@ var Meetings = {
     // Receives the meeting plan for today
     var self = this;
     $.ajax({
-      url: self.api,
+      url: (self.debugApi ? self.debugThisApi : self.api),
       success: function(meetings) {
 
         // If meeting debugging is enabled
-        if (self.debugMeetings) {
-          meetings = self.debugMeetingsString;
+        if (self.debugString) {
+          meetings = self.debugThisString;
         }
 
         meetings = meetings.trim()
