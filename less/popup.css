@@ -186,7 +186,8 @@ body {
         0 0 70px #011b36;
 }
 #container #cantinas li.message {
-  font-style: italic;
+  /*font-style: italic;*/
+
 }
 #container #bus {
   border: 0pt solid #ff0000;
