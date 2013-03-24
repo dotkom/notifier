@@ -144,7 +144,7 @@ var Hours = {
 
   capitalizeFirstLetterOnly: function(string) {
     string = string.toLowerCase();
-    var regex = /[a-z]/;
+    var regex = /[a-zæøå]/;
     var firstLetter = String(string.match(regex)).toUpperCase();
     return string.replace(regex, firstLetter);
   },
