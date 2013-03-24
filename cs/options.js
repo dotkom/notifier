@@ -564,7 +564,7 @@
     slideFavoriteBusLines();
     Stops.load(function(result) {
       if (DEBUG) {
-        return console.log('Loading lists:', result);
+        return console.log('Loading bus lists:', result);
       }
     });
     if (BROWSER === 'Opera') {

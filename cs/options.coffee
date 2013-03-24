@@ -536,8 +536,9 @@ $ ->
   slideFavoriteBusLines()
 
   # Load lists of bus stops
+  # Through this call the Stops List will auto-upate if it's old
   Stops.load (result) ->
-    if DEBUG then console.log 'Loading lists:', result
+    if DEBUG then console.log 'Loading bus lists:', result
 
   # If Opera, disable and redesign features related to desktop notifications
   if BROWSER is 'Opera'
