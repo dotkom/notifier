@@ -3,13 +3,13 @@ var Stops = {
   apiKey: '/f6975f3c1a3d838dc69724b9445b3466',
   msgDisconnected: 'Frakoblet fra api.visuweb.no',
   msgKeyExpired: EXTENSION_NICK + ' trenger oppdatering',
-  msgParsingCompleted: 'Busslister lastet inn',
-  msgParsingStopsSuccess: 'Listen med busstopp er oppdatert',
+  msgParsingCompleted: 'Busslister lastet fra localstorage',
+  msgParsingStopsSuccess: 'Busslister lastet fra API',
   msgParsingStopsFailed: 'Klarte ikke hente liste over busstopp',
   msgMalformedLocalStops: 'Feil format på lokal liste over busstopp',
   msgMalformedExternalStops: 'Feil format på hentet liste over busstopp',
 
-  debug: 1,
+  debug: 0,
 
   // List format:
   // Stops.list = {
@@ -25,8 +25,28 @@ var Stops = {
       if (this.debug) console.log('WARNING: Callback is recommended. The callback contains completion/error message.');
     }
 
+    // Check if the lists we have are old. They are expensive to fetch
+    // so we'll only get the list from Tri's API every two weeks and
+    // this is only checked when the user opens the options page.
+    var needNewList = false;
+    var listAge = localStorage.stopListAge;
+    if (listAge == undefined) {
+      needNewList = true;
+    }
+    else {
+      var now = new Date();
+      var listAge = new Date(JSON.parse(listAge));
+      var diff = now - listAge;
+      // Using four weeks instead of actual month
+      var fourWeeks = 2 * 7 * 24 * 60 * 60 * 1000;
+      if (this.debug) console.log('load - ListAge:',fourWeeks,'<',diff,':',(fourWeeks<diff));
+      if (fourWeeks < diff) {
+        needNewList = true;
+      }
+    }
+
     // Parse the saved copies of stopList and stopNames
-    if (localStorage.stopList != undefined && localStorage.stopNames != undefined) {
+    if (!needNewList && localStorage.stopList != undefined && localStorage.stopNames != undefined) {
       try {
         if (this.debug) console.log('load - parsing saved lists');
         this.list = JSON.parse(localStorage.stopList);
@@ -103,6 +123,9 @@ var Stops = {
       // Save lists to localStorage when done
       localStorage.stopList = JSON.stringify(this.list);
       localStorage.stopNames = JSON.stringify(this.names);
+
+      // ...and note the time so we can compare it later
+      localStorage.stopListAge = JSON.stringify(new Date());
 
       // All done!
       callback(self.msgParsingStopsSuccess);
