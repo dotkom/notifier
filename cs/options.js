@@ -240,14 +240,23 @@
     busStopId = Bus.getStop(stopName, direction);
     busStopId = Bus.getStop(stopName, direction);
     return Bus.getLines(busStopId, function(json) {
-      var arrayOfLines, counter, item, line, _i, _j, _len, _len1, _ref;
-      if (typeof json === 'string') {
-        $(cssSelector + ' .lines').html('<span class="error">' + json + '</span>');
+      var arrayOfLines, counter, errorMessage, item, line, _i, _j, _len, _len1, _ref, _ref1;
+      if (typeof json === 'undefined' || typeof json === 'string') {
+        errorMessage = (_ref = typeof json === 'undefined') != null ? _ref : {
+          'Oops, noe gikk galt': json
+        };
+        $(cssSelector + ' .lines').html('<span class="error">Oops, noe gikk galt</span>');
+        setTimeout((function() {
+          $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
+          return $(cssSelector + ' .lines .retry').click(function() {
+            return getFavoriteLines(busField);
+          });
+        }), 2500);
       } else {
         arrayOfLines = [];
-        _ref = json.lines;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          item = _ref[_i];
+        _ref1 = json.next;
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          item = _ref1[_i];
           if (-1 === arrayOfLines.indexOf(Number(item.line))) {
             arrayOfLines.push(Number(item.line));
           }
