@@ -245,7 +245,7 @@
         errorMessage = (_ref = typeof json === 'undefined') != null ? _ref : {
           'Oops, noe gikk galt': json
         };
-        $(cssSelector + ' .lines').html('<span class="error">Oops, noe gikk galt</span>');
+        $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
         setTimeout((function() {
           $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
           return $(cssSelector + ' .lines .retry').click(function() {

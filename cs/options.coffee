@@ -225,7 +225,7 @@ getFavoriteLines = (busField) ->
     # Did the json even reach us? Is the result an error message?
     if typeof json is 'undefined' or typeof json is 'string'
       errorMessage = (typeof json is 'undefined' ? 'Oops, noe gikk galt' : json)
-      $(cssSelector + ' .lines').html '<span class="error">Oops, noe gikk galt</span>'
+      $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
       setTimeout ( ->
         $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
         $(cssSelector + ' .lines .retry').click ->
