@@ -253,11 +253,15 @@
       }
       if (errorMessage !== null) {
         $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
+        clearTimeout($('#bus_box').data('timeoutId'));
         setTimeout((function() {
           $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
-          return $(cssSelector + ' .lines .retry').click(function() {
+          $(cssSelector + ' .lines .retry').click(function() {
             return getFavoriteLines(busField);
           });
+          return setTimeout((function() {
+            return slideFavoriteBusLines();
+          }), 1500);
         }), 2200);
       } else {
         arrayOfLines = [];

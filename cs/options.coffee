@@ -229,10 +229,14 @@ getFavoriteLines = (busField) ->
       # Show error message
       $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
       # Show retry-button
+      clearTimeout $('#bus_box').data 'timeoutId'
       setTimeout ( ->
         $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
         $(cssSelector + ' .lines .retry').click ->
           getFavoriteLines busField
+        setTimeout ( ->
+          slideFavoriteBusLines()
+        ), 1500
       ), 2200
     else
       # Sort lines and remove duplicates
