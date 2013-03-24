@@ -320,6 +320,7 @@ loadBus = (busField) ->
       activeLines = JSON.parse activeLines # stringified array
       inactiveLines = JSON.parse inactiveLines # stringified array
       # Collect active and inactive lines to a single dict
+      # with boolean values showing active or inactive
       lines = {}
       for line in activeLines
         lines[line] = true
@@ -331,14 +332,14 @@ loadBus = (busField) ->
         keys.push i
       keys = keys.sort (a,b) ->
         return a - b
-      # Add lines to bus stop
+      # Add lines to bus stop as a generated table
       $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
       counter = 0
       for i in keys
         if counter % 4 == 0
           $(cssSelector + ' .lines table').append '</tr><tr>'
         status = if lines[i] is true then 'active' else 'inactive'
-        $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+i+'</td>'
+        $(cssSelector + ' .lines table tr:last').append '<td class="line '+status+'">'+i+'</td>'
         counter = counter + 1
       $(cssSelector + ' .lines').append '</tr></table>'
 

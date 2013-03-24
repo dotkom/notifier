@@ -373,7 +373,7 @@
             $(cssSelector + ' .lines table').append('</tr><tr>');
           }
           status = lines[i] === true ? 'active' : 'inactive';
-          $(cssSelector + ' .lines table tr:last').append('<td class="line active">' + i + '</td>');
+          $(cssSelector + ' .lines table tr:last').append('<td class="line ' + status + '">' + i + '</td>');
           counter = counter + 1;
         }
         return $(cssSelector + ' .lines').append('</tr></table>');
