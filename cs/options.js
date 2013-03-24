@@ -253,11 +253,15 @@
       }
       if (errorMessage !== null) {
         $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
+        clearTimeout($('#bus_box').data('timeoutId'));
         setTimeout((function() {
           $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
-          return $(cssSelector + ' .lines .retry').click(function() {
+          $(cssSelector + ' .lines .retry').click(function() {
             return getFavoriteLines(busField);
           });
+          return setTimeout((function() {
+            return slideFavoriteBusLines();
+          }), 1500);
         }), 2200);
       } else {
         arrayOfLines = [];
@@ -369,7 +373,7 @@
             $(cssSelector + ' .lines table').append('</tr><tr>');
           }
           status = lines[i] === true ? 'active' : 'inactive';
-          $(cssSelector + ' .lines table tr:last').append('<td class="line active">' + i + '</td>');
+          $(cssSelector + ' .lines table tr:last').append('<td class="line ' + status + '">' + i + '</td>');
           counter = counter + 1;
         }
         return $(cssSelector + ' .lines').append('</tr></table>');
