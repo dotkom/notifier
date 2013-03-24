@@ -69,14 +69,14 @@ var Bus = {
     lines['departures'] = [];
 
     var count = 0;
-    var nLines = (favoriteLines == undefined ? 10 : 100);
+    var nLines = (favoriteLines.length == 0 ? 10 : 100);
 
     for (i in departures) {
 
       var line = departures[i]['line'];
 
       // Usually controlled by favorite lines
-      if (favoriteLines != undefined)
+      if (favoriteLines.length != 0)
         if (favoriteLines.indexOf(Number(line)) === -1)
           continue;
       // Otherwise controlled with counter
