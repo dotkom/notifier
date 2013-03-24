@@ -91,7 +91,10 @@ body {
   -webkit-transition: all 0.15s ease-out;
 }
 #container #header #buttons .popupbutton:hover {
-  box-shadow: inset 0px 0px 10px #777, 0px 0px 15px #bbb, 0px 0px 20px #bbb, 0px 0px 25px #bbb;
+  box-shadow: inset 0pt 0pt 5pt #777,
+          0pt 0pt 10pt #bbb,
+          0pt 0pt 15pt #bbb,
+          0pt 0pt 20pt #bbb;
 }
 #container #header #buttontext {
   border: 0pt solid #ffff00;
@@ -99,7 +102,9 @@ body {
   position: relative;
   float: left;
   font-weight: bold;
-  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+  text-shadow: 0 0 10pt white,
+        0 0 15pt white,
+        0 0 20pt white;
 }
 #container #header #logo {
   border: 0pt solid #ffff00;
@@ -176,14 +181,14 @@ body {
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas li:hover {
-  text-shadow: 0 0 10px #fff,
-        0 0 15px #fff,
-        0 0 20px #fff,
-        0 0 30px #fff,
-        0 0 40px #011b36,
-        0 0 40px #011b36,
-        0 0 70px #011b36,
-        0 0 70px #011b36;
+  text-shadow: 0 0 7pt white,
+        0 0 10pt white,
+        0 0 15pt white,
+        0 0 20pt white,
+        0 0 30pt #011b36,
+        0 0 30pt #011b36,
+        0 0 50pt #011b36,
+        0 0 50pt #011b36;
 }
 #container #cantinas li.message {
   /*font-style: italic;*/
@@ -307,7 +312,8 @@ body {
   -webkit-transition: box-shadow 0.3s ease-out 0s;
 }
 #container #news .post .item:hover {
-  box-shadow: inset 0px 0px 2px #bbb, 0px 0px 15px #fff;
+  box-shadow: inset 0pt 0pt 2pt #bbb,
+            0pt 0pt 10pt white;
 }
 #container #news .post .item img {
   float: left;
@@ -328,5 +334,12 @@ body {
 #container #news .unread {
   color: white;
   font-size: 8pt;
-  text-shadow: 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 25px #011b36, 0 0 30px #011b36, 0 0 35px #fff, 0 0 40px #011b36, 0 0 45px #011b36;
+  text-shadow: 0 0 10px white,
+        0 0 15px white,
+        0 0 20px white,
+        0 0 25px #011b36,
+        0 0 30px #011b36,
+        0 0 35px #fff,
+        0 0 40px #011b36,
+        0 0 45px #011b36;
 }
