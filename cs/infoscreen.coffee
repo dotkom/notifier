@@ -144,8 +144,8 @@ createBusDataRequest = (bus, cssIdentificator) ->
   activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
   activeLines = JSON.parse activeLines
   if activeLines.length is 0
-    activeLines = undefined
-  # Get bus data, having "undefined" activeLines will give all lines
+    activeLines = undefined # if activelines is undefined we'll get all lines, no problemo.
+  # Get bus data
   Bus.get ls[bus], activeLines, (lines) ->
     insertBusInfo lines, ls[bus+'_name'], cssIdentificator
 
