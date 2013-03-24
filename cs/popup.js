@@ -145,20 +145,15 @@
   };
 
   createBusDataRequest = function(bus, cssIdentificator) {
-    var activeLines, amountOfLines;
+    var activeLines;
     activeLines = ls[bus + '_active_lines'];
-    if (activeLines !== void 0 && activeLines !== '') {
-      activeLines = JSON.parse(activeLines);
-      Bus.getFavoriteLines(ls[bus], activeLines, function(lines) {
-        return insertBusInfo(lines, ls[bus + '_name'], cssIdentificator);
-      });
+    activeLines = JSON.parse(activeLines);
+    if (activeLines.length === 0) {
+      activeLines = void 0;
     }
-    if (activeLines === void 0 || activeLines === '') {
-      amountOfLines = 3;
-      return Bus.getAnyLines(ls[bus], amountOfLines, function(lines) {
-        return insertBusInfo(lines, ls[bus + '_name'], cssIdentificator);
-      });
-    }
+    return Bus.get(ls[bus], activeLines, function(lines) {
+      return insertBusInfo(lines, ls[bus + '_name'], cssIdentificator);
+    });
   };
 
   insertBusInfo = function(lines, stopName, cssIdentificator) {

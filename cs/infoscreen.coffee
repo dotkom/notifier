@@ -142,17 +142,12 @@ updateBus = ->
 
 createBusDataRequest = (bus, cssIdentificator) ->
   activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
-  
-  # Get favorite lines
-  if activeLines isnt undefined and activeLines isnt '' # empty string if user deactivated all bus lines like an idiot, or if bus stop is unused
-    activeLines = JSON.parse activeLines
-    Bus.getFavoriteLines ls[bus], activeLines, (lines) ->
-      insertBusInfo lines, ls[bus+'_name'], cssIdentificator
-  # Get any lines
-  if activeLines is undefined or activeLines is ''
-    amountOfLines = 3 # only 3 lines per bus stop in the popup
-    Bus.getAnyLines ls[bus], amountOfLines, (lines) ->
-      insertBusInfo lines, ls[bus+'_name'], cssIdentificator
+  activeLines = JSON.parse activeLines
+  if activeLines.length is 0
+    activeLines = undefined
+  # Get bus data, having "undefined" activeLines will give all lines
+  Bus.get ls[bus], activeLines, (lines) ->
+    insertBusInfo lines, ls[bus+'_name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator
