@@ -276,5 +276,26 @@ $ ->
     Browser.openTab 'http://www.atb.no'
     window.close()
 
+  # React to Konami code
+  $(document).konami (
+    code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
+    callback: ->
+      $('head').append '<style type="text/css">
+        @-webkit-keyframes adjustHue {
+          0% { -webkit-filter: hue-rotate(0deg); }
+          10% { -webkit-filter: hue-rotate(36deg); }
+          20% { -webkit-filter: hue-rotate(72deg); }
+          30% { -webkit-filter: hue-rotate(108deg); }
+          40% { -webkit-filter: hue-rotate(144deg); }
+          50% { -webkit-filter: hue-rotate(180deg); }
+          60% { -webkit-filter: hue-rotate(216deg); }
+          70% { -webkit-filter: hue-rotate(252deg); }
+          80% { -webkit-filter: hue-rotate(288deg); }
+          90% { -webkit-filter: hue-rotate(324deg); }
+          100% { -webkit-filter: hue-rotate(360deg); }
+        }</style>'
+      $('#background').attr 'style','-webkit-animation:adjustHue 10s alternate infinite;'
+  )
+
   # Enter main loop, keeping everything up-to-date
   mainLoop()
