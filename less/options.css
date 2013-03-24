@@ -263,7 +263,13 @@ header #notification .saved {
   color: black;
   text-align: center;
   font-size: 9pt;
-  font-weight: bold;
+}
+.item #bus_box .bus_stop .lines .retry {
+  color: black;
+  text-align: center;
+  font-size: 9pt;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .item #bus_box .bus_stop .lines .loading_left {
   position: relative;
