@@ -226,6 +226,7 @@ getFavoriteLines = (busField) ->
     if typeof json is 'undefined' or typeof json is 'string'
       errorMessage = (typeof json is 'undefined' ? 'Oops, noe gikk galt' : json)
       $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
+      # Show retry-button
       setTimeout ( ->
         $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
         $(cssSelector + ' .lines .retry').click ->
