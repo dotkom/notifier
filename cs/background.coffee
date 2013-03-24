@@ -33,7 +33,7 @@ updateOfficeAndMeetings = ->
       Browser.setIcon 'img/icon-'+status+'.png'
       ls.currentStatus = status
       Meetings.get (meetings) ->
-        today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
+        today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
         Browser.setTitle today
         ls.currentStatusMessage = message
 
@@ -77,34 +77,38 @@ $ ->
 
   if ls.showBus is undefined
     ls.showBus = 'true'
-  if ls.first_bus is undefined
+
+  # If any of these properties are undefined we'll reset all of them
+  first_bus_props = [
+    ls.first_bus,
+    ls.first_bus_name,
+    ls.first_bus_direction,
+    ls.first_bus_active_lines,
+    ls.first_bus_inactive_lines,
+  ]
+  second_bus_props = [
+    ls.second_bus,
+    ls.second_bus_name,
+    ls.second_bus_direction,
+    ls.second_bus_active_lines,
+    ls.second_bus_inactive_lines,
+  ]
+  firstBusOk = true
+  secondBusOk = true
+  # Lol, CoffeeScript at it's best
+  firstBusOk = false for prop in first_bus_props when prop is undefined
+  secondBusOk = false for prop in second_bus_props when prop is undefined
+  if !firstBusOk
     ls.first_bus = 16011333
-  if ls.first_bus_name is undefined
     ls.first_bus_name = 'Gløshaugen Nord'
-  if ls.first_bus_direction is undefined
     ls.first_bus_direction = 'til byen'
-  if ls.first_bus_active_lines is undefined
     ls.first_bus_active_lines = JSON.stringify [5, 22]
-    # hack
-    ls.first_bus = 16011333
-    ls.first_bus_name = 'Gløshaugen Nord'
-    ls.first_bus_direction = 'til byen'
-    ls.second_bus = 16010333
-    ls.second_bus_name = 'Gløshaugen Nord'
-    ls.second_bus_direction = 'fra byen'
-    ls.second_bus_active_lines = JSON.stringify [5, 22]
-    # /hack
-  if ls.first_bus_inactive_lines is undefined
     ls.first_bus_inactive_lines = JSON.stringify [169]
-  if ls.second_bus is undefined
+  if !secondBusOk
     ls.second_bus = 16010333
-  if ls.second_bus_name is undefined
     ls.second_bus_name = 'Gløshaugen Nord'
-  if ls.second_bus_direction is undefined
     ls.second_bus_direction = 'fra byen'
-  if ls.second_bus_active_lines is undefined
     ls.second_bus_active_lines = JSON.stringify [5, 22]
-  if ls.second_bus_inactive_lines is undefined
     ls.second_bus_inactive_lines = JSON.stringify [169]
   
   if ls.showOffice is undefined

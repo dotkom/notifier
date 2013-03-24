@@ -49,7 +49,7 @@
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
           var today;
-          today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings;
+          today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
           Browser.setTitle(today);
           return ls.currentStatusMessage = message;
         });
@@ -92,6 +92,7 @@
   };
 
   $(function() {
+    var firstBusOk, first_bus_props, prop, secondBusOk, second_bus_props, _i, _j, _len, _len1;
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
@@ -103,41 +104,34 @@
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
     }
-    if (ls.first_bus === void 0) {
+    first_bus_props = [ls.first_bus, ls.first_bus_name, ls.first_bus_direction, ls.first_bus_active_lines, ls.first_bus_inactive_lines];
+    second_bus_props = [ls.second_bus, ls.second_bus_name, ls.second_bus_direction, ls.second_bus_active_lines, ls.second_bus_inactive_lines];
+    firstBusOk = true;
+    secondBusOk = true;
+    for (_i = 0, _len = first_bus_props.length; _i < _len; _i++) {
+      prop = first_bus_props[_i];
+      if (prop === void 0) {
+        firstBusOk = false;
+      }
+    }
+    for (_j = 0, _len1 = second_bus_props.length; _j < _len1; _j++) {
+      prop = second_bus_props[_j];
+      if (prop === void 0) {
+        secondBusOk = false;
+      }
+    }
+    if (!firstBusOk) {
       ls.first_bus = 16011333;
-    }
-    if (ls.first_bus_name === void 0) {
       ls.first_bus_name = 'Gløshaugen Nord';
-    }
-    if (ls.first_bus_direction === void 0) {
       ls.first_bus_direction = 'til byen';
-    }
-    if (ls.first_bus_active_lines === void 0) {
       ls.first_bus_active_lines = JSON.stringify([5, 22]);
-      ls.first_bus = 16011333;
-      ls.first_bus_name = 'Gløshaugen Nord';
-      ls.first_bus_direction = 'til byen';
-      ls.second_bus = 16010333;
-      ls.second_bus_name = 'Gløshaugen Nord';
-      ls.second_bus_direction = 'fra byen';
-      ls.second_bus_active_lines = JSON.stringify([5, 22]);
-    }
-    if (ls.first_bus_inactive_lines === void 0) {
       ls.first_bus_inactive_lines = JSON.stringify([169]);
     }
-    if (ls.second_bus === void 0) {
+    if (!secondBusOk) {
       ls.second_bus = 16010333;
-    }
-    if (ls.second_bus_name === void 0) {
       ls.second_bus_name = 'Gløshaugen Nord';
-    }
-    if (ls.second_bus_direction === void 0) {
       ls.second_bus_direction = 'fra byen';
-    }
-    if (ls.second_bus_active_lines === void 0) {
       ls.second_bus_active_lines = JSON.stringify([5, 22]);
-    }
-    if (ls.second_bus_inactive_lines === void 0) {
       ls.second_bus_inactive_lines = JSON.stringify([169]);
     }
     if (ls.showOffice === void 0) {
