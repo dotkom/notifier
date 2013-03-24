@@ -26,7 +26,7 @@ updateOfficeStatus = ->
     ls.currentStatus = status
     Meetings.get (meetings) ->
       meetings = $.trim meetings
-      today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
+      today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
       Browser.setTitle today
       ls.currentStatusMessage = message
 
@@ -66,7 +66,7 @@ bindBusFields = (busField) ->
     
     # Lost focus, suggestions on busstops?
     partialStop = $(stop).val()
-    suggestions = Bus.getPotentialStops partialStop
+    suggestions = Stops.partialNameToPotentialNames partialStop
 
     # No input, revert to the busstop that was clicked away
     if partialStop is '' or suggestions.length is 0
@@ -103,9 +103,9 @@ bindBusFields = (busField) ->
     else if event.keyCode is 13
       if DEBUG then console.log 'keyup - enter, checking input'
       possibleStop = $(stop).val()
-      suggestions = Bus.getStopIds possibleStop
+      suggestions = Stops.nameToIds possibleStop
       if suggestions.length isnt 0
-        realStopName = Bus.getStopName suggestions[0]
+        realStopName = Stops.idToName suggestions[0]
         $(stop).val realStopName
         # then empty the suggestion list
         $('#bus_suggestions').html ''
@@ -134,7 +134,7 @@ bindBusFields = (busField) ->
 
       if nameStart.length > 0
         # Suggestions
-        suggestions = Bus.getPotentialStops nameStart
+        suggestions = Stops.partialNameToPotentialNames nameStart
         $('#bus_suggestions').html ''
         for i of suggestions
           _text = suggestions[i]
@@ -178,10 +178,8 @@ bindBusFields = (busField) ->
 
 bindFavoriteBusLines = (busField) ->
   cssSelector = '#' + busField
-
   # Switch status on click
   $(cssSelector + ' .lines .line').click ->
-
     # Switch status and save
     if $(this).hasClass 'active'
       $(this).attr 'class', 'inactive'
@@ -196,7 +194,7 @@ getDirections = (busField, correctStop) ->
   stopName = $(cssSelector + ' input')
   direction = $(cssSelector + ' select')
   # Get and inject possible directions for correct stop
-  allDirections = Bus.getDirections correctStop
+  allDirections = Stops.nameToDirections correctStop
   $(direction).html ''
   for i in allDirections
     $(direction).append '<option>' + i + '</option>'
@@ -216,22 +214,26 @@ getFavoriteLines = (busField) ->
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
-  busStopId = Bus.getStop stopName, direction
-
   # Get and inject possible lines for correct stop
-  busStopId = Bus.getStop stopName, direction
+  busStopId = Stops.nameAndDirectionToId stopName, direction
   
   Bus.getLines busStopId, (json) ->
     # Did the json even reach us? Is the result an error message?
-    if typeof json is 'undefined' or typeof json is 'string'
-      errorMessage = (typeof json is 'undefined' ? 'Oops, noe gikk galt' : json)
+    console.log json
+    errorMessage = null
+    if typeof json is 'undefined' then errorMessage = 'Oops, frakoblet'
+    if typeof json is 'string' then errorMessage = json
+    if typeof json[0] isnt 'undefined' then errorMessage = 'Feil: ' + json[0]
+    
+    if errorMessage isnt null
+      # Show error message
       $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
       # Show retry-button
       setTimeout ( ->
         $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
         $(cssSelector + ' .lines .retry').click ->
           getFavoriteLines busField
-      ), 2500
+      ), 2200
     else
       # Sort lines and remove duplicates
       arrayOfLines = []
@@ -271,7 +273,7 @@ saveBus = (busField) ->
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
-  busStopId = Bus.getStop stopName, direction
+  busStopId = Stops.nameAndDirectionToId stopName, direction
   
   # Get active/inactive lines
   activeLines = []
@@ -336,9 +338,6 @@ loadBus = (busField) ->
         counter = counter + 1
       $(cssSelector + ' .lines').append '</tr></table>'
 
-addFavoriteBusLines = (cssSelector) ->
-  console.log 'implement this'
-
 slideFavoriteBusLines = ->
   # Hide the favorite bus line spans from the start
   setTimeout (->
@@ -346,7 +345,6 @@ slideFavoriteBusLines = ->
       $('#bus_box .lines').slideUp()
       $('#bus_box #arrow_down').fadeIn()
   ), 1500
-
   # Show favorite bus line spans when hovering
   $('#bus_box').mouseenter ->
     clearTimeout $(this).data 'timeoutId'
@@ -498,7 +496,7 @@ $ ->
   $(window).bind "resize", resizeBackgroundImage
   resizeBackgroundImage() # Run once in case the window is quite big
   
-  # Minor esthetical adjustments for OS version
+  # Minor esthetical adjustments for OS
   if OPERATING_SYSTEM is 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
@@ -531,6 +529,10 @@ $ ->
 
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
+
+  # Load lists of bus stops
+  Stops.load (result) ->
+    if DEBUG then console.log 'Loading lists:', result
 
   # If Opera, disable and redesign features related to desktop notifications
   if BROWSER is 'Opera'
