@@ -220,15 +220,22 @@ getFavoriteLines = (busField) ->
 
   # Get and inject possible lines for correct stop
   busStopId = Bus.getStop stopName, direction
+  
   Bus.getLines busStopId, (json) ->
-
-    # Is result an error message?
-    if typeof json is 'string'
-      $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>'
+    # Did the json even reach us? Is the result an error message?
+    if typeof json is 'undefined' or typeof json is 'string'
+      errorMessage = (typeof json is 'undefined' ? 'Oops, noe gikk galt' : json)
+      $(cssSelector + ' .lines').html '<span class="error">Oops, noe gikk galt</span>'
+      setTimeout ( ->
+        $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
+        $(cssSelector + ' .lines .retry').click ->
+          getFavoriteLines busField
+      ), 2500
     else
       # Sort lines and remove duplicates
       arrayOfLines = []
-      for item in json.lines
+      # for item in json.lines # this is probably more correct to use for the future
+      for item in json.next
         if -1 is arrayOfLines.indexOf Number item.line
           # Casting strings to numbers to make them easily sortable
           arrayOfLines.push Number item.line
