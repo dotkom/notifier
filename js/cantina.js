@@ -120,7 +120,7 @@ var Cantina = {
     var self = this;
     try {
       var dinnerList = todaysMenu.split('<br>');
-      
+
       // Remove empty or irrelevant information (items: first, last, second last)
       dinnerList = dinnerList.splice(1,dinnerList.length-3);
 
@@ -191,10 +191,16 @@ var Cantina = {
       });
       
       // If no dinner info is found at all, check for unique message at monday
-      // WARNING: recursion going on!
-      if (dinnerObjects.length === 0 && mondaysCantinaMenu !== null) {
+      if (dinnerObjects.length === 0) {
         if (self.debug) console.log('WARNING: no dinner menu found today, checking monday');
-        self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
+        if (mondaysCantinaMenu !== null) {
+          // WARNING: recursion is divine!
+          self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
+        }
+        else {
+          if (self.debug) console.log('WARNING: no info found on monday either');
+          callback(this.msgClosed);
+        }
         return;
       }
 
@@ -204,7 +210,6 @@ var Cantina = {
 
         // Extract any food flags first
         dinner.flags = self.getFoodFlags(text);
-
         // If it's a message (dinner without a price) we'll just trim it
         if (dinner.price == null) {
           // Even messages (like " God sommer ") needs trimming
@@ -219,7 +224,6 @@ var Cantina = {
           text = self.removeFoodHomeMade(text);
           text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
           text = text.trim();
-          
           // If current item is NOT about the buffet, continue with:
           if (text.toLowerCase().indexOf('buffet') === -1) {
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
