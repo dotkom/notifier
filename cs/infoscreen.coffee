@@ -50,82 +50,97 @@ updateCoffee = ->
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
-  # Fetching and displaying the news feed
-  fetchFeed ->
-    response = ls.lastResponseData
-    if response != undefined
-      displayStories response
-    else
-      $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
-  
-  # Private function
-  displayStories = (xmlstring) ->
+  # Displaying the news feed (prefetched by the background page)
+  # response = ls.lastResponseData
+  # if response != undefined
+  #   displayStories response
+  # else
+  #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
+  newsLimit = 6
 
-    # Parse the feed
-    xmldoc = $.parseXML xmlstring
-    $xml = $(xmldoc)
-    items = $xml.find "item"
+  News.get 'online', newsLimit, (items) ->
 
-    ################################# BUG TRAP ################################
-    lolRememberThis = ls.mostRecentRead
-    
-    # Find most recent post
-    _guid = $(items[0]).find "guid"
-    _text = $(_guid).text()
-    _mostRecent = _text.split('/')[4]
-    if ls.mostRecentRead is _mostRecent
-      if DEBUG then console.log 'RETURNED EARLY' #####
-      return
-    ls.mostRecentRead = _mostRecent
-
-    if DEBUG then console.log 'CLEARING HTML'
+    # Find most recent post, return if we've already seen it
+    guid = $(items[0]).find "guid"
+    text = $(guid).text()
+    mostRecent = text.split('/')[4]
+    # if ls.mostRecentRead is mostRecent
+    #   if $('#news').text().trim() isnt '' # News box empty already
+    #     if DEBUG then console.log 'No new news'
+    #     return
+    ls.mostRecentRead = mostRecent
     $('#news').html ''
+
+    # Get list of last viewed items and check for news that are just
+    # updated rather than being actual news
+    updatedList = findUpdatedPosts()
     
-    if DEBUG then console.log 'BUILDING HTML'
     # Build list of last viewed for the next time the popup opens
     idsOfLastViewed = []
     
     # Add feed items to popup
-    items.each (index, element) ->
+    $.each items, (index, item) ->
       
-      limit = 3
-      limit = if ls.noDinnerInfo is 'true' then 3 else 2
-      if DEBUG then console.log 'LIMIT IS "'+limit+'", typeof '+typeof limit
-      if DEBUG then console.log 'INDEX IS "'+index+'", typeof '+typeof index
-      if DEBUG then console.log 'index < limit :: '+(index < limit)
-      if index < limit
-        post = parsePost(element)
-        idsOfLastViewed.push(post.id)
+      if index < newsLimit
+        idsOfLastViewed.push(item.id)
         
-        item = '<div class="post"><span class="read"></span>'
+        htmlItem = '<div class="post"><div class="title">'
+        if index < ls.unreadCount
+          if item.id in updatedList.indexOf
+            htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+          else
+            htmlItem += '<span class="unread">NEW <b>::</b> </span>'
         
-        item += '
-            <span class="title">' + post.title + '</span>
-            <div class="item">
-              <img id="' + post.id + '" src="' + post.image + '" width="107" />
+        htmlItem += item.title + '
+          </div>
+            <div class="item" data="' + item.link + '">
+              <img id="' + item.id + '" src="' + item.image + '" width="107" />
               <div class="textwrapper">
-                <div class="emphasized">- Skrevet av ' + post.creator + ' den ' + post.date + '</div>
-                ' + post.description + '
+                <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>
+                ' + item.description + '
               </div>
             </div>
           </div>'
-        $('#news').append item
-
-    ################################# BUG TRAP ################################
-    whatsthis = $('#news').html()
-    whatsthis = whatsthis.trim()
-    if whatsthis is ''
-      alert 'TRAP TRIGGERED!'
-      console.log 'TRAPPED!'
-      console.log 'items', typeof items, items
-      console.log '#news', $('#news').html()
-      console.log 'ls.mostRecentRead was', typeof lolRememberThis, lolRememberThis
-      console.log '_mostRecent is', typeof _mostRecent, _mostRecent
+        $('#news').append htmlItem
     
-    # Finally, fetch news post images from the API async synchronously
+    # Store list of last viewed items
+    ls.lastViewedIdList = JSON.stringify idsOfLastViewed
+    
+    # All items are now considered read
+    Browser.setBadgeText ''
+    ls.unreadCount = 0
+
+    # Make news items open extension website while closing popup
+    $('.item').click ->
+      # The link is embedded as the ID of the element, we don't want to use
+      # <a> anchors because it creates an ugly box marking the focus element
+      Browser.openTab $(this).attr 'data'
+      window.close()
+
+    # Online: Fetch images from the API asynchronously
     for index, value of idsOfLastViewed
-      getImageUrlForId value, (id, image) ->
-        $('#'+id).attr 'src', image
+      News.online_getImage value, (id, image) ->
+        $('img[id='+id+']').attr 'src', image
+
+# Checks the most recent list of news against the most recently viewed list of news
+findUpdatedPosts = ->
+  # undefined checks first
+  if ls.lastViewedIdList == undefined
+    ls.lastViewedIdList = JSON.stringify []
+    return []
+  else if ls.mostRecentIdList == undefined
+    ls.mostRecentIdList = JSON.stringify []
+    return []
+  # Compare lists, return union (updated items)
+  else
+    viewedList = JSON.parse ls.lastViewedIdList
+    newsList = JSON.parse ls.mostRecentIdList
+    updatedList = []
+    for viewed in viewedList
+      for news in newsList
+        if viewedList[viewed] == newsList[news]
+          updatedList.push viewedList[viewed]
+    return updatedList
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
@@ -207,7 +222,7 @@ updateHours = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    # show the cursor and remove the overlay
+    # show the cursor and remove the overlay (the gradient at the bottom)
     # (allows DOM inspection with the mouse)
     $('html').css 'cursor', 'auto'
     $('#overlay').hide()
