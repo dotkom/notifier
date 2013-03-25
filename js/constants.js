@@ -13,7 +13,7 @@ var CREATOR_EMAIL = 'dotkom@online.ntnu.no';
 // var BACKUP_IMAGE = 'img/logo-sponsor-placeholder.png';
 
 // AJAX and JSON timeout
-var AJAX_TIMEOUT = 5000;
+var AJAX_TIMEOUT = 7500;
 
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
