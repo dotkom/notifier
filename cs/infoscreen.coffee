@@ -222,7 +222,7 @@ updateHours = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    # show the cursor and remove the overlay
+    # show the cursor and remove the overlay (the gradient at the bottom)
     # (allows DOM inspection with the mouse)
     $('html').css 'cursor', 'auto'
     $('#overlay').hide()
