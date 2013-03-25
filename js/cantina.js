@@ -215,6 +215,7 @@ var Cantina = {
           text = self.addMissingSpaces(text);
           text = self.shortenFoodServedWith(text);
           text = self.shortenFoodWithATasteOf(text);
+          text = self.expandAbbreviations(text);
           text = self.removeFoodHomeMade(text);
           text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
           text = text.trim();
@@ -334,6 +335,12 @@ var Cantina = {
     if (this.debugText) console.log('TasteOf\t:: ' + text);
     // Replace wordings like 'med en liten smak av' to just 'med'
     return text.replace(/[,|\.]?\s?(med)?\s?(en|et)?\s?(liten?)?\s?(smak|hint|dæsj|tøtsj)\s?(av)?\s/gi, ' med ');
+  },
+
+  expandAbbreviations: function(text) {
+    if (this.debugText) console.log('Abbrev.\t:: ' + text);
+    // Replace wordings like 'm', 'm/' with the actual word, make sure there is one space on either side of the word
+    return text.replace(/((\b|[æøåÆØÅ]*)\S|\S(\b|[æøåÆØÅ]*)) ?\/?m(\/| |\b|[æøåÆØÅ]) ?/gi, '$1 med ');
   },
 
   removeFoodHomeMade: function(text) {
