@@ -18,7 +18,7 @@ var News = {
     'nabla': 'http://nabla.no/feed/',
     'spanskrøret': 'http://spanskroret.no/feed/',
     // Medier
-    'dusken.no': 'http://dusken.no/feed/',
+    'dusken': 'http://dusken.no/feed/',
     'universitetsavisa': 'http://www.universitetsavisa.no/?service=rss',
     // Store studentorganisasjoner
     'samfundet': 'http://www.samfundet.no/arrangement/rss',
@@ -85,6 +85,7 @@ var News = {
     post.description = $(item).find("description").text();
     post.creator = $(item).find("dc:creator").text();
     post.date = $(item).find("pubDate").text().substr(5, 11);
+    
     post.id = $(item).find("guid").text().split('/')[4];
     post.image = this.backupImage;
 
@@ -100,18 +101,21 @@ var News = {
         post.link = directLink;
       }
     }
-
-    // Remove excessive whitespace and ludicrous formatting from description
+    // Remove HTML and excessive whitespace from description
     post.description = $.trim($(post.description).text());
     
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
       var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
       $(item).find(tag).each(function(){
-        post.creator = $(this).text();
+        post.creator = $(this).text().trim();
       });
     }
-    // Abbreviate creators middle names if name is very long
+    // Didn't find a creator, set the feedname as creator
+    if (post.creator == '') {
+      post.creator = feedName;
+    }
+    // Abbreviate creators with long names
     post.creator = this.abbreviateName(post.creator);
     
     // title + description must not exceed 5 lines
