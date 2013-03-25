@@ -53,10 +53,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: 10000;
-  background-color: black;
   opacity: 0;
-  text-align: center;
-  vertical-align: middle;
 }
 #background {
   /* using a div because the background needs to be resized if
@@ -185,14 +182,15 @@ body {
   padding: 0;
   margin: 0;
   position: relative;
+  top: 35pt;
   font-size: 18pt;
   line-height: 25pt;
   background-color: #000f1d;
   height: 144pt;
   width: 110%;
   margin-left: -5%;
-  margin-bottom: 25pt;
-  box-shadow: 0 0 20pt #88b;
+  margin-bottom: 45pt;
+  box-shadow: 0 0 35pt #88b;
 }
 #container #bus .name {
   color: white;
@@ -351,9 +349,10 @@ body {
 #container #logo {
   border: 0pt solid #ff0000;
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 30pt;
+  bottom: 30pt;
   width: 300pt;
+  z-index: 110;
 }
 /* the pageflip at the bottom */
 #pageflipbg {

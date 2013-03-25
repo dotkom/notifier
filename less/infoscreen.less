@@ -73,10 +73,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: 10000;
-  background-color: black;
   opacity: 0;
-  text-align: center;
-  vertical-align: middle;
 }
 
 #background {
@@ -196,14 +193,15 @@ body {
     .fullbox;
 
     position: relative;
+    top: 35pt;
     font-size: 18pt;
     line-height: 25pt;
     background-color: #000f1d;
     height: 144pt;
     width: 110%;
     margin-left: -5%;
-    margin-bottom: 25pt;
-    box-shadow: 0 0 20pt #88b;
+    margin-bottom: 45pt;
+    box-shadow: 0 0 35pt #88b;
 
     .name {
       color: white;
@@ -355,9 +353,10 @@ body {
   #logo {
     .debugred;
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 30pt;
+    bottom: 30pt;
     width: 300pt;
+    z-index: 110;
   }
 }
 
@@ -405,15 +404,14 @@ body {
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 108;
+  a {
+    font: bold 11px monospace;
+    color: #ccf2cc;
+    text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
-#pagefliplink a {
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  text-decoration: none;
-}
-
-#pagefliplink a:hover {
-  text-decoration: underline;
-}
