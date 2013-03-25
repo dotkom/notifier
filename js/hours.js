@@ -122,7 +122,7 @@ var Hours = {
 
   prettifyTodaysHours: function(todays) {
     // All en-dashes and em-dashes to regular dashes
-    todays = todays.replace(/\u2013|\u2014/g, '-');
+    todays = todays.replace(/\u2013|\u2014|&ndash;|&mdash;/g, '-');
     // All dots to colons
     todays = todays.replace(/\./g,':');
     // Add colons where missing 1600 -> 16:00
