@@ -17,7 +17,7 @@
 
 // Variables
 
-@in-post-padding: 7pt;
+@in-post-padding: 9pt;
 @online-orange: #ee861f;
 
 // Mixins
@@ -100,7 +100,9 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  margin: 30pt;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 30pt;
   z-index: 10;
 
   #office {
@@ -151,57 +153,56 @@ body {
     }
   }
 
-  #news {
+  #cantinas {
     .debugred;
     .fullbox;
 
-    .post {
-      .debugyellow;
+    .hours {
+      color: white;
+      padding-bottom: 3pt;
+      font-weight: normal;
+      font-style: italic;
+      text-transform: none;
+    }
+    #left {
+      .debugpink;
       position: relative;
-      clear: both;
-
-      .item {
-        .debugyellow;
-        min-height: 40pt;
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-        img {
-          float: left;
-          background: snow;
-          width: 170pt;
-          max-height: 140pt;
-          padding: 5px;
-          box-shadow: 0px 0px 10px #bbb;
-        }
-
-        .textwrapper {
-          .debuglime;
-          position: relative;
-          float: left;
-          text-align: left;
-          margin-left: @in-post-padding * 2;
-          width: 73%;
-
-          .date {
-            text-transform: uppercase;
-            font-size: 24pt;
-          }
-        }
-      }
+      float: left;
+      width: 48%;
+    }
+    #right {
+      .debugpink;
+      position: relative;
+      float: right;
+      width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
+    }
+    #dinnerbox {
+      .debugyellow;
+    }
+    li {
+      .debuglime;
+      position: relative;
+      width: 95%;
+      list-style-type: none;
+      -webkit-transition: text-shadow 0.15s ease-out 0s;
+    }
+    li.message {
+      /*font-style: italic;*/
     }
   }
 
   #bus {
     .debugred;
     .fullbox;
+
+    position: relative;
     font-size: 18pt;
     line-height: 25pt;
     background-color: #000f1d;
     height: 144pt;
     width: 110%;
-    margin-top: 25pt;
     margin-left: -5%;
+    margin-bottom: 25pt;
     box-shadow: 0 0 20pt #88b;
 
     .name {
@@ -310,41 +311,44 @@ body {
     }
   }
 
-  #cantinas {
+  #news {
     .debugred;
     .fullbox;
 
-    .hours {
-      color: white;
-      padding-bottom: 3pt;
-      font-weight: normal;
-      font-style: italic;
-      text-transform: none;
-    }
-    #left {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 48%;
-    }
-    #right {
-      .debugpink;
-      position: relative;
-      float: right;
-      width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
-    }
-    #dinnerbox {
+    .post {
       .debugyellow;
-    }
-    li {
-      .debuglime;
       position: relative;
-      width: 95%;
-      list-style-type: none;
-      -webkit-transition: text-shadow 0.15s ease-out 0s;
-    }
-    li.message {
-      /*font-style: italic;*/
+      clear: both;
+
+      .item {
+        .debugyellow;
+        min-height: 40pt;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        img {
+          float: left;
+          background: snow;
+          width: 170pt;
+          max-height: 140pt;
+          padding: 5px;
+          box-shadow: 0px 0px 10px #bbb;
+        }
+
+        .textwrapper {
+          .debuglime;
+          position: relative;
+          float: left;
+          text-align: left;
+          margin-left: @in-post-padding * 2;
+          width: 73%;
+
+          .date {
+            text-transform: uppercase;
+            font-size: 24pt;
+          }
+        }
+      }
     }
   }
 
