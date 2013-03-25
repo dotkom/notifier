@@ -2,7 +2,7 @@ var News = {
   newsMinLimit: 1,
   newsMaxLimit: 15,
   backupImage: 'img/logo-sponsor-placeholder.png',
-  msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit;
+  msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
   msgConnectionError: 'Frakoblet fra feed: ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
@@ -60,21 +60,22 @@ var News = {
       dataType: 'xml',
       success: function(xml) {
         // ls.lastResponseData = xmlstring;
-        this.parse(xml, feedName, callback);
+        self.parse(xml, feedName, callback);
       },
       error: function(jqXHR, text, err) {
-        if (this.debug) console.log('ERROR:', this.msgConnectionError, feedName);
-        callback(this.msgConnectionError);
+        if (self.debug) console.log('ERROR:', self.msgConnectionError, feedName);
+        callback(self.msgConnectionError);
       },
     });
   },
 
   parse: function(xml, feedName, callback) {
-    var items = {};
+    var items = [];
+    var self = this;
     $(xml).find('item').each( function() {
-      var item = this.parseItem(this);
-      items.push(item, feedName);
-    }
+      var item = self.parseItem(this);
+      items.push(item);
+    });
     callback(items);
   },
 

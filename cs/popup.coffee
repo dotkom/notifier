@@ -138,12 +138,13 @@ updateNews = ->
     guid = $(items[0]).find "guid"
     text = $(guid).text()
     mostRecent = text.split('/')[4]
-    if ls.mostRecentRead is _mostRecent
-      if DEBUG then console.log 'No new news'
-      return
+    if ls.mostRecentRead is mostRecent
+      if $('#news').text().trim() isnt '' # News box empty already
+        if DEBUG then console.log 'No new news'
+        return
     ls.mostRecentRead = mostRecent
     $('#news').html ''
-    
+
     # Get list of last viewed items and check for news that are just
     # updated rather than being actual news
     updatedList = findUpdatedPosts()
@@ -152,10 +153,9 @@ updateNews = ->
     idsOfLastViewed = []
     
     # Add feed items to popup
-    items.each (index, item) ->
+    $.each items, (index, item) ->
       
       if index < newsLimit
-        # post = News.parseItem(item)
         idsOfLastViewed.push(item.id)
         
         htmlItem = '<div class="post"><div class="title">'
@@ -165,7 +165,8 @@ updateNews = ->
           else
             htmlItem += '<span class="unread">NEW <b>::</b> </span>'
         
-        htmlItem += item.title + '</div>
+        htmlItem += item.title + '
+          </div>
             <div class="item" data="' + item.link + '">
               <img id="' + item.id + '" src="' + item.image + '" width="107" />
               <div class="textwrapper">
@@ -190,7 +191,7 @@ updateNews = ->
       Browser.openTab $(this).attr 'data'
       window.close()
 
-    # Finally, fetch news post images from the API async synchronously
+    # Online: Fetch images from the API asynchronously
     for index, value of idsOfLastViewed
       News.online_getImage value, (id, image) ->
         $('img[id='+id+']').attr 'src', image

@@ -189,17 +189,19 @@
       guid = $(items[0]).find("guid");
       text = $(guid).text();
       mostRecent = text.split('/')[4];
-      if (ls.mostRecentRead === _mostRecent) {
-        if (DEBUG) {
-          console.log('No new news');
+      if (ls.mostRecentRead === mostRecent) {
+        if ($('#news').text().trim() !== '') {
+          if (DEBUG) {
+            console.log('No new news');
+          }
+          return;
         }
-        return;
       }
       ls.mostRecentRead = mostRecent;
       $('#news').html('');
       updatedList = findUpdatedPosts();
       idsOfLastViewed = [];
-      items.each(function(index, item) {
+      $.each(items, function(index, item) {
         var htmlItem, _ref;
         if (index < newsLimit) {
           idsOfLastViewed.push(item.id);
