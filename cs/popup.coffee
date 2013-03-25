@@ -138,10 +138,10 @@ updateNews = ->
     guid = $(items[0]).find "guid"
     text = $(guid).text()
     mostRecent = text.split('/')[4]
-    if ls.mostRecentRead is mostRecent
-      if $('#news').text().trim() isnt '' # News box empty already
-        if DEBUG then console.log 'No new news'
-        return
+    # if ls.mostRecentRead is mostRecent
+    #   if $('#news').text().trim() isnt '' # News box empty already
+    #     if DEBUG then console.log 'No new news'
+    #     return
     ls.mostRecentRead = mostRecent
     $('#news').html ''
 

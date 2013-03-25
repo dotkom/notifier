@@ -189,14 +189,6 @@
       guid = $(items[0]).find("guid");
       text = $(guid).text();
       mostRecent = text.split('/')[4];
-      if (ls.mostRecentRead === mostRecent) {
-        if ($('#news').text().trim() !== '') {
-          if (DEBUG) {
-            console.log('No new news');
-          }
-          return;
-        }
-      }
       ls.mostRecentRead = mostRecent;
       $('#news').html('');
       updatedList = findUpdatedPosts();
@@ -213,7 +205,8 @@
               htmlItem += '<span class="unread">NEW <b>::</b> </span>';
             }
           }
-          htmlItem += item.title + '</div>\
+          htmlItem += item.title + '\
+          </div>\
             <div class="item" data="' + item.link + '">\
               <img id="' + item.id + '" src="' + item.image + '" width="107" />\
               <div class="textwrapper">\
