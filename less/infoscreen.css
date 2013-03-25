@@ -23,7 +23,7 @@
   font-size: 24pt;
   font-weight: bold;
   padding-top: 25pt;
-  padding-bottom: 7pt;
+  padding-bottom: 9pt;
 }
 .emphasized {
   font-style: italic;
@@ -47,16 +47,15 @@ body {
   line-height: 22pt;
 }
 #overlay {
+  /* note: the overlay is hidden when debugging, to be able to select/click stuff */
+
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  background-color: black;
-  opacity: 0;
-  text-align: center;
-  vertical-align: middle;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom no-repeat;
 }
 #background {
   /* using a div because the background needs to be resized if
@@ -78,7 +77,9 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  margin: 30pt;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 30pt;
   z-index: 10;
 }
 #container #office {
@@ -134,43 +135,47 @@ body {
   font-style: italic;
   margin-bottom: 2pt;
 }
-#container #news {
+#container #cantinas {
   border: 0pt solid #ff0000;
   width: 100%;
   clear: both;
   padding: 0;
   margin: 0;
 }
-#container #news .post {
-  border: 0pt solid #ffff00;
+#container #cantinas .hours {
+  color: white;
+  padding-bottom: 3pt;
+  font-weight: normal;
+  font-style: italic;
+  text-transform: none;
+}
+#container #cantinas #left {
+  border: 0pt solid #ffc0cb;
   position: relative;
-  clear: both;
-}
-#container #news .post .item {
-  border: 0pt solid #ffff00;
-  min-height: 40pt;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-#container #news .post .item img {
   float: left;
-  background: snow;
-  width: 170pt;
-  max-height: 140pt;
-  padding: 5px;
-  box-shadow: 0px 0px 10px #bbb;
+  width: 48%;
 }
-#container #news .post .item .textwrapper {
+#container #cantinas #right {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+  /* when the right box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #cantinas #dinnerbox {
+  border: 0pt solid #ffff00;
+}
+#container #cantinas li {
   border: 0pt solid #00ff00;
   position: relative;
-  float: left;
-  text-align: left;
-  margin-left: 14pt;
-  width: 73%;
+  width: 95%;
+  list-style-type: none;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
-#container #news .post .item .textwrapper .date {
-  text-transform: uppercase;
-  font-size: 24pt;
+#container #cantinas li.message {
+  /*font-style: italic;*/
+
 }
 #container #bus {
   border: 0pt solid #ff0000;
@@ -178,14 +183,16 @@ body {
   clear: both;
   padding: 0;
   margin: 0;
+  position: relative;
+  top: 35pt;
   font-size: 18pt;
   line-height: 25pt;
   background-color: #000f1d;
   height: 144pt;
   width: 110%;
-  margin-top: 25pt;
   margin-left: -5%;
-  box-shadow: 0 0 20pt #88b;
+  margin-bottom: 45pt;
+  box-shadow: 0 0 35pt #88b;
 }
 #container #bus .name {
   color: white;
@@ -303,54 +310,52 @@ body {
   
   }
 }
-#container #cantinas {
+#container #news {
   border: 0pt solid #ff0000;
   width: 100%;
   clear: both;
   padding: 0;
   margin: 0;
 }
-#container #cantinas .hours {
-  color: white;
-  padding-bottom: 3pt;
-  font-weight: normal;
-  font-style: italic;
-  text-transform: none;
-}
-#container #cantinas #left {
-  border: 0pt solid #ffc0cb;
-  position: relative;
-  float: left;
-  width: 48%;
-}
-#container #cantinas #right {
-  border: 0pt solid #ffc0cb;
-  position: relative;
-  float: right;
-  width: 50%;
-  /* when the right box is half the width it'll appear they're both aligned to 50% */
-
-}
-#container #cantinas #dinnerbox {
+#container #news .post {
   border: 0pt solid #ffff00;
+  position: relative;
+  clear: both;
 }
-#container #cantinas li {
+#container #news .post .item {
+  border: 0pt solid #ffff00;
+  min-height: 40pt;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#container #news .post .item img {
+  float: left;
+  background: snow;
+  width: 170pt;
+  max-height: 140pt;
+  padding: 5px;
+  box-shadow: 0px 0px 10px #bbb;
+}
+#container #news .post .item .textwrapper {
   border: 0pt solid #00ff00;
   position: relative;
-  width: 95%;
-  list-style-type: none;
-  -webkit-transition: text-shadow 0.15s ease-out 0s;
+  float: left;
+  text-align: left;
+  margin-left: 18pt;
+  width: 73%;
 }
-#container #cantinas li.message {
-  /*font-style: italic;*/
-
+#container #news .post .item .textwrapper .date {
+  text-transform: uppercase;
+  font-size: 24pt;
 }
-#container #logo {
+/* the sponsor logo */
+#logo {
   border: 0pt solid #ff0000;
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 30pt;
+  bottom: 30pt;
   width: 300pt;
+  z-index: 110;
 }
 /* the pageflip at the bottom */
 #pageflipbg {

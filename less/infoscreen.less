@@ -17,7 +17,7 @@
 
 // Variables
 
-@in-post-padding: 7pt;
+@in-post-padding: 9pt;
 @online-orange: #ee861f;
 
 // Mixins
@@ -67,16 +67,14 @@ body {
 }
 
 #overlay {
+  /* note: the overlay is hidden when debugging, to be able to select/click stuff */
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  background-color: black;
-  opacity: 0;
-  text-align: center;
-  vertical-align: middle;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom no-repeat;
 }
 
 #background {
@@ -100,7 +98,9 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  margin: 30pt;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 30pt;
   z-index: 10;
 
   #office {
@@ -151,58 +151,58 @@ body {
     }
   }
 
-  #news {
+  #cantinas {
     .debugred;
     .fullbox;
 
-    .post {
-      .debugyellow;
+    .hours {
+      color: white;
+      padding-bottom: 3pt;
+      font-weight: normal;
+      font-style: italic;
+      text-transform: none;
+    }
+    #left {
+      .debugpink;
       position: relative;
-      clear: both;
-
-      .item {
-        .debugyellow;
-        min-height: 40pt;
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-        img {
-          float: left;
-          background: snow;
-          width: 170pt;
-          max-height: 140pt;
-          padding: 5px;
-          box-shadow: 0px 0px 10px #bbb;
-        }
-
-        .textwrapper {
-          .debuglime;
-          position: relative;
-          float: left;
-          text-align: left;
-          margin-left: @in-post-padding * 2;
-          width: 73%;
-
-          .date {
-            text-transform: uppercase;
-            font-size: 24pt;
-          }
-        }
-      }
+      float: left;
+      width: 48%;
+    }
+    #right {
+      .debugpink;
+      position: relative;
+      float: right;
+      width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
+    }
+    #dinnerbox {
+      .debugyellow;
+    }
+    li {
+      .debuglime;
+      position: relative;
+      width: 95%;
+      list-style-type: none;
+      -webkit-transition: text-shadow 0.15s ease-out 0s;
+    }
+    li.message {
+      /*font-style: italic;*/
     }
   }
 
   #bus {
     .debugred;
     .fullbox;
+
+    position: relative;
+    top: 35pt;
     font-size: 18pt;
     line-height: 25pt;
     background-color: #000f1d;
     height: 144pt;
     width: 110%;
-    margin-top: 25pt;
     margin-left: -5%;
-    box-shadow: 0 0 20pt #88b;
+    margin-bottom: 45pt;
+    box-shadow: 0 0 35pt #88b;
 
     .name {
       color: white;
@@ -310,51 +310,58 @@ body {
     }
   }
 
-  #cantinas {
+  #news {
     .debugred;
     .fullbox;
 
-    .hours {
-      color: white;
-      padding-bottom: 3pt;
-      font-weight: normal;
-      font-style: italic;
-      text-transform: none;
-    }
-    #left {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 48%;
-    }
-    #right {
-      .debugpink;
-      position: relative;
-      float: right;
-      width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
-    }
-    #dinnerbox {
+    .post {
       .debugyellow;
-    }
-    li {
-      .debuglime;
       position: relative;
-      width: 95%;
-      list-style-type: none;
-      -webkit-transition: text-shadow 0.15s ease-out 0s;
-    }
-    li.message {
-      /*font-style: italic;*/
+      clear: both;
+
+      .item {
+        .debugyellow;
+        min-height: 40pt;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        img {
+          float: left;
+          background: snow;
+          width: 170pt;
+          max-height: 140pt;
+          padding: 5px;
+          box-shadow: 0px 0px 10px #bbb;
+        }
+
+        .textwrapper {
+          .debuglime;
+          position: relative;
+          float: left;
+          text-align: left;
+          margin-left: @in-post-padding * 2;
+          width: 73%;
+
+          .date {
+            text-transform: uppercase;
+            font-size: 24pt;
+          }
+        }
+      }
     }
   }
 
-  #logo {
-    .debugred;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 300pt;
-  }
+}
+
+/* the sponsor logo */
+
+#logo {
+  .debugred;
+  position: absolute;
+  right: 30pt;
+  bottom: 30pt;
+  width: 300pt;
+  z-index: 110;
 }
 
 /* the pageflip at the bottom */
@@ -401,15 +408,14 @@ body {
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 108;
+  a {
+    font: bold 11px monospace;
+    color: #ccf2cc;
+    text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
-#pagefliplink a {
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  text-decoration: none;
-}
-
-#pagefliplink a:hover {
-  text-decoration: underline;
-}
