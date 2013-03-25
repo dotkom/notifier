@@ -125,79 +125,79 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   # Displaying the news feed (prefetched by the background page)
-  response = ls.lastResponseData
-  if response != undefined
-    displayStories response
-  else
-    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
+  # response = ls.lastResponseData
+  # if response != undefined
+  #   displayStories response
+  # else
+  #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
+  newsLimit = 4
 
-displayStories = (xmlstring) ->
-  # Parse the feed
-  xmldoc = $.parseXML xmlstring
-  $xml = $(xmldoc)
-  items = $xml.find "item"
-  
-  # Find most recent post, return if there are no new posts
-  _guid = $(items[0]).find "guid"
-  _text = $(_guid).text()
-  _mostRecent = _text.split('/')[4]
-  ls.mostRecentRead = _mostRecent
-  $('#news').html ''
-  
-  # Get list of last viewed items and check for news that are just
-  # updated rather than being actual news
-  updatedList = findUpdatedPosts()
-  
-  # Build list of last viewed for the next time the popup opens
-  idsOfLastViewed = []
-  
-  # Add feed items to popup
-  items.each (index, element) ->
+  News.get 'online', newsLimit, (items) ->
+
+    # Find most recent post, return if we've already seen it
+    guid = $(items[0]).find "guid"
+    text = $(guid).text()
+    mostRecent = text.split('/')[4]
+    if ls.mostRecentRead is _mostRecent
+      if DEBUG then console.log 'No new news'
+      return
+    ls.mostRecentRead = mostRecent
+    $('#news').html ''
     
-    if index < 4
-      post = parsePost(element)
-      idsOfLastViewed.push(post.id)
+    # Get list of last viewed items and check for news that are just
+    # updated rather than being actual news
+    updatedList = findUpdatedPosts()
+    
+    # Build list of last viewed for the next time the popup opens
+    idsOfLastViewed = []
+    
+    # Add feed items to popup
+    items.each (index, item) ->
       
-      item = '<div class="post"><div class="title">'
-      if index < ls.unreadCount
-        if post.id in updatedList.indexOf
-          item += '<span class="unread">UPDATED <b>::</b> </span>'
-        else
-          item += '<span class="unread">NEW <b>::</b> </span>'
-      
-      item += post.title + '</div>
-          <div class="item" id="' + post.link + '">
-            <img id="' + post.id + '" src="' + post.image + '" width="107" />
-            <div class="textwrapper">
-              <div class="emphasized">- Skrevet av ' + post.creator + ' den ' + post.date + '</div>
-              ' + post.description + '
+      if index < newsLimit
+        # post = News.parseItem(item)
+        idsOfLastViewed.push(item.id)
+        
+        htmlItem = '<div class="post"><div class="title">'
+        if index < ls.unreadCount
+          if item.id in updatedList.indexOf
+            htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+          else
+            htmlItem += '<span class="unread">NEW <b>::</b> </span>'
+        
+        htmlItem += item.title + '</div>
+            <div class="item" data="' + item.link + '">
+              <img id="' + item.id + '" src="' + item.image + '" width="107" />
+              <div class="textwrapper">
+                <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>
+                ' + item.description + '
+              </div>
             </div>
-          </div>
-        </div>'
-      $('#news').append item
-  
-  # Store list of last viewed items
-  ls.lastViewedIdList = JSON.stringify idsOfLastViewed
-  
-  # All items are now considered read :)
-  Browser.setBadgeText ''
-  ls.unreadCount = 0
+          </div>'
+        $('#news').append htmlItem
+    
+    # Store list of last viewed items
+    ls.lastViewedIdList = JSON.stringify idsOfLastViewed
+    
+    # All items are now considered read
+    Browser.setBadgeText ''
+    ls.unreadCount = 0
 
-  # Make news items open extension website while closing popup
-  $('.item').click ->
-    # The link is embedded as the ID of the element, we don't want to use
-    # <a> anchors because it creates an ugly box marking the focus element
-    Browser.openTab $(this).attr('id')
-    window.close()
+    # Make news items open extension website while closing popup
+    $('.item').click ->
+      # The link is embedded as the ID of the element, we don't want to use
+      # <a> anchors because it creates an ugly box marking the focus element
+      Browser.openTab $(this).attr 'data'
+      window.close()
 
-  # Finally, fetch news post images from the API async synchronously
-  for index, value of idsOfLastViewed
-    getImageUrlForId value, (id, image) ->
-      $('img[id='+id+']').attr 'src', image
+    # Finally, fetch news post images from the API async synchronously
+    for index, value of idsOfLastViewed
+      News.online_getImage value, (id, image) ->
+        $('img[id='+id+']').attr 'src', image
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = ->
-  # Definition checks first
+  # undefined checks first
   if ls.lastViewedIdList == undefined
     ls.lastViewedIdList = JSON.stringify []
     return []
