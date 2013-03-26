@@ -61,7 +61,7 @@
     if (DEBUG) {
       console.log('updateCoffeeSubscription');
     }
-    return Coffee.getPots(function(pots) {
+    return Coffee.get(function(pots, age) {
       var notLongAgo, storedPots;
       pots = Number(pots);
       if (!isNaN(pots)) {
