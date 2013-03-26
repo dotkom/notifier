@@ -72,7 +72,7 @@ var News = {
     var items = [];
     var self = this;
     $(xml).find('item').each( function() {
-      var item = self.parseItem(this);
+      var item = self.parseItem(this, feedName);
       items.push(item);
     });
     callback(items);
@@ -103,7 +103,14 @@ var News = {
         post.link = directLink;
       }
     }
-    post.description = post.description.trim();
+    // Remove excessive whitespace...
+    if (post.description.match(/<\w+>|<\/\w+>/g) !== null) { // Check if string contains markup
+      // ...and ludicrous formatting (HTML)
+      post.description = $.trim($(post.description).text());
+    }
+    else {
+      post.description = post.description.trim();
+    }
     
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
@@ -113,9 +120,8 @@ var News = {
       });
     }
     // Didn't find a creator, set the feedname as creator
-    console.log('HEEEEEEEEER creator "'+post.creator+'"', typeof post.creator); ////////////////////////////////////
-    if (post.creator === '') {
-      post.creator = feedName;
+    if (post.creator.length == 0) {
+      post.creator = feedName.capitalize();
     }
     // Abbreviate creators with long names
     post.creator = this.abbreviateName(post.creator);
