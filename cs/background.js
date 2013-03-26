@@ -63,7 +63,6 @@
     }
     return Coffee.get(false, function(pots, age) {
       var storedPots;
-      pots = Number(pots);
       console.log('pots', pots, 'age', age);
       if (!isNaN(pots)) {
         storedPots = Number(ls.coffeePots);
@@ -71,7 +70,7 @@
           console.log('- new pot!! meeting?');
           if (ls.currentStatus !== 'meeting') {
             console.log('-- not meetings!!!! near in time?');
-            if (age.match(/\d:\d/g === null)) {
+            if (age < 10) {
               console.log('--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!');
               Coffee.showNotification(pots);
             } else {

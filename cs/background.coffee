@@ -40,7 +40,6 @@ updateOfficeAndMeetings = ->
 updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
   Coffee.get false, (pots, age) ->
-    pots = Number pots
     console.log 'pots', pots, 'age', age
     # Error messages will be NaN here
     if not isNaN pots
@@ -52,7 +51,7 @@ updateCoffeeSubscription = ->
         if ls.currentStatus isnt 'meeting'
           console.log '-- not meetings!!!! near in time?' ################################################################
           # Old coffee in the age string can be easily recongized by the timestamp
-          if age.match /\d:\d/g is null
+          if age < 10
             # Notify everyone with a coffee subscription :D
             console.log '--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!' ################################################################
             Coffee.showNotification pots
