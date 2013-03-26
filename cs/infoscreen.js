@@ -325,7 +325,7 @@
       }), 3500);
     }), 1800000);
     if (!DEBUG) {
-      setInterval((function() {
+      setTimeout((function() {
         return document.location.reload();
       }), 3600000);
     }

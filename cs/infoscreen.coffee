@@ -272,7 +272,7 @@ $ ->
 
   # Reload the page once every day
   unless DEBUG
-    setInterval ( ->
+    setTimeout ( ->
       document.location.reload()
     ), 3600000 # KILLBUG: set to once every hour for now in order to keep #news alive, set to 86400000 later
 
