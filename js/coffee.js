@@ -91,44 +91,44 @@ var Coffee = {
     });
   },
 
-  getPots: function(callback) {
-    // Function used by background process to determine when a new coffee pot is cooking
-    if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
-    var self = this;
-    $.ajax({
-      url: self.api,
-      success: function(data) {
-        try {
-          // Split into pot number and age of last pot
-          var pieces = data.split("\n");
-          var pots = pieces[0];
-          var ageString = pieces[1];
+  // getPots: function(callback) {
+  //   // Function used by background process to determine when a new coffee pot is cooking
+  //   if (callback == undefined) {
+  //     console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+  //     return;
+  //   }
+  //   var self = this;
+  //   $.ajax({
+  //     url: self.api,
+  //     success: function(data) {
+  //       try {
+  //         // Split into pot number and age of last pot
+  //         var pieces = data.split("\n");
+  //         var pots = pieces[0];
+  //         var ageString = pieces[1];
 
-          // Get now
-          var now = new Date();
+  //         // Get now
+  //         var now = new Date();
 
-          // Check if the coffee pots were made today
-          var coffeeDate = new Date(ageString.match(/\d+\. [a-zA-Z]+/));
-          if (coffeeDate.getDate() == now.getDate()) {
-            callback(pots);
-          }
-          else {
-            callback(0);
-          }
-        } catch (err) {
-          if (DEBUG) console.log('ERROR: Failed to parse coffee status.');
-          callback(0);
-        }
-      },
-      error: function(jqXHR, text, err) {
-        if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
-        callback(0);
-      },
-    });
-  },
+  //         // Check if the coffee pots were made today
+  //         var coffeeDate = new Date(ageString.match(/\d+\. [a-zA-Z]+/));
+  //         if (coffeeDate.getDate() == now.getDate()) {
+  //           callback(pots);
+  //         }
+  //         else {
+  //           callback(0);
+  //         }
+  //       } catch (err) {
+  //         if (DEBUG) console.log('ERROR: Failed to parse coffee status.');
+  //         callback(0);
+  //       }
+  //     },
+  //     error: function(jqXHR, text, err) {
+  //       if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
+  //       callback(0);
+  //     },
+  //   });
+  // },
 
   showNotification: function(pots) {
     // Amount of pots currently not used
