@@ -30,8 +30,7 @@ var News = {
     'rektoratet': 'http://www.ntnu.no/blogger/rektoratet/feed/',
   },
 
-  // old fetchFeed
-  // Fetchfeed is called by background.html periodically, with unreadCount as
+  // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
   get: function(feedName, limit, callback) {
@@ -60,7 +59,7 @@ var News = {
       dataType: 'xml',
       success: function(xml) {
         // ls.lastResponseData = xmlstring;
-        self.parse(xml, feedName, callback);
+        self.parseFeed(xml, feedName, callback);
       },
       error: function(jqXHR, text, err) {
         if (self.debug) console.log('ERROR:', self.msgConnectionError, feedName);
@@ -69,7 +68,7 @@ var News = {
     });
   },
 
-  parse: function(xml, feedName, callback) {
+  parseFeed: function(xml, feedName, callback) {
     var items = [];
     var self = this;
     $(xml).find('item').each( function() {
