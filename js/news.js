@@ -48,7 +48,7 @@ var News = {
     // NTNU
     'ntnu': 'img/logo-sponsor-placeholder.png',
     'rektoratet': 'img/logo-sponsor-placeholder.png',
-  }
+  },
 
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
@@ -101,8 +101,6 @@ var News = {
     callback(items);
   },
 
-  // NOT DONE YET ///////////////////////////////////////////////////////////////////
-  // todo: this function only handles the online-feed, make sure it handles all feeds
   parseItem: function(item, feedName) {
     var post = {};
     post.title = $(item).find("title").text();
@@ -110,7 +108,7 @@ var News = {
     post.description = $(item).find("description").text();
     post.creator = $(item).find("dc:creator").text();
     
-    post.date = $(item).find("pubDate").text().substr(5, 11); /////////////////////
+    post.date = $(item).find("pubDate").text().substr(5, 11);
     post.image = this.images[feedName];
     
     // Check for alternative links in description
@@ -142,6 +140,11 @@ var News = {
     }
     // Abbreviate long creator names
     post.creator = this.abbreviateName(post.creator);
+
+    // In case pubDate didn't exist, set to null
+    if (post.date == '') {
+      post.date = null;
+    }
     
     // title + description must not exceed 5 lines
     var line = 50; // conservative estimation
