@@ -145,9 +145,9 @@ updateNews = ->
 
     # Get list of last viewed items and check for news that are just
     # updated rather than being actual news
-    lastViewedIdList = JSON.parse ls.lastViewedIdList
-    mostRecentIdList = JSON.parse ls.mostRecentIdList
-    updatedList = findUpdatedPosts lastViewedIdList, mostRecentIdList
+    viewedList = JSON.parse ls.lastViewedIdList
+    newsList = JSON.parse ls.mostRecentIdList
+    updatedList = findUpdatedPosts viewedList, newsList
 
     # Build list of last viewed for the next time the popup opens
     idsOfLastViewed = []
@@ -156,11 +156,11 @@ updateNews = ->
     $.each items, (index, item) ->
       
       if index < newsLimit
-        idsOfLastViewed.push(item.id)
+        idsOfLastViewed.push item.link
         
         htmlItem = '<div class="post"><div class="title">'
         if index < ls.unreadCount
-          if item.id in updatedList.indexOf
+          if item.link in updatedList.indexOf
             htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
           else
             htmlItem += '<span class="unread">NEW <b>::</b> </span>'
@@ -168,7 +168,7 @@ updateNews = ->
         htmlItem += item.title + '
           </div>
             <div class="item" data="' + item.link + '">
-              <img id="' + item.id + '" src="' + item.image + '" width="107" />
+              <img src="' + item.image + '" width="107" />
               <div class="textwrapper">
                 <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>
                 ' + item.description + '
@@ -192,13 +192,14 @@ updateNews = ->
       window.close()
 
     # Online: Fetch images from the API asynchronously
+    self = this
     if feed is 'online'
-      for index, value of idsOfLastViewed
-        News.online_getImage value, (id, image) ->
-          $('img[id='+id+']').attr 'src', image
+      for index, link of idsOfLastViewed
+        News.online_getImage link, (id, image) ->
+          $('.item[data="'+link+'"] img').attr 'src', image
 
 # Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = (lastViewedIdList, mostRecentIdList) ->
+findUpdatedPosts = (viewedList, newsList) ->
   # Compare lists, return union (updated items)
   updatedList = []
   for viewed in viewedList

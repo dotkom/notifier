@@ -186,21 +186,21 @@
     newsLimit = 4;
     feed = 'online';
     return News.get(feed, newsLimit, function(items) {
-      var idsOfLastViewed, index, lastViewedIdList, mostRecent, mostRecentIdList, updatedList, value, _results;
+      var idsOfLastViewed, index, link, mostRecent, newsList, self, updatedList, viewedList, _results;
       mostRecent = items[0].link;
       ls.mostRecentRead = mostRecent;
       $('#news').html('');
-      lastViewedIdList = JSON.parse(ls.lastViewedIdList);
-      mostRecentIdList = JSON.parse(ls.mostRecentIdList);
-      updatedList = findUpdatedPosts(lastViewedIdList, mostRecentIdList);
+      viewedList = JSON.parse(ls.lastViewedIdList);
+      newsList = JSON.parse(ls.mostRecentIdList);
+      updatedList = findUpdatedPosts(viewedList, newsList);
       idsOfLastViewed = [];
       $.each(items, function(index, item) {
         var htmlItem, _ref;
         if (index < newsLimit) {
-          idsOfLastViewed.push(item.id);
+          idsOfLastViewed.push(item.link);
           htmlItem = '<div class="post"><div class="title">';
           if (index < ls.unreadCount) {
-            if (_ref = item.id, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
+            if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
               htmlItem += '<span class="unread">UPDATED <b>::</b> </span>';
             } else {
               htmlItem += '<span class="unread">NEW <b>::</b> </span>';
@@ -209,7 +209,7 @@
           htmlItem += item.title + '\
           </div>\
             <div class="item" data="' + item.link + '">\
-              <img id="' + item.id + '" src="' + item.image + '" width="107" />\
+              <img src="' + item.image + '" width="107" />\
               <div class="textwrapper">\
                 <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>\
                 ' + item.description + '\
@@ -226,12 +226,13 @@
         Browser.openTab($(this).attr('data'));
         return window.close();
       });
+      self = this;
       if (feed === 'online') {
         _results = [];
         for (index in idsOfLastViewed) {
-          value = idsOfLastViewed[index];
-          _results.push(News.online_getImage(value, function(id, image) {
-            return $('img[id=' + id + ']').attr('src', image);
+          link = idsOfLastViewed[index];
+          _results.push(News.online_getImage(link, function(id, image) {
+            return $('.item[data="' + link + '"] img').attr('src', image);
           }));
         }
         return _results;
@@ -239,7 +240,7 @@
     });
   };
 
-  findUpdatedPosts = function(lastViewedIdList, mostRecentIdList) {
+  findUpdatedPosts = function(viewedList, newsList) {
     var news, updatedList, viewed, _i, _j, _len, _len1;
     updatedList = [];
     for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
