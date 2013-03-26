@@ -294,25 +294,3 @@ var News = {
   },
 
 }
-
-
-/*
-felles:
-    feeds
-    get
-    parseFeed
-    parseItem
-    showNotification
-    unreadCount
-    fletting
-
-hver for seg:
-    // last read
-    keep list of recent posts
-    get post image
-*/
-
-
-
-
-
