@@ -99,6 +99,18 @@ var Coffee = {
     });
   },
 
+  madeToday: function(ageString) {
+
+  },
+
+  prettifyAgeString: function(age) {
+
+  },
+
+  prettifyPotsString: function(pots) {
+    
+  },
+
   showNotification: function(pots) {
     // Amount of pots currently not used
     Browser.createNotification('subscription.html');
