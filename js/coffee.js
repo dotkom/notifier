@@ -32,23 +32,15 @@ var Coffee = {
           var pots = pieces[0];
           var ageString = pieces[1];
 
-          var madeToday = this.isMadeToday(ageString);
+          if (this.isMadeToday(ageString)) {
 
-          // Raw data data requested?
-          if (madeToday && rawData) {
-            pots = Number(pots);
-            var age = coffeeTime[0] + ':' + coffeeTime[1];
-            callback(pots, age);
-          }
-          // Regular data requsted (pretty strings)
-          else if (madeToday) {
-
-            // Make age string
-            var age = this.makeAgeString()
-
-            // Make pots string
-            if (!raw)
-              pots = this.prettifyPotsString(pots);
+            // Calculate age difference from right now
+            var age = this.madeHowLongAgo(ageString);
+            
+            if (!raw) {
+              age = this.prettyAgeString(diff);
+              pots = this.prettyPotsString(pots);
+            }
 
             // Call it back
             callback(pots, age);
@@ -90,8 +82,7 @@ var Coffee = {
     var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
     var one_minute = 1000 * 60;
     // Calculate difference between the two dates, and convert to minutes
-    var diff = Math.floor(( now.getTime() - then.getTime() ) / one_minute);
-    return diff;
+    return Math.floor(( now.getTime() - then.getTime() ) / one_minute);
   },
 
   prettyAgeString: function(diff) {
