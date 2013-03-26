@@ -201,8 +201,6 @@ var News = {
     localStorage.mostRecentIdList = JSON.stringify(idList);
   },
 
-  // NOT DONE YET ///////////////////////////////////////////////////////////////////
-  // todo: this function only handles the online-feed, make sure it handles all feeds
   showNotification: function(item) {
     if (localStorage.showNotifications == 'true') {
       var post = this.parseItem(item);
@@ -212,10 +210,7 @@ var News = {
       localStorage.notificationTitle = post.title;
       localStorage.notificationLink = post.link;
       localStorage.notificationDescription = post.description;
-      localStorage.notificationCreator = post.creator; // finnes ikke alltid TOOOODOOOOOO
-      localStorage.notificationDate = post.date; // finnes ikke alltid TOOOODOOOOOO
-      localStorage.notificationId = post.id; // TOOOODODODOODODODODODDDOOo, bruk link
-      localStorage.notificationImage = this.backupImage;
+      localStorage.notificationCreator = post.creator;
       // Show desktop notification
       Browser.createNotification('notification.html');
     }
@@ -241,7 +236,8 @@ var News = {
 
   // Organization specific functions
 
-  online_getImage: function(id, callback) {
+  online_getImage: function(link, callback) {
+    var id = link.split('/')[4]; // id is stored in the link
     var image = 'undefined';
     var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
     $.getJSON(api + id, function(json) {
