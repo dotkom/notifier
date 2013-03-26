@@ -9,7 +9,7 @@ var Coffee = {
   debugCoffee: 0,
   debugCoffeeString: "200\n1. March 14:28:371",
 
-  get: function(callback) {
+  get: function(rawData, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
@@ -41,9 +41,18 @@ var Coffee = {
           dateString = dateString.replace('.', ''); // Remove period
           dateString = dateString + ', ' + now.getFullYear();
           var coffeeDate = new Date(dateString);
-
+          
           // Check if the coffee pots were made today
-          if (coffeeDate.getDate() == now.getDate()) {
+          var madeToday = coffeeDate.getDate() == now.getDate();
+
+          // Raw data data requested?
+          if (madeToday && rawData) {
+            pots = Number(pots);
+            var age = coffeeTime[0] + ':' + coffeeTime[1];
+            callback(pots, age);
+          }
+          // Regular data requsted (pretty strings)
+          else if (madeToday) {
 
             // Calulate the age of the last pot better
             var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
@@ -76,7 +85,6 @@ var Coffee = {
           }
           else {
             // Coffee was not made today
-            var coffee = '';
             callback(self.msgNoPots, self.msgNoCoffee);
           }
         } catch (err) {
@@ -90,45 +98,6 @@ var Coffee = {
       },
     });
   },
-
-  // getPots: function(callback) {
-  //   // Function used by background process to determine when a new coffee pot is cooking
-  //   if (callback == undefined) {
-  //     console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
-  //     return;
-  //   }
-  //   var self = this;
-  //   $.ajax({
-  //     url: self.api,
-  //     success: function(data) {
-  //       try {
-  //         // Split into pot number and age of last pot
-  //         var pieces = data.split("\n");
-  //         var pots = pieces[0];
-  //         var ageString = pieces[1];
-
-  //         // Get now
-  //         var now = new Date();
-
-  //         // Check if the coffee pots were made today
-  //         var coffeeDate = new Date(ageString.match(/\d+\. [a-zA-Z]+/));
-  //         if (coffeeDate.getDate() == now.getDate()) {
-  //           callback(pots);
-  //         }
-  //         else {
-  //           callback(0);
-  //         }
-  //       } catch (err) {
-  //         if (DEBUG) console.log('ERROR: Failed to parse coffee status.');
-  //         callback(0);
-  //       }
-  //     },
-  //     error: function(jqXHR, text, err) {
-  //       if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
-  //       callback(0);
-  //     },
-  //   });
-  // },
 
   showNotification: function(pots) {
     // Amount of pots currently not used
