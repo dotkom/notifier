@@ -184,7 +184,7 @@
       console.log('updateNews');
     }
     newsLimit = 4;
-    return News.get('online', newsLimit, function(items) {
+    return News.get('samfundet', newsLimit, function(items) {
       var guid, idsOfLastViewed, index, mostRecent, text, updatedList, value, _results;
       guid = $(items[0]).find("guid");
       text = $(guid).text();

@@ -103,8 +103,7 @@ var News = {
         post.link = directLink;
       }
     }
-    // Remove HTML and excessive whitespace from description
-    post.description = $.trim($(post.description).text());
+    post.description = post.description.trim();
     
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
@@ -114,7 +113,8 @@ var News = {
       });
     }
     // Didn't find a creator, set the feedname as creator
-    if (post.creator == '') {
+    console.log('HEEEEEEEEER creator "'+post.creator+'"', typeof post.creator); ////////////////////////////////////
+    if (post.creator === '') {
       post.creator = feedName;
     }
     // Abbreviate creators with long names
@@ -213,19 +213,24 @@ var News = {
   },
 
   abbreviateName: function(oldName) {
-    // Abbreviate middle names if name is long
-    if (18 < oldName.length) {
-      var pieces = oldName.split(' ');
-      if (2 < pieces.length) {
-        // Add first name
-        var newName = pieces[0];
-        // Add one letter per middle name
-        for (var i = 1; i < pieces.length - 1; i++)
-          newName += ' ' + pieces[i].charAt(0).toUpperCase() + '.';
-        // Add last name
-        newName += ' ' + pieces[pieces.length-1];
-        return newName;
+    if (oldName != undefined) {
+      // Abbreviate middle names if name is long
+      if (18 < oldName.length) {
+        var pieces = oldName.split(' ');
+        if (2 < pieces.length) {
+          // Add first name
+          var newName = pieces[0];
+          // Add one letter per middle name
+          for (var i = 1; i < pieces.length - 1; i++)
+            newName += ' ' + pieces[i].charAt(0).toUpperCase() + '.';
+          // Add last name
+          newName += ' ' + pieces[pieces.length-1];
+          return newName;
+        }
       }
+    }
+    else {
+      if (this.debug) console.log('ERROR: cannot abbreviate an undefined name');
     }
     return oldName;
   },

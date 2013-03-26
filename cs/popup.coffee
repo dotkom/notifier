@@ -131,8 +131,8 @@ updateNews = ->
   # else
   #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
   newsLimit = 4
-
-  News.get 'online', newsLimit, (items) ->
+  
+  News.get 'samfundet', newsLimit, (items) ->
 
     # Find most recent post, return if we've already seen it
     guid = $(items[0]).find "guid"
