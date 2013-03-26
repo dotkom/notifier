@@ -240,10 +240,8 @@
     var dinner, dinnerlist, _i, _len;
     dinnerlist = '';
     if (typeof menu === 'string') {
-      ls.noDinnerInfo = 'true';
       dinnerlist += '<li>' + menu + '</li>';
     } else {
-      ls.noDinnerInfo = 'false';
       for (_i = 0, _len = menu.length; _i < _len; _i++) {
         dinner = menu[_i];
         if (dinner.price !== null) {
