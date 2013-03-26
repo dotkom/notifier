@@ -9,7 +9,7 @@ var Coffee = {
   debug: 0,
   debugString: "200\n1. March 14:28:371",
 
-  get: function(rawData, callback) {
+  get: function(pretty, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
@@ -29,19 +29,20 @@ var Coffee = {
         try {
           // Split into pot number and age of last pot
           var pieces = data.split("\n");
-          var pots = pieces[0];
+          var pots = Number(pieces[0]);
           var ageString = pieces[1];
 
+          // Coffee made today?
           if (this.isMadeToday(ageString)) {
 
-            // Calculate age difference from right now
-            var age = this.madeHowLongAgo(ageString);
-            
-            if (!raw) {
-              age = this.prettyAgeString(diff);
+            // Calculate minute difference from right now
+            var age = this.minuteDiff(ageString);
+
+            // If pretty strings are requested
+            if (pretty) {
+              age = this.prettyAgeString(age);
               pots = this.prettyPotsString(pots);
             }
-
             // Call it back
             callback(pots, age);
           }
@@ -74,7 +75,7 @@ var Coffee = {
     return coffeeDate.getDate() == now.getDate();
   },
 
-  madeHowLongAgo: function(ageString) {
+  minuteDiff: function(ageString) {
     // Get now
     var now = new Date();
     // Calulate the age of the last pot better
