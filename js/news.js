@@ -59,7 +59,7 @@ var News = {
       dataType: 'xml',
       success: function(xml) {
         // ls.lastResponseData = xmlstring;
-        self.parseFeed(xml, feedName, callback);
+        self.parseFeed(xml, feedName, limit, callback);
       },
       error: function(jqXHR, text, err) {
         if (self.debug) console.log('ERROR:', self.msgConnectionError, feedName);
@@ -68,12 +68,15 @@ var News = {
     });
   },
 
-  parseFeed: function(xml, feedName, callback) {
+  parseFeed: function(xml, feedName, limit, callback) {
     var items = [];
     var self = this;
+    var count = 0;
     $(xml).find('item').each( function() {
-      var item = self.parseItem(this, feedName);
-      items.push(item);
+      if (count++ < limit) {
+        var item = self.parseItem(this, feedName);
+        items.push(item);
+      }
     });
     callback(items);
   },
@@ -218,6 +221,7 @@ var News = {
   checkForAltLink: function(description) {
     // For simplicity we'll use the first and best link we can find
     var altLink = description.match(/\(?\b(?:(http|https|ftp):\/\/)?((?:www.)?[a-zA-Z0-9\-\.]+[\.][a-zA-Z]{2,4})(?::(\d*))?(?=[\s\/,\.\)])([\/]{1}[^\s\?]*[\/]{1})*(?:\/?([^\s\n\?\[\]\{\}\#]*(?:(?=\.)){1}|[^\s\n\?\[\]\{\}\.\#]*)?([\.]{1}[^\s\?\#]*)?)?(?:\?{1}([^\s\n\#\[\]\(\)]*))?([\#][^\s\n]*)?\)?/);
+    console.log('alt link found:::::', altLink)
     // Regex credz: http://someweblog.com/url-regular-expression-javascript-link-shortener/
     if (altLink != null) {
       if (typeof altLink[0] != 'undefined') {
