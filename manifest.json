@@ -28,7 +28,7 @@
     "notifications",
     "*://*.online.ntnu.no/*",
     "*://*.visuweb.no/*",
-    "*://*.sit.no/*"
+    "*://*.sit.no/*",
     "*://*.samfundet.no/*"
   ],
 
