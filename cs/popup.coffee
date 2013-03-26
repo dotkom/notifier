@@ -165,9 +165,13 @@ updateNews = ->
           else
             htmlItem += '<span class="unread">NEW <b>::</b> </span>'
         
+        # EXPLANATION NEEDED:
+        # .item[data] contains the link
+        # .item[name] contains the alternative link, if one exists, otherwise null
+        console.log 'ALTLINK', item.altLink
         htmlItem += item.title + '
           </div>
-            <div class="item" data="' + item.link + '">
+            <div class="item" data="' + item.link + '" name="' + item.altLink + '">
               <img src="' + item.image + '" width="107" />
               <div class="textwrapper">
                 <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>
@@ -191,12 +195,18 @@ updateNews = ->
       Browser.openTab $(this).attr 'data'
       window.close()
 
-    # Online: Fetch images from the API asynchronously
-    self = this
+    # Online specific stuff
     if feed is 'online'
+      # Fetch images from the API asynchronously
       for index, link of idsOfLastViewed
-        News.online_getImage link, (id, image) ->
+        News.online_getImage link, (link, image) ->
+          # It's important to get the link from the callback, not the above code
+          # in order to have the right link at the right time, async ftw.
           $('.item[data="'+link+'"] img').attr 'src', image
+          # When that's done for an image, check if the link could be a better one
+          altLink = $('.item[data="'+link+'"]').attr 'name'
+          if altLink isnt 'null'
+            $('.item[data="'+link+'"]').attr 'data', altLink
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (viewedList, newsList) ->

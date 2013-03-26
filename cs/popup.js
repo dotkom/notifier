@@ -186,7 +186,7 @@
     newsLimit = 4;
     feed = 'online';
     return News.get(feed, newsLimit, function(items) {
-      var idsOfLastViewed, index, link, mostRecent, newsList, self, updatedList, viewedList, _results;
+      var idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
       mostRecent = items[0].link;
       ls.mostRecentRead = mostRecent;
       $('#news').html('');
@@ -206,9 +206,10 @@
               htmlItem += '<span class="unread">NEW <b>::</b> </span>';
             }
           }
+          console.log('ALTLINK', item.altLink);
           htmlItem += item.title + '\
           </div>\
-            <div class="item" data="' + item.link + '">\
+            <div class="item" data="' + item.link + '" name="' + item.altLink + '">\
               <img src="' + item.image + '" width="107" />\
               <div class="textwrapper">\
                 <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>\
@@ -226,13 +227,17 @@
         Browser.openTab($(this).attr('data'));
         return window.close();
       });
-      self = this;
       if (feed === 'online') {
         _results = [];
         for (index in idsOfLastViewed) {
           link = idsOfLastViewed[index];
-          _results.push(News.online_getImage(link, function(id, image) {
-            return $('.item[data="' + link + '"] img').attr('src', image);
+          _results.push(News.online_getImage(link, function(link, image) {
+            var altLink;
+            $('.item[data="' + link + '"] img').attr('src', image);
+            altLink = $('.item[data="' + link + '"]').attr('name');
+            if (altLink !== 'null') {
+              return $('.item[data="' + link + '"]').attr('data', altLink);
+            }
           }));
         }
         return _results;
