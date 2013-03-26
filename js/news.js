@@ -181,7 +181,7 @@ var News = {
           Browser.setBadgeText(String(unread_count));
         }
         localStorage.unreadCount = unread_count;
-        this.storeMostRecentIds(idList); // New || Updated
+        localStorage.mostRecentIdList = JSON.stringify(idList); // New || Updated
         return false;
       }
       
@@ -191,14 +191,10 @@ var News = {
         Browser.setBadgeText(this.maxNewsAmount + '+');
         localStorage.unreadCount = this.maxNewsAmount;
         // New or updated?
-        this.storeMostRecentIds(idList); // New || Updated
+        localStorage.mostRecentIdList = JSON.stringify(idList); // New || Updated
         return false;
       }
     });
-  },
-
-  storeMostRecentIds: function(idList) {
-    localStorage.mostRecentIdList = JSON.stringify(idList);
   },
 
   showNotification: function(item) {
