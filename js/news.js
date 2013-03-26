@@ -86,23 +86,20 @@ var News = {
     post.link = $(item).find("link").text();
     post.description = $(item).find("description").text();
     post.creator = $(item).find("dc:creator").text();
-    post.date = $(item).find("pubDate").text().substr(5, 11);
     
-    post.id = $(item).find("guid").text().split('/')[4];
-    post.image = this.backupImage;
+    post.altLink = null;
+
+    post.date = $(item).find("pubDate").text().substr(5, 11); /////////////////////
+    
+    post.image = this.backupImage; ////////////////////////////////////////////////
 
     // Shorten 'bedriftspresentasjon' to 'bedpres'
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
 
-    // Check for more direct link in the description
-    var directLink = post.description.match(/(http.:\/\/)?online.ntnu.no\/event\/\d+(\/)?/g)
-    if (directLink != null) {
-      directLink = directLink[0];
-      if (directLink != undefined) {
-        post.link = directLink;
-      }
-    }
+    // Check for alternative links in description
+    var altLink = this.checkForAltLink(post.description);
+
     // Remove excessive whitespace...
     if (post.description.match(/<\w+>|<\/\w+>/g) !== null) { // Check if string contains markup
       // ...and ludicrous formatting (HTML)
@@ -123,7 +120,7 @@ var News = {
     if (post.creator.length == 0) {
       post.creator = feedName.capitalize();
     }
-    // Abbreviate creators with long names
+    // Abbreviate long creator names
     post.creator = this.abbreviateName(post.creator);
     
     // title + description must not exceed 5 lines
@@ -207,7 +204,7 @@ var News = {
     if (localStorage.showNotifications == 'true') {
       var post = this.parseItem(item);
       // Remember this
-      localStorage.lastNotified = post.id;
+      localStorage.lastNotified = post.link;
       // Get content
       localStorage.notificationTitle = post.title;
       localStorage.notificationLink = post.link;
@@ -216,6 +213,18 @@ var News = {
       // Show desktop notification
       Browser.createNotification('notification.html');
     }
+  },
+
+  checkForAltLink: function(description) {
+    // For simplicity we'll use the first and best link we can find
+    var altLink = description.match(/\(?\b(?:(http|https|ftp):\/\/)?((?:www.)?[a-zA-Z0-9\-\.]+[\.][a-zA-Z]{2,4})(?::(\d*))?(?=[\s\/,\.\)])([\/]{1}[^\s\?]*[\/]{1})*(?:\/?([^\s\n\?\[\]\{\}\#]*(?:(?=\.)){1}|[^\s\n\?\[\]\{\}\.\#]*)?([\.]{1}[^\s\?\#]*)?)?(?:\?{1}([^\s\n\#\[\]\(\)]*))?([\#][^\s\n]*)?\)?/);
+    // Regex credz: http://someweblog.com/url-regular-expression-javascript-link-shortener/
+    if (altLink != null) {
+      if (typeof altLink[0] != 'undefined') {
+        return altLink;
+      }
+    }
+    return null;
   },
 
   abbreviateName: function(oldName) {
@@ -250,18 +259,18 @@ var News = {
     $.getJSON(api + id, function(json) {
       if (json['online_news_image']) {
         image = json['online_news_image']['0']['image'];
-        callback(id, image);
+        callback(link, image);
       }
       else {
         image = this.backupImage;
         if (this.debug) console.log('ERROR: no image exists for id: ' + id);
-        callback(id, image);
+        callback(link, image);
       }
     })
     .error(function() {
       image = this.backupImage;
       if (this.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
-      callback(id, image);
+      callback(link, image);
     });
   },
 
