@@ -61,19 +61,21 @@
     if (DEBUG) {
       console.log('updateCoffeeSubscription');
     }
-    return Coffee.get(function(pots, age) {
-      var notLongAgo, storedPots;
+    return Coffee.get(true, function(pots, age) {
+      var storedPots;
       pots = Number(pots);
+      console.log('pots', pots, 'age', age);
       if (!isNaN(pots)) {
         storedPots = Number(ls.coffeePots);
         if (storedPots < pots) {
           console.log('- new pot!! meeting?');
           if (ls.currentStatus !== 'meeting') {
             console.log('-- not meetings!!!! near in time?');
-            notLongAgo = true;
-            if (notLongAgo) {
+            if (age.match(/\d:\d/g === null)) {
               console.log('--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!');
               Coffee.showNotification(pots);
+            } else {
+              console.log('------------------ old coffee is old :(');
             }
           }
         }

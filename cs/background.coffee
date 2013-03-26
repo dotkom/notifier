@@ -39,8 +39,9 @@ updateOfficeAndMeetings = ->
 
 updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
-  Coffee.get (pots, age) ->
+  Coffee.get true, (pots, age) ->
     pots = Number pots
+    console.log 'pots', pots, 'age', age
     # Error messages will be NaN here
     if not isNaN pots
       storedPots = Number ls.coffeePots
@@ -50,11 +51,13 @@ updateCoffeeSubscription = ->
         # Not a meeting?
         if ls.currentStatus isnt 'meeting'
           console.log '-- not meetings!!!! near in time?' ################################################################
-          notLongAgo = true
-          if notLongAgo
+          # Old coffee in the age string can be easily recongized by the timestamp
+          if age.match /\d:\d/g is null
             # Notify everyone with a coffee subscription :D
             console.log '--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!' ################################################################
             Coffee.showNotification pots
+          else
+            console.log '------------------ old coffee is old :('
       # And remember to update localStorage
       ls.coffeePots = pots
 
