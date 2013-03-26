@@ -32,18 +32,7 @@ var Coffee = {
           var pots = pieces[0];
           var ageString = pieces[1];
 
-          // Get now
-          var now = new Date();
-
-          // Figure out which date the coffee was made
-          var dateObject = ageString.match(/\d+\. [a-zA-Z]+/); // Operas JS-engine makes an object instead of a string
-          var dateString = String(dateObject);
-          dateString = dateString.replace('.', ''); // Remove period
-          dateString = dateString + ', ' + now.getFullYear();
-          var coffeeDate = new Date(dateString);
-          
-          // Check if the coffee pots were made today
-          var madeToday = coffeeDate.getDate() == now.getDate();
+          var madeToday = this.isMadeToday(ageString);
 
           // Raw data data requested?
           if (madeToday && rawData) {
@@ -78,7 +67,7 @@ var Coffee = {
             }
 
             // Make pots-string
-            pots = (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
+            pots = this.prettifyPotsString(pots);
 
             // Call it back
             callback(pots, age);
@@ -99,8 +88,17 @@ var Coffee = {
     });
   },
 
-  madeToday: function(ageString) {
-
+  isMadeToday: function(ageString) {
+    // Get now
+    var now = new Date();
+    // Figure out which date the coffee was made
+    var dateObject = ageString.match(/\d+\. [a-zA-Z]+/); // Operas JS-engine makes an object instead of a string
+    var dateString = String(dateObject);
+    dateString = dateString.replace('.', ''); // Remove period
+    dateString = dateString + ', ' + now.getFullYear();
+    var coffeeDate = new Date(dateString);
+    // Check if the coffee pots were made today
+    return coffeeDate.getDate() == now.getDate();
   },
 
   prettifyAgeString: function(age) {
@@ -108,7 +106,7 @@ var Coffee = {
   },
 
   prettifyPotsString: function(pots) {
-    
+    return (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
   },
 
   showNotification: function(pots) {
