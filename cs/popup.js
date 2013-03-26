@@ -184,7 +184,7 @@
       console.log('updateNews');
     }
     newsLimit = 4;
-    feed = 'online';
+    feed = 'samfundet';
     return News.get(feed, newsLimit, function(items) {
       var idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
       mostRecent = items[0].link;
@@ -195,7 +195,7 @@
       updatedList = findUpdatedPosts(viewedList, newsList);
       idsOfLastViewed = [];
       $.each(items, function(index, item) {
-        var htmlItem, _ref;
+        var date, htmlItem, _ref;
         if (index < newsLimit) {
           idsOfLastViewed.push(item.link);
           htmlItem = '<div class="post"><div class="title">';
@@ -206,13 +206,16 @@
               htmlItem += '<span class="unread">NEW <b>::</b> </span>';
             }
           }
-          console.log('ALTLINK', item.altLink);
+          date = '';
+          if (item.date !== null) {
+            date = ' den ' + item.date;
+          }
           htmlItem += item.title + '\
           </div>\
             <div class="item" data="' + item.link + '" name="' + item.altLink + '">\
               <img src="' + item.image + '" width="107" />\
               <div class="textwrapper">\
-                <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>\
+                <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>\
                 ' + item.description + '\
               </div>\
             </div>\
