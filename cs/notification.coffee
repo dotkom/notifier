@@ -3,11 +3,10 @@ $ = jQuery
 ls = localStorage
 
 setNotification = ->
-  id = ls.notificationId
-  link = ls.notificationLink
-  creator = ls.notificationCreator
   title = ls.notificationTitle
+  link = ls.notificationLink
   description = ls.notificationDescription
+  creator = ls.notificationCreator
   
   # Shorten title and description to fit nicely
   maxlength = 90
@@ -20,7 +19,7 @@ setNotification = ->
     window.close
 
   # Asynchronously fetch the image
-  getImageUrlForId id, (id, image) ->
+  News.online_getImage link, (id, image) ->
     # Create the HTML
     $('#notification').html('
       <div class="item">
