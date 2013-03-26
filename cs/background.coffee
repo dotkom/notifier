@@ -39,7 +39,7 @@ updateOfficeAndMeetings = ->
 
 updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
-  Coffee.get true, (pots, age) ->
+  Coffee.get false, (pots, age) ->
     pots = Number pots
     console.log 'pots', pots, 'age', age
     # Error messages will be NaN here

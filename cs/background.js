@@ -61,7 +61,7 @@
     if (DEBUG) {
       console.log('updateCoffeeSubscription');
     }
-    return Coffee.get(true, function(pots, age) {
+    return Coffee.get(false, function(pots, age) {
       var storedPots;
       pots = Number(pots);
       console.log('pots', pots, 'age', age);

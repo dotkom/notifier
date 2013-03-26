@@ -34,7 +34,7 @@ updateMeetings = ->
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
-  Coffee.get (pots, age) ->
+  Coffee.get true, (pots, age) ->
     $('#todays #coffee #pots').html '- '+pots
     $('#todays #coffee #age').html age
 
