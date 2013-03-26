@@ -78,6 +78,8 @@ var News = {
     callback(items);
   },
 
+  // NOT DONE YET ///////////////////////////////////////////////////////////////////
+  // todo: this function only handles the online-feed, make sure it handles all feeds
   parseItem: function(item, feedName) {
     var post = {};
     post.title = $(item).find("title").text();
@@ -131,6 +133,8 @@ var News = {
     return post;
   },
 
+  // NOT DONE YET ///////////////////////////////////////////////////////////////////
+  // todo: this function only handles the online-feed, make sure it handles all feeds
   unreadCount: function(xmlstring) {
     
 
@@ -197,6 +201,8 @@ var News = {
     localStorage.mostRecentIdList = JSON.stringify(idList);
   },
 
+  // NOT DONE YET ///////////////////////////////////////////////////////////////////
+  // todo: this function only handles the online-feed, make sure it handles all feeds
   showNotification: function(item) {
     if (localStorage.showNotifications == 'true') {
       var post = this.parseItem(item);
@@ -263,21 +269,17 @@ var News = {
 felles:
     feeds
     get
-    show notification
+    parseFeed
+    parseItem
+    showNotification
+    unreadCount
     fletting
 
 hver for seg:
     // last read
-    max news amount
-    unread count
-    parse post
     keep list of recent posts
     get post image
 */
-
-
-
-
 
 
 
