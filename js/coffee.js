@@ -65,7 +65,7 @@ var Coffee = {
               age = 'Kaffen ble laget kl '+coffeeTime[0]+':'+coffeeTime[1];
             }
             else {
-              age = 'Har noen laget kaffe i fremtiden?!'
+              age = 'WAT? Lager noen kaffe i fremtiden nå?!'
             }
 
             // Make pots-string
