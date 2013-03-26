@@ -29,6 +29,7 @@
     "*://*.online.ntnu.no/*",
     "*://*.visuweb.no/*",
     "*://*.sit.no/*"
+    "*://*.samfundet.no/*"
   ],
 
 	"content_scripts": [
