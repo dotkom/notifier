@@ -46,10 +46,15 @@ updateCoffeeSubscription = ->
       storedPots = Number ls.coffeePots
       # New pot?
       if storedPots < pots
+        console.log '- new pot!! meeting?' ################################################################
         # Not a meeting?
         if ls.currentStatus isnt 'meeting'
-          # Notify everyone with a coffee subscription :D
-          Coffee.showNotification pots
+          console.log '-- not meetings!!!! near in time?' ################################################################
+          notLongAgo = true
+          if notLongAgo
+            # Notify everyone with a coffee subscription :D
+            console.log '--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!' ################################################################
+            Coffee.showNotification pots
       # And remember to update localStorage
       ls.coffeePots = pots
 

@@ -62,13 +62,19 @@
       console.log('updateCoffeeSubscription');
     }
     return Coffee.getPots(function(pots) {
-      var storedPots;
+      var notLongAgo, storedPots;
       pots = Number(pots);
       if (!isNaN(pots)) {
         storedPots = Number(ls.coffeePots);
         if (storedPots < pots) {
+          console.log('- new pot!! meeting?');
           if (ls.currentStatus !== 'meeting') {
-            Coffee.showNotification(pots);
+            console.log('-- not meetings!!!! near in time?');
+            notLongAgo = true;
+            if (notLongAgo) {
+              console.log('--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!');
+              Coffee.showNotification(pots);
+            }
           }
         }
         return ls.coffeePots = pots;
