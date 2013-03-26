@@ -90,19 +90,16 @@ var News = {
     post.description = $(item).find("description").text();
     post.creator = $(item).find("dc:creator").text();
     
-    post.altLink = null;
-
     post.date = $(item).find("pubDate").text().substr(5, 11); /////////////////////
-    
     post.image = this.backupImage; ////////////////////////////////////////////////
+    
+    // Check for alternative links in description
+    post.altLink = this.checkForAltLink(post.description);
 
     // Shorten 'bedriftspresentasjon' to 'bedpres'
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
-
-    // Check for alternative links in description
-    var altLink = this.checkForAltLink(post.description);
-
+    
     // Remove excessive whitespace...
     if (post.description.match(/<\w+>|<\/\w+>/g) !== null) { // Check if string contains markup
       // ...and ludicrous formatting (HTML)
@@ -219,13 +216,11 @@ var News = {
   },
 
   checkForAltLink: function(description) {
-    // For simplicity we'll use the first and best link we can find
-    var altLink = description.match(/\(?\b(?:(http|https|ftp):\/\/)?((?:www.)?[a-zA-Z0-9\-\.]+[\.][a-zA-Z]{2,4})(?::(\d*))?(?=[\s\/,\.\)])([\/]{1}[^\s\?]*[\/]{1})*(?:\/?([^\s\n\?\[\]\{\}\#]*(?:(?=\.)){1}|[^\s\n\?\[\]\{\}\.\#]*)?([\.]{1}[^\s\?\#]*)?)?(?:\?{1}([^\s\n\#\[\]\(\)]*))?([\#][^\s\n]*)?\)?/);
-    console.log('alt link found:::::', altLink)
-    // Regex credz: http://someweblog.com/url-regular-expression-javascript-link-shortener/
+    // Looking for alternative link, find the first and best full link
+    var altLink = description.match(/href="(http.*)"/);
     if (altLink != null) {
-      if (typeof altLink[0] != 'undefined') {
-        return altLink;
+      if (typeof altLink[1] == 'string') {
+        return altLink[1];
       }
     }
     return null;
