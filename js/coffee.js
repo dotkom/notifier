@@ -6,8 +6,8 @@ var Coffee = {
   msgConnectionError: 'Frakoblet fra kaffeknappen',
   msgComforting: 'Det er sikkert kaffe!',
   
-  debugCoffee: 0,
-  debugCoffeeString: "200\n1. March 14:28:371",
+  debug: 0,
+  debugString: "200\n1. March 14:28:371",
 
   get: function(rawData, callback) {
     if (callback == undefined) {
@@ -22,8 +22,8 @@ var Coffee = {
       success: function(data) {
 
         // If coffee debugging is enabled
-        if (self.debugCoffee) {
-          data = self.debugCoffeeString;
+        if (self.debug) {
+          data = self.debugString;
         }
 
         try {
@@ -43,31 +43,12 @@ var Coffee = {
           // Regular data requsted (pretty strings)
           else if (madeToday) {
 
-            // Calulate the age of the last pot better
-            var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
-            var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
-            var one_minute = 1000 * 60;
+            // Make age string
+            var age = this.makeAgeString()
 
-            // Calculate difference between the two dates, and convert to minutes
-            var diff = Math.floor(( now.getTime() - then.getTime() ) / one_minute);
-            
-            // Create a proper time string from all the minutes
-            var age;
-            if (-1 <= diff && diff <= 9) {
-              age = 'Kaffen ble <b>nettopp laget</b>';
-            }
-            else if (10 <= diff && diff <= 59) {
-              age = 'Kaffen ble laget for '+diff+' min siden';
-            }
-            else if (60 <= diff) {
-              age = 'Kaffen ble laget kl '+coffeeTime[0]+':'+coffeeTime[1];
-            }
-            else {
-              age = 'WAT? Lager noen kaffe i fremtiden nå?!'
-            }
-
-            // Make pots-string
-            pots = this.prettifyPotsString(pots);
+            // Make pots string
+            if (!raw)
+              pots = this.prettifyPotsString(pots);
 
             // Call it back
             callback(pots, age);
@@ -101,11 +82,31 @@ var Coffee = {
     return coffeeDate.getDate() == now.getDate();
   },
 
-  prettifyAgeString: function(age) {
-
+  madeHowLongAgo: function(ageString) {
+    // Get now
+    var now = new Date();
+    // Calulate the age of the last pot better
+    var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
+    var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
+    var one_minute = 1000 * 60;
+    // Calculate difference between the two dates, and convert to minutes
+    var diff = Math.floor(( now.getTime() - then.getTime() ) / one_minute);
+    return diff;
   },
 
-  prettifyPotsString: function(pots) {
+  prettyAgeString: function(diff) {
+    // Create a proper time string from all the minutes
+    if (0 <= diff && diff <= 9)
+      return 'Kaffen ble <b>nettopp laget</b>';
+    else if (10 <= diff && diff <= 59)
+      return 'Kaffen ble laget for '+diff+' min siden';
+    else if (60 <= diff)
+      return 'Kaffen ble laget kl '+coffeeTime[0]+':'+coffeeTime[1];
+    else
+      return 'WAT? Lager noen kaffe i fremtiden nå?!';
+  },
+
+  prettyPotsString: function(pots) {
     return (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
   },
 
