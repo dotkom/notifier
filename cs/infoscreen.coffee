@@ -56,7 +56,7 @@ updateNews = ->
   #   displayStories response
   # else
   #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
-  newsLimit = 6
+  newsLimit = 5
 
   News.get 'online', newsLimit, (items) ->
 

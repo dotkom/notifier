@@ -95,7 +95,7 @@
     if (DEBUG) {
       console.log('updateNews');
     }
-    newsLimit = 6;
+    newsLimit = 5;
     return News.get('online', newsLimit, function(items) {
       var guid, idsOfLastViewed, index, mostRecent, text, updatedList, value, _results;
       guid = $(items[0]).find("guid");
