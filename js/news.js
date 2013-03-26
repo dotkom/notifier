@@ -1,7 +1,6 @@
 var News = {
   newsMinLimit: 1,
   newsMaxLimit: 15,
-  backupImage: 'img/logo-sponsor-placeholder.png',
   msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
   msgConnectionError: 'Frakoblet fra feed: ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
@@ -29,6 +28,27 @@ var News = {
     'ntnu': 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
     'rektoratet': 'http://www.ntnu.no/blogger/rektoratet/feed/',
   },
+
+  images: {
+    // Linjeforeninger
+    'berg': 'img/logo-sponsor-placeholder.png',
+    'delta': 'img/logo-sponsor-placeholder.png',
+    'emil': 'img/logo-sponsor-placeholder.png',
+    'online': 'img/logo-sponsor-placeholder.png',
+    'nabla': 'img/logo-sponsor-placeholder.png',
+    'spanskrøret': 'img/logo-sponsor-placeholder.png',
+    // Medier
+    'dusken': 'img/logo-sponsor-placeholder.png',
+    'universitetsavisa': 'img/logo-sponsor-placeholder.png',
+    // Store studentorganisasjoner
+    'samfundet': 'img/logo-sponsor-placeholder.png',
+    // Studentdemokrati
+    'studenttinget': 'img/logo-sponsor-placeholder.png',
+    'velferdstinget': 'img/logo-sponsor-placeholder.png',
+    // NTNU
+    'ntnu': 'img/logo-sponsor-placeholder.png',
+    'rektoratet': 'img/logo-sponsor-placeholder.png',
+  }
 
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
@@ -91,7 +111,7 @@ var News = {
     post.creator = $(item).find("dc:creator").text();
     
     post.date = $(item).find("pubDate").text().substr(5, 11); /////////////////////
-    post.image = this.backupImage; ////////////////////////////////////////////////
+    post.image = this.images[feedName];
     
     // Check for alternative links in description
     post.altLink = this.checkForAltLink(post.description);
@@ -99,7 +119,7 @@ var News = {
     // Shorten 'bedriftspresentasjon' to 'bedpres'
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
-    
+
     // Remove excessive whitespace...
     if (post.description.match(/<\w+>|<\/\w+>/g) !== null) { // Check if string contains markup
       // ...and ludicrous formatting (HTML)
@@ -261,13 +281,13 @@ var News = {
         callback(link, image);
       }
       else {
-        image = this.backupImage;
+        image = this.images['online'];
         if (this.debug) console.log('ERROR: no image exists for id: ' + id);
         callback(link, image);
       }
     })
     .error(function() {
-      image = this.backupImage;
+      image = this.images['online'];
       if (this.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
       callback(link, image);
     });
