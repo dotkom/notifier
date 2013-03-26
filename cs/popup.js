@@ -179,38 +179,43 @@
   };
 
   updateNews = function() {
-    var newsLimit;
+    var feed, newsLimit;
     if (DEBUG) {
       console.log('updateNews');
     }
     newsLimit = 4;
-    return News.get('online', newsLimit, function(items) {
-      var guid, idsOfLastViewed, index, mostRecent, text, updatedList, value, _results;
-      guid = $(items[0]).find("guid");
-      text = $(guid).text();
-      mostRecent = text.split('/')[4];
+    feed = 'samfundet';
+    return News.get(feed, newsLimit, function(items) {
+      var idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
+      mostRecent = items[0].link;
       ls.mostRecentRead = mostRecent;
       $('#news').html('');
-      updatedList = findUpdatedPosts();
+      viewedList = JSON.parse(ls.lastViewedIdList);
+      newsList = JSON.parse(ls.mostRecentIdList);
+      updatedList = findUpdatedPosts(viewedList, newsList);
       idsOfLastViewed = [];
       $.each(items, function(index, item) {
-        var htmlItem, _ref;
+        var date, htmlItem, _ref;
         if (index < newsLimit) {
-          idsOfLastViewed.push(item.id);
+          idsOfLastViewed.push(item.link);
           htmlItem = '<div class="post"><div class="title">';
           if (index < ls.unreadCount) {
-            if (_ref = item.id, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
+            if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
               htmlItem += '<span class="unread">UPDATED <b>::</b> </span>';
             } else {
               htmlItem += '<span class="unread">NEW <b>::</b> </span>';
             }
           }
+          date = '';
+          if (item.date !== null) {
+            date = ' den ' + item.date;
+          }
           htmlItem += item.title + '\
           </div>\
-            <div class="item" data="' + item.link + '">\
-              <img id="' + item.id + '" src="' + item.image + '" width="107" />\
+            <div class="item" data="' + item.link + '" name="' + item.altLink + '">\
+              <img src="' + item.image + '" width="107" />\
               <div class="textwrapper">\
-                <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>\
+                <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>\
                 ' + item.description + '\
               </div>\
             </div>\
@@ -225,40 +230,37 @@
         Browser.openTab($(this).attr('data'));
         return window.close();
       });
-      _results = [];
-      for (index in idsOfLastViewed) {
-        value = idsOfLastViewed[index];
-        _results.push(News.online_getImage(value, function(id, image) {
-          return $('img[id=' + id + ']').attr('src', image);
-        }));
+      if (feed === 'online') {
+        _results = [];
+        for (index in idsOfLastViewed) {
+          link = idsOfLastViewed[index];
+          _results.push(News.online_getImage(link, function(link, image) {
+            var altLink;
+            $('.item[data="' + link + '"] img').attr('src', image);
+            altLink = $('.item[data="' + link + '"]').attr('name');
+            if (altLink !== 'null') {
+              return $('.item[data="' + link + '"]').attr('data', altLink);
+            }
+          }));
+        }
+        return _results;
       }
-      return _results;
     });
   };
 
-  findUpdatedPosts = function() {
-    var news, newsList, updatedList, viewed, viewedList, _i, _j, _len, _len1;
-    if (ls.lastViewedIdList === void 0) {
-      ls.lastViewedIdList = JSON.stringify([]);
-      return [];
-    } else if (ls.mostRecentIdList === void 0) {
-      ls.mostRecentIdList = JSON.stringify([]);
-      return [];
-    } else {
-      viewedList = JSON.parse(ls.lastViewedIdList);
-      newsList = JSON.parse(ls.mostRecentIdList);
-      updatedList = [];
-      for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
-        viewed = viewedList[_i];
-        for (_j = 0, _len1 = newsList.length; _j < _len1; _j++) {
-          news = newsList[_j];
-          if (viewedList[viewed] === newsList[news]) {
-            updatedList.push(viewedList[viewed]);
-          }
+  findUpdatedPosts = function(viewedList, newsList) {
+    var news, updatedList, viewed, _i, _j, _len, _len1;
+    updatedList = [];
+    for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
+      viewed = viewedList[_i];
+      for (_j = 0, _len1 = newsList.length; _j < _len1; _j++) {
+        news = newsList[_j];
+        if (viewedList[viewed] === newsList[news]) {
+          updatedList.push(viewedList[viewed]);
         }
       }
-      return updatedList;
     }
+    return updatedList;
   };
 
   optionsText = function(show) {
@@ -300,6 +302,13 @@
     }
     if (ls.showBus !== 'true') {
       $('#bus').hide();
+    }
+    if (ls.lastViewedIdList === void 0) {
+      ls.lastViewedIdList = JSON.stringify([]);
+      return [];
+    } else if (ls.mostRecentIdList === void 0) {
+      ls.mostRecentIdList = JSON.stringify([]);
+      return [];
     }
     $('#logo').click(function() {
       Browser.openTab(EXTENSION_WEBSITE);

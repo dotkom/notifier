@@ -131,13 +131,11 @@ updateNews = ->
   # else
   #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
   newsLimit = 4
-
-  News.get 'online', newsLimit, (items) ->
+  feed = 'samfundet'
+  News.get feed, newsLimit, (items) ->
 
     # Find most recent post, return if we've already seen it
-    guid = $(items[0]).find "guid"
-    text = $(guid).text()
-    mostRecent = text.split('/')[4]
+    mostRecent = items[0].link
     # if ls.mostRecentRead is mostRecent
     #   if $('#news').text().trim() isnt '' # News box empty already
     #     if DEBUG then console.log 'No new news'
@@ -147,8 +145,10 @@ updateNews = ->
 
     # Get list of last viewed items and check for news that are just
     # updated rather than being actual news
-    updatedList = findUpdatedPosts()
-    
+    viewedList = JSON.parse ls.lastViewedIdList
+    newsList = JSON.parse ls.mostRecentIdList
+    updatedList = findUpdatedPosts viewedList, newsList
+
     # Build list of last viewed for the next time the popup opens
     idsOfLastViewed = []
     
@@ -156,21 +156,27 @@ updateNews = ->
     $.each items, (index, item) ->
       
       if index < newsLimit
-        idsOfLastViewed.push(item.id)
+        idsOfLastViewed.push item.link
         
         htmlItem = '<div class="post"><div class="title">'
         if index < ls.unreadCount
-          if item.id in updatedList.indexOf
+          if item.link in updatedList.indexOf
             htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
           else
             htmlItem += '<span class="unread">NEW <b>::</b> </span>'
         
+        # EXPLANATION NEEDED:
+        # .item[data] contains the link
+        # .item[name] contains the alternative link, if one exists, otherwise null
+        date = ''
+        if item.date isnt null
+          date = ' den '+item.date
         htmlItem += item.title + '
           </div>
-            <div class="item" data="' + item.link + '">
-              <img id="' + item.id + '" src="' + item.image + '" width="107" />
+            <div class="item" data="' + item.link + '" name="' + item.altLink + '">
+              <img src="' + item.image + '" width="107" />
               <div class="textwrapper">
-                <div class="emphasized">- Skrevet av ' + item.creator + ' den ' + item.date + '</div>
+                <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
                 ' + item.description + '
               </div>
             </div>
@@ -191,30 +197,28 @@ updateNews = ->
       Browser.openTab $(this).attr 'data'
       window.close()
 
-    # Online: Fetch images from the API asynchronously
-    for index, value of idsOfLastViewed
-      News.online_getImage value, (id, image) ->
-        $('img[id='+id+']').attr 'src', image
+    # Online specific stuff
+    if feed is 'online'
+      # Fetch images from the API asynchronously
+      for index, link of idsOfLastViewed
+        News.online_getImage link, (link, image) ->
+          # It's important to get the link from the callback, not the above code
+          # in order to have the right link at the right time, async ftw.
+          $('.item[data="'+link+'"] img').attr 'src', image
+          # When that's done for an image, check if the link could be a better one
+          altLink = $('.item[data="'+link+'"]').attr 'name'
+          if altLink isnt 'null'
+            $('.item[data="'+link+'"]').attr 'data', altLink
 
 # Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = ->
-  # undefined checks first
-  if ls.lastViewedIdList == undefined
-    ls.lastViewedIdList = JSON.stringify []
-    return []
-  else if ls.mostRecentIdList == undefined
-    ls.mostRecentIdList = JSON.stringify []
-    return []
+findUpdatedPosts = (viewedList, newsList) ->
   # Compare lists, return union (updated items)
-  else
-    viewedList = JSON.parse ls.lastViewedIdList
-    newsList = JSON.parse ls.mostRecentIdList
-    updatedList = []
-    for viewed in viewedList
-      for news in newsList
-        if viewedList[viewed] == newsList[news]
-          updatedList.push viewedList[viewed]
-    return updatedList
+  updatedList = []
+  for viewed in viewedList
+    for news in newsList
+      if viewedList[viewed] == newsList[news]
+        updatedList.push viewedList[viewed]
+  return updatedList
 
 optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
@@ -248,6 +252,14 @@ $ ->
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
+  
+  # Check for undefined in the lists of news' IDs
+  if ls.lastViewedIdList == undefined
+    ls.lastViewedIdList = JSON.stringify []
+    return []
+  else if ls.mostRecentIdList == undefined
+    ls.mostRecentIdList = JSON.stringify []
+    return []
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

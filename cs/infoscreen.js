@@ -95,7 +95,7 @@
     if (DEBUG) {
       console.log('updateNews');
     }
-    newsLimit = 6;
+    newsLimit = 5;
     return News.get('online', newsLimit, function(items) {
       var guid, idsOfLastViewed, index, mostRecent, text, updatedList, value, _results;
       guid = $(items[0]).find("guid");
@@ -240,10 +240,8 @@
     var dinner, dinnerlist, _i, _len;
     dinnerlist = '';
     if (typeof menu === 'string') {
-      ls.noDinnerInfo = 'true';
       dinnerlist += '<li>' + menu + '</li>';
     } else {
-      ls.noDinnerInfo = 'false';
       for (_i = 0, _len = menu.length; _i < _len; _i++) {
         dinner = menu[_i];
         if (dinner.price !== null) {
@@ -325,7 +323,7 @@
       }), 3500);
     }), 1800000);
     if (!DEBUG) {
-      setInterval((function() {
+      setTimeout((function() {
         return document.location.reload();
       }), 3600000);
     }

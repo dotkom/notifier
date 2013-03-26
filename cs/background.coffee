@@ -55,13 +55,12 @@ updateCoffeeSubscription = ->
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
-  # Fetching and counting the news feed
-  fetchFeed ->
-    response = ls.lastResponseData
-    if response != null
-      unreadCount response
+  newsLimit = 4
+  News.get 'online', newsLimit, (items) ->
+    if items isnt null
+      News.unreadCount items
     else
-      console.log 'ERROR: response was null'
+      if DEBUG then console.log 'ERROR: News did not reach us'
 
 # Document ready, go!
 $ ->

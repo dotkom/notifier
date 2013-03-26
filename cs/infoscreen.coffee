@@ -56,7 +56,7 @@ updateNews = ->
   #   displayStories response
   # else
   #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
-  newsLimit = 6
+  newsLimit = 5
 
   News.get 'online', newsLimit, (items) ->
 
@@ -200,10 +200,8 @@ listDinners = (menu) ->
   dinnerlist = ''
   # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if typeof menu is 'string'
-    ls.noDinnerInfo = 'true'
     dinnerlist += '<li>' + menu + '</li>'
   else
-    ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
         dinner.price = dinner.price + ',- '
@@ -272,7 +270,7 @@ $ ->
 
   # Reload the page once every day
   unless DEBUG
-    setInterval ( ->
+    setTimeout ( ->
       document.location.reload()
     ), 3600000 # KILLBUG: set to once every hour for now in order to keep #news alive, set to 86400000 later
 

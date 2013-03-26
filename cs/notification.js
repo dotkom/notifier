@@ -7,12 +7,11 @@
   ls = localStorage;
 
   setNotification = function() {
-    var creator, description, id, link, maxlength, title;
-    id = ls.notificationId;
-    link = ls.notificationLink;
-    creator = ls.notificationCreator;
+    var creator, description, link, maxlength, title;
     title = ls.notificationTitle;
+    link = ls.notificationLink;
     description = ls.notificationDescription;
+    creator = ls.notificationCreator;
     maxlength = 90;
     if (maxlength < description.length) {
       description = description.substring(0, maxlength) + '...';
@@ -21,11 +20,11 @@
       Browser.openTab(link);
       return window.close;
     });
-    return getImageUrlForId(id, function(id, image) {
+    return News.online_getImage(link, function(id, image) {
       return $('#notification').html('\
       <div class="item">\
         <div class="title">' + title + '</div>\
-        <img id="' + id + '" src="' + image + '" />\
+        <img src="' + image + '" />\
         <div class="textwrapper">\
           <div class="emphasized">- Av ' + creator + '</div>\
           <div class="description">' + description + '</div>\
