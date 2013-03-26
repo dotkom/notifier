@@ -145,8 +145,10 @@ updateNews = ->
 
     # Get list of last viewed items and check for news that are just
     # updated rather than being actual news
-    updatedList = findUpdatedPosts()
-    
+    lastViewedIdList = JSON.parse ls.lastViewedIdList
+    mostRecentIdList = JSON.parse ls.mostRecentIdList
+    updatedList = findUpdatedPosts lastViewedIdList, mostRecentIdList
+
     # Build list of last viewed for the next time the popup opens
     idsOfLastViewed = []
     
@@ -196,24 +198,14 @@ updateNews = ->
           $('img[id='+id+']').attr 'src', image
 
 # Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = ->
-  # undefined checks first
-  if ls.lastViewedIdList == undefined
-    ls.lastViewedIdList = JSON.stringify []
-    return []
-  else if ls.mostRecentIdList == undefined
-    ls.mostRecentIdList = JSON.stringify []
-    return []
+findUpdatedPosts = (lastViewedIdList, mostRecentIdList) ->
   # Compare lists, return union (updated items)
-  else
-    viewedList = JSON.parse ls.lastViewedIdList
-    newsList = JSON.parse ls.mostRecentIdList
-    updatedList = []
-    for viewed in viewedList
-      for news in newsList
-        if viewedList[viewed] == newsList[news]
-          updatedList.push viewedList[viewed]
-    return updatedList
+  updatedList = []
+  for viewed in viewedList
+    for news in newsList
+      if viewedList[viewed] == newsList[news]
+        updatedList.push viewedList[viewed]
+  return updatedList
 
 optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
@@ -247,6 +239,14 @@ $ ->
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
+  
+  # Check for undefined in the lists of news' IDs
+  if ls.lastViewedIdList == undefined
+    ls.lastViewedIdList = JSON.stringify []
+    return []
+  else if ls.mostRecentIdList == undefined
+    ls.mostRecentIdList = JSON.stringify []
+    return []
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

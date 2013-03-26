@@ -186,11 +186,13 @@
     newsLimit = 4;
     feed = 'online';
     return News.get(feed, newsLimit, function(items) {
-      var idsOfLastViewed, index, mostRecent, updatedList, value, _results;
+      var idsOfLastViewed, index, lastViewedIdList, mostRecent, mostRecentIdList, updatedList, value, _results;
       mostRecent = items[0].link;
       ls.mostRecentRead = mostRecent;
       $('#news').html('');
-      updatedList = findUpdatedPosts();
+      lastViewedIdList = JSON.parse(ls.lastViewedIdList);
+      mostRecentIdList = JSON.parse(ls.mostRecentIdList);
+      updatedList = findUpdatedPosts(lastViewedIdList, mostRecentIdList);
       idsOfLastViewed = [];
       $.each(items, function(index, item) {
         var htmlItem, _ref;
@@ -237,29 +239,19 @@
     });
   };
 
-  findUpdatedPosts = function() {
-    var news, newsList, updatedList, viewed, viewedList, _i, _j, _len, _len1;
-    if (ls.lastViewedIdList === void 0) {
-      ls.lastViewedIdList = JSON.stringify([]);
-      return [];
-    } else if (ls.mostRecentIdList === void 0) {
-      ls.mostRecentIdList = JSON.stringify([]);
-      return [];
-    } else {
-      viewedList = JSON.parse(ls.lastViewedIdList);
-      newsList = JSON.parse(ls.mostRecentIdList);
-      updatedList = [];
-      for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
-        viewed = viewedList[_i];
-        for (_j = 0, _len1 = newsList.length; _j < _len1; _j++) {
-          news = newsList[_j];
-          if (viewedList[viewed] === newsList[news]) {
-            updatedList.push(viewedList[viewed]);
-          }
+  findUpdatedPosts = function(lastViewedIdList, mostRecentIdList) {
+    var news, updatedList, viewed, _i, _j, _len, _len1;
+    updatedList = [];
+    for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
+      viewed = viewedList[_i];
+      for (_j = 0, _len1 = newsList.length; _j < _len1; _j++) {
+        news = newsList[_j];
+        if (viewedList[viewed] === newsList[news]) {
+          updatedList.push(viewedList[viewed]);
         }
       }
-      return updatedList;
     }
+    return updatedList;
   };
 
   optionsText = function(show) {
@@ -301,6 +293,13 @@
     }
     if (ls.showBus !== 'true') {
       $('#bus').hide();
+    }
+    if (ls.lastViewedIdList === void 0) {
+      ls.lastViewedIdList = JSON.stringify([]);
+      return [];
+    } else if (ls.mostRecentIdList === void 0) {
+      ls.mostRecentIdList = JSON.stringify([]);
+      return [];
     }
     $('#logo').click(function() {
       Browser.openTab(EXTENSION_WEBSITE);
