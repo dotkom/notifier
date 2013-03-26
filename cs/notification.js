@@ -24,7 +24,7 @@
       return $('#notification').html('\
       <div class="item">\
         <div class="title">' + title + '</div>\
-        <img id="' + id + '" src="' + image + '" />\
+        <img src="' + image + '" />\
         <div class="textwrapper">\
           <div class="emphasized">- Av ' + creator + '</div>\
           <div class="description">' + description + '</div>\
