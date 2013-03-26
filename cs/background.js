@@ -77,16 +77,18 @@
   };
 
   updateNews = function() {
+    var newsLimit;
     if (DEBUG) {
       console.log('updateNews');
     }
-    return fetchFeed(function() {
-      var response;
-      response = ls.lastResponseData;
-      if (response !== null) {
-        return unreadCount(response);
+    newsLimit = 4;
+    return News.get('online', newsLimit, function(items) {
+      if (items !== null) {
+        return News.unreadCount(items);
       } else {
-        return console.log('ERROR: response was null');
+        if (DEBUG) {
+          return console.log('ERROR: News did not reach us');
+        }
       }
     });
   };
