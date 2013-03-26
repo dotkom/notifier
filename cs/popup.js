@@ -179,16 +179,15 @@
   };
 
   updateNews = function() {
-    var newsLimit;
+    var feed, newsLimit;
     if (DEBUG) {
       console.log('updateNews');
     }
     newsLimit = 4;
-    return News.get('samfundet', newsLimit, function(items) {
-      var guid, idsOfLastViewed, index, mostRecent, text, updatedList, value, _results;
-      guid = $(items[0]).find("guid");
-      text = $(guid).text();
-      mostRecent = text.split('/')[4];
+    feed = 'online';
+    return News.get(feed, newsLimit, function(items) {
+      var idsOfLastViewed, index, mostRecent, updatedList, value, _results;
+      mostRecent = items[0].link;
       ls.mostRecentRead = mostRecent;
       $('#news').html('');
       updatedList = findUpdatedPosts();
@@ -225,14 +224,16 @@
         Browser.openTab($(this).attr('data'));
         return window.close();
       });
-      _results = [];
-      for (index in idsOfLastViewed) {
-        value = idsOfLastViewed[index];
-        _results.push(News.online_getImage(value, function(id, image) {
-          return $('img[id=' + id + ']').attr('src', image);
-        }));
+      if (feed === 'online') {
+        _results = [];
+        for (index in idsOfLastViewed) {
+          value = idsOfLastViewed[index];
+          _results.push(News.online_getImage(value, function(id, image) {
+            return $('img[id=' + id + ']').attr('src', image);
+          }));
+        }
+        return _results;
       }
-      return _results;
     });
   };
 

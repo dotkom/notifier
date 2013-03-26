@@ -131,13 +131,11 @@ updateNews = ->
   # else
   #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
   newsLimit = 4
-
-  News.get 'samfundet', newsLimit, (items) ->
+  feed = 'online'
+  News.get feed, newsLimit, (items) ->
 
     # Find most recent post, return if we've already seen it
-    guid = $(items[0]).find "guid"
-    text = $(guid).text()
-    mostRecent = text.split('/')[4]
+    mostRecent = items[0].link
     # if ls.mostRecentRead is mostRecent
     #   if $('#news').text().trim() isnt '' # News box empty already
     #     if DEBUG then console.log 'No new news'
@@ -192,9 +190,10 @@ updateNews = ->
       window.close()
 
     # Online: Fetch images from the API asynchronously
-    for index, value of idsOfLastViewed
-      News.online_getImage value, (id, image) ->
-        $('img[id='+id+']').attr 'src', image
+    if feed is 'online'
+      for index, value of idsOfLastViewed
+        News.online_getImage value, (id, image) ->
+          $('img[id='+id+']').attr 'src', image
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = ->
