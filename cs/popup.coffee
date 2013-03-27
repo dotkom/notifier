@@ -129,7 +129,7 @@ updateNews = ->
   if feedItems isnt undefined
     displayItems JSON.parse feedItems
   else
-    chosenAffiliation = ls.affiliation_name
+    chosenAffiliation = ls.affiliationName
     $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+chosenAffiliation+'</div></div>'
 
 displayItems = (items) ->

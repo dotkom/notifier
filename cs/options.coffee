@@ -529,7 +529,7 @@ $ ->
   #   fadeInCanvas()
 
   # Allow user to change affiliation
-  bindAffiliationSelector 'affiliation_name'
+  bindAffiliationSelector 'affiliationName'
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'

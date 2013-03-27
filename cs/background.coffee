@@ -68,7 +68,7 @@ updateCoffeeSubscription = ->
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
-  affiliation = ls['affiliation_name']
+  affiliation = ls['affiliationName']
   newsLimit = 4
   News.get affiliation, newsLimit, (items) ->
     if typeof items is 'string'
@@ -92,8 +92,8 @@ $ ->
 
   if ls.affiliation is undefined
     ls.affiliation = 'true'
-  if ls.affiliation_name is undefined
-    ls.affiliation_name = 'online'
+  if ls.affiliationName is undefined
+    ls.affiliationName = 'online'
 
   if ls.showBus is undefined
     ls.showBus = 'true'

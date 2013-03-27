@@ -94,7 +94,7 @@
     if (DEBUG) {
       console.log('updateNews');
     }
-    affiliation = ls['affiliation_name'];
+    affiliation = ls['affiliationName'];
     newsLimit = 4;
     return News.get(affiliation, newsLimit, function(items) {
       if (typeof items === 'string') {
@@ -121,8 +121,8 @@
     if (ls.affiliation === void 0) {
       ls.affiliation = 'true';
     }
-    if (ls.affiliation_name === void 0) {
-      ls.affiliation_name = 'online';
+    if (ls.affiliationName === void 0) {
+      ls.affiliationName = 'online';
     }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';

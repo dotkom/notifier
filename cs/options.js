@@ -553,7 +553,7 @@
     setTimeout((function() {
       return $('#plusonebutton').fadeIn(150);
     }), 1100);
-    bindAffiliationSelector('affiliation_name');
+    bindAffiliationSelector('affiliationName');
     bindCantinaSelector('left_cantina');
     bindCantinaSelector('right_cantina');
     bindBusFields('first_bus');
