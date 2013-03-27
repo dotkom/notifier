@@ -20,16 +20,6 @@ pageFlipCursorBlinking = ->
   $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
     $(@).animate opacity: 1, "fast", "swing",
 
-updateOfficeStatus = ->
-  Office.get (status, title, message) ->
-    Browser.setIcon 'img/icon-'+status+'.png'
-    ls.currentStatus = status
-    Meetings.get (meetings) ->
-      meetings = $.trim meetings
-      today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
-      Browser.setTitle today
-      ls.currentStatusMessage = message
-
 testDesktopNotification = ->
   Browser.createNotification 'notification.html'
 
@@ -43,17 +33,11 @@ bindAffiliationSelector = (selector) ->
   $(cssSelector + '[value=' + chosenAffiliation + ']').prop 'selected', 'selected'
   # React to change
   $(cssSelector).change ->
+    # Save the change
     chosenAffiliation = $(this).val()
     ls[selector] = chosenAffiliation
-    if DEBUG then console.log 'updateNews'
-    newsLimit = 4 # ///////////////////////////////////////////////////// WIP
-    News.get chosenAffiliation, newsLimit, (items) ->
-      if typeof items is 'string'
-        # Error message, log it
-        if DEBUG then console.log 'ERROR:', items
-      else
-        ls.feedItems = JSON.stringify items
-        News.unreadCount items
+    # Reload news
+    Browser.getBackgroundProcess().updateNews()
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -437,7 +421,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    updateOfficeStatus()
+    Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
     # Animations
     revertInfoscreen()
 
@@ -607,7 +591,7 @@ $ ->
         console.log 'affiliation OFF' #######################################################
       
       if this.id is 'showOffice' and this.checked is true
-        updateOfficeStatus()
+        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
         Browser.setIcon 'img/icon-default.png'
         Browser.setTitle EXTENSION_NAME
