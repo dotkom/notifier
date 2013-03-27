@@ -60,14 +60,14 @@
     
     "*://*.samfundet.no/*",
     
-    "*://*.velferdstinget.no/*"
+    "*://*.velferdstinget.no/*",
     "*://*.studenttinget.no/*",
     "*://*.studentparlamentet.com/*",
     
     "*://*.retriever-info.com/*",
     "*://*.ntnu.no/blogger/rektoratet/*",
     "*://*.hist.no/*",
-    "*://*.dmmh.no/*",
+    "*://*.dmmh.no/*"
   ],
 
 	"content_scripts": [
