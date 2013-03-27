@@ -584,11 +584,6 @@ $ ->
     # All the other checkboxes (not Infoscreen)
     else
       ls[this.id] = this.checked;
-
-      if this.id is 'showAffiliation' and this.checked is true
-        console.log 'showAffiliation ON' #######################################################
-      if this.id is 'showAffiliation' and this.checked is false
-        console.log 'showAffiliation OFF' #######################################################
       
       if this.id is 'showOffice' and this.checked is true
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);

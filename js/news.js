@@ -297,8 +297,6 @@ var News = {
     // shorten description according to desclength
     if (desclength < post.description.length)
       post.description = post.description.substr(0, desclength) + '...';
-    
-    console.log('POST;', post); /////////////////////////////////////////////////////
 
     return post;
   },
