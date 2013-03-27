@@ -32,7 +32,7 @@
     </div>\
     </a>');
     if (ls.notificationFeedName === 'online') {
-      return News.online_getImage(link, function(id, image) {
+      return News.online_getImage(link, function(link, image) {
         return $('img').prop('src', image);
       });
     }

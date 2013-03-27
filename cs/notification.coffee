@@ -33,7 +33,7 @@ setNotification = ->
 
   if ls.notificationFeedName is 'online'
     # Online specific: Fetch image from API
-    News.online_getImage link, (id, image) ->
+    News.online_getImage link, (link, image) ->
       $('img').prop 'src', image
 
 # show the html5 notification with timeout when the document is ready
