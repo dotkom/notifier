@@ -102,7 +102,7 @@ var News = {
     }
 
     feedName = feedName.toLowerCase();
-    var rssUrl = this.feeds[feedName].url;
+    var rssUrl = this.feeds[feedName].feed;
 
     var self = this;
     $.ajax({
@@ -142,8 +142,8 @@ var News = {
     post.creator = $(item).find("dc:creator").text();
     post.date = $(item).find("pubDate").text().substr(5, 11);
     // Locally stored
-    post.image = this.feeds[feedName].image;
-    post.feed = feedName;
+    post.image = this.feeds[feedName]['image'];
+    post.feedName = feedName;
     
     // Check for alternative links in description
     post.altLink = this.checkForAltLink(post.description);
@@ -198,7 +198,8 @@ var News = {
     var linkList = []; // New || Updated
     
     // Count feed items
-    $.each items, (index, item) ->
+    var self = this;
+    items.forEach(function(item, index) {
       
       var link = item.link;
       
@@ -209,7 +210,7 @@ var News = {
         // Send a desktop notification about the first unread item
         if (unreadCount == 1) {
           if (localStorage.newsLastNotified != link) {
-            this.showNotification(item);
+            self.showNotification(item);
           }
           localStorage.newsMostRecentUnread = link;
         }
@@ -247,16 +248,15 @@ var News = {
 
   showNotification: function(item) {
     if (localStorage.showNotifications == 'true') {
-      var post = this.parseItem(item);
       // Remember this
-      localStorage.newsLastNotified = post.link;
+      localStorage.newsLastNotified = item.link;
       // Get content
-      localStorage.notificationTitle = post.title;
-      localStorage.notificationLink = post.link;
-      localStorage.notificationDescription = post.description;
-      localStorage.notificationCreator = post.creator;
-      localStorage.notificationImage = post.image;
-      localStorage.notificationFeedName = post.feedName;
+      localStorage.notificationTitle = item.title;
+      localStorage.notificationLink = item.link;
+      localStorage.notificationDescription = item.description;
+      localStorage.notificationCreator = item.creator;
+      localStorage.notificationImage = item.image;
+      localStorage.notificationFeedName = item.feedName;
       // Show desktop notification
       Browser.createNotification('notification.html');
     }
