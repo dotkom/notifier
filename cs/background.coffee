@@ -70,10 +70,12 @@ updateNews = ->
   if DEBUG then console.log 'updateNews'
   newsLimit = 4
   News.get 'online', newsLimit, (items) ->
-    if items isnt null
-      News.unreadCount items
-    else
+    if typeof items is 'string'
+      # Error message, log it
       if DEBUG then console.log 'ERROR: News did not reach us'
+    else
+      ls.feedItems = JSON.stringify items
+      News.unreadCount items
 
 # Document ready, go!
 $ ->

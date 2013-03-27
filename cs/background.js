@@ -96,12 +96,13 @@
     }
     newsLimit = 4;
     return News.get('online', newsLimit, function(items) {
-      if (items !== null) {
-        return News.unreadCount(items);
-      } else {
+      if (typeof items === 'string') {
         if (DEBUG) {
           return console.log('ERROR: News did not reach us');
         }
+      } else {
+        ls.feedItems = JSON.stringify(items);
+        return News.unreadCount(items);
       }
     });
   };
