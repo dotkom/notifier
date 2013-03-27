@@ -3,7 +3,7 @@
 function onRequest(request, sender, callback) {
   if (request == 'resetCounterWhenOnWebsite' || request.action == 'resetCounterWhenOnWebsite') {
     localStorage.unreadCount = 0;
-    localStorage.mostRecentRead = localStorage.mostRecentUnread;
+    localStorage.newsMostRecentRead = localStorage.newsMostRecentUnread;
     Browser.setBadgeText('');
   }
   // else if (request.action == 'getChosenDinner') {

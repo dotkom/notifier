@@ -193,55 +193,43 @@ var News = {
     return post;
   },
 
-  // NOT DONE YET ///////////////////////////////////////////////////////////////////
-  // todo: this function only handles the online-feed, make sure it handles all feeds
-  unreadCount: function(xmlstring) {
-    
-
-    return; //
-
-
-    var unread_count = 0;
-    
-    // Parse the feed
-    var xmldoc = $.parseXML(xmlstring);
-    $xml = $(xmldoc);
-    var items = $xml.find("item");
-    var idList = []; // New || Updated
+  unreadCount: function(items) {
+    var unreadCount = 0;
+    var linkList = []; // New || Updated
     
     // Count feed items
-    items.each( function(index, element) {
+    $.each items, (index, item) ->
       
-      var id = $(element).find("guid").text().split('/')[4];
+      var link = item.link;
       
       // Counting...
-      if (id != localStorage.mostRecentRead) {
-        unread_count++;
-        idList.push(id); // New || Updated
-        // Send a desktop notification about the first unread element
-        if (unread_count == 1) {
-          if (localStorage.lastNotified != id) {
-            this.showNotification(element);
+      if (link != localStorage.newsMostRecentRead) {
+        unreadCount++;
+        linkList.push(link); // New || Updated
+        // Send a desktop notification about the first unread item
+        if (unreadCount == 1) {
+          if (localStorage.newsLastNotified != link) {
+            this.showNotification(item);
           }
-          localStorage.mostRecentUnread = id;
+          localStorage.newsMostRecentUnread = link;
         }
       }
       // All counted :)
       else {
-        if (unread_count == 0) {
+        if (unreadCount == 0) {
           if (this.debug) console.log('no new posts');
           Browser.setBadgeText('');
         }
-        else if (unread_count >= this.maxNewsAmount) {
+        else if (unreadCount >= this.maxNewsAmount) {
           if (this.debug) console.log(this.maxNewsAmount + '+ unread posts');
           Browser.setBadgeText(this.maxNewsAmount + '+');
         }
         else {
           if (this.debug) console.log('1-' + (this.maxNewsAmount - 1) + ' unread posts');
-          Browser.setBadgeText(String(unread_count));
+          Browser.setBadgeText(String(unreadCount));
         }
-        localStorage.unreadCount = unread_count;
-        localStorage.mostRecentIdList = JSON.stringify(idList); // New || Updated
+        localStorage.unreadCount = unreadCount;
+        localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
         return false;
       }
       
@@ -251,7 +239,7 @@ var News = {
         Browser.setBadgeText(this.maxNewsAmount + '+');
         localStorage.unreadCount = this.maxNewsAmount;
         // New or updated?
-        localStorage.mostRecentIdList = JSON.stringify(idList); // New || Updated
+        localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
         return false;
       }
     });
@@ -261,7 +249,7 @@ var News = {
     if (localStorage.showNotifications == 'true') {
       var post = this.parseItem(item);
       // Remember this
-      localStorage.lastNotified = post.link;
+      localStorage.newsLastNotified = post.link;
       // Get content
       localStorage.notificationTitle = post.title;
       localStorage.notificationLink = post.link;
