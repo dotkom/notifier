@@ -41,7 +41,7 @@ var News = {
     'dusken': 'img/logo-sponsor-placeholder.png',
     'universitetsavisa': 'img/logo-sponsor-placeholder.png',
     // Store studentorganisasjoner
-    'samfundet': 'img/logo-sponsor-placeholder.png',
+    'samfundet': 'img/placeholders/samfundet.png',
     // Studentdemokrati
     'studenttinget': 'img/logo-sponsor-placeholder.png',
     'velferdstinget': 'img/logo-sponsor-placeholder.png',
