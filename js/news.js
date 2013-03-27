@@ -8,8 +8,9 @@ var News = {
 
   debug: 1,
 
+  // IMPORTANT: Keep the same order here as in options.html and in manifest.json
   feeds: {
-    // Linjeforeninger
+    // Linjeforeninger Gløshaugen
     'berg': {
       'feed': 'http://bergstud.no/feed/',
       'logo': 'img/logos/berg.png',
@@ -24,6 +25,11 @@ var News = {
       'feed': 'http://emilweb.no/feed/',
       'logo': 'img/logos/emil.png',
       'image': 'img/placeholders/emil.png',
+    },
+    'leonardo': {
+      'feed': 'http://industrielldesign.com/feed',
+      'logo': 'img/logos/leonardo.png',
+      'image': 'img/placeholders/leonardo.png',
     },
     'online': {
       'feed': 'https://online.ntnu.no/feeds/news/',
@@ -40,7 +46,87 @@ var News = {
       'logo': 'img/logos/spanskrøret.png',
       'image': 'img/placeholders/spanskrøret.png',
     },
-    // Medier
+    'volvox': {
+      'feed': 'http://org.ntnu.no/volvox/feed/',
+      'logo': 'img/logos/volvox.png',
+      'image': 'img/placeholders/volvox.png',
+    },
+
+    // Linjeforeninger Dragvoll
+    'dionysos': {
+      'feed': 'http://dionysosntnu.wordpress.com/feed/',
+      'logo': 'img/logos/dionysos.png',
+      'image': 'img/placeholders/dionysos.png',
+    },
+    'erudio': {
+      'feed': 'http://www.erudiontnu.org/?feed=rss2',
+      'logo': 'img/logos/erudio.png',
+      'image': 'img/placeholders/erudio.png',
+    },
+    'geolf': {
+      'feed': 'http://geolf.org/feed/',
+      'logo': 'img/logos/geolf.png',
+      'image': 'img/placeholders/geolf.png',
+    },
+    'gengangere': {
+      'feed': 'http://www.gengangere.no/feed/',
+      'logo': 'img/logos/gengangere.png',
+      'image': 'img/placeholders/gengangere.png',
+    },
+    'jump cut': {
+      'feed': 'http://jumpcutdragvoll.wordpress.com/feed/',
+      'logo': 'img/logos/jump cut.png',
+      'image': 'img/placeholders/jump cut.png',
+    },
+    'ludimus': {
+      'feed': 'http://ludimus.org/feed/',
+      'logo': 'img/logos/ludimus.png',
+      'image': 'img/placeholders/ludimus.png',
+    },
+    'primetime': {
+      'feed': 'http://www.primetime.trondheim.no/feed/',
+      'logo': 'img/logos/primetime.png',
+      'image': 'img/placeholders/primetime.png',
+    },
+    'sturm und drang': {
+      'feed': 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
+      'logo': 'img/logos/sturm und drang.png',
+      'image': 'img/placeholders/sturm und drang.png',
+    },
+
+    // Linjeforeninger HiST/DMMH/TJSF/BI
+    'fraktur': {
+      'feed': 'http://www.fraktur.no/feed/',
+      'logo': 'img/logos/fraktur.png',
+      'image': 'img/placeholders/fraktur.png',
+    },
+    'kom': {
+      'feed': 'http://kjemiogmaterial.wordpress.com/feed/',
+      'logo': 'img/logos/kom.png',
+      'image': 'img/placeholders/kom.png',
+    },
+    'logistikkstudentene': {
+      'feed': 'http://www.logistikkstudentene.no/',
+      'logo': 'img/logos/logistikkstudentene.png',
+      'image': 'img/placeholders/logistikkstudentene.png',
+    },
+    'tihlde': {
+      'feed': 'http://tihlde.org/feed/',
+      'logo': 'img/logos/tihlde.png',
+      'image': 'img/placeholders/tihlde.png',
+    },
+    'tim og shænko': {
+      'feed': 'http://bygging.no/feed/',
+      'logo': 'img/logos/tim og shænko.png',
+      'image': 'img/placeholders/tim og shænko.png',
+    },
+    'tjsf': {
+      'feed': 'http://tjsf.no/feed/',
+      'logo': 'img/logos/tjsf.png',
+      'image': 'img/placeholders/tjsf.png',
+    },
+
+    // Studentmedier
     'dusken': {
       'feed': 'http://dusken.no/feed/',
       'logo': 'img/logos/dusken.png',
@@ -51,33 +137,51 @@ var News = {
       'logo': 'img/logos/universitetsavisa.png',
       'image': 'img/placeholders/universitetsavisa.png',
     },
+
     // Store studentorganisasjoner
     'samfundet': {
       'feed': 'http://www.samfundet.no/arrangement/rss',
       'logo': 'img/logos/samfundet.png',
       'image': 'img/placeholders/samfundet.png',
     },
+
     // Studentdemokrati
-    'studenttinget': {
-      'feed': 'http://www.studenttinget.no/feed/',
-      'logo': 'img/logos/studenttinget.png',
-      'image': 'img/placeholders/studenttinget.png',
-    },
     'velferdstinget': {
       'feed': 'http://www.velferdstinget.no/feed/rss/',
       'logo': 'img/logos/velferdstinget.png',
       'image': 'img/placeholders/velferdstinget.png',
     },
-    // NTNU
+    'studenttinget ntnu': {
+      'feed': 'http://www.studenttinget.no/feed/',
+      'logo': 'img/logos/studenttinget ntnu.png',
+      'image': 'img/placeholders/studenttinget ntnu.png',
+    },
+    'studentparlamentet hist': {
+      'feed': 'http://studentparlamentet.com/?feed=rss2',
+      'logo': 'img/logos/studentparlamentet hist.png',
+      'image': 'img/placeholders/studentparlamentet hist.png',
+    },
+    
+    // Institusjoner
     'ntnu': {
       'feed': 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
       'logo': 'img/logos/ntnu.png',
       'image': 'img/placeholders/ntnu.png',
     },
-    'rektoratet': {
+    'rektoratet ntnu': {
       'feed': 'http://www.ntnu.no/blogger/rektoratet/feed/',
-      'logo': 'img/logos/rektoratet.png',
-      'image': 'img/placeholders/rektoratet.png',
+      'logo': 'img/logos/rektoratet ntnu.png',
+      'image': 'img/placeholders/rektoratet ntnu.png',
+    },
+    'hist': {
+      'feed': 'http://hist.no/rss.ap?thisId=1393',
+      'logo': 'img/logos/hist.png',
+      'image': 'img/placeholders/hist.png',
+    },
+    'dmmh': {
+      'feed': 'http://www.dmmh.no/rss.php?type=site&id=10&location=393',
+      'logo': 'img/logos/dmmh.png',
+      'image': 'img/placeholders/dmmh.png',
     },
   },
 
