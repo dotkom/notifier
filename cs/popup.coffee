@@ -131,7 +131,7 @@ updateNews = ->
   # else
   #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
   newsLimit = 4
-  feed = 'online'
+  feed = 'nabla'
   News.get feed, newsLimit, (items) ->
 
     # Find most recent post, return if we've already seen it
@@ -151,7 +151,7 @@ updateNews = ->
 
     # Build list of last viewed for the next time the popup opens
     idsOfLastViewed = []
-    
+
     # Add feed items to popup
     $.each items, (index, item) ->
       
@@ -164,7 +164,7 @@ updateNews = ->
             htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
           else
             htmlItem += '<span class="unread">NEW <b>::</b> </span>'
-        
+
         # EXPLANATION NEEDED:
         # .item[data] contains the link
         # .item[name] contains the alternative link, if one exists, otherwise null
@@ -185,7 +185,7 @@ updateNews = ->
     
     # Store list of last viewed items
     ls.lastViewedIdList = JSON.stringify idsOfLastViewed
-    
+
     # All items are now considered read
     Browser.setBadgeText ''
     ls.unreadCount = 0
@@ -256,7 +256,7 @@ $ ->
   # Check for undefined in the lists of news' IDs
   if ls.lastViewedIdList == undefined
     ls.lastViewedIdList = JSON.stringify []
-  else if ls.mostRecentIdList == undefined
+  if ls.mostRecentIdList == undefined
     ls.mostRecentIdList = JSON.stringify []
 
   # Make logo open extension website while closing popup

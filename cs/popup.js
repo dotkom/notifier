@@ -184,7 +184,7 @@
       console.log('updateNews');
     }
     newsLimit = 4;
-    feed = 'online';
+    feed = 'nabla';
     return News.get(feed, newsLimit, function(items) {
       var idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
       mostRecent = items[0].link;
@@ -305,7 +305,8 @@
     }
     if (ls.lastViewedIdList === void 0) {
       ls.lastViewedIdList = JSON.stringify([]);
-    } else if (ls.mostRecentIdList === void 0) {
+    }
+    if (ls.mostRecentIdList === void 0) {
       ls.mostRecentIdList = JSON.stringify([]);
     }
     $('#logo').click(function() {
