@@ -103,13 +103,16 @@ var News = {
 
   parseItem: function(item, feedName) {
     var post = {};
+    // The popular fields
     post.title = $(item).find("title").text();
     post.link = $(item).find("link").text();
     post.description = $(item).find("description").text();
+    // Less used fields
     post.creator = $(item).find("dc:creator").text();
-    
     post.date = $(item).find("pubDate").text().substr(5, 11);
+    // Locally stored
     post.image = this.images[feedName];
+    post.feed = feedName;
     
     // Check for alternative links in description
     post.altLink = this.checkForAltLink(post.description);
@@ -233,6 +236,8 @@ var News = {
       localStorage.notificationLink = post.link;
       localStorage.notificationDescription = post.description;
       localStorage.notificationCreator = post.creator;
+      localStorage.notificationImage = post.image;
+      localStorage.notificationFeedName = post.feedName;
       // Show desktop notification
       Browser.createNotification('notification.html');
     }
