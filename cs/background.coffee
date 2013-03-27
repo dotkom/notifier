@@ -90,8 +90,8 @@ $ ->
   
   # Set default choices if undefined, in the same order as on the options page
 
-  if ls.affiliation is undefined
-    ls.affiliation = 'true'
+  if ls.showAffiliation is undefined
+    ls.showAffiliation = 'true'
   if ls.affiliationName is undefined
     ls.affiliationName = 'online'
 

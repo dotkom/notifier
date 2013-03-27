@@ -118,8 +118,8 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
-    if (ls.affiliation === void 0) {
-      ls.affiliation = 'true';
+    if (ls.showAffiliation === void 0) {
+      ls.showAffiliation = 'true';
     }
     if (ls.affiliationName === void 0) {
       ls.affiliationName = 'online';

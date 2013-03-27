@@ -585,10 +585,10 @@ $ ->
     else
       ls[this.id] = this.checked;
 
-      if this.id is 'affiliation' and this.checked is true
-        console.log 'affiliation ON' #######################################################
-      if this.id is 'affiliation' and this.checked is false
-        console.log 'affiliation OFF' #######################################################
+      if this.id is 'showAffiliation' and this.checked is true
+        console.log 'showAffiliation ON' #######################################################
+      if this.id is 'showAffiliation' and this.checked is false
+        console.log 'showAffiliation OFF' #######################################################
       
       if this.id is 'showOffice' and this.checked is true
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);

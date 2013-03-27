@@ -589,11 +589,11 @@
         return toggleInfoscreen(this.checked);
       } else {
         ls[this.id] = this.checked;
-        if (this.id === 'affiliation' && this.checked === true) {
-          console.log('affiliation ON');
+        if (this.id === 'showAffiliation' && this.checked === true) {
+          console.log('showAffiliation ON');
         }
-        if (this.id === 'affiliation' && this.checked === false) {
-          console.log('affiliation OFF');
+        if (this.id === 'showAffiliation' && this.checked === false) {
+          console.log('showAffiliation OFF');
         }
         if (this.id === 'showOffice' && this.checked === true) {
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
