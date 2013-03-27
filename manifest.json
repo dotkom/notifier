@@ -34,10 +34,10 @@
     "*://*.emilweb.no/*",
     "*://*.industrielldesign.com/*",
     "*://*.online.ntnu.no/*",
-    "x://*.org.ntnu.no/delta/*",
+    "*://*.org.ntnu.no/delta/*",
     "*://*.nabla.no/*",
     "*://*.spanskroret.no/*",
-    "x://*.org.ntnu.no/volvox/*",
+    "*://*.org.ntnu.no/volvox/*",
 
     "*://*.dionysosntnu.wordpress.com/*",
     "*://*.erudiontnu.org/*",
