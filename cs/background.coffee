@@ -72,7 +72,7 @@ updateNews = ->
   News.get 'online', newsLimit, (items) ->
     if typeof items is 'string'
       # Error message, log it
-      if DEBUG then console.log 'ERROR: News did not reach us'
+      if DEBUG then console.log 'ERROR:', items
     else
       ls.feedItems = JSON.stringify items
       News.unreadCount items

@@ -98,7 +98,7 @@
     return News.get('online', newsLimit, function(items) {
       if (typeof items === 'string') {
         if (DEBUG) {
-          return console.log('ERROR: News did not reach us');
+          return console.log('ERROR:', items);
         }
       } else {
         ls.feedItems = JSON.stringify(items);
