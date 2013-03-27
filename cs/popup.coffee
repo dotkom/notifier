@@ -134,12 +134,8 @@ updateNews = ->
   feed = 'nabla'
   News.get feed, newsLimit, (items) ->
 
-    # Find most recent post, return if we've already seen it
+    # Find most recent post and save it
     mostRecent = items[0].link
-    # if ls.mostRecentRead is mostRecent
-    #   if $('#news').text().trim() isnt '' # News box empty already
-    #     if DEBUG then console.log 'No new news'
-    #     return
     ls.mostRecentRead = mostRecent
     $('#news').html ''
 
