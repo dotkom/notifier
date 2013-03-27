@@ -29,8 +29,8 @@
     } else {
       iteration++;
     }
-    if (DEBUG || !navigator.onLine || ls.currentStatus === 'error') {
-      loopTimeout = BACKGROUND_LOOP_QUICK;
+    if (DEBUG || !navigator.onLine) {
+      loopTimeout = BACKGROUND_LOOP_OFFLINE;
     } else {
       loopTimeout = BACKGROUND_LOOP;
     }

@@ -17,8 +17,8 @@ mainLoop = ->
   # Schedule for repetition once a minute (checking connectivity,
   # feed and office status). Runs every 3rd second if it's offline,
   # trying to react quickly upon reconnection...
-  if DEBUG or !navigator.onLine or ls.currentStatus is 'error'
-    loopTimeout = BACKGROUND_LOOP_QUICK
+  if DEBUG or !navigator.onLine
+    loopTimeout = BACKGROUND_LOOP_OFFLINE
   else
     loopTimeout = BACKGROUND_LOOP
 
