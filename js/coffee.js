@@ -36,11 +36,13 @@ var Coffee = {
           if (this.isMadeToday(ageString)) {
 
             // Calculate minute difference from right now
-            var age = this.minuteDiff(ageString);
+            var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
+            var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
+            var age = this.minuteDiff(then);
 
             // If pretty strings are requested
             if (pretty) {
-              age = this.prettyAgeString(age);
+              age = this.prettyAgeString(age, coffeeTime);
               pots = this.prettyPotsString(pots);
             }
             // Call it back
@@ -75,18 +77,15 @@ var Coffee = {
     return coffeeDate.getDate() == now.getDate();
   },
 
-  minuteDiff: function(ageString) {
+  minuteDiff: function(then) {
     // Get now
-    var now = new Date();
-    // Calulate the age of the last pot better
-    var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
-    var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
+    var now = new Date();    
     var one_minute = 1000 * 60;
     // Calculate difference between the two dates, and convert to minutes
     return Math.floor(( now.getTime() - then.getTime() ) / one_minute);
   },
 
-  prettyAgeString: function(diff) {
+  prettyAgeString: function(diff, coffeeTime) {
     // Create a proper time string from all the minutes
     if (0 <= diff && diff <= 9)
       return 'Kaffen ble <b>nettopp laget</b>';
@@ -102,9 +101,29 @@ var Coffee = {
     return (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
   },
 
-  showNotification: function(pots) {
-    // Amount of pots currently not used
-    Browser.createNotification('subscription.html');
+  showNotification: function(pots, age) { // Parameter vars not in use yet.
+    // If the computer has slept for a while and there are
+    // suddenly four new coffeepots then they will all be
+    // lined up for notifications, giving the user four
+    // notifications at once. This is prevented here by not
+    // allowing two consecutive notifications within 4 minutes
+    // of each other.
+    var showIt = true;
+    try {
+      var then = JSON.parse(localStorage.lastSubscriptionTime);
+      if (this.minuteDiff(then) <= 4) {
+        showIt = false;
+      }
+    }
+    catch (err) {
+      if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
+    }
+    if (showIt) {
+      localStorage.lastSubscriptionTime = JSON.stringify(new Date());
+      Browser.createNotification('subscription.html');
+    }
+    else
+      if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
   },
 
 }
