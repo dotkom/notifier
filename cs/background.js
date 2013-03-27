@@ -117,6 +117,12 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
+    if (ls.affiliation === void 0) {
+      ls.affiliation = 'true';
+    }
+    if (ls.affiliation_name === void 0) {
+      ls.affiliation_name = 'online';
+    }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
     }
