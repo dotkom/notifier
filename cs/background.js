@@ -196,6 +196,9 @@
     setInterval((function() {
       return document.location.reload();
     }), 86400000);
+    window.updateOfficeAndMeetings = updateOfficeAndMeetings;
+    window.updateCoffeeSubscription = updateCoffeeSubscription;
+    window.updateNews = updateNews;
     return mainLoop();
   });
 

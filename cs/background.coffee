@@ -174,6 +174,14 @@ $ ->
     document.location.reload()
   ), 86400000
 
+  # Attaching the update-functions to the window (global) object so other pages
+  # may lend these functions via Browser.getBackgroundProcess().function()
+  # instead of having to rewrite the function on that page which may lead
+  # to code rot.
+  window.updateOfficeAndMeetings = updateOfficeAndMeetings
+  window.updateCoffeeSubscription = updateCoffeeSubscription
+  window.updateNews = updateNews
+
   # Enter main loop, keeping everything up-to-date
   mainLoop()
 
