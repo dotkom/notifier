@@ -10,44 +10,75 @@ var News = {
 
   feeds: {
     // Linjeforeninger
-    'berg': 'http://bergstud.no/feed/',
-    'delta': 'http://org.ntnu.no/delta/wp/?feed=rss2',
-    'emil': 'http://emilweb.no/feed/',
-    'online': 'https://online.ntnu.no/feeds/news/',
-    'nabla': 'http://nabla.no/feed/',
-    'spanskrøret': 'http://spanskroret.no/feed/',
+    'berg': {
+      'feed': 'http://bergstud.no/feed/',
+      'logo': 'img/logos/berg.png',
+      'image': 'img/placeholders/berg.png',
+    },
+    'delta': {
+      'feed': 'http://org.ntnu.no/delta/wp/?feed=rss2',
+      'logo': 'img/logos/delta.png',
+      'image': 'img/placeholders/delta.png',
+    },
+    'emil': {
+      'feed': 'http://emilweb.no/feed/',
+      'logo': 'img/logos/emil.png',
+      'image': 'img/placeholders/emil.png',
+    },
+    'online': {
+      'feed': 'https://online.ntnu.no/feeds/news/',
+      'logo': 'img/logos/online.png',
+      'image': 'img/placeholders/online.png',
+    },
+    'nabla': {
+      'feed': 'http://nabla.no/feed/',
+      'logo': 'img/logos/nabla.png',
+      'image': 'img/placeholders/nabla.png',
+    },
+    'spanskrøret': {
+      'feed': 'http://spanskroret.no/feed/',
+      'logo': 'img/logos/spanskrøret.png',
+      'image': 'img/placeholders/spanskrøret.png',
+    },
     // Medier
-    'dusken': 'http://dusken.no/feed/',
-    'universitetsavisa': 'http://www.universitetsavisa.no/?service=rss',
+    'dusken': {
+      'feed': 'http://dusken.no/feed/',
+      'logo': 'img/logos/dusken.png',
+      'image': 'img/placeholders/dusken.png',
+    },
+    'universitetsavisa': {
+      'feed': 'http://www.universitetsavisa.no/?service=rss',
+      'logo': 'img/logos/universitetsavisa.png',
+      'image': 'img/placeholders/universitetsavisa.png',
+    },
     // Store studentorganisasjoner
-    'samfundet': 'http://www.samfundet.no/arrangement/rss',
+    'samfundet': {
+      'feed': 'http://www.samfundet.no/arrangement/rss',
+      'logo': 'img/logos/samfundet.png',
+      'image': 'img/placeholders/samfundet.png',
+    },
     // Studentdemokrati
-    'studenttinget': 'http://www.studenttinget.no/feed/',
-    'velferdstinget': 'http://www.velferdstinget.no/feed/rss/',
+    'studenttinget': {
+      'feed': 'http://www.studenttinget.no/feed/',
+      'logo': 'img/logos/studenttinget.png',
+      'image': 'img/placeholders/studenttinget.png',
+    },
+    'velferdstinget': {
+      'feed': 'http://www.velferdstinget.no/feed/rss/',
+      'logo': 'img/logos/velferdstinget.png',
+      'image': 'img/placeholders/velferdstinget.png',
+    },
     // NTNU
-    'ntnu': 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
-    'rektoratet': 'http://www.ntnu.no/blogger/rektoratet/feed/',
-  },
-
-  images: {
-    // Linjeforeninger
-    'berg': 'img/logo-sponsor-placeholder.png',
-    'delta': 'img/logo-sponsor-placeholder.png',
-    'emil': 'img/logo-sponsor-placeholder.png',
-    'online': 'img/logo-sponsor-placeholder.png',
-    'nabla': 'img/logo-sponsor-placeholder.png',
-    'spanskrøret': 'img/logo-sponsor-placeholder.png',
-    // Medier
-    'dusken': 'img/logo-sponsor-placeholder.png',
-    'universitetsavisa': 'img/logo-sponsor-placeholder.png',
-    // Store studentorganisasjoner
-    'samfundet': 'img/placeholders/samfundet.png',
-    // Studentdemokrati
-    'studenttinget': 'img/logo-sponsor-placeholder.png',
-    'velferdstinget': 'img/logo-sponsor-placeholder.png',
-    // NTNU
-    'ntnu': 'img/logo-sponsor-placeholder.png',
-    'rektoratet': 'img/logo-sponsor-placeholder.png',
+    'ntnu': {
+      'feed': 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
+      'logo': 'img/logos/ntnu.png',
+      'image': 'img/placeholders/ntnu.png',
+    },
+    'rektoratet': {
+      'feed': 'http://www.ntnu.no/blogger/rektoratet/feed/',
+      'logo': 'img/logos/rektoratet.png',
+      'image': 'img/placeholders/rektoratet.png',
+    },
   },
 
   // Get is called by background.html periodically, with News.unreadCount as
