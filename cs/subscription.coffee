@@ -27,8 +27,7 @@ setSubscription = ->
 
   # Create the HTML
   width = $('#subscription').width()
-  $('#subscription').html '<img src="'+images[random]+'" />'
-  # $('#subscription').html '<img src="'+images[random]+'" width="'+width+'" />'
+  $('#subscription').html '<img src="'+images[random]+'" width="'+width+'" />'
 
 # show the html5 notification with timeout when the document is ready
 $ ->
