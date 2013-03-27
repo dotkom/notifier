@@ -39,19 +39,32 @@ updateOfficeAndMeetings = ->
 
 updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
-  Coffee.getPots (pots) ->
-    pots = Number pots
+  Coffee.get false, (pots, age) ->
+    console.log 'pots', pots, 'age', age
     # Error messages will be NaN here
-    if not isNaN pots
+    if not isNaN pots and not isNaN age
       storedPots = Number ls.coffeePots
       # New pot?
       if storedPots < pots
+        console.log '- new pot!! meeting?' ################################################################
         # Not a meeting?
         if ls.currentStatus isnt 'meeting'
-          # Notify everyone with a coffee subscription :D
-          Coffee.showNotification pots
+          console.log '-- not meetings!!!! near in time?' ################################################################
+          # Old coffee in the age string can be easily recongized by the timestamp
+          if age < 10
+            # Notify everyone with a coffee subscription :D
+            console.log '--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!' ################################################################
+            Coffee.showNotification pots, age
+          else
+            console.log 'ERROR: ------------------ old coffee is old :( --------------------'
+        else
+          console.log 'ERROR: -------- was a meeting :( --------'
+      else
+        console.log 'ERROR: -- was an old pot :( --'
       # And remember to update localStorage
       ls.coffeePots = pots
+    else
+      console.log 'ERROR: ======== isNaN! ========', pots, age
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'

@@ -1,15 +1,15 @@
 var Coffee = {
-  api: 'http://draug.online.ntnu.no/coffee.txt',
+  api: 'http://draug.online.ntnu.no/coffee_dev.txt',
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
   msgFormatError: 'Feil i kaffeformat',
   msgConnectionError: 'Frakoblet fra kaffeknappen',
   msgComforting: 'Det er sikkert kaffe!',
   
-  debugCoffee: 0,
-  debugCoffeeString: "200\n1. March 14:28:371",
+  debug: 0,
+  debugString: "200\n1. March 14:28:371",
 
-  get: function(callback) {
+  get: function(pretty, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
@@ -22,61 +22,34 @@ var Coffee = {
       success: function(data) {
 
         // If coffee debugging is enabled
-        if (self.debugCoffee) {
-          data = self.debugCoffeeString;
+        if (self.debug) {
+          data = self.debugString;
         }
 
         try {
           // Split into pot number and age of last pot
           var pieces = data.split("\n");
-          var pots = pieces[0];
+          var pots = Number(pieces[0]);
           var ageString = pieces[1];
 
-          // Get now
-          var now = new Date();
+          // Coffee made today?
+          if (self.isMadeToday(ageString)) {
 
-          // Figure out which date the coffee was made
-          var dateObject = ageString.match(/\d+\. [a-zA-Z]+/); // Operas JS-engine makes an object instead of a string
-          var dateString = String(dateObject);
-          dateString = dateString.replace('.', ''); // Remove period
-          dateString = dateString + ', ' + now.getFullYear();
-          var coffeeDate = new Date(dateString);
-
-          // Check if the coffee pots were made today
-          if (coffeeDate.getDate() == now.getDate()) {
-
-            // Calulate the age of the last pot better
+            // Calculate minute difference from right now
             var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
             var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
-            var one_minute = 1000 * 60;
+            var age = self.minuteDiff(then);
 
-            // Calculate difference between the two dates, and convert to minutes
-            var diff = Math.floor(( now.getTime() - then.getTime() ) / one_minute);
-            
-            // Create a proper time string from all the minutes
-            var age;
-            if (-1 <= diff && diff <= 9) {
-              age = 'Kaffen ble <b>nettopp laget</b>';
+            // If pretty strings are requested
+            if (pretty) {
+              age = self.prettyAgeString(age, coffeeTime);
+              pots = self.prettyPotsString(pots);
             }
-            else if (10 <= diff && diff <= 59) {
-              age = 'Kaffen ble laget for '+diff+' min siden';
-            }
-            else if (60 <= diff) {
-              age = 'Kaffen ble laget kl '+coffeeTime[0]+':'+coffeeTime[1];
-            }
-            else {
-              age = 'Har noen laget kaffe i fremtiden?!'
-            }
-
-            // Make pots-string
-            pots = (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
-
             // Call it back
             callback(pots, age);
           }
           else {
             // Coffee was not made today
-            var coffee = '';
             callback(self.msgNoPots, self.msgNoCoffee);
           }
         } catch (err) {
@@ -91,48 +64,66 @@ var Coffee = {
     });
   },
 
-  getPots: function(callback) {
-    // Function used by background process to determine when a new coffee pot is cooking
-    if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
-    var self = this;
-    $.ajax({
-      url: self.api,
-      success: function(data) {
-        try {
-          // Split into pot number and age of last pot
-          var pieces = data.split("\n");
-          var pots = pieces[0];
-          var ageString = pieces[1];
-
-          // Get now
-          var now = new Date();
-
-          // Check if the coffee pots were made today
-          var coffeeDate = new Date(ageString.match(/\d+\. [a-zA-Z]+/));
-          if (coffeeDate.getDate() == now.getDate()) {
-            callback(pots);
-          }
-          else {
-            callback(0);
-          }
-        } catch (err) {
-          if (DEBUG) console.log('ERROR: Failed to parse coffee status.');
-          callback(0);
-        }
-      },
-      error: function(jqXHR, text, err) {
-        if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
-        callback(0);
-      },
-    });
+  isMadeToday: function(ageString) {
+    // Get now
+    var now = new Date();
+    // Figure out which date the coffee was made
+    var dateObject = ageString.match(/\d+\. [a-zA-Z]+/); // Operas JS-engine makes an object instead of a string
+    var dateString = String(dateObject);
+    dateString = dateString.replace('.', ''); // Remove period
+    dateString = dateString + ', ' + now.getFullYear();
+    var coffeeDate = new Date(dateString);
+    // Check if the coffee pots were made today
+    return coffeeDate.getDate() == now.getDate();
   },
 
-  showNotification: function(pots) {
-    // Amount of pots currently not used
-    Browser.createNotification('subscription.html');
+  minuteDiff: function(then) {
+    // Get now
+    var now = new Date();    
+    var one_minute = 1000 * 60;
+    // Calculate difference between the two dates, and convert to minutes
+    return Math.floor(( now.getTime() - then.getTime() ) / one_minute);
+  },
+
+  prettyAgeString: function(diff, coffeeTime) {
+    // Create a proper time string from all the minutes
+    if (0 <= diff && diff <= 9)
+      return 'Kaffen ble <b>nettopp laget</b>';
+    else if (10 <= diff && diff <= 59)
+      return 'Kaffen ble laget for '+diff+' min siden';
+    else if (60 <= diff)
+      return 'Kaffen ble laget kl '+coffeeTime[0]+':'+coffeeTime[1];
+    else
+      return 'WAT? Lager noen kaffe i fremtiden nå?!';
+  },
+
+  prettyPotsString: function(pots) {
+    return (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
+  },
+
+  showNotification: function(pots, age) { // Parameter vars not in use yet.
+    // If the computer has slept for a while and there are
+    // suddenly four new coffeepots then they will all be
+    // lined up for notifications, giving the user four
+    // notifications at once. This is prevented here by not
+    // allowing two consecutive notifications within 4 minutes
+    // of each other.
+    var showIt = true;
+    try {
+      var then = JSON.parse(localStorage.lastSubscriptionTime);
+      if (this.minuteDiff(then) <= 4) {
+        showIt = false;
+      }
+    }
+    catch (err) {
+      if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
+    }
+    if (showIt) {
+      localStorage.lastSubscriptionTime = JSON.stringify(new Date());
+      Browser.createNotification('subscription.html');
+    }
+    else
+      if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
   },
 
 }

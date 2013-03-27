@@ -34,7 +34,7 @@ updateMeetings = ->
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
-  Coffee.get (pots, age) ->
+  Coffee.get true, (pots, age) ->
     $('#todays #coffee #pots').html '- '+pots
     $('#todays #coffee #age').html age
 
@@ -131,7 +131,7 @@ updateNews = ->
   # else
   #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
   newsLimit = 4
-  feed = 'samfundet'
+  feed = 'online'
   News.get feed, newsLimit, (items) ->
 
     # Find most recent post, return if we've already seen it
@@ -256,10 +256,8 @@ $ ->
   # Check for undefined in the lists of news' IDs
   if ls.lastViewedIdList == undefined
     ls.lastViewedIdList = JSON.stringify []
-    return []
   else if ls.mostRecentIdList == undefined
     ls.mostRecentIdList = JSON.stringify []
-    return []
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
