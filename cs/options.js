@@ -592,11 +592,18 @@
         return toggleInfoscreen(this.checked);
       } else {
         ls[this.id] = this.checked;
+        if (this.id === 'membership' && this.checked === true) {
+          console.log('membership ON');
+        }
+        if (this.id === 'membership' && this.checked === false) {
+          console.log('membership OFF');
+        }
+        if (this.id === 'showOffice' && this.checked === true) {
+          updateOfficeStatus();
+        }
         if (this.id === 'showOffice' && this.checked === false) {
           Browser.setIcon('img/icon-default.png');
           Browser.setTitle(EXTENSION_NAME);
-        } else if (this.id === 'showOffice' && this.checked === true) {
-          updateOfficeStatus();
         }
         if (this.id === 'showNotifications' && this.checked === true) {
           testDesktopNotification();

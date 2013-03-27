@@ -577,13 +577,17 @@ $ ->
     # All the other checkboxes (not Infoscreen)
     else
       ls[this.id] = this.checked;
+
+      if this.id is 'membership' and this.checked is true
+        console.log 'membership ON' #######################################################
+      if this.id is 'membership' and this.checked is false
+        console.log 'membership OFF' #######################################################
       
+      if this.id is 'showOffice' and this.checked is true
+        updateOfficeStatus()
       if this.id is 'showOffice' and this.checked is false
         Browser.setIcon 'img/icon-default.png'
         Browser.setTitle EXTENSION_NAME
-
-      else if this.id is 'showOffice' and this.checked is true
-        updateOfficeStatus()
       
       if this.id is 'showNotifications' and this.checked is true
         testDesktopNotification()
