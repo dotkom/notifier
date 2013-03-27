@@ -205,10 +205,10 @@ var News = {
       var link = item.link;
       
       // Counting...
-      console.log(link+'\n'+localStorage.mostRecentRead)
+
       if (link != localStorage.mostRecentRead) {
         unreadCount++;
-        console.log('unread', unreadCount)
+
         linkList.push(link); // New || Updated
         // Send a desktop notification about the first unread item
         if (unreadCount == 1) {
@@ -223,7 +223,6 @@ var News = {
         if (unreadCount == 0) {
           if (self.debug) console.log('no new posts');
           Browser.setBadgeText('');
-          console.log(4)
         }
         else if (unreadCount >= maxNewsAmount) {
           if (self.debug) console.log(maxNewsAmount + '+ unread posts');
@@ -306,6 +305,7 @@ var News = {
     var id = link.split('/')[4]; // id is stored in the link
     var image = 'undefined';
     var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
+    var self = this;
     $.getJSON(api + id, function(json) {
       if (json['online_news_image']) {
         image = json['online_news_image']['0']['image'];
@@ -313,13 +313,13 @@ var News = {
       }
       else {
         image = this.images['online'].image;
-        if (this.debug) console.log('ERROR: no image exists for id: ' + id);
+        if (self.debug) console.log('ERROR: no image exists for id: ' + id);
         callback(link, image);
       }
     })
     .error(function() {
-      image = this.images['online'].image;
-      if (this.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
+      image = self.images['online'].image;
+      if (self.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
       callback(link, image);
     });
   },
