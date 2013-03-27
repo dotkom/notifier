@@ -319,8 +319,12 @@ var Cantina = {
     if (this.debugText) console.log('Flags\t:: ' + text);
     // Removes food flags like V,G,L in all known forms. Seriously. All known forms. Don't.
     return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/g, '');
-    // Note: æøåÆØÅ is wrongly matched as word boundary, bug report has been submitted to
+    // NOTE: æøåÆØÅ is wrongly matched as word boundary, bug report has been submitted to
     // the Chromium team. A case sensitive fix is implemented via negative lookahead.
+    // UPDATE from yangguo@chromium.org: "Unfortunately, this is specified by ECMA-262,
+    // 15.10.2.6 (Assertion). \b essentially depends on the definition of IsWordChar,
+    // which basically covers [a-zA-Z0-9_]. Unicode is not considered here." ..dammit.
+    // REPORT: https://code.google.com/p/chromium/issues/detail?id=223360
   },
 
   addMissingSpaces: function(text) {
