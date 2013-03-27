@@ -125,86 +125,84 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   # Displaying the news feed (prefetched by the background page)
-  # response = ls.lastResponseData
-  # if response != undefined
-  #   displayStories response
-  # else
-  #   $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
-  newsLimit = 4
-  feed = 'nabla'
-  News.get feed, newsLimit, (items) ->
+  feedItems = ls.feedItems
+  if feedItems isnt undefined
+    displayItems feedItems
+  else
+    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
 
-    # Find most recent post and save it
-    mostRecent = items[0].link
-    ls.mostRecentRead = mostRecent
-    $('#news').html ''
+displayItems = (items) ->
+  # Find most recent post and save it
+  mostRecent = items[0].link
+  ls.mostRecentRead = mostRecent
+  $('#news').html ''
 
-    # Get list of last viewed items and check for news that are just
-    # updated rather than being actual news
-    viewedList = JSON.parse ls.lastViewedIdList
-    newsList = JSON.parse ls.mostRecentIdList
-    updatedList = findUpdatedPosts viewedList, newsList
+  # Get list of last viewed items and check for news that are just
+  # updated rather than being actual news
+  viewedList = JSON.parse ls.lastViewedIdList
+  newsList = JSON.parse ls.mostRecentIdList
+  updatedList = findUpdatedPosts viewedList, newsList
 
-    # Build list of last viewed for the next time the popup opens
-    idsOfLastViewed = []
+  # Build list of last viewed for the next time the popup opens
+  idsOfLastViewed = []
 
-    # Add feed items to popup
-    $.each items, (index, item) ->
-      
-      if index < newsLimit
-        idsOfLastViewed.push item.link
-        
-        htmlItem = '<div class="post"><div class="title">'
-        if index < ls.unreadCount
-          if item.link in updatedList.indexOf
-            htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
-          else
-            htmlItem += '<span class="unread">NEW <b>::</b> </span>'
-
-        # EXPLANATION NEEDED:
-        # .item[data] contains the link
-        # .item[name] contains the alternative link, if one exists, otherwise null
-        date = ''
-        if item.date isnt null
-          date = ' den '+item.date
-        htmlItem += item.title + '
-          </div>
-            <div class="item" data="' + item.link + '" name="' + item.altLink + '">
-              <img src="' + item.image + '" width="107" />
-              <div class="textwrapper">
-                <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
-                ' + item.description + '
-              </div>
-            </div>
-          </div>'
-        $('#news').append htmlItem
+  # Add feed items to popup
+  $.each items, (index, item) ->
     
-    # Store list of last viewed items
-    ls.lastViewedIdList = JSON.stringify idsOfLastViewed
+    if index < newsLimit
+      idsOfLastViewed.push item.link
+      
+      htmlItem = '<div class="post"><div class="title">'
+      if index < ls.unreadCount
+        if item.link in updatedList.indexOf
+          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+        else
+          htmlItem += '<span class="unread">NEW <b>::</b> </span>'
 
-    # All items are now considered read
-    Browser.setBadgeText ''
-    ls.unreadCount = 0
+      # EXPLANATION NEEDED:
+      # .item[data] contains the link
+      # .item[name] contains the alternative link, if one exists, otherwise null
+      date = ''
+      if item.date isnt null
+        date = ' den '+item.date
+      htmlItem += item.title + '
+        </div>
+          <div class="item" data="' + item.link + '" name="' + item.altLink + '">
+            <img src="' + item.image + '" width="107" />
+            <div class="textwrapper">
+              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
+              ' + item.description + '
+            </div>
+          </div>
+        </div>'
+      $('#news').append htmlItem
+  
+  # Store list of last viewed items
+  ls.lastViewedIdList = JSON.stringify idsOfLastViewed
 
-    # Make news items open extension website while closing popup
-    $('.item').click ->
-      # The link is embedded as the ID of the element, we don't want to use
-      # <a> anchors because it creates an ugly box marking the focus element
-      Browser.openTab $(this).attr 'data'
-      window.close()
+  # All items are now considered read
+  Browser.setBadgeText ''
+  ls.unreadCount = 0
 
-    # Online specific stuff
-    if feed is 'online'
-      # Fetch images from the API asynchronously
-      for index, link of idsOfLastViewed
-        News.online_getImage link, (link, image) ->
-          # It's important to get the link from the callback, not the above code
-          # in order to have the right link at the right time, async ftw.
-          $('.item[data="'+link+'"] img').attr 'src', image
-          # When that's done for an image, check if the link could be a better one
-          altLink = $('.item[data="'+link+'"]').attr 'name'
-          if altLink isnt 'null'
-            $('.item[data="'+link+'"]').attr 'data', altLink
+  # Make news items open extension website while closing popup
+  $('.item').click ->
+    # The link is embedded as the ID of the element, we don't want to use
+    # <a> anchors because it creates an ugly box marking the focus element
+    Browser.openTab $(this).attr 'data'
+    window.close()
+
+  # Online specific stuff
+  if feed is 'online'
+    # Fetch images from the API asynchronously
+    for index, link of idsOfLastViewed
+      News.online_getImage link, (link, image) ->
+        # It's important to get the link from the callback, not the above code
+        # in order to have the right link at the right time, async ftw.
+        $('.item[data="'+link+'"] img').attr 'src', image
+        # When that's done for an image, check if the link could be a better one
+        altLink = $('.item[data="'+link+'"]').attr 'name'
+        if altLink isnt 'null'
+          $('.item[data="'+link+'"]').attr 'data', altLink
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (viewedList, newsList) ->
