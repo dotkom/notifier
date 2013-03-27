@@ -90,7 +90,7 @@ var News = {
       callback(this.msgUnsupportedFeed);
       return;
     }
-    if (isNaN(limit) || (limit < 1 && 20 < limit)) {
+    if (!isNumber(limit) || (limit < 1 && 20 < limit)) {
       if (this.debug) console.log('ERROR:', this.msgNewsLimit);
       callback(this.msgNewsLimit);
       return;
@@ -102,7 +102,7 @@ var News = {
     }
 
     feedName = feedName.toLowerCase();
-    var rssUrl = this.feeds[feedName];
+    var rssUrl = this.feeds[feedName].url;
 
     var self = this;
     $.ajax({
@@ -142,7 +142,7 @@ var News = {
     post.creator = $(item).find("dc:creator").text();
     post.date = $(item).find("pubDate").text().substr(5, 11);
     // Locally stored
-    post.image = this.images[feedName];
+    post.image = this.feeds[feedName].image;
     post.feed = feedName;
     
     // Check for alternative links in description
@@ -320,13 +320,13 @@ var News = {
         callback(link, image);
       }
       else {
-        image = this.images['online'];
+        image = this.images['online'].image;
         if (this.debug) console.log('ERROR: no image exists for id: ' + id);
         callback(link, image);
       }
     })
     .error(function() {
-      image = this.images['online'];
+      image = this.images['online'].image;
       if (this.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
       callback(link, image);
     });
