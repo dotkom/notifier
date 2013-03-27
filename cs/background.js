@@ -74,7 +74,7 @@
               console.log('--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!');
               Coffee.showNotification(pots);
             } else {
-              console.log('------------------ old coffee is old :(');
+              console.log('ERROR: ------------------ old coffee is old :( --------------------');
             }
           }
         }
