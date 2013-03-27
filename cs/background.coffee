@@ -54,7 +54,7 @@ updateCoffeeSubscription = ->
           if age < 10
             # Notify everyone with a coffee subscription :D
             console.log '--- NEAR IN TIME! OMFGOMFG KAFFE!!!!!!!!' ################################################################
-            Coffee.showNotification pots
+            Coffee.showNotification pots, age
           else
             console.log 'ERROR: ------------------ old coffee is old :( --------------------'
         else
