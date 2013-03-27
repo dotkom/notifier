@@ -33,17 +33,17 @@ var Coffee = {
           var ageString = pieces[1];
 
           // Coffee made today?
-          if (this.isMadeToday(ageString)) {
+          if (self.isMadeToday(ageString)) {
 
             // Calculate minute difference from right now
             var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
             var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
-            var age = this.minuteDiff(then);
+            var age = self.minuteDiff(then);
 
             // If pretty strings are requested
             if (pretty) {
-              age = this.prettyAgeString(age, coffeeTime);
-              pots = this.prettyPotsString(pots);
+              age = self.prettyAgeString(age, coffeeTime);
+              pots = self.prettyPotsString(pots);
             }
             // Call it back
             callback(pots, age);
