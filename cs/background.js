@@ -64,7 +64,7 @@
     return Coffee.get(false, function(pots, age) {
       var storedPots;
       console.log('pots', pots, 'age', age);
-      if (!isNaN(pots)) {
+      if (!isNaN(pots && !isNaN(age))) {
         storedPots = Number(ls.coffeePots);
         if (storedPots < pots) {
           console.log('- new pot!! meeting?');
@@ -76,9 +76,15 @@
             } else {
               console.log('ERROR: ------------------ old coffee is old :( --------------------');
             }
+          } else {
+            console.log('ERROR: -------- was a meeting :( --------');
           }
+        } else {
+          console.log('ERROR: -- was an old pot :( --');
         }
         return ls.coffeePots = pots;
+      } else {
+        return console.log('ERROR: ======== isNaN! ========', pots, age);
       }
     });
   };
