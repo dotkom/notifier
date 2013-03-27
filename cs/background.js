@@ -39,12 +39,12 @@
     }), loopTimeout);
   };
 
-  updateOfficeAndMeetings = function() {
+  updateOfficeAndMeetings = function(force) {
     if (DEBUG) {
       console.log('updateOfficeAndMeetings');
     }
     return Office.get(function(status, title, message) {
-      if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
+      if (force || ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         Browser.setIcon('img/icon-' + status + '.png');
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
@@ -90,12 +90,13 @@
   };
 
   updateNews = function() {
-    var newsLimit;
+    var affiliation, newsLimit;
     if (DEBUG) {
       console.log('updateNews');
     }
+    affiliation = ls['affiliation_name'];
     newsLimit = 4;
-    return News.get('online', newsLimit, function(items) {
+    return News.get(affiliation, newsLimit, function(items) {
       if (typeof items === 'string') {
         if (DEBUG) {
           return console.log('ERROR:', items);

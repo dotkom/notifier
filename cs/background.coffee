@@ -26,10 +26,10 @@ mainLoop = ->
     mainLoop()
   ), loopTimeout
 
-updateOfficeAndMeetings = ->
+updateOfficeAndMeetings = (force) ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
-    if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
+    if force or ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       Browser.setIcon 'img/icon-'+status+'.png'
       ls.currentStatus = status
       Meetings.get (meetings) ->
@@ -68,8 +68,9 @@ updateCoffeeSubscription = ->
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
+  affiliation = ls['affiliation_name']
   newsLimit = 4
-  News.get 'online', newsLimit, (items) ->
+  News.get affiliation, newsLimit, (items) ->
     if typeof items is 'string'
       # Error message, log it
       if DEBUG then console.log 'ERROR:', items
