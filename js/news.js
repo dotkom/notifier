@@ -195,38 +195,42 @@ var News = {
 
   unreadCount: function(items) {
     var unreadCount = 0;
+    var maxNewsAmount = items.length-1;
     var linkList = []; // New || Updated
-    
+
     // Count feed items
     var self = this;
     items.forEach(function(item, index) {
-      
+
       var link = item.link;
       
       // Counting...
-      if (link != localStorage.newsMostRecentRead) {
+      console.log(link+'\n'+localStorage.mostRecentRead)
+      if (link != localStorage.mostRecentRead) {
         unreadCount++;
+        console.log('unread', unreadCount)
         linkList.push(link); // New || Updated
         // Send a desktop notification about the first unread item
         if (unreadCount == 1) {
-          if (localStorage.newsLastNotified != link) {
+          if (localStorage.lastNotified != link) {
             self.showNotification(item);
           }
-          localStorage.newsMostRecentUnread = link;
+          localStorage.mostRecentUnread = link;
         }
       }
       // All counted :)
       else {
         if (unreadCount == 0) {
-          if (this.debug) console.log('no new posts');
+          if (self.debug) console.log('no new posts');
           Browser.setBadgeText('');
+          console.log(4)
         }
-        else if (unreadCount >= this.maxNewsAmount) {
-          if (this.debug) console.log(this.maxNewsAmount + '+ unread posts');
-          Browser.setBadgeText(this.maxNewsAmount + '+');
+        else if (unreadCount >= maxNewsAmount) {
+          if (self.debug) console.log(maxNewsAmount + '+ unread posts');
+          Browser.setBadgeText(maxNewsAmount + '+');
         }
         else {
-          if (this.debug) console.log('1-' + (this.maxNewsAmount - 1) + ' unread posts');
+          if (self.debug) console.log('1-' + (maxNewsAmount - 1) + ' unread posts');
           Browser.setBadgeText(String(unreadCount));
         }
         localStorage.unreadCount = unreadCount;
@@ -235,10 +239,10 @@ var News = {
       }
       
       // Stop counting if unread number is greater than 9
-      if (index > (this.maxNewsAmount - 1)) { // Remember index is counting 0
-        if (this.debug) console.log(this.maxNewsAmount + '+ unread posts (stopped counting)');
-        Browser.setBadgeText(this.maxNewsAmount + '+');
-        localStorage.unreadCount = this.maxNewsAmount;
+      if (index > (maxNewsAmount - 1)) { // Remember index is counting 0
+        if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
+        Browser.setBadgeText(maxNewsAmount + '+');
+        localStorage.unreadCount = maxNewsAmount;
         // New or updated?
         localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
         return false;
@@ -249,7 +253,7 @@ var News = {
   showNotification: function(item) {
     if (localStorage.showNotifications == 'true') {
       // Remember this
-      localStorage.newsLastNotified = item.link;
+      localStorage.lastNotified = item.link;
       // Get content
       localStorage.notificationTitle = item.title;
       localStorage.notificationLink = item.link;
