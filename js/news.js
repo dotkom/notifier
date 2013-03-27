@@ -256,10 +256,10 @@ var News = {
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
 
-    // Remove excessive whitespace...
-    if (post.description.match(/<\w+>|<\/\w+>/g) !== null) { // Check if string contains markup
-      // ...and ludicrous formatting (HTML)
-      post.description = $.trim($(post.description).text());
+    // Remove HTML and excessive whitespace
+    if (post.description.match(/<\w+>/g) !== null) { // Check if string contains markup
+      post.description = post.description.replace(/<[^>]+>/g, '$1');
+      post.description = post.description.trim();
     }
     else {
       post.description = post.description.trim();
@@ -274,8 +274,10 @@ var News = {
     }
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
-      post.creator = feedName.capitalize();
+      post.creator = feedName;
     }
+    // Capitalize creator name either way
+    post.creator = post.creator.capitalize();
     // Abbreviate long creator names
     post.creator = this.abbreviateName(post.creator);
 
