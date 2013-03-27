@@ -33,7 +33,7 @@
     </a>');
     if (ls.notificationFeedName === 'online') {
       return News.online_getImage(link, function(id, image) {
-        return $('#notification img').prop('src', image);
+        return $('img').prop('src', image);
       });
     }
   };
