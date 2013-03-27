@@ -166,7 +166,7 @@ displayItems = (items) ->
     # .item[name] contains the alternative link, if one exists, otherwise null
     date = ''
     if item.date isnt null
-      date = ' den '+item.date
+      date = ' den ' + item.date
     htmlItem += item.title + '
       </div>
         <div class="item" data="' + item.link + '" name="' + item.altLink + '">
