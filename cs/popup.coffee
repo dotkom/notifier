@@ -256,10 +256,8 @@ $ ->
   # Check for undefined in the lists of news' IDs
   if ls.lastViewedIdList == undefined
     ls.lastViewedIdList = JSON.stringify []
-    return []
   else if ls.mostRecentIdList == undefined
     ls.mostRecentIdList = JSON.stringify []
-    return []
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

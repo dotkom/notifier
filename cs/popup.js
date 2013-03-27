@@ -305,10 +305,8 @@
     }
     if (ls.lastViewedIdList === void 0) {
       ls.lastViewedIdList = JSON.stringify([]);
-      return [];
     } else if (ls.mostRecentIdList === void 0) {
       ls.mostRecentIdList = JSON.stringify([]);
-      return [];
     }
     $('#logo').click(function() {
       Browser.openTab(EXTENSION_WEBSITE);
