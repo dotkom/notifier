@@ -37,18 +37,30 @@ testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
 bindAffiliationSelector = (selector) ->
+  cssSelector = '#' + selector
+  chosenAffiliation = ls[selector]
   # Default values
-  $('#' + selector).val ls[selector]
+  $(cssSelector + '[value=' + chosenAffiliation + ']').prop 'selected', 'selected'
   # React to change
-  $('#' + selector).change ->
-    ls[selector] = $(this).val()
+  $(cssSelector).change ->
+    chosenAffiliation = $(this).val()
+    ls[selector] = chosenAffiliation
+    if DEBUG then console.log 'updateNews'
+    newsLimit = 4 # ///////////////////////////////////////////////////// WIP
+    News.get chosenAffiliation, newsLimit, (items) ->
+      if typeof items is 'string'
+        # Error message, log it
+        if DEBUG then console.log 'ERROR:', items
+      else
+        ls.feedItems = JSON.stringify items
+        News.unreadCount items
 
 bindCantinaSelector = (selector) ->
   # Default values
   $('#' + selector).val ls[selector]
   # React to change
   $('#' + selector).change ->
-    ls[selector] = $(this).val()
+    ls[selector] = $(this).prop('value')
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
@@ -513,9 +525,10 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
 
-  # Minor esthetical adjustmenst for Browser
-  html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
-  $('label[for=openChatter] span').html html
+  # Note: Uncommented as long as the Chatter option us uncommented in options.html
+  # # Minor esthetical adjustmenst for Browser
+  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  # $('label[for=openChatter] span').html html
 
   # Blinking cursor at pageflip
   setInterval ( ->
@@ -532,7 +545,7 @@ $ ->
   #   fadeInCanvas()
 
   # Allow user to change affiliation
-  bindAffiliationSelector 'affiliation_selector'
+  bindAffiliationSelector 'affiliation_name'
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'

@@ -57,16 +57,35 @@
   };
 
   bindAffiliationSelector = function(selector) {
-    $('#' + selector).val(ls[selector]);
-    return $('#' + selector).change(function() {
-      return ls[selector] = $(this).val();
+    var chosenAffiliation, cssSelector;
+    cssSelector = '#' + selector;
+    chosenAffiliation = ls[selector];
+    $(cssSelector + '[value=' + chosenAffiliation + ']').prop('selected', 'selected');
+    return $(cssSelector).change(function() {
+      var newsLimit;
+      chosenAffiliation = $(this).val();
+      ls[selector] = chosenAffiliation;
+      if (DEBUG) {
+        console.log('updateNews');
+      }
+      newsLimit = 4;
+      return News.get(chosenAffiliation, newsLimit, function(items) {
+        if (typeof items === 'string') {
+          if (DEBUG) {
+            return console.log('ERROR:', items);
+          }
+        } else {
+          ls.feedItems = JSON.stringify(items);
+          return News.unreadCount(items);
+        }
+      });
     });
   };
 
   bindCantinaSelector = function(selector) {
     $('#' + selector).val(ls[selector]);
     return $('#' + selector).change(function() {
-      return ls[selector] = $(this).val();
+      return ls[selector] = $(this).prop('value');
     });
   };
 
@@ -530,7 +549,7 @@
   };
 
   $(function() {
-    var html, text;
+    var text;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -556,15 +575,13 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
-    html = $('label[for=openChatter] span').html().replace(/__nettleseren__/g, BROWSER);
-    $('label[for=openChatter] span').html(html);
     setInterval((function() {
       return pageFlipCursorBlinking();
     }), 600);
     setTimeout((function() {
       return $('#plusonebutton').fadeIn(150);
     }), 1100);
-    bindAffiliationSelector('affiliation_selector');
+    bindAffiliationSelector('affiliation_name');
     bindCantinaSelector('left_cantina');
     bindCantinaSelector('right_cantina');
     bindBusFields('first_bus');
