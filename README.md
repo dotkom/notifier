@@ -2,6 +2,9 @@
 
 This is a Chrome/Opera extension from the student organization Online at NTNU, see http://online.ntnu.no
 
+* Install for Chrome: https://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf
+* Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
+
 # Terms of use
 
 Use this program entirely on your own risk. We do not take any responsibility for consequences that might arise from using this program in any way imaginable.
@@ -40,6 +43,10 @@ Chronological Credz
 	- Aleksander Skraastad
 	- John Hanssen Kolstad
 	- Magnus Dysthe
+
+Issues submitted to the Chromium og Opera teams
+
+- Regex word boundary and ÆØÅ: https://code.google.com/p/chromium/issues/detail?id=223360
 
 # In-depth features
 
