@@ -13,7 +13,7 @@
       return window.close;
     });
     width = $('#subscription').width();
-    return $('#subscription').html('<img src="' + images[random] + '" />');
+    return $('#subscription').html('<img src="' + images[random] + '" width="' + width + '" />');
   };
 
   $(function() {

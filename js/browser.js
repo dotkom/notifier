@@ -108,6 +108,8 @@ var Browser = {
   // FUNCTIONS BELOW ARE NOT YET FULLY IMPLEMENTED
 
   createNotification: function(path) {
+    // For future reference, support for webkit notifications can be
+    // tested with (!window.webkitNotifications)
     if (BROWSER == 'Chrome') {
       notification = webkitNotifications.createHTMLNotification(path);
       notification.show();

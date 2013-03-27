@@ -67,7 +67,7 @@
     if (DEBUG) {
       console.log('updateCoffee');
     }
-    return Coffee.get(function(pots, age) {
+    return Coffee.get(true, function(pots, age) {
       $('#todays #coffee #pots').html('- ' + pots);
       return $('#todays #coffee #age').html(age);
     });
@@ -184,7 +184,7 @@
       console.log('updateNews');
     }
     newsLimit = 4;
-    feed = 'samfundet';
+    feed = 'online';
     return News.get(feed, newsLimit, function(items) {
       var idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
       mostRecent = items[0].link;
@@ -305,10 +305,8 @@
     }
     if (ls.lastViewedIdList === void 0) {
       ls.lastViewedIdList = JSON.stringify([]);
-      return [];
     } else if (ls.mostRecentIdList === void 0) {
       ls.mostRecentIdList = JSON.stringify([]);
-      return [];
     }
     $('#logo').click(function() {
       Browser.openTab(EXTENSION_WEBSITE);
