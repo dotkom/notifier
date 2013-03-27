@@ -29,7 +29,18 @@
     "*://*.online.ntnu.no/*",
     "*://*.visuweb.no/*",
     "*://*.sit.no/*",
-    "*://*.samfundet.no/*"
+    "*://*.bergstud.no/*",
+    "*://*.dusken.no/*",
+    "*://*.emilweb.no/*",
+    "*://*.retriever-info.com/*",
+    "*://*.ntnu.no/*",
+    "*://*.org.ntnu.no/*",
+    "*://*.nabla.no/*",
+    "*://*.samfundet.no/*",
+    "*://*.spanskroret.no/*",
+    "*://*.studenttinget.no/*",
+    "*://*.universitetsavisa.no/*",
+    "*://*.velferdstinget.no/*"
   ],
 
 	"content_scripts": [
