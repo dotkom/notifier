@@ -106,7 +106,7 @@ var News = {
       'image': 'img/placeholders/kom.png',
     },
     'logistikkstudentene': {
-      'feed': 'http://www.logistikkstudentene.no/',
+      'feed': 'http://www.logistikkstudentene.no/?feed=rss2',
       'logo': 'img/logos/logistikkstudentene.png',
       'image': 'img/placeholders/logistikkstudentene.png',
     },
@@ -238,13 +238,16 @@ var News = {
 
   parseItem: function(item, feedName) {
     var post = {};
+
+    // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
+
     // The popular fields
-    post.title = $(item).find("title").text();
-    post.link = $(item).find("link").text();
-    post.description = $(item).find("description").text();
+    post.title = $(item).find("title").filter(':first').text();
+    post.link = $(item).find("link").filter(':first').text();
+    post.description = $(item).find("description").filter(':first').text();
     // Less used fields
-    post.creator = $(item).find("dc:creator").text();
-    post.date = $(item).find("pubDate").text().substr(5, 11);
+    post.creator = $(item).find("dc:creator").filter(':first').text();
+    post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
     // Locally stored
     post.image = this.feeds[feedName]['image'];
     post.feedName = feedName;
@@ -256,14 +259,13 @@ var News = {
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
 
-    // Remove HTML and excessive whitespace
-    if (post.description.match(/<\w+>/g) !== null) { // Check if string contains markup
-      post.description = post.description.replace(/<[^>]+>/g, '$1');
-      post.description = post.description.trim();
-    }
-    else {
-      post.description = post.description.trim();
-    }
+    // Remove HTML
+    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
+
+    // Trimming
+    post.title = post.title.trim();
+    post.description = post.description.trim();
     
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
@@ -296,6 +298,8 @@ var News = {
     if (desclength < post.description.length)
       post.description = post.description.substr(0, desclength) + '...';
     
+    console.log('POST;', post); /////////////////////////////////////////////////////
+
     return post;
   },
 
@@ -373,7 +377,7 @@ var News = {
 
   checkForAltLink: function(description) {
     // Looking for alternative link, find the first and best full link
-    var altLink = description.match(/href="(http.*)"/);
+    var altLink = description.match(/href="(http[^"]*)"/);
     if (altLink != null) {
       if (typeof altLink[1] == 'string') {
         return altLink[1];
