@@ -7,6 +7,7 @@ setNotification = ->
   link = ls.notificationLink
   description = ls.notificationDescription
   creator = ls.notificationCreator
+  image = ls.notificationImage
   
   # Shorten title and description to fit nicely
   maxlength = 90
@@ -18,19 +19,22 @@ setNotification = ->
     Browser.openTab link
     window.close
 
-  # Asynchronously fetch the image
-  News.online_getImage link, (id, image) ->
-    # Create the HTML
-    $('#notification').html('
-      <div class="item">
-        <div class="title">' + title + '</div>
-        <img src="' + image + '" />
-        <div class="textwrapper">
-          <div class="emphasized">- Av ' + creator + '</div>
-          <div class="description">' + description + '</div>
-        </div>
+  # Create the HTML
+  $('#notification').html '
+    <div class="item">
+      <div class="title">' + title + '</div>
+      <img src="' + image + '" />
+      <div class="textwrapper">
+        <div class="emphasized">- Av ' + creator + '</div>
+        <div class="description">' + description + '</div>
       </div>
-      </a>')
+    </div>
+    </a>'
+
+  if ls.notificationFeedName is 'online'
+    # Online specific: Fetch image from API
+    News.online_getImage link, (id, image) ->
+      $('#notification img').prop 'src', image
 
 # show the html5 notification with timeout when the document is ready
 $ ->

@@ -7,11 +7,12 @@
   ls = localStorage;
 
   setNotification = function() {
-    var creator, description, link, maxlength, title;
+    var creator, description, image, link, maxlength, title;
     title = ls.notificationTitle;
     link = ls.notificationLink;
     description = ls.notificationDescription;
     creator = ls.notificationCreator;
+    image = ls.notificationImage;
     maxlength = 90;
     if (maxlength < description.length) {
       description = description.substring(0, maxlength) + '...';
@@ -20,18 +21,21 @@
       Browser.openTab(link);
       return window.close;
     });
-    return News.online_getImage(link, function(id, image) {
-      return $('#notification').html('\
-      <div class="item">\
-        <div class="title">' + title + '</div>\
-        <img src="' + image + '" />\
-        <div class="textwrapper">\
-          <div class="emphasized">- Av ' + creator + '</div>\
-          <div class="description">' + description + '</div>\
-        </div>\
+    $('#notification').html('\
+    <div class="item">\
+      <div class="title">' + title + '</div>\
+      <img src="' + image + '" />\
+      <div class="textwrapper">\
+        <div class="emphasized">- Av ' + creator + '</div>\
+        <div class="description">' + description + '</div>\
       </div>\
-      </a>');
-    });
+    </div>\
+    </a>');
+    if (ls.notificationFeedName === 'online') {
+      return News.online_getImage(link, function(id, image) {
+        return $('#notification img').prop('src', image);
+      });
+    }
   };
 
   $(function() {
