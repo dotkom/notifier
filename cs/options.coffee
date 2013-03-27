@@ -36,6 +36,13 @@ testDesktopNotification = ->
 testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
+bindAffiliationSelector = (selector) ->
+  # Default values
+  $('#' + selector).val ls[selector]
+  # React to change
+  $('#' + selector).change ->
+    ls[selector] = $(this).val()
+
 bindCantinaSelector = (selector) ->
   # Default values
   $('#' + selector).val ls[selector]
@@ -524,6 +531,9 @@ $ ->
   # $('#notification').click ->
   #   fadeInCanvas()
 
+  # Allow user to change affiliation
+  bindAffiliationSelector 'affiliation_selector'
+
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
   bindCantinaSelector 'right_cantina'
@@ -578,10 +588,10 @@ $ ->
     else
       ls[this.id] = this.checked;
 
-      if this.id is 'membership' and this.checked is true
-        console.log 'membership ON' #######################################################
-      if this.id is 'membership' and this.checked is false
-        console.log 'membership OFF' #######################################################
+      if this.id is 'affiliation' and this.checked is true
+        console.log 'affiliation ON' #######################################################
+      if this.id is 'affiliation' and this.checked is false
+        console.log 'affiliation OFF' #######################################################
       
       if this.id is 'showOffice' and this.checked is true
         updateOfficeStatus()
