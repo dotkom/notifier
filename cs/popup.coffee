@@ -127,7 +127,7 @@ updateNews = ->
   # Displaying the news feed (prefetched by the background page)
   feedItems = ls.feedItems
   if feedItems isnt undefined
-    displayItems feedItems
+    displayItems JSON.parse feedItems
   else
     $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
 
