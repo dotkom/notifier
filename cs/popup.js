@@ -184,7 +184,7 @@
       console.log('updateNews');
     }
     newsLimit = 4;
-    feed = 'samfundet';
+    feed = 'online';
     return News.get(feed, newsLimit, function(items) {
       var idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
       mostRecent = items[0].link;
