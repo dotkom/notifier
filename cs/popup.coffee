@@ -134,6 +134,7 @@ updateNews = ->
 displayItems = (items) ->
   # Find most recent post and save it
   mostRecent = items[0].link
+  feedName = items[0].feedName
   ls.mostRecentRead = mostRecent
   $('#news').html ''
 
@@ -149,33 +150,33 @@ displayItems = (items) ->
   # Add feed items to popup
   $.each items, (index, item) ->
     
-    if index < newsLimit
-      idsOfLastViewed.push item.link
-      
-      htmlItem = '<div class="post"><div class="title">'
-      if index < ls.unreadCount
-        if item.link in updatedList.indexOf
-          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
-        else
-          htmlItem += '<span class="unread">NEW <b>::</b> </span>'
+    # if index < newsLimit
+    idsOfLastViewed.push item.link
+    
+    htmlItem = '<div class="post"><div class="title">'
+    if index < ls.unreadCount
+      if item.link in updatedList.indexOf
+        htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+      else
+        htmlItem += '<span class="unread">NEW <b>::</b> </span>'
 
-      # EXPLANATION NEEDED:
-      # .item[data] contains the link
-      # .item[name] contains the alternative link, if one exists, otherwise null
-      date = ''
-      if item.date isnt null
-        date = ' den '+item.date
-      htmlItem += item.title + '
-        </div>
-          <div class="item" data="' + item.link + '" name="' + item.altLink + '">
-            <img src="' + item.image + '" width="107" />
-            <div class="textwrapper">
-              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
-              ' + item.description + '
-            </div>
+    # EXPLANATION NEEDED:
+    # .item[data] contains the link
+    # .item[name] contains the alternative link, if one exists, otherwise null
+    date = ''
+    if item.date isnt null
+      date = ' den '+item.date
+    htmlItem += item.title + '
+      </div>
+        <div class="item" data="' + item.link + '" name="' + item.altLink + '">
+          <img src="' + item.image + '" width="107" />
+          <div class="textwrapper">
+            <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
+            ' + item.description + '
           </div>
-        </div>'
-      $('#news').append htmlItem
+        </div>
+      </div>'
+    $('#news').append htmlItem
   
   # Store list of last viewed items
   ls.lastViewedIdList = JSON.stringify idsOfLastViewed
@@ -192,7 +193,7 @@ displayItems = (items) ->
     window.close()
 
   # Online specific stuff
-  if feed is 'online'
+  if feedName is 'online'
     # Fetch images from the API asynchronously
     for index, link of idsOfLastViewed
       News.online_getImage link, (link, image) ->
