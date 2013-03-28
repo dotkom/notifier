@@ -560,7 +560,7 @@
   };
 
   $(function() {
-    var text;
+    var html, text;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -586,6 +586,8 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
+    html = $('#pagefliplink').html().replace(/__creator__/g, CREATOR_NAME);
+    $('#pagefliplink').html(html);
     setInterval((function() {
       return pageFlipCursorBlinking();
     }), 600);

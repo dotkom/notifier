@@ -550,6 +550,10 @@ $ ->
   # # Minor esthetical adjustmenst for Browser
   # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
   # $('label[for=openChatter] span').html html
+
+  # Adding creator name to pageflip
+  html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
+  $('#pagefliplink').html html
   
   # Blinking cursor at pageflip
   setInterval ( ->
