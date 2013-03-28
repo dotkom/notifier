@@ -12,7 +12,7 @@ var AJAX_TIMEOUT = 7500;
 
 // Loops & intervals
 var BACKGROUND_LOOP = 30000; // 30s
-var BACKGROUND_LOOP_OFFLINE = 10000; // 10s, respond quickly when we get back online
+var BACKGROUND_LOOP_OFFLINE = 3000; // 3s, respond quickly when we get back online
 var PAGE_LOOP = 10000; // 10s
 
 // Update stuff at every X intervals
