@@ -340,14 +340,6 @@ header #notification .saved {
   width: 87pt;
   margin: 0 8pt;
 }
-.item .cantina_selector {
-  width: 72pt;
-  /* fancypants select menus:
-    background-color: transparent;
-    color: white;
-    */
-
-}
 .item #infoscreen_preview {
   display: none;
 }
