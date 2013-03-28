@@ -130,9 +130,11 @@ header #notification .saved {
 
   /* for regular size images */
 
-  /* the bus option in particular */
+  /* the affiliation option in particular */
 
   /* the cantina option in particular */
+
+  /* the bus option in particular */
 
   /* the infoscreen option in particular */
 
@@ -167,6 +169,95 @@ header #notification .saved {
       0 0 40px #011b36,
       0 0 70px #011b36,
       0 0 70px #011b36;
+}
+.item #affiliationBox {
+  width: 265pt;
+  margin: 5pt 0 0 15pt;
+  overflow: hidden;
+  border-top: 1pt solid white;
+  border-bottom: 1pt solid #7a7a7a;
+  border-radius: 3pt;
+  background: #e6e5e5;
+  /* Old browsers */
+
+  background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Opera 11.10+ */
+
+  background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
+  /* W3C */
+
+  padding: 3pt 8pt;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+.item #affiliationBox select#affiliationName {
+  border: 0pt solid #ff0000;
+  float: left;
+  border: 1pt solid #7a7a7a;
+  position: relative;
+  margin-top: 2pt;
+  margin-left: 8pt;
+  white-space: nowrap;
+  width: 130pt;
+}
+.item #affiliationBox select#colorSelector {
+  border: 0pt solid #ff0000;
+  float: left;
+  border: 1pt solid #7a7a7a;
+  position: relative;
+  margin-top: 2pt;
+  margin-left: 8pt;
+  white-space: nowrap;
+  width: 98pt;
+}
+.item #affiliationBox #affiliationLogo {
+  border: 0pt solid #ff0000;
+  float: left;
+  white-space: nowrap;
+  width: 19pt;
+  margin: 0 0;
+}
+.item #cantinaBox {
+  width: 265pt;
+  margin: 5pt 0 0 15pt;
+  overflow: hidden;
+  border-top: 1pt solid white;
+  border-bottom: 1pt solid #7a7a7a;
+  border-radius: 3pt;
+  background: #e6e5e5;
+  /* Old browsers */
+
+  background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Opera 11.10+ */
+
+  background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
+  /* W3C */
+
+  padding: 3pt 8pt;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+.item #cantinaBox select {
+  border: 0pt solid #ff0000;
+  float: left;
+  border: 1pt solid #7a7a7a;
+  position: relative;
+  margin-top: 2.5pt;
+  white-space: nowrap;
+  width: 80pt;
+}
+.item #cantinaBox #cantinaLogo {
+  border: 0pt solid #ff0000;
+  float: left;
+  white-space: nowrap;
+  width: 87pt;
+  margin: 0 8pt;
 }
 .item #bus_box {
   width: 265pt;
@@ -300,45 +391,6 @@ header #notification .saved {
 }
 .item #bus_box #arrow_down img {
   width: 9pt;
-}
-.item #cantinaBox {
-  width: 265pt;
-  margin: 5pt 0 0 15pt;
-  overflow: hidden;
-  border-top: 1pt solid white;
-  border-bottom: 1pt solid #7a7a7a;
-  border-radius: 3pt;
-  background: #e6e5e5;
-  /* Old browsers */
-
-  background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Chrome10+,Safari5.1+ */
-
-  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Opera 11.10+ */
-
-  background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
-  /* W3C */
-
-  padding: 3pt 8pt;
-  white-space: nowrap;
-  word-wrap: break-word;
-}
-.item #cantinaBox select {
-  border: 0pt solid #ff0000;
-  float: left;
-  border: 1pt solid #7a7a7a;
-  position: relative;
-  margin-top: 2pt;
-  white-space: nowrap;
-  width: 80pt;
-}
-.item #cantinaBox #cantinaLogo {
-  border: 0pt solid #ff0000;
-  float: left;
-  white-space: nowrap;
-  width: 87pt;
-  margin: 0 8pt;
 }
 .item #infoscreen_preview {
   display: none;
