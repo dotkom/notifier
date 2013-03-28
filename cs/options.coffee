@@ -426,9 +426,6 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
                 Browser.setIcon 'img/icon-default.png'
                 Browser.setTitle 'Online Infoscreen'
                 Browser.setBadgeText ''
-                # Set news limit to infoscreen size, up to 8
-                ls.newsLimit = 8
-                Browser.getBackgroundProcess().updateNews()
                 # Create Infoscreen in a new tab
                 if not force
                   Browser.openBackgroundTab 'infoscreen.html'
@@ -441,8 +438,6 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # closeInfoscreenTabs()
     # Refresh office status
     Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
-    # Set news limit to popup size, max 4
-    ls.newsLimit = 4
     # Animations
     revertInfoscreen()
 

@@ -76,8 +76,6 @@ displayItems = (items) ->
 
   # Add feed items to popup
   $.each items, (index, item) ->
-    
-    # if index < newsLimit
     idsOfLastViewed.push item.link
     
     htmlItem = '<div class="post"><div class="title">'
@@ -242,6 +240,12 @@ $ ->
   ls.removeItem 'mostRecentRead'
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
+
+  # Hide stuff the user does not want to see
+  $('#office').hide() if ls.showOffice isnt 'true'
+  $('#todays').hide() if ls.showOffice isnt 'true'
+  $('#cantinas').hide() if ls.showCantina isnt 'true'
+  $('#bus').hide() if ls.showBus isnt 'true'
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'

@@ -69,10 +69,10 @@ updateCoffeeSubscription = ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   affiliation = ls['affiliationName']
-  newsLimit = Number localStorage.newsLimit
-  if isNaN newsLimit
-    console.log 'ERROR: news limit must be a number'
-    newsLimit = 4
+  # The number of news possible to cram into the infoscreen
+  # if all other features are disabled is exactly 8, that's
+  # what we'll keep in storage till we need it.
+  newsLimit = 8
   News.get affiliation, newsLimit, (items) ->
     if typeof items is 'string'
       # Error message, log it
@@ -97,8 +97,6 @@ $ ->
     ls.showAffiliation = 'true'
   if ls.affiliationName is undefined
     ls.affiliationName = 'online'
-  if ls.newsLimit is undefined
-    ls.newsLimit = 4
 
   if ls.showBus is undefined
     ls.showBus = 'true'

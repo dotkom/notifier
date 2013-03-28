@@ -95,11 +95,7 @@
       console.log('updateNews');
     }
     affiliation = ls['affiliationName'];
-    newsLimit = Number(localStorage.newsLimit);
-    if (isNaN(newsLimit)) {
-      console.log('ERROR: news limit must be a number');
-      newsLimit = 4;
-    }
+    newsLimit = 8;
     return News.get(affiliation, newsLimit, function(items) {
       if (typeof items === 'string') {
         if (DEBUG) {
@@ -127,9 +123,6 @@
     }
     if (ls.affiliationName === void 0) {
       ls.affiliationName = 'online';
-    }
-    if (ls.newsLimit === void 0) {
-      ls.newsLimit = 4;
     }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';

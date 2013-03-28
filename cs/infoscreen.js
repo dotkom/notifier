@@ -295,6 +295,18 @@
     ls.removeItem('mostRecentRead');
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
+    if (ls.showOffice !== 'true') {
+      $('#office').hide();
+    }
+    if (ls.showOffice !== 'true') {
+      $('#todays').hide();
+    }
+    if (ls.showCantina !== 'true') {
+      $('#cantinas').hide();
+    }
+    if (ls.showBus !== 'true') {
+      $('#bus').hide();
+    }
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");

@@ -470,8 +470,6 @@
                   Browser.setIcon('img/icon-default.png');
                   Browser.setTitle('Online Infoscreen');
                   Browser.setBadgeText('');
-                  ls.newsLimit = 8;
-                  Browser.getBackgroundProcess().updateNews();
                   if (!force) {
                     return Browser.openBackgroundTab('infoscreen.html');
                   }
@@ -486,7 +484,6 @@
     } else {
       ls[id] = 'false';
       Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
-      ls.newsLimit = 4;
       return revertInfoscreen();
     }
   };

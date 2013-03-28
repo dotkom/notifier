@@ -150,8 +150,6 @@ displayItems = (items) ->
 
   # Add feed items to popup
   $.each items, (index, item) ->
-    
-    # if index < newsLimit
     idsOfLastViewed.push item.link
     
     htmlItem = '<div class="post"><div class="title">'
