@@ -27,8 +27,8 @@ testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
 bindAffiliationSelector = ->
-  selector = 'showAffiliation'
-  chosenAffiliation = ls['showAffiliation']
+  selector = 'affiliationName'
+  chosenAffiliation = ls['affiliationName']
   # Default values
   $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
   # React to change
