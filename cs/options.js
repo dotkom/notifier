@@ -43,11 +43,11 @@
   };
 
   bindAffiliationSelector = function() {
-    var chosenAffiliation, cssSelector;
-    cssSelector = '#affiliationName';
+    var chosenAffiliation, selector;
+    selector = 'affiliationName';
     chosenAffiliation = ls['affiliationName'];
-    $(cssSelector + '[value=' + chosenAffiliation + ']').prop('selected', 'selected');
-    return $(cssSelector).change(function() {
+    $('#' + selector + '[value=' + chosenAffiliation + ']').prop('selected', 'selected');
+    return $('#' + selector).change(function() {
       var oldAffiliation;
       chosenAffiliation = $(this).val();
       oldAffiliation = ls[selector];
@@ -63,11 +63,37 @@
 
   disableOnlineSpecificFeatures = function() {
     ls['showOffice'] = 'false';
+    $('label[for="showOffice"]').animate({
+      height: 0,
+      opacity: 0
+    }, 'slow', function() {
+      return $(this).remove();
+    });
     ls['coffeeSubscription'] = 'false';
-    return ls['useInfoscreen'] = 'false';
+    return $('label[for="coffeeSubscription"]').animate({
+      height: 0,
+      opacity: 0
+    }, 'slow', function() {
+      return $(this).remove();
+    });
   };
 
-  enableOnlineSpecificFeatures = function() {};
+  enableOnlineSpecificFeatures = function() {
+    ls['showOffice'] = 'true';
+    $('label[for="showOffice"]').animate({
+      height: 'toggle',
+      opacity: 'toggle'
+    }, 'slow', function() {
+      return $(this).remove();
+    });
+    ls['coffeeSubscription'] = 'true';
+    return $('label[for="coffeeSubscription"]').animate({
+      height: 0,
+      opacity: 0
+    }, 'slow', function() {
+      return $(this).remove();
+    });
+  };
 
   bindCantinaSelector = function(selector) {
     $('#' + selector).val(ls[selector]);

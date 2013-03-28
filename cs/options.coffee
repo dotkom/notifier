@@ -27,12 +27,12 @@ testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
 bindAffiliationSelector = ->
-  cssSelector = '#affiliationName'
+  selector = 'affiliationName'
   chosenAffiliation = ls['affiliationName']
   # Default values
-  $(cssSelector + '[value=' + chosenAffiliation + ']').prop 'selected', 'selected'
+  $('#'+selector + '[value=' + chosenAffiliation + ']').prop 'selected', 'selected'
   # React to change
-  $(cssSelector).change ->
+  $('#'+selector).change ->
     chosenAffiliation = $(this).val()
     # Check if switching from or to Online
     oldAffiliation = ls[selector]
@@ -46,14 +46,42 @@ bindAffiliationSelector = ->
     Browser.getBackgroundProcess().updateNews()
 
 disableOnlineSpecificFeatures = ->
+  # Disable office status
   ls['showOffice'] = 'false'
+  $('label[for="showOffice"]').animate(
+    {height: 0, opacity: 0},
+    'slow',
+    ->
+      $(this).remove()
+  )
+  # Disable coffee subscription
   ls['coffeeSubscription'] = 'false'
-  ls['useInfoscreen'] = 'false'
+  $('label[for="coffeeSubscription"]').animate(
+    {height: 0, opacity: 0},
+    'slow',
+    ->
+      $(this).remove()
+  )
   # if typeof force isnt 'undefined' and typeof force isnt 'boolean'
   #   console.log 'ERROR: force must be a boolean'
 
 enableOnlineSpecificFeatures = ->
-
+  # Disable office status
+  ls['showOffice'] = 'true'
+  $('label[for="showOffice"]').animate(
+    {height: 'toggle', opacity: 'toggle'},
+    'slow',
+    ->
+      $(this).remove()
+  )
+  # Disable coffee subscription
+  ls['coffeeSubscription'] = 'true'
+  $('label[for="coffeeSubscription"]').animate(
+    {height: 0, opacity: 0},
+    'slow',
+    ->
+      $(this).remove()
+  )
 
 bindCantinaSelector = (selector) ->
   # Default values
