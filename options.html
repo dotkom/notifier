@@ -168,24 +168,6 @@
         </div>
       </div>
 
-      <div class="item iconitem">
-        <label for="showOffice">
-          <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
-          <span>
-            Vis kontorets status:
-            <img class="icon" src="/img/icon-open.png" />Åpent
-            <img class="icon" src="/img/icon-closed.png" />Lukket
-            <img class="icon" src="/img/icon-meeting.png" />Møte
-            <img class="icon" src="/img/icon-waffle.png"/>
-            <span style="position:relative; left:-4pt;">
-              Vafler
-            </span>
-          </span>
-          <br />
-          <img class="image" src="/img/options-office-plan.png" />
-        </label>
-      </div>
-
       <div class="item">
         <label for="showCantina">
           <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
@@ -253,6 +235,24 @@
         </label>
       </div>
 
+      <div class="item iconitem">
+        <label for="showOffice">
+          <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
+          <span>
+            Vis kontorets status:
+            <img class="icon" src="/img/icon-open.png" />Åpent
+            <img class="icon" src="/img/icon-closed.png" />Lukket
+            <img class="icon" src="/img/icon-meeting.png" />Møte
+            <img class="icon" src="/img/icon-waffle.png"/>
+            <span style="position:relative; left:-4pt;">
+              Vafler
+            </span>
+          </span>
+          <br />
+          <img class="image" src="/img/options-office-plan.png" />
+        </label>
+      </div>
+
       <!-- <div class="item">
         <label for="openChatter">
           <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" />
@@ -265,6 +265,18 @@
 
     </div>
     <div id="right" class="side">
+
+      <div class="item">
+        <label for="useInfoscreen">
+          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
+          <span>
+            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
+          </span><br />
+          <img class="image" src="/img/options-infoscreen.png" /><br />
+          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
+        </label>
+      </div>
+
       <div id="infoscreen_slider">
 
         <div class="item">
@@ -287,17 +299,6 @@
           </label>
         </div>
 
-      </div>
-
-      <div class="item">
-        <label for="useInfoscreen">
-          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
-          <span>
-            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
-          </span><br />
-          <img class="image" src="/img/options-infoscreen.png" /><br />
-          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
-        </label>
       </div>
 
     </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
@@ -330,7 +331,7 @@
   <div id="pageflip"></div>
   <div id="pagefliplink">
     <br />
-    <a href="http://github.com/dotkom/online-notifier/" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />dotKom with &lt;3<span class="pageflipcursor">_</span></a>
+    <a href="http://github.com/dotkom/online-notifier/" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />__creator__ with &lt;3<span class="pageflipcursor">_</span></a>
   </div>
 
   <!-- +1 button -->
