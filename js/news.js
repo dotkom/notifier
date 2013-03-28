@@ -1,6 +1,7 @@
 var News = {
   newsMinLimit: 1,
   newsMaxLimit: 15,
+  unreadMaxCount: 4, // The popup needs only 4 news items, infoscreen needs more but doesn't need counting
   msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
   msgConnectionError: 'Frakoblet fra feed: ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
@@ -303,7 +304,9 @@ var News = {
 
   unreadCount: function(items) {
     var unreadCount = 0;
-    var maxNewsAmount = items.length-1;
+    var maxNewsAmount = this.unreadMaxCount;
+    if (items.length-1 < maxNewsAmount)
+      maxNewsAmount = items.length-1;
     var linkList = []; // New || Updated
 
     // Count feed items
@@ -332,7 +335,7 @@ var News = {
           if (self.debug) console.log('no new posts');
           Browser.setBadgeText('');
         }
-        else if (unreadCount >= maxNewsAmount) {
+        else if (maxNewsAmount <= unreadCount) {
           if (self.debug) console.log(maxNewsAmount + '+ unread posts');
           Browser.setBadgeText(maxNewsAmount + '+');
         }
@@ -345,10 +348,10 @@ var News = {
         return false;
       }
       
-      // Stop counting if unread number is greater than 9
-      if (index > (maxNewsAmount - 1)) { // Remember index is counting 0
+      // Stop counting if unread number is greater than maxNewsAmount
+      if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
         if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
-        Browser.setBadgeText(maxNewsAmount + '+');
+        Browser.setBadgeText(String(maxNewsAmount));// + '+');
         localStorage.unreadCount = maxNewsAmount;
         // New or updated?
         localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
