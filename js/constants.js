@@ -4,7 +4,7 @@ var DEBUG = 1;
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_NICK = 'Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
-var CREATOR_NAME = 'dotKom'; // max 8 letters because of styling
+var CREATOR_NAME = 'Online'; // max 8 letters because of styling
 var CREATOR_EMAIL = 'dotkom@online.ntnu.no';
 
 // AJAX and JSON timeout
