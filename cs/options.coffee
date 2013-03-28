@@ -51,22 +51,23 @@ disableOnlineSpecificFeatures = ->
   $('label[for="showOffice"]').slideUp 'slow', ->
     # Disable coffee subscription
     ls['coffeeSubscription'] = 'false'
-    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-      # Change logo and subtext in a cool way
-      affiliationName = localStorage.affiliationName
-      # Fading out subtext
-      $('#logo_subtext').fadeOut 'slow', ->
-        # Changing subtext temporarily
-        $('#logo_subtext').html affiliationName
-        $('#logo_subtext').fadeIn 'slow', ->
-          # Setting new logo and fading it in
-          newLogo = News.feeds[affiliationName].logo
-          $('#logo').prop 'src', newLogo
-          $('#logo').fadeIn 'slow', ->
-            # Changing subtext back
-            $('#logo_subtext').fadeOut 'slow', ->
-              $('#logo_subtext').html 'notifier options'
-              $('#logo_subtext').fadeIn 'slow'
+    $('label[for="coffeeSubscription"]').slideUp 'slow'
+    # $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # # Change logo and subtext in a cool way
+      # affiliationName = localStorage.affiliationName
+      # # Fading out subtext
+      # $('#logo_subtext').fadeOut 'slow', ->
+      #   # Changing subtext temporarily
+      #   $('#logo_subtext').html affiliationName
+      #   $('#logo_subtext').fadeIn 'slow', ->
+      #     # Setting new logo and fading it in
+      #     newLogo = News.feeds[affiliationName].logo
+      #     $('#logo').prop 'src', newLogo
+      #     $('#logo').fadeIn 'slow', ->
+      #       # Changing subtext back
+      #       $('#logo_subtext').fadeOut 'slow', ->
+      #         $('#logo_subtext').html 'notifier options'
+      #         $('#logo_subtext').fadeIn 'slow'
 
 enableOnlineSpecificFeatures = ->
   # Enable office status
@@ -85,7 +86,7 @@ bindCantinaSelector = (selector) ->
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
-  if DEBUG then console.log 'Binding bus fields for ' + cssSelector
+  # if DEBUG then console.log 'Binding bus fields for ' + cssSelector
   fadeTime = 50
 
   stop = $(cssSelector + ' input')
@@ -349,7 +350,7 @@ loadBus = (busField) ->
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
-    if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
+    # if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
   
   # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
@@ -584,9 +585,7 @@ $ ->
   slideFavoriteBusLines()
 
   # Load lists of bus stops
-  # Through this call the Stops List will auto-upate if it's old
-  Stops.load (result) ->
-    if DEBUG then console.log 'Loading bus lists:', result
+  Stops.load()
 
   # If Opera, disable and redesign features related to desktop notifications
   if BROWSER is 'Opera'

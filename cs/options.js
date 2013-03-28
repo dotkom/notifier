@@ -65,24 +65,7 @@
     ls['showOffice'] = 'false';
     return $('label[for="showOffice"]').slideUp('slow', function() {
       ls['coffeeSubscription'] = 'false';
-      return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
-        var affiliationName;
-        affiliationName = localStorage.affiliationName;
-        return $('#logo_subtext').fadeOut('slow', function() {
-          $('#logo_subtext').html(affiliationName);
-          return $('#logo_subtext').fadeIn('slow', function() {
-            var newLogo;
-            newLogo = News.feeds[affiliationName].logo;
-            $('#logo').prop('src', newLogo);
-            return $('#logo').fadeIn('slow', function() {
-              return $('#logo_subtext').fadeOut('slow', function() {
-                $('#logo_subtext').html('notifier options');
-                return $('#logo_subtext').fadeIn('slow');
-              });
-            });
-          });
-        });
-      });
+      return $('label[for="coffeeSubscription"]').slideUp('slow');
     });
   };
 
@@ -103,9 +86,6 @@
   bindBusFields = function(busField) {
     var cssSelector, direction, fadeTime, stop;
     cssSelector = '#' + busField;
-    if (DEBUG) {
-      console.log('Binding bus fields for ' + cssSelector);
-    }
     fadeTime = 50;
     stop = $(cssSelector + ' input');
     direction = $(cssSelector + ' select');
@@ -376,9 +356,6 @@
     if (stopName !== void 0 && direction !== void 0) {
       $(cssSelector + ' input').val(stopName);
       $(cssSelector + ' select').val(direction);
-      if (DEBUG) {
-        console.log('loaded "' + stopName + '" to "' + busField + '"');
-      }
     }
     if (activeLines !== void 0 && inactiveLines !== void 0) {
       if (activeLines === '' && inactiveLines === '') {
@@ -599,11 +576,7 @@
     bindBusFields('first_bus');
     bindBusFields('second_bus');
     slideFavoriteBusLines();
-    Stops.load(function(result) {
-      if (DEBUG) {
-        return console.log('Loading bus lists:', result);
-      }
-    });
+    Stops.load();
     if (BROWSER === 'Opera') {
       $('input#showNotifications').prop("disabled", "disabled");
       $('input#showNotifications').prop("checked", "false");
