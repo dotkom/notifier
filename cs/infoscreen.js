@@ -116,30 +116,32 @@
     idsOfLastViewed = [];
     $.each(items, function(index, item) {
       var date, htmlItem, _ref;
-      idsOfLastViewed.push(item.link);
-      htmlItem = '<div class="post"><div class="title">';
-      if (index < ls.unreadCount) {
-        if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
-          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>';
-        } else {
-          htmlItem += '<span class="unread">NEW <b>::</b> </span>';
+      if (index < 8) {
+        idsOfLastViewed.push(item.link);
+        htmlItem = '<div class="post"><div class="title">';
+        if (index < ls.unreadCount) {
+          if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
+            htmlItem += '<span class="unread">UPDATED <b>::</b> </span>';
+          } else {
+            htmlItem += '<span class="unread">NEW <b>::</b> </span>';
+          }
         }
-      }
-      date = '';
-      if (item.date !== null) {
-        date = ' den ' + item.date;
-      }
-      htmlItem += item.title + '\
-      </div>\
-        <div class="item" data="' + item.link + '" name="' + item.altLink + '">\
-          <img src="' + item.image + '" width="107" />\
-          <div class="textwrapper">\
-            <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>\
-            ' + item.description + '\
-          </div>\
+        date = '';
+        if (item.date !== null) {
+          date = ' den ' + item.date;
+        }
+        htmlItem += item.title + '\
         </div>\
-      </div>';
-      return $('#news').append(htmlItem);
+          <div class="item" data="' + item.link + '" name="' + item.altLink + '">\
+            <img src="' + item.image + '" width="107" />\
+            <div class="textwrapper">\
+              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>\
+              ' + item.description + '\
+            </div>\
+          </div>\
+        </div>';
+        return $('#news').append(htmlItem);
+      }
     });
     ls.lastViewedIdList = JSON.stringify(idsOfLastViewed);
     Browser.setBadgeText('');
