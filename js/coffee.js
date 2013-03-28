@@ -36,6 +36,7 @@ var Coffee = {
           if (self.isMadeToday(ageString)) {
 
             // Calculate minute difference from right now
+            var now = new Date();
             var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
             var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
             var age = self.minuteDiff(then);
@@ -45,15 +46,21 @@ var Coffee = {
               age = self.prettyAgeString(age, coffeeTime);
               pots = self.prettyPotsString(pots);
             }
+
             // Call it back
             callback(pots, age);
           }
           else {
             // Coffee was not made today
-            callback(self.msgNoPots, self.msgNoCoffee);
+            if (pretty) {
+              callback(self.msgNoPots, self.msgNoCoffee);
+            }
+            else {
+              callback(0, 0);
+            }
           }
         } catch (err) {
-          if (DEBUG) console.log('ERROR: Coffee format is wrong.');
+          if (DEBUG) console.log('ERROR: Coffee format is wrong:', err);
           callback(self.msgFormatError, self.msgComforting);
         }
       },
