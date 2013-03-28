@@ -303,12 +303,37 @@ header {
 
   /* the cantina option in particular */
 
-  .cantina_selector {
-    width: 72pt;
-    /* fancypants select menus:
-    background-color: transparent;
-    color: white;
-    */
+  #cantinaBox {
+    width: 265pt;
+    margin: 5pt 0 0 15pt;
+    overflow: hidden;
+    border-top: 1pt solid white;
+    border-bottom: 1pt solid #7a7a7a;
+    border-radius: 3pt;
+    background: #e6e5e5; /* Old browsers */
+    background: -webkit-linear-gradient(top, #e6e5e5 0%,#cececf 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #e6e5e5 0%,#cececf 100%); /* Opera 11.10+ */
+    background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%); /* W3C */
+    padding: 3pt 8pt;
+    white-space: nowrap;
+    word-wrap: break-word;
+
+    select {
+      .debugred;
+      float: left;
+      border: 1pt solid #7a7a7a;
+      position: relative;
+      margin-top: 2pt;
+      white-space: nowrap;
+      width: 80pt;
+    }
+    #cantinaLogo {
+      .debugred;
+      float: left;
+      white-space: nowrap;
+      width: 87pt;
+      margin: 0 8pt;
+    }
   }
 
   /* the infoscreen option in particular */

@@ -301,6 +301,45 @@ header #notification .saved {
 .item #bus_box #arrow_down img {
   width: 9pt;
 }
+.item #cantinaBox {
+  width: 265pt;
+  margin: 5pt 0 0 15pt;
+  overflow: hidden;
+  border-top: 1pt solid white;
+  border-bottom: 1pt solid #7a7a7a;
+  border-radius: 3pt;
+  background: #e6e5e5;
+  /* Old browsers */
+
+  background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Opera 11.10+ */
+
+  background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
+  /* W3C */
+
+  padding: 3pt 8pt;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+.item #cantinaBox select {
+  border: 0pt solid #ff0000;
+  float: left;
+  border: 1pt solid #7a7a7a;
+  position: relative;
+  margin-top: 2pt;
+  white-space: nowrap;
+  width: 80pt;
+}
+.item #cantinaBox #cantinaLogo {
+  border: 0pt solid #ff0000;
+  float: left;
+  white-space: nowrap;
+  width: 87pt;
+  margin: 0 8pt;
+}
 .item .cantina_selector {
   width: 72pt;
   /* fancypants select menus:
