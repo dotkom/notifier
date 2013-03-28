@@ -13,29 +13,29 @@
     if (DEBUG) {
       console.log("\n#" + iteration);
     }
-    if (iteration % UPDATE_OFFICE_INTERVAL === 0) {
+    if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
       updateOffice();
     }
-    if (iteration % UPDATE_SERVANT_INTERVAL === 0) {
+    if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
       updateServant();
     }
-    if (iteration % UPDATE_MEETINGS_INTERVAL === 0) {
+    if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
       updateMeetings();
     }
-    if (iteration % UPDATE_COFFEE_INTERVAL === 0) {
+    if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
       updateCoffee();
     }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0) {
-      updateNews();
-    }
-    if (iteration % UPDATE_BUS_INTERVAL === 0) {
-      updateBus();
-    }
-    if (iteration % UPDATE_CANTINAS_INTERVAL === 0) {
+    if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
       updateCantinas();
     }
     if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
       updateHours();
+    }
+    if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
+      updateBus();
+    }
+    if (iteration % UPDATE_NEWS_INTERVAL === 0) {
+      updateNews();
     }
     if (10000 < iteration) {
       iteration = 0;

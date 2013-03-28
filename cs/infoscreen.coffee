@@ -6,14 +6,14 @@ iteration = 0
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
-  updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0
-  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0
-  updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0
-  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0
-  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
-  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0
-  updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0
+  updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
+  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
+  updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
+  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
+  updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
