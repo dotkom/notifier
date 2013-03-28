@@ -316,21 +316,25 @@ var News = {
     // Locally stored
     post.image = this.feeds[feedName]['image'];
     post.feedName = feedName;
+
+    // Check for image in rarely used <enclosure>-tag
+    var enclosure = $(item).find('enclosure');
+    if (enclosure != '') {
+      try {
+        // Universitetsavisa does this little trick to get images in their feed
+        post.image = enclosure['0'].attributes.url.textContent;
+      }
+      catch (err) {
+        // Do nothing, we we're just checking, move along quitely
+      }
+    }
     
     // Check for alternative links in description
     post.altLink = this.checkForAltLink(post.description);
 
-    // Shorten 'bedriftspresentasjon' to 'bedpres'
-    post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
-    post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
-
     // Remove HTML
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
-
-    // Trimming
-    post.title = post.title.trim();
-    post.description = post.description.trim();
     
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
@@ -352,6 +356,14 @@ var News = {
     if (post.date == '') {
       post.date = null;
     }
+
+    // Trimming
+    post.title = post.title.trim();
+    post.description = post.description.trim();
+
+    // Shorten 'bedriftspresentasjon' to 'bedpres'
+    post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
+    post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
     
     // title + description must not exceed 5 lines
     var line = 50; // conservative estimation
