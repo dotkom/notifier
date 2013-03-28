@@ -253,7 +253,10 @@ $ ->
   if OPERATING_SYSTEM == 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
-
+  
+  # Adding creator name to pageflip
+  html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
+  $('#pagefliplink').html html
   # Blinking cursor at pageflip
   setInterval ( ->
     $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
