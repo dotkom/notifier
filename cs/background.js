@@ -122,7 +122,7 @@
       ls.showAffiliation = 'true';
     }
     if (ls.affiliationName === void 0) {
-      ls.affiliationName = 'online';
+      ls.affiliationName = 'universitetsavisa';
     }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
