@@ -1,13 +1,13 @@
 var News = {
   newsMinLimit: 1,
   newsMaxLimit: 15,
-  unreadMaxCount: 4, // The popup needs only 4 news items, infoscreen needs more but doesn't need counting
+  unreadMaxCount: 3, // 0-indexed like the list it its counting, actually +1
   msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
   msgConnectionError: 'Frakoblet fra feed: ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
 
-  debug: 1,
+  debug: 0,
 
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
   feeds: {
@@ -351,7 +351,7 @@ var News = {
       // Stop counting if unread number is greater than maxNewsAmount
       if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
         if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
-        Browser.setBadgeText(String(maxNewsAmount));// + '+');
+        Browser.setBadgeText(maxNewsAmount + '+');
         localStorage.unreadCount = maxNewsAmount;
         // New or updated?
         localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
