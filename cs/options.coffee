@@ -48,40 +48,33 @@ bindAffiliationSelector = ->
 disableOnlineSpecificFeatures = ->
   # Disable office status
   ls['showOffice'] = 'false'
-  $('label[for="showOffice"]').animate(
-    {height: 0, opacity: 0},
-    'slow',
-    ->
-      $(this).remove()
-  )
-  # Disable coffee subscription
-  ls['coffeeSubscription'] = 'false'
-  $('label[for="coffeeSubscription"]').animate(
-    {height: 0, opacity: 0},
-    'slow',
-    ->
-      $(this).remove()
-  )
-  # if typeof force isnt 'undefined' and typeof force isnt 'boolean'
-  #   console.log 'ERROR: force must be a boolean'
+  $('label[for="showOffice"]').slideUp 'slow', ->
+    # Disable coffee subscription
+    ls['coffeeSubscription'] = 'false'
+    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # Change logo and subtext in a cool way
+      affiliationName = localStorage.affiliationName
+      # Fading out subtext
+      $('#logo_subtext').fadeOut 'slow', ->
+        # Changing subtext temporarily
+        $('#logo_subtext').html affiliationName
+        $('#logo_subtext').fadeIn 'slow', ->
+          # Setting new logo and fading it in
+          newLogo = News.feeds[affiliationName].logo
+          $('#logo').prop 'src', newLogo
+          $('#logo').fadeIn 'slow', ->
+            # Changing subtext back
+            $('#logo_subtext').fadeOut 'slow', ->
+              $('#logo_subtext').html 'notifier options'
+              $('#logo_subtext').fadeIn 'slow'
 
 enableOnlineSpecificFeatures = ->
-  # Disable office status
+  # Enable office status
   ls['showOffice'] = 'true'
-  $('label[for="showOffice"]').animate(
-    {height: 'toggle', opacity: 'toggle'},
-    'slow',
-    ->
-      $(this).remove()
-  )
-  # Disable coffee subscription
+  $('label[for="showOffice"]').slideDown()
+  # Enable coffee subscription
   ls['coffeeSubscription'] = 'true'
-  $('label[for="coffeeSubscription"]').animate(
-    {height: 0, opacity: 0},
-    'slow',
-    ->
-      $(this).remove()
-  )
+  $('label[for="coffeeSubscription"]').slideDown()
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -557,7 +550,7 @@ $ ->
   # # Minor esthetical adjustmenst for Browser
   # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
   # $('label[for=openChatter] span').html html
-
+  
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()
