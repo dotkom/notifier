@@ -46,7 +46,7 @@
     var chosenAffiliation, selector;
     selector = 'affiliationName';
     chosenAffiliation = ls['affiliationName'];
-    $('#' + selector + '[value=' + chosenAffiliation + ']').prop('selected', 'selected');
+    $('#' + selector + '[value="' + chosenAffiliation + '"]').prop('selected', 'selected');
     return $('#' + selector).change(function() {
       var oldAffiliation;
       chosenAffiliation = $(this).val();
@@ -562,7 +562,6 @@
   $(function() {
     var html, text;
     if (DEBUG) {
-      $('#debug_links').show();
       $('button.debug').click(function() {
         return Browser.openTab($(this).attr('data'));
       });

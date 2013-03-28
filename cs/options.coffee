@@ -30,7 +30,7 @@ bindAffiliationSelector = ->
   selector = 'affiliationName'
   chosenAffiliation = ls['affiliationName']
   # Default values
-  $('#'+selector + '[value=' + chosenAffiliation + ']').prop 'selected', 'selected'
+  $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
   # React to change
   $('#'+selector).change ->
     chosenAffiliation = $(this).val()
@@ -519,7 +519,7 @@ fadeInCanvas = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    $('#debug_links').show()
+    # $('#debug_links').show()
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
   
@@ -554,7 +554,7 @@ $ ->
   # Adding creator name to pageflip
   html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
   $('#pagefliplink').html html
-  
+
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()
