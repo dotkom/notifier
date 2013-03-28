@@ -26,18 +26,34 @@ testDesktopNotification = ->
 testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
-bindAffiliationSelector = (selector) ->
-  cssSelector = '#' + selector
-  chosenAffiliation = ls[selector]
+bindAffiliationSelector = ->
+  cssSelector = '#affiliationName'
+  chosenAffiliation = ls['affiliationName']
   # Default values
   $(cssSelector + '[value=' + chosenAffiliation + ']').prop 'selected', 'selected'
   # React to change
   $(cssSelector).change ->
-    # Save the change
     chosenAffiliation = $(this).val()
+    # Check if switching from or to Online
+    oldAffiliation = ls[selector]
+    if oldAffiliation is 'online'
+      disableOnlineSpecificFeatures()
+    else if chosenAffiliation is 'online'
+      enableOnlineSpecificFeatures()
+    # Save the change
     ls[selector] = chosenAffiliation
     # Reload news
     Browser.getBackgroundProcess().updateNews()
+
+disableOnlineSpecificFeatures = ->
+  ls['showOffice'] = 'false'
+  ls['coffeeSubscription'] = 'false'
+  ls['useInfoscreen'] = 'false'
+  # if typeof force isnt 'undefined' and typeof force isnt 'boolean'
+  #   console.log 'ERROR: force must be a boolean'
+
+enableOnlineSpecificFeatures = ->
+
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -410,6 +426,9 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
                 Browser.setIcon 'img/icon-default.png'
                 Browser.setTitle 'Online Infoscreen'
                 Browser.setBadgeText ''
+                # Set news limit to infoscreen size, up to 8
+                ls.newsLimit = 8
+                Browser.getBackgroundProcess().updateNews()
                 # Create Infoscreen in a new tab
                 if not force
                   Browser.openBackgroundTab 'infoscreen.html'
@@ -422,6 +441,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # closeInfoscreenTabs()
     # Refresh office status
     Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+    # Set news limit to popup size, max 4
+    ls.newsLimit = 4
     # Animations
     revertInfoscreen()
 
@@ -529,7 +550,7 @@ $ ->
   #   fadeInCanvas()
 
   # Allow user to change affiliation
-  bindAffiliationSelector 'affiliationName'
+  bindAffiliationSelector()
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
