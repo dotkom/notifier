@@ -131,6 +131,76 @@
       </div>
 
       <div class="item">
+        <label for="showCantina">
+          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
+          <span>
+            Vis middagsmeny og åpningstider fra SiT
+          </span><br />
+        </label>
+        <div id="cantinaBox" class="image">
+          <select class="cantina_selector" id="left_cantina">
+            <optgroup label="kantiner">
+              <option value="dmmh">dmmh</option>
+              <option value="dragvoll">dragvoll</option>
+              <option value="elektro">elektro</option>
+              <option value="hangaren">hangaren</option>
+              <option value="kalvskinnet">kalvskinnet</option>
+              <option value="kjelhuset">kjelhuset</option>
+              <option value="moholt">moholt</option>
+              <option value="mtfs">mtfs</option>
+              <option value="ranheimsveien">ranheimsveien</option>
+              <option value="realfag">realfag</option>
+              <option value="rotvoll">rotvoll</option>
+              <option value="tyholt">tyholt</option>
+              <option value="øya">øya</option>
+            </optgroup>
+            <optgroup label="storkiosker">
+              <option value="storkiosk dragvoll">storkiosk dragvoll</option>
+              <option value="storkiosk gløshaugen">storkiosk gløshaugen</option>
+              <option value="storkiosk øya">storkiosk øya</option>
+              <option value="idretts. dragvoll">idretts. dragvoll</option>
+            </optgroup>
+            <optgroup label="kaféer">
+              <option value="sito dragvoll">sito dragvoll</option>
+              <option value="sito realfag">sito realfag</option>
+              <option value="sito stripa">sito stripa</option>
+            </optgroup>
+          </select>
+          <label for="showCantina">
+            <img id="cantinaLogo" src="/img/logo-sit.png" />
+          </label>
+          <select class="cantina_selector" id="right_cantina">
+            <optgroup label="kantiner">
+              <option value="dmmh">dmmh</option>
+              <option value="dragvoll">dragvoll</option>
+              <option value="elektro">elektro</option>
+              <option value="hangaren">hangaren</option>
+              <option value="kalvskinnet">kalvskinnet</option>
+              <option value="kjelhuset">kjelhuset</option>
+              <option value="moholt">moholt</option>
+              <option value="mtfs">mtfs</option>
+              <option value="ranheimsveien">ranheimsveien</option>
+              <option value="realfag">realfag</option>
+              <option value="rotvoll">rotvoll</option>
+              <option value="tyholt">tyholt</option>
+              <option value="øya">øya</option>
+            </optgroup>
+            <optgroup label="storkiosker">
+              <option value="storkiosk dragvoll">storkiosk dragvoll</option>
+              <option value="storkiosk gløshaugen">storkiosk gløshaugen</option>
+              <option value="storkiosk øya">storkiosk øya</option>
+              <option value="idretts. dragvoll">idretts. dragvoll</option>
+            </optgroup>
+            <optgroup label="kaféer">
+              <option value="sito dragvoll">sito dragvoll</option>
+              <option value="sito realfag">sito realfag</option>
+              <option value="sito stripa">sito stripa</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <div class="item">
         <label for="showBus">
           <input type="checkbox" name="showBus" value="showBus" id="showBus" />
           <span>
@@ -165,80 +235,6 @@
           <div id="arrow_down">
             <img src="img/options-arrow-down.png" />
           </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <label for="showCantina">
-          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
-          <span>
-            Vis middagsmeny og åpningstider fra SiT
-          </span><br />
-        </label>
-        <div id="cantinaBox" class="image">
-
-          <select class="cantina_selector" id="left_cantina">
-            <optgroup label="kantiner">
-              <option value="dmmh">dmmh</option>
-              <option value="dragvoll">dragvoll</option>
-              <option value="elektro">elektro</option>
-              <option value="hangaren">hangaren</option>
-              <option value="kalvskinnet">kalvskinnet</option>
-              <option value="kjelhuset">kjelhuset</option>
-              <option value="moholt">moholt</option>
-              <option value="mtfs">mtfs</option>
-              <option value="ranheimsveien">ranheimsveien</option>
-              <option value="realfag">realfag</option>
-              <option value="rotvoll">rotvoll</option>
-              <option value="tyholt">tyholt</option>
-              <option value="øya">øya</option>
-            </optgroup>
-            <optgroup label="storkiosker">
-              <option value="storkiosk dragvoll">storkiosk dragvoll</option>
-              <option value="storkiosk gløshaugen">storkiosk gløshaugen</option>
-              <option value="storkiosk øya">storkiosk øya</option>
-              <option value="idretts. dragvoll">idretts. dragvoll</option>
-            </optgroup>
-            <optgroup label="kaféer">
-              <option value="sito dragvoll">sito dragvoll</option>
-              <option value="sito realfag">sito realfag</option>
-              <option value="sito stripa">sito stripa</option>
-            </optgroup>
-          </select>
-
-          <label for="showCantina">
-            <img id="cantinaLogo" src="/img/logo-sit.png" />
-          </label>
-
-          <select class="cantina_selector" id="right_cantina">
-            <optgroup label="kantiner">
-              <option value="dmmh">dmmh</option>
-              <option value="dragvoll">dragvoll</option>
-              <option value="elektro">elektro</option>
-              <option value="hangaren">hangaren</option>
-              <option value="kalvskinnet">kalvskinnet</option>
-              <option value="kjelhuset">kjelhuset</option>
-              <option value="moholt">moholt</option>
-              <option value="mtfs">mtfs</option>
-              <option value="ranheimsveien">ranheimsveien</option>
-              <option value="realfag">realfag</option>
-              <option value="rotvoll">rotvoll</option>
-              <option value="tyholt">tyholt</option>
-              <option value="øya">øya</option>
-            </optgroup>
-            <optgroup label="storkiosker">
-              <option value="storkiosk dragvoll">storkiosk dragvoll</option>
-              <option value="storkiosk gløshaugen">storkiosk gløshaugen</option>
-              <option value="storkiosk øya">storkiosk øya</option>
-              <option value="idretts. dragvoll">idretts. dragvoll</option>
-            </optgroup>
-            <optgroup label="kaféer">
-              <option value="sito dragvoll">sito dragvoll</option>
-              <option value="sito realfag">sito realfag</option>
-              <option value="sito stripa">sito stripa</option>
-            </optgroup>
-          </select>
-
         </div>
       </div>
 
