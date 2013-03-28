@@ -20,32 +20,73 @@ pageFlipCursorBlinking = ->
   $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
     $(@).animate opacity: 1, "fast", "swing",
 
-updateOfficeStatus = ->
-  Office.get (status, title, message) ->
-    Browser.setIcon 'img/icon-'+status+'.png'
-    ls.currentStatus = status
-    Meetings.get (meetings) ->
-      meetings = $.trim meetings
-      today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
-      Browser.setTitle today
-      ls.currentStatusMessage = message
-
 testDesktopNotification = ->
   Browser.createNotification 'notification.html'
 
 testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
+bindAffiliationSelector = ->
+  selector = 'affiliationName'
+  chosenAffiliation = ls['affiliationName']
+  # Default values
+  $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
+  # React to change
+  $('#'+selector).change ->
+    chosenAffiliation = $(this).val()
+    # Check if switching from or to Online
+    oldAffiliation = ls[selector]
+    if oldAffiliation is 'online'
+      disableOnlineSpecificFeatures()
+    else if chosenAffiliation is 'online'
+      enableOnlineSpecificFeatures()
+    # Save the change
+    ls[selector] = chosenAffiliation
+    # Reload news
+    Browser.getBackgroundProcess().updateNews()
+
+disableOnlineSpecificFeatures = ->
+  # Disable office status
+  ls['showOffice'] = 'false'
+  $('label[for="showOffice"]').slideUp 'slow', ->
+    # Disable coffee subscription
+    ls['coffeeSubscription'] = 'false'
+    $('label[for="coffeeSubscription"]').slideUp 'slow'
+    # $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # # Change logo and subtext in a cool way
+      # affiliationName = localStorage.affiliationName
+      # # Fading out subtext
+      # $('#logo_subtext').fadeOut 'slow', ->
+      #   # Changing subtext temporarily
+      #   $('#logo_subtext').html affiliationName
+      #   $('#logo_subtext').fadeIn 'slow', ->
+      #     # Setting new logo and fading it in
+      #     newLogo = News.feeds[affiliationName].logo
+      #     $('#logo').prop 'src', newLogo
+      #     $('#logo').fadeIn 'slow', ->
+      #       # Changing subtext back
+      #       $('#logo_subtext').fadeOut 'slow', ->
+      #         $('#logo_subtext').html 'notifier options'
+      #         $('#logo_subtext').fadeIn 'slow'
+
+enableOnlineSpecificFeatures = ->
+  # Enable office status
+  ls['showOffice'] = 'true'
+  $('label[for="showOffice"]').slideDown()
+  # Enable coffee subscription
+  ls['coffeeSubscription'] = 'true'
+  $('label[for="coffeeSubscription"]').slideDown()
+
 bindCantinaSelector = (selector) ->
   # Default values
   $('#' + selector).val ls[selector]
   # React to change
   $('#' + selector).change ->
-    ls[selector] = $(this).val()
+    ls[selector] = $(this).prop('value')
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
-  if DEBUG then console.log 'Binding bus fields for ' + cssSelector
+  # if DEBUG then console.log 'Binding bus fields for ' + cssSelector
   fadeTime = 50
 
   stop = $(cssSelector + ' input')
@@ -309,7 +350,7 @@ loadBus = (busField) ->
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
-    if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
+    # if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
   
   # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
@@ -418,7 +459,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    updateOfficeStatus()
+    Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
     # Animations
     revertInfoscreen()
 
@@ -479,7 +520,7 @@ fadeInCanvas = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    $('#debug_links').show()
+    # $('#debug_links').show()
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
   
@@ -506,9 +547,14 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
 
-  # Minor esthetical adjustmenst for Browser
-  html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
-  $('label[for=openChatter] span').html html
+  # Note: Uncommented as long as the Chatter option us uncommented in options.html
+  # # Minor esthetical adjustmenst for Browser
+  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  # $('label[for=openChatter] span').html html
+
+  # Adding creator name to pageflip
+  html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
+  $('#pagefliplink').html html
 
   # Blinking cursor at pageflip
   setInterval ( ->
@@ -524,6 +570,9 @@ $ ->
   # $('#notification').click ->
   #   fadeInCanvas()
 
+  # Allow user to change affiliation
+  bindAffiliationSelector()
+
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
   bindCantinaSelector 'right_cantina'
@@ -536,9 +585,7 @@ $ ->
   slideFavoriteBusLines()
 
   # Load lists of bus stops
-  # Through this call the Stops List will auto-upate if it's old
-  Stops.load (result) ->
-    if DEBUG then console.log 'Loading bus lists:', result
+  Stops.load()
 
   # If Opera, disable and redesign features related to desktop notifications
   if BROWSER is 'Opera'
@@ -578,12 +625,11 @@ $ ->
     else
       ls[this.id] = this.checked;
       
+      if this.id is 'showOffice' and this.checked is true
+        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
         Browser.setIcon 'img/icon-default.png'
         Browser.setTitle EXTENSION_NAME
-
-      else if this.id is 'showOffice' and this.checked is true
-        updateOfficeStatus()
       
       if this.id is 'showNotifications' and this.checked is true
         testDesktopNotification()

@@ -29,8 +29,8 @@
     } else {
       iteration++;
     }
-    if (DEBUG || !navigator.onLine || ls.currentStatus === 'error') {
-      loopTimeout = BACKGROUND_LOOP_QUICK;
+    if (DEBUG || !navigator.onLine) {
+      loopTimeout = BACKGROUND_LOOP_OFFLINE;
     } else {
       loopTimeout = BACKGROUND_LOOP;
     }
@@ -39,12 +39,12 @@
     }), loopTimeout);
   };
 
-  updateOfficeAndMeetings = function() {
+  updateOfficeAndMeetings = function(force) {
     if (DEBUG) {
       console.log('updateOfficeAndMeetings');
     }
     return Office.get(function(status, title, message) {
-      if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
+      if (force || ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         Browser.setIcon('img/icon-' + status + '.png');
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
@@ -90,18 +90,20 @@
   };
 
   updateNews = function() {
-    var newsLimit;
+    var affiliation, newsLimit;
     if (DEBUG) {
       console.log('updateNews');
     }
-    newsLimit = 4;
-    return News.get('online', newsLimit, function(items) {
-      if (items !== null) {
-        return News.unreadCount(items);
-      } else {
+    affiliation = ls['affiliationName'];
+    newsLimit = 8;
+    return News.get(affiliation, newsLimit, function(items) {
+      if (typeof items === 'string') {
         if (DEBUG) {
-          return console.log('ERROR: News did not reach us');
+          return console.log('ERROR:', items);
         }
+      } else {
+        ls.feedItems = JSON.stringify(items);
+        return News.unreadCount(items);
       }
     });
   };
@@ -116,6 +118,12 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
+    if (ls.showAffiliation === void 0) {
+      ls.showAffiliation = 'true';
+    }
+    if (ls.affiliationName === void 0) {
+      ls.affiliationName = 'universitetsavisa';
+    }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
     }
@@ -189,6 +197,9 @@
     setInterval((function() {
       return document.location.reload();
     }), 86400000);
+    window.updateOfficeAndMeetings = updateOfficeAndMeetings;
+    window.updateCoffeeSubscription = updateCoffeeSubscription;
+    window.updateNews = updateNews;
     return mainLoop();
   });
 

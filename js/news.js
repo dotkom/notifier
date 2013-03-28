@@ -1,53 +1,253 @@
 var News = {
   newsMinLimit: 1,
   newsMaxLimit: 15,
+  unreadMaxCount: 3, // 0-indexed like the list it its counting, actually +1
   msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
   msgConnectionError: 'Frakoblet fra feed: ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
 
-  debug: 1,
+  debug: 0,
 
+  // IMPORTANT: Keep the same order here as in options.html and in manifest.json
   feeds: {
-    // Linjeforeninger
-    'berg': 'http://bergstud.no/feed/',
-    'delta': 'http://org.ntnu.no/delta/wp/?feed=rss2',
-    'emil': 'http://emilweb.no/feed/',
-    'online': 'https://online.ntnu.no/feeds/news/',
-    'nabla': 'http://nabla.no/feed/',
-    'spanskrøret': 'http://spanskroret.no/feed/',
-    // Medier
-    'dusken': 'http://dusken.no/feed/',
-    'universitetsavisa': 'http://www.universitetsavisa.no/?service=rss',
-    // Store studentorganisasjoner
-    'samfundet': 'http://www.samfundet.no/arrangement/rss',
-    // Studentdemokrati
-    'studenttinget': 'http://www.studenttinget.no/feed/',
-    'velferdstinget': 'http://www.velferdstinget.no/feed/rss/',
-    // NTNU
-    'ntnu': 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
-    'rektoratet': 'http://www.ntnu.no/blogger/rektoratet/feed/',
-  },
+    // Linjeforeninger Gløshaugen
+    'berg': {
+      'feed': 'http://bergstud.no/feed/',
+      'logo': 'org/berg/logo.png',
+      'square': 'org/berg/square.png',
+      'placeholder': 'org/berg/placeholder.png',
+      'color': 'grey',
+    },
+    'delta': {
+      'feed': 'http://org.ntnu.no/delta/wp/?feed=rss2',
+      'logo': 'org/delta/logo.png',
+      'square': 'org/delta/square.png',
+      'placeholder': 'org/delta/placeholder.png',
+      'color': 'green',
+    },
+    'emil': {
+      'feed': 'http://emilweb.no/feed/',
+      'logo': 'org/emil/logo.png',
+      'square': 'org/emil/square.png',
+      'placeholder': 'org/emil/placeholder.png',
+      'color': 'green',
+    },
+    'leonardo': {
+      'feed': 'http://industrielldesign.com/feed',
+      'logo': 'org/leonardo/logo.png',
+      'square': 'org/leonardo/square.png',
+      'placeholder': 'org/leonardo/placeholder.png',
+      'color': 'cyan',
+    },
+    'online': {
+      'feed': 'https://online.ntnu.no/feeds/news/',
+      'logo': 'org/online/logo.png',
+      'square': 'org/online/square.png',
+      'placeholder': 'org/online/placeholder.png',
+      'color': 'blue',
+    },
+    'nabla': {
+      'feed': 'http://nabla.no/feed/',
+      'logo': 'org/nabla/logo.png',
+      'square': 'org/nabla/square.png',
+      'placeholder': 'org/nabla/placeholder.png',
+      'color': 'red',
+    },
+    'spanskrøret': {
+      'feed': 'http://spanskroret.no/feed/',
+      'logo': 'org/spanskrøret/logo.png',
+      'square': 'org/spanskrøret/square.png',
+      'placeholder': 'org/spanskrøret/placeholder.png',
+      'color': 'grey',
+    },
+    'volvox': {
+      'feed': 'http://org.ntnu.no/volvox/feed/',
+      'logo': 'org/volvox/logo.png',
+      'square': 'org/volvox/square.png',
+      'placeholder': 'org/volvox/placeholder.png',
+      'color': 'green',
+    },
 
-  images: {
-    // Linjeforeninger
-    'berg': 'img/logo-sponsor-placeholder.png',
-    'delta': 'img/logo-sponsor-placeholder.png',
-    'emil': 'img/logo-sponsor-placeholder.png',
-    'online': 'img/logo-sponsor-placeholder.png',
-    'nabla': 'img/logo-sponsor-placeholder.png',
-    'spanskrøret': 'img/logo-sponsor-placeholder.png',
-    // Medier
-    'dusken': 'img/logo-sponsor-placeholder.png',
-    'universitetsavisa': 'img/logo-sponsor-placeholder.png',
+    // Linjeforeninger Dragvoll
+    'dionysos': {
+      'feed': 'http://dionysosntnu.wordpress.com/feed/',
+      'logo': 'org/dionysos/logo.png',
+      'square': 'org/dionysos/square.png',
+      'placeholder': 'org/dionysos/placeholder.png',
+      'color': 'grey',
+    },
+    'erudio': {
+      'feed': 'http://www.erudiontnu.org/?feed=rss2',
+      'logo': 'org/erudio/logo.png',
+      'square': 'org/erudio/square.png',
+      'placeholder': 'org/erudio/placeholder.png',
+      'color': 'red',
+    },
+    'geolf': {
+      'feed': 'http://geolf.org/feed/',
+      'logo': 'org/geolf/logo.png',
+      'square': 'org/geolf/square.png',
+      'placeholder': 'org/geolf/placeholder.png',
+      'color': 'blue',
+    },
+    'gengangere': {
+      'feed': 'http://www.gengangere.no/feed/',
+      'logo': 'org/gengangere/logo.png',
+      'square': 'org/gengangere/square.png',
+      'placeholder': 'org/gengangere/placeholder.png',
+      'color': 'grey',
+    },
+    'jump cut': {
+      'feed': 'http://jumpcutdragvoll.wordpress.com/feed/',
+      'logo': 'org/jump cut/logo.png',
+      'square': 'org/jump cut/square.png',
+      'placeholder': 'org/jump cut/placeholder.png',
+      'color': 'grey',
+    },
+    'ludimus': {
+      'feed': 'http://ludimus.org/feed/',
+      'logo': 'org/ludimus/logo.png',
+      'square': 'org/ludimus/square.png',
+      'placeholder': 'org/ludimus/placeholder.png',
+      'color': 'red',
+    },
+    'primetime': {
+      'feed': 'http://www.primetime.trondheim.no/feed/',
+      'logo': 'org/primetime/logo.png',
+      'square': 'org/primetime/square.png',
+      'placeholder': 'org/primetime/placeholder.png',
+      'color': 'cyan',
+    },
+    'sturm und drang': {
+      'feed': 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
+      'logo': 'org/sturm und drang/logo.png',
+      'square': 'org/sturm und drang/square.png',
+      'placeholder': 'org/sturm und drang/placeholder.png',
+      'color': 'red',
+    },
+
+    // Linjeforeninger HiST/DMMH/TJSF/BI
+    'fraktur': {
+      'feed': 'http://www.fraktur.no/feed/',
+      'logo': 'org/fraktur/logo.png',
+      'square': 'org/fraktur/square.png',
+      'placeholder': 'org/fraktur/placeholder.png',
+      'color': 'cyan',
+    },
+    'kom': {
+      'feed': 'http://kjemiogmaterial.wordpress.com/feed/',
+      'logo': 'org/kom/logo.png',
+      'square': 'org/kom/square.png',
+      'placeholder': 'org/kom/placeholder.png',
+      'color': 'cyan',
+    },
+    'logistikkstudentene': {
+      'feed': 'http://www.logistikkstudentene.no/?feed=rss2',
+      'logo': 'org/logistikkstudentene/logo.png',
+      'square': 'org/logistikkstudentene/square.png',
+      'placeholder': 'org/logistikkstudentene/placeholder.png',
+      'color': 'cyan',
+    },
+    'tihlde': {
+      'feed': 'http://tihlde.org/feed/',
+      'logo': 'org/tihlde/logo.png',
+      'square': 'org/tihlde/square.png',
+      'placeholder': 'org/tihlde/placeholder.png',
+      'color': 'blue',
+    },
+    'tim og shænko': {
+      'feed': 'http://bygging.no/feed/',
+      'logo': 'org/tim og shænko/logo.png',
+      'square': 'org/tim og shænko/square.png',
+      'placeholder': 'org/tim og shænko/placeholder.png',
+      'color': 'blue',
+    },
+    'tjsf': {
+      'feed': 'http://tjsf.no/feed/',
+      'logo': 'org/tjsf/logo.png',
+      'square': 'org/tjsf/square.png',
+      'placeholder': 'org/tjsf/placeholder.png',
+      'color': 'grey',
+    },
+
+    // Studentmedier
+    'dusken': {
+      'feed': 'http://dusken.no/feed/',
+      'logo': 'org/dusken/logo.png',
+      'square': 'org/dusken/square.png',
+      'placeholder': 'org/dusken/placeholder.png',
+      'color': 'grå',
+    },
+    'universitetsavisa': {
+      'feed': 'http://www.universitetsavisa.no/?service=rss',
+      'logo': 'org/universitetsavisa/logo.png',
+      'square': 'org/universitetsavisa/square.png',
+      'placeholder': 'org/universitetsavisa/placeholder.png',
+      'color': 'cyan',
+    },
+
     // Store studentorganisasjoner
-    'samfundet': 'img/logo-sponsor-placeholder.png',
+    'samfundet': {
+      'feed': 'http://www.samfundet.no/arrangement/rss',
+      'logo': 'org/samfundet/logo.png',
+      'square': 'org/samfundet/square.png',
+      'placeholder': 'org/samfundet/placeholder.png',
+      'color': 'red',
+    },
+
     // Studentdemokrati
-    'studenttinget': 'img/logo-sponsor-placeholder.png',
-    'velferdstinget': 'img/logo-sponsor-placeholder.png',
-    // NTNU
-    'ntnu': 'img/logo-sponsor-placeholder.png',
-    'rektoratet': 'img/logo-sponsor-placeholder.png',
+    'velferdstinget': {
+      'feed': 'http://www.velferdstinget.no/feed/rss/',
+      'logo': 'org/velferdstinget/logo.png',
+      'square': 'org/velferdstinget/square.png',
+      'placeholder': 'org/velferdstinget/placeholder.png',
+      'color': 'cyan',
+    },
+    'studenttinget ntnu': {
+      'feed': 'http://www.studenttinget.no/feed/',
+      'logo': 'org/studenttinget ntnu/logo.png',
+      'square': 'org/studenttinget ntnu/square.png',
+      'placeholder': 'org/studenttinget ntnu/placeholder.png',
+      'color': 'red',
+    },
+    'studentparlamentet hist': {
+      'feed': 'http://studentparlamentet.com/?feed=rss2',
+      'logo': 'org/studentparlamentet hist/logo.png',
+      'square': 'org/studentparlamentet hist/square.png',
+      'placeholder': 'org/studentparlamentet hist/placeholder.png',
+      'color': 'blue',
+    },
+    
+    // Institusjoner
+    'ntnu': {
+      'feed': 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
+      'logo': 'org/ntnu/logo.png',
+      'square': 'org/ntnu/square.png',
+      'placeholder': 'org/ntnu/placeholder.png',
+      'color': 'blue',
+    },
+    'rektoratet ntnu': {
+      'feed': 'http://www.ntnu.no/blogger/rektoratet/feed/',
+      'logo': 'org/rektoratet ntnu/logo.png',
+      'square': 'org/rektoratet ntnu/square.png',
+      'placeholder': 'org/rektoratet ntnu/placeholder.png',
+      'color': 'blue',
+    },
+    'hist': {
+      'feed': 'http://hist.no/rss.ap?thisId=1393',
+      'logo': 'org/hist/logo.png',
+      'square': 'org/hist/square.png',
+      'placeholder': 'org/hist/placeholder.png',
+      'color': 'blue',
+    },
+    'dmmh': {
+      'feed': 'http://www.dmmh.no/rss.php?type=site&id=10&location=393',
+      'logo': 'org/dmmh/logo.png',
+      'square': 'org/dmmh/square.png',
+      'placeholder': 'org/dmmh/placeholder.png',
+      'color': 'red',
+    },
   },
 
   // Get is called by background.html periodically, with News.unreadCount as
@@ -59,7 +259,7 @@ var News = {
       callback(this.msgUnsupportedFeed);
       return;
     }
-    if (isNaN(limit) || (limit < 1 && 20 < limit)) {
+    if (!isNumber(limit) || (limit < 1 && 20 < limit)) {
       if (this.debug) console.log('ERROR:', this.msgNewsLimit);
       callback(this.msgNewsLimit);
       return;
@@ -71,7 +271,7 @@ var News = {
     }
 
     feedName = feedName.toLowerCase();
-    var rssUrl = this.feeds[feedName];
+    var rssUrl = this.feeds[feedName].feed;
 
     var self = this;
     $.ajax({
@@ -103,29 +303,38 @@ var News = {
 
   parseItem: function(item, feedName) {
     var post = {};
-    post.title = $(item).find("title").text();
-    post.link = $(item).find("link").text();
-    post.description = $(item).find("description").text();
-    post.creator = $(item).find("dc:creator").text();
-    
-    post.date = $(item).find("pubDate").text().substr(5, 11);
-    post.image = this.images[feedName];
+
+    // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
+
+    // The popular fields
+    post.title = $(item).find("title").filter(':first').text();
+    post.link = $(item).find("link").filter(':first').text();
+    post.description = $(item).find("description").filter(':first').text();
+    // Less used fields
+    post.creator = $(item).find("dc:creator").filter(':first').text();
+    post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
+    // Locally stored
+    post.image = this.feeds[feedName]['image'];
+    post.feedName = feedName;
+
+    // Check for image in rarely used <enclosure>-tag
+    var enclosure = $(item).find('enclosure');
+    if (enclosure != '') {
+      try {
+        // Universitetsavisa does this little trick to get images in their feed
+        post.image = enclosure['0'].attributes.url.textContent;
+      }
+      catch (err) {
+        // Do nothing, we we're just checking, move along quitely
+      }
+    }
     
     // Check for alternative links in description
     post.altLink = this.checkForAltLink(post.description);
 
-    // Shorten 'bedriftspresentasjon' to 'bedpres'
-    post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
-    post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
-
-    // Remove excessive whitespace...
-    if (post.description.match(/<\w+>|<\/\w+>/g) !== null) { // Check if string contains markup
-      // ...and ludicrous formatting (HTML)
-      post.description = $.trim($(post.description).text());
-    }
-    else {
-      post.description = post.description.trim();
-    }
+    // Remove HTML
+    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
     
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
@@ -136,8 +345,10 @@ var News = {
     }
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
-      post.creator = feedName.capitalize();
+      post.creator = feedName;
     }
+    // Capitalize creator name either way
+    post.creator = post.creator.capitalize();
     // Abbreviate long creator names
     post.creator = this.abbreviateName(post.creator);
 
@@ -145,6 +356,14 @@ var News = {
     if (post.date == '') {
       post.date = null;
     }
+
+    // Trimming
+    post.title = post.title.trim();
+    post.description = post.description.trim();
+
+    // Shorten 'bedriftspresentasjon' to 'bedpres'
+    post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
+    post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
     
     // title + description must not exceed 5 lines
     var line = 50; // conservative estimation
@@ -155,69 +374,63 @@ var News = {
     // shorten description according to desclength
     if (desclength < post.description.length)
       post.description = post.description.substr(0, desclength) + '...';
-    
+
     return post;
   },
 
-  // NOT DONE YET ///////////////////////////////////////////////////////////////////
-  // todo: this function only handles the online-feed, make sure it handles all feeds
-  unreadCount: function(xmlstring) {
-    
+  unreadCount: function(items) {
+    var unreadCount = 0;
+    var maxNewsAmount = this.unreadMaxCount;
+    if (items.length-1 < maxNewsAmount)
+      maxNewsAmount = items.length-1;
+    var linkList = []; // New || Updated
 
-    return; //
-
-
-    var unread_count = 0;
-    
-    // Parse the feed
-    var xmldoc = $.parseXML(xmlstring);
-    $xml = $(xmldoc);
-    var items = $xml.find("item");
-    var idList = []; // New || Updated
-    
     // Count feed items
-    items.each( function(index, element) {
-      
-      var id = $(element).find("guid").text().split('/')[4];
+    var self = this;
+    items.forEach(function(item, index) {
+
+      var link = item.link;
       
       // Counting...
-      if (id != localStorage.mostRecentRead) {
-        unread_count++;
-        idList.push(id); // New || Updated
-        // Send a desktop notification about the first unread element
-        if (unread_count == 1) {
-          if (localStorage.lastNotified != id) {
-            this.showNotification(element);
+
+      if (link != localStorage.mostRecentRead) {
+        unreadCount++;
+
+        linkList.push(link); // New || Updated
+        // Send a desktop notification about the first unread item
+        if (unreadCount == 1) {
+          if (localStorage.lastNotified != link) {
+            self.showNotification(item);
           }
-          localStorage.mostRecentUnread = id;
+          localStorage.mostRecentUnread = link;
         }
       }
       // All counted :)
       else {
-        if (unread_count == 0) {
-          if (this.debug) console.log('no new posts');
+        if (unreadCount == 0) {
+          if (self.debug) console.log('no new posts');
           Browser.setBadgeText('');
         }
-        else if (unread_count >= this.maxNewsAmount) {
-          if (this.debug) console.log(this.maxNewsAmount + '+ unread posts');
-          Browser.setBadgeText(this.maxNewsAmount + '+');
+        else if (maxNewsAmount <= unreadCount) {
+          if (self.debug) console.log(maxNewsAmount + '+ unread posts');
+          Browser.setBadgeText(maxNewsAmount + '+');
         }
         else {
-          if (this.debug) console.log('1-' + (this.maxNewsAmount - 1) + ' unread posts');
-          Browser.setBadgeText(String(unread_count));
+          if (self.debug) console.log('1-' + (maxNewsAmount - 1) + ' unread posts');
+          Browser.setBadgeText(String(unreadCount));
         }
-        localStorage.unreadCount = unread_count;
-        localStorage.mostRecentIdList = JSON.stringify(idList); // New || Updated
+        localStorage.unreadCount = unreadCount;
+        localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
         return false;
       }
       
-      // Stop counting if unread number is greater than 9
-      if (index > (this.maxNewsAmount - 1)) { // Remember index is counting 0
-        if (this.debug) console.log(this.maxNewsAmount + '+ unread posts (stopped counting)');
-        Browser.setBadgeText(this.maxNewsAmount + '+');
-        localStorage.unreadCount = this.maxNewsAmount;
+      // Stop counting if unread number is greater than maxNewsAmount
+      if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
+        if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
+        Browser.setBadgeText(maxNewsAmount + '+');
+        localStorage.unreadCount = maxNewsAmount;
         // New or updated?
-        localStorage.mostRecentIdList = JSON.stringify(idList); // New || Updated
+        localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
         return false;
       }
     });
@@ -225,14 +438,15 @@ var News = {
 
   showNotification: function(item) {
     if (localStorage.showNotifications == 'true') {
-      var post = this.parseItem(item);
       // Remember this
-      localStorage.lastNotified = post.link;
+      localStorage.lastNotified = item.link;
       // Get content
-      localStorage.notificationTitle = post.title;
-      localStorage.notificationLink = post.link;
-      localStorage.notificationDescription = post.description;
-      localStorage.notificationCreator = post.creator;
+      localStorage.notificationTitle = item.title;
+      localStorage.notificationLink = item.link;
+      localStorage.notificationDescription = item.description;
+      localStorage.notificationCreator = item.creator;
+      localStorage.notificationImage = item.image;
+      localStorage.notificationFeedName = item.feedName;
       // Show desktop notification
       Browser.createNotification('notification.html');
     }
@@ -240,7 +454,7 @@ var News = {
 
   checkForAltLink: function(description) {
     // Looking for alternative link, find the first and best full link
-    var altLink = description.match(/href="(http.*)"/);
+    var altLink = description.match(/href="(http[^"]*)"/);
     if (altLink != null) {
       if (typeof altLink[1] == 'string') {
         return altLink[1];
@@ -278,20 +492,21 @@ var News = {
     var id = link.split('/')[4]; // id is stored in the link
     var image = 'undefined';
     var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
+    var self = this;
     $.getJSON(api + id, function(json) {
       if (json['online_news_image']) {
         image = json['online_news_image']['0']['image'];
         callback(link, image);
       }
       else {
-        image = this.images['online'];
-        if (this.debug) console.log('ERROR: no image exists for id: ' + id);
+        image = this.images['online'].image;
+        if (self.debug) console.log('ERROR: no image exists for id: ' + id);
         callback(link, image);
       }
     })
     .error(function() {
-      image = this.images['online'];
-      if (this.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
+      image = self.images['online'].image;
+      if (self.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
       callback(link, image);
     });
   },

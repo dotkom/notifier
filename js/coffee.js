@@ -79,7 +79,7 @@ var Coffee = {
 
   minuteDiff: function(then) {
     // Get now
-    var now = new Date();    
+    var now = new Date();
     var one_minute = 1000 * 60;
     // Calculate difference between the two dates, and convert to minutes
     return Math.floor(( now.getTime() - then.getTime() ) / one_minute);

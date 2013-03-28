@@ -17,8 +17,8 @@ mainLoop = ->
   # Schedule for repetition once a minute (checking connectivity,
   # feed and office status). Runs every 3rd second if it's offline,
   # trying to react quickly upon reconnection...
-  if DEBUG or !navigator.onLine or ls.currentStatus is 'error'
-    loopTimeout = BACKGROUND_LOOP_QUICK
+  if DEBUG or !navigator.onLine
+    loopTimeout = BACKGROUND_LOOP_OFFLINE
   else
     loopTimeout = BACKGROUND_LOOP
 
@@ -26,10 +26,10 @@ mainLoop = ->
     mainLoop()
   ), loopTimeout
 
-updateOfficeAndMeetings = ->
+updateOfficeAndMeetings = (force) ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
-    if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
+    if force or ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       Browser.setIcon 'img/icon-'+status+'.png'
       ls.currentStatus = status
       Meetings.get (meetings) ->
@@ -68,12 +68,18 @@ updateCoffeeSubscription = ->
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
-  newsLimit = 4
-  News.get 'online', newsLimit, (items) ->
-    if items isnt null
-      News.unreadCount items
+  affiliation = ls['affiliationName']
+  # The number of news possible to cram into the infoscreen
+  # if all other features are disabled is exactly 8, that's
+  # what we'll keep in storage till we need it.
+  newsLimit = 8
+  News.get affiliation, newsLimit, (items) ->
+    if typeof items is 'string'
+      # Error message, log it
+      if DEBUG then console.log 'ERROR:', items
     else
-      if DEBUG then console.log 'ERROR: News did not reach us'
+      ls.feedItems = JSON.stringify items
+      News.unreadCount items
 
 # Document ready, go!
 $ ->
@@ -86,6 +92,12 @@ $ ->
   ls.removeItem 'currentStatusMessage'
   
   # Set default choices if undefined, in the same order as on the options page
+
+  if ls.showAffiliation is undefined
+    ls.showAffiliation = 'true'
+  if ls.affiliationName is undefined
+    # ls.affiliationName = 'online'
+    ls.affiliationName = 'universitetsavisa'
 
   if ls.showBus is undefined
     ls.showBus = 'true'
@@ -166,6 +178,14 @@ $ ->
   setInterval ( ->
     document.location.reload()
   ), 86400000
+
+  # Attaching the update-functions to the window (global) object so other pages
+  # may lend these functions via Browser.getBackgroundProcess().function()
+  # instead of having to rewrite the function on that page which may lead
+  # to code rot.
+  window.updateOfficeAndMeetings = updateOfficeAndMeetings
+  window.updateCoffeeSubscription = updateCoffeeSubscription
+  window.updateNews = updateNews
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

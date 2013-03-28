@@ -4,7 +4,7 @@ var DEBUG = 1;
 var EXTENSION_NAME = 'Online Notifier';
 var EXTENSION_NICK = 'Notifier';
 var EXTENSION_WEBSITE = 'https://online.ntnu.no';
-var CREATOR_NAME = 'dotKom'; // max 8 letters because of styling
+var CREATOR_NAME = 'Online'; // max 8 letters because of styling
 var CREATOR_EMAIL = 'dotkom@online.ntnu.no';
 
 // AJAX and JSON timeout
@@ -12,7 +12,7 @@ var AJAX_TIMEOUT = 7500;
 
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
-var BACKGROUND_LOOP_QUICK = 10000; // 10s, fix it quickly when something has gone wrong
+var BACKGROUND_LOOP_OFFLINE = 3000; // 3s, respond quickly when we get back online
 var PAGE_LOOP = 10000; // every 10th second
 
 // Update stuff at every X intervals

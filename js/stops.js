@@ -9,7 +9,7 @@ var Stops = {
   msgMalformedLocalStops: 'Feil format på lokal liste over busstopp',
   msgMalformedExternalStops: 'Feil format på hentet liste over busstopp',
 
-  debug: 0,
+  debug: 1,
 
   // List format:
   // Stops.list = {
@@ -20,7 +20,6 @@ var Stops = {
   names: null,
 
   load: function(callback) {
-    if (this.debug) console.log('load');
     if (callback == undefined) {
       if (this.debug) console.log('WARNING: Callback is recommended. The callback contains completion/error message.');
     }
@@ -51,10 +50,11 @@ var Stops = {
         if (this.debug) console.log('load - parsing saved lists');
         this.list = JSON.parse(localStorage.stopList);
         this.names = JSON.parse(localStorage.stopNames);
-        callback(this.msgParsingCompleted);
+        if (callback != undefined)
+          callback(this.msgParsingCompleted);
       }
       catch (err) {
-        console.log('ERROR: '+msg.msgMalformedLocalStops);
+        console.log('ERROR: '+this.msgMalformedLocalStops);
         this.reset(callback);
       }
     }
@@ -70,7 +70,8 @@ var Stops = {
           self.parse(json, callback);
         },
         error: function(jqXHR, text, err) {
-          callback(self.msgDisconnected);
+          if (callback != undefined)
+            callback(self.msgDisconnected);
         },
       });
     }
@@ -91,8 +92,9 @@ var Stops = {
     // API response will contain 'unauthorized' when key is invalid or arguments are missing
     if (typeof json === 'string') {
         if (json.indexOf('unauthorized') !== -1) {
-        console.log('ERROR: ' + self.msgKeyExpired);
-        callback(self.msgKeyExpired);
+        console.log('ERROR: ' + this.msgKeyExpired);
+        if (callback != undefined)
+          callback(this.msgKeyExpired);
         return;
       }
     }
@@ -101,8 +103,9 @@ var Stops = {
 
       // Bus stops missing from the json?
       if (busStops == undefined) {
-        callback(self.msgMalformedExternalStops);
-        console.log('ERROR: ' + self.msgMalformedExternalStops);
+        if (callback != undefined)
+          callback(this.msgMalformedExternalStops);
+        console.log('ERROR: ' + this.msgMalformedExternalStops);
         return;
       }
 
@@ -128,12 +131,13 @@ var Stops = {
       localStorage.stopListAge = JSON.stringify(new Date());
 
       // All done!
-      callback(self.msgParsingStopsSuccess);
+      if (callback != undefined)
+        callback(this.msgParsingStopsSuccess);
     }
     catch (err) {
-      console.log('ERROR: ' + self.msgParsingStopsFailed + ': ' + err);
-      callback(self.msgParsingStopsFailed);
-      return;
+      console.log('ERROR: ' + this.msgParsingStopsFailed + ': ' + err);
+      if (callback != undefined)
+        callback(this.msgParsingStopsFailed);
     }
   },
 

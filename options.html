@@ -19,6 +19,7 @@
   
   <!-- JS Services -->
   <script src="js/browser.js"></script>
+  <script src="js/news.js"></script>
   <script src="js/bus.js"></script>
   <script src="js/stops.js"></script>
   <script src="js/meetings.js"></script>
@@ -72,19 +73,147 @@
   <div id="container">
     <div id="left" class="side">
 
-      <!-- <div class="item">
-        <label for="membership">
-          <input type="checkbox" name="membership" value="membership" id="membership" />
-          <span>Jeg er en </span>
-          <select class="cantina_selector" id="left_cantina">
-            <option value="dragvoll">Onliner</option>
-            <option value="hangaren">Gløsing</option>
-            <option value="kalvskinnet">Dragvolling</option>
-          </select>
-          <br />
-          <img class="image" src="/img/options-webchat.png" />
+      <div class="item">
+        <label for="showAffiliation">
+          <input type="checkbox" name="showAffiliation" value="showAffiliation" id="showAffiliation" disabled="disabled" />
+          <span>
+            Velg nyhetskilde blant linjeforeninger, studentmedier og mer
+          </span><br />
         </label>
-      </div> -->
+        <div id="affiliationBox" class="image">
+          <label for="affiliationName">
+            <img id="affiliationLogo" src="/img/logo-rss.png" />
+          </label>
+          <select id="affiliationName">
+            <optgroup label="Linjeforeninger Gløshaugen">
+              <option value="berg">Berg</option>
+              <option value="delta">Delta</option>
+              <option value="emil">Emil</option>
+              <option value="leonardo">Leonardo</option>
+              <option value="online" selected>Online</option>
+              <option value="nabla">Nabla</option>
+              <option value="spanskrøret">Spanskrøret</option>
+              <option value="volvox">Volvox</option>
+            </optgroup>
+            <optgroup label="Linjeforeninger Dragvoll">
+              <option value="dionysos">Dionysos</option>
+              <option value="erudio">Erudio</option>
+              <option value="geolf">Geolf</option>
+              <option value="gengangere">Gengangere</option>
+              <option value="jump cut">Jump Cut</option>
+              <option value="ludimus">Ludimus</option>
+              <option value="primetime">Primetime</option>
+              <option value="sturm und drang">Sturm und Drang</option>
+            </optgroup>
+            <optgroup label="Linjeforeninger HiST/DMMH/TJSF/BI">
+              <option value="fraktur">Fraktur</option>
+              <option value="kom">KOM</option>
+              <option value="logistikkstudentene">Logistikkstudentene</option>
+              <option value="tihlde">Tihlde</option>
+              <option value="tim og shænko">Tim og Shænko</option>
+              <option value="tjsf">TJSF</option>
+            </optgroup>
+            <optgroup label="Studentmedier">
+              <option value="dusken">Dusken</option>
+              <option value="universitetsavisa">Universitetsavisa</option>
+            </optgroup>
+            <optgroup label="Store studentorganisasjoner">
+              <option value="samfundet">Samfundet</option>
+            </optgroup>
+            <optgroup label="Studentdemokrati">
+              <option value="velferdstinget">Velferdstinget</option>
+              <option value="studenttinget ntnu">Studenttinget NTNU</option>
+              <option value="studentparlamentet hist">Studentparlamentet HiST</option>
+            </optgroup>
+            <optgroup label="Institusjoner">
+              <option value="ntnu">NTNU</option>
+              <option value="rektoratet ntnu">Rektoratet NTNU</option>
+              <option value="hist">HiST</option>
+              <option value="dmmh">DMMH</option>
+            </optgroup>
+          </select>
+          <select id="colorSelector">
+            <option value="blue">Blå fargepalett</option>
+            <option value="grenn">Grønn fargepalett</option>
+            <option value="grey">Grå fargepalett</option>
+            <option value="yellow">Gul fargepalett</option>
+            <option value="purple">Lilla fargepalett</option>
+            <option value="pink">Rosa fargepalett</option>
+            <option value="red">Rød fargepalett</option>
+            <option value="cyan">Turkis fargepalett</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="item">
+        <label for="showCantina">
+          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
+          <span>
+            Vis middagsmeny og åpningstider fra SiT
+          </span><br />
+        </label>
+        <div id="cantinaBox" class="image">
+          <select class="cantina_selector" id="left_cantina">
+            <optgroup label="kantiner">
+              <option value="dmmh">DMMH</option>
+              <option value="dragvoll">Dragvoll</option>
+              <option value="elektro">Elektro</option>
+              <option value="hangaren">Hangaren</option>
+              <option value="kalvskinnet">Kalvskinnet</option>
+              <option value="kjelhuset">Kjelhuset</option>
+              <option value="moholt">Moholt</option>
+              <option value="mtfs">MTFS</option>
+              <option value="ranheimsveien">Ranheimsveien</option>
+              <option value="realfag">Realfag</option>
+              <option value="rotvoll">Rotvoll</option>
+              <option value="tyholt">Tyholt</option>
+              <option value="øya">Øya</option>
+            </optgroup>
+            <optgroup label="storkiosker">
+              <option value="storkiosk dragvoll">Storkiosk Dragvoll</option>
+              <option value="storkiosk gløshaugen">Storkiosk Gløshaugen</option>
+              <option value="storkiosk øya">Storkiosk Øya</option>
+              <option value="idretts. dragvoll">Idretts. Dragvoll</option>
+            </optgroup>
+            <optgroup label="kaféer">
+              <option value="sito dragvoll">Sito Dragvoll</option>
+              <option value="sito realfag">Sito Realfag</option>
+              <option value="sito stripa">Sito Stripa</option>
+            </optgroup>
+          </select>
+          <label for="showCantina">
+            <img id="cantinaLogo" src="/img/logo-sit.png" />
+          </label>
+          <select class="cantina_selector" id="right_cantina">
+            <optgroup label="kantiner">
+              <option value="dmmh">DMMH</option>
+              <option value="dragvoll">Dragvoll</option>
+              <option value="elektro">Elektro</option>
+              <option value="hangaren">Hangaren</option>
+              <option value="kalvskinnet">Kalvskinnet</option>
+              <option value="kjelhuset">Kjelhuset</option>
+              <option value="moholt">Moholt</option>
+              <option value="mtfs">MTFS</option>
+              <option value="ranheimsveien">Ranheimsveien</option>
+              <option value="realfag">Realfag</option>
+              <option value="rotvoll">Rotvoll</option>
+              <option value="tyholt">Tyholt</option>
+              <option value="øya">Øya</option>
+            </optgroup>
+            <optgroup label="storkiosker">
+              <option value="storkiosk dragvoll">Storkiosk Dragvoll</option>
+              <option value="storkiosk gløshaugen">Storkiosk Gløshaugen</option>
+              <option value="storkiosk øya">Storkiosk Øya</option>
+              <option value="idretts. dragvoll">Idretts. Dragvoll</option>
+            </optgroup>
+            <optgroup label="kaféer">
+              <option value="sito dragvoll">Sito Dragvoll</option>
+              <option value="sito realfag">Sito Realfag</option>
+              <option value="sito stripa">Sito Stripa</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
 
       <div class="item">
         <label for="showBus">
@@ -142,74 +271,7 @@
         </label>
       </div>
 
-      <div class="item">
-        <label for="showCantina">
-          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
-          <span>
-            Vis meny/åpningstid fra
-            <select class="cantina_selector" id="left_cantina">
-              <optgroup label="kantiner">
-                <option value="dmmh">dmmh</option>
-                <option value="dragvoll">dragvoll</option>
-                <option value="elektro">elektro</option>
-                <option value="hangaren">hangaren</option>
-                <option value="kalvskinnet">kalvskinnet</option>
-                <option value="kjelhuset">kjelhuset</option>
-                <option value="moholt">moholt</option>
-                <option value="mtfs">mtfs</option>
-                <option value="ranheimsveien">ranheimsveien</option>
-                <option value="realfag">realfag</option>
-                <option value="rotvoll">rotvoll</option>
-                <option value="tyholt">tyholt</option>
-                <option value="øya">øya</option>
-              </optgroup>
-              <optgroup label="storkiosker">
-                <option value="storkiosk dragvoll">storkiosk dragvoll</option>
-                <option value="storkiosk gløshaugen">storkiosk gløshaugen</option>
-                <option value="storkiosk øya">storkiosk øya</option>
-                <option value="idretts. dragvoll">idretts. dragvoll</option>
-              </optgroup>
-              <optgroup label="kaféer">
-                <option value="sito dragvoll">sito dragvoll</option>
-                <option value="sito realfag">sito realfag</option>
-                <option value="sito stripa">sito stripa</option>
-              </optgroup>
-            </select>
-            og
-            <select class="cantina_selector" id="right_cantina">
-              <optgroup label="kantiner">
-                <option value="dmmh">dmmh</option>
-                <option value="dragvoll">dragvoll</option>
-                <option value="elektro">elektro</option>
-                <option value="hangaren">hangaren</option>
-                <option value="kalvskinnet">kalvskinnet</option>
-                <option value="kjelhuset">kjelhuset</option>
-                <option value="moholt">moholt</option>
-                <option value="mtfs">mtfs</option>
-                <option value="ranheimsveien">ranheimsveien</option>
-                <option value="realfag">realfag</option>
-                <option value="rotvoll">rotvoll</option>
-                <option value="tyholt">tyholt</option>
-                <option value="øya">øya</option>
-              </optgroup>
-              <optgroup label="storkiosker">
-                <option value="storkiosk dragvoll">storkiosk dragvoll</option>
-                <option value="storkiosk gløshaugen">storkiosk gløshaugen</option>
-                <option value="storkiosk øya">storkiosk øya</option>
-                <option value="idretts. dragvoll">idretts. dragvoll</option>
-              </optgroup>
-              <optgroup label="kaféer">
-                <option value="sito dragvoll">sito dragvoll</option>
-                <option value="sito realfag">sito realfag</option>
-                <option value="sito stripa">sito stripa</option>
-              </optgroup>
-            </select>
-          </span><br />
-          <img class="image" src="/img/options-cantina-menu.png" />
-        </label>
-      </div>
-
-      <div class="item">
+      <!-- <div class="item">
         <label for="openChatter">
           <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" />
           <span>
@@ -217,10 +279,22 @@
           </span><br />
           <img class="image" src="/img/options-webchat.png" />
         </label>
-      </div>
+      </div> -->
 
     </div>
     <div id="right" class="side">
+
+      <div class="item">
+        <label for="useInfoscreen">
+          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
+          <span>
+            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
+          </span><br />
+          <img class="image" src="/img/options-infoscreen.png" /><br />
+          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
+        </label>
+      </div>
+
       <div id="infoscreen_slider">
 
         <div class="item">
@@ -243,17 +317,6 @@
           </label>
         </div>
 
-      </div>
-
-      <div class="item">
-        <label for="useInfoscreen">
-          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
-          <span>
-            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
-          </span><br />
-          <img class="image" src="/img/options-infoscreen.png" /><br />
-          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
-        </label>
       </div>
 
     </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
@@ -286,7 +349,7 @@
   <div id="pageflip"></div>
   <div id="pagefliplink">
     <br />
-    <a href="http://github.com/dotkom/online-notifier/" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />dotKom with &lt;3<span class="pageflipcursor">_</span></a>
+    <a href="http://github.com/dotkom/online-notifier/" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />__creator__ with &lt;3<span class="pageflipcursor">_</span></a>
   </div>
 
   <!-- +1 button -->
