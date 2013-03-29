@@ -50,6 +50,13 @@ bindAffiliationSelector = ->
     # Reload news
     Browser.getBackgroundProcess().updateNews()
 
+bindAffiliationColorSelector = ->
+  # React to change
+  $('#affiliationColorSelector').change ->
+    chosenAffiliation = $(this).val()
+    # Save the change
+    ls['affiliationColor'] = chosenAffiliation
+
 disableOnlineSpecificFeatures = ->
   # Disable office status and coffee subscription
   ls['showOffice'] = 'false'
@@ -560,8 +567,9 @@ $ ->
   # $('#notification').click ->
   #   fadeInCanvas()
 
-  # Allow user to change affiliation
+  # Allow user to change affiliation and colors
   bindAffiliationSelector()
+  bindAffiliationColorSelector()
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
