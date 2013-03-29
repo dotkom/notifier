@@ -9,7 +9,7 @@ var Stops = {
   msgMalformedLocalStops: 'Feil format på lokal liste over busstopp',
   msgMalformedExternalStops: 'Feil format på hentet liste over busstopp',
 
-  debug: 1,
+  debug: 0,
 
   // List format:
   // Stops.list = {
@@ -131,8 +131,10 @@ var Stops = {
       localStorage.stopListAge = JSON.stringify(new Date());
 
       // All done!
-      if (callback != undefined)
+      if (this.debug) console.log('parse - list parsing success');
+      if (callback != undefined) {
         callback(this.msgParsingStopsSuccess);
+      }
     }
     catch (err) {
       console.log('ERROR: ' + this.msgParsingStopsFailed + ': ' + err);
