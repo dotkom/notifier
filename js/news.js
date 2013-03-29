@@ -498,6 +498,16 @@ var News = {
     return oldName;
   },
 
+  getColoringStyle: function(color) {
+    if (this.colors[color] != undefined) {
+      return this.colors[color];
+    }
+    else {
+      if (this.debug) console.log('ERROR: unsupported color', color);
+      return colors['blue'];
+    }
+  },
+
   // Organization specific functions
 
   online_getImage: function(link, callback) {
