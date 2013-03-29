@@ -233,7 +233,6 @@
             </div>\
           </div>\
         </div>';
-        console.log(htmlItem);
         return $('#news').append(htmlItem);
       }
     });

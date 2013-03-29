@@ -182,7 +182,6 @@ displayItems = (items) ->
             </div>
           </div>
         </div>'
-      console.log htmlItem ##################################### WAT SHER HER?
       $('#news').append htmlItem
   
   # Store list of last viewed items

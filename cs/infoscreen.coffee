@@ -95,12 +95,14 @@ displayItems = (items) ->
       # EXPLANATION NEEDED:
       # .item[data] contains the link
       # .item[name] contains the alternative link, if one exists, otherwise null
-      date = ''
+      date = altLink = ''
       if item.date isnt null
-        date = ' den '+item.date
+        date = ' den ' + item.date
+      if item.altLink isnt null
+        altLink = ' name="' + item.altLink + '"'
       htmlItem += item.title + '
         </div>
-          <div class="item" data="' + item.link + '" name="' + item.altLink + '">
+          <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
             <div class="textwrapper">
               <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
