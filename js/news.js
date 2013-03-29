@@ -439,8 +439,9 @@ var News = {
       var link = item.link;
       
       // Counting...
+      viewedList = JSON.parse(localStorage.viewedNewsList);
 
-      if (link != localStorage.mostRecentRead) {
+      if (viewedList.indexOf(link) === -1) {
         unreadCount++;
 
         newsList.push(link); // New || Updated
@@ -450,7 +451,6 @@ var News = {
           if (localStorage.lastNotified != link) {
             self.showNotification(item);
           }
-          localStorage.mostRecentUnread = link;
         }
       }
       // All counted :)
@@ -469,7 +469,7 @@ var News = {
         }
         localStorage.unreadCount = unreadCount;
         localStorage.newsList = JSON.stringify(newsList); // New || Updated
-        return false;
+        return;
       }
       
       // Stop counting if unread number is greater than maxNewsAmount
@@ -479,7 +479,7 @@ var News = {
         localStorage.unreadCount = maxNewsAmount;
         // New or updated?
         localStorage.newsList = JSON.stringify(newsList); // New || Updated
-        return false;
+        return;
       }
     });
   },

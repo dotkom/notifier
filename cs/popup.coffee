@@ -134,8 +134,8 @@ updateNews = ->
 
 displayItems = (items) ->
   # Find most recent post and save it
-  mostRecent = items[0].link
-  ls.mostRecentRead = mostRecent
+  # mosatRecent = items[0].link
+  # ls.moastRecentRead = moastRecent
 
   # Empty the newsbox
   $('#news').html ''

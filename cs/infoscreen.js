@@ -107,9 +107,7 @@
   };
 
   displayItems = function(items) {
-    var feedName, index, link, mostRecent, newsList, updatedList, viewedList, _results;
-    mostRecent = items[0].link;
-    ls.mostRecentRead = mostRecent;
+    var feedName, index, link, newsList, updatedList, viewedList, _results;
     $('#news').html('');
     feedName = items.feedName;
     newsList = JSON.parse(ls.newsList);
