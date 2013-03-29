@@ -107,9 +107,9 @@
   displayItems = function(items) {
     var feedName, idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
     mostRecent = items[0].link;
-    feedName = items[0].feedName;
     ls.mostRecentRead = mostRecent;
     $('#news').html('');
+    feedName = items.feedName;
     viewedList = JSON.parse(ls.lastViewedIdList);
     newsList = JSON.parse(ls.mostRecentIdList);
     updatedList = findUpdatedPosts(viewedList, newsList);

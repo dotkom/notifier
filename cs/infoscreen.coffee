@@ -61,9 +61,12 @@ updateNews = ->
 displayItems = (items) ->
   # Find most recent post and save it
   mostRecent = items[0].link
-  feedName = items[0].feedName
   ls.mostRecentRead = mostRecent
+  
+  # Empty the newsbox
   $('#news').html ''
+  # Get feedname
+  feedName = items.feedName
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
