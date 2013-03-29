@@ -291,7 +291,7 @@ var News = {
     'purple':   {'-webkit-filter': 'hue-rotate(66deg)'},
     'green':    {'-webkit-filter': 'hue-rotate(-85deg)'},
     'grey':     {'-webkit-filter': 'grayscale(1) hue-rotate(0deg)'},
-    'yellow':   {'-webkit-filter': 'hue-rotate(-151deg) saturate(1.5) brightness(1.2)'},
+    'yellow':   {'-webkit-filter': 'hue-rotate(-151deg) saturate(1.6) brightness(2.3)'},
   },
 
   // Get is called by background.html periodically, with News.unreadCount as
