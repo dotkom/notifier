@@ -57,17 +57,16 @@ updateCoffeeSubscription = ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   affiliation = ls['affiliationName']
-  # The number of news possible to cram into the infoscreen
-  # if all other features are disabled is exactly 8, that's
-  # what we'll keep in storage till we need it.
-  newsLimit = 8
+  # Get more news than needed to check for old news that have been updated
+  newsLimit = 10
   News.get affiliation, newsLimit, (items) ->
     if typeof items is 'string'
-      # Error message, log it
+      # Error message, log it maybe
       if DEBUG then console.log 'ERROR:', items
     else
       ls.feedItems = JSON.stringify items
       News.unreadCountAndNotify items
+      News.refreshNewsIdList items
 
 # Document ready, go!
 $ ->
@@ -89,10 +88,10 @@ $ ->
     ls.affiliationColor = 'blue'
 
   # Lists of links (IDs) for news items
-  if ls.viewedNewsList is undefined
-    ls.viewedNewsList = JSON.stringify []
   if ls.newsList is undefined
     ls.newsList = JSON.stringify []
+  if ls.viewedNewsList is undefined
+    ls.viewedNewsList = JSON.stringify []
 
   if ls.showBus is undefined
     ls.showBus = 'true'

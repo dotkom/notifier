@@ -83,7 +83,7 @@
       console.log('updateNews');
     }
     affiliation = ls['affiliationName'];
-    newsLimit = 8;
+    newsLimit = 10;
     return News.get(affiliation, newsLimit, function(items) {
       if (typeof items === 'string') {
         if (DEBUG) {
@@ -91,7 +91,8 @@
         }
       } else {
         ls.feedItems = JSON.stringify(items);
-        return News.unreadCountAndNotify(items);
+        News.unreadCountAndNotify(items);
+        return News.refreshNewsIdList(items);
       }
     });
   };
@@ -115,11 +116,11 @@
     if (ls.affiliationColor === void 0) {
       ls.affiliationColor = 'blue';
     }
-    if (ls.viewedNewsList === void 0) {
-      ls.viewedNewsList = JSON.stringify([]);
-    }
     if (ls.newsList === void 0) {
       ls.newsList = JSON.stringify([]);
+    }
+    if (ls.viewedNewsList === void 0) {
+      ls.viewedNewsList = JSON.stringify([]);
     }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
