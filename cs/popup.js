@@ -200,7 +200,7 @@
     feedName = items[0].feedName;
     newsList = JSON.parse(ls.newsList);
     viewedList = JSON.parse(ls.viewedNewsList);
-    updatedList = findUpdatedPosts(viewedList, newsList);
+    updatedList = findUpdatedPosts(newsList, viewedList);
     viewedList = [];
     $.each(items, function(index, item) {
       var altLink, date, htmlItem, _ref;
@@ -258,15 +258,19 @@
     }
   };
 
-  findUpdatedPosts = function(viewedList, newsList) {
-    var news, updatedList, viewed, _i, _j, _len, _len1;
+  findUpdatedPosts = function(newsList, viewedList) {
+    var i, j, updatedList;
     updatedList = [];
-    for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
-      viewed = viewedList[_i];
-      for (_j = 0, _len1 = newsList.length; _j < _len1; _j++) {
-        news = newsList[_j];
-        if (viewedList[viewed] === newsList[news]) {
-          updatedList.push(viewedList[viewed]);
+    for (i in newsList) {
+      if (newsList[i] === viewedList[0]) {
+        break;
+      }
+      for (j in viewedList) {
+        if (j === 0) {
+          continue;
+        }
+        if (newsList[i] === viewedList[j]) {
+          updatedList.push(newsList[i]);
         }
       }
     }

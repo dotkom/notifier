@@ -142,7 +142,7 @@ displayItems = (items) ->
   # updated rather than being actual news
   newsList = JSON.parse ls.newsList
   viewedList = JSON.parse ls.viewedNewsList
-  updatedList = findUpdatedPosts viewedList, newsList # Union
+  updatedList = findUpdatedPosts newsList, viewedList
 
   # Build list of last viewed for the next time the user views the news
   viewedList = []
@@ -208,13 +208,18 @@ displayItems = (items) ->
           $('.item[data="'+link+'"]').attr 'data', altLink
 
 # Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = (viewedList, newsList) ->
-  # Compare lists, return union (updated items)
+findUpdatedPosts = (newsList, viewedList) ->
   updatedList = []
-  for viewed in viewedList
-    for news in newsList
-      if viewedList[viewed] == newsList[news]
-        updatedList.push viewedList[viewed]
+  # Compare lists, keep your mind straight here:
+  # Updated news are:
+  # - saved in the newsList before the first identical item in the viewedList
+  # - saved in the viewedList after the first identical item in the newsList
+  for i of newsList
+    break if newsList[i] is viewedList[0]
+    for j of viewedList
+      continue if j is 0
+      if newsList[i] is viewedList[j]
+        updatedList.push newsList[i]
   return updatedList
 
 optionsText = (show) ->
