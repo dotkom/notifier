@@ -50,6 +50,9 @@ body {
   the display is really big (1500px-2000px in width or height) */
 
   background: url('/img/background-popup.png') center center no-repeat;
+  -webkit-filter: hue-rotate(0deg);
+  /* will be tweaked later */
+
   position: fixed;
   left: 0;
   top: 0;
