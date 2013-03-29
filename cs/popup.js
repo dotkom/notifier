@@ -326,7 +326,7 @@
           console.log('Applying affiliation color', color);
         }
         css = News.getColoringStyle(color);
-        $('#background').prop('style', css);
+        $('#background').css(css);
       }
     }
     if (ls.lastViewedIdList === void 0) {

@@ -262,7 +262,7 @@ $ ->
     if color isnt 'undefined' and color isnt ''
       if DEBUG then console.log 'Applying affiliation color', color
       css = News.getColoringStyle color
-      $('#background').prop 'style', css
+      $('#background').css css
   
   # Check for undefined in the lists of news' IDs
   if ls.lastViewedIdList == undefined
