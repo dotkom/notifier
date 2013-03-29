@@ -39,10 +39,7 @@
   };
 
   $(function() {
-    setNotification();
-    return setTimeout((function() {
-      return window.close();
-    }), 5000);
+    return setNotification();
   });
 
 }).call(this);

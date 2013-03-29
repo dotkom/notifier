@@ -39,6 +39,6 @@ setNotification = ->
 # show the html5 notification with timeout when the document is ready
 $ ->
   setNotification()
-  setTimeout ( ->
-    window.close()
-  ), 5000
+  # setTimeout ( ->
+  #   window.close()
+  # ), 5000
