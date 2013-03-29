@@ -88,6 +88,12 @@ $ ->
   if ls.affiliationColor is undefined
     ls.affiliationColor = 'blue'
 
+  # Lists of IDs for news items
+  if ls.lastViewedIdList is undefined
+    ls.lastViewedIdList = JSON.stringify []
+  if ls.mostRecentIdList is undefined
+    ls.mostRecentIdList = JSON.stringify []
+
   if ls.showBus is undefined
     ls.showBus = 'true'
 

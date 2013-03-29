@@ -115,6 +115,12 @@
     if (ls.affiliationColor === void 0) {
       ls.affiliationColor = 'blue';
     }
+    if (ls.lastViewedIdList === void 0) {
+      ls.lastViewedIdList = JSON.stringify([]);
+    }
+    if (ls.mostRecentIdList === void 0) {
+      ls.mostRecentIdList = JSON.stringify([]);
+    }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';
     }
