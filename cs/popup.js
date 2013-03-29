@@ -292,7 +292,7 @@
   };
 
   $(function() {
-    var affiliation, color, css, logo;
+    var affiliation, color, cssMap, logo;
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
@@ -320,14 +320,14 @@
         }
         $('#header #logo').prop('src', logo);
       }
-      color = ls['affiliationColor'];
-      if (color !== 'undefined' && color !== '') {
-        if (DEBUG) {
-          console.log('Applying affiliation color', color);
-        }
-        css = News.getColoringStyle(color);
-        $('#background').css(css);
+    }
+    color = ls['affiliationColor'];
+    if (color !== 'undefined' && color !== '') {
+      if (DEBUG) {
+        console.log('Applying affiliation color', color);
       }
+      cssMap = News.getColoringStyle(color);
+      $('#background').css(cssMap);
     }
     if (ls.lastViewedIdList === void 0) {
       ls.lastViewedIdList = JSON.stringify([]);

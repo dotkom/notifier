@@ -257,12 +257,13 @@ $ ->
     if logo isnt undefined and logo isnt ''
       if DEBUG then console.log 'Applying affiliation logo', logo
       $('#header #logo').prop 'src', logo
-    # If the user has a defined color
-    color = ls['affiliationColor']
-    if color isnt 'undefined' and color isnt ''
-      if DEBUG then console.log 'Applying affiliation color', color
-      css = News.getColoringStyle color
-      $('#background').css css
+  
+  # Show the color palette the user has chosen
+  color = ls['affiliationColor']
+  if color isnt 'undefined' and color isnt ''
+    if DEBUG then console.log 'Applying affiliation color', color
+    cssMap = News.getColoringStyle color
+    $('#background').css cssMap
   
   # Check for undefined in the lists of news' IDs
   if ls.lastViewedIdList == undefined
