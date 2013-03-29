@@ -84,8 +84,9 @@ $ ->
   if ls.showAffiliation is undefined
     ls.showAffiliation = 'true'
   if ls.affiliationName is undefined
-    # ls.affiliationName = 'online'
-    ls.affiliationName = 'universitetsavisa'
+    ls.affiliationName = 'online'
+  if ls.affiliationColor is undefined
+    ls.affiliationColor = 'blue'
 
   if ls.showBus is undefined
     ls.showBus = 'true'

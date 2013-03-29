@@ -28,7 +28,7 @@ testCoffeeSubscription = ->
 
 bindAffiliationSelector = ->
   selector = 'affiliationName'
-  chosenAffiliation = ls['affiliationName']
+  chosenAffiliation = ls[selector]
   # Default values
   $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
   # React to change
@@ -42,6 +42,11 @@ bindAffiliationSelector = ->
       enableOnlineSpecificFeatures()
     # Save the change
     ls[selector] = chosenAffiliation
+    # Get and save the recommended color palette for the chosen affiliation
+    color = News.feeds[chosenAffiliation].color
+    if color isnt undefined and color isnt ''
+      $('#affiliationColorSelector').val color
+      ls['affiliationColor'] = color
     # Reload news
     Browser.getBackgroundProcess().updateNews()
 
@@ -52,22 +57,6 @@ disableOnlineSpecificFeatures = ->
     # Disable coffee subscription
     ls['coffeeSubscription'] = 'false'
     $('label[for="coffeeSubscription"]').slideUp 'slow'
-    # $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-      # # Change logo and subtext in a cool way
-      # affiliationName = localStorage.affiliationName
-      # # Fading out subtext
-      # $('#logo_subtext').fadeOut 'slow', ->
-      #   # Changing subtext temporarily
-      #   $('#logo_subtext').html affiliationName
-      #   $('#logo_subtext').fadeIn 'slow', ->
-      #     # Setting new logo and fading it in
-      #     newLogo = News.feeds[affiliationName].logo
-      #     $('#logo').prop 'src', newLogo
-      #     $('#logo').fadeIn 'slow', ->
-      #       # Changing subtext back
-      #       $('#logo_subtext').fadeOut 'slow', ->
-      #         $('#logo_subtext').html 'notifier options'
-      #         $('#logo_subtext').fadeIn 'slow'
 
 enableOnlineSpecificFeatures = ->
   # Enable office status

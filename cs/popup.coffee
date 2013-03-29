@@ -248,6 +248,16 @@ $ ->
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
+
+  # Show the logo and placeholder image for the correct organization
+  if ls.affiliationName isnt 'online'
+    affiliation = ls.affiliationName
+    # If the affiliation has a defined logo
+    logo = News.feeds[affiliation].logo
+    if DEBUG then console.log 'Checking for affiliation logo...', logo
+    if logo isnt undefined and logo isnt ''
+      if DEBUG then console.log 'Found! Switching logo...'
+      $('#header #logo').prop 'src', logo
   
   # Check for undefined in the lists of news' IDs
   if ls.lastViewedIdList == undefined

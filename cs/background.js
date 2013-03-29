@@ -110,7 +110,10 @@
       ls.showAffiliation = 'true';
     }
     if (ls.affiliationName === void 0) {
-      ls.affiliationName = 'universitetsavisa';
+      ls.affiliationName = 'online';
+    }
+    if (ls.affiliationColor === void 0) {
+      ls.affiliationColor = 'blue';
     }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';

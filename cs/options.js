@@ -45,10 +45,10 @@
   bindAffiliationSelector = function() {
     var chosenAffiliation, selector;
     selector = 'affiliationName';
-    chosenAffiliation = ls['affiliationName'];
+    chosenAffiliation = ls[selector];
     $('#' + selector + '[value="' + chosenAffiliation + '"]').prop('selected', 'selected');
     return $('#' + selector).change(function() {
-      var oldAffiliation;
+      var color, oldAffiliation;
       chosenAffiliation = $(this).val();
       oldAffiliation = ls[selector];
       if (oldAffiliation === 'online') {
@@ -57,6 +57,11 @@
         enableOnlineSpecificFeatures();
       }
       ls[selector] = chosenAffiliation;
+      color = News.feeds[chosenAffiliation].color;
+      if (color !== void 0 && color !== '') {
+        $('#affiliationColorSelector').val(color);
+        ls['affiliationColor'] = color;
+      }
       return Browser.getBackgroundProcess().updateNews();
     });
   };

@@ -292,6 +292,7 @@
   };
 
   $(function() {
+    var affiliation, logo;
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
@@ -309,6 +310,19 @@
     }
     if (ls.showBus !== 'true') {
       $('#bus').hide();
+    }
+    if (ls.affiliationName !== 'online') {
+      affiliation = ls.affiliationName;
+      logo = News.feeds[affiliation].logo;
+      if (DEBUG) {
+        console.log('Checking for affiliation logo...', logo);
+      }
+      if (logo !== void 0 && logo !== '') {
+        if (DEBUG) {
+          console.log('Found! Switching logo...');
+        }
+        $('#header #logo').prop('src', logo);
+      }
     }
     if (ls.lastViewedIdList === void 0) {
       ls.lastViewedIdList = JSON.stringify([]);
