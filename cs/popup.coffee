@@ -254,10 +254,15 @@ $ ->
     affiliation = ls.affiliationName
     # If the affiliation has a defined logo
     logo = News.feeds[affiliation].logo
-    if DEBUG then console.log 'Checking for affiliation logo...', logo
     if logo isnt undefined and logo isnt ''
-      if DEBUG then console.log 'Found! Switching logo...'
+      if DEBUG then console.log 'Applying affiliation logo', logo
       $('#header #logo').prop 'src', logo
+    # If the user has a defined color
+    color = ls['affiliationColor']
+    if color isnt 'undefined' and color isnt ''
+      if DEBUG then console.log 'Applying affiliation color', color
+      css = News.getColoringStyle color
+      $('#background').prop 'style', css
   
   # Check for undefined in the lists of news' IDs
   if ls.lastViewedIdList == undefined
