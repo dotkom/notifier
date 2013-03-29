@@ -424,13 +424,21 @@ var News = {
     return post;
   },
 
+  refreshNewsIdList: function(items) {
+    var freshNewsList = [];
+    items.forEach(function(item, index) {
+      freshNewsList.push(item.link);
+    });
+    localStorage.newsList = JSON.stringify(freshNewsList);
+  },
+
   unreadCountAndNotify: function(items) {
     var unreadCount = 0;
     var maxNewsAmount = this.unreadMaxCount;
     if (items.length-1 < maxNewsAmount)
       maxNewsAmount = items.length-1;
 
-    var newsList = []; // Helps separate new and updated
+    var newsList = JSON.parse(localStorage.newsList);
 
     // Count feed items
     var self = this;
@@ -439,14 +447,10 @@ var News = {
       var link = item.link;
       
       // Counting...
-      viewedList = JSON.parse(localStorage.viewedNewsList);
-
-      if (viewedList.indexOf(link) === -1) {
+      if (newsList.indexOf(link) === -1) {
         unreadCount++;
 
-        newsList.push(link); // New || Updated
-
-        // Send a desktop notification about the first unread item
+        // Send a desktop notification about the first new item
         if (unreadCount == 1) {
           if (localStorage.lastNotified != link) {
             self.showNotification(item);
@@ -468,7 +472,6 @@ var News = {
           Browser.setBadgeText(String(unreadCount));
         }
         localStorage.unreadCount = unreadCount;
-        localStorage.newsList = JSON.stringify(newsList); // New || Updated
         return;
       }
       
@@ -477,8 +480,6 @@ var News = {
         if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
         Browser.setBadgeText(maxNewsAmount + '+');
         localStorage.unreadCount = maxNewsAmount;
-        // New or updated?
-        localStorage.newsList = JSON.stringify(newsList); // New || Updated
         return;
       }
     });
