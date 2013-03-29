@@ -30,6 +30,8 @@
 }
 
 .title {
+  /* DO NOT change this class unless you must, this class with is heavily
+  modified by the application when the user changes color palettes */
   display: block;
   color: @online-orange;
   text-transform: uppercase;
@@ -65,11 +67,13 @@ body {
 }
 
 #background {
+  /* DO NOT change this div unless you must, this div with it's background
+  image is heavily modified by the application when the user changes color
+  palettes */
+  position: fixed;
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
   background: url('/img/background-popup.png') center center no-repeat;
-  -webkit-filter: hue-rotate(0deg); /* will be tweaked later */
-  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -213,6 +217,9 @@ body {
   }
 
   #bus {
+    /* DO NOT change this div unless you must, this div with it's background
+    color is heavily modified by the application when the user changes color
+    palettes */
     .debugred;
     .fullbox;
 
