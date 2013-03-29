@@ -336,12 +336,15 @@ var News = {
     var items = [];
     var self = this;
     var count = 0;
+    // Add each item from the feed
     $(xml).find('item').each( function() {
       if (count++ < limit) {
         var item = self.parseItem(this, feedName);
         items.push(item);
       }
     });
+    // Finally add the feedName and call it back
+    items.feedName = feedName;
     callback(items);
   },
 
@@ -359,7 +362,6 @@ var News = {
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
     // Locally stored
     post.image = this.feeds[feedName]['image'];
-    post.feedName = feedName;
 
     // Check for image in rarely used <enclosure>-tag
     var enclosure = $(item).find('enclosure');
@@ -427,7 +429,8 @@ var News = {
     var maxNewsAmount = this.unreadMaxCount;
     if (items.length-1 < maxNewsAmount)
       maxNewsAmount = items.length-1;
-    var linkList = []; // New || Updated
+
+    var linkList = []; // Helps separate new and updated
 
     // Count feed items
     var self = this;
