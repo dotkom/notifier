@@ -68,8 +68,8 @@
 
   disableOnlineSpecificFeatures = function() {
     ls['showOffice'] = 'false';
+    ls['coffeeSubscription'] = 'false';
     return $('label[for="showOffice"]').slideUp('slow', function() {
-      ls['coffeeSubscription'] = 'false';
       return $('label[for="coffeeSubscription"]').slideUp('slow');
     });
   };

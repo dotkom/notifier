@@ -51,11 +51,12 @@ bindAffiliationSelector = ->
     Browser.getBackgroundProcess().updateNews()
 
 disableOnlineSpecificFeatures = ->
-  # Disable office status
+  # Disable office status and coffee subscription
   ls['showOffice'] = 'false'
+  ls['coffeeSubscription'] = 'false'
+  # Hide office status option
   $('label[for="showOffice"]').slideUp 'slow', ->
-    # Disable coffee subscription
-    ls['coffeeSubscription'] = 'false'
+    # Hide coffee subscription option
     $('label[for="coffeeSubscription"]').slideUp 'slow'
 
 enableOnlineSpecificFeatures = ->
