@@ -424,7 +424,7 @@ var News = {
     return post;
   },
 
-  unreadCount: function(items) {
+  unreadCountAndNotify: function(items) {
     var unreadCount = 0;
     var maxNewsAmount = this.unreadMaxCount;
     if (items.length-1 < maxNewsAmount)

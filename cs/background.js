@@ -91,7 +91,7 @@
         }
       } else {
         ls.feedItems = JSON.stringify(items);
-        return News.unreadCount(items);
+        return News.unreadCountAndNotify(items);
       }
     });
   };

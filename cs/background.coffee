@@ -67,7 +67,7 @@ updateNews = ->
       if DEBUG then console.log 'ERROR:', items
     else
       ls.feedItems = JSON.stringify items
-      News.unreadCount items
+      News.unreadCountAndNotify items
 
 # Document ready, go!
 $ ->
