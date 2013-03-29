@@ -79,13 +79,11 @@ updateHours = ->
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
-
   if !navigator.onLine
     $('#bus #first_bus .name').html ls.first_bus_name
     $('#bus #second_bus .name').html ls.second_bus_name
     $('#bus #first_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
     $('#bus #second_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-  
   else
     createBusDataRequest('first_bus', '#first_bus')
     createBusDataRequest('second_bus', '#second_bus')
@@ -164,12 +162,14 @@ displayItems = (items) ->
       # EXPLANATION NEEDED:
       # .item[data] contains the link
       # .item[name] contains the alternative link, if one exists, otherwise null
-      date = ''
+      date = altLink = ''
       if item.date isnt null
         date = ' den ' + item.date
+      if item.altLink isnt null
+        altLink = ' name="' + item.altLink + '"'
       htmlItem += item.title + '
         </div>
-          <div class="item" data="' + item.link + '" name="' + item.altLink + '">
+          <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
             <div class="textwrapper">
               <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
@@ -177,6 +177,7 @@ displayItems = (items) ->
             </div>
           </div>
         </div>'
+      console.log htmlItem ##################################### WAT SHER HER?
       $('#news').append htmlItem
   
   # Store list of last viewed items
@@ -264,12 +265,6 @@ $ ->
     if DEBUG then console.log 'Applying affiliation color', color
     cssMap = News.getColoringStyle color
     $('#background').css cssMap
-  
-  # Check for undefined in the lists of news' IDs
-  if ls.lastViewedIdList == undefined
-    ls.lastViewedIdList = JSON.stringify []
-  if ls.mostRecentIdList == undefined
-    ls.mostRecentIdList = JSON.stringify []
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

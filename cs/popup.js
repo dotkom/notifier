@@ -203,7 +203,7 @@
     updatedList = findUpdatedPosts(viewedList, newsList);
     idsOfLastViewed = [];
     $.each(items, function(index, item) {
-      var date, htmlItem, _ref;
+      var altLink, date, htmlItem, _ref;
       if (index < 4) {
         idsOfLastViewed.push(item.link);
         htmlItem = '<div class="post"><div class="title">';
@@ -214,13 +214,16 @@
             htmlItem += '<span class="unread">NEW <b>::</b> </span>';
           }
         }
-        date = '';
+        date = altLink = '';
         if (item.date !== null) {
           date = ' den ' + item.date;
         }
+        if (item.altLink !== null) {
+          altLink = ' name="' + item.altLink + '"';
+        }
         htmlItem += item.title + '\
         </div>\
-          <div class="item" data="' + item.link + '" name="' + item.altLink + '">\
+          <div class="item" data="' + item.link + '"' + altLink + '>\
             <img src="' + item.image + '" width="107" />\
             <div class="textwrapper">\
               <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>\
@@ -228,6 +231,7 @@
             </div>\
           </div>\
         </div>';
+        console.log(htmlItem);
         return $('#news').append(htmlItem);
       }
     });
@@ -328,12 +332,6 @@
       }
       cssMap = News.getColoringStyle(color);
       $('#background').css(cssMap);
-    }
-    if (ls.lastViewedIdList === void 0) {
-      ls.lastViewedIdList = JSON.stringify([]);
-    }
-    if (ls.mostRecentIdList === void 0) {
-      ls.mostRecentIdList = JSON.stringify([]);
     }
     $('#logo').click(function() {
       Browser.openTab(EXTENSION_WEBSITE);
