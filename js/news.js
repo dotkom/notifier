@@ -13,6 +13,7 @@ var News = {
   feeds: {
     // Linjeforeninger Gløshaugen
     'berg': {
+      'name': 'Bergstuderendes Forening',
       'feed': 'http://bergstud.no/feed/',
       'logo': '/org/berg/logo.png',
       'symbol': '/org/berg/symbol.png',
@@ -20,6 +21,7 @@ var News = {
       'color': 'grey',
     },
     'delta': {
+      'name': 'Delta',
       'feed': 'http://org.ntnu.no/delta/wp/?feed=rss2',
       'logo': '/org/delta/logo.png',
       'symbol': '/org/delta/symbol.png',
@@ -27,6 +29,7 @@ var News = {
       'color': 'green',
     },
     'emil': {
+      'name': 'Emil',
       'feed': 'http://emilweb.no/feed/',
       'logo': '/org/emil/logo.png',
       'symbol': '/org/emil/symbol.png',
@@ -34,6 +37,7 @@ var News = {
       'color': 'green',
     },
     'leonardo': {
+      'name': 'Leonardo',
       'feed': 'http://industrielldesign.com/feed',
       'logo': '/org/leonardo/logo.png',
       'symbol': '/org/leonardo/symbol.png',
@@ -41,6 +45,7 @@ var News = {
       'color': 'cyan',
     },
     'online': {
+      'name': 'Online',
       'feed': 'https://online.ntnu.no/feeds/news/',
       'logo': '/org/online/logo.png',
       'symbol': '/org/online/symbol.png',
@@ -48,6 +53,7 @@ var News = {
       'color': 'blue',
     },
     'nabla': {
+      'name': 'Nabla',
       'feed': 'http://nabla.no/feed/',
       'logo': '/org/nabla/logo.png',
       'symbol': '/org/nabla/symbol.png',
@@ -55,6 +61,7 @@ var News = {
       'color': 'red',
     },
     'spanskrøret': {
+      'name': 'Spanskrøret',
       'feed': 'http://spanskroret.no/feed/',
       'logo': '/org/spanskrøret/logo.png',
       'symbol': '/org/spanskrøret/symbol.png',
@@ -62,6 +69,7 @@ var News = {
       'color': 'grey',
     },
     'volvox': {
+      'name': 'Volvox & Alkymisten',
       'feed': 'http://org.ntnu.no/volvox/feed/',
       'logo': '/org/volvox/logo.png',
       'symbol': '/org/volvox/symbol.png',
@@ -71,6 +79,7 @@ var News = {
 
     // Linjeforeninger Dragvoll
     'dionysos': {
+      'name': 'Dionysos',
       'feed': 'http://dionysosntnu.wordpress.com/feed/',
       'logo': '/org/dionysos/logo.png',
       'symbol': '/org/dionysos/symbol.png',
@@ -78,6 +87,7 @@ var News = {
       'color': 'grey',
     },
     'erudio': {
+      'name': 'Erudio',
       'feed': 'http://www.erudiontnu.org/?feed=rss2',
       'logo': '/org/erudio/logo.png',
       'symbol': '/org/erudio/symbol.png',
@@ -85,6 +95,7 @@ var News = {
       'color': 'red',
     },
     'geolf': {
+      'name': 'Geolf',
       'feed': 'http://geolf.org/feed/',
       'logo': '/org/geolf/logo.png',
       'symbol': '/org/geolf/symbol.png',
@@ -92,6 +103,7 @@ var News = {
       'color': 'blue',
     },
     'gengangere': {
+      'name': 'Gengangere',
       'feed': 'http://www.gengangere.no/feed/',
       'logo': '/org/gengangere/logo.png',
       'symbol': '/org/gengangere/symbol.png',
@@ -99,6 +111,7 @@ var News = {
       'color': 'grey',
     },
     'jump cut': {
+      'name': 'Jump Cut',
       'feed': 'http://jumpcutdragvoll.wordpress.com/feed/',
       'logo': '/org/jump cut/logo.png',
       'symbol': '/org/jump cut/symbol.png',
@@ -106,6 +119,7 @@ var News = {
       'color': 'grey',
     },
     'ludimus': {
+      'name': 'Ludimus',
       'feed': 'http://ludimus.org/feed/',
       'logo': '/org/ludimus/logo.png',
       'symbol': '/org/ludimus/symbol.png',
@@ -113,6 +127,7 @@ var News = {
       'color': 'red',
     },
     'primetime': {
+      'name': 'Primetime',
       'feed': 'http://www.primetime.trondheim.no/feed/',
       'logo': '/org/primetime/logo.png',
       'symbol': '/org/primetime/symbol.png',
@@ -120,6 +135,7 @@ var News = {
       'color': 'cyan',
     },
     'sturm und drang': {
+      'name': 'Sturm Und Drang',
       'feed': 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
       'logo': '/org/sturm und drang/logo.png',
       'symbol': '/org/sturm und drang/symbol.png',
@@ -129,6 +145,7 @@ var News = {
 
     // Linjeforeninger HiST/DMMH/TJSF/BI
     'fraktur': {
+      'name': 'Fraktur',
       'feed': 'http://www.fraktur.no/feed/',
       'logo': '/org/fraktur/logo.png',
       'symbol': '/org/fraktur/symbol.png',
@@ -136,6 +153,7 @@ var News = {
       'color': 'cyan',
     },
     'kom': {
+      'name': 'KOM',
       'feed': 'http://kjemiogmaterial.wordpress.com/feed/',
       'logo': '/org/kom/logo.png',
       'symbol': '/org/kom/symbol.png',
@@ -143,6 +161,7 @@ var News = {
       'color': 'cyan',
     },
     'logistikkstudentene': {
+      'name': 'Logistikkstudentene',
       'feed': 'http://www.logistikkstudentene.no/?feed=rss2',
       'logo': '/org/logistikkstudentene/logo.png',
       'symbol': '/org/logistikkstudentene/symbol.png',
@@ -150,6 +169,7 @@ var News = {
       'color': 'cyan',
     },
     'tihlde': {
+      'name': 'TIHLDE',
       'feed': 'http://tihlde.org/feed/',
       'logo': '/org/tihlde/logo.png',
       'symbol': '/org/tihlde/symbol.png',
@@ -157,6 +177,7 @@ var News = {
       'color': 'blue',
     },
     'tim og shænko': {
+      'name': 'Tim & Shænko',
       'feed': 'http://bygging.no/feed/',
       'logo': '/org/tim og shænko/logo.png',
       'symbol': '/org/tim og shænko/symbol.png',
@@ -164,6 +185,7 @@ var News = {
       'color': 'blue',
     },
     'tjsf': {
+      'name': 'TJSF',
       'feed': 'http://tjsf.no/feed/',
       'logo': '/org/tjsf/logo.png',
       'symbol': '/org/tjsf/symbol.png',
@@ -173,6 +195,7 @@ var News = {
 
     // Studentmedier
     'dusken': {
+      'name': 'Dusken.no',
       'feed': 'http://dusken.no/feed/',
       'logo': '/org/dusken/logo.png',
       'symbol': '/org/dusken/symbol.png',
@@ -180,6 +203,7 @@ var News = {
       'color': 'grå',
     },
     'universitetsavisa': {
+      'name': 'Universitetsavisa',
       'feed': 'http://www.universitetsavisa.no/?service=rss',
       'logo': '/org/universitetsavisa/logo.png',
       'symbol': '/org/universitetsavisa/symbol.png',
@@ -189,6 +213,7 @@ var News = {
 
     // Store studentorganisasjoner
     'samfundet': {
+      'name': 'Studentersamfundet',
       'feed': 'http://www.samfundet.no/arrangement/rss',
       'logo': '/org/samfundet/logo.png',
       'symbol': '/org/samfundet/symbol.png',
@@ -198,6 +223,7 @@ var News = {
 
     // Studentdemokrati
     'velferdstinget': {
+      'name': 'Velferdstinget',
       'feed': 'http://www.velferdstinget.no/feed/rss/',
       'logo': '/org/velferdstinget/logo.png',
       'symbol': '/org/velferdstinget/symbol.png',
@@ -205,6 +231,7 @@ var News = {
       'color': 'cyan',
     },
     'studenttinget ntnu': {
+      'name': 'Studenttinget NTNU',
       'feed': 'http://www.studenttinget.no/feed/',
       'logo': '/org/studenttinget ntnu/logo.png',
       'symbol': '/org/studenttinget ntnu/symbol.png',
@@ -212,6 +239,7 @@ var News = {
       'color': 'red',
     },
     'studentparlamentet hist': {
+      'name': 'Studentparlamentet HiST',
       'feed': 'http://studentparlamentet.com/?feed=rss2',
       'logo': '/org/studentparlamentet hist/logo.png',
       'symbol': '/org/studentparlamentet hist/symbol.png',
@@ -221,6 +249,7 @@ var News = {
     
     // Institusjoner
     'ntnu': {
+      'name': 'NTNU',
       'feed': 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
       'logo': '/org/ntnu/logo.png',
       'symbol': '/org/ntnu/symbol.png',
@@ -228,6 +257,7 @@ var News = {
       'color': 'blue',
     },
     'rektoratet ntnu': {
+      'name': 'Rektoratet NTNU',
       'feed': 'http://www.ntnu.no/blogger/rektoratet/feed/',
       'logo': '/org/rektoratet ntnu/logo.png',
       'symbol': '/org/rektoratet ntnu/symbol.png',
@@ -235,6 +265,7 @@ var News = {
       'color': 'blue',
     },
     'hist': {
+      'name': 'HiST',
       'feed': 'http://hist.no/rss.ap?thisId=1393',
       'logo': '/org/hist/logo.png',
       'symbol': '/org/hist/symbol.png',
@@ -242,6 +273,7 @@ var News = {
       'color': 'blue',
     },
     'dmmh': {
+      'name': 'DMMH',
       'feed': 'http://www.dmmh.no/rss.php?type=site&id=10&location=393',
       'logo': '/org/dmmh/logo.png',
       'symbol': '/org/dmmh/symbol.png',
@@ -252,14 +284,14 @@ var News = {
 
   // How much hue must be rotated to achieve a specific color
   colors: {
-    'blue':    '-webkit-filter: grayscale(0), hue-rotate(0deg);',
-    'cyan':    '-webkit-filter: grayscale(0), hue-rotate(-31deg);',
-    'pink':    '-webkit-filter: grayscale(0), hue-rotate(92deg);',
-    'red':     '-webkit-filter: grayscale(0), hue-rotate(144deg);',
-    'purple':  '-webkit-filter: grayscale(0), hue-rotate(66deg);',
-    'green':   '-webkit-filter: grayscale(0), hue-rotate(-85deg);',
-    'grey':    '-webkit-filter: grayscale(1), hue-rotate(0deg);',
-    // 'yellow': '-webkit-filter: hue-rotate(-151deg); -webkit-filter: saturate(150%); -webkit-filter: brightness ellerno +20.......',
+    'blue':     {'-webkit-filter': 'hue-rotate(0deg)'},
+    'cyan':     {'-webkit-filter': 'hue-rotate(-31deg)'},
+    'pink':     {'-webkit-filter': 'hue-rotate(92deg)'},
+    'red':      {'-webkit-filter': 'hue-rotate(144deg)'},
+    'purple':   {'-webkit-filter': 'hue-rotate(66deg)'},
+    'green':    {'-webkit-filter': 'hue-rotate(-85deg)'},
+    'grey':     {'-webkit-filter': 'grayscale(1) hue-rotate(0deg)'},
+    'yellow':   {'-webkit-filter': 'hue-rotate(-151deg) saturate(1.5) brightness(1.2)'},
   },
 
   // Get is called by background.html periodically, with News.unreadCount as
