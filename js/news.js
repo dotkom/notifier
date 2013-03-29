@@ -250,6 +250,18 @@ var News = {
     },
   },
 
+  // How much hue must be rotated to achieve a specific color
+  colors: {
+    'blue':    '-webkit-filter: grayscale(0), hue-rotate(0deg);',
+    'cyan':    '-webkit-filter: grayscale(0), hue-rotate(-31deg);',
+    'pink':    '-webkit-filter: grayscale(0), hue-rotate(92deg);',
+    'red':     '-webkit-filter: grayscale(0), hue-rotate(144deg);',
+    'purple':  '-webkit-filter: grayscale(0), hue-rotate(66deg);',
+    'green':   '-webkit-filter: grayscale(0), hue-rotate(-85deg);',
+    'grey':    '-webkit-filter: grayscale(1), hue-rotate(0deg);',
+    // 'yellow': '-webkit-filter: hue-rotate(-151deg); -webkit-filter: saturate(150%); -webkit-filter: brightness ellerno +20.......',
+  },
+
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
