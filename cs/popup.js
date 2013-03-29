@@ -195,19 +195,19 @@
   };
 
   displayItems = function(items) {
-    var feedName, idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
+    var feedName, index, link, mostRecent, newsList, updatedList, viewedList, _results;
     mostRecent = items[0].link;
     ls.mostRecentRead = mostRecent;
     $('#news').html('');
     feedName = items.feedName;
-    viewedList = JSON.parse(ls.lastViewedIdList);
-    newsList = JSON.parse(ls.mostRecentIdList);
+    newsList = JSON.parse(ls.newsList);
+    viewedList = JSON.parse(ls.viewedNewsList);
     updatedList = findUpdatedPosts(viewedList, newsList);
-    idsOfLastViewed = [];
+    viewedList = [];
     $.each(items, function(index, item) {
       var altLink, date, htmlItem, _ref;
       if (index < newsLimit) {
-        idsOfLastViewed.push(item.link);
+        viewedList.push(item.link);
         htmlItem = '<div class="post"><div class="title">';
         if (index < ls.unreadCount) {
           if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
@@ -236,7 +236,7 @@
         return $('#news').append(htmlItem);
       }
     });
-    ls.lastViewedIdList = JSON.stringify(idsOfLastViewed);
+    ls.viewedNewsList = JSON.stringify(viewedList);
     Browser.setBadgeText('');
     ls.unreadCount = 0;
     $('.item').click(function() {
@@ -245,8 +245,8 @@
     });
     if (feedName === 'online') {
       _results = [];
-      for (index in idsOfLastViewed) {
-        link = idsOfLastViewed[index];
+      for (index in viewedList) {
+        link = viewedList[index];
         _results.push(News.online_getImage(link, function(link, image) {
           var altLink;
           $('.item[data="' + link + '"] img').attr('src', image);

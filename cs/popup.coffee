@@ -144,18 +144,18 @@ displayItems = (items) ->
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
-  viewedList = JSON.parse ls.lastViewedIdList
-  newsList = JSON.parse ls.mostRecentIdList
-  updatedList = findUpdatedPosts viewedList, newsList
+  newsList = JSON.parse ls.newsList
+  viewedList = JSON.parse ls.viewedNewsList
+  updatedList = findUpdatedPosts viewedList, newsList # Union
 
-  # Build list of last viewed for the next time the popup opens
-  idsOfLastViewed = []
+  # Build list of last viewed for the next time the user views the news
+  viewedList = []
 
   # Add feed items to popup
   $.each items, (index, item) ->
     
     if index < newsLimit
-      idsOfLastViewed.push item.link
+      viewedList.push item.link
       
       htmlItem = '<div class="post"><div class="title">'
       if index < ls.unreadCount
@@ -185,7 +185,7 @@ displayItems = (items) ->
       $('#news').append htmlItem
   
   # Store list of last viewed items
-  ls.lastViewedIdList = JSON.stringify idsOfLastViewed
+  ls.viewedNewsList = JSON.stringify viewedList
 
   # All items are now considered read
   Browser.setBadgeText ''
@@ -201,7 +201,7 @@ displayItems = (items) ->
   # Online specific stuff
   if feedName is 'online'
     # Fetch images from the API asynchronously
-    for index, link of idsOfLastViewed
+    for index, link of viewedList
       News.online_getImage link, (link, image) ->
         # It's important to get the link from the callback, not the above code
         # in order to have the right link at the right time, async ftw.

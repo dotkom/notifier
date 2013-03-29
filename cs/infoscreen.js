@@ -107,19 +107,19 @@
   };
 
   displayItems = function(items) {
-    var feedName, idsOfLastViewed, index, link, mostRecent, newsList, updatedList, viewedList, _results;
+    var feedName, index, link, mostRecent, newsList, updatedList, viewedList, _results;
     mostRecent = items[0].link;
     ls.mostRecentRead = mostRecent;
     $('#news').html('');
     feedName = items.feedName;
-    viewedList = JSON.parse(ls.lastViewedIdList);
-    newsList = JSON.parse(ls.mostRecentIdList);
+    newsList = JSON.parse(ls.newsList);
+    viewedList = JSON.parse(ls.viewedNewsList);
     updatedList = findUpdatedPosts(viewedList, newsList);
-    idsOfLastViewed = [];
+    viewedList = [];
     $.each(items, function(index, item) {
       var altLink, date, htmlItem, _ref;
       if (index < newsLimit) {
-        idsOfLastViewed.push(item.link);
+        viewedList.push(item.link);
         htmlItem = '<div class="post"><div class="title">';
         if (index < ls.unreadCount) {
           if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
@@ -148,7 +148,7 @@
         return $('#news').append(htmlItem);
       }
     });
-    ls.lastViewedIdList = JSON.stringify(idsOfLastViewed);
+    ls.viewedNewsList = JSON.stringify(viewedList);
     Browser.setBadgeText('');
     ls.unreadCount = 0;
     $('.item').click(function() {
@@ -157,8 +157,8 @@
     });
     if (feedName === 'online') {
       _results = [];
-      for (index in idsOfLastViewed) {
-        link = idsOfLastViewed[index];
+      for (index in viewedList) {
+        link = viewedList[index];
         _results.push(News.online_getImage(link, function(link, image) {
           var altLink;
           $('.item[data="' + link + '"] img').attr('src', image);
@@ -172,29 +172,19 @@
     }
   };
 
-  findUpdatedPosts = function() {
-    var news, newsList, updatedList, viewed, viewedList, _i, _j, _len, _len1;
-    if (ls.lastViewedIdList === void 0) {
-      ls.lastViewedIdList = JSON.stringify([]);
-      return [];
-    } else if (ls.mostRecentIdList === void 0) {
-      ls.mostRecentIdList = JSON.stringify([]);
-      return [];
-    } else {
-      viewedList = JSON.parse(ls.lastViewedIdList);
-      newsList = JSON.parse(ls.mostRecentIdList);
-      updatedList = [];
-      for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
-        viewed = viewedList[_i];
-        for (_j = 0, _len1 = newsList.length; _j < _len1; _j++) {
-          news = newsList[_j];
-          if (viewedList[viewed] === newsList[news]) {
-            updatedList.push(viewedList[viewed]);
-          }
+  findUpdatedPosts = function(viewedList, newsList) {
+    var news, updatedList, viewed, _i, _j, _len, _len1;
+    updatedList = [];
+    for (_i = 0, _len = viewedList.length; _i < _len; _i++) {
+      viewed = viewedList[_i];
+      for (_j = 0, _len1 = newsList.length; _j < _len1; _j++) {
+        news = newsList[_j];
+        if (viewedList[viewed] === newsList[news]) {
+          updatedList.push(viewedList[viewed]);
         }
       }
-      return updatedList;
     }
+    return updatedList;
   };
 
   updateBus = function() {

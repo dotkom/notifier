@@ -430,7 +430,7 @@ var News = {
     if (items.length-1 < maxNewsAmount)
       maxNewsAmount = items.length-1;
 
-    var linkList = []; // Helps separate new and updated
+    var newsList = []; // Helps separate new and updated
 
     // Count feed items
     var self = this;
@@ -443,7 +443,8 @@ var News = {
       if (link != localStorage.mostRecentRead) {
         unreadCount++;
 
-        linkList.push(link); // New || Updated
+        newsList.push(link); // New || Updated
+
         // Send a desktop notification about the first unread item
         if (unreadCount == 1) {
           if (localStorage.lastNotified != link) {
@@ -467,7 +468,7 @@ var News = {
           Browser.setBadgeText(String(unreadCount));
         }
         localStorage.unreadCount = unreadCount;
-        localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
+        localStorage.newsList = JSON.stringify(newsList); // New || Updated
         return false;
       }
       
@@ -477,7 +478,7 @@ var News = {
         Browser.setBadgeText(maxNewsAmount + '+');
         localStorage.unreadCount = maxNewsAmount;
         // New or updated?
-        localStorage.mostRecentLinkList = JSON.stringify(linkList); // New || Updated
+        localStorage.newsList = JSON.stringify(newsList); // New || Updated
         return false;
       }
     });
