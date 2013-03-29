@@ -3,6 +3,8 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
+newsLimit = 4 # The best amount of news for the popup, IMO
+
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
@@ -134,7 +136,7 @@ displayItems = (items) ->
   # Find most recent post and save it
   mostRecent = items[0].link
   ls.mostRecentRead = mostRecent
-  
+
   # Empty the newsbox
   $('#news').html ''
   # Get feedname
@@ -152,7 +154,7 @@ displayItems = (items) ->
   # Add feed items to popup
   $.each items, (index, item) ->
     
-    if index < 4 # The best amount of news for the popup, IMO
+    if index < newsLimit
       idsOfLastViewed.push item.link
       
       htmlItem = '<div class="post"><div class="title">'

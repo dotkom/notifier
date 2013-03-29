@@ -3,6 +3,8 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
+newsLimit = 8 # The most news you can cram into Infoscreen, if other features are disabled
+
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
@@ -80,7 +82,7 @@ displayItems = (items) ->
   # Add feed items to popup
   $.each items, (index, item) ->
     
-    if index < 8 # The most news you can cram into Infoscreen, if other features are disabled
+    if index < newsLimit
       idsOfLastViewed.push item.link
       
       htmlItem = '<div class="post"><div class="title">'
