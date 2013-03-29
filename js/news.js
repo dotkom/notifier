@@ -343,8 +343,6 @@ var News = {
         items.push(item);
       }
     });
-    // Finally add the feedName and call it back
-    items.feedName = feedName;
     callback(items);
   },
 
@@ -362,6 +360,8 @@ var News = {
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
     // Locally stored
     post.image = this.feeds[feedName]['image'];
+    // Tag the posts with the name of the feed they came from
+    post.feedName = feedName
 
     // Check for image in rarely used <enclosure>-tag
     var enclosure = $(item).find('enclosure');

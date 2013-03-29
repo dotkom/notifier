@@ -61,14 +61,10 @@ updateNews = ->
     $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+chosenAffiliation+'</div></div>'
 
 displayItems = (items) ->
-  # Find most recent post and save it
-  # mosatRecent = items[0].link
-  # ls.moastRecentRead = moastRecent
-
   # Empty the newsbox
   $('#news').html ''
   # Get feedname
-  feedName = items.feedName
+  feedName = items[0].feedName
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
