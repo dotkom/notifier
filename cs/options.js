@@ -48,7 +48,7 @@
     chosenAffiliation = ls[selector];
     $('#' + selector + '[value="' + chosenAffiliation + '"]').prop('selected', 'selected');
     return $('#' + selector).change(function() {
-      var color, oldAffiliation;
+      var color, oldAffiliation, symbol;
       chosenAffiliation = $(this).val();
       oldAffiliation = ls[selector];
       if (oldAffiliation === 'online') {
@@ -61,6 +61,11 @@
       if (color !== void 0 && color !== '') {
         $('#affiliationColorSelector').val(color);
         ls['affiliationColor'] = color;
+      }
+      symbol = Affiliation.org[chosenAffiliation].symbol;
+      if (symbol !== void 0 && symbol !== '') {
+        Browser.setIcon(symbol);
+        ls['affiliationSymbol'] = symbol;
       }
       return Browser.getBackgroundProcess().updateNews();
     });
