@@ -1,4 +1,5 @@
 var Affiliation = {
+  debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
   org: {
@@ -271,6 +272,31 @@ var Affiliation = {
       'placeholder': '/org/dmmh/placeholder.png',
       'color': 'red',
     },
+  },
+
+  // Organization specific functions
+
+  online_getImage: function(link, callback) {
+    var id = link.split('/')[4]; // id is stored in the link
+    var image = 'undefined';
+    var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
+    var self = this;
+    $.getJSON(api + id, function(json) {
+      if (json['online_news_image']) {
+        image = json['online_news_image']['0']['image'];
+        callback(link, image);
+      }
+      else {
+        image = this.images['online'].image;
+        if (self.debug) console.log('ERROR: no image exists for id: ' + id);
+        callback(link, image);
+      }
+    })
+    .error(function() {
+      image = self.images['online'].image;
+      if (self.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
+      callback(link, image);
+    });
   },
 
 }
