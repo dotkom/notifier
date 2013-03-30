@@ -262,14 +262,16 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  # Show the logo and placeholder image for the correct organization
   if ls.affiliationName isnt 'online'
+    # Hide chat button
+    $('#chatter_button').hide()
+    # Show the logo and placeholder image for the correct organization
     affiliation = ls.affiliationName
     # If the affiliation has a defined logo
-    logo = Affiliation.org[affiliation].logo
-    if logo isnt undefined and logo isnt ''
-      if DEBUG then console.log 'Applying affiliation logo', logo
-      $('#header #logo').prop 'src', logo
+    symbol = Affiliation.org[affiliation].symbol
+    if symbol isnt undefined and symbol isnt ''
+      if DEBUG then console.log 'Applying affiliation symbol', symbol
+      $('#header #logo').prop 'src', symbol
   
   # Show the color palette the user has chosen
   color = ls['affiliationColor']

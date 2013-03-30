@@ -308,7 +308,7 @@
   };
 
   $(function() {
-    var affiliation, color, cssMap, logo;
+    var affiliation, color, cssMap, symbol;
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
@@ -328,13 +328,14 @@
       $('#bus').hide();
     }
     if (ls.affiliationName !== 'online') {
+      $('#chatter_button').hide();
       affiliation = ls.affiliationName;
-      logo = Affiliation.org[affiliation].logo;
-      if (logo !== void 0 && logo !== '') {
+      symbol = Affiliation.org[affiliation].symbol;
+      if (symbol !== void 0 && symbol !== '') {
         if (DEBUG) {
-          console.log('Applying affiliation logo', logo);
+          console.log('Applying affiliation symbol', symbol);
         }
-        $('#header #logo').prop('src', logo);
+        $('#header #logo').prop('src', symbol);
       }
     }
     color = ls['affiliationColor'];
