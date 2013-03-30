@@ -117,7 +117,8 @@ body {
   border: 0pt solid #ffff00;
   float: right;
   cursor: pointer;
-  width: 140pt;
+  max-width: 140pt;
+  max-height: 50pt;
 }
 #container #todays {
   border: 0pt solid #ffff00;
