@@ -51,7 +51,10 @@
   };
 
   $(function() {
-    return setNotification();
+    setNotification();
+    return setTimeout((function() {
+      return window.close();
+    }), 5500);
   });
 
 }).call(this);
