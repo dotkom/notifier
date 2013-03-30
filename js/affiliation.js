@@ -47,6 +47,32 @@ var Affiliation = {
       placeholder: '/org/leonardo/placeholder.png',
       color: 'cyan',
       useAltLink: false,
+      getImages: function(links, callback) {
+        var self = this;
+        $.ajax({
+          url: 'http://industrielldesign.com/',
+          dataType: 'html',
+          success: function(html) {
+            try {
+              var images = [];
+              for (i in links) {
+                var realLink = links[i].split('?')[0];
+                var image = $(html).find('a[href="'+realLink+'"] img').attr('src');
+                images.push(image);
+              }
+              callback(links, images);
+            }
+            catch (e) {
+              if (this.debug) console.log('ERROR: could not parse Leonardo\'s website');
+              callback(undefined);
+            }
+          },
+          error: function(e) {
+            if (this.debug) console.log('ERROR: could not fetch Leonardo\'s website');
+            callback(undefined);
+          },
+        });
+      },
     },
     'online': {
       name: 'Online',
