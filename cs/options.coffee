@@ -517,7 +517,7 @@ fadeInCanvas = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    # $('#debug_links').show()
+    $('#debug_links').show()
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
   
