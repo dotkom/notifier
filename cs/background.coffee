@@ -73,6 +73,13 @@ updateNews = ->
         News.unreadCountAndNotify items
         News.refreshNewsIdList items
 
+loadAffiliationIcon = ->
+  symbol = ls.affiliationSymbol
+  if symbol isnt undefined and symbol isnt ''
+    Browser.setIcon ls.affiliationSymbol
+  else
+    if DEBUG then console.log 'ERROR: tried to load empty/undefined affiliation icon'
+
 # Document ready, go!
 $ ->
   # Setting the timeout for all AJAX and JSON requests
@@ -104,37 +111,36 @@ $ ->
     ls.showBus = 'true'
 
   # If any of these properties are undefined we'll reset all of them
-  first_bus_props = [
-    ls.first_bus,
-    ls.first_bus_name,
-    ls.first_bus_direction,
-    ls.first_bus_active_lines,
-    ls.first_bus_inactive_lines,
+  firstBusProps = [
+    ls.firstBus,
+    ls.firstBusName,
+    ls.firstBusDirection,
+    ls.firstBusActiveLines,
+    ls.firstBusInactiveLines,
   ]
-  second_bus_props = [
-    ls.second_bus,
-    ls.second_bus_name,
-    ls.second_bus_direction,
-    ls.second_bus_active_lines,
-    ls.second_bus_inactive_lines,
+  secondBusProps = [
+    ls.secondBus,
+    ls.secondBusName,
+    ls.secondBusDirection,
+    ls.secondBusActiveLines,
+    ls.secondBusInactiveLines,
   ]
   firstBusOk = true
   secondBusOk = true
-  # Lol, CoffeeScript at it's best
-  firstBusOk = false for prop in first_bus_props when prop is undefined
-  secondBusOk = false for prop in second_bus_props when prop is undefined
+  firstBusOk = false for prop in firstBusProps when prop is undefined
+  secondBusOk = false for prop in secondBusProps when prop is undefined
   if !firstBusOk
-    ls.first_bus = 16011333
-    ls.first_bus_name = 'Gløshaugen Nord'
-    ls.first_bus_direction = 'til byen'
-    ls.first_bus_active_lines = JSON.stringify [5, 22]
-    ls.first_bus_inactive_lines = JSON.stringify [169]
+    ls.firstBus = 16011333
+    ls.firstBusName = 'Gløshaugen Nord'
+    ls.firstBusDirection = 'til byen'
+    ls.firstBusActiveLines = JSON.stringify [5, 22]
+    ls.firstBusInactiveLines = JSON.stringify [169]
   if !secondBusOk
-    ls.second_bus = 16010333
-    ls.second_bus_name = 'Gløshaugen Nord'
-    ls.second_bus_direction = 'fra byen'
-    ls.second_bus_active_lines = JSON.stringify [5, 22]
-    ls.second_bus_inactive_lines = JSON.stringify [169]
+    ls.secondBus = 16010333
+    ls.secondBusName = 'Gløshaugen Nord'
+    ls.secondBusDirection = 'fra byen'
+    ls.secondBusActiveLines = JSON.stringify [5, 22]
+    ls.secondBusInactiveLines = JSON.stringify [169]
   
   if ls.showOffice is undefined
     ls.showOffice = 'true'
@@ -163,11 +169,9 @@ $ ->
   # Open options page after install
   if ls.everConnected is undefined and !DEBUG
     Browser.openTab 'options.html'
-
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
     Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
@@ -175,10 +179,7 @@ $ ->
   # Set default vars for main loop
   ls.everConnected = ls.wasConnected = 'false'
 
-  # Load affiliation icon
-  symbol = ls.affiliationSymbol
-  if symbol isnt undefined and symbol isnt ''
-      Browser.setIcon symbol
+  loadAffiliationIcon()
 
   # Reload the page once every day
   setInterval ( ->
@@ -192,6 +193,7 @@ $ ->
   window.updateOfficeAndMeetings = updateOfficeAndMeetings
   window.updateCoffeeSubscription = updateCoffeeSubscription
   window.updateNews = updateNews
+  window.loadAffiliationIcon = loadAffiliationIcon
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()
