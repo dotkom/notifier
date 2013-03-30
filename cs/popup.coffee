@@ -208,6 +208,12 @@ displayItems = (items) ->
         # in order to have the right link at the right time, async ftw.
         $('.item[data="'+link+'"] img').attr 'src', image
 
+  # If the organization has it's own getImages function, use it
+  if Affiliation.org[feedKey].getImages isnt undefined
+    Affiliation.org[feedKey].getImages viewedList, (links, images) ->
+      for index of links
+        $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
+
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
   updatedList = []

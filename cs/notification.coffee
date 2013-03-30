@@ -34,10 +34,16 @@ setNotification = ->
       </div>
       </a>'
 
+    # If the organization has an image API, use it
     if Affiliation.org[feedKey].getImage isnt undefined
-      # If the organization has an image API, use it
       Affiliation.org[feedKey].getImage link, (link, image) ->
         $('img').prop 'src', image
+
+    if Affiliation.org[feedKey].getImages isnt undefined
+      links = []
+      links.push link
+      Affiliation.org[feedKey].getImages links, (links, images) ->
+        $('img').attr 'src', images[0]
 
   catch e
     log 'ERROR in desktop notification', e
@@ -46,8 +52,8 @@ setNotification = ->
 # in a Chrome version back in 2012. Use the background process to
 # log debug messages out.
 # https://code.google.com/p/chromium/issues/detail?id=162724
-log = (object) ->
-  if DEBUG then Browser.getBackgroundProcess().console.log object
+log = (object...) ->
+  if !DEBUG then Browser.getBackgroundProcess().console.log object...
 
 # show the html5 notification with timeout when the document is ready
 $ ->
