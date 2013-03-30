@@ -195,9 +195,9 @@
   };
 
   displayItems = function(items) {
-    var feedName, index, link, newsList, updatedList, viewedList, _results;
+    var altLink, feedKey, index, link, newsList, updatedList, viewedList, _results;
     $('#news').html('');
-    feedName = items[0].feedName;
+    feedKey = items[0].feedKey;
     newsList = JSON.parse(ls.newsList);
     viewedList = JSON.parse(ls.viewedNewsList);
     updatedList = findUpdatedPosts(newsList, viewedList);
@@ -241,17 +241,18 @@
       Browser.openTab($(this).attr('data'));
       return window.close();
     });
-    if (feedName === 'online') {
+    if (Affiliation.org[feedKey].useAltLink) {
+      altLink = $('.item[data="' + link + '"]').attr('name');
+      if (altLink !== 'null') {
+        $('.item[data="' + link + '"]').attr('data', altLink);
+      }
+    }
+    if (Affiliation.org[feedKey].getImage !== void 0) {
       _results = [];
       for (index in viewedList) {
         link = viewedList[index];
-        _results.push(Affiliation.online_getImage(link, function(link, image) {
-          var altLink;
-          $('.item[data="' + link + '"] img').attr('src', image);
-          altLink = $('.item[data="' + link + '"]').attr('name');
-          if (altLink !== 'null') {
-            return $('.item[data="' + link + '"]').attr('data', altLink);
-          }
+        _results.push(Affiliation.org[feedKey].getImage(link, function(link, image) {
+          return $('.item[data="' + link + '"] img').attr('src', image);
         }));
       }
       return _results;

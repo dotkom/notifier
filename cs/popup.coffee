@@ -136,7 +136,7 @@ displayItems = (items) ->
   # Empty the newsbox
   $('#news').html ''
   # Get feedname
-  feedName = items[0].feedName
+  feedKey = items[0].feedKey
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
@@ -194,18 +194,19 @@ displayItems = (items) ->
     Browser.openTab $(this).attr 'data'
     window.close()
 
-  # Online specific stuff
-  if feedName is 'online'
-    # Fetch images from the API asynchronously
+  # If organization prefers alternative links, use them
+  if Affiliation.org[feedKey].useAltLink
+    altLink = $('.item[data="'+link+'"]').attr 'name'
+    if altLink isnt 'null'
+      $('.item[data="'+link+'"]').attr 'data', altLink
+
+  # If the organization has it's own getImage function, use it
+  if Affiliation.org[feedKey].getImage isnt undefined
     for index, link of viewedList
-      Affiliation.online_getImage link, (link, image) ->
+      Affiliation.org[feedKey].getImage link, (link, image) ->
         # It's important to get the link from the callback, not the above code
         # in order to have the right link at the right time, async ftw.
         $('.item[data="'+link+'"] img').attr 'src', image
-        # When that's done for an image, check if the link could be a better one
-        altLink = $('.item[data="'+link+'"]').attr 'name'
-        if altLink isnt 'null'
-          $('.item[data="'+link+'"]').attr 'data', altLink
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
