@@ -136,22 +136,22 @@
       console.log('updateBus');
     }
     if (!navigator.onLine) {
-      $('#bus #first_bus .name').html(ls.first_bus_name);
-      $('#bus #second_bus .name').html(ls.second_bus_name);
-      $('#bus #first_bus .first .line').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
-      return $('#bus #second_bus .first .line').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
+      $('#bus #firstBus .name').html(ls.firstBusName);
+      $('#bus #secondBus .name').html(ls.secondBusName);
+      $('#bus #firstBus .first .line').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
+      return $('#bus #secondBus .first .line').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
     } else {
-      createBusDataRequest('first_bus', '#first_bus');
-      return createBusDataRequest('second_bus', '#second_bus');
+      createBusDataRequest('firstBus', '#firstBus');
+      return createBusDataRequest('secondBus', '#secondBus');
     }
   };
 
   createBusDataRequest = function(bus, cssIdentificator) {
     var activeLines;
-    activeLines = ls[bus + '_active_lines'];
+    activeLines = ls[bus + 'ActiveLines'];
     activeLines = JSON.parse(activeLines);
     return Bus.get(ls[bus], activeLines, function(lines) {
-      return insertBusInfo(lines, ls[bus + '_name'], cssIdentificator);
+      return insertBusInfo(lines, ls[bus + 'Name'], cssIdentificator);
     });
   };
 

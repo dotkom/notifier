@@ -215,7 +215,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#container #bus #first_bus {
+#container #bus #firstBus {
   border: 0pt solid #00ff00;
   position: relative;
   float: left;
@@ -223,7 +223,7 @@ body {
   padding-top: 10pt;
   width: 42%;
 }
-#container #bus #second_bus {
+#container #bus #secondBus {
   border: 0pt solid #00ff00;
   width: 42%;
   position: relative;

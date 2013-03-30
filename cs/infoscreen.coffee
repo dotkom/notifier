@@ -161,21 +161,21 @@ updateBus = ->
   if DEBUG then console.log 'updateBus'
 
   if !navigator.onLine
-    $('#bus #first_bus .name').html ls.first_bus_name
-    $('#bus #second_bus .name').html ls.second_bus_name
-    $('#bus #first_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #second_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #firstBus .name').html ls.firstBusName
+    $('#bus #secondBus .name').html ls.secondBusName
+    $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
 
   else
-    createBusDataRequest('first_bus', '#first_bus')
-    createBusDataRequest('second_bus', '#second_bus')
+    createBusDataRequest('firstBus', '#firstBus')
+    createBusDataRequest('secondBus', '#secondBus')
 
 createBusDataRequest = (bus, cssIdentificator) ->
-  activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
+  activeLines = ls[bus+'ActiveLines'] # array of lines stringified with JSON (hopefully)
   activeLines = JSON.parse activeLines
   # Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get ls[bus], activeLines, (lines) ->
-    insertBusInfo lines, ls[bus+'_name'], cssIdentificator
+    insertBusInfo lines, ls[bus+'Name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator

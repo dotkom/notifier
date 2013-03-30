@@ -112,7 +112,7 @@
       if (DEBUG) {
         console.log('focus - clear field and show saved value as placeholder');
       }
-      ls.busStopClickedAway = ls[busField + '_name'];
+      ls.busStopClickedAway = ls[busField + 'Name'];
       $(stop).val('');
       return $(stop).attr('placeholder', ls.busStopClickedAway);
     });
@@ -348,10 +348,10 @@
       return inactiveLines.push(Number($(this).text()));
     });
     ls[busField] = busStopId;
-    ls[busField + '_name'] = stopName;
-    ls[busField + '_direction'] = direction;
-    ls[busField + '_active_lines'] = JSON.stringify(activeLines);
-    ls[busField + '_inactive_lines'] = JSON.stringify(inactiveLines);
+    ls[busField + 'Name'] = stopName;
+    ls[busField + 'Direction'] = direction;
+    ls[busField + 'ActiveLines'] = JSON.stringify(activeLines);
+    ls[busField + 'InactiveLines'] = JSON.stringify(inactiveLines);
     if (DEBUG) {
       console.log('saved activeLines for ' + busField, '"', activeLines, '"');
     }
@@ -367,10 +367,10 @@
   loadBus = function(busField) {
     var activeLines, counter, cssSelector, direction, i, inactiveLines, keys, line, lines, status, stopName, _i, _j, _k, _len, _len1, _len2;
     cssSelector = '#' + busField;
-    stopName = ls[busField + '_name'];
-    direction = ls[busField + '_direction'];
-    activeLines = ls[busField + '_active_lines'];
-    inactiveLines = ls[busField + '_inactive_lines'];
+    stopName = ls[busField + 'Name'];
+    direction = ls[busField + 'Direction'];
+    activeLines = ls[busField + 'ActiveLines'];
+    inactiveLines = ls[busField + 'InactiveLines'];
     if (stopName !== void 0 && direction !== void 0) {
       $(cssSelector + ' input').val(stopName);
       $(cssSelector + ' select').val(direction);
@@ -593,8 +593,8 @@
     bindAffiliationColorSelector();
     bindCantinaSelector('left_cantina');
     bindCantinaSelector('right_cantina');
-    bindBusFields('first_bus');
-    bindBusFields('second_bus');
+    bindBusFields('firstBus');
+    bindBusFields('secondBus');
     slideFavoriteBusLines();
     Stops.load();
     if (BROWSER === 'Opera') {

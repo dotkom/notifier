@@ -101,7 +101,7 @@ bindBusFields = (busField) ->
     
     # Clear stop field on click
     if DEBUG then console.log 'focus - clear field and show saved value as placeholder'
-    ls.busStopClickedAway = ls[busField+'_name']
+    ls.busStopClickedAway = ls[busField+'Name']
     $(stop).val ''
     $(stop).attr 'placeholder', ls.busStopClickedAway
 
@@ -332,10 +332,10 @@ saveBus = (busField) ->
   
   # Save all to localStorage
   ls[busField] = busStopId
-  ls[busField + '_name'] = stopName
-  ls[busField + '_direction'] = direction
-  ls[busField + '_active_lines'] = JSON.stringify activeLines
-  ls[busField + '_inactive_lines'] = JSON.stringify inactiveLines
+  ls[busField + 'Name'] = stopName
+  ls[busField + 'Direction'] = direction
+  ls[busField + 'ActiveLines'] = JSON.stringify activeLines
+  ls[busField + 'InactiveLines'] = JSON.stringify inactiveLines
   if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"' ######################################
   if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"' ######################################
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
@@ -343,10 +343,10 @@ saveBus = (busField) ->
 
 loadBus = (busField) ->
   cssSelector = '#' + busField
-  stopName = ls[busField + '_name']
-  direction = ls[busField + '_direction']
-  activeLines = ls[busField + '_active_lines']
-  inactiveLines = ls[busField + '_inactive_lines']
+  stopName = ls[busField + 'Name']
+  direction = ls[busField + 'Direction']
+  activeLines = ls[busField + 'ActiveLines']
+  inactiveLines = ls[busField + 'InactiveLines']
 
   # Add stopname and direction to busfields
   if stopName isnt undefined and direction isnt undefined
@@ -581,8 +581,8 @@ $ ->
   bindCantinaSelector 'right_cantina'
 
   # Give user suggestions for autocomplete of bus stops
-  bindBusFields 'first_bus'
-  bindBusFields 'second_bus'
+  bindBusFields 'firstBus'
+  bindBusFields 'secondBus'
 
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
