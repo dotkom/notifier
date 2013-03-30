@@ -21,4 +21,35 @@ var Colors = {
   title {
     'blue':     {'': ''},
   },
+
+  getBackgroundStyle: function(color) {
+    if (this.background[color] != undefined) {
+      return this.background[color];
+    }
+    else {
+      if (this.debug) console.log('ERROR: unsupported color', color);
+      return background['blue'];
+    }
+  },
+
+  getBusStyle: function(color) {
+    if (this.bus[color] != undefined) {
+      return this.bus[color];
+    }
+    else {
+      if (this.debug) console.log('ERROR: unsupported color', color);
+      return bus['blue'];
+    }
+  },
+
+  getTitleStyle: function(color) {
+    if (this.title[color] != undefined) {
+      return this.title[color];
+    }
+    else {
+      if (this.debug) console.log('ERROR: unsupported color', color);
+      return title['blue'];
+    }
+  },
+
 }
