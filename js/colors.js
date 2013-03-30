@@ -3,7 +3,7 @@ var Colors = {
   // CSS to add to #background-div
   background: {
     'blue':     {'-webkit-filter': 'hue-rotate(0deg)'},
-    'cyan':     {'-webkit-filter': 'hue-rotate(-31deg)'},
+    'cyan':     {'-webkit-filter': 'hue-rotate(-30deg) saturate(3) brightness(1.5)'},
     'pink':     {'-webkit-filter': 'hue-rotate(92deg)'},
     'red':      {'-webkit-filter': 'hue-rotate(144deg)'},
     'purple':   {'-webkit-filter': 'hue-rotate(66deg)'},
@@ -15,11 +15,13 @@ var Colors = {
   // CSS to add to #bus-div
   bus: {
     'blue':     {'': ''},
+    'cyan':     {'background-color': '#111', 'box-shadow': '0 0 15pt #ccc'},
   },
 
   // CSS to add to titles
   title: {
     'blue':     {'': ''},
+    'cyan':     {'color': 'NavajoWhite'},
   },
 
   getBackgroundStyle: function(color) {

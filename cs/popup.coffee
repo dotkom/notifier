@@ -277,8 +277,9 @@ $ ->
   color = ls['affiliationColor']
   if color isnt 'undefined' and color isnt ''
     if DEBUG then console.log 'Applying affiliation color', color
-    cssMap = Colors.getBackgroundStyle color
-    $('#background').css cssMap
+    $('#background').css Colors.getBackgroundStyle color
+    $('#bus').css Colors.getBusStyle color
+    $('.title').css Colors.getTitleStyle color
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

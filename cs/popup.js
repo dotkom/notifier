@@ -308,7 +308,7 @@
   };
 
   $(function() {
-    var affiliation, color, cssMap, symbol;
+    var affiliation, color, symbol;
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
@@ -343,8 +343,9 @@
       if (DEBUG) {
         console.log('Applying affiliation color', color);
       }
-      cssMap = Colors.getBackgroundStyle(color);
-      $('#background').css(cssMap);
+      $('#background').css(Colors.getBackgroundStyle(color));
+      $('#bus').css(Colors.getBusStyle(color));
+      $('.title').css(Colors.getTitleStyle(color));
     }
     $('#logo').click(function() {
       Browser.openTab(EXTENSION_WEBSITE);
