@@ -12,8 +12,8 @@ var News = {
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
-  get: function(feedObject, limit, callback) {
-    if (feedObject === undefined) {
+  get: function(affiliationObject, limit, callback) {
+    if (affiliationObject === undefined) {
       if (this.debug) console.log('ERROR:', this.msgUnsupportedFeed);
       callback(this.msgUnsupportedFeed);
       return;
@@ -29,7 +29,7 @@ var News = {
       return;
     }
 
-    var rssUrl = feedObject.feed;
+    var rssUrl = affiliationObject.feed;
 
     var self = this;
     $.ajax({
@@ -37,30 +37,30 @@ var News = {
       dataType: 'xml',
       success: function(xml) {
         // ls.lastResponseData = xmlstring;
-        self.parseFeed(xml, feedObject, limit, callback);
+        self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR:', self.msgConnectionError, feedObject);
+        if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject);
         callback(self.msgConnectionError);
       },
     });
   },
 
-  parseFeed: function(xml, feedObject, limit, callback) {
+  parseFeed: function(xml, affiliationObject, limit, callback) {
     var items = [];
     var self = this;
     var count = 0;
     // Add each item from the feed
     $(xml).find('item').each( function() {
       if (count++ < limit) {
-        var item = self.parseItem(this, feedObject);
+        var item = self.parseItem(this, affiliationObject);
         items.push(item);
       }
     });
     callback(items);
   },
 
-  parseItem: function(item, feedObject) {
+  parseItem: function(item, affiliationObject) {
     var post = {};
 
     // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
@@ -73,9 +73,10 @@ var News = {
     post.creator = $(item).find("dc:creator").filter(':first').text();
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
     // Locally stored
-    post.image = feedObject.image;
-    // Tag the posts with the name of the feed they came from
-    post.feedName = feedObject.name;
+    post.image = affiliationObject.image;
+    // Tag the posts with the key and name of the feed they came from
+    post.feedKey = affiliationObject.key;
+    post.feedName = affiliationObject.name;
 
     // Check for image in rarely used <enclosure>-tag
     var enclosure = $(item).find('enclosure');
@@ -209,6 +210,7 @@ var News = {
       localStorage.notificationDescription = item.description;
       localStorage.notificationCreator = item.creator;
       localStorage.notificationImage = item.image;
+      localStorage.notificationFeedKey = item.feedKey;
       localStorage.notificationFeedName = item.feedName;
       // Show desktop notification
       Browser.createNotification('notification.html');
