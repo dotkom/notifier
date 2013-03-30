@@ -126,7 +126,7 @@ displayItems = (items) ->
   if feedName is 'online'
     # Fetch images from the API asynchronously
     for index, link of viewedList
-      News.online_getImage link, (link, image) ->
+      Affiliation.online_getImage link, (link, image) ->
         # It's important to get the link from the callback, not the above code
         # in order to have the right link at the right time, async ftw.
         $('.item[data="'+link+'"] img').attr 'src', image

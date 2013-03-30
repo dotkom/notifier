@@ -43,7 +43,7 @@ bindAffiliationSelector = ->
     # Save the change
     ls[selector] = chosenAffiliation
     # Get and save the recommended color palette for the chosen affiliation
-    color = News.feeds[chosenAffiliation].color
+    color = Affiliation.org[chosenAffiliation].color
     if color isnt undefined and color isnt ''
       $('#affiliationColorSelector').val color
       ls['affiliationColor'] = color

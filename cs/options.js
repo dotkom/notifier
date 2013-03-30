@@ -57,7 +57,7 @@
         enableOnlineSpecificFeatures();
       }
       ls[selector] = chosenAffiliation;
-      color = News.feeds[chosenAffiliation].color;
+      color = Affiliation.org[chosenAffiliation].color;
       if (color !== void 0 && color !== '') {
         $('#affiliationColorSelector').val(color);
         ls['affiliationColor'] = color;

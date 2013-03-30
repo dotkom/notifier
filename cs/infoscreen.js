@@ -157,7 +157,7 @@
       _results = [];
       for (index in viewedList) {
         link = viewedList[index];
-        _results.push(News.online_getImage(link, function(link, image) {
+        _results.push(Affiliation.online_getImage(link, function(link, image) {
           var altLink;
           $('.item[data="' + link + '"] img').attr('src', image);
           altLink = $('.item[data="' + link + '"]').attr('name');

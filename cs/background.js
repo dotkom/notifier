@@ -78,23 +78,30 @@
   };
 
   updateNews = function() {
-    var affiliation, newsLimit;
+    var affiliation, affiliationName, newsLimit;
     if (DEBUG) {
       console.log('updateNews');
     }
-    affiliation = ls['affiliationName'];
-    newsLimit = 10;
-    return News.get(affiliation, newsLimit, function(items) {
-      if (typeof items === 'string') {
-        if (DEBUG) {
-          return console.log('ERROR:', items);
-        }
-      } else {
-        ls.feedItems = JSON.stringify(items);
-        News.unreadCountAndNotify(items);
-        return News.refreshNewsIdList(items);
+    affiliationName = ls['affiliationName'];
+    affiliation = Affiliation.org[affiliationName];
+    if (affiliation === void 0) {
+      if (DEBUG) {
+        return console.log('ERROR: chosen affiliation', affiliationName, 'is not known');
       }
-    });
+    } else {
+      newsLimit = 10;
+      return News.get(affiliation, newsLimit, function(items) {
+        if (typeof items === 'string') {
+          if (DEBUG) {
+            return console.log('ERROR:', items);
+          }
+        } else {
+          ls.feedItems = JSON.stringify(items);
+          News.unreadCountAndNotify(items);
+          return News.refreshNewsIdList(items);
+        }
+      });
+    }
   };
 
   $(function() {

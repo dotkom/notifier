@@ -198,7 +198,7 @@ displayItems = (items) ->
   if feedName is 'online'
     # Fetch images from the API asynchronously
     for index, link of viewedList
-      News.online_getImage link, (link, image) ->
+      Affiliation.online_getImage link, (link, image) ->
         # It's important to get the link from the callback, not the above code
         # in order to have the right link at the right time, async ftw.
         $('.item[data="'+link+'"] img').attr 'src', image
@@ -259,7 +259,7 @@ $ ->
   if ls.affiliationName isnt 'online'
     affiliation = ls.affiliationName
     # If the affiliation has a defined logo
-    logo = News.feeds[affiliation].logo
+    logo = Affiliation.org[affiliation].logo
     if logo isnt undefined and logo isnt ''
       if DEBUG then console.log 'Applying affiliation logo', logo
       $('#header #logo').prop 'src', logo
@@ -268,7 +268,7 @@ $ ->
   color = ls['affiliationColor']
   if color isnt 'undefined' and color isnt ''
     if DEBUG then console.log 'Applying affiliation color', color
-    cssMap = News.getColoringStyle color
+    cssMap = Colors.getBackgroundStyle color
     $('#background').css cssMap
 
   # Make logo open extension website while closing popup

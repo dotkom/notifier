@@ -56,17 +56,22 @@ updateCoffeeSubscription = ->
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
-  affiliation = ls['affiliationName']
-  # Get more news than needed to check for old news that have been updated
-  newsLimit = 10
-  News.get affiliation, newsLimit, (items) ->
-    if typeof items is 'string'
-      # Error message, log it maybe
-      if DEBUG then console.log 'ERROR:', items
-    else
-      ls.feedItems = JSON.stringify items
-      News.unreadCountAndNotify items
-      News.refreshNewsIdList items
+  # Get affiliation object
+  affiliationName = ls['affiliationName']
+  affiliation = Affiliation.org[affiliationName]
+  if affiliation is undefined
+    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationName, 'is not known'
+  else
+    # Get more news than needed to check for old news that have been updated
+    newsLimit = 10
+    News.get affiliation, newsLimit, (items) ->
+      if typeof items is 'string'
+        # Error message, log it maybe
+        if DEBUG then console.log 'ERROR:', items
+      else
+        ls.feedItems = JSON.stringify items
+        News.unreadCountAndNotify items
+        News.refreshNewsIdList items
 
 # Document ready, go!
 $ ->
