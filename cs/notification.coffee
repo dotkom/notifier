@@ -3,38 +3,51 @@ $ = jQuery
 ls = localStorage
 
 setNotification = ->
-  title = ls.notificationTitle
-  link = ls.notificationLink
-  description = ls.notificationDescription
-  creator = ls.notificationCreator
-  image = ls.notificationImage
-  
-  # Shorten title and description to fit nicely
-  maxlength = 90
-  if maxlength < description.length
-    description = description.substring(0, maxlength) + '...'
-  
-  # Capture clicks
-  $('#notification').click ->
-    Browser.openTab link
-    window.close
+  try
+    title = ls.notificationTitle
+    link = ls.notificationLink
+    description = ls.notificationDescription
+    creator = ls.notificationCreator
+    image = ls.notificationImage
+    feedKey = ls.notificationFeedKey
+    feedName = ls.notificationFeedName
+    
+    # Shorten title and description to fit nicely
+    maxlength = 90
+    if maxlength < description.length
+      description = description.substring(0, maxlength) + '...'
+    
+    # Capture clicks
+    $('#notification').click ->
+      Browser.openTab link
+      window.close
 
-  # Create the HTML
-  $('#notification').html '
-    <div class="item">
-      <div class="title">' + title + '</div>
-      <img src="' + image + '" />
-      <div class="textwrapper">
-        <div class="emphasized">- Av ' + creator + '</div>
-        <div class="description">' + description + '</div>
+    # Create the HTML
+    $('#notification').html '
+      <div class="item">
+        <div class="title">' + title + '</div>
+        <img src="' + image + '" />
+        <div class="textwrapper">
+          <div class="emphasized">- Av ' + creator + '</div>
+          <div class="description">' + description + '</div>
+        </div>
       </div>
-    </div>
-    </a>'
+      </a>'
 
-  if ls.notificationFeedName is 'online'
-    # Online specific: Fetch image from API
-    News.online_getImage link, (link, image) ->
-      $('img').prop 'src', image
+    if Affiliation.org[feedKey].getImage isnt undefined
+      # If the organization has an image API, use it
+      Affiliation.org[feedKey].getImage link, (link, image) ->
+        $('img').prop 'src', image
+
+  catch e
+    log 'ERROR in desktop notification', e
+
+# Support for inspection of desktop notification views disappeared
+# in a Chrome version back in 2012. Use the background process to
+# log debug messages out.
+# https://code.google.com/p/chromium/issues/detail?id=162724
+log = (object) ->
+  if DEBUG then Browser.getBackgroundProcess().console.log object
 
 # show the html5 notification with timeout when the document is ready
 $ ->
