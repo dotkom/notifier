@@ -18,7 +18,7 @@ var Colors = {
   },
 
   // CSS to add to titles
-  title {
+  title: {
     'blue':     {'': ''},
   },
 
