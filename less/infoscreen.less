@@ -73,8 +73,20 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 1000;
+  background: transparent;
+}
+
+#fadeOutNews {
+  .debuglime;
+  /* note: the overlay is hidden when debugging, to be able to select/click stuff */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 505px;
   z-index: 100;
-  background: url('/img/background-infoscreen-news-cutoff.png') center bottom no-repeat;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
 }
 
 #background {
