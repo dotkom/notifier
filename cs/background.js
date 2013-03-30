@@ -105,7 +105,7 @@
   };
 
   $(function() {
-    var firstBusOk, first_bus_props, prop, secondBusOk, second_bus_props, _i, _j, _len, _len1;
+    var firstBusOk, first_bus_props, prop, secondBusOk, second_bus_props, symbol, _i, _j, _len, _len1;
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
@@ -122,6 +122,9 @@
     }
     if (ls.affiliationColor === void 0) {
       ls.affiliationColor = 'blue';
+    }
+    if (ls.affiliationSymbol === void 0) {
+      ls.affiliationSymbol = '/img/icon-default.png';
     }
     if (ls.newsList === void 0) {
       ls.newsList = JSON.stringify([]);
@@ -199,6 +202,10 @@
       Browser.openBackgroundTab('http://webchat.freenode.net/?channels=online');
     }
     ls.everConnected = ls.wasConnected = 'false';
+    symbol = ls.affiliationSymbol;
+    if (symbol !== void 0 && symbol !== '') {
+      Browser.setIcon(symbol);
+    }
     setInterval((function() {
       return document.location.reload();
     }), 86400000);

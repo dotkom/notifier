@@ -91,6 +91,8 @@ $ ->
     ls.affiliationName = 'online'
   if ls.affiliationColor is undefined
     ls.affiliationColor = 'blue'
+  if ls.affiliationSymbol is undefined
+    ls.affiliationSymbol = '/img/icon-default.png'
 
   # Lists of links (IDs) for news items
   if ls.newsList is undefined
@@ -172,6 +174,11 @@ $ ->
 
   # Set default vars for main loop
   ls.everConnected = ls.wasConnected = 'false'
+
+  # Load affiliation icon
+  symbol = ls.affiliationSymbol
+  if symbol isnt undefined and symbol isnt ''
+      Browser.setIcon symbol
 
   # Reload the page once every day
   setInterval ( ->
