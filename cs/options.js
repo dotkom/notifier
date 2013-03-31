@@ -44,7 +44,7 @@
 
   bindAffiliationSelector = function() {
     var chosenAffiliation, selector;
-    selector = 'affiliationName';
+    selector = 'affiliationKey';
     chosenAffiliation = ls[selector];
     $('#' + selector + '[value="' + chosenAffiliation + '"]').prop('selected', 'selected');
     return $('#' + selector).change(function() {

@@ -193,7 +193,7 @@ header #notification .saved {
   white-space: nowrap;
   word-wrap: break-word;
 }
-.item #affiliationBox select#affiliationName {
+.item #affiliationBox select#affiliationKey {
   border: 0pt solid #ff0000;
   float: left;
   border: 1pt solid #7a7a7a;

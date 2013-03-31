@@ -78,15 +78,15 @@
   };
 
   updateNews = function() {
-    var affiliation, affiliationName, newsLimit;
+    var affiliation, affiliationKey, newsLimit;
     if (DEBUG) {
       console.log('updateNews');
     }
-    affiliationName = ls['affiliationName'];
-    affiliation = Affiliation.org[affiliationName];
+    affiliationKey = ls['affiliationKey'];
+    affiliation = Affiliation.org[affiliationKey];
     if (affiliation === void 0) {
       if (DEBUG) {
-        return console.log('ERROR: chosen affiliation', affiliationName, 'is not known');
+        return console.log('ERROR: chosen affiliation', affiliationKey, 'is not known');
       }
     } else {
       newsLimit = 10;

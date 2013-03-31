@@ -57,10 +57,10 @@ updateCoffeeSubscription = ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   # Get affiliation object
-  affiliationName = ls['affiliationName']
-  affiliation = Affiliation.org[affiliationName]
+  affiliationKey = ls['affiliationKey']
+  affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationName, 'is not known'
+    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey, 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
