@@ -1,5 +1,5 @@
 var Affiliation = {
-  self: this,
+  top: this,
   debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
@@ -68,12 +68,12 @@ var Affiliation = {
               callback(links, images);
             }
             catch (e) {
-              if (self.debug) console.log('ERROR: could not parse Leonardo\'s website');
+              if (top.debug) console.log('ERROR: could not parse Leonardo\'s website');
               callback(links, placeholders);
             }
           },
           error: function(e) {
-            if (self.debug) console.log('ERROR: could not fetch Leonardo\'s website');
+            if (top.debug) console.log('ERROR: could not fetch Leonardo\'s website');
             callback(links, placeholders);
           },
         });
@@ -98,12 +98,12 @@ var Affiliation = {
             callback(link, image);
           }
           else {
-            if (self.debug) console.log('ERROR: no image exists for id: ' + id);
+            if (top.debug) console.log('ERROR: no image exists for id: ' + id);
             callback(link, placeholder);
           }
         })
         .error(function() {
-          if (self.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
+          if (top.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
           callback(link, placeholder);
         });
       },
@@ -326,12 +326,12 @@ var Affiliation = {
               callback(link, image);
             }
             catch (e) {
-              if (self.debug) console.log('ERROR: could not parse Samfundet\'s website');
+              if (top.debug) console.log('ERROR: could not parse Samfundet\'s website');
               callback(link, placeholder);
             }
           },
           error: function(e) {
-            if (self.debug) console.log('ERROR: could not fetch Samfundet\'s website');
+            if (top.debug) console.log('ERROR: could not fetch Samfundet\'s website');
             callback(link, placeholder);
           },
         });
