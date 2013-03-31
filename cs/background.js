@@ -127,8 +127,8 @@
     if (ls.showAffiliation === void 0) {
       ls.showAffiliation = 'true';
     }
-    if (ls.affiliationName === void 0) {
-      ls.affiliationName = 'online';
+    if (ls.affiliationKey === void 0) {
+      ls.affiliationKey = 'online';
     }
     if (ls.affiliationColor === void 0) {
       ls.affiliationColor = 'blue';

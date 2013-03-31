@@ -94,8 +94,8 @@ $ ->
 
   if ls.showAffiliation is undefined
     ls.showAffiliation = 'true'
-  if ls.affiliationName is undefined
-    ls.affiliationName = 'online'
+  if ls.affiliationKey is undefined
+    ls.affiliationKey = 'online'
   if ls.affiliationColor is undefined
     ls.affiliationColor = 'blue'
   if ls.affiliationSymbol is undefined
