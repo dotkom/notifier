@@ -3,7 +3,7 @@ var News = {
   newsMaxLimit: 15,
   unreadMaxCount: 3, // 0-indexed like the list it its counting, actually +1
   msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
-  msgConnectionError: 'Frakoblet fra feed: ',
+  msgConnectionError: 'Frakoblet fra feeden til ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
 
@@ -40,8 +40,8 @@ var News = {
         self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject);
-        callback(self.msgConnectionError);
+        if (self.debug) console.log('ERROR:', self.msgConnectionError);
+        callback(self.msgConnectionError, affiliationObject.name);
       },
     });
   },
