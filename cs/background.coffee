@@ -83,7 +83,7 @@ loadAffiliationIcon = ->
 # Document ready, go!
 $ ->
   # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: AJAX_TIMEOUT
+  $.ajaxSetup AJAX_SETUP
   
   # Clear previous thoughts
   if DEBUG then ls.clear()

@@ -7,8 +7,11 @@ var EXTENSION_WEBSITE = 'https://online.ntnu.no';
 var CREATOR_NAME = 'Online'; // max 8 letters because of styling
 var CREATOR_EMAIL = 'dotkom@online.ntnu.no';
 
-// AJAX and JSON timeout
-var AJAX_TIMEOUT = 9000;
+// AJAX setup
+var AJAX_SETUP = {
+	timeout: 9000,
+	cache: false,
+}
 
 // Loops & intervals
 var BACKGROUND_LOOP = 30000; // 30s

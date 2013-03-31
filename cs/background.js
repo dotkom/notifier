@@ -118,9 +118,7 @@
 
   $(function() {
     var firstBusOk, firstBusProps, prop, secondBusOk, secondBusProps, _i, _j, _len, _len1;
-    $.ajaxSetup({
-      timeout: AJAX_TIMEOUT
-    });
+    $.ajaxSetup(AJAX_SETUP);
     if (DEBUG) {
       ls.clear();
     }

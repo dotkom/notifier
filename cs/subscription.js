@@ -17,6 +17,7 @@
   };
 
   $(function() {
+    $.ajaxSetup(AJAX_SETUP);
     setSubscription();
     return setTimeout((function() {
       return window.close();

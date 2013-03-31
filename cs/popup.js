@@ -309,9 +309,7 @@
 
   $(function() {
     var affiliation, color, logo;
-    $.ajaxSetup({
-      timeout: AJAX_TIMEOUT
-    });
+    $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       setTimeout((function() {

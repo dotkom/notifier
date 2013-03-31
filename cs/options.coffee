@@ -527,7 +527,7 @@ $ ->
       Browser.openTab $(this).attr 'data'
   
   # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: AJAX_TIMEOUT
+  $.ajaxSetup AJAX_SETUP
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->

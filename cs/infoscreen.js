@@ -298,9 +298,7 @@
       $('html').css('cursor', 'auto');
       $('#overlay').hide();
     }
-    $.ajaxSetup({
-      timeout: AJAX_TIMEOUT
-    });
+    $.ajaxSetup(AJAX_SETUP);
     ls.removeItem('mostRecentRead');
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');

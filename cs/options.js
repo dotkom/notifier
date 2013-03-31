@@ -562,9 +562,7 @@
         return Browser.openTab($(this).attr('data'));
       });
     }
-    $.ajaxSetup({
-      timeout: AJAX_TIMEOUT
-    });
+    $.ajaxSetup(AJAX_SETUP);
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;

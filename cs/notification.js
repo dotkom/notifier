@@ -61,6 +61,7 @@
   };
 
   $(function() {
+    $.ajaxSetup(AJAX_SETUP);
     setNotification();
     return setTimeout((function() {
       return window.close();
