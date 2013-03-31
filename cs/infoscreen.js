@@ -101,7 +101,7 @@
     if (feedItems !== void 0) {
       return displayItems(JSON.parse(feedItems));
     } else {
-      chosenAffiliation = ls.affiliationName;
+      chosenAffiliation = ls.affiliationKey;
       return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + chosenAffiliation + '</div></div>');
     }
   };
