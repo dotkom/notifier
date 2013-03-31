@@ -93,7 +93,7 @@
   };
 
   updateNews = function() {
-    var chosenAffiliation, feedItems;
+    var feedItems, key, name;
     if (DEBUG) {
       console.log('updateNews');
     }
@@ -101,8 +101,9 @@
     if (feedItems !== void 0) {
       return displayItems(JSON.parse(feedItems));
     } else {
-      chosenAffiliation = ls.affiliationKey;
-      return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + chosenAffiliation + '</div></div>');
+      key = ls.affiliationKey;
+      name = Affiliation.org[key].name;
+      return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
     }
   };
 
