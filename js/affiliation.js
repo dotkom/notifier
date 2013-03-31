@@ -1,4 +1,5 @@
 var Affiliation = {
+  self: this,
   debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
@@ -48,7 +49,11 @@ var Affiliation = {
       color: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        var self = this;
+        var placeholder = this.placeholder;
+        var placeholders = []
+        // In case we don't find any images, prepare an array with placeholders
+        for (var i=0; i<links.length; i++)
+          placeholders.push(placeholder);
         $.ajax({
           url: 'http://industrielldesign.com/',
           dataType: 'html',
@@ -63,13 +68,13 @@ var Affiliation = {
               callback(links, images);
             }
             catch (e) {
-              if (this.debug) console.log('ERROR: could not parse Leonardo\'s website');
-              callback(undefined);
+              if (self.debug) console.log('ERROR: could not parse Leonardo\'s website');
+              callback(links, placeholders);
             }
           },
           error: function(e) {
-            if (this.debug) console.log('ERROR: could not fetch Leonardo\'s website');
-            callback(undefined);
+            if (self.debug) console.log('ERROR: could not fetch Leonardo\'s website');
+            callback(links, placeholders);
           },
         });
       },
@@ -84,25 +89,22 @@ var Affiliation = {
       color: 'blue',
       useAltLink: true,
       getImage: function(link, callback) {
+        var placeholder = this.placeholder;
         var id = link.split('/')[4]; // id is stored in the link
-        var image = 'undefined';
         var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
-        var self = this;
         $.getJSON(api + id, function(json) {
           if (json['online_news_image']) {
             image = json['online_news_image']['0']['image'];
             callback(link, image);
           }
           else {
-            image = this.images['online'].image;
             if (self.debug) console.log('ERROR: no image exists for id: ' + id);
-            callback(link, image);
+            callback(link, placeholder);
           }
         })
         .error(function() {
-          image = self.images['online'].image;
           if (self.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
-          callback(link, image);
+          callback(link, placeholder);
         });
       },
     },
@@ -313,6 +315,27 @@ var Affiliation = {
       placeholder: '/org/samfundet/placeholder.png',
       color: 'red',
       useAltLink: false,
+      getImage: function(link, callback) {
+        var placeholder = this.placeholder;
+        $.ajax({
+          url: link,
+          dataType: 'html',
+          success: function(html) {
+            try {
+              var image = $(html).find('img.event').attr('src');
+              callback(link, image);
+            }
+            catch (e) {
+              if (self.debug) console.log('ERROR: could not parse Samfundet\'s website');
+              callback(link, placeholder);
+            }
+          },
+          error: function(e) {
+            if (self.debug) console.log('ERROR: could not fetch Samfundet\'s website');
+            callback(link, placeholder);
+          },
+        });
+      },
     },
 
     // Studentdemokrati
