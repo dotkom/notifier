@@ -129,8 +129,9 @@ updateNews = ->
   if feedItems isnt undefined
     displayItems JSON.parse feedItems
   else
-    chosenAffiliation = ls.affiliationName
-    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+chosenAffiliation+'</div></div>'
+    key = ls.affiliationKey
+    name = Affiliation.org[key].name
+    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
 displayItems = (items) ->
   # Empty the newsbox
@@ -262,11 +263,11 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  if ls.affiliationName isnt 'online'
+  if ls.affiliationKey isnt 'online'
     # Hide chat button
     $('#chatter_button').hide()
     # Show the logo and placeholder image for the correct organization
-    affiliation = ls.affiliationName
+    affiliation = ls.affiliationKey
     # If the affiliation has a defined logo
     logo = Affiliation.org[affiliation].logo
     if logo isnt undefined and logo isnt ''

@@ -181,7 +181,7 @@
   };
 
   updateNews = function() {
-    var chosenAffiliation, feedItems;
+    var affiliationKey, affiliationName, feedItems;
     if (DEBUG) {
       console.log('updateNews');
     }
@@ -189,8 +189,9 @@
     if (feedItems !== void 0) {
       return displayItems(JSON.parse(feedItems));
     } else {
-      chosenAffiliation = ls.affiliationName;
-      return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + chosenAffiliation + '</div></div>');
+      affiliationKey = ls.affiliationKey;
+      affiliationName = Affiliation.org[affiliationKey].name;
+      return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + affiliationName + '</div></div>');
     }
   };
 
@@ -325,9 +326,9 @@
     if (ls.showBus !== 'true') {
       $('#bus').hide();
     }
-    if (ls.affiliationName !== 'online') {
+    if (ls.affiliationKey !== 'online') {
       $('#chatter_button').hide();
-      affiliation = ls.affiliationName;
+      affiliation = ls.affiliationKey;
       logo = Affiliation.org[affiliation].logo;
       if (logo !== void 0 && logo !== '') {
         if (DEBUG) {
