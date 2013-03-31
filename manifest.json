@@ -26,48 +26,7 @@
 	
   "permissions": [
     "notifications",
-
-    "*://*.sit.no/*",
-    "*://*.visuweb.no/*",
-    
-    "*://*.bergstud.no/*",
-    "*://*.emilweb.no/*",
-    "*://*.industrielldesign.com/*",
-    "*://*.online.ntnu.no/*",
-    "*://*.org.ntnu.no/delta/*",
-    "*://*.nabla.no/*",
-    "*://*.spanskroret.no/*",
-    "*://*.org.ntnu.no/volvox/*",
-
-    "*://*.dionysosntnu.wordpress.com/*",
-    "*://*.erudiontnu.org/*",
-    "*://*.geolf.org/*",
-    "*://*.gengangere.no/*",
-    "*://*.jumpcutdragvoll.wordpress.com/*",
-    "*://*.ludimus.org/*",
-    "*://*.primetime.trondheim.no/*",
-    "*://*.sturm.ntnu.no/*",
-    
-    "*://*.fraktur.no/*",
-    "*://*.kjemiogmaterial.wordpress.com/*",
-    "*://*.logistikkstudentene.no/*",
-    "*://*.tihlde.org/*",
-    "*://*.bygging.no/*",
-    "*://*.tjsf.no/*",
-    
-    "*://*.dusken.no/*",
-    "*://*.universitetsavisa.no/*",
-    
-    "*://*.samfundet.no/*",
-    
-    "*://*.velferdstinget.no/*",
-    "*://*.studenttinget.no/*",
-    "*://*.studentparlamentet.com/*",
-    
-    "*://*.retriever-info.com/*",
-    "*://*.ntnu.no/blogger/rektoratet/*",
-    "*://*.hist.no/*",
-    "*://*.dmmh.no/*"
+    "<all_urls>"
   ],
 
 	"content_scripts": [
