@@ -278,9 +278,6 @@ $ ->
   if color isnt 'undefined' and color isnt ''
     if DEBUG then console.log 'Applying affiliation color', color
     $('#palette').attr 'href', Palettes.getColor color
-    # $('#background').css Colors.getBackgroundStyle color
-    # $('#bus').css Colors.getBusStyle color
-    # $('.title').css Colors.getTitleStyle color
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
