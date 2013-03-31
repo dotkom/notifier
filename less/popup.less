@@ -1,65 +1,28 @@
 
-// Debugging
+@import "common.less";
 
-@debug: 0pt;
-.debugred {
-  border: @debug solid red;
-}
-.debugyellow {
-  border: @debug solid yellow;
-}
-.debugpink {
-  border: @debug solid pink;
-}
-.debuglime {
-  border: @debug solid lime;
-}
+/* This file contains popup-additions to common.less */
 
 // Variables
 
-@in-post-padding: 5pt;
-@online-orange: #ee861f;
+@in-post-padding: 9pt;
 
 // Mixins
 
-.fullbox {
-  width: 100%;
-  clear: both;
-  padding: 0;
-  margin: 0;
-}
-
 .title {
-  /* DO NOT change this class unless you must, this class with is heavily
-  modified by the application when the user changes color palettes */
-  display: block;
-  color: @online-orange;
-  text-transform: uppercase;
   font-size: 9pt;
-  font-weight: bold;
   padding-top: 10pt;
   padding-bottom: 2pt;
 }
 
 .emphasized {
-  font-style: italic;
   font-size: 9pt;
   margin-bottom: 3pt;
-}
-
-.index {
-  font-style: italic;
 }
 
 // Rules
 
 body {
-  background: #001429;
-  overflow: hidden;
-  font-family: helvetica;
-  color: white;
-  margin: 0;
-  padding: 0;
   width: 350pt;
   height: 400pt;
   font-size: 9pt;
@@ -67,33 +30,14 @@ body {
 }
 
 #background {
-  /* DO NOT change this div unless you must, this div with it's background
-  image is heavily modified by the application when the user changes color
-  palettes */
-  position: fixed;
-  /* using a div because the background needs to be resized if
-  the display is really big (1500px-2000px in width or height) */
-  background: url('/img/background-popup.png') center center no-repeat;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+  background-image: url('/img/background-popup.png');
 }
 
 /* This container keeps the content centered */
 
 #container {
-  .debugpink;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   overflow-y: auto;
-  overflow-x: hidden;
   padding: 15pt;
-  z-index: 10;
 
   #header {
     .debugred;
@@ -142,63 +86,24 @@ body {
   }
 
   #todays {
-    .debugyellow;
-    .fullbox;
-
     #schedule {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 48%;
       #servant {
-        font-style: italic;
         margin-bottom: 2pt;
       }
     }
     #coffee {
-      .debugpink;
-      position: relative;
-      float: right;
-      width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
       #pots {
-        font-style: italic;
         margin-bottom: 2pt;
       }
     }
   }
 
   #cantinas {
-    .debugred;
-    .fullbox;
-
     .hours {
       padding-bottom: 2pt;
-      font-weight: normal;
-      font-style: italic;
-      text-transform: none;
-    }
-    #left {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 48%;
-    }
-    #right {
-      .debugpink;
-      position: relative;
-      float: right;
-      width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
-    }
-    #dinnerbox {
-      .debugyellow;
     }
     li {
-      .debuglime;
-      position: relative;
-      width: 95%;
       cursor: pointer;
-      list-style-type: none;
-      -webkit-transition: text-shadow 0.15s ease-out 0s;
     }
     li:hover {
       text-shadow:
@@ -211,52 +116,28 @@ body {
         0 0 50pt #011b36,
         0 0 50pt #011b36;
     }
-    li.message {
-      /*font-style: italic;*/
-    }
   }
 
   #bus {
-    /* DO NOT change this div unless you must, this div with it's background
-    color is heavily modified by the application when the user changes color
-    palettes */
-    .debugred;
-    .fullbox;
-
-    position: relative;
     top: 12pt;
     line-height: 11.5pt;
-    background-color: #000f1d;
-    color: white;
     height: 65pt;
-    width: 110%;
-    margin-left: -5%;
     margin-bottom: 15pt;
     box-shadow: 0 0 20pt #88b;
 
     .name {
       margin-bottom: 4pt;
-      text-decoration: underline;
-      font-weight: bold;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
-    #firstBus {
-      .debuglime;
-      position: relative;
-      float: left;
-      text-align: right;
-      padding-top: 10pt;
-      width: 40%;
+    .loading_left {
+      width: 80px;
+      bottom: 3pt;
+    }
+    .loading_right {
+      width: 80px;
+      bottom: 3pt;
     }
     #middle {
-      .debuglime;
-      position: relative;
-      float: left;
-      text-align: center;
       width: 18%;
-      height: 100%;
       #atb_logo {
         position: relative;
         left: -.5pt;
@@ -265,63 +146,19 @@ body {
         cursor: pointer;
       }
     }
-    #secondBus {
-      .debuglime;
-      position: relative;
-      float: left;
-      text-align: left;
-      padding-top: 10pt;
-      width: 40%;
-    }
-    .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
-      .debugred;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .time {
-      font-weight: bold;
-    }
-    .error {
-      font-style: italic;
-    }
-    .loading_left {
-      position: relative;
-      z-index: 1000;
-      width: 80px;
-      bottom: 3pt;
-      -webkit-transform: scaleX(-1);
-    }
-    .loading_right {
-      position: relative;
-      z-index: 1000;
-      width: 80px;
-      bottom: 3pt;
-    }
   }
 
   #news {
-    .debugred;
-    .fullbox;
-
     .post {
-      .debugyellow;
-      position: relative;
-      clear: both;
-
       .item {
-        .debugyellow;
         margin-top: -4pt;
         min-height: 30pt;
         cursor: pointer;
-        padding-right: @in-post-padding;
-        padding-left: @in-post-padding;
+        /*padding-right: @in-post-padding;
+        padding-left: @in-post-padding;*/
         margin-left: -@in-post-padding;
         margin-right: -@in-post-padding;
         padding: @in-post-padding;
-        text-overflow: ellipsis;
-        overflow: hidden;
         -webkit-transition: box-shadow 0.3s ease-out 0s;
 
         &:hover {
@@ -330,35 +167,19 @@ body {
             0pt 0pt 10pt white;
         }
         img {
-          float: left;
-          background: snow;
           width: 70pt;
           max-height: 70pt;
           padding: 3pt;
           box-shadow: 0 0 10pt #bbb;
         }
         .textwrapper {
-          .debuglime;
-          position: relative;
-          float: left;
-          text-align: left;
           margin-left: 7pt;
           width: 70%;
         }
       }
     }
     .unread {
-      color: white;
       font-size: 8pt;
-      text-shadow:
-        0 0 10px white,
-        0 0 15px white,
-        0 0 20px white,
-        0 0 25px #011b36,
-        0 0 30px #011b36,
-        0 0 35px #fff,
-        0 0 40px #011b36,
-        0 0 45px #011b36;
     }
   }
 
