@@ -1,0 +1,237 @@
+
+// Variables
+
+@debug: 0;
+
+// Debugging, use bright colors that stand out
+
+.debugred {border: @debug solid red;}
+.debugpink {border: @debug solid pink;}
+.debuglime {border: @debug solid lime;}
+.debugyellow {border: @debug solid yellow;}
+
+// Mixins
+
+.fullbox {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.title {
+  color: #ee861f;
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  .unread {
+    color: white;
+  }
+}
+
+.emphasized {
+  font-style: italic;
+  margin-bottom: 3pt;
+}
+
+// Rules
+
+body {
+  background: #001429;
+  color: white;
+  font-family: Helvetica;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+  position: absolute;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* This container keeps the content centered */
+
+#container {
+  .debugpink;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+  z-index: 10;
+
+  #todays {
+    .debugyellow;
+    .fullbox;
+
+    #schedule {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 48%;
+      #servant {
+        font-style: italic;
+      }
+    }
+    #coffee {
+      .debugpink;
+      position: relative;
+      float: right;
+      width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+      #pots {
+        font-style: italic;
+      }
+    }
+  }
+
+  #cantinas {
+    .debugred;
+    .fullbox;
+
+    .hours {
+      font-weight: normal;
+      font-style: italic;
+      text-transform: none;
+    }
+    #left {
+      .debugpink;
+      position: relative;
+      float: left;
+      width: 48%;
+    }
+    #right {
+      .debugpink;
+      position: relative;
+      float: right;
+      width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+    }
+    #dinnerbox {
+      .debugyellow;
+    }
+    li {
+      .debuglime;
+      position: relative;
+      width: 95%;
+      list-style-type: none;
+      -webkit-transition: text-shadow 0.15s ease-out 0s;
+    }
+    li.message {
+      /*font-style: italic;*/
+    }
+  }
+
+  #bus {
+    .debugred;
+    .fullbox;
+
+    position: relative;
+    background-color: #000f1d;
+    width: 110%;
+    margin-left: -5%;
+
+    .name {
+      margin-bottom: 4pt;
+      text-decoration: underline;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #firstBus {
+      .debuglime;
+      position: relative;
+      float: left;
+      text-align: right;
+      padding-top: 10pt;
+      width: 40%;
+    }
+    #secondBus {
+      .debuglime;
+      position: relative;
+      float: left;
+      text-align: left;
+      padding-top: 10pt;
+      width: 40%;
+    }
+    .loading_left {
+      position: relative;
+      z-index: 100;
+      -webkit-transform: scaleX(-1);
+    }
+    .loading_right {
+      position: relative;
+      z-index: 100;
+    }
+    .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
+      .debugred;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .time {
+      font-weight: bold;
+    }
+    .error {
+      font-style: italic;
+    }
+    #middle {
+      .debuglime;
+      position: relative;
+      float: left;
+      text-align: center;
+      height: 100%;
+    }
+  }
+
+  #news {
+    .debugred;
+    .fullbox;
+
+    .post {
+      .debugyellow;
+      position: relative;
+      clear: both;
+
+      .item {
+        .debugyellow;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        img {
+          float: left;
+          background: snow;
+        }
+        .textwrapper {
+          .debuglime;
+          position: relative;
+          float: left;
+          text-align: left;
+        }
+      }
+    }
+    .unread {
+      text-shadow:
+        0 0 10px white,
+        0 0 15px white,
+        0 0 20px white,
+        0 0 25px #011b36,
+        0 0 30px #011b36,
+        0 0 35px #fff,
+        0 0 40px #011b36,
+        0 0 45px #011b36;
+    }
+  }
+
+}
