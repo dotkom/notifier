@@ -308,7 +308,7 @@
   };
 
   $(function() {
-    var affiliation, color, symbol;
+    var affiliation, color, logo;
     $.ajaxSetup({
       timeout: AJAX_TIMEOUT
     });
@@ -330,12 +330,12 @@
     if (ls.affiliationName !== 'online') {
       $('#chatter_button').hide();
       affiliation = ls.affiliationName;
-      symbol = Affiliation.org[affiliation].symbol;
-      if (symbol !== void 0 && symbol !== '') {
+      logo = Affiliation.org[affiliation].logo;
+      if (logo !== void 0 && logo !== '') {
         if (DEBUG) {
-          console.log('Applying affiliation symbol', symbol);
+          console.log('Applying affiliation logo', logo);
         }
-        $('#header #logo').prop('src', symbol);
+        $('#header #logo').prop('src', logo);
       }
     }
     color = ls['affiliationColor'];
@@ -343,9 +343,7 @@
       if (DEBUG) {
         console.log('Applying affiliation color', color);
       }
-      $('#background').css(Colors.getBackgroundStyle(color));
-      $('#bus').css(Colors.getBusStyle(color));
-      $('.title').css(Colors.getTitleStyle(color));
+      $('#palette').attr('href', Palettes.getColor(color));
     }
     $('#logo').click(function() {
       Browser.openTab(EXTENSION_WEBSITE);

@@ -268,18 +268,19 @@ $ ->
     # Show the logo and placeholder image for the correct organization
     affiliation = ls.affiliationName
     # If the affiliation has a defined logo
-    symbol = Affiliation.org[affiliation].symbol
-    if symbol isnt undefined and symbol isnt ''
-      if DEBUG then console.log 'Applying affiliation symbol', symbol
-      $('#header #logo').prop 'src', symbol
+    logo = Affiliation.org[affiliation].logo
+    if logo isnt undefined and logo isnt ''
+      if DEBUG then console.log 'Applying affiliation logo', logo
+      $('#header #logo').prop 'src', logo
   
   # Show the color palette the user has chosen
   color = ls['affiliationColor']
   if color isnt 'undefined' and color isnt ''
     if DEBUG then console.log 'Applying affiliation color', color
-    $('#background').css Colors.getBackgroundStyle color
-    $('#bus').css Colors.getBusStyle color
-    $('.title').css Colors.getTitleStyle color
+    $('#palette').attr 'href', Palettes.getColor color
+    # $('#background').css Colors.getBackgroundStyle color
+    # $('#bus').css Colors.getBusStyle color
+    # $('.title').css Colors.getTitleStyle color
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

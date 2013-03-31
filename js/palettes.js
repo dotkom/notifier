@@ -1,4 +1,4 @@
-var Colors = {
+var Palettes = {
   
   // CSS to add to #background-div
   background: {
@@ -22,6 +22,29 @@ var Colors = {
   title: {
     'blue':     {'': ''},
     'cyan':     {'color': 'NavajoWhite'},
+  },
+
+  palettes: {
+    'blue': 'less/palette_blue.css',
+    'white': 'less/palette_white.css',
+    'cyan': 'less/palette_cyan.css',
+    
+    'pink': 'less/palette_pink.css',
+    'red': 'less/palette_red.css',
+    'purple': 'less/palette_purple.css',
+    'green': 'less/palette_green.css',
+    'grey': 'less/palette_grey.css',
+    'yellow': 'less/palette_yellow.css',
+  },
+
+  getColor: function(color) {
+    if (this.palettes[color] != undefined) {
+      return this.palettes[color];
+    }
+    else {
+      if (this.debug) console.log('ERROR: unsupported palette', color);
+      return this.palettes['blue'];
+    }
   },
 
   getBackgroundStyle: function(color) {
