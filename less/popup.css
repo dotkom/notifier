@@ -1,14 +1,14 @@
 .debugred {
-  border: 0 solid #ff0000;
+  border: 0pt solid #ff0000;
 }
 .debugpink {
-  border: 0 solid #ffc0cb;
+  border: 0pt solid #ffc0cb;
 }
 .debuglime {
-  border: 0 solid #00ff00;
+  border: 0pt solid #00ff00;
 }
 .debugyellow {
-  border: 0 solid #ffff00;
+  border: 0pt solid #ffff00;
 }
 .fullbox {
   clear: both;
@@ -53,7 +53,7 @@ body {
 }
 /* This container keeps the content centered */
 #container {
-  border: 0 solid #ffc0cb;
+  border: 0pt solid #ffc0cb;
   position: absolute;
   top: 0;
   right: 0;
@@ -63,14 +63,14 @@ body {
   z-index: 10;
 }
 #container #todays {
-  border: 0 solid #ffff00;
+  border: 0pt solid #ffff00;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays #schedule {
-  border: 0 solid #ffc0cb;
+  border: 0pt solid #ffc0cb;
   position: relative;
   float: left;
   width: 48%;
@@ -79,7 +79,7 @@ body {
   font-style: italic;
 }
 #container #todays #coffee {
-  border: 0 solid #ffc0cb;
+  border: 0pt solid #ffc0cb;
   position: relative;
   float: right;
   width: 50%;
@@ -90,7 +90,7 @@ body {
   font-style: italic;
 }
 #container #cantinas {
-  border: 0 solid #ff0000;
+  border: 0pt solid #ff0000;
   clear: both;
   margin: 0;
   padding: 0;
@@ -102,13 +102,13 @@ body {
   text-transform: none;
 }
 #container #cantinas #left {
-  border: 0 solid #ffc0cb;
+  border: 0pt solid #ffc0cb;
   position: relative;
   float: left;
   width: 48%;
 }
 #container #cantinas #right {
-  border: 0 solid #ffc0cb;
+  border: 0pt solid #ffc0cb;
   position: relative;
   float: right;
   width: 50%;
@@ -116,10 +116,10 @@ body {
 
 }
 #container #cantinas #dinnerbox {
-  border: 0 solid #ffff00;
+  border: 0pt solid #ffff00;
 }
 #container #cantinas li {
-  border: 0 solid #00ff00;
+  border: 0pt solid #00ff00;
   position: relative;
   width: 95%;
   list-style-type: none;
@@ -130,7 +130,7 @@ body {
 
 }
 #container #bus {
-  border: 0 solid #ff0000;
+  border: 0pt solid #ff0000;
   clear: both;
   margin: 0;
   padding: 0;
@@ -149,7 +149,7 @@ body {
   text-overflow: ellipsis;
 }
 #container #bus #firstBus {
-  border: 0 solid #00ff00;
+  border: 0pt solid #00ff00;
   position: relative;
   float: left;
   text-align: right;
@@ -157,7 +157,7 @@ body {
   width: 40%;
 }
 #container #bus #secondBus {
-  border: 0 solid #00ff00;
+  border: 0pt solid #00ff00;
   position: relative;
   float: left;
   text-align: left;
@@ -183,7 +183,7 @@ body {
 #container #bus .eighth,
 #container #bus .nineth,
 #container #bus .tenth {
-  border: 0 solid #ff0000;
+  border: 0pt solid #ff0000;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -196,26 +196,26 @@ body {
   font-style: italic;
 }
 #container #bus #middle {
-  border: 0 solid #00ff00;
+  border: 0pt solid #00ff00;
   position: relative;
   float: left;
   text-align: center;
   height: 100%;
 }
 #container #news {
-  border: 0 solid #ff0000;
+  border: 0pt solid #ff0000;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #news .post {
-  border: 0 solid #ffff00;
+  border: 0pt solid #ffff00;
   position: relative;
   clear: both;
 }
 #container #news .post .item {
-  border: 0 solid #ffff00;
+  border: 0pt solid #ffff00;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -224,7 +224,7 @@ body {
   background: snow;
 }
 #container #news .post .item .textwrapper {
-  border: 0 solid #00ff00;
+  border: 0pt solid #00ff00;
   position: relative;
   float: left;
   text-align: left;
@@ -264,19 +264,22 @@ body {
   height: 320pt;
   border-radius: 3pt;
   padding: 20pt;
-  overflow: scroll;
   z-index: 100;
   opacity: .95;
   display: none;
+  overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0pt 0pt 10pt black,
     0pt 0pt 30pt black,
     0pt 0pt 70pt black;
 }
 #tips .text {
+  border: 0pt solid #ffc0cb;
   color: black;
   font-size: 9pt;
 }
 #tips .text .clicktoclose {
+  border: 0pt solid #ff0000;
   color: #aaa;
   text-align: right;
   font-style: italic;
@@ -297,7 +300,7 @@ body {
   padding: 15pt;
 }
 #container #header {
-  border: 0 solid #ff0000;
+  border: 0pt solid #ff0000;
   clear: both;
   margin: 0;
   padding: 0;
@@ -306,8 +309,8 @@ body {
   padding-bottom: 4pt;
 }
 #container #header #buttons {
-  border: 0 solid #00ff00;
-  width: 150pt;
+  border: 0pt solid #00ff00;
+  width: 160pt;
   float: left;
 }
 #container #header #buttons .popupbutton {
@@ -323,7 +326,7 @@ body {
           0pt 0pt 20pt #bbb;
 }
 #container #header #buttontext {
-  border: 0 solid #ffff00;
+  border: 0pt solid #ffff00;
   display: none;
   position: relative;
   float: left;
@@ -333,7 +336,7 @@ body {
         0 0 20pt white;
 }
 #container #header #logo {
-  border: 0 solid #ffff00;
+  border: 0pt solid #ffff00;
   float: right;
   cursor: pointer;
   max-width: 140pt;

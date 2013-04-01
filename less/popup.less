@@ -38,18 +38,21 @@ body {
   height: 320pt;
   border-radius: 3pt;
   padding: 20pt;
-  overflow: scroll;
   z-index: 100;
   opacity: .95;
   display: none;
+  overflow-y: auto;
+  overflow-x: hidden;
   box-shadow:
     0pt 0pt 10pt black,
     0pt 0pt 30pt black,
     0pt 0pt 70pt black;
   .text {
+    .debugpink;
     color: black;
     font-size: 9pt;
     .clicktoclose {
+      .debugred;
       color: #aaa;
       text-align: right;
       font-style: italic;
@@ -82,7 +85,7 @@ body {
 
     #buttons {
       .debuglime;
-      width: 150pt;
+      width: 160pt;
       float: left;
 
       .popupbutton {
