@@ -29,6 +29,41 @@ body {
   line-height: 11.5pt;
 }
 
+#tips {
+  position: fixed;
+  background-color: Snow;
+  top: 20pt;
+  right: 20pt;
+  left: 20pt;
+  height: 320pt;
+  border-radius: 3pt;
+  padding: 20pt;
+  overflow: scroll;
+  z-index: 100;
+  opacity: .95;
+  display: none;
+  box-shadow:
+    0pt 0pt 10pt black,
+    0pt 0pt 30pt black,
+    0pt 0pt 70pt black;
+  .text {
+    color: black;
+    font-size: 9pt;
+    .clicktoclose {
+      color: #aaa;
+      text-align: right;
+      font-style: italic;
+      margin-top: -15pt;
+    }
+    .big {
+      font-size: 14pt;
+    }
+    a {
+      outline: none;
+    }
+  }
+}
+
 #background {
   background-image: url('/img/background-popup.png');
 }
