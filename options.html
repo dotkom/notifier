@@ -75,6 +75,7 @@
   <div id="container">
     <div id="left" class="side">
 
+      <!--
       <div class="item">
         <label for="showAffiliation">
           <input type="checkbox" name="showAffiliation" value="showAffiliation" id="showAffiliation" disabled="disabled" />
@@ -86,7 +87,7 @@
           <label for="affiliationKey">
             <img id="affiliationLogo" src="/img/logo-rss.png" />
           </label>
-          <!-- IMPORTANT: Keep the same order here as in options.html and in manifest.json -->
+          <!- IMPORTANT: Keep the same order here as in options.html and in manifest.json ->
           <select id="affiliationKey">
             <optgroup label="Linjeforeninger Gløshaugen">
               <option value="berg">Berg</option>
@@ -146,6 +147,25 @@
             <option value="cyan">Turkis fargepalett</option>
           </select>
         </div>
+      </div>
+      -->
+
+      <div class="item iconitem">
+        <label for="showOffice">
+          <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
+          <span>
+            Vis kontorets status:
+            <img class="icon" src="/img/icon-open.png" />Åpent
+            <img class="icon" src="/img/icon-closed.png" />Lukket
+            <img class="icon" src="/img/icon-meeting.png" />Møte
+            <img class="icon" src="/img/icon-waffle.png"/>
+            <span style="position:relative; left:-4pt;">
+              Vafler
+            </span>
+          </span>
+          <br />
+          <img class="image" src="/img/options-office-plan.png" />
+        </label>
       </div>
 
       <div class="item">
@@ -256,25 +276,7 @@
         </div>
       </div>
 
-      <div class="item iconitem">
-        <label for="showOffice">
-          <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
-          <span>
-            Vis kontorets status:
-            <img class="icon" src="/img/icon-open.png" />Åpent
-            <img class="icon" src="/img/icon-closed.png" />Lukket
-            <img class="icon" src="/img/icon-meeting.png" />Møte
-            <img class="icon" src="/img/icon-waffle.png"/>
-            <span style="position:relative; left:-4pt;">
-              Vafler
-            </span>
-          </span>
-          <br />
-          <img class="image" src="/img/options-office-plan.png" />
-        </label>
-      </div>
-
-      <!-- <div class="item">
+      <div class="item">
         <label for="openChatter">
           <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" />
           <span>
@@ -282,33 +284,12 @@
           </span><br />
           <img class="image" src="/img/options-webchat.png" />
         </label>
-      </div> -->
+      </div>
 
     </div>
     <div id="right" class="side">
 
-      <div class="item">
-        <label for="useInfoscreen">
-          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
-          <span>
-            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
-          </span><br />
-          <img class="image" src="/img/options-infoscreen.png" /><br />
-          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
-        </label>
-      </div>
-
       <div id="infoscreen_slider">
-
-        <div class="item">
-          <label for="showNotifications">
-            <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" />
-            <span>
-              Vis varsel når nyheter publiseres / oppdateres
-            </span><br />
-            <img class="image" src="/img/options-desktop-notification.png" />
-          </label>
-        </div>
 
         <div class="item">
           <label for="coffeeSubscription">
@@ -320,6 +301,27 @@
           </label>
         </div>
 
+        <div class="item">
+          <label for="showNotifications">
+            <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" />
+            <span>
+              Vis varsel når nyheter publiseres / oppdateres
+            </span><br />
+            <img class="image" src="/img/options-desktop-notification.png" />
+          </label>
+        </div>
+
+      </div>
+
+      <div class="item">
+        <label for="useInfoscreen">
+          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
+          <span>
+            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
+          </span><br />
+          <img class="image" src="/img/options-infoscreen.png" /><br />
+          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
+        </label>
       </div>
 
     </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
