@@ -292,7 +292,7 @@
   };
 
   tipsText = function(show) {
-    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Kontakt & Tips');
+    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++');
   };
 
   chatterText = function(show) {
