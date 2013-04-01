@@ -233,8 +233,12 @@ findUpdatedPosts = (newsList, viewedList) ->
 optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
 
+tipsText = (show) ->
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Kontakt & Tips'
+
 chatterText = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
 
 fadeButtonText = (show, msg) ->
   fadeInSpeed = 150
@@ -303,6 +307,23 @@ $ ->
     chatterText true
   $('#chatter_button').mouseleave ->
     chatterText false
+
+  $('#tips_button').mouseenter ->
+    tipsText true
+  $('#tips_button').mouseleave ->
+    tipsText false
+
+  # Bind the Tips button and the Tips dialog
+  $('#tips_button').click ->
+    if $('#tips').filter(':visible').length is 1
+      $('#tips').fadeOut 'fast'
+    else
+      $('#tips').fadeIn 'fast'
+  $('#tips:not(a)').click ->
+    $('#tips').fadeOut 'fast'
+  $('#tips a').click ->
+    Browser.openTab $(this).attr 'href'
+    window.close()
 
   $('#bus #atb_logo').click ->
     Browser.openTab 'http://www.atb.no'
