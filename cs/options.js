@@ -579,6 +579,8 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
+    html = $('label[for=openChatter] span').html().replace(/__nettleseren__/g, BROWSER);
+    $('label[for=openChatter] span').html(html);
     html = $('#pagefliplink').html().replace(/__creator__/g, CREATOR_NAME);
     $('#pagefliplink').html(html);
     setInterval((function() {

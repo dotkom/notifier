@@ -549,10 +549,9 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
 
-  # Note: Uncommented as long as the Chatter option us uncommented in options.html
-  # # Minor esthetical adjustmenst for Browser
-  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
-  # $('label[for=openChatter] span').html html
+  # Minor esthetical adjustmenst for Browser
+  html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  $('label[for=openChatter] span').html html
 
   # Adding creator name to pageflip
   html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
