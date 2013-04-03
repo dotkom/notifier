@@ -1,4 +1,4 @@
-var DEBUG = 1;
+var DEBUG = 0;
 
 // General
 var EXTENSION_NAME = 'Online Notifier';
