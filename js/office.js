@@ -1,6 +1,7 @@
 var Office = {
   
-  api: 'https://online.ntnu.no/service_static/office_status',
+  eventApi: 'https://online.ntnu.no/service_static/office_status',
+  lightApi: 'http://draug.online.ntnu.no/lys.txt',
   titleError: 'Oops',
   titleOpen: 'Åpent',
   titleClosed: 'Lukket',
@@ -45,7 +46,7 @@ var Office = {
     // Møte: dotKom   // event title or 'No title'-meeting or nothing
     var self = this;
     $.ajax({
-      url: self.api,
+      url: self.eventApi,
       success: function(data) {
         var status = data.split('\n',2)[0];
         var title = data.split('\n',2)[1];
@@ -78,7 +79,7 @@ var Office = {
     // Receives current light intensity from the office: OFF 0-800-1023 ON
     var self = this;
     $.ajax({
-      url: 'http://draug.online.ntnu.no/lys.txt',
+      url: self.lightApi,
       success: function(data) {
         if (data > self.lightLimit) {
           callback('closed', self.titleClosed, self.msgClosed);
