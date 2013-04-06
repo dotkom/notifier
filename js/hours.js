@@ -53,11 +53,9 @@ var Hours = {
     var postString = 'diner='+this.cantinas[cantina];
     
     var self = this;
-    $.ajax({
-      type: 'POST',
+    Ajaxer.getJson({
       data: postString,
       url: self.api,
-      dataType: 'json',
       success: function(json) {
         if (self.debug) console.log('Untreated JSON:', json);
 

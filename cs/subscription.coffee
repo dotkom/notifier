@@ -31,6 +31,9 @@ setSubscription = ->
 
 # show the html5 notification with timeout when the document is ready
 $ ->
+  # Setting the timeout for all AJAX and JSON requests
+  $.ajaxSetup AJAX_SETUP
+  
   setSubscription()
   setTimeout ( ->
     window.close()

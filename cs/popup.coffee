@@ -3,6 +3,8 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
+newsLimit = 4 # The best amount of news for the popup, IMO
+
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
@@ -79,23 +81,21 @@ updateHours = ->
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
-
   if !navigator.onLine
-    $('#bus #first_bus .name').html ls.first_bus_name
-    $('#bus #second_bus .name').html ls.second_bus_name
-    $('#bus #first_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #second_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-  
+    $('#bus #firstBus .name').html ls.firstBusName
+    $('#bus #secondBus .name').html ls.secondBusName
+    $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
   else
-    createBusDataRequest('first_bus', '#first_bus')
-    createBusDataRequest('second_bus', '#second_bus')
+    createBusDataRequest('firstBus', '#firstBus')
+    createBusDataRequest('secondBus', '#secondBus')
 
 createBusDataRequest = (bus, cssIdentificator) ->
-  activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
+  activeLines = ls[bus+'ActiveLines'] # array of lines stringified with JSON (hopefully)
   activeLines = JSON.parse activeLines
   # Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get ls[bus], activeLines, (lines) ->
-    insertBusInfo lines, ls[bus+'_name'], cssIdentificator
+    insertBusInfo lines, ls[bus+'Name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator
@@ -129,30 +129,30 @@ updateNews = ->
   if feedItems isnt undefined
     displayItems JSON.parse feedItems
   else
-    chosenAffiliation = ls.affiliationName
-    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+chosenAffiliation+'</div></div>'
+    key = ls.affiliationKey
+    name = Affiliation.org[key].name
+    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
 displayItems = (items) ->
-  # Find most recent post and save it
-  mostRecent = items[0].link
-  feedName = items[0].feedName
-  ls.mostRecentRead = mostRecent
+  # Empty the newsbox
   $('#news').html ''
+  # Get feedname
+  feedKey = items[0].feedKey
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
-  viewedList = JSON.parse ls.lastViewedIdList
-  newsList = JSON.parse ls.mostRecentIdList
-  updatedList = findUpdatedPosts viewedList, newsList
+  newsList = JSON.parse ls.newsList
+  viewedList = JSON.parse ls.viewedNewsList
+  updatedList = findUpdatedPosts newsList, viewedList
 
-  # Build list of last viewed for the next time the popup opens
-  idsOfLastViewed = []
+  # Build list of last viewed for the next time the user views the news
+  viewedList = []
 
   # Add feed items to popup
   $.each items, (index, item) ->
     
-    if index < 4 # The best amount of news for the popup, IMO
-      idsOfLastViewed.push item.link
+    if index < newsLimit
+      viewedList.push item.link
       
       htmlItem = '<div class="post"><div class="title">'
       if index < ls.unreadCount
@@ -164,12 +164,14 @@ displayItems = (items) ->
       # EXPLANATION NEEDED:
       # .item[data] contains the link
       # .item[name] contains the alternative link, if one exists, otherwise null
-      date = ''
+      date = altLink = ''
       if item.date isnt null
         date = ' den ' + item.date
+      if item.altLink isnt null
+        altLink = ' name="' + item.altLink + '"'
       htmlItem += item.title + '
         </div>
-          <div class="item" data="' + item.link + '" name="' + item.altLink + '">
+          <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
             <div class="textwrapper">
               <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
@@ -180,7 +182,7 @@ displayItems = (items) ->
       $('#news').append htmlItem
   
   # Store list of last viewed items
-  ls.lastViewedIdList = JSON.stringify idsOfLastViewed
+  ls.viewedNewsList = JSON.stringify viewedList
 
   # All items are now considered read
   Browser.setBadgeText ''
@@ -193,34 +195,50 @@ displayItems = (items) ->
     Browser.openTab $(this).attr 'data'
     window.close()
 
-  # Online specific stuff
-  if feedName is 'online'
-    # Fetch images from the API asynchronously
-    for index, link of idsOfLastViewed
-      News.online_getImage link, (link, image) ->
+  # If organization prefers alternative links, use them
+  if Affiliation.org[feedKey].useAltLink
+    altLink = $('.item[data="'+link+'"]').attr 'name'
+    if altLink isnt 'null'
+      $('.item[data="'+link+'"]').attr 'data', altLink
+
+  # If the organization has it's own getImage function, use it
+  if Affiliation.org[feedKey].getImage isnt undefined
+    for index, link of viewedList
+      Affiliation.org[feedKey].getImage link, (link, image) ->
         # It's important to get the link from the callback, not the above code
         # in order to have the right link at the right time, async ftw.
         $('.item[data="'+link+'"] img').attr 'src', image
-        # When that's done for an image, check if the link could be a better one
-        altLink = $('.item[data="'+link+'"]').attr 'name'
-        if altLink isnt 'null'
-          $('.item[data="'+link+'"]').attr 'data', altLink
+
+  # If the organization has it's own getImages function, use it
+  if Affiliation.org[feedKey].getImages isnt undefined
+    Affiliation.org[feedKey].getImages viewedList, (links, images) ->
+      for index of links
+        $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
 
 # Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = (viewedList, newsList) ->
-  # Compare lists, return union (updated items)
+findUpdatedPosts = (newsList, viewedList) ->
   updatedList = []
-  for viewed in viewedList
-    for news in newsList
-      if viewedList[viewed] == newsList[news]
-        updatedList.push viewedList[viewed]
+  # Compare lists, keep your mind straight here:
+  # Updated news are:
+  # - saved in the newsList before the first identical item in the viewedList
+  # - saved in the viewedList after the first identical item in the newsList
+  for i of newsList
+    break if newsList[i] is viewedList[0]
+    for j of viewedList
+      continue if j is 0
+      if newsList[i] is viewedList[j]
+        updatedList.push newsList[i]
   return updatedList
 
 optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
 
+tipsText = (show) ->
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++'
+
 chatterText = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
 
 fadeButtonText = (show, msg) ->
   fadeInSpeed = 150
@@ -235,7 +253,7 @@ fadeButtonText = (show, msg) ->
 # Document ready, go!
 $ ->
   # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: AJAX_TIMEOUT
+  $.ajaxSetup AJAX_SETUP
 
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
@@ -248,12 +266,23 @@ $ ->
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
+
+  if ls.affiliationKey isnt 'online'
+    # Hide chat button
+    $('#chatter_button').hide()
+    # Show the logo and placeholder image for the correct organization
+    affiliation = ls.affiliationKey
+    # If the affiliation has a defined logo
+    logo = Affiliation.org[affiliation].logo
+    if logo isnt undefined and logo isnt ''
+      if DEBUG then console.log 'Applying affiliation logo', logo
+      $('#header #logo').prop 'src', logo
   
-  # Check for undefined in the lists of news' IDs
-  if ls.lastViewedIdList == undefined
-    ls.lastViewedIdList = JSON.stringify []
-  if ls.mostRecentIdList == undefined
-    ls.mostRecentIdList = JSON.stringify []
+  # Show the color palette the user has chosen
+  color = ls['affiliationColor']
+  if color isnt 'undefined' and color isnt ''
+    if DEBUG then console.log 'Applying affiliation color', color
+    $('#palette').attr 'href', Palettes.getColor color
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
@@ -278,6 +307,23 @@ $ ->
     chatterText true
   $('#chatter_button').mouseleave ->
     chatterText false
+
+  $('#tips_button').mouseenter ->
+    tipsText true
+  $('#tips_button').mouseleave ->
+    tipsText false
+
+  # Bind the Tips button and the Tips dialog
+  $('#tips_button').click ->
+    if $('#tips').filter(':visible').length is 1
+      $('#tips').fadeOut 'fast'
+    else
+      $('#tips').fadeIn 'fast'
+  $('#tips:not(a)').click ->
+    $('#tips').fadeOut 'fast'
+  $('#tips a').click ->
+    Browser.openTab $(this).attr 'href'
+    window.close()
 
   $('#bus #atb_logo').click ->
     Browser.openTab 'http://www.atb.no'

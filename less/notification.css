@@ -8,6 +8,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+  cursor: pointer;
   font-family: helvetica;
   color: black;
 }
@@ -40,7 +41,7 @@ body {
   border: 0pt solid #ff0000;
   position: relative;
   float: right;
-  width: 115pt;
+  width: 110pt;
 }
 .item .textwrapper .emphasized {
   font-style: italic;

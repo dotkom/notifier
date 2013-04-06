@@ -18,12 +18,15 @@
   <script src="js/google_analytics.js"></script>
   
   <!-- JS Services -->
+  <script src="js/affiliation.js"></script>
+  <script src="js/ajaxer.js"></script>
   <script src="js/browser.js"></script>
-  <script src="js/news.js"></script>
   <script src="js/bus.js"></script>
-  <script src="js/stops.js"></script>
   <script src="js/meetings.js"></script>
+  <script src="js/news.js"></script>
   <script src="js/office.js"></script>
+  <script src="js/palettes.js"></script>
+  <script src="js/stops.js"></script>
 
   <!-- begin GL -->
   <script src="gl/glMatrix-0.9.5.min.js"></script>
@@ -73,6 +76,7 @@
   <div id="container">
     <div id="left" class="side">
 
+      <!--
       <div class="item">
         <label for="showAffiliation">
           <input type="checkbox" name="showAffiliation" value="showAffiliation" id="showAffiliation" disabled="disabled" />
@@ -81,10 +85,11 @@
           </span><br />
         </label>
         <div id="affiliationBox" class="image">
-          <label for="affiliationName">
+          <label for="affiliationKey">
             <img id="affiliationLogo" src="/img/logo-rss.png" />
           </label>
-          <select id="affiliationName">
+          <!- IMPORTANT: Keep the same order here as in options.html and in manifest.json ->
+          <select id="affiliationKey">
             <optgroup label="Linjeforeninger Gløshaugen">
               <option value="berg">Berg</option>
               <option value="delta">Delta</option>
@@ -132,9 +137,9 @@
               <option value="dmmh">DMMH</option>
             </optgroup>
           </select>
-          <select id="colorSelector">
+          <select id="affiliationColorSelector">
             <option value="blue">Blå fargepalett</option>
-            <option value="grenn">Grønn fargepalett</option>
+            <option value="green">Grønn fargepalett</option>
             <option value="grey">Grå fargepalett</option>
             <option value="yellow">Gul fargepalett</option>
             <option value="purple">Lilla fargepalett</option>
@@ -144,114 +149,7 @@
           </select>
         </div>
       </div>
-
-      <div class="item">
-        <label for="showCantina">
-          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
-          <span>
-            Vis middagsmeny og åpningstider fra SiT
-          </span><br />
-        </label>
-        <div id="cantinaBox" class="image">
-          <select class="cantina_selector" id="left_cantina">
-            <optgroup label="kantiner">
-              <option value="dmmh">DMMH</option>
-              <option value="dragvoll">Dragvoll</option>
-              <option value="elektro">Elektro</option>
-              <option value="hangaren">Hangaren</option>
-              <option value="kalvskinnet">Kalvskinnet</option>
-              <option value="kjelhuset">Kjelhuset</option>
-              <option value="moholt">Moholt</option>
-              <option value="mtfs">MTFS</option>
-              <option value="ranheimsveien">Ranheimsveien</option>
-              <option value="realfag">Realfag</option>
-              <option value="rotvoll">Rotvoll</option>
-              <option value="tyholt">Tyholt</option>
-              <option value="øya">Øya</option>
-            </optgroup>
-            <optgroup label="storkiosker">
-              <option value="storkiosk dragvoll">Storkiosk Dragvoll</option>
-              <option value="storkiosk gløshaugen">Storkiosk Gløshaugen</option>
-              <option value="storkiosk øya">Storkiosk Øya</option>
-              <option value="idretts. dragvoll">Idretts. Dragvoll</option>
-            </optgroup>
-            <optgroup label="kaféer">
-              <option value="sito dragvoll">Sito Dragvoll</option>
-              <option value="sito realfag">Sito Realfag</option>
-              <option value="sito stripa">Sito Stripa</option>
-            </optgroup>
-          </select>
-          <label for="showCantina">
-            <img id="cantinaLogo" src="/img/logo-sit.png" />
-          </label>
-          <select class="cantina_selector" id="right_cantina">
-            <optgroup label="kantiner">
-              <option value="dmmh">DMMH</option>
-              <option value="dragvoll">Dragvoll</option>
-              <option value="elektro">Elektro</option>
-              <option value="hangaren">Hangaren</option>
-              <option value="kalvskinnet">Kalvskinnet</option>
-              <option value="kjelhuset">Kjelhuset</option>
-              <option value="moholt">Moholt</option>
-              <option value="mtfs">MTFS</option>
-              <option value="ranheimsveien">Ranheimsveien</option>
-              <option value="realfag">Realfag</option>
-              <option value="rotvoll">Rotvoll</option>
-              <option value="tyholt">Tyholt</option>
-              <option value="øya">Øya</option>
-            </optgroup>
-            <optgroup label="storkiosker">
-              <option value="storkiosk dragvoll">Storkiosk Dragvoll</option>
-              <option value="storkiosk gløshaugen">Storkiosk Gløshaugen</option>
-              <option value="storkiosk øya">Storkiosk Øya</option>
-              <option value="idretts. dragvoll">Idretts. Dragvoll</option>
-            </optgroup>
-            <optgroup label="kaféer">
-              <option value="sito dragvoll">Sito Dragvoll</option>
-              <option value="sito realfag">Sito Realfag</option>
-              <option value="sito stripa">Sito Stripa</option>
-            </optgroup>
-          </select>
-        </div>
-      </div>
-
-      <div class="item">
-        <label for="showBus">
-          <input type="checkbox" name="showBus" value="showBus" id="showBus" />
-          <span>
-            Vis sanntidsbuss fra AtB
-          </span><br />
-        </label>
-        <div id="bus_box" class="image">
-          <div id="first_bus" class="bus_stop">
-            <input type="text" placeholder="Busstopp"></input><br />
-            <select>
-              <option>til byen</option>
-              <option selected="selected">fra byen</option>
-            </select>
-            <div class="lines">
-              <!-- a wrapping div makes the slide animation smooth for when
-              the table with favorite bus lines is injected here -->
-            </div>
-          </div>
-          <label for="showBus">
-            <img id="bus_logo" src="/img/logo-atb.png" />
-          </label>
-          <div id="second_bus" class="bus_stop">
-            <input type="text" placeholder="Busstopp"></input><br />
-            <select>
-              <option selected="selected">til byen</option>
-              <option>fra byen</option>
-            </select>
-            <div class="lines">
-              <!-- a wrapping div makes the slide animation smooth for the table that's injected here -->
-            </div>
-          </div>
-          <div id="arrow_down">
-            <img src="img/options-arrow-down.png" />
-          </div>
-        </div>
-      </div>
+      -->
 
       <div class="item iconitem">
         <label for="showOffice">
@@ -271,7 +169,115 @@
         </label>
       </div>
 
-      <!-- <div class="item">
+      <div class="item">
+        <label for="showCantina">
+          <input type="checkbox" name="showCantina" value="showCantina" id="showCantina" />
+          <span>
+            Vis middagsmeny og åpningstider fra SiT
+          </span><br />
+        </label>
+        <div id="cantinaBox" class="image">
+          <select class="cantina_selector" id="left_cantina">
+            <optgroup label="Kantiner">
+              <option value="dmmh">DMMH</option>
+              <option value="dragvoll">Dragvoll</option>
+              <option value="elektro">Elektro</option>
+              <option value="hangaren">Hangaren</option>
+              <option value="kalvskinnet">Kalvskinnet</option>
+              <option value="kjelhuset">Kjelhuset</option>
+              <option value="moholt">Moholt</option>
+              <option value="mtfs">MTFS</option>
+              <option value="ranheimsveien">Ranheimsveien</option>
+              <option value="realfag">Realfag</option>
+              <option value="rotvoll">Rotvoll</option>
+              <option value="tyholt">Tyholt</option>
+              <option value="øya">Øya</option>
+            </optgroup>
+            <optgroup label="Storkiosker">
+              <option value="storkiosk dragvoll">Storkiosk Dragvoll</option>
+              <option value="storkiosk gløshaugen">Storkiosk Gløshaugen</option>
+              <option value="storkiosk øya">Storkiosk Øya</option>
+              <option value="idretts. dragvoll">Idretts. Dragvoll</option>
+            </optgroup>
+            <optgroup label="Kaféer">
+              <option value="sito dragvoll">Sito Dragvoll</option>
+              <option value="sito realfag">Sito Realfag</option>
+              <option value="sito stripa">Sito Stripa</option>
+            </optgroup>
+          </select>
+          <label for="showCantina">
+            <img id="cantinaLogo" src="/img/logo-sit.png" />
+          </label>
+          <select class="cantina_selector" id="right_cantina">
+            <optgroup label="Kantiner">
+              <option value="dmmh">DMMH</option>
+              <option value="dragvoll">Dragvoll</option>
+              <option value="elektro">Elektro</option>
+              <option value="hangaren">Hangaren</option>
+              <option value="kalvskinnet">Kalvskinnet</option>
+              <option value="kjelhuset">Kjelhuset</option>
+              <option value="moholt">Moholt</option>
+              <option value="mtfs">MTFS</option>
+              <option value="ranheimsveien">Ranheimsveien</option>
+              <option value="realfag">Realfag</option>
+              <option value="rotvoll">Rotvoll</option>
+              <option value="tyholt">Tyholt</option>
+              <option value="øya">Øya</option>
+            </optgroup>
+            <optgroup label="Storkiosker">
+              <option value="storkiosk dragvoll">Storkiosk Dragvoll</option>
+              <option value="storkiosk gløshaugen">Storkiosk Gløshaugen</option>
+              <option value="storkiosk øya">Storkiosk Øya</option>
+              <option value="idretts. dragvoll">Idretts. Dragvoll</option>
+            </optgroup>
+            <optgroup label="Kaféer">
+              <option value="sito dragvoll">Sito Dragvoll</option>
+              <option value="sito realfag">Sito Realfag</option>
+              <option value="sito stripa">Sito Stripa</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <div class="item">
+        <label for="showBus">
+          <input type="checkbox" name="showBus" value="showBus" id="showBus" />
+          <span>
+            Vis sanntidsbuss fra AtB
+          </span><br />
+        </label>
+        <div id="bus_box" class="image">
+          <div id="firstBus" class="bus_stop">
+            <input type="text" placeholder="Busstopp"></input><br />
+            <select>
+              <option>til byen</option>
+              <option selected="selected">fra byen</option>
+            </select>
+            <div class="lines">
+              <!-- a wrapping div makes the slide animation smooth for when
+              the table with favorite bus lines is injected here -->
+            </div>
+          </div>
+          <label for="showBus">
+            <img id="bus_logo" src="/img/logo-atb.png" />
+          </label>
+          <div id="secondBus" class="bus_stop">
+            <input type="text" placeholder="Busstopp"></input><br />
+            <select>
+              <option selected="selected">til byen</option>
+              <option>fra byen</option>
+            </select>
+            <div class="lines">
+              <!-- a wrapping div makes the slide animation smooth for the table that's injected here -->
+            </div>
+          </div>
+          <div id="arrow_down">
+            <img src="img/options-arrow-down.png" />
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
         <label for="openChatter">
           <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" />
           <span>
@@ -279,10 +285,34 @@
           </span><br />
           <img class="image" src="/img/options-webchat.png" />
         </label>
-      </div> -->
+      </div>
 
     </div>
     <div id="right" class="side">
+
+      <div id="infoscreen_slider">
+
+        <div class="item">
+          <label for="coffeeSubscription">
+            <input type="checkbox" name="coffeeSubscription" value="coffeeSubscription" id="coffeeSubscription" />
+            <span>
+              Abonner på nytraktet kaffe
+            </span><br />
+            <img class="image" src="/img/options-coffee-subscription.png" />
+          </label>
+        </div>
+
+        <div class="item">
+          <label for="showNotifications">
+            <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" />
+            <span>
+              Vis varsel når nyheter publiseres / oppdateres
+            </span><br />
+            <img class="image" src="/img/options-desktop-notification.png" />
+          </label>
+        </div>
+
+      </div>
 
       <div class="item">
         <label for="useInfoscreen">
@@ -295,30 +325,6 @@
         </label>
       </div>
 
-      <div id="infoscreen_slider">
-
-        <div class="item">
-          <label for="showNotifications">
-            <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" />
-            <span>
-              Vis varsel når nyheter publiseres / oppdateres
-            </span><br />
-            <img class="image" src="/img/options-desktop-notification.png" />
-          </label>
-        </div>
-
-        <div class="item">
-          <label for="coffeeSubscription">
-            <input type="checkbox" name="coffeeSubscription" value="coffeeSubscription" id="coffeeSubscription" />
-            <span>
-              Abonner på nykokt kaffe
-            </span><br />
-            <img class="image" src="/img/options-coffee-subscription.png" />
-          </label>
-        </div>
-
-      </div>
-
     </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
   </div>
 
@@ -327,9 +333,12 @@
 
   <!-- DEBUG: Links to the other pages in the app -->
   <div id="debug_links">
+    pages<br />
+    <button type="button" class="debug" data="subscription.html">subscription.html</button><br />
+    <button type="button" class="debug" data="notification.html">notification.html</button><br />
     <button type="button" class="debug" data="infoscreen.html">infoscreen.html</button><br />
     <button type="button" class="debug" data="popup.html">popup.html</button><br />
-    <br />
+    <br />cantina feeds<br />
     <button type="button" class="debug" data="https://www.sit.no/rss.ap?thisId=38798">dmmh-feed</button><br />
     <button type="button" class="debug" data="https://www.sit.no/rss.ap?thisId=36441">dragvoll-feed</button><br />
     <button type="button" class="debug" data="https://www.sit.no/rss.ap?thisId=40227">elektro-feed</button><br />

@@ -1,10 +1,10 @@
 var Coffee = {
-  api: 'http://draug.online.ntnu.no/coffee_dev.txt',
+  api: 'http://draug.online.ntnu.no/coffee.txt',
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
   msgFormatError: 'Feil i kaffeformat',
   msgConnectionError: 'Frakoblet fra kaffeknappen',
-  msgComforting: 'Det er sikkert kaffe!',
+  msgComforting: 'Så, så. Det er sikkert kaffe :)',
   
   debug: 0,
   debugString: "200\n1. March 14:28:371",
@@ -17,7 +17,7 @@ var Coffee = {
 
     // Receives the status for the coffee pot
     var self = this;
-    $.ajax({
+    Ajaxer.getPlainText({
       url: self.api,
       success: function(data) {
 
@@ -129,8 +129,9 @@ var Coffee = {
       localStorage.lastSubscriptionTime = JSON.stringify(new Date());
       Browser.createNotification('subscription.html');
     }
-    else
+    else {
       if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
+    }
   },
 
 }

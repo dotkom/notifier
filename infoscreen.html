@@ -17,6 +17,8 @@
   <script src="js/google_analytics.js"></script>
 
   <!-- JS Services -->
+  <script src="js/affiliation.js"></script>
+  <script src="js/ajaxer.js"></script>
   <script src="js/browser.js"></script>
   <script src="js/bus.js"></script>
   <script src="js/cantina.js"></script>
@@ -25,6 +27,7 @@
   <script src="js/meetings.js"></script>
   <script src="js/news.js"></script>
   <script src="js/office.js"></script>
+  <script src="js/palettes.js"></script>
   <script src="js/servant.js"></script>
 
   <!-- Document ready sript -->
@@ -34,6 +37,7 @@
 
 <body>
   <div id="overlay"></div>
+  <div id="fadeOutNews"></div>
   <div id="background"></div>
   <div id="container">
 
@@ -73,7 +77,7 @@
     </div>
     
     <div id="bus">
-      <div id="first_bus">
+      <div id="firstBus">
         <div class="name">
           <!-- br's are hackish -->
           <br /><br /><br /><img class="loading_left" src="img/loading.gif" />
@@ -103,7 +107,7 @@
         </div>
         <img id="atb_logo" src="/img/logo-atb.png" />
       </div>
-      <div id="second_bus">
+      <div id="secondBus">
         <div class="name">
           <!-- br's are hackish -->
           <br /><br /><br /><img class="loading_right" src="img/loading.gif" />
@@ -131,7 +135,7 @@
       <div class="post">
         <div class="title">Laster tittel...</div>
         <div class="item" data="https://online.ntnu.no/">
-        <img src="img/placeholders/online.png" width="107">
+        <img src="img/placeholder.png" width="107">
         <div class="textwrapper">
           <div class="emphasized">- Laster forfatter... Laster dato...</div>
             Laster tekst...
@@ -141,7 +145,7 @@
       <div class="post">
         <div class="title">Laster tittel...</div>
         <div class="item" data="https://online.ntnu.no/">
-        <img src="img/placeholders/online.png" width="107">
+        <img src="img/placeholder.png" width="107">
         <div class="textwrapper">
           <div class="emphasized">- Laster forfatter... Laster dato...</div>
             Laster tekst...
@@ -151,7 +155,7 @@
       <div class="post">
         <div class="title">Laster tittel...</div>
         <div class="item" data="https://online.ntnu.no/">
-        <img src="img/placeholders/online.png" width="107">
+        <img src="img/placeholder.png" width="107">
         <div class="textwrapper">
           <div class="emphasized">- Laster forfatter... Laster dato...</div>
             Laster tekst...
@@ -161,7 +165,7 @@
       <div class="post">
         <div class="title">Laster tittel...</div>
         <div class="item" data="https://online.ntnu.no/">
-        <img src="img/placeholders/online.png" width="107">
+        <img src="img/placeholder.png" width="107">
         <div class="textwrapper">
           <div class="emphasized">- Laster forfatter... Laster dato...</div>
             Laster tekst...
@@ -171,7 +175,7 @@
       <div class="post">
         <div class="title">Laster tittel...</div>
         <div class="item" data="https://online.ntnu.no/">
-        <img src="img/placeholders/online.png" width="107">
+        <img src="img/placeholder.png" width="107">
         <div class="textwrapper">
           <div class="emphasized">- Laster forfatter... Laster dato...</div>
             Laster tekst...
@@ -181,7 +185,7 @@
       <div class="post">
         <div class="title">Laster tittel...</div>
         <div class="item" data="https://online.ntnu.no/">
-        <img src="img/placeholders/online.png" width="107">
+        <img src="img/placeholder.png" width="107">
         <div class="textwrapper">
           <div class="emphasized">- Laster forfatter... Laster dato...</div>
             Laster tekst...

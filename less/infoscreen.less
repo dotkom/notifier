@@ -1,52 +1,23 @@
 
-// Debugging
+@import "common.less";
 
-@debug: 0pt;
-.debugred {
-  border: @debug solid red;
-}
-.debugyellow {
-  border: @debug solid yellow;
-}
-.debugpink {
-  border: @debug solid pink;
-}
-.debuglime {
-  border: @debug solid lime;
-}
+/* This file contains infoscreen-additions to common.less */
 
 // Variables
 
 @in-post-padding: 9pt;
-@online-orange: #ee861f;
 
 // Mixins
 
-.fullbox {
-  width: 100%;
-  clear: both;
-  padding: 0;
-  margin: 0;
-}
-
 .title {
-  display: block;
-  color: @online-orange;
-  text-transform: uppercase;
   font-size: 24pt;
-  font-weight: bold;
   padding-top: 25pt;
-  padding-bottom: @in-post-padding;
+  padding-bottom: 9pt;
 }
 
 .emphasized {
-  font-style: italic;
   font-size: 14pt;
   margin-bottom: 8pt;
-}
-
-.index {
-  font-style: italic;
 }
 
 // Rules
@@ -56,52 +27,45 @@ html {
 }
 
 body {
-  background: #001429;
-  font-family: helvetica;
-  color: white;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
   font-size: 20pt;
   line-height: 22pt;
 }
 
 #overlay {
-  /* note: the overlay is hidden when debugging, to be able to select/click stuff */
+  /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
+  /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
+  /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 1000;
+  background: transparent;
+}
+
+#fadeOutNews {
+  .debuglime;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 505px;
   z-index: 100;
-  background: url('/img/background-infoscreen-news-cutoff.png') center bottom no-repeat;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
 }
 
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
-  background: url('/img/background-large-vertical.png') center center no-repeat;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+  background-image: url('/img/background-large-vertical.png');
 }
 
 /* This container keeps the content centered */
 
 #container {
-  .debugpink;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   overflow-y: hidden;
-  overflow-x: hidden;
   padding: 30pt;
-  z-index: 10;
 
   #office {
     .debugred;
@@ -126,140 +90,45 @@ body {
   }
 
   #todays {
-    .debugyellow;
-    .fullbox;
-
     #schedule {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 48%;
       #servant {
-        font-style: italic;
-        margin-bottom: 2pt;
+        margin-bottom: 5pt;
       }
     }
     #coffee {
-      .debugpink;
-      position: relative;
-      float: right;
-      width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
       #pots {
-        font-style: italic;
-        margin-bottom: 2pt;
+        margin-bottom: 5pt;
       }
     }
   }
 
   #cantinas {
-    .debugred;
-    .fullbox;
-
     .hours {
-      color: white;
       padding-bottom: 3pt;
-      font-weight: normal;
-      font-style: italic;
-      text-transform: none;
-    }
-    #left {
-      .debugpink;
-      position: relative;
-      float: left;
-      width: 48%;
-    }
-    #right {
-      .debugpink;
-      position: relative;
-      float: right;
-      width: 50%; /* when the right box is half the width it'll appear they're both aligned to 50% */
-    }
-    #dinnerbox {
-      .debugyellow;
-    }
-    li {
-      .debuglime;
-      position: relative;
-      width: 95%;
-      list-style-type: none;
-      -webkit-transition: text-shadow 0.15s ease-out 0s;
-    }
-    li.message {
-      /*font-style: italic;*/
     }
   }
 
   #bus {
-    .debugred;
-    .fullbox;
-
-    position: relative;
     top: 35pt;
     font-size: 18pt;
     line-height: 25pt;
-    background-color: #000f1d;
     height: 144pt;
-    width: 110%;
-    margin-left: -5%;
     margin-bottom: 45pt;
     box-shadow: 0 0 35pt #88b;
 
     .name {
-      color: white;
       margin-bottom: 3pt;
-      text-decoration: underline;
-      font-weight: bold;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    #first_bus {
-      .debuglime;
-      position: relative;
-      float: left;
-      text-align: right;
-      padding-top: 10pt;
-      width: 42%;
-    }
-    #second_bus {
-      .debuglime;
-      width: 42%;
-      position: relative;
-      padding-top: 10pt;
-      float: left;
-      text-align: left;
     }
     .loading_left {
-      position: relative;
       width: 160px;
       bottom: 16pt;
-      -webkit-transform: scaleX(-1);
     }
     .loading_right {
-      position: relative;
       width: 160px;
       bottom: 16pt;
     }
-    .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
-      .debugred;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .time {
-      font-weight: bold;
-    }
-    .error {
-      font-style: italic;
-    }
     #middle {
-      .debuglime;
-      float: left;
-      position: relative;
-      height: 100%;
       width: 14%;
-      text-align: center;
       #atb_logo {
         .debuglime;
         height: 85pt;
@@ -276,7 +145,6 @@ body {
           font-family: helvetica;
           font-size: 30pt;
           list-style: none;
-          /*text-shadow: 0 0 5pt #00c6ff;*/
         }
         #hours {
           position: relative;
@@ -294,7 +162,6 @@ body {
           @-webkit-keyframes mymove {
             0% {
               opacity:1.0;
-              /*text-shadow: 0 0 20pt #00c6ff;*/
             }
             50% {
               opacity:0;
@@ -302,7 +169,6 @@ body {
             }
             100% {
               opacity:1.0;
-              /*text-shadow: 0 0 20pt #00c6ff;*/
             }
           }
         }
@@ -311,34 +177,17 @@ body {
   }
 
   #news {
-    .debugred;
-    .fullbox;
-
     .post {
-      .debugyellow;
-      position: relative;
-      clear: both;
-
       .item {
-        .debugyellow;
         min-height: 40pt;
-        text-overflow: ellipsis;
-        overflow: hidden;
 
         img {
-          float: left;
-          background: snow;
           width: 170pt;
           max-height: 140pt;
-          padding: 5px;
-          box-shadow: 0px 0px 10px #bbb;
+          padding: 6pt;
+          box-shadow: 0 0 20pt #bbb;
         }
-
         .textwrapper {
-          .debuglime;
-          position: relative;
-          float: left;
-          text-align: left;
           margin-left: @in-post-padding * 2;
           width: 73%;
 
@@ -347,6 +196,9 @@ body {
             font-size: 24pt;
           }
         }
+      }
+      .unread {
+        font-size: 18pt;
       }
     }
   }
@@ -365,11 +217,12 @@ body {
 }
 
 /* the pageflip at the bottom */
+/* used PX instead of PT because images are measured in PX */
 
 #pageflipbg {
   position: fixed;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   background: transparent url('/img/pageflip-infoscreen-bg.png') no-repeat left bottom;
   width: 356px;
   height: 181px;
@@ -390,8 +243,8 @@ body {
 
 #pageflip {
   position: fixed;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   background: transparent url('/img/pageflip-infoscreen.png') no-repeat left bottom;
   width: 356px;
   height: 181px;

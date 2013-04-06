@@ -44,9 +44,10 @@ Chronological Credz
 	- John Hanssen Kolstad
 	- Magnus Dysthe
 
-Issues submitted to the Chromium og Opera teams
+Issues submitted to the Chromium and Opera teams
 
 - Regex word boundary and ÆØÅ: https://code.google.com/p/chromium/issues/detail?id=223360
+- Desktop Notification logging: https://code.google.com/p/chromium/issues/detail?id=225212
 
 # In-depth features
 

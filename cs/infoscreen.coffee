@@ -3,6 +3,8 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
+newsLimit = 8 # The most news you can cram into Infoscreen, if other features are disabled
+
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
@@ -55,30 +57,30 @@ updateNews = ->
   if feedItems isnt undefined
     displayItems JSON.parse feedItems
   else
-    chosenAffiliation = ls.affiliationName
-    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+chosenAffiliation+'</div></div>'
+    key = ls.affiliationKey
+    name = Affiliation.org[key].name
+    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
 displayItems = (items) ->
-  # Find most recent post and save it
-  mostRecent = items[0].link
-  feedName = items[0].feedName
-  ls.mostRecentRead = mostRecent
+  # Empty the newsbox
   $('#news').html ''
+  # Get feedname
+  feedKey = items[0].feedKey
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
-  viewedList = JSON.parse ls.lastViewedIdList
-  newsList = JSON.parse ls.mostRecentIdList
-  updatedList = findUpdatedPosts viewedList, newsList
+  newsList = JSON.parse ls.newsList
+  viewedList = JSON.parse ls.viewedNewsList
+  updatedList = findUpdatedPosts newsList, viewedList
 
-  # Build list of last viewed for the next time the popup opens
-  idsOfLastViewed = []
+  # Build list of last viewed for the next time the user views the news
+  viewedList = []
 
   # Add feed items to popup
   $.each items, (index, item) ->
     
-    if index < 8 # The most news you can cram into Infoscreen, if other features are disabled
-      idsOfLastViewed.push item.link
+    if index < newsLimit
+      viewedList.push item.link
       
       htmlItem = '<div class="post"><div class="title">'
       if index < ls.unreadCount
@@ -90,12 +92,14 @@ displayItems = (items) ->
       # EXPLANATION NEEDED:
       # .item[data] contains the link
       # .item[name] contains the alternative link, if one exists, otherwise null
-      date = ''
+      date = altLink = ''
       if item.date isnt null
-        date = ' den '+item.date
+        date = ' den ' + item.date
+      if item.altLink isnt null
+        altLink = ' name="' + item.altLink + '"'
       htmlItem += item.title + '
         </div>
-          <div class="item" data="' + item.link + '" name="' + item.altLink + '">
+          <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
             <div class="textwrapper">
               <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
@@ -106,7 +110,7 @@ displayItems = (items) ->
       $('#news').append htmlItem
   
   # Store list of last viewed items
-  ls.lastViewedIdList = JSON.stringify idsOfLastViewed
+  ls.viewedNewsList = JSON.stringify viewedList
 
   # All items are now considered read
   Browser.setBadgeText ''
@@ -119,58 +123,60 @@ displayItems = (items) ->
     Browser.openTab $(this).attr 'data'
     window.close()
 
-  # Online specific stuff
-  if feedName is 'online'
-    # Fetch images from the API asynchronously
-    for index, link of idsOfLastViewed
-      News.online_getImage link, (link, image) ->
+  # If organization prefers alternative links, use them
+  if Affiliation.org[feedKey].useAltLink
+    altLink = $('.item[data="'+link+'"]').attr 'name'
+    if altLink isnt 'null'
+      $('.item[data="'+link+'"]').attr 'data', altLink
+
+  # If the organization has it's own getImage function, use it
+  if Affiliation.org[feedKey].getImage isnt undefined
+    for index, link of viewedList
+      Affiliation.org[feedKey].getImage link, (link, image) ->
         # It's important to get the link from the callback, not the above code
         # in order to have the right link at the right time, async ftw.
         $('.item[data="'+link+'"] img').attr 'src', image
-        # When that's done for an image, check if the link could be a better one
-        altLink = $('.item[data="'+link+'"]').attr 'name'
-        if altLink isnt 'null'
-          $('.item[data="'+link+'"]').attr 'data', altLink
+
+  # If the organization has it's own getImages function, use it
+  if Affiliation.org[feedKey].getImages isnt undefined
+    Affiliation.org[feedKey].getImages viewedList, (links, images) ->
+      for index of links
+        $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
 
 # Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = ->
-  # undefined checks first
-  if ls.lastViewedIdList == undefined
-    ls.lastViewedIdList = JSON.stringify []
-    return []
-  else if ls.mostRecentIdList == undefined
-    ls.mostRecentIdList = JSON.stringify []
-    return []
-  # Compare lists, return union (updated items)
-  else
-    viewedList = JSON.parse ls.lastViewedIdList
-    newsList = JSON.parse ls.mostRecentIdList
-    updatedList = []
-    for viewed in viewedList
-      for news in newsList
-        if viewedList[viewed] == newsList[news]
-          updatedList.push viewedList[viewed]
-    return updatedList
+findUpdatedPosts = (newsList, viewedList) ->
+  updatedList = []
+  # Compare lists, keep your mind straight here:
+  # Updated news are:
+  # - saved in the newsList before the first identical item in the viewedList
+  # - saved in the viewedList after the first identical item in the newsList
+  for i of newsList
+    break if newsList[i] is viewedList[0]
+    for j of viewedList
+      continue if j is 0
+      if newsList[i] is viewedList[j]
+        updatedList.push newsList[i]
+  return updatedList
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
 
   if !navigator.onLine
-    $('#bus #first_bus .name').html ls.first_bus_name
-    $('#bus #second_bus .name').html ls.second_bus_name
-    $('#bus #first_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #second_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #firstBus .name').html ls.firstBusName
+    $('#bus #secondBus .name').html ls.secondBusName
+    $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
 
   else
-    createBusDataRequest('first_bus', '#first_bus')
-    createBusDataRequest('second_bus', '#second_bus')
+    createBusDataRequest('firstBus', '#firstBus')
+    createBusDataRequest('secondBus', '#secondBus')
 
 createBusDataRequest = (bus, cssIdentificator) ->
-  activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
+  activeLines = ls[bus+'ActiveLines'] # array of lines stringified with JSON (hopefully)
   activeLines = JSON.parse activeLines
   # Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get ls[bus], activeLines, (lines) ->
-    insertBusInfo lines, ls[bus+'_name'], cssIdentificator
+    insertBusInfo lines, ls[bus+'Name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator
@@ -236,7 +242,7 @@ $ ->
     $('#overlay').hide()
   
   # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: AJAX_TIMEOUT
+  $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'

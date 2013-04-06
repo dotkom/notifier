@@ -27,8 +27,8 @@ testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
 bindAffiliationSelector = ->
-  selector = 'affiliationName'
-  chosenAffiliation = ls['affiliationName']
+  selector = 'affiliationKey'
+  chosenAffiliation = ls[selector]
   # Default values
   $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
   # React to change
@@ -42,32 +42,34 @@ bindAffiliationSelector = ->
       enableOnlineSpecificFeatures()
     # Save the change
     ls[selector] = chosenAffiliation
+    # Get and save the recommended color palette for the chosen affiliation
+    color = Affiliation.org[chosenAffiliation].color
+    if color isnt undefined and color isnt ''
+      $('#affiliationColorSelector').val color
+      ls['affiliationColor'] = color
+    # Get and save the icon for the chosen affiliation
+    symbol = Affiliation.org[chosenAffiliation].symbol
+    if symbol isnt undefined and symbol isnt ''
+      Browser.setIcon symbol
+      ls['affiliationSymbol'] = symbol
     # Reload news
     Browser.getBackgroundProcess().updateNews()
 
+bindAffiliationColorSelector = ->
+  # React to change
+  $('#affiliationColorSelector').change ->
+    chosenAffiliation = $(this).val()
+    # Save the change
+    ls['affiliationColor'] = chosenAffiliation
+
 disableOnlineSpecificFeatures = ->
-  # Disable office status
+  # Disable office status and coffee subscription
   ls['showOffice'] = 'false'
+  ls['coffeeSubscription'] = 'false'
+  # Hide office status option
   $('label[for="showOffice"]').slideUp 'slow', ->
-    # Disable coffee subscription
-    ls['coffeeSubscription'] = 'false'
+    # Hide coffee subscription option
     $('label[for="coffeeSubscription"]').slideUp 'slow'
-    # $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-      # # Change logo and subtext in a cool way
-      # affiliationName = localStorage.affiliationName
-      # # Fading out subtext
-      # $('#logo_subtext').fadeOut 'slow', ->
-      #   # Changing subtext temporarily
-      #   $('#logo_subtext').html affiliationName
-      #   $('#logo_subtext').fadeIn 'slow', ->
-      #     # Setting new logo and fading it in
-      #     newLogo = News.feeds[affiliationName].logo
-      #     $('#logo').prop 'src', newLogo
-      #     $('#logo').fadeIn 'slow', ->
-      #       # Changing subtext back
-      #       $('#logo_subtext').fadeOut 'slow', ->
-      #         $('#logo_subtext').html 'notifier options'
-      #         $('#logo_subtext').fadeIn 'slow'
 
 enableOnlineSpecificFeatures = ->
   # Enable office status
@@ -99,7 +101,7 @@ bindBusFields = (busField) ->
     
     # Clear stop field on click
     if DEBUG then console.log 'focus - clear field and show saved value as placeholder'
-    ls.busStopClickedAway = ls[busField+'_name']
+    ls.busStopClickedAway = ls[busField+'Name']
     $(stop).val ''
     $(stop).attr 'placeholder', ls.busStopClickedAway
 
@@ -330,10 +332,10 @@ saveBus = (busField) ->
   
   # Save all to localStorage
   ls[busField] = busStopId
-  ls[busField + '_name'] = stopName
-  ls[busField + '_direction'] = direction
-  ls[busField + '_active_lines'] = JSON.stringify activeLines
-  ls[busField + '_inactive_lines'] = JSON.stringify inactiveLines
+  ls[busField + 'Name'] = stopName
+  ls[busField + 'Direction'] = direction
+  ls[busField + 'ActiveLines'] = JSON.stringify activeLines
+  ls[busField + 'InactiveLines'] = JSON.stringify inactiveLines
   if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"' ######################################
   if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"' ######################################
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
@@ -341,10 +343,10 @@ saveBus = (busField) ->
 
 loadBus = (busField) ->
   cssSelector = '#' + busField
-  stopName = ls[busField + '_name']
-  direction = ls[busField + '_direction']
-  activeLines = ls[busField + '_active_lines']
-  inactiveLines = ls[busField + '_inactive_lines']
+  stopName = ls[busField + 'Name']
+  direction = ls[busField + 'Direction']
+  activeLines = ls[busField + 'ActiveLines']
+  inactiveLines = ls[busField + 'InactiveLines']
 
   # Add stopname and direction to busfields
   if stopName isnt undefined and direction isnt undefined
@@ -520,12 +522,12 @@ fadeInCanvas = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    # $('#debug_links').show()
+    $('#debug_links').show()
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
   
   # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: AJAX_TIMEOUT
+  $.ajaxSetup AJAX_SETUP
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
@@ -547,10 +549,9 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
 
-  # Note: Uncommented as long as the Chatter option us uncommented in options.html
-  # # Minor esthetical adjustmenst for Browser
-  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
-  # $('label[for=openChatter] span').html html
+  # Minor esthetical adjustmenst for Browser
+  html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  $('label[for=openChatter] span').html html
 
   # Adding creator name to pageflip
   html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
@@ -570,16 +571,17 @@ $ ->
   # $('#notification').click ->
   #   fadeInCanvas()
 
-  # Allow user to change affiliation
+  # Allow user to change affiliation and colors
   bindAffiliationSelector()
+  bindAffiliationColorSelector()
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
   bindCantinaSelector 'right_cantina'
 
   # Give user suggestions for autocomplete of bus stops
-  bindBusFields 'first_bus'
-  bindBusFields 'second_bus'
+  bindBusFields 'firstBus'
+  bindBusFields 'secondBus'
 
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()

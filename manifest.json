@@ -18,6 +18,15 @@
     "default_popup": "popup.html"
   },
 
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+K",
+        "mac": "Ctrl+K"
+      }
+    }
+  },
+
   "icons": {
     "16" : "img/logo-16.png",
     "48" : "img/logo-48.png",
@@ -26,48 +35,9 @@
 	
   "permissions": [
     "notifications",
-
-    "*://*.sit.no/*",
-    "*://*.visuweb.no/*",
-    
-    "*://*.bergstud.no/*",
-    "*://*.emilweb.no/*",
-    "*://*.industrielldesign.com/*",
     "*://*.online.ntnu.no/*",
-    "*://*.org.ntnu.no/delta/*",
-    "*://*.nabla.no/*",
-    "*://*.spanskroret.no/*",
-    "*://*.org.ntnu.no/volvox/*",
-
-    "*://*.dionysosntnu.wordpress.com/*",
-    "*://*.erudiontnu.org/*",
-    "*://*.geolf.org/*",
-    "*://*.gengangere.no/*",
-    "*://*.jumpcutdragvoll.wordpress.com/*",
-    "*://*.ludimus.org/*",
-    "*://*.primetime.trondheim.no/*",
-    "*://*.sturm.ntnu.no/*",
-    
-    "*://*.fraktur.no/*",
-    "*://*.kjemiogmaterial.wordpress.com/*",
-    "*://*.logistikkstudentene.no/*",
-    "*://*.tihlde.org/*",
-    "*://*.bygging.no/*",
-    "*://*.tjsf.no/*",
-    
-    "*://*.dusken.no/*",
-    "*://*.universitetsavisa.no/*",
-    
-    "*://*.samfundet.no/*",
-    
-    "*://*.velferdstinget.no/*",
-    "*://*.studenttinget.no/*",
-    "*://*.studentparlamentet.com/*",
-    
-    "*://*.retriever-info.com/*",
-    "*://*.ntnu.no/blogger/rektoratet/*",
-    "*://*.hist.no/*",
-    "*://*.dmmh.no/*"
+    "*://*.visuweb.no/*",
+    "*://*.sit.no/*"
   ],
 
 	"content_scripts": [
