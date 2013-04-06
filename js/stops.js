@@ -62,9 +62,8 @@ var Stops = {
     else {
       if (this.debug) console.log('load - getting fresh lists');
       var self = this;
-      $.ajax({
+      Ajaxer.getJson({
         url: self.api + self.apiKey,
-        dataType: 'json',
         success: function(json) {
           if (this.debug) console.log('load - fresh lists retrieved');
           self.parse(json, callback);

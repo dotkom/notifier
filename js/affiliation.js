@@ -54,9 +54,8 @@ var Affiliation = {
         // In case we don't find any images, prepare an array with placeholders
         for (var i=0; i<links.length; i++)
           placeholders.push(placeholder);
-        $.ajax({
+        Ajaxer.getHtml({
           url: 'http://industrielldesign.com/',
-          dataType: 'html',
           success: function(html) {
             try {
               var images = [];
@@ -317,9 +316,8 @@ var Affiliation = {
       useAltLink: false,
       getImage: function(link, callback) {
         var placeholder = this.placeholder;
-        $.ajax({
+        Ajaxer.getHtml({
           url: link,
-          dataType: 'html',
           success: function(html) {
             try {
               var image = $(html).find('img.event').attr('src');

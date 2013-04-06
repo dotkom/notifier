@@ -45,7 +45,7 @@ var Office = {
     // 1              // 0=closed, 1=meeting, 2=waffles, 3=error
     // Møte: dotKom   // event title or 'No title'-meeting or nothing
     var self = this;
-    $.ajax({
+    Ajaxer.getPlainText({
       url: self.eventApi,
       success: function(data) {
         var status = data.split('\n',2)[0];
@@ -78,7 +78,7 @@ var Office = {
 
     // Receives current light intensity from the office: OFF 0-800-1023 ON
     var self = this;
-    $.ajax({
+    Ajaxer.getPlainText({
       url: self.lightApi,
       success: function(data) {
         if (data > self.lightLimit) {

@@ -57,8 +57,8 @@ var Cantina = {
     var rssUrl = this.feeds[cantina];
 
     var self = this;
-    $.ajax({
-      url: rssUrl, // permission to use url granted in manifest.json
+    Ajaxer.getXml({
+      url: rssUrl,
       success: function(xml) {
         self.parseXml(xml, callback);
       },

@@ -32,11 +32,9 @@ var News = {
     var rssUrl = affiliationObject.feed;
 
     var self = this;
-    $.ajax({
-      url: rssUrl, // permission to use url granted in manifest.json
-      dataType: 'xml',
+    Ajaxer.getXml({
+      url: rssUrl,
       success: function(xml) {
-        // ls.lastResponseData = xmlstring;
         self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {

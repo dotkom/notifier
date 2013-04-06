@@ -14,9 +14,8 @@ var Bus = {
     }
 
     var self = this;
-    $.ajax({
+    Ajaxer.getJson({
       url: self.api + stopId + self.apiKey,
-      dataType: 'json',
       success: function(json) {
         self.parseDepartures(json, favoriteLines, callback);
       },
@@ -38,9 +37,8 @@ var Bus = {
     // - Route API will give more, but will still suffer closer to midnight
     // - Route API has a field for lines that might be implemented in the API one day, check there!
     var self = this;
-    $.ajax({
+    Ajaxer.getJson({
       url: self.api + stopId + self.apiKey,
-      dataType: 'json',
       success: function(json) {
         callback(json);
       },

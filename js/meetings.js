@@ -16,7 +16,7 @@ var Meetings = {
 
     // Receives the meeting plan for today
     var self = this;
-    $.ajax({
+    Ajaxer.getPlainText({
       url: (self.debugApi ? self.debugThisApi : self.api),
       success: function(meetings) {
         if (self.debug) console.log('Raw meetings:\n\n', meetings);

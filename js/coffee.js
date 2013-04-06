@@ -17,7 +17,7 @@ var Coffee = {
 
     // Receives the status for the coffee pot
     var self = this;
-    $.ajax({
+    Ajaxer.getPlainText({
       url: self.api,
       success: function(data) {
 

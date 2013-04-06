@@ -14,7 +14,7 @@ var Servant = {
 
     // Receives the meeting plan for today
     var self = this;
-    $.ajax({
+    Ajaxer.getPlainText({
       url: self.api,
       success: function(servant) {
 
