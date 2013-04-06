@@ -1,4 +1,4 @@
-var DEBUG = 0;
+var DEBUG = 1;
 
 // General
 var EXTENSION_NAME = 'Online Notifier';
@@ -55,8 +55,10 @@ else {
 
 // Production detection
 if (BROWSER == "Chrome") {
-	if (chrome.i18n.getMessage('@@extension_id') === "hfgffimlnajpbenfpaofmmffcdmgkllf") {
-		DEBUG = 0;
+	if (typeof chrome.i18n != "undefined") {
+		if (chrome.i18n.getMessage('@@extension_id') === "hfgffimlnajpbenfpaofmmffcdmgkllf") {
+			DEBUG = 0;
+		}
 	}
 }
 else if (BROWSER == "Opera") {
