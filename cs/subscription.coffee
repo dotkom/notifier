@@ -4,27 +4,9 @@ $ = jQuery
 setSubscription = ->
 
   # Randomize image
-  images = [
-    '/meme/1.jpg',
-    '/meme/2.jpg',
-    '/meme/3.jpg',
-    '/meme/4.jpg',
-    '/meme/5.jpg',
-    '/meme/6.jpg',
-    '/meme/7.jpg',
-    '/meme/8.jpg',
-    '/meme/9.jpg',
-    '/meme/10.jpg',
-    '/meme/11.jpg',
-    '/meme/12.jpg',
-    '/meme/13.png',
-    '/meme/14.png',
-    '/meme/15.png',
-    '/meme/16.png',
-    '/meme/17.png',
-    '/meme/18.png',
-  ]
+  images = numbers[1..27]
   random = Math.floor Math.random() * images.length
+  image = './meme/' + images[random] + '.jpg'
 
   # Capture clicks
   $('#subscription').click ->
@@ -33,7 +15,7 @@ setSubscription = ->
 
   # Create the HTML
   width = $('#subscription').width()
-  $('#subscription').html '<img src="'+images[random]+'" width="'+width+'" />'
+  $('#subscription').html '<img src="' + image + '" width="'+width+'" />'
 
 # show the html5 notification with timeout when the document is ready
 $ ->
