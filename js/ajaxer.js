@@ -4,7 +4,7 @@ Ajaxer = {
   // Format of params:
   // params = {
   //   url: 'http://api.lol.com',
-  //   isMobile: 1,
+  //   data: {sth: 'something', lol: 'laugh out LOUD'}, // Only use if you want a POST request
   //   success: function(data) {
   //     // Do something wth data
   //   },
@@ -56,8 +56,9 @@ Ajaxer = {
     }
 
     var self = this;
-    
-    if (params.isMobile) {
+    // Using the constant window.IS_MOBILE here is a small hack
+    // which saves a considerable amount of code clutter
+    if (window.IS_MOBILE) {
       // Notifier Mobile
       var dataBlob = {};
       dataBlob.url = params.url;
