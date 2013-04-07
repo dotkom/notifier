@@ -1,69 +1,49 @@
 .debugred {
   border: 0pt solid #ff0000;
 }
-.debugyellow {
-  border: 0pt solid #ffff00;
-}
 .debugpink {
   border: 0pt solid #ffc0cb;
 }
 .debuglime {
   border: 0pt solid #00ff00;
 }
+.debugyellow {
+  border: 0pt solid #ffff00;
+}
 .fullbox {
-  width: 100%;
   clear: both;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  width: 100%;
 }
 .title {
-  display: block;
   color: #ee861f;
-  text-transform: uppercase;
-  font-size: 24pt;
+  display: block;
   font-weight: bold;
-  padding-top: 25pt;
-  padding-bottom: 7pt;
+  text-transform: uppercase;
+}
+.title .unread {
+  color: white;
 }
 .emphasized {
   font-style: italic;
-  font-size: 14pt;
-  margin-bottom: 8pt;
-}
-.index {
-  font-style: italic;
-}
-html {
-  cursor: none;
 }
 body {
   background: #001429;
-  font-family: helvetica;
   color: white;
+  font-family: Helvetica;
+  overflow: hidden;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  font-size: 20pt;
-  line-height: 22pt;
-}
-#overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  background-color: black;
-  opacity: 0;
-  text-align: center;
-  vertical-align: middle;
 }
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
 
-  background: url('/img/background-large-vertical.png') center center no-repeat;
   position: absolute;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -78,39 +58,15 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  margin: 30pt;
+  overflow-x: hidden;
   z-index: 10;
-}
-#container #office {
-  border: 0pt solid #ff0000;
-  width: 100%;
-  clear: both;
-  padding: 0;
-  margin: 0;
-  margin-bottom: -60pt;
-  text-align: center;
-}
-#container #office img {
-  border: 0pt solid #00ff00;
-  width: 90%;
-}
-#container #office #subtext {
-  border: 0pt solid #ffff00;
-  position: relative;
-  top: -80pt;
-  min-height: 50pt;
-  max-height: 50pt;
-  font-size: 32pt;
-  font-weight: bold;
-  text-align: center;
-  text-shadow: 0 0 15pt black, 0 0 20pt black;
 }
 #container #todays {
   border: 0pt solid #ffff00;
-  width: 100%;
   clear: both;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  width: 100%;
 }
 #container #todays #schedule {
   border: 0pt solid #ffc0cb;
@@ -120,7 +76,6 @@ body {
 }
 #container #todays #schedule #servant {
   font-style: italic;
-  margin-bottom: 2pt;
 }
 #container #todays #coffee {
   border: 0pt solid #ffc0cb;
@@ -132,96 +87,90 @@ body {
 }
 #container #todays #coffee #pots {
   font-style: italic;
-  margin-bottom: 2pt;
 }
-#container #news {
+#container #cantinas {
   border: 0pt solid #ff0000;
-  width: 100%;
   clear: both;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  width: 100%;
 }
-#container #news .post {
-  border: 0pt solid #ffff00;
+#container #cantinas .hours {
+  font-weight: normal;
+  font-style: italic;
+  text-transform: none;
+}
+#container #cantinas #left {
+  border: 0pt solid #ffc0cb;
   position: relative;
-  clear: both;
-}
-#container #news .post .item {
-  border: 0pt solid #ffff00;
-  min-height: 40pt;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-#container #news .post .item img {
   float: left;
-  background: snow;
-  width: 170pt;
-  max-height: 140pt;
-  padding: 5px;
-  box-shadow: 0px 0px 10px #bbb;
+  width: 48%;
 }
-#container #news .post .item .textwrapper {
+#container #cantinas #right {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #cantinas #dinnerbox {
+  border: 0pt solid #ffff00;
+}
+#container #cantinas li {
   border: 0pt solid #00ff00;
   position: relative;
-  float: left;
-  text-align: left;
-  margin-left: 14pt;
-  width: 73%;
+  width: 95%;
+  list-style-type: none;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
-#container #news .post .item .textwrapper .date {
-  text-transform: uppercase;
-  font-size: 24pt;
+#container #cantinas li.message {
+  /*font-style: italic;*/
+
 }
 #container #bus {
   border: 0pt solid #ff0000;
-  width: 100%;
   clear: both;
-  padding: 0;
   margin: 0;
-  font-size: 18pt;
-  line-height: 25pt;
+  padding: 0;
+  width: 100%;
+  position: relative;
   background-color: #000f1d;
-  height: 144pt;
   width: 110%;
-  margin-top: 25pt;
   margin-left: -5%;
-  box-shadow: 0 0 20pt #88b;
 }
 #container #bus .name {
-  color: white;
-  margin-bottom: 3pt;
+  margin-bottom: 4pt;
   text-decoration: underline;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#container #bus #first_bus {
+#container #bus #firstBus {
   border: 0pt solid #00ff00;
   position: relative;
   float: left;
   text-align: right;
   padding-top: 10pt;
-  width: 42%;
+  width: 40%;
 }
-#container #bus #second_bus {
+#container #bus #secondBus {
   border: 0pt solid #00ff00;
-  width: 42%;
   position: relative;
-  padding-top: 10pt;
   float: left;
   text-align: left;
+  padding-top: 10pt;
+  width: 40%;
 }
 #container #bus .loading_left {
   position: relative;
-  width: 160px;
-  bottom: 16pt;
+  z-index: 100;
   -webkit-transform: scaleX(-1);
 }
 #container #bus .loading_right {
   position: relative;
-  width: 160px;
-  bottom: 16pt;
+  z-index: 100;
 }
 #container #bus .first,
 #container #bus .second,
@@ -247,11 +196,155 @@ body {
 }
 #container #bus #middle {
   border: 0pt solid #00ff00;
-  float: left;
   position: relative;
-  height: 100%;
-  width: 14%;
+  float: left;
   text-align: center;
+  height: 100%;
+}
+#container #news {
+  border: 0pt solid #ff0000;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+#container #news .post {
+  border: 0pt solid #ffff00;
+  position: relative;
+  clear: both;
+}
+#container #news .post .item {
+  border: 0pt solid #ffff00;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#container #news .post .item img {
+  float: left;
+  background: snow;
+}
+#container #news .post .item .textwrapper {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: left;
+}
+#container #news .unread {
+  text-shadow: 0 0 10px white,
+        0 0 15px white,
+        0 0 20px white,
+        0 0 25px #011b36,
+        0 0 30px #011b36,
+        0 0 35px #fff,
+        0 0 40px #011b36,
+        0 0 45px #011b36;
+}
+/* This file contains infoscreen-additions to common.less */
+.title {
+  font-size: 24pt;
+  padding-top: 25pt;
+  padding-bottom: 9pt;
+}
+.emphasized {
+  font-size: 14pt;
+  margin-bottom: 8pt;
+}
+html {
+  cursor: none;
+}
+body {
+  font-size: 20pt;
+  line-height: 22pt;
+}
+#overlay {
+  /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
+
+  /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
+
+  /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: transparent;
+}
+#fadeOutNews {
+  border: 0pt solid #00ff00;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 505px;
+  z-index: 100;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
+}
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+
+  background-image: url('/img/background-large-vertical.png');
+}
+/* This container keeps the content centered */
+#container {
+  overflow-y: hidden;
+  padding: 30pt;
+}
+#container #office {
+  border: 0pt solid #ff0000;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  margin-bottom: -60pt;
+  text-align: center;
+}
+#container #office img {
+  border: 0pt solid #00ff00;
+  width: 90%;
+}
+#container #office #subtext {
+  border: 0pt solid #ffff00;
+  position: relative;
+  top: -80pt;
+  min-height: 50pt;
+  max-height: 50pt;
+  font-size: 32pt;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 15pt black, 0 0 20pt black;
+}
+#container #todays #schedule #servant {
+  margin-bottom: 5pt;
+}
+#container #todays #coffee #pots {
+  margin-bottom: 5pt;
+}
+#container #cantinas .hours {
+  padding-bottom: 3pt;
+}
+#container #bus {
+  top: 35pt;
+  font-size: 18pt;
+  line-height: 25pt;
+  height: 144pt;
+  margin-bottom: 45pt;
+  box-shadow: 0 0 35pt #88b;
+}
+#container #bus .name {
+  margin-bottom: 3pt;
+}
+#container #bus .loading_left {
+  width: 160px;
+  bottom: 16pt;
+}
+#container #bus .loading_right {
+  width: 160px;
+  bottom: 16pt;
+}
+#container #bus #middle {
+  width: 14%;
 }
 #container #bus #middle #atb_logo {
   border: 0pt solid #00ff00;
@@ -270,8 +363,6 @@ body {
   font-family: helvetica;
   font-size: 30pt;
   list-style: none;
-  /*text-shadow: 0 0 5pt #00c6ff;*/
-
 }
 #container #bus #middle #clock #hours {
   position: relative;
@@ -290,8 +381,6 @@ body {
 @-webkit-keyframes mymove {
   0% {
     opacity: 1.0;
-    /*text-shadow: 0 0 20pt #00c6ff;*/
-  
   }
   50% {
     opacity: 0;
@@ -299,64 +388,43 @@ body {
   }
   100% {
     opacity: 1.0;
-    /*text-shadow: 0 0 20pt #00c6ff;*/
-  
   }
 }
-#container #cantinas {
-  border: 0pt solid #ff0000;
-  width: 100%;
-  clear: both;
-  padding: 0;
-  margin: 0;
+#container #news .post .item {
+  min-height: 40pt;
 }
-#container #cantinas .hours {
-  color: white;
-  padding-bottom: 3pt;
-  font-weight: normal;
-  font-style: italic;
-  text-transform: none;
+#container #news .post .item img {
+  width: 170pt;
+  max-height: 140pt;
+  padding: 6pt;
+  box-shadow: 0 0 20pt #bbb;
 }
-#container #cantinas #left {
-  border: 0pt solid #ffc0cb;
-  position: relative;
-  float: left;
-  width: 48%;
+#container #news .post .item .textwrapper {
+  margin-left: 18pt;
+  width: 73%;
 }
-#container #cantinas #right {
-  border: 0pt solid #ffc0cb;
-  position: relative;
-  float: right;
-  width: 50%;
-  /* when the right box is half the width it'll appear they're both aligned to 50% */
-
+#container #news .post .item .textwrapper .date {
+  text-transform: uppercase;
+  font-size: 24pt;
 }
-#container #cantinas #dinnerbox {
-  border: 0pt solid #ffff00;
+#container #news .post .unread {
+  font-size: 18pt;
 }
-#container #cantinas li {
-  border: 0pt solid #00ff00;
-  position: relative;
-  width: 95%;
-  list-style-type: none;
-  -webkit-transition: text-shadow 0.15s ease-out 0s;
-}
-#container #cantinas li.message {
-  /*font-style: italic;*/
-
-}
-#container #logo {
+/* the sponsor logo */
+#logo {
   border: 0pt solid #ff0000;
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 30pt;
+  bottom: 30pt;
   width: 300pt;
+  z-index: 110;
 }
 /* the pageflip at the bottom */
+/* used PX instead of PT because images are measured in PX */
 #pageflipbg {
   position: fixed;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   background: transparent url('/img/pageflip-infoscreen-bg.png') no-repeat left bottom;
   width: 356px;
   height: 181px;
@@ -375,8 +443,8 @@ body {
 }
 #pageflip {
   position: fixed;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   background: transparent url('/img/pageflip-infoscreen.png') no-repeat left bottom;
   width: 356px;
   height: 181px;
@@ -394,7 +462,7 @@ body {
   z-index: 108;
 }
 #pagefliplink a {
-  font: bold 11px monospace;
+  font: bold 22px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   text-decoration: none;

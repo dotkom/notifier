@@ -3,17 +3,19 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
+newsLimit = 8 # The most news you can cram into Infoscreen, if other features are disabled
+
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
-  updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0
-  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0
-  updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0
-  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0
-  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
-  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0
-  updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0
+  updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
+  updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
+  updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
+  updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
+  updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -44,115 +46,144 @@ updateMeetings = ->
 
 updateCoffee = ->
   if DEBUG then console.log 'updateCoffee'
-  Coffee.get (pots, age) ->
+  Coffee.get true, (pots, age) ->
     $('#todays #coffee #pots').html '- '+pots
     $('#todays #coffee #age').html age
 
 updateNews = ->
   if DEBUG then console.log 'updateNews'
-  # Fetching and displaying the news feed
-  fetchFeed ->
-    response = ls.lastResponseData
-    if response != undefined
-      displayStories response
-    else
-      $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra online.ntnu.no</div></div>'
-  
-  # Private function
-  displayStories = (xmlstring) ->
+  # Displaying the news feed (prefetched by the background page)
+  feedItems = ls.feedItems
+  if feedItems isnt undefined
+    displayItems JSON.parse feedItems
+  else
+    key = ls.affiliationKey
+    name = Affiliation.org[key].name
+    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
-    # Parse the feed
-    xmldoc = $.parseXML xmlstring
-    $xml = $(xmldoc)
-    items = $xml.find "item"
+displayItems = (items) ->
+  # Empty the newsbox
+  $('#news').html ''
+  # Get feedname
+  feedKey = items[0].feedKey
 
-    ################################# BUG TRAP ################################
-    lolRememberThis = ls.mostRecentRead
-    
-    # Find most recent post
-    _guid = $(items[0]).find "guid"
-    _text = $(_guid).text()
-    _mostRecent = _text.split('/')[4]
-    if ls.mostRecentRead is _mostRecent
-      if DEBUG then console.log 'RETURNED EARLY' #####
-      return
-    ls.mostRecentRead = _mostRecent
+  # Get list of last viewed items and check for news that are just
+  # updated rather than being actual news
+  newsList = JSON.parse ls.newsList
+  viewedList = JSON.parse ls.viewedNewsList
+  updatedList = findUpdatedPosts newsList, viewedList
 
-    if DEBUG then console.log 'CLEARING HTML'
-    $('#news').html ''
+  # Build list of last viewed for the next time the user views the news
+  viewedList = []
+
+  # Add feed items to popup
+  $.each items, (index, item) ->
     
-    if DEBUG then console.log 'BUILDING HTML'
-    # Build list of last viewed for the next time the popup opens
-    idsOfLastViewed = []
-    
-    # Add feed items to popup
-    items.each (index, element) ->
+    if index < newsLimit
+      viewedList.push item.link
       
-      limit = 3
-      limit = if ls.noDinnerInfo is 'true' then 3 else 2
-      if DEBUG then console.log 'LIMIT IS "'+limit+'", typeof '+typeof limit
-      if DEBUG then console.log 'INDEX IS "'+index+'", typeof '+typeof index
-      if DEBUG then console.log 'index < limit :: '+(index < limit)
-      if index < limit
-        post = parsePost(element)
-        idsOfLastViewed.push(post.id)
-        
-        item = '<div class="post"><span class="read"></span>'
-        
-        item += '
-            <span class="title">' + post.title + '</span>
-            <div class="item">
-              <img id="' + post.id + '" src="' + post.image + '" width="107" />
-              <div class="textwrapper">
-                <div class="emphasized">- Skrevet av ' + post.creator + ' den ' + post.date + '</div>
-                ' + post.description + '
-              </div>
-            </div>
-          </div>'
-        $('#news').append item
+      htmlItem = '<div class="post"><div class="title">'
+      if index < ls.unreadCount
+        if item.link in updatedList.indexOf
+          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+        else
+          htmlItem += '<span class="unread">NEW <b>::</b> </span>'
 
-    ################################# BUG TRAP ################################
-    whatsthis = $('#news').html()
-    whatsthis = whatsthis.trim()
-    if whatsthis is ''
-      alert 'TRAP TRIGGERED!'
-      console.log 'TRAPPED!'
-      console.log 'items', typeof items, items
-      console.log '#news', $('#news').html()
-      console.log 'ls.mostRecentRead was', typeof lolRememberThis, lolRememberThis
-      console.log '_mostRecent is', typeof _mostRecent, _mostRecent
-    
-    # Finally, fetch news post images from the API async synchronously
-    for index, value of idsOfLastViewed
-      getImageUrlForId value, (id, image) ->
-        $('#'+id).attr 'src', image
+      # EXPLANATION NEEDED:
+      # .item[data] contains the link
+      # .item[name] contains the alternative link, if one exists, otherwise null
+      date = altLink = ''
+      if item.date isnt null
+        date = ' den ' + item.date
+      if item.altLink isnt null
+        altLink = ' name="' + item.altLink + '"'
+      htmlItem += item.title + '
+        </div>
+          <div class="item" data="' + item.link + '"' + altLink + '>
+            <img src="' + item.image + '" width="107" />
+            <div class="textwrapper">
+              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
+              ' + item.description + '
+            </div>
+          </div>
+        </div>'
+      $('#news').append htmlItem
+  
+  # Store list of last viewed items
+  ls.viewedNewsList = JSON.stringify viewedList
+
+  # All items are now considered read
+  Browser.setBadgeText ''
+  ls.unreadCount = 0
+
+  # Make news items open extension website while closing popup
+  $('.item').click ->
+    # The link is embedded as the ID of the element, we don't want to use
+    # <a> anchors because it creates an ugly box marking the focus element.
+    # Note that altLinks are embedded in the name-property of the element,
+    # - if preferred by the organization, we should use that instead.
+    altLink = $(this).attr 'name'
+    useAltLink = Affiliation.org[ls.affiliationKey].useAltLink
+    if altLink isnt undefined and useAltLink is true
+      Browser.openTab $(this).attr 'name'
+    else
+      Browser.openTab $(this).attr 'data'
+    window.close()
+
+  # If organization prefers alternative links, use them
+  if Affiliation.org[feedKey].useAltLink
+    altLink = $('.item[data="'+link+'"]').attr 'name'
+    if altLink isnt 'null'
+      $('.item[data="'+link+'"]').attr 'data', altLink
+
+  # If the organization has it's own getImage function, use it
+  if Affiliation.org[feedKey].getImage isnt undefined
+    for index, link of viewedList
+      Affiliation.org[feedKey].getImage link, (link, image) ->
+        # It's important to get the link from the callback, not the above code
+        # in order to have the right link at the right time, async ftw.
+        $('.item[data="'+link+'"] img').attr 'src', image
+
+  # If the organization has it's own getImages function, use it
+  if Affiliation.org[feedKey].getImages isnt undefined
+    Affiliation.org[feedKey].getImages viewedList, (links, images) ->
+      for index of links
+        $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
+
+# Checks the most recent list of news against the most recently viewed list of news
+findUpdatedPosts = (newsList, viewedList) ->
+  updatedList = []
+  # Compare lists, keep your mind straight here:
+  # Updated news are:
+  # - saved in the newsList before the first identical item in the viewedList
+  # - saved in the viewedList after the first identical item in the newsList
+  for i of newsList
+    break if newsList[i] is viewedList[0]
+    for j of viewedList
+      continue if j is 0
+      if newsList[i] is viewedList[j]
+        updatedList.push newsList[i]
+  return updatedList
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
 
   if !navigator.onLine
-    $('#bus #first_bus .name').html ls.first_bus_name
-    $('#bus #second_bus .name').html ls.second_bus_name
-    $('#bus #first_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #second_bus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #firstBus .name').html ls.firstBusName
+    $('#bus #secondBus .name').html ls.secondBusName
+    $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
 
   else
-    createBusDataRequest('first_bus', '#first_bus')
-    createBusDataRequest('second_bus', '#second_bus')
+    createBusDataRequest('firstBus', '#firstBus')
+    createBusDataRequest('secondBus', '#secondBus')
 
 createBusDataRequest = (bus, cssIdentificator) ->
-  activeLines = ls[bus+'_active_lines'] # array of lines stringified with JSON (hopefully)
-  
-  # Get favorite lines
-  if activeLines isnt undefined and activeLines isnt '' # empty string if user deactivated all bus lines like an idiot, or if bus stop is unused
-    activeLines = JSON.parse activeLines
-    Bus.getFavoriteLines ls[bus], activeLines, (lines) ->
-      insertBusInfo lines, ls[bus+'_name'], cssIdentificator
-  # Get any lines
-  if activeLines is undefined or activeLines is ''
-    amountOfLines = 3 # only 3 lines per bus stop in the popup
-    Bus.getAnyLines ls[bus], amountOfLines, (lines) ->
-      insertBusInfo lines, ls[bus+'_name'], cssIdentificator
+  activeLines = ls[bus+'ActiveLines'] # array of lines stringified with JSON (hopefully)
+  activeLines = JSON.parse activeLines
+  # Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
+  Bus.get ls[bus], activeLines, (lines) ->
+    insertBusInfo lines, ls[bus+'Name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator
@@ -192,10 +223,8 @@ listDinners = (menu) ->
   dinnerlist = ''
   # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if typeof menu is 'string'
-    ls.noDinnerInfo = 'true'
     dinnerlist += '<li>' + menu + '</li>'
   else
-    ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
         dinner.price = dinner.price + ',- '
@@ -214,24 +243,31 @@ updateHours = ->
 # Document ready, go!
 $ ->
   if DEBUG
-    # show the cursor and remove the overlay
+    # show the cursor and remove the overlay (the gradient at the bottom)
     # (allows DOM inspection with the mouse)
     $('html').css 'cursor', 'auto'
     $('#overlay').hide()
   
   # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: AJAX_TIMEOUT
+  $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
   ls.removeItem 'mostRecentRead'
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
+
+  # Hide stuff the user does not want to see
+  $('#office').hide() if ls.showOffice isnt 'true'
+  $('#todays').hide() if ls.showOffice isnt 'true'
+  $('#cantinas').hide() if ls.showCantina isnt 'true'
+  $('#bus').hide() if ls.showBus isnt 'true'
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
-
+  # Adding creator name to pageflip
+  $('#pageflipname').text ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
@@ -264,7 +300,7 @@ $ ->
 
   # Reload the page once every day
   unless DEBUG
-    setInterval ( ->
+    setTimeout ( ->
       document.location.reload()
     ), 3600000 # KILLBUG: set to once every hour for now in order to keep #news alive, set to 86400000 later
 

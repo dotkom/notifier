@@ -53,11 +53,9 @@ var Hours = {
     var postString = 'diner='+this.cantinas[cantina];
     
     var self = this;
-    $.ajax({
-      type: 'POST',
+    Ajaxer.getJson({
       data: postString,
       url: self.api,
-      dataType: 'json',
       success: function(json) {
         if (self.debug) console.log('Untreated JSON:', json);
 
@@ -122,7 +120,7 @@ var Hours = {
 
   prettifyTodaysHours: function(todays) {
     // All en-dashes and em-dashes to regular dashes
-    todays = todays.replace(/\u2013|\u2014/g, '-');
+    todays = todays.replace(/\u2013|\u2014|&ndash;|&mdash;/g, '-');
     // All dots to colons
     todays = todays.replace(/\./g,':');
     // Add colons where missing 1600 -> 16:00
@@ -144,7 +142,7 @@ var Hours = {
 
   capitalizeFirstLetterOnly: function(string) {
     string = string.toLowerCase();
-    var regex = /[a-z]/;
+    var regex = /[a-zæøå]/;
     var firstLetter = String(string.match(regex)).toUpperCase();
     return string.replace(regex, firstLetter);
   },

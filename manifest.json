@@ -18,6 +18,15 @@
     "default_popup": "popup.html"
   },
 
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+K",
+        "mac": "Ctrl+K"
+      }
+    }
+  },
+
   "icons": {
     "16" : "img/logo-16.png",
     "48" : "img/logo-48.png",

@@ -1,6 +1,10 @@
 # Online Notifier
 
-This is a Chrome/Opera extension from the student organization Online at NTNU, see http://online.ntnu.no
+This is a both a Chrome/Opera extension and a WebApp from the student organization Online at NTNU, see http://online.ntnu.no
+
+* Install for Chrome: https://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf
+* Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
+* Add WebApp for Mobile: Navigate to http://informatikk.org/mobile and tap "Add to Home Screen"
 
 # Terms of use
 
@@ -13,9 +17,10 @@ Features
 - Displays status for Onlines office: Open, closed, meeting, free waffles
 - Displays todays meetings and current servant at Onlines office
 - Displays the status of the coffee pot at Onlines office
-- Displays todays dinner menu from cantinas at NTNU, with opening hours
+- Displays todays dinner menu and opening hours from SiT cantinas
 - Displays bus data from AtB in real time
 - Displays and notifies about news from Online
+- Can be used as a webapp (for iOS and Android) by putting all the code on a PHP-enabled server
 - Can be used as an infoscreen (full HD vertical screen) for continous use
 - All pages in the extension are live, they keep themselves updated
 - Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript, jQuery and WebGL
@@ -40,6 +45,12 @@ Chronological Credz
 	- Aleksander Skraastad
 	- John Hanssen Kolstad
 	- Magnus Dysthe
+	- Michael Johansen
+
+Issues submitted to the Chromium and Opera teams
+
+- Regex word boundary and ÆØÅ: https://code.google.com/p/chromium/issues/detail?id=223360
+- Desktop Notification logging: https://code.google.com/p/chromium/issues/detail?id=225212
 
 # In-depth features
 
@@ -53,6 +64,14 @@ General
 - Detects network status adjusts all affected values accordingly
 - Dev mode: Faster updates, frequent clearing of localstorage
 - Automatic determination of whether or not dev mode should be enabled
+
+Affiliation
+
+- *Work in progress*
+
+Palettes
+
+- *Work in progress*
 
 News
 
@@ -106,7 +125,7 @@ Servant
 Coffee
 
 - An arduino is connected to a big button at the Online office, to be pushed whenever someone is cooking a new pot of coffee
-- Whenever a new coffee pot is on it's way users will get a desktop notification
+- Whenever a new coffee pot is made users get a HTML desktop notification with a random coffee meme
 - Overview showing how old the last pot of coffee is and how many pots of coffee has been made today
 - Fetched via a service running at Onlines Raspberry Pi, found at http://draug.online.ntnu.no/coffee.txt
 

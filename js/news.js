@@ -1,189 +1,252 @@
+var News = {
+  newsMinLimit: 1,
+  newsMaxLimit: 15,
+  unreadMaxCount: 3, // 0-indexed like the list it its counting, actually +1
+  msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
+  msgConnectionError: 'Frakoblet fra feeden til ',
+  msgUnsupportedFeed: 'Feeden støttes ikke',
+  msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
 
-// Note: This is how many news items we'll fetch, not how many we'll display!
-var MAX_NEWS_AMOUNT = 4;
+  debug: 0,
 
-// Fetchfeed is called by background.html periodically, with unreadCount as
-// callback. Fetchfeed is also called by popup.html when requested, but
-// without the callback as we already know the amount of unread posts.
-function fetchFeed(callback) {
-	$.ajax({
-		url: 'https://online.ntnu.no/feeds/news/',
-		dataType: 'text',
-		success: function(xmlstring) {
-			localStorage.lastResponseData = xmlstring;
-			if (callback != undefined)
-				callback(xmlstring);
-		},
-		error: function(jqXHR, text, err) {
-			if (DEBUG) console.log('ERROR: failed to fetch news feed');
-			callback();
-		},
-	});
-}
+  // Get is called by background.html periodically, with News.unreadCount as
+  // callback. Fetchfeed is also called by popup.html when requested, but
+  // without the callback as we already know the amount of unread posts.
+  get: function(affiliationObject, limit, callback) {
+    if (affiliationObject === undefined) {
+      if (this.debug) console.log('ERROR:', this.msgUnsupportedFeed);
+      callback(this.msgUnsupportedFeed);
+      return;
+    }
+    if (!isNumber(limit) || (limit < 1 && 20 < limit)) {
+      if (this.debug) console.log('ERROR:', this.msgNewsLimit);
+      callback(this.msgNewsLimit);
+      return;
+    }
+    if (callback == undefined) {
+      console.log('ERROR:', this.msgCallbackRequired);
+      callback(this.msgCallbackRequired);
+      return;
+    }
 
-function unreadCount(xmlstring) {
+    var rssUrl = affiliationObject.feed;
 
-	var unread_count = 0;
-	
-	// Parse the feed
-	var xmldoc = $.parseXML(xmlstring);
-	$xml = $(xmldoc);
-	var items = $xml.find("item");
-	var idList = []; // New || Updated
-	
-	// Count feed items
-	items.each( function(index, element) {
-		
-		var id = $(element).find("guid").text().split('/')[4];
-		
-		// Counting...
-		if (id != localStorage.mostRecentRead) {
-			unread_count++;
-			idList.push(id); // New || Updated
-			// Send a desktop notification about the first unread element
-			if (unread_count == 1) {
-				if (localStorage.lastNotified != id) {
-					showNotification(element);
-				}
-				localStorage.mostRecentUnread = id;
-			}
-		}
-		// All counted :)
-		else {
-			if (unread_count == 0) {
-				if (DEBUG) console.log('no new posts');
-				Browser.setBadgeText('');
-			}
-			else if (unread_count >= MAX_NEWS_AMOUNT) {
-				if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts');
-				Browser.setBadgeText(MAX_NEWS_AMOUNT + '+');
-			}
-			else {
-				if (DEBUG) console.log('1-' + (MAX_NEWS_AMOUNT - 1) + ' unread posts');
-				Browser.setBadgeText(String(unread_count));
-			}
-			localStorage.unreadCount = unread_count;
-			storeMostRecentIds(idList); // New || Updated
-			return false;
-		}
-		
-		// Stop counting if unread number is greater than 9
-		if (index > (MAX_NEWS_AMOUNT - 1)) { // Remember index is counting 0
-			if (DEBUG) console.log(MAX_NEWS_AMOUNT + '+ unread posts (stopped counting)');
-			Browser.setBadgeText(MAX_NEWS_AMOUNT + '+');
-			localStorage.unreadCount = MAX_NEWS_AMOUNT;
-			// New or updated?
-			storeMostRecentIds(idList); // New || Updated
-			return false;
-		}
-	});
-}
+    var self = this;
+    Ajaxer.getXml({
+      url: rssUrl,
+      success: function(xml) {
+        self.parseFeed(xml, affiliationObject, limit, callback);
+      },
+      error: function(jqXHR, text, err) {
+        if (self.debug) console.log('ERROR:', self.msgConnectionError);
+        callback(self.msgConnectionError, affiliationObject.name);
+      },
+    });
+  },
 
-function storeMostRecentIds(idList) {
-	localStorage.mostRecentIdList = JSON.stringify(idList);
-}
+  parseFeed: function(xml, affiliationObject, limit, callback) {
+    var items = [];
+    var self = this;
+    var count = 0;
+    // Add each item from the feed
+    $(xml).find('item').each( function() {
+      if (count++ < limit) {
+        var item = self.parseItem(this, affiliationObject);
+        items.push(item);
+      }
+    });
+    callback(items);
+  },
 
-function showNotification(element) {
-	if (localStorage.showNotifications == 'true') {
-		var post = parsePost(element);
-		// Remember this
-		localStorage.lastNotified = post.id;
-		// Get content
-		localStorage.notificationTitle = post.title;
-		localStorage.notificationLink = post.link;
-		localStorage.notificationDescription = post.description;
-		localStorage.notificationCreator = post.creator;
-		localStorage.notificationDate = post.date;
-		localStorage.notificationId = post.id;
-		localStorage.notificationImage = BACKUP_IMAGE;
-		// Show desktop notification
-		Browser.createNotification('notification.html');
-	}
-}
+  parseItem: function(item, affiliationObject) {
+    var post = {};
 
-function parsePost(item) {
-	var post = new Object();
-	post.title = $(item).find("title").text();
-	post.link = $(item).find("link").text();
-	post.description = $(item).find("description").text();
-	post.creator = $(item).find("dc:creator").text();
-	post.date = $(item).find("pubDate").text().substr(5, 11);
-	post.id = $(item).find("guid").text().split('/')[4];
-	post.image = BACKUP_IMAGE;
+    // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
 
-	// Shorten 'bedriftspresentasjon' to 'bedpres'
-	post.title = post.title.replace(/edrift(s)?presentasjon/g, 'edpres');
-	post.description = post.description.replace(/edrift(s)?presentasjon/g, 'edpres');
+    // The popular fields
+    post.title = $(item).find("title").filter(':first').text();
+    post.link = $(item).find("link").filter(':first').text();
+    post.description = $(item).find("description").filter(':first').text();
+    // Less used fields
+    post.creator = $(item).find("dc:creator").filter(':first').text();
+    post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
+    // Locally stored
+    post.image = affiliationObject.placeholder;
+    // Tag the posts with the key and name of the feed they came from
+    post.feedKey = affiliationObject.key;
+    post.feedName = affiliationObject.name;
 
-	// Check for more direct link in the description
-	var directLink = post.description.match(/(http.:\/\/)?online.ntnu.no\/event\/\d+(\/)?/g)
-	if (directLink != null) {
-		directLink = directLink[0];
-		if (directLink != undefined) {
-			post.link = directLink;
-		}
-	}
+    // Check for image in rarely used <enclosure>-tag
+    var enclosure = $(item).find('enclosure');
+    if (enclosure != '') {
+      try {
+        // Universitetsavisa does this little trick to get images in their feed
+        post.image = enclosure['0'].attributes.url.textContent;
+      }
+      catch (err) {
+        // Do nothing, we we're just checking, move along quitely
+      }
+    }
+    
+    // Check for alternative links in description
+    post.altLink = this.checkForAltLink(post.description);
 
-	// Remove excessive whitespace and ludicrous formatting from description
-	post.description = $.trim($(post.description).text());
-	
-	// In case browser does not grok tags with colons, stupid browser
-	if (post.creator == '') {
-		var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
-		$(item).find(tag).each(function(){
-			post.creator = $(this).text();
-		});
-	}
-	// Abbreviate creators middle names if name is very long
-	post.creator = abbreviateMiddleNames(post.creator);
-	
-	// title + description must not exceed 5 lines
-	var line = 50; // conservative estimation
-	var desclength = line * 3;
-	// double line titles will shorten the description by 1 line
-	if (line <= post.title.length)
-		desclength -= line;
-	// shorten description according to desclength
-	if (desclength < post.description.length)
-		post.description = post.description.substr(0, desclength) + '...';
-	
-	return post;
-}
+    // Remove HTML
+    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
+    
+    // In case browser does not grok tags with colons, stupid browser
+    if (post.creator == '') {
+      var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
+      $(item).find(tag).each(function(){
+        post.creator = $(this).text().trim();
+      });
+    }
+    // Didn't find a creator, set the feedname as creator
+    if (post.creator.length == 0) {
+      post.creator = post.feedName;
+    }
+    // Capitalize creator name either way
+    post.creator = post.creator.capitalize();
+    // Abbreviate long creator names
+    post.creator = this.abbreviateName(post.creator);
 
-function abbreviateMiddleNames(oldName) {
-	// Abbreviate middle names if name is long
-	if (18 < oldName.length) {
-		var pieces = oldName.split(' ');
-		if (2 < pieces.length) {
-			// Add first name
-			var newName = pieces[0];
-			// Add one letter per middle name
-			for (var i = 1; i < pieces.length - 1; i++)
-				newName += ' ' + pieces[i].charAt(0).toUpperCase() + '.';
-			// Add last name
-			newName += ' ' + pieces[pieces.length-1];
-			return newName;
-		}
-	}
-	return oldName;
-}
+    // In case pubDate didn't exist, set to null
+    if (post.date == '') {
+      post.date = null;
+    }
 
-function getImageUrlForId(id, callback) {
-	var image = 'undefined';
-	$.getJSON(API_ADDRESS + id, function(json) {
-		if (json['online_news_image']) {
-			image = json['online_news_image']['0']['image'];
-			callback(id, image);
-		}
-		else {
-			image = BACKUP_IMAGE;
-			if (DEBUG) console.log('ERROR: no image exists for id: ' + id);
-			callback(id, image);
-		}
-	})
-	.error(function() {
-		image = BACKUP_IMAGE;
-		if (DEBUG) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
-		callback(id, image);
-	});
+    // Trimming
+    post.title = post.title.trim();
+    post.description = post.description.trim();
+
+    // Shorten 'bedriftspresentasjon' to 'bedpres'
+    post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
+    post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
+    
+    // title + description must not exceed 5 lines
+    var line = 50; // conservative estimation
+    var desclength = line * 3;
+    // double line titles will shorten the description by 1 line
+    if (line <= post.title.length)
+      desclength -= line;
+    // shorten description according to desclength
+    if (desclength < post.description.length)
+      post.description = post.description.substr(0, desclength) + '...';
+
+    return post;
+  },
+
+  refreshNewsIdList: function(items) {
+    var freshNewsList = [];
+    items.forEach(function(item, index) {
+      freshNewsList.push(item.link);
+    });
+    localStorage.newsList = JSON.stringify(freshNewsList);
+  },
+
+  unreadCountAndNotify: function(items) {
+    var unreadCount = 0;
+    var maxNewsAmount = this.unreadMaxCount;
+    if (items.length-1 < maxNewsAmount)
+      maxNewsAmount = items.length-1;
+
+    var newsList = JSON.parse(localStorage.newsList);
+
+    // Count feed items
+    var self = this;
+    items.forEach(function(item, index) {
+
+      var link = item.link;
+      
+      // Counting...
+      if (newsList.indexOf(link) === -1) {
+        unreadCount++;
+
+        // Send a desktop notification about the first new item
+        if (unreadCount == 1) {
+          if (localStorage.lastNotified != link) {
+            self.showNotification(item);
+          }
+        }
+      }
+      // All counted :)
+      else {
+        if (unreadCount == 0) {
+          if (self.debug) console.log('no new posts');
+          Browser.setBadgeText('');
+        }
+        else if (maxNewsAmount <= unreadCount) {
+          if (self.debug) console.log(maxNewsAmount + '+ unread posts');
+          Browser.setBadgeText(maxNewsAmount + '+');
+        }
+        else {
+          if (self.debug) console.log('1-' + (maxNewsAmount - 1) + ' unread posts');
+          Browser.setBadgeText(String(unreadCount));
+        }
+        localStorage.unreadCount = unreadCount;
+        return;
+      }
+      
+      // Stop counting if unread number is greater than maxNewsAmount
+      if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
+        if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
+        Browser.setBadgeText(maxNewsAmount + '+');
+        localStorage.unreadCount = maxNewsAmount;
+        return;
+      }
+    });
+  },
+
+  showNotification: function(item) {
+    if (localStorage.showNotifications == 'true') {
+      // Remember this
+      localStorage.lastNotified = item.link;
+      // Get content
+      localStorage.notificationTitle = item.title;
+      localStorage.notificationLink = item.link;
+      localStorage.notificationDescription = item.description;
+      localStorage.notificationCreator = item.creator;
+      localStorage.notificationImage = item.image;
+      localStorage.notificationFeedKey = item.feedKey;
+      localStorage.notificationFeedName = item.feedName;
+      // Show desktop notification
+      Browser.createNotification('notification.html');
+    }
+  },
+
+  checkForAltLink: function(description) {
+    // Looking for alternative link, find the first and best full link
+    var altLink = description.match(/href="(http[^"]*)"/);
+    if (altLink != null) {
+      if (typeof altLink[1] == 'string') {
+        return altLink[1];
+      }
+    }
+    return null;
+  },
+
+  abbreviateName: function(oldName) {
+    if (oldName != undefined) {
+      // Abbreviate middle names if name is long
+      if (18 < oldName.length) {
+        var pieces = oldName.split(' ');
+        if (2 < pieces.length) {
+          // Add first name
+          var newName = pieces[0];
+          // Add one letter per middle name
+          for (var i = 1; i < pieces.length - 1; i++)
+            newName += ' ' + pieces[i].charAt(0).toUpperCase() + '.';
+          // Add last name
+          newName += ' ' + pieces[pieces.length-1];
+          return newName;
+        }
+      }
+    }
+    else {
+      if (this.debug) console.log('ERROR: cannot abbreviate an undefined name');
+    }
+    return oldName;
+  },
+
 }

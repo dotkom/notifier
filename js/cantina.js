@@ -57,8 +57,8 @@ var Cantina = {
     var rssUrl = this.feeds[cantina];
 
     var self = this;
-    $.ajax({
-      url: rssUrl, // permission to use url granted in manifest.json
+    Ajaxer.getXml({
+      url: rssUrl,
       success: function(xml) {
         self.parseXml(xml, callback);
       },
@@ -120,7 +120,7 @@ var Cantina = {
     var self = this;
     try {
       var dinnerList = todaysMenu.split('<br>');
-      
+
       // Remove empty or irrelevant information (items: first, last, second last)
       dinnerList = dinnerList.splice(1,dinnerList.length-3);
 
@@ -191,10 +191,16 @@ var Cantina = {
       });
       
       // If no dinner info is found at all, check for unique message at monday
-      // WARNING: recursion going on!
-      if (dinnerObjects.length === 0 && mondaysCantinaMenu !== null) {
+      if (dinnerObjects.length === 0) {
         if (self.debug) console.log('WARNING: no dinner menu found today, checking monday');
-        self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
+        if (mondaysCantinaMenu !== null) {
+          // WARNING: recursion is divine!
+          self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
+        }
+        else {
+          if (self.debug) console.log('WARNING: no info found on monday either');
+          callback(this.msgClosed);
+        }
         return;
       }
 
@@ -204,7 +210,6 @@ var Cantina = {
 
         // Extract any food flags first
         dinner.flags = self.getFoodFlags(text);
-
         // If it's a message (dinner without a price) we'll just trim it
         if (dinner.price == null) {
           // Even messages (like " God sommer ") needs trimming
@@ -215,10 +220,10 @@ var Cantina = {
           text = self.addMissingSpaces(text);
           text = self.shortenFoodServedWith(text);
           text = self.shortenFoodWithATasteOf(text);
+          text = self.expandAbbreviations(text);
           text = self.removeFoodHomeMade(text);
           text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
           text = text.trim();
-          
           // If current item is NOT about the buffet, continue with:
           if (text.toLowerCase().indexOf('buffet') === -1) {
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
@@ -313,9 +318,14 @@ var Cantina = {
   removeFoodFlags: function(text) {
     if (this.debugText) console.log('Flags\t:: ' + text);
     // Removes food flags like V,G,L in all known forms. Seriously. All known forms. Don't.
-    return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/g, '');
-    // Note: æøåÆØÅ is wrongly matched as word boundary, bug report has been submitted to
+    return text.replace(/([,;&(.\/]*\b[VGL]+(?![æøåÆØÅ])\b[,;&).\s]*)+/g, '');
+    // return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/g, '');
+    // NOTE: æøåÆØÅ is wrongly matched as word boundary, bug report has been submitted to
     // the Chromium team. A case sensitive fix is implemented via negative lookahead.
+    // UPDATE from yangguo@chromium.org: "Unfortunately, this is specified by ECMA-262,
+    // 15.10.2.6 (Assertion). \b essentially depends on the definition of IsWordChar,
+    // which basically covers [a-zA-Z0-9_]. Unicode is not considered here." ..dammit.
+    // REPORT: https://code.google.com/p/chromium/issues/detail?id=223360
   },
 
   addMissingSpaces: function(text) {
@@ -334,6 +344,12 @@ var Cantina = {
     if (this.debugText) console.log('TasteOf\t:: ' + text);
     // Replace wordings like 'med en liten smak av' to just 'med'
     return text.replace(/[,|\.]?\s?(med)?\s?(en|et)?\s?(liten?)?\s?(smak|hint|dæsj|tøtsj)\s?(av)?\s/gi, ' med ');
+  },
+
+  expandAbbreviations: function(text) {
+    if (this.debugText) console.log('Abbrev.\t:: ' + text);
+    // Replace wordings like 'm', 'm/' with the actual word, make sure there is one space on either side of the word
+    return text.replace(/((\b|[æøåÆØÅ]*)\S|\S(\b|[æøåÆØÅ]*)) ?\/?m(\/| |\b|[æøåÆØÅ]) ?/gi, '$1 med ');
   },
 
   removeFoodHomeMade: function(text) {

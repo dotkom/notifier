@@ -48,14 +48,14 @@ header #logo {
   border: 0pt solid #ffff00;
   position: relative;
   float: left;
-  margin-left: 25pt;
+  margin-left: 40pt;
 }
 header #logo_subtext {
   border: 0pt solid #ffff00;
   position: absolute;
   float: left;
   margin-top: 1pt;
-  margin-left: 220pt;
+  margin-left: 235pt;
   font-size: 44pt;
   font-weight: lighter;
   /* more precise than italic, the Online logo is skewered exactly 15 degrees */
@@ -65,7 +65,7 @@ header #logo_subtext {
 }
 header #notification {
   position: absolute;
-  left: 8pt;
+  left: 23pt;
   top: 7.5pt;
   padding: 3pt 15pt 2pt 10pt;
   background: #001429;
@@ -130,9 +130,11 @@ header #notification .saved {
 
   /* for regular size images */
 
-  /* the bus option in particular */
+  /* the affiliation option in particular */
 
   /* the cantina option in particular */
+
+  /* the bus option in particular */
 
   /* the infoscreen option in particular */
 
@@ -167,6 +169,95 @@ header #notification .saved {
       0 0 40px #011b36,
       0 0 70px #011b36,
       0 0 70px #011b36;
+}
+.item #affiliationBox {
+  width: 265pt;
+  margin: 5pt 0 0 15pt;
+  overflow: hidden;
+  border-top: 1pt solid white;
+  border-bottom: 1pt solid #7a7a7a;
+  border-radius: 3pt;
+  background: #e6e5e5;
+  /* Old browsers */
+
+  background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Opera 11.10+ */
+
+  background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
+  /* W3C */
+
+  padding: 3pt 8pt;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+.item #affiliationBox select#affiliationKey {
+  border: 0pt solid #ff0000;
+  float: left;
+  border: 1pt solid #7a7a7a;
+  position: relative;
+  margin-top: 2pt;
+  margin-left: 8pt;
+  white-space: nowrap;
+  width: 130pt;
+}
+.item #affiliationBox #affiliationColorSelector {
+  border: 0pt solid #ff0000;
+  float: left;
+  border: 1pt solid #7a7a7a;
+  position: relative;
+  margin-top: 2pt;
+  margin-left: 8pt;
+  white-space: nowrap;
+  width: 98pt;
+}
+.item #affiliationBox #affiliationLogo {
+  border: 0pt solid #ff0000;
+  float: left;
+  white-space: nowrap;
+  width: 19pt;
+  margin: 0 0;
+}
+.item #cantinaBox {
+  width: 265pt;
+  margin: 5pt 0 0 15pt;
+  overflow: hidden;
+  border-top: 1pt solid white;
+  border-bottom: 1pt solid #7a7a7a;
+  border-radius: 3pt;
+  background: #e6e5e5;
+  /* Old browsers */
+
+  background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
+  /* Opera 11.10+ */
+
+  background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
+  /* W3C */
+
+  padding: 3pt 8pt;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+.item #cantinaBox select {
+  border: 0pt solid #ff0000;
+  float: left;
+  border: 1pt solid #8d8d8d;
+  position: relative;
+  margin-top: 2.5pt;
+  white-space: nowrap;
+  width: 80pt;
+}
+.item #cantinaBox #cantinaLogo {
+  border: 0pt solid #ff0000;
+  float: left;
+  white-space: nowrap;
+  width: 87pt;
+  margin: 0 8pt;
 }
 .item #bus_box {
   width: 265pt;
@@ -263,7 +354,13 @@ header #notification .saved {
   color: black;
   text-align: center;
   font-size: 9pt;
-  font-weight: bold;
+}
+.item #bus_box .bus_stop .lines .retry {
+  color: black;
+  text-align: center;
+  font-size: 9pt;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .item #bus_box .bus_stop .lines .loading_left {
   position: relative;
@@ -281,7 +378,7 @@ header #notification .saved {
 
   float: left;
   white-space: nowrap;
-  width: 33pt;
+  width: 34pt;
   margin: 0 8pt;
 }
 .item #bus_box #arrow_down {
@@ -290,18 +387,10 @@ header #notification .saved {
   /* paint behind other stuff */
 
   left: -135pt;
-  top: 28pt;
+  top: 29pt;
 }
 .item #bus_box #arrow_down img {
   width: 9pt;
-}
-.item .cantina_selector {
-  width: 72pt;
-  /* fancypants select menus:
-    background-color: transparent;
-    color: white;
-    */
-
 }
 .item #infoscreen_preview {
   display: none;
@@ -363,7 +452,28 @@ header #notification .saved {
 
 }
 /* The pageflip at the bottom */
+/*@-webkit-keyframes terminal {
+  0% {
+    -webkit-filter: contrast(100%) brightness(1) hue-rotate(0deg);
+    text-shadow:
+      0 0 5px #68bf70,
+      0 0 10px #60b95e,
+      0 0 15px #368f2c,
+      0 0 20px #25892e,
+      0 0 30px #183e1a;
+  }
+  100% {
+    -webkit-filter: contrast(102%) brightness(.98) hue-rotate(2deg);
+    text-shadow:
+      0 0 3px #68bf70,
+      0 0 8px #60b95e,
+      0 0 12px #368f2c,
+      0 0 15px #25892e,
+      0 0 25px #183e1a;
+  }
+}*/
 #pageflipbg {
+  -webkit-animation: terminal .5s alternate infinite;
   position: fixed;
   left: 0;
   bottom: 0;
@@ -373,6 +483,7 @@ header #notification .saved {
   z-index: 105;
 }
 #pagefliptext {
+  -webkit-animation: terminal .5s alternate infinite;
   position: fixed;
   width: 170px;
   height: 36px;
@@ -380,7 +491,11 @@ header #notification .saved {
   bottom: 5px;
   font: bold 11px monospace;
   color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  text-shadow: 0 0 5px #68bf70,
+    0 0 10px #60b95e,
+    0 0 15px #368f2c,
+    0 0 20px #25892e,
+    0 0 30px #183e1a;
   z-index: 106;
 }
 #pageflip {
@@ -404,6 +519,7 @@ header #notification .saved {
   z-index: 108;
 }
 #pagefliplink a {
+  -webkit-animation: terminal .5s alternate infinite;
   font: bold 11px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;

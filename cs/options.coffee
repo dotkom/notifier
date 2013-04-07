@@ -20,32 +20,80 @@ pageFlipCursorBlinking = ->
   $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
     $(@).animate opacity: 1, "fast", "swing",
 
-updateOfficeStatus = ->
-  Office.get (status, title, message) ->
-    Browser.setIcon 'img/icon-'+status+'.png'
-    ls.currentStatus = status
-    Meetings.get (meetings) ->
-      meetings = $.trim meetings
-      today = '### Nå\n' + title + ": " + message + "\n\n### Resten av dagen\n" + meetings
-      Browser.setTitle today
-      ls.currentStatusMessage = message
-
 testDesktopNotification = ->
   Browser.createNotification 'notification.html'
 
 testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
+bindAffiliationSelector = ->
+  selector = 'affiliationKey'
+  chosenAffiliation = ls[selector]
+  # Default values
+  $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
+  # React to change
+  $('#'+selector).change ->
+    chosenAffiliation = $(this).val()
+    # Check if switching from or to Online
+    oldAffiliation = ls[selector]
+    if oldAffiliation is 'online'
+      disableOnlineSpecificFeatures()
+    else if chosenAffiliation is 'online'
+      enableOnlineSpecificFeatures()
+    # Save the change
+    ls[selector] = chosenAffiliation
+    # Get and save the recommended color palette for the chosen affiliation
+    color = Affiliation.org[chosenAffiliation].color
+    if color isnt undefined and color isnt ''
+      $('#affiliationColorSelector').val color
+      ls['affiliationColor'] = color
+    # Get and save the icon for the chosen affiliation
+    symbol = Affiliation.org[chosenAffiliation].symbol
+    if symbol isnt undefined and symbol isnt ''
+      Browser.setIcon symbol
+      ls['affiliationSymbol'] = symbol
+    # Reload news
+    Browser.getBackgroundProcess().updateNews()
+
+bindAffiliationColorSelector = ->
+  # React to change
+  $('#affiliationColorSelector').change ->
+    chosenAffiliation = $(this).val()
+    # Save the change
+    ls['affiliationColor'] = chosenAffiliation
+
+disableOnlineSpecificFeatures = ->
+  ls.showOffice = 'false'
+  ls.coffeeSubscription = 'false'
+  ls.extensionCreator = 'Online'
+  # Hide office status option
+  $('label[for="showOffice"]').slideUp 'slow', ->
+    # Hide coffee subscription option
+    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # Change pageflip name
+      changeCreatorName 'Online'
+
+enableOnlineSpecificFeatures = ->
+  ls.showOffice = 'true'
+  ls.coffeeSubscription = 'true'
+  ls.extensionCreator = 'dotKom'
+  # Enable office status
+  $('label[for="showOffice"]').slideDown 'slow', ->
+    # Enable coffee subscription
+    $('label[for="coffeeSubscription"]').slideDown 'slow', ->
+      # Change pageflip name
+      changeCreatorName 'dotKom'
+
 bindCantinaSelector = (selector) ->
   # Default values
   $('#' + selector).val ls[selector]
   # React to change
   $('#' + selector).change ->
-    ls[selector] = $(this).val()
+    ls[selector] = $(this).prop('value')
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
-  if DEBUG then console.log 'Binding bus fields for ' + cssSelector
+  # if DEBUG then console.log 'Binding bus fields for ' + cssSelector
   fadeTime = 50
 
   stop = $(cssSelector + ' input')
@@ -58,7 +106,7 @@ bindBusFields = (busField) ->
     
     # Clear stop field on click
     if DEBUG then console.log 'focus - clear field and show saved value as placeholder'
-    ls.busStopClickedAway = ls[busField+'_name']
+    ls.busStopClickedAway = ls[busField+'Name']
     $(stop).val ''
     $(stop).attr 'placeholder', ls.busStopClickedAway
 
@@ -66,7 +114,7 @@ bindBusFields = (busField) ->
     
     # Lost focus, suggestions on busstops?
     partialStop = $(stop).val()
-    suggestions = Bus.getPotentialStops partialStop
+    suggestions = Stops.partialNameToPotentialNames partialStop
 
     # No input, revert to the busstop that was clicked away
     if partialStop is '' or suggestions.length is 0
@@ -103,9 +151,9 @@ bindBusFields = (busField) ->
     else if event.keyCode is 13
       if DEBUG then console.log 'keyup - enter, checking input'
       possibleStop = $(stop).val()
-      suggestions = Bus.getStopIds possibleStop
+      suggestions = Stops.nameToIds possibleStop
       if suggestions.length isnt 0
-        realStopName = Bus.getStopName suggestions[0]
+        realStopName = Stops.idToName suggestions[0]
         $(stop).val realStopName
         # then empty the suggestion list
         $('#bus_suggestions').html ''
@@ -134,7 +182,7 @@ bindBusFields = (busField) ->
 
       if nameStart.length > 0
         # Suggestions
-        suggestions = Bus.getPotentialStops nameStart
+        suggestions = Stops.partialNameToPotentialNames nameStart
         $('#bus_suggestions').html ''
         for i of suggestions
           _text = suggestions[i]
@@ -178,10 +226,8 @@ bindBusFields = (busField) ->
 
 bindFavoriteBusLines = (busField) ->
   cssSelector = '#' + busField
-
   # Switch status on click
   $(cssSelector + ' .lines .line').click ->
-
     # Switch status and save
     if $(this).hasClass 'active'
       $(this).attr 'class', 'inactive'
@@ -196,7 +242,7 @@ getDirections = (busField, correctStop) ->
   stopName = $(cssSelector + ' input')
   direction = $(cssSelector + ' select')
   # Get and inject possible directions for correct stop
-  allDirections = Bus.getDirections correctStop
+  allDirections = Stops.nameToDirections correctStop
   $(direction).html ''
   for i in allDirections
     $(direction).append '<option>' + i + '</option>'
@@ -216,19 +262,35 @@ getFavoriteLines = (busField) ->
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
-  busStopId = Bus.getStop stopName, direction
-
   # Get and inject possible lines for correct stop
-  busStopId = Bus.getStop stopName, direction
+  busStopId = Stops.nameAndDirectionToId stopName, direction
+  
   Bus.getLines busStopId, (json) ->
-
-    # Is result an error message?
-    if typeof json is 'string'
-      $(cssSelector + ' .lines').html '<span class="error">'+json+'</span>'
+    # Did the json even reach us? Is the result an error message?
+    console.log json
+    errorMessage = null
+    if typeof json is 'undefined' then errorMessage = 'Oops, frakoblet'
+    if typeof json is 'string' then errorMessage = json
+    if typeof json[0] isnt 'undefined' then errorMessage = 'Feil: ' + json[0]
+    
+    if errorMessage isnt null
+      # Show error message
+      $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
+      # Show retry-button
+      clearTimeout $('#bus_box').data 'timeoutId'
+      setTimeout ( ->
+        $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
+        $(cssSelector + ' .lines .retry').click ->
+          getFavoriteLines busField
+        setTimeout ( ->
+          slideFavoriteBusLines()
+        ), 1500
+      ), 2200
     else
       # Sort lines and remove duplicates
       arrayOfLines = []
-      for item in json.lines
+      # for item in json.lines # this is probably more correct to use for the future
+      for item in json.next
         if -1 is arrayOfLines.indexOf Number item.line
           # Casting strings to numbers to make them easily sortable
           arrayOfLines.push Number item.line
@@ -263,7 +325,7 @@ saveBus = (busField) ->
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
-  busStopId = Bus.getStop stopName, direction
+  busStopId = Stops.nameAndDirectionToId stopName, direction
   
   # Get active/inactive lines
   activeLines = []
@@ -275,10 +337,10 @@ saveBus = (busField) ->
   
   # Save all to localStorage
   ls[busField] = busStopId
-  ls[busField + '_name'] = stopName
-  ls[busField + '_direction'] = direction
-  ls[busField + '_active_lines'] = JSON.stringify activeLines
-  ls[busField + '_inactive_lines'] = JSON.stringify inactiveLines
+  ls[busField + 'Name'] = stopName
+  ls[busField + 'Direction'] = direction
+  ls[busField + 'ActiveLines'] = JSON.stringify activeLines
+  ls[busField + 'InactiveLines'] = JSON.stringify inactiveLines
   if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"' ######################################
   if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"' ######################################
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
@@ -286,16 +348,16 @@ saveBus = (busField) ->
 
 loadBus = (busField) ->
   cssSelector = '#' + busField
-  stopName = ls[busField + '_name']
-  direction = ls[busField + '_direction']
-  activeLines = ls[busField + '_active_lines']
-  inactiveLines = ls[busField + '_inactive_lines']
+  stopName = ls[busField + 'Name']
+  direction = ls[busField + 'Direction']
+  activeLines = ls[busField + 'ActiveLines']
+  inactiveLines = ls[busField + 'InactiveLines']
 
   # Add stopname and direction to busfields
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
-    if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
+    # if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
   
   # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
@@ -306,6 +368,7 @@ loadBus = (busField) ->
       activeLines = JSON.parse activeLines # stringified array
       inactiveLines = JSON.parse inactiveLines # stringified array
       # Collect active and inactive lines to a single dict
+      # with boolean values showing active or inactive
       lines = {}
       for line in activeLines
         lines[line] = true
@@ -317,19 +380,16 @@ loadBus = (busField) ->
         keys.push i
       keys = keys.sort (a,b) ->
         return a - b
-      # Add lines to bus stop
+      # Add lines to bus stop as a generated table
       $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
       counter = 0
       for i in keys
         if counter % 4 == 0
           $(cssSelector + ' .lines table').append '</tr><tr>'
         status = if lines[i] is true then 'active' else 'inactive'
-        $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+i+'</td>'
+        $(cssSelector + ' .lines table tr:last').append '<td class="line '+status+'">'+i+'</td>'
         counter = counter + 1
       $(cssSelector + ' .lines').append '</tr></table>'
-
-addFavoriteBusLines = (cssSelector) ->
-  console.log 'implement this'
 
 slideFavoriteBusLines = ->
   # Hide the favorite bus line spans from the start
@@ -338,7 +398,6 @@ slideFavoriteBusLines = ->
       $('#bus_box .lines').slideUp()
       $('#bus_box #arrow_down').fadeIn()
   ), 1500
-
   # Show favorite bus line spans when hovering
   $('#bus_box').mouseenter ->
     clearTimeout $(this).data 'timeoutId'
@@ -407,7 +466,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    updateOfficeStatus()
+    Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
     # Animations
     revertInfoscreen()
 
@@ -465,6 +524,28 @@ fadeInCanvas = ->
           'swing'
       ), 200
 
+changeCreatorName = (name, build) ->
+  # Animate it
+  text = $('#pageflipline').text()
+  if text.length is 0
+    build = true
+    name = name + " with <3"
+  random = Math.floor 400 * Math.random() + 50
+  if !build
+    $('#pageflipline').text text.slice 0, text.length-1
+    setTimeout ( ->
+      changeCreatorName name
+    ), random
+  else
+    if text.length isnt name.length
+      if text.length is 0
+        $('#pageflipline').text name.slice 0, 1
+      else
+        $('#pageflipline').text name.slice 0, text.length+1
+      setTimeout ( ->
+        changeCreatorName name, true
+      ), random
+
 # Document ready, go!
 $ ->
   if DEBUG
@@ -473,7 +554,7 @@ $ ->
       Browser.openTab $(this).attr 'data'
   
   # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup timeout: AJAX_TIMEOUT
+  $.ajaxSetup AJAX_SETUP
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
@@ -490,7 +571,7 @@ $ ->
   $(window).bind "resize", resizeBackgroundImage
   resizeBackgroundImage() # Run once in case the window is quite big
   
-  # Minor esthetical adjustments for OS version
+  # Minor esthetical adjustments for OS
   if OPERATING_SYSTEM is 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
@@ -498,6 +579,9 @@ $ ->
   # Minor esthetical adjustmenst for Browser
   html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
   $('label[for=openChatter] span').html html
+
+  # Adding creator name to pageflip
+  $('#pageflipname').text ls.extensionCreator
 
   # Blinking cursor at pageflip
   setInterval ( ->
@@ -513,16 +597,23 @@ $ ->
   # $('#notification').click ->
   #   fadeInCanvas()
 
+  # Allow user to change affiliation and colors
+  bindAffiliationSelector()
+  bindAffiliationColorSelector()
+
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
   bindCantinaSelector 'right_cantina'
 
   # Give user suggestions for autocomplete of bus stops
-  bindBusFields 'first_bus'
-  bindBusFields 'second_bus'
+  bindBusFields 'firstBus'
+  bindBusFields 'secondBus'
 
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
+
+  # Load lists of bus stops
+  Stops.load()
 
   # If Opera, disable and redesign features related to desktop notifications
   if BROWSER is 'Opera'
@@ -562,12 +653,11 @@ $ ->
     else
       ls[this.id] = this.checked;
       
+      if this.id is 'showOffice' and this.checked is true
+        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
         Browser.setIcon 'img/icon-default.png'
-        Browser.setTitle EXTENSION_NAME
-
-      else if this.id is 'showOffice' and this.checked is true
-        updateOfficeStatus()
+        Browser.setTitle ls.extensionName
       
       if this.id is 'showNotifications' and this.checked is true
         testDesktopNotification()

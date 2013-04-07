@@ -16,7 +16,7 @@ var Meetings = {
 
     // Receives the meeting plan for today
     var self = this;
-    $.ajax({
+    Ajaxer.getPlainText({
       url: (self.debugApi ? self.debugThisApi : self.api),
       success: function(meetings) {
         if (self.debug) console.log('Raw meetings:\n\n', meetings);
@@ -46,6 +46,8 @@ var Meetings = {
     meetings = meetings.replace(/0(\d)/g, '$1');
     // Add spaces for times "10-16:30" -> "10 - 16:30" and days "Fredag-Søndag" -> "Fredag - Søndag"
     meetings = meetings.replace(/(dag|\d) ?- ?(\d+:?\d*|[a-zæøå]+dag)/gi, '$1 - $2:');
+    // Change times like 23:30 and 23:59 to just 24
+    meetings = meetings.replace(/23:(59|30)/g, '24');
     return meetings;
   },
 

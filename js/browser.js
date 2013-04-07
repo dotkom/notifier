@@ -1,8 +1,11 @@
 var Browser = {
+  msgUnsupported: 'ERROR: Unsupported browser',
 
   setIcon: function(path) {
     if (BROWSER == 'Chrome') {
-      chrome.browserAction.setIcon({path: path});
+      if (chrome.browserAction != undefined) {
+        chrome.browserAction.setIcon({path: path});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -11,17 +14,19 @@ var Browser = {
       }
       // If this is another page reference button through background process
       else {
-        opera.extension.bgProcess.OPERA_BUTTON.icon = path;
+        this.getBackgroundProcess().OPERA_BUTTON.icon = path;
       }
     }
     else {
-      console.log('ERROR: Unsupported browser');
+      console.log(this.msgUnsupported);
     }
   },
 
   setTitle: function(title) {
     if (BROWSER == 'Chrome') {
-      chrome.browserAction.setTitle({title: title});
+      if (chrome.browserAction != undefined) {
+        chrome.browserAction.setTitle({title: title});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -30,17 +35,19 @@ var Browser = {
       }
       // If this is another page reference button through background process
       else {
-        opera.extension.bgProcess.OPERA_BUTTON.title = title;
+        this.getBackgroundProcess().OPERA_BUTTON.title = title;
       }
     }
     else {
-      console.log('ERROR: Unsupported browser');
+      console.log(this.msgUnsupported);
     }
   },
 
   setBadgeText: function(text) {
     if (BROWSER == 'Chrome') {
-      chrome.browserAction.setBadgeText({text: text});
+      if (chrome.browserAction != undefined) {
+        chrome.browserAction.setBadgeText({text: text});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -49,17 +56,19 @@ var Browser = {
       }
       // If this is another page reference button through background process
       else {
-        opera.extension.bgProcess.OPERA_BUTTON.badge.textContent = text;
+        this.getBackgroundProcess().OPERA_BUTTON.badge.textContent = text;
       }
     }
     else {
-      console.log('ERROR: Unsupported browser');
+      console.log(this.msgUnsupported);
     }
   },
 
   openTab: function(url) {
     if (BROWSER == 'Chrome') {
-      chrome.tabs.create({url: url, selected: true});
+      if (chrome.tabs != undefined) {
+        chrome.tabs.create({url: url, selected: true});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -73,17 +82,19 @@ var Browser = {
       }
       // Recurse to the background page
       else {
-        opera.extension.bgProcess.Browser.openTab(url);
+        this.getBackgroundProcess().Browser.openTab(url);
       }
     }
     else {
-      console.log('ERROR: Unsupported browser');
+      console.log(this.msgUnsupported);
     }
   },
 
   openBackgroundTab: function(url) {
     if (BROWSER == 'Chrome') {
-      chrome.tabs.create({url: url, selected: false});
+      if (chrome.tabs != undefined) {
+        chrome.tabs.create({url: url, selected: false});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -97,17 +108,33 @@ var Browser = {
       }
       // Recurse to the background page
       else {
-        opera.extension.bgProcess.Browser.openBackgroundTab(url);
+        this.getBackgroundProcess().Browser.openBackgroundTab(url);
       }
     }
     else {
-      console.log('ERROR: Unsupported browser');
+      console.log(this.msgUnsupported);
+    }
+  },
+
+  getBackgroundProcess: function() {
+    if (BROWSER == 'Chrome') {
+      if (chrome.extension != undefined) {
+        return chrome.extension.getBackgroundPage();
+      }
+    }
+    else if (BROWSER == 'Opera') {
+      return opera.extension.bgProcess;
+    }
+    else {
+      console.log(this.msgUnsupported);
     }
   },
 
   // FUNCTIONS BELOW ARE NOT YET FULLY IMPLEMENTED
 
   createNotification: function(path) {
+    // For future reference, support for webkit notifications can be
+    // tested with (!window.webkitNotifications)
     if (BROWSER == 'Chrome') {
       notification = webkitNotifications.createHTMLNotification(path);
       notification.show();
@@ -117,7 +144,7 @@ var Browser = {
       console.log('BROWSER.JS: createNotification, will not be avaliable in Opera until 12.50');
     }
     else {
-      console.log('ERROR: Unsupported browser');
+      console.log(this.msgUnsupported);
     }
   },
 
@@ -129,7 +156,7 @@ var Browser = {
   //     console.log('BROWSER.JS: getUrl');
   //   }
   //   else {
-  //     console.log('ERROR: Unsupported browser');
+  //     console.log(this.msgUnsupported);
   //   }
   // },
 

@@ -1,0 +1,316 @@
+
+@import "common.less";
+
+/* This file contains mobile-additions to common.less */
+
+// Variables
+
+@in-post-padding: 7pt;
+
+// Mixins
+
+.title {
+  font-size: 24pt;
+  padding-top: 20pt;
+  padding-bottom: 5pt;
+}
+
+.emphasized {
+  font-size: 24pt;
+  margin-bottom: 8pt;
+}
+
+// Webkit (Safari in iOS), disable touch callout and some other default touch behavior
+
+* {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  /*-webkit-user-select: none;*/ /* do not use, disables possibility of having options */
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+// Rules
+
+body {
+  /* Using blue radial and black vertical background gradients instead of images,
+  saving a lot of page weight. Ironically, Microsoft has the best gradient maker, at
+  ie.microsoft.com/testdrive/graphics/cssgradientbackgroundmaker/default.html */
+  
+  /*
+  Fallback for older browsers
+  background-color: #002343;
+  IE10 Consumer Preview
+  background-image: -ms-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  Mozilla Firefox
+  background-image: -moz-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  Opera
+  background-image: -o-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  Webkit (Safari/Chrome 10)
+  background-image: -webkit-gradient(radial, center center, 0, center center, 494, color-stop(0, #00274F), color-stop(0.2, #00254C), color-stop(0.4, #002040), color-stop(0.6, #001832), color-stop(0.8, #001427), color-stop(1, #000000));
+  Webkit (Chrome 11+)
+  background-image: -webkit-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  W3C Markup, IE10 Release Preview
+  background-image: radial-gradient(circle farthest-corner at center, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  */
+
+  width: 735pt;
+  font-size: 24pt;
+}
+
+/* This container keeps the content centered */
+
+#container {
+  overflow-y: auto;
+  padding: 30pt;
+
+  #office {
+    .fullbox;
+    /* set "padding-top: 40pt" if page uses translucent status bar (wifi, battery) */
+    padding-top: 0pt;
+    text-align: center;
+    #status {
+      .debuglime;
+      font-size: 90pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-shadow: 0 0 15pt black, 0 0 20pt black;
+    }
+    .open {
+      color: #00ff00;
+    }
+    .closed {
+      color: #ffff00;
+    }
+    .meeting {
+      color: #ff0000;
+    }
+    .waffle {
+      color: SandyBrown;
+    }
+    .error {
+      color: #888;
+    }
+    #subtext {
+      .debugyellow;
+      position: relative;
+      top: -10pt;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0 0 15pt black, 0 0 20pt black;
+    }
+  }
+
+  #bus {
+    top: 30pt;
+    margin-bottom: 30pt;
+    box-shadow: 0 0 15pt #88b;
+    height: 140pt;
+
+    .name {
+      margin-bottom: 3pt;
+    }
+    #firstBus {
+      padding-top: 12pt;
+      width: 42%;
+    }
+    #secondBus {
+      padding-top: 12pt;
+      width: 41%;
+    }
+    .loading_left {
+      width: 160px;
+      top: 18pt;
+    }
+    .loading_right {
+      width: 160px;
+      top: 18pt;
+    }
+    #middle {
+      width: 14%;
+      height: 100%;
+      img {
+        margin: 35pt 0;
+        height: 75pt;
+      }
+    }
+  }
+
+  #news {
+    /*padding-top: @box-padding * 2;*/
+
+    .post {
+      /*padding-bottom: @box-padding;*/
+      
+      .item {
+        min-height: 40pt;
+
+        img {
+          width: 170pt;
+          max-height: 140pt;
+          padding: 5px;
+          -webkit-box-shadow: 0px 0px 10px #bbb;
+        }
+        .textwrapper {
+          margin-left: @in-post-padding * 2;
+          width: 70%;
+        }
+      }
+    }
+  }
+
+  #logo {
+    .fullbox;
+    text-align: center;
+    img {
+      width: 300pt;
+      padding: 30pt 0;
+    }
+  }
+  
+  /*
+  #options {
+    .fullbox;
+
+    #bus_box {
+      overflow: hidden;
+      border-top: 1pt solid white;
+      border-bottom: 1pt solid #7a7a7a;
+      border-radius: 10pt;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
+      padding: 6pt 8pt;
+      white-space: nowrap;
+      word-wrap: break-word;
+      z-index: 100;
+
+      .bus_stop {
+        .debugred;
+        float: left;
+        white-space: nowrap;
+        z-index: 101;
+        input {
+          width: 245pt;
+          font-size: 24pt;
+          z-index: 102;
+        }
+        select {
+          z-index: 10; /* allows the down-arrow to be painted behind this * /
+          position: relative; /* allows the down-arrow to be painted behind this * /
+          width: 245pt;
+          font-size: 24pt;
+          z-index: 102;
+        }
+        .lines {
+          z-index: 10; /* allows the down-arrow to be painted behind this * /
+          position: relative; /* allows the down-arrow to be painted behind this * /
+          width: 245pt;
+          margin-top: 1pt;
+          border-top: 1pt solid white;
+          box-shadow: 0 1pt 2pt #888;
+          border-radius: 3pt;
+          background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e8e8e8), color-stop(1, #c0c0c0));
+          padding: 2pt 5pt 1pt 5pt;
+          text-align: left;
+          font-size: 24pt;
+          text-shadow: 0 0 0 white; /* resets inhertied value from parent element * /
+          z-index: 102;
+
+          table {
+            .debugred;
+            width: 100%;
+            table-layout: fixed;
+            text-align: center;
+            z-index: 103;
+            td {
+              .debugyellow;
+              padding: 1pt 0;
+              z-index: 103;
+            }
+          }
+          .active {
+            cursor: pointer;
+            color: black;
+            &:hover {
+              font-weight: bold;
+            }
+          }
+          .inactive {
+            cursor: pointer;
+            color: gray;
+            &:hover {
+              font-weight: bold;
+            }
+          }
+          .error {
+            color: black;
+            text-align: center;
+            font-size: 24pt;
+          }
+          .loading_left {
+            position: relative;
+            width: 80px;
+            -webkit-transform: scaleX(-1);
+          }
+          .loading_right {
+            position: relative;
+            width: 80px;
+          }
+        }
+      }
+      #bus_logo {
+        .debugred;
+        position: relative; /* allows the down-arrow to be painted behind this * /
+        z-index: 10; /* allows the down-arrow to be painted behind this * /
+        float: left;
+        white-space: nowrap;
+        width: 95pt;
+        margin: 0 8pt;
+      }
+    }
+  }
+  */
+}
+
+/* Suggestions for bus stops */
+/*
+#bus_suggestions {
+  .debuglime;
+  position: absolute;
+  vertical-align: middle;
+  overflow: auto;
+  width: 100%;
+  height: 265pt;
+  vertical-align: middle;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  
+  .suggestion {
+    font-size: 40pt;
+    line-height: 1.5;
+    padding-left: 30pt;
+    letter-spacing: .7pt;
+    box-shadow: inset 0 0 20pt black, inset 0 0 40pt black, inset 0 0 60pt black, inset 0 0 80pt black, inset 0 0 100pt black;
+    .matched_character {
+      font-weight: bold;
+    }
+  }
+  .correct {
+    color: white;
+    font-size: 24pt;
+    font-weight: bold;
+    line-height: 1.5;
+    text-shadow:
+      0 0 10px #fff,
+      0 0 15px #fff,
+      0 0 20px #fff,
+      0 0 30px #fff,
+      0 0 40px #011b36,
+      0 0 40px #011b36;
+  }
+}
+*/
