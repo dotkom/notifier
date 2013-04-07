@@ -1,0 +1,538 @@
+.debugred {
+  border: 0pt solid #ff0000;
+}
+.debugpink {
+  border: 0pt solid #ffc0cb;
+}
+.debuglime {
+  border: 0pt solid #00ff00;
+}
+.debugyellow {
+  border: 0pt solid #ffff00;
+}
+.fullbox {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.title {
+  color: #ee861f;
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.title .unread {
+  color: white;
+}
+.emphasized {
+  font-style: italic;
+}
+body {
+  background: #001429;
+  color: white;
+  font-family: Helvetica;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+
+  position: absolute;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+/* This container keeps the content centered */
+#container {
+  border: 0pt solid #ffc0cb;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+  z-index: 10;
+}
+#container #todays {
+  border: 0pt solid #ffff00;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+#container #todays #schedule {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: left;
+  width: 48%;
+}
+#container #todays #schedule #servant {
+  font-style: italic;
+}
+#container #todays #coffee {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #todays #coffee #pots {
+  font-style: italic;
+}
+#container #cantinas {
+  border: 0pt solid #ff0000;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+#container #cantinas .hours {
+  font-weight: normal;
+  font-style: italic;
+  text-transform: none;
+}
+#container #cantinas #left {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: left;
+  width: 48%;
+}
+#container #cantinas #right {
+  border: 0pt solid #ffc0cb;
+  position: relative;
+  float: right;
+  width: 50%;
+  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+
+}
+#container #cantinas #dinnerbox {
+  border: 0pt solid #ffff00;
+}
+#container #cantinas li {
+  border: 0pt solid #00ff00;
+  position: relative;
+  width: 95%;
+  list-style-type: none;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
+}
+#container #cantinas li.message {
+  /*font-style: italic;*/
+
+}
+#container #bus {
+  border: 0pt solid #ff0000;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  background-color: #000f1d;
+  width: 110%;
+  margin-left: -5%;
+}
+#container #bus .name {
+  margin-bottom: 4pt;
+  text-decoration: underline;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container #bus #firstBus {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: right;
+  padding-top: 10pt;
+  width: 40%;
+}
+#container #bus #secondBus {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: left;
+  padding-top: 10pt;
+  width: 40%;
+}
+#container #bus .loading_left {
+  position: relative;
+  z-index: 100;
+  -webkit-transform: scaleX(-1);
+}
+#container #bus .loading_right {
+  position: relative;
+  z-index: 100;
+}
+#container #bus .first,
+#container #bus .second,
+#container #bus .third,
+#container #bus .fourth,
+#container #bus .fifth,
+#container #bus .sixth,
+#container #bus .seventh,
+#container #bus .eighth,
+#container #bus .nineth,
+#container #bus .tenth {
+  border: 0pt solid #ff0000;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container #bus .time {
+  font-weight: bold;
+}
+#container #bus .error {
+  font-style: italic;
+}
+#container #bus #middle {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: center;
+  height: 100%;
+}
+#container #news {
+  border: 0pt solid #ff0000;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+#container #news .post {
+  border: 0pt solid #ffff00;
+  position: relative;
+  clear: both;
+}
+#container #news .post .item {
+  border: 0pt solid #ffff00;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#container #news .post .item img {
+  float: left;
+  background: snow;
+}
+#container #news .post .item .textwrapper {
+  border: 0pt solid #00ff00;
+  position: relative;
+  float: left;
+  text-align: left;
+}
+#container #news .unread {
+  text-shadow: 0 0 10px white,
+        0 0 15px white,
+        0 0 20px white,
+        0 0 25px #011b36,
+        0 0 30px #011b36,
+        0 0 35px #fff,
+        0 0 40px #011b36,
+        0 0 45px #011b36;
+}
+/* This file contains mobile-additions to common.less */
+.title {
+  font-size: 24pt;
+  padding-top: 20pt;
+  padding-bottom: 5pt;
+}
+.emphasized {
+  font-size: 24pt;
+  margin-bottom: 8pt;
+}
+* {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /*-webkit-user-select: none;*/
+  /* do not use, disables possibility of having options */
+
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+body {
+  /* Using blue radial and black vertical background gradients instead of images,
+  saving a lot of page weight. Ironically, Microsoft has the best gradient maker, at
+  ie.microsoft.com/testdrive/graphics/cssgradientbackgroundmaker/default.html */
+
+  /*
+  Fallback for older browsers
+  background-color: #002343;
+  IE10 Consumer Preview
+  background-image: -ms-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  Mozilla Firefox
+  background-image: -moz-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  Opera
+  background-image: -o-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  Webkit (Safari/Chrome 10)
+  background-image: -webkit-gradient(radial, center center, 0, center center, 494, color-stop(0, #00274F), color-stop(0.2, #00254C), color-stop(0.4, #002040), color-stop(0.6, #001832), color-stop(0.8, #001427), color-stop(1, #000000));
+  Webkit (Chrome 11+)
+  background-image: -webkit-radial-gradient(center, circle farthest-corner, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  W3C Markup, IE10 Release Preview
+  background-image: radial-gradient(circle farthest-corner at center, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
+  */
+
+  width: 735pt;
+  font-size: 24pt;
+}
+/* This container keeps the content centered */
+#container {
+  overflow-y: auto;
+  padding: 30pt;
+  /*
+  #options {
+    .fullbox;
+
+    #bus_box {
+      overflow: hidden;
+      border-top: 1pt solid white;
+      border-bottom: 1pt solid #7a7a7a;
+      border-radius: 10pt;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
+      padding: 6pt 8pt;
+      white-space: nowrap;
+      word-wrap: break-word;
+      z-index: 100;
+
+      .bus_stop {
+        .debugred;
+        float: left;
+        white-space: nowrap;
+        z-index: 101;
+        input {
+          width: 245pt;
+          font-size: 24pt;
+          z-index: 102;
+        }
+        select {
+          z-index: 10; /* allows the down-arrow to be painted behind this * /
+          position: relative; /* allows the down-arrow to be painted behind this * /
+          width: 245pt;
+          font-size: 24pt;
+          z-index: 102;
+        }
+        .lines {
+          z-index: 10; /* allows the down-arrow to be painted behind this * /
+          position: relative; /* allows the down-arrow to be painted behind this * /
+          width: 245pt;
+          margin-top: 1pt;
+          border-top: 1pt solid white;
+          box-shadow: 0 1pt 2pt #888;
+          border-radius: 3pt;
+          background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e8e8e8), color-stop(1, #c0c0c0));
+          padding: 2pt 5pt 1pt 5pt;
+          text-align: left;
+          font-size: 24pt;
+          text-shadow: 0 0 0 white; /* resets inhertied value from parent element * /
+          z-index: 102;
+
+          table {
+            .debugred;
+            width: 100%;
+            table-layout: fixed;
+            text-align: center;
+            z-index: 103;
+            td {
+              .debugyellow;
+              padding: 1pt 0;
+              z-index: 103;
+            }
+          }
+          .active {
+            cursor: pointer;
+            color: black;
+            &:hover {
+              font-weight: bold;
+            }
+          }
+          .inactive {
+            cursor: pointer;
+            color: gray;
+            &:hover {
+              font-weight: bold;
+            }
+          }
+          .error {
+            color: black;
+            text-align: center;
+            font-size: 24pt;
+          }
+          .loading_left {
+            position: relative;
+            width: 80px;
+            -webkit-transform: scaleX(-1);
+          }
+          .loading_right {
+            position: relative;
+            width: 80px;
+          }
+        }
+      }
+      #bus_logo {
+        .debugred;
+        position: relative; /* allows the down-arrow to be painted behind this * /
+        z-index: 10; /* allows the down-arrow to be painted behind this * /
+        float: left;
+        white-space: nowrap;
+        width: 95pt;
+        margin: 0 8pt;
+      }
+    }
+  }
+  */
+
+}
+#container #office {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* set "padding-top: 40pt" if page uses translucent status bar (wifi, battery) */
+
+  padding-top: 0pt;
+  text-align: center;
+}
+#container #office #status {
+  border: 0pt solid #00ff00;
+  font-size: 90pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 0 15pt black, 0 0 20pt black;
+}
+#container #office .open {
+  color: #00ff00;
+}
+#container #office .closed {
+  color: #ffff00;
+}
+#container #office .meeting {
+  color: #ff0000;
+}
+#container #office .waffle {
+  color: SandyBrown;
+}
+#container #office .error {
+  color: #888;
+}
+#container #office #subtext {
+  border: 0pt solid #ffff00;
+  position: relative;
+  top: -10pt;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 15pt black, 0 0 20pt black;
+}
+#container #bus {
+  top: 30pt;
+  margin-bottom: 30pt;
+  box-shadow: 0 0 15pt #88b;
+  height: 140pt;
+}
+#container #bus .name {
+  margin-bottom: 3pt;
+}
+#container #bus #firstBus {
+  padding-top: 12pt;
+  width: 42%;
+}
+#container #bus #secondBus {
+  padding-top: 12pt;
+  width: 41%;
+}
+#container #bus .loading_left {
+  width: 160px;
+  top: 18pt;
+}
+#container #bus .loading_right {
+  width: 160px;
+  top: 18pt;
+}
+#container #bus #middle {
+  width: 14%;
+  height: 100%;
+}
+#container #bus #middle img {
+  margin: 35pt 0;
+  height: 75pt;
+}
+#container #news {
+  /*padding-top: @box-padding * 2;*/
+
+}
+#container #news .post {
+  /*padding-bottom: @box-padding;*/
+
+}
+#container #news .post .item {
+  min-height: 40pt;
+}
+#container #news .post .item img {
+  width: 170pt;
+  max-height: 140pt;
+  padding: 5px;
+  -webkit-box-shadow: 0px 0px 10px #bbb;
+}
+#container #news .post .item .textwrapper {
+  margin-left: 14pt;
+  width: 70%;
+}
+#container #logo {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+#container #logo img {
+  width: 300pt;
+  padding: 30pt 0;
+}
+/* Suggestions for bus stops */
+/*
+#bus_suggestions {
+  .debuglime;
+  position: absolute;
+  vertical-align: middle;
+  overflow: auto;
+  width: 100%;
+  height: 265pt;
+  vertical-align: middle;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  
+  .suggestion {
+    font-size: 40pt;
+    line-height: 1.5;
+    padding-left: 30pt;
+    letter-spacing: .7pt;
+    box-shadow: inset 0 0 20pt black, inset 0 0 40pt black, inset 0 0 60pt black, inset 0 0 80pt black, inset 0 0 100pt black;
+    .matched_character {
+      font-weight: bold;
+    }
+  }
+  .correct {
+    color: white;
+    font-size: 24pt;
+    font-weight: bold;
+    line-height: 1.5;
+    text-shadow:
+      0 0 10px #fff,
+      0 0 15px #fff,
+      0 0 20px #fff,
+      0 0 30px #fff,
+      0 0 40px #011b36,
+      0 0 40px #011b36;
+  }
+}
+*/

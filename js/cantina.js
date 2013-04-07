@@ -318,7 +318,8 @@ var Cantina = {
   removeFoodFlags: function(text) {
     if (this.debugText) console.log('Flags\t:: ' + text);
     // Removes food flags like V,G,L in all known forms. Seriously. All known forms. Don't.
-    return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/g, '');
+    return text.replace(/([,;&(.\/]*\b[VGL]+(?![æøåÆØÅ])\b[,;&).\s]*)+/g, '');
+    // return text.replace(/([,;&\(\/\.]*\b[VGL]+(?![æøåÆØÅ])\b[,;&\s\)\.]*)+/g, '');
     // NOTE: æøåÆØÅ is wrongly matched as word boundary, bug report has been submitted to
     // the Chromium team. A case sensitive fix is implemented via negative lookahead.
     // UPDATE from yangguo@chromium.org: "Unfortunately, this is specified by ECMA-262,
