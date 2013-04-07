@@ -261,7 +261,7 @@ $ ->
     $('#pagefliplink').attr "style", "bottom:9px;"
   
   # Adding creator name to pageflip
-  html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
+  html = $('#pagefliplink').html().replace /__creator__/g, ls.extensionCreator
   $('#pagefliplink').html html
   # Blinking cursor at pageflip
   setInterval ( ->

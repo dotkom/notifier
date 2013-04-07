@@ -92,6 +92,13 @@ $ ->
   
   # Set default choices if undefined, in the same order as on the options page
 
+  if ls.extensionName is undefined
+    ls.extensionName = 'Online Notifier'
+  if ls.extensionWebsite is undefined
+    ls.extensionWebsite = 'https://online.ntnu.no'
+  if ls.extensionCreator is undefined
+    ls.extensionCreator = 'dotKom' # Max 8 letters because of styling
+
   if ls.showAffiliation is undefined
     ls.showAffiliation = 'true'
   if ls.affiliationKey is undefined

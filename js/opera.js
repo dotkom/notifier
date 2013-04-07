@@ -4,7 +4,7 @@ var OPERA_BUTTON = null;
 // If this is an opera extension, add the popup icon
 if (BROWSER == "Opera") {
   var properties = {
-    title: EXTENSION_NAME,
+    title: localStorage.extensionName,
     icon: "img/logo-18.png",
     badge: {
       backgroundColor: '#b90014',

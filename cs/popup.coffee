@@ -286,7 +286,7 @@ $ ->
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
-    Browser.openTab EXTENSION_WEBSITE
+    Browser.openTab ls.extensionWebsite
     window.close()
 
   $('#options_button').click ->

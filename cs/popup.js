@@ -350,7 +350,7 @@
       $('#palette').attr('href', Palettes.getColor(color));
     }
     $('#logo').click(function() {
-      Browser.openTab(EXTENSION_WEBSITE);
+      Browser.openTab(ls.extensionWebsite);
       return window.close();
     });
     $('#options_button').click(function() {
