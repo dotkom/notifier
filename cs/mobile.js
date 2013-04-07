@@ -274,7 +274,14 @@
     Browser.setBadgeText('');
     ls.unreadCount = 0;
     $('.item').click(function() {
-      Browser.openTab($(this).attr('data'));
+      var altLink, useAltLink;
+      altLink = $(this).attr('name');
+      useAltLink = Affiliation.org[ls.affiliationKey].useAltLink;
+      if (altLink !== void 0 && useAltLink === true) {
+        Browser.openTab($(this).attr('name'));
+      } else {
+        Browser.openTab($(this).attr('data'));
+      }
       return window.close();
     });
     if (Affiliation.org[feedKey].useAltLink) {
