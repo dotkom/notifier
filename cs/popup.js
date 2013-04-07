@@ -333,6 +333,7 @@
     }
     if (ls.affiliationKey !== 'online') {
       $('#chatter_button').hide();
+      $('#mobile_text').hide();
       affiliation = ls.affiliationKey;
       logo = Affiliation.org[affiliation].logo;
       if (logo !== void 0 && logo !== '') {

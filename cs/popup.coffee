@@ -270,6 +270,8 @@ $ ->
   if ls.affiliationKey isnt 'online'
     # Hide chat button
     $('#chatter_button').hide()
+    # Hide Notifier Mobile info in Tips box
+    $('#mobile_text').hide()
     # Show the logo and placeholder image for the correct organization
     affiliation = ls.affiliationKey
     # If the affiliation has a defined logo
