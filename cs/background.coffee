@@ -57,7 +57,7 @@ updateCoffeeSubscription = ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   # Get affiliation object
-  affiliationKey = ls['affiliationKey']
+  affiliationKey = ls.affiliationKey
   affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
     if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey, 'is not known'
