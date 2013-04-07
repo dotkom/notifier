@@ -71,7 +71,7 @@ var News = {
     post.creator = $(item).find("dc:creator").filter(':first').text();
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
     // Locally stored
-    post.image = affiliationObject.image;
+    post.image = affiliationObject.placeholder;
     // Tag the posts with the key and name of the feed they came from
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;

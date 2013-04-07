@@ -63,21 +63,26 @@ bindAffiliationColorSelector = ->
     ls['affiliationColor'] = chosenAffiliation
 
 disableOnlineSpecificFeatures = ->
-  # Disable office status and coffee subscription
-  ls['showOffice'] = 'false'
-  ls['coffeeSubscription'] = 'false'
+  ls.showOffice = 'false'
+  ls.coffeeSubscription = 'false'
+  ls.extensionCreator = 'Online'
   # Hide office status option
   $('label[for="showOffice"]').slideUp 'slow', ->
     # Hide coffee subscription option
-    $('label[for="coffeeSubscription"]').slideUp 'slow'
+    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # Change pageflip name
+      changeCreatorName 'Online'
 
 enableOnlineSpecificFeatures = ->
+  ls.showOffice = 'true'
+  ls.coffeeSubscription = 'true'
+  ls.extensionCreator = 'dotKom'
   # Enable office status
-  ls['showOffice'] = 'true'
-  $('label[for="showOffice"]').slideDown()
-  # Enable coffee subscription
-  ls['coffeeSubscription'] = 'true'
-  $('label[for="coffeeSubscription"]').slideDown()
+  $('label[for="showOffice"]').slideDown 'slow', ->
+    # Enable coffee subscription
+    $('label[for="coffeeSubscription"]').slideDown 'slow', ->
+      # Change pageflip name
+      changeCreatorName 'dotKom'
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -519,6 +524,28 @@ fadeInCanvas = ->
           'swing'
       ), 200
 
+changeCreatorName = (name, build) ->
+  # Animate it
+  text = $('#pageflipline').text()
+  if text.length is 0
+    build = true
+    name = name + " with <3"
+  random = Math.floor 400 * Math.random() + 50
+  if !build
+    $('#pageflipline').text text.slice 0, text.length-1
+    setTimeout ( ->
+      changeCreatorName name
+    ), random
+  else
+    if text.length isnt name.length
+      if text.length is 0
+        $('#pageflipline').text name.slice 0, 1
+      else
+        $('#pageflipline').text name.slice 0, text.length+1
+      setTimeout ( ->
+        changeCreatorName name, true
+      ), random
+
 # Document ready, go!
 $ ->
   if DEBUG
@@ -554,8 +581,7 @@ $ ->
   $('label[for=openChatter] span').html html
 
   # Adding creator name to pageflip
-  html = $('#pagefliplink').html().replace /__creator__/g, CREATOR_NAME
-  $('#pagefliplink').html html
+  $('#pageflipname').text ls.extensionCreator
 
   # Blinking cursor at pageflip
   setInterval ( ->
@@ -631,7 +657,7 @@ $ ->
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
         Browser.setIcon 'img/icon-default.png'
-        Browser.setTitle EXTENSION_NAME
+        Browser.setTitle ls.extensionName
       
       if this.id is 'showNotifications' and this.checked is true
         testDesktopNotification()

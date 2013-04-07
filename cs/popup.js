@@ -239,7 +239,14 @@
     Browser.setBadgeText('');
     ls.unreadCount = 0;
     $('.item').click(function() {
-      Browser.openTab($(this).attr('data'));
+      var altLink, useAltLink;
+      altLink = $(this).attr('name');
+      useAltLink = Affiliation.org[ls.affiliationKey].useAltLink;
+      if (altLink !== void 0 && useAltLink === true) {
+        Browser.openTab($(this).attr('name'));
+      } else {
+        Browser.openTab($(this).attr('data'));
+      }
       return window.close();
     });
     if (Affiliation.org[feedKey].useAltLink) {
@@ -333,6 +340,7 @@
     }
     if (ls.affiliationKey !== 'online') {
       $('#chatter_button').hide();
+      $('#mobile_text').hide();
       affiliation = ls.affiliationKey;
       logo = Affiliation.org[affiliation].logo;
       if (logo !== void 0 && logo !== '') {
@@ -350,7 +358,7 @@
       $('#palette').attr('href', Palettes.getColor(color));
     }
     $('#logo').click(function() {
-      Browser.openTab(EXTENSION_WEBSITE);
+      Browser.openTab(ls.extensionWebsite);
       return window.close();
     });
     $('#options_button').click(function() {

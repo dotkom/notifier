@@ -5,15 +5,16 @@
   $ = jQuery;
 
   setSubscription = function() {
-    var images, random, width;
-    images = ['/meme/1.jpg', '/meme/2.jpg', '/meme/3.jpg', '/meme/4.jpg', '/meme/5.jpg', '/meme/6.jpg', '/meme/7.jpg', '/meme/8.jpg', '/meme/9.jpg', '/meme/10.jpg', '/meme/11.jpg', '/meme/12.jpg'];
-    random = Math.floor(Math.random() * images.length);
+    var amount, image, random, width;
+    amount = 27;
+    random = 1 + Math.floor(Math.random() * amount);
+    image = './meme/' + random + '.jpg';
     $('#subscription').click(function() {
       Browser.openTab('options.html');
       return window.close;
     });
     width = $('#subscription').width();
-    return $('#subscription').html('<img src="' + images[random] + '" width="' + width + '" />');
+    return $('#subscription').html('<img src="' + image + '" width="' + width + '" />');
   };
 
   $(function() {

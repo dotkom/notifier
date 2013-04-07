@@ -216,8 +216,15 @@ displayItems = (items) ->
   # Make news items open extension website while closing popup
   $('.item').click ->
     # The link is embedded as the ID of the element, we don't want to use
-    # <a> anchors because it creates an ugly box marking the focus element
-    Browser.openTab $(this).attr 'data'
+    # <a> anchors because it creates an ugly box marking the focus element.
+    # Note that altLinks are embedded in the name-property of the element,
+    # - if preferred by the organization, we should use that instead.
+    altLink = $(this).attr 'name'
+    useAltLink = Affiliation.org[ls.affiliationKey].useAltLink
+    if altLink isnt undefined and useAltLink is true
+      Browser.openTab $(this).attr 'name'
+    else
+      Browser.openTab $(this).attr 'data'
     window.close()
 
   # If organization prefers alternative links, use them

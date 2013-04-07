@@ -5,7 +5,7 @@ var Bus = {
   msgDisconnectedShort: 'Oops, frakoblet',
   msgConnectionError: 'Tilkoblingsfeil',
   msgInvalidDirection: 'Ugyldig retning',
-  msgKeyExpired: EXTENSION_NICK + ' trenger oppdatering',
+  msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
 
   get: function(stopId, favoriteLines, callback) {
     if (callback == undefined) {

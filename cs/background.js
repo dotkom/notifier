@@ -124,6 +124,15 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
+    if (ls.extensionName === void 0) {
+      ls.extensionName = 'Online Notifier';
+    }
+    if (ls.extensionWebsite === void 0) {
+      ls.extensionWebsite = 'https://online.ntnu.no';
+    }
+    if (ls.extensionCreator === void 0) {
+      ls.extensionCreator = 'dotKom';
+    }
     if (ls.showAffiliation === void 0) {
       ls.showAffiliation = 'true';
     }

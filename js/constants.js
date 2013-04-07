@@ -1,11 +1,4 @@
-var DEBUG = 1;
-
-// General
-var EXTENSION_NAME = 'Online Notifier';
-var EXTENSION_NICK = 'Notifier';
-var EXTENSION_WEBSITE = 'https://online.ntnu.no';
-var CREATOR_NAME = 'Online'; // max 8 letters because of styling
-var CREATOR_EMAIL = 'dotkom@online.ntnu.no';
+var DEBUG = 0;
 
 // AJAX setup
 var AJAX_SETUP = {
