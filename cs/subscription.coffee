@@ -4,7 +4,8 @@ $ = jQuery
 setSubscription = ->
 
   # Randomize image
-  random = 1 + Math.floor Math.random() * 27
+  amount = 27 # Number of memes, in regular human numbers, not zero-indexed
+  random = 1 + Math.floor Math.random() * amount
   image = './meme/' + random + '.jpg'
 
   # Capture clicks
