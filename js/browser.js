@@ -3,7 +3,9 @@ var Browser = {
 
   setIcon: function(path) {
     if (BROWSER == 'Chrome') {
-      chrome.browserAction.setIcon({path: path});
+      if (chrome.browserAction != undefined) {
+        chrome.browserAction.setIcon({path: path});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -22,7 +24,9 @@ var Browser = {
 
   setTitle: function(title) {
     if (BROWSER == 'Chrome') {
-      chrome.browserAction.setTitle({title: title});
+      if (chrome.browserAction != undefined) {
+        chrome.browserAction.setTitle({title: title});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -41,7 +45,9 @@ var Browser = {
 
   setBadgeText: function(text) {
     if (BROWSER == 'Chrome') {
-      chrome.browserAction.setBadgeText({text: text});
+      if (chrome.browserAction != undefined) {
+        chrome.browserAction.setBadgeText({text: text});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -60,7 +66,9 @@ var Browser = {
 
   openTab: function(url) {
     if (BROWSER == 'Chrome') {
-      chrome.tabs.create({url: url, selected: true});
+      if (chrome.tabs != undefined) {
+        chrome.tabs.create({url: url, selected: true});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -84,7 +92,9 @@ var Browser = {
 
   openBackgroundTab: function(url) {
     if (BROWSER == 'Chrome') {
-      chrome.tabs.create({url: url, selected: false});
+      if (chrome.tabs != undefined) {
+        chrome.tabs.create({url: url, selected: false});
+      }
     }
     else if (BROWSER == 'Opera') {
       // If this is the background page
@@ -108,7 +118,9 @@ var Browser = {
 
   getBackgroundProcess: function() {
     if (BROWSER == 'Chrome') {
-      return chrome.extension.getBackgroundPage();
+      if (chrome.extension != undefined) {
+        return chrome.extension.getBackgroundPage();
+      }
     }
     else if (BROWSER == 'Opera') {
       return opera.extension.bgProcess;

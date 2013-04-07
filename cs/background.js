@@ -82,7 +82,7 @@
     if (DEBUG) {
       console.log('updateNews');
     }
-    affiliationKey = ls['affiliationKey'];
+    affiliationKey = ls.affiliationKey;
     affiliation = Affiliation.org[affiliationKey];
     if (affiliation === void 0) {
       if (DEBUG) {

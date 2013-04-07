@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Notifier</title>
+  <meta charset="utf-8" />
+
+  <!-- Remove Safari UI elements -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- Black status bar (wifi, battery indicator etc) - maybe use black-translucent ? -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <!-- Use a static viewport, prevent zooming/scaling -->
+  <meta name="viewport" content="user-scalable=0" />
+  <!-- Set the default Home Screen name for the web app -->
+  <meta name="apple-mobile-web-app-title" content="Notifier">
+
+  <!-- App icons -->
+  <!-- Any device -->
+  <link href="mimg/icon-57.png" rel="apple-touch-icon-precomposed" />
+  <!--iPhone-->
+  <link href="mimg/icon-57.png" sizes="57x57" rel="apple-touch-icon-precomposed" />
+  <!--iPad-->
+  <link href="mimg/icon-72.png" sizes="72x72" rel="apple-touch-icon-precomposed" />
+  <!--iPhone Retina-->
+  <link href="mimg/icon-114.png" sizes="114x114" rel="apple-touch-icon-precomposed" />
+  <!--iPad Retina-->
+  <link href="mimg/icon-144.png" sizes="144x144" rel="apple-touch-icon-precomposed" />
+  
+  <!-- Splash image -->
+  <!-- iPhone -->
+  <link href="mimg/splash-320x460.png" sizes="320x460" media="(device-width: 320px)" rel="apple-touch-startup-image" />
+  <!-- iPhone4 -->
+  <link href="mimg/splash-640x920.png" sizes="640x920" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <!-- iPhone5 -->
+  <link href="mimg/splash-640x1096.png" sizes="640x1096" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <!-- iPad Portrait -->
+  <link href="mimg/splash-768x1004.png" sizes="768x1004" media="(min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait)" rel="apple-touch-startup-image" />
+  <!-- iPad Landscape -->
+  <link href="mimg/splash-1024x748.png" sizes="1024x748" media="(min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape)" rel="apple-touch-startup-image" />
+  <!-- iPad Retina Portrait -->
+  <link href="mimg/splash-1536x2008.png" sizes="1536x2008" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <!-- iPad Retina Landscape -->
+  <link href="mimg/splash-2048x1496.png" sizes="2048x1496" media="(device-width: 1536px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+  <!-- CSS Less -->
+  <link rel="stylesheet" type="text/css" href="less/mobile.css" />
+
+  <!-- JS Libs -->
+  <script src="libs/jquery-1.9.1.min.js"></script>
+
+  <!-- JS Behind the scenes -->
+  <script src="js/constants.js"></script>
+  <script src="js/missing_functions.js"></script>
+  <script src="js/missing_prototypes.js"></script>
+  <script src="js/google_analytics.js"></script>
+  
+  <!-- JS Services -->
+  <script src="js/affiliation.js"></script>
+  <script src="js/ajaxer.js"></script>
+  <script src="js/browser.js"></script>
+  <script src="js/bus.js"></script>
+  <script src="js/cantina.js"></script>
+  <script src="js/coffee.js"></script>
+  <script src="js/hours.js"></script>
+  <script src="js/meetings.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/office.js"></script>
+  <script src="js/palettes.js"></script>
+  <script src="js/servant.js"></script>
+
+  <!-- Document ready sript -->
+  <script src="cs/mobile.js"></script>
+
+</head>
+
+<body>
+  <div id="container">
+
+    <div id="office">
+      <div id="status">Laster</div>
+      <div id="subtext">Henter kontorstatus...</div>
+    </div>
+
+    <div id="todays">
+      <div id="schedule">
+        <div class="title">Kontoret i dag</div>
+        <div id="servant">- Laster kontorvakt...</div>
+        <div id="meetings">Laster møteplan...</div>
+      </div>
+      <div id="coffee">
+        <div class="title">Kaffe på kontoret</div>
+        <div id="pots">- Laster antall kanner...</div>
+        <div id="age">Laster kaffestatus...</div>
+      </div>
+    </div>
+    
+    <div id="cantinas">
+      <div id="left">
+        <div class="title">
+          Laster...
+        </div>
+        <div class="hours">Laster...</div>
+        <div id="dinnerbox"></div>
+      </div>
+      <div id="right">
+        <div class="title">
+          Laster...
+        </div>
+        <div class="hours">Laster...</div>
+        <div id="dinnerbox"></div>
+      </div>
+    </div>
+
+    <div id="bus">
+      <div id="firstBus">
+        <div class="name">
+          <img class="loading_left" src="img/loading.gif" />
+        </div>
+        <div class="first">
+          <span class="line"></span>
+          <span class="time"></span>
+        </div>
+        <div class="second">
+          <span class="line"></span>
+          <span class="time"></span>
+        </div>
+        <div class="third">
+          <span class="line"></span>
+          <span class="time"></span>
+        </div>
+        <div class="fourth">
+          <span class="line"></span>
+          <span class="time"></span>
+        </div>
+      </div>
+      <div id="middle">
+        <img src="mimg/logo-atb-small.png" />
+      </div>
+      <div id="secondBus">
+        <div class="name">
+          <img class="loading_right" src="img/loading.gif" />
+        </div>
+        <div class="first">
+          <span class="time"></span>
+          <span class="line"></span>
+        </div>
+        <div class="second">
+          <span class="time"></span>
+          <span class="line"></span>
+        </div>
+        <div class="third">
+          <span class="time"></span>
+          <span class="line"></span>
+        </div>
+        <div class="fourth">
+          <span class="time"></span>
+          <span class="line"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="news">
+      <div class="post">
+        <div class="title">Laster tittel...</div>
+        <div class="item" data="https://online.ntnu.no/">
+        <img src="img/placeholder.png" width="107">
+        <div class="textwrapper">
+          <div class="emphasized">- Laster forfatter... Laster dato...</div>
+            Laster tekst...
+          </div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="title">Laster tittel...</div>
+        <div class="item" data="https://online.ntnu.no/">
+        <img src="img/placeholder.png" width="107">
+        <div class="textwrapper">
+          <div class="emphasized">- Laster forfatter... Laster dato...</div>
+            Laster tekst...
+          </div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="title">Laster tittel...</div>
+        <div class="item" data="https://online.ntnu.no/">
+        <img src="img/placeholder.png" width="107">
+        <div class="textwrapper">
+          <div class="emphasized">- Laster forfatter... Laster dato...</div>
+            Laster tekst...
+          </div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="title">Laster tittel...</div>
+        <div class="item" data="https://online.ntnu.no/">
+        <img src="img/placeholder.png" width="107">
+        <div class="textwrapper">
+          <div class="emphasized">- Laster forfatter... Laster dato...</div>
+            Laster tekst...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="logo">
+      <a href="https://online.ntnu.no">
+        <img src="img/logo-big.png" />
+      </a>
+    </div>
+    
+    <!--
+    <div id="options">
+      <span class="title">Bussvalg</span>
+
+      <div id="bus_box">
+        <div id="first_bus" class="bus_stop">
+          <input type="text" placeholder="Busstopp" style="z-index:300;"></input><br />
+          <select>
+            <option>til byen</option>
+            <option selected="selected">fra byen</option>
+          </select>
+        </div>
+        <label for="showBus">
+          <img id="bus_logo" src="/mobile/mimg/logo-atb-small.png" />
+        </label>
+        <div id="second_bus" class="bus_stop">
+          <input type="text" placeholder="Busstopp"></input><br />
+          <select>
+            <option selected="selected">til byen</option>
+            <option>fra byen</option>
+          </select>
+        </div>
+    </div>
+
+    <div id="bus_suggestions">
+    </div>
+    -->
+    
+  </div>
+</body>
+</html>
+
+
+
+
+
+
