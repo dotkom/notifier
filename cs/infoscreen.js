@@ -294,7 +294,6 @@
   };
 
   $(function() {
-    var html;
     if (DEBUG) {
       $('html').css('cursor', 'auto');
       $('#overlay').hide();
@@ -319,8 +318,7 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
-    html = $('#pagefliplink').html().replace(/__creator__/g, ls.extensionCreator);
-    $('#pagefliplink').html(html);
+    $('#pageflipname').text(ls.extensionCreator);
     setInterval((function() {
       return $(".pageflipcursor").animate({
         opacity: 0
