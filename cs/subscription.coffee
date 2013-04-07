@@ -4,9 +4,8 @@ $ = jQuery
 setSubscription = ->
 
   # Randomize image
-  images = numbers[1..27]
-  random = Math.floor Math.random() * images.length
-  image = './meme/' + images[random] + '.jpg'
+  random = 1 + Math.floor Math.random() * 27
+  image = './meme/' + random + '.jpg'
 
   # Capture clicks
   $('#subscription').click ->

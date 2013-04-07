@@ -5,10 +5,9 @@
   $ = jQuery;
 
   setSubscription = function() {
-    var image, images, random, width;
-    images = numbers.slice(1, 28);
-    random = Math.floor(Math.random() * images.length);
-    image = './meme/' + images[random] + '.jpg';
+    var image, random, width;
+    random = 1 + Math.floor(Math.random() * 27);
+    image = './meme/' + random + '.jpg';
     $('#subscription').click(function() {
       Browser.openTab('options.html');
       return window.close;
