@@ -452,7 +452,28 @@ header #notification .saved {
 
 }
 /* The pageflip at the bottom */
+/*@-webkit-keyframes terminal {
+  0% {
+    -webkit-filter: contrast(100%) brightness(1) hue-rotate(0deg);
+    text-shadow:
+      0 0 5px #68bf70,
+      0 0 10px #60b95e,
+      0 0 15px #368f2c,
+      0 0 20px #25892e,
+      0 0 30px #183e1a;
+  }
+  100% {
+    -webkit-filter: contrast(102%) brightness(.98) hue-rotate(2deg);
+    text-shadow:
+      0 0 3px #68bf70,
+      0 0 8px #60b95e,
+      0 0 12px #368f2c,
+      0 0 15px #25892e,
+      0 0 25px #183e1a;
+  }
+}*/
 #pageflipbg {
+  -webkit-animation: terminal .5s alternate infinite;
   position: fixed;
   left: 0;
   bottom: 0;
@@ -462,6 +483,7 @@ header #notification .saved {
   z-index: 105;
 }
 #pagefliptext {
+  -webkit-animation: terminal .5s alternate infinite;
   position: fixed;
   width: 170px;
   height: 36px;
@@ -469,7 +491,11 @@ header #notification .saved {
   bottom: 5px;
   font: bold 11px monospace;
   color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+  text-shadow: 0 0 5px #68bf70,
+    0 0 10px #60b95e,
+    0 0 15px #368f2c,
+    0 0 20px #25892e,
+    0 0 30px #183e1a;
   z-index: 106;
 }
 #pageflip {
@@ -493,6 +519,7 @@ header #notification .saved {
   z-index: 108;
 }
 #pagefliplink a {
+  -webkit-animation: terminal .5s alternate infinite;
   font: bold 11px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
