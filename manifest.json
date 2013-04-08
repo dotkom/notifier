@@ -35,9 +35,7 @@
 	
   "permissions": [
     "notifications",
-    "*://*.online.ntnu.no/*",
-    "*://*.visuweb.no/*",
-    "*://*.sit.no/*"
+    "<all_urls>",
   ],
 
 	"content_scripts": [
