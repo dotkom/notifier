@@ -576,9 +576,10 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
 
-  # Minor esthetical adjustmenst for Browser
-  html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
-  $('label[for=openChatter] span').html html
+  # Uncommented as long as we are not using the Chatter option (noone admits to using it)
+  # # Minor esthetical adjustmenst for Browser
+  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  # $('label[for=openChatter] span').html html
 
   # Adding creator name to pageflip
   $('#pageflipname').text ls.extensionCreator

@@ -589,7 +589,7 @@
   };
 
   $(function() {
-    var html, text;
+    var text;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -613,8 +613,6 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
-    html = $('label[for=openChatter] span').html().replace(/__nettleseren__/g, BROWSER);
-    $('label[for=openChatter] span').html(html);
     $('#pageflipname').text(ls.extensionCreator);
     setInterval((function() {
       return pageFlipCursorBlinking();
