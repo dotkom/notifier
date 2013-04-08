@@ -570,20 +570,18 @@ $ ->
   # Bind the windows resize function
   $(window).bind "resize", resizeBackgroundImage
   resizeBackgroundImage() # Run once in case the window is quite big
-  
-  # Minor esthetical adjustments for OS
-  if OPERATING_SYSTEM is 'Windows'
-    $('#pagefliptext').attr "style", "bottom:9px;"
-    $('#pagefliplink').attr "style", "bottom:9px;"
 
   # Uncommented as long as we are not using the Chatter option (noone admits to using it)
   # # Minor esthetical adjustmenst for Browser
   # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
   # $('label[for=openChatter] span').html html
-
+  
+  # Minor esthetical adjustments for OS
+  if OPERATING_SYSTEM is 'Windows'
+    $('#pagefliptext').attr "style", "bottom:9px;"
+    $('#pagefliplink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
   $('#pageflipname').text ls.extensionCreator
-
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()
