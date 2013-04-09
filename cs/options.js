@@ -43,26 +43,27 @@
   };
 
   bindAffiliationSelector = function() {
-    var chosenAffiliation, selector;
-    selector = 'affiliationKey';
-    chosenAffiliation = ls[selector];
-    $('#' + selector + '[value="' + chosenAffiliation + '"]').prop('selected', 'selected');
-    return $('#' + selector).change(function() {
+    var affiliationKey, id;
+    id = 'affiliationKey';
+    affiliationKey = ls[id];
+    $('#' + id).val(affiliationKey);
+    $('#' + id + ' option[selected]').removeAttr('selected');
+    return $('#' + id).change(function() {
       var color, oldAffiliation, symbol;
-      chosenAffiliation = $(this).val();
-      oldAffiliation = ls[selector];
+      affiliationKey = $(this).val();
+      oldAffiliation = ls[id];
       if (oldAffiliation === 'online') {
         disableOnlineSpecificFeatures();
-      } else if (chosenAffiliation === 'online') {
+      } else if (affiliationKey === 'online') {
         enableOnlineSpecificFeatures();
       }
-      ls[selector] = chosenAffiliation;
-      color = Affiliation.org[chosenAffiliation].color;
+      ls[id] = affiliationKey;
+      color = Affiliation.org[affiliationKey].color;
       if (color !== void 0 && color !== '') {
-        $('#affiliationColorSelector').val(color);
+        $('#affiliationColor').val(color);
         ls['affiliationColor'] = color;
       }
-      symbol = Affiliation.org[chosenAffiliation].symbol;
+      symbol = Affiliation.org[affiliationKey].symbol;
       if (symbol !== void 0 && symbol !== '') {
         Browser.setIcon(symbol);
         ls['affiliationSymbol'] = symbol;
@@ -72,10 +73,14 @@
   };
 
   bindAffiliationColorSelector = function() {
-    return $('#affiliationColorSelector').change(function() {
-      var chosenAffiliation;
-      chosenAffiliation = $(this).val();
-      return ls['affiliationColor'] = chosenAffiliation;
+    var id;
+    id = 'affiliationColor';
+    $('#' + id).val(ls[id]);
+    $('#' + id + ' option[selected]').removeAttr('selected');
+    return $('#' + id).change(function() {
+      var affiliationColor;
+      affiliationColor = $(this).val();
+      return ls[id] = affiliationColor;
     });
   };
 

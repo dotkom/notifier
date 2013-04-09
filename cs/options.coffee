@@ -27,28 +27,30 @@ testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
 bindAffiliationSelector = ->
-  selector = 'affiliationKey'
-  chosenAffiliation = ls[selector]
-  # Default values
-  $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
+  id = 'affiliationKey'
+  affiliationKey = ls[id]
+  # Default values, set only the chosen affiliation as selected, because it is the Chosen One
+  $('#'+id).val affiliationKey
+  # Remove any previous "selected" (by default) attributes
+  $('#'+id+' option[selected]').removeAttr('selected');
   # React to change
-  $('#'+selector).change ->
-    chosenAffiliation = $(this).val()
+  $('#'+id).change ->
+    affiliationKey = $(this).val()
     # Check if switching from or to Online
-    oldAffiliation = ls[selector]
+    oldAffiliation = ls[id]
     if oldAffiliation is 'online'
       disableOnlineSpecificFeatures()
-    else if chosenAffiliation is 'online'
+    else if affiliationKey is 'online'
       enableOnlineSpecificFeatures()
     # Save the change
-    ls[selector] = chosenAffiliation
+    ls[id] = affiliationKey
     # Get and save the recommended color palette for the chosen affiliation
-    color = Affiliation.org[chosenAffiliation].color
+    color = Affiliation.org[affiliationKey].color
     if color isnt undefined and color isnt ''
-      $('#affiliationColorSelector').val color
+      $('#affiliationColor').val color
       ls['affiliationColor'] = color
     # Get and save the icon for the chosen affiliation
-    symbol = Affiliation.org[chosenAffiliation].symbol
+    symbol = Affiliation.org[affiliationKey].symbol
     if symbol isnt undefined and symbol isnt ''
       Browser.setIcon symbol
       ls['affiliationSymbol'] = symbol
@@ -56,11 +58,16 @@ bindAffiliationSelector = ->
     Browser.getBackgroundProcess().updateNews()
 
 bindAffiliationColorSelector = ->
+  id = 'affiliationColor'
+  # Default values
+  $('#'+id).val ls[id]
+  # Remove any previous "selected" (by default) attributes
+  $('#'+id+' option[selected]').removeAttr('selected');
   # React to change
-  $('#affiliationColorSelector').change ->
-    chosenAffiliation = $(this).val()
+  $('#'+id).change ->
+    affiliationColor = $(this).val()
     # Save the change
-    ls['affiliationColor'] = chosenAffiliation
+    ls[id] = affiliationColor
 
 disableOnlineSpecificFeatures = ->
   ls.showOffice = 'false'
