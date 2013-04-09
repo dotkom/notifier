@@ -1,6 +1,6 @@
 var Affiliation = {
   top: this,
-  debug: 0,
+  debug: 1,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
 
@@ -67,12 +67,12 @@ var Affiliation = {
               callback(links, images);
             }
             catch (e) {
-              if (top.debug) console.log('ERROR: could not parse Leonardo\'s website');
+              if (top.debug) console.log('ERROR: could not parse '+this.name+' website');
               callback(links, placeholders);
             }
           },
           error: function(e) {
-            if (top.debug) console.log('ERROR: could not fetch Leonardo\'s website');
+            if (top.debug) console.log('ERROR: could not fetch '+this.name+' website');
             callback(links, placeholders);
           },
         });
@@ -82,9 +82,9 @@ var Affiliation = {
       name: 'Online',
       key: 'online',
       feed: 'https://online.ntnu.no/feeds/news/',
-      logo: './org/online/logo.png',
-      icon: './org/online/icon.png',
-      placeholder: './img/placeholder.png', // Note different URL from the rest
+      logo: './img/logo.png', // Note unique URL pattern
+      icon: './img/icon-default.png', // Note unique URL pattern
+      placeholder: './img/placeholder.png', // Note unique URL pattern
       color: 'blue',
       useAltLink: true,
       getImage: function(link, callback) {
@@ -117,8 +117,45 @@ var Affiliation = {
       logo: './org/nabla/logo.png',
       icon: './org/nabla/icon.png',
       placeholder: './org/nabla/placeholder.png',
-      color: 'red',
+      color: 'white',
       useAltLink: false,
+      getImages: function(links, callback) {
+        var placeholder = this.placeholder;
+        var placeholders = []
+        // In case we don't find any images, prepare an array with placeholders
+        for (var i=0; i<links.length; i++)
+          placeholders.push(placeholder);
+        Ajaxer.getHtml({
+          url: 'http://nabla.no/',
+          success: function(html) {
+            try {
+              var images = [];
+              for (i in links) {
+                var relativeLink = links[i].split('nabla.no')[1];
+                // jQuery 1.9+ does not consider pages starting with a newline as HTML, only "<" is allowed
+                html = $.trim(html);
+                var image = $(html).find('.news_item a[href="'+relativeLink+'"] img').attr('src');
+                if (image == undefined) {
+                  image = placeholder;
+                }
+                else {
+                  image = 'http://nabla.no' + image;
+                }
+                images.push(image);
+              }
+              callback(links, images);
+            }
+            catch (e) {
+              if (top.debug) console.log('ERROR: could not parse '+this.name+' website');
+              callback(links, placeholders);
+            }
+          },
+          error: function(e) {
+            if (top.debug) console.log('ERROR: could not fetch '+this.name+' website');
+            callback(links, placeholders);
+          },
+        });
+      },
     },
     'spanskrøret': {
       name: 'Spanskrøret',
