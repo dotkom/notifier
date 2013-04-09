@@ -47,7 +47,6 @@
     id = 'affiliationKey';
     affiliationKey = ls[id];
     $('#' + id).val(affiliationKey);
-    $('#' + id + ' option[selected]').removeAttr('selected');
     return $('#' + id).change(function() {
       var color, oldAffiliation, symbol;
       affiliationKey = $(this).val();
@@ -76,7 +75,6 @@
     var id;
     id = 'affiliationColor';
     $('#' + id).val(ls[id]);
-    $('#' + id + ' option[selected]').removeAttr('selected');
     return $('#' + id).change(function() {
       var affiliationColor;
       affiliationColor = $(this).val();
@@ -578,7 +576,7 @@
       build = true;
       name = name + " with <3";
     }
-    random = Math.floor(400 * Math.random() + 50);
+    random = Math.floor(350 * Math.random() + 50);
     if (!build) {
       $('#pageflipline').text(text.slice(0, text.length - 1));
       return ls.animateCreatorNameTimeoutId = setTimeout((function() {

@@ -32,7 +32,7 @@ bindAffiliationSelector = ->
   # Default values, set only the chosen affiliation as selected, because it is the Chosen One
   $('#'+id).val affiliationKey
   # Remove any previous "selected" (by default) attributes
-  $('#'+id+' option[selected]').removeAttr('selected');
+  # $('#'+id+' option[selected]').removeAttr('selected');
   # React to change
   $('#'+id).change ->
     affiliationKey = $(this).val()
@@ -62,7 +62,7 @@ bindAffiliationColorSelector = ->
   # Default values
   $('#'+id).val ls[id]
   # Remove any previous "selected" (by default) attributes
-  $('#'+id+' option[selected]').removeAttr('selected');
+  # $('#'+id+' option[selected]').removeAttr('selected');
   # React to change
   $('#'+id).change ->
     affiliationColor = $(this).val()
@@ -543,7 +543,7 @@ animateCreatorName = (name, build) ->
   if text.length is 0
     build = true
     name = name + " with <3"
-  random = Math.floor 400 * Math.random() + 50
+  random = Math.floor 350 * Math.random() + 50
   if !build
     $('#pageflipline').text text.slice 0, text.length-1
     ls.animateCreatorNameTimeoutId = setTimeout ( ->
