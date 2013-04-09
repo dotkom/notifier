@@ -77,6 +77,8 @@ disableOnlineSpecificFeatures = ->
   $('label[for="showOffice"]').slideUp 'slow', ->
     # Hide coffee subscription option
     $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # Stop previous changeCreatorName instance, if any
+      clearTimeout ls.changeCreatorNameTimeoutId
       # Change pageflip name
       changeCreatorName 'Online'
 
@@ -88,6 +90,8 @@ enableOnlineSpecificFeatures = ->
   $('label[for="showOffice"]').slideDown 'slow', ->
     # Enable coffee subscription
     $('label[for="coffeeSubscription"]').slideDown 'slow', ->
+      # Stop previous changeCreatorName instance, if any
+      clearTimeout ls.changeCreatorNameTimeoutId
       # Change pageflip name
       changeCreatorName 'dotKom'
 
@@ -540,7 +544,7 @@ changeCreatorName = (name, build) ->
   random = Math.floor 400 * Math.random() + 50
   if !build
     $('#pageflipline').text text.slice 0, text.length-1
-    setTimeout ( ->
+    ls.changeCreatorNameTimeoutId = setTimeout ( ->
       changeCreatorName name
     ), random
   else
@@ -549,7 +553,7 @@ changeCreatorName = (name, build) ->
         $('#pageflipline').text name.slice 0, 1
       else
         $('#pageflipline').text name.slice 0, text.length+1
-      setTimeout ( ->
+      ls.changeCreatorNameTimeoutId = setTimeout ( ->
         changeCreatorName name, true
       ), random
 

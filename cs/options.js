@@ -90,6 +90,7 @@
     ls.extensionCreator = 'Online';
     return $('label[for="showOffice"]').slideUp('slow', function() {
       return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
+        clearTimeout(ls.changeCreatorNameTimeoutId);
         return changeCreatorName('Online');
       });
     });
@@ -101,6 +102,7 @@
     ls.extensionCreator = 'dotKom';
     return $('label[for="showOffice"]').slideDown('slow', function() {
       return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
+        clearTimeout(ls.changeCreatorNameTimeoutId);
         return changeCreatorName('dotKom');
       });
     });
@@ -576,7 +578,7 @@
     random = Math.floor(400 * Math.random() + 50);
     if (!build) {
       $('#pageflipline').text(text.slice(0, text.length - 1));
-      return setTimeout((function() {
+      return ls.changeCreatorNameTimeoutId = setTimeout((function() {
         return changeCreatorName(name);
       }), random);
     } else {
@@ -586,7 +588,7 @@
         } else {
           $('#pageflipline').text(name.slice(0, text.length + 1));
         }
-        return setTimeout((function() {
+        return ls.changeCreatorNameTimeoutId = setTimeout((function() {
           return changeCreatorName(name, true);
         }), random);
       }
