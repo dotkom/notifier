@@ -1,1 +1,19 @@
-/* blue is default, do nothing */
+
+body {
+  color: Black;
+}
+
+.title {
+  color: Black;
+}
+
+#background {
+  background-image: url();
+  background-color: white;
+}
+
+#container #bus {
+  color: black;
+  background-color: LightGray;
+  box-shadow: 0 0 15pt #ccc;
+}
