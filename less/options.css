@@ -193,7 +193,7 @@ header #notification .saved {
   white-space: nowrap;
   word-wrap: break-word;
 }
-.item #affiliationBox select#affiliationKey {
+.item #affiliationBox #affiliationKey {
   border: 0pt solid #ff0000;
   float: left;
   border: 1pt solid #7a7a7a;
@@ -203,7 +203,7 @@ header #notification .saved {
   white-space: nowrap;
   width: 130pt;
 }
-.item #affiliationBox #affiliationColorSelector {
+.item #affiliationBox #affiliationColor {
   border: 0pt solid #ff0000;
   float: left;
   border: 1pt solid #7a7a7a;
