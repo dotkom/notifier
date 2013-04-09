@@ -77,8 +77,6 @@ disableOnlineSpecificFeatures = ->
   $('label[for="showOffice"]').slideUp 'slow', ->
     # Hide coffee subscription option
     $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-      # Stop previous changeCreatorName instance, if any
-      clearTimeout ls.changeCreatorNameTimeoutId
       # Change pageflip name
       changeCreatorName 'Online'
 
@@ -90,8 +88,6 @@ enableOnlineSpecificFeatures = ->
   $('label[for="showOffice"]').slideDown 'slow', ->
     # Enable coffee subscription
     $('label[for="coffeeSubscription"]').slideDown 'slow', ->
-      # Stop previous changeCreatorName instance, if any
-      clearTimeout ls.changeCreatorNameTimeoutId
       # Change pageflip name
       changeCreatorName 'dotKom'
 
@@ -535,7 +531,13 @@ fadeInCanvas = ->
           'swing'
       ), 200
 
-changeCreatorName = (name, build) ->
+changeCreatorName = (name) ->
+  # Stop previous changeCreatorName instance, if any
+  clearTimeout ls.changeCreatorNameTimeoutId
+  # Animate creator name change in the pageflip
+  animateCreatorName name
+
+animateCreatorName = (name, build) ->
   # Animate it
   text = $('#pageflipline').text()
   if text.length is 0
@@ -544,8 +546,8 @@ changeCreatorName = (name, build) ->
   random = Math.floor 400 * Math.random() + 50
   if !build
     $('#pageflipline').text text.slice 0, text.length-1
-    ls.changeCreatorNameTimeoutId = setTimeout ( ->
-      changeCreatorName name
+    ls.animateCreatorNameTimeoutId = setTimeout ( ->
+      animateCreatorName name
     ), random
   else
     if text.length isnt name.length
@@ -553,8 +555,8 @@ changeCreatorName = (name, build) ->
         $('#pageflipline').text name.slice 0, 1
       else
         $('#pageflipline').text name.slice 0, text.length+1
-      ls.changeCreatorNameTimeoutId = setTimeout ( ->
-        changeCreatorName name, true
+      ls.animateCreatorNameTimeoutId = setTimeout ( ->
+        animateCreatorName name, true
       ), random
 
 # Document ready, go!
