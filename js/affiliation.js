@@ -117,7 +117,7 @@ var Affiliation = {
       logo: './org/nabla/logo.png',
       icon: './org/nabla/icon.png',
       placeholder: './org/nabla/placeholder.png',
-      color: 'white',
+      color: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
         var placeholder = this.placeholder;
@@ -132,9 +132,13 @@ var Affiliation = {
               var images = [];
               for (i in links) {
                 var relativeLink = links[i].split('nabla.no')[1];
-                // jQuery 1.9+ does not consider pages starting with a newline as HTML, only "<" is allowed
+                // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
                 html = $.trim(html);
-                var image = $(html).find('.news_item a[href="'+relativeLink+'"] img').attr('src');
+                // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
+                image = $(html);
+                // Find the actual image reference
+                image = image.find('.news_item a[href="'+relativeLink+'"] img').attr('src');
+                
                 if (image == undefined) {
                   image = placeholder;
                 }
