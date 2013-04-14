@@ -1,0 +1,17 @@
+
+.title {
+  color: white;
+  text-shadow:
+    0 0 10pt #e07900,
+    0 0 20pt #e07900;
+  text-decoration: none;
+}
+
+#background {
+  -webkit-filter: hue-rotate(144deg);
+}
+
+#container #bus {
+  background-color: #111;
+  box-shadow: 0 0 15pt #ccc;
+}
