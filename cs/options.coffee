@@ -50,10 +50,10 @@ bindAffiliationSelector = ->
       $('#affiliationColor').val color
       ls['affiliationColor'] = color
     # Get and save the icon for the chosen affiliation
-    symbol = Affiliation.org[affiliationKey].symbol
-    if symbol isnt undefined and symbol isnt ''
-      Browser.setIcon symbol
-      ls['affiliationSymbol'] = symbol
+    icon = Affiliation.org[affiliationKey].icon
+    if icon isnt undefined and icon isnt ''
+      Browser.setIcon icon
+      ls['affiliationIcon'] = icon
     # Reload news
     Browser.getBackgroundProcess().updateNews()
 

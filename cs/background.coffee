@@ -74,9 +74,9 @@ updateNews = ->
         News.refreshNewsIdList items
 
 loadAffiliationIcon = ->
-  symbol = ls.affiliationSymbol
-  if symbol isnt undefined and symbol isnt ''
-    Browser.setIcon ls.affiliationSymbol
+  icon = ls.affiliationIcon
+  if icon isnt undefined and icon isnt ''
+    Browser.setIcon ls.affiliationIcon
   else
     if DEBUG then console.log 'ERROR: tried to load empty/undefined affiliation icon'
 

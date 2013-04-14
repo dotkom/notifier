@@ -48,7 +48,7 @@
     affiliationKey = ls[id];
     $('#' + id).val(affiliationKey);
     return $('#' + id).change(function() {
-      var color, oldAffiliation, symbol;
+      var color, icon, oldAffiliation;
       affiliationKey = $(this).val();
       oldAffiliation = ls[id];
       if (oldAffiliation === 'online') {
@@ -62,10 +62,10 @@
         $('#affiliationColor').val(color);
         ls['affiliationColor'] = color;
       }
-      symbol = Affiliation.org[affiliationKey].symbol;
-      if (symbol !== void 0 && symbol !== '') {
-        Browser.setIcon(symbol);
-        ls['affiliationSymbol'] = symbol;
+      icon = Affiliation.org[affiliationKey].icon;
+      if (icon !== void 0 && icon !== '') {
+        Browser.setIcon(icon);
+        ls['affiliationIcon'] = icon;
       }
       return Browser.getBackgroundProcess().updateNews();
     });

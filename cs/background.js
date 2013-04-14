@@ -105,10 +105,10 @@
   };
 
   loadAffiliationIcon = function() {
-    var symbol;
-    symbol = ls.affiliationSymbol;
-    if (symbol !== void 0 && symbol !== '') {
-      return Browser.setIcon(ls.affiliationSymbol);
+    var icon;
+    icon = ls.affiliationIcon;
+    if (icon !== void 0 && icon !== '') {
+      return Browser.setIcon(ls.affiliationIcon);
     } else {
       if (DEBUG) {
         return console.log('ERROR: tried to load empty/undefined affiliation icon');
