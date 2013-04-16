@@ -190,9 +190,9 @@ var News = {
       
       // Stop counting if unread number is greater than maxNewsAmount
       if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
-        if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
-        Browser.setBadgeText(maxNewsAmount + '+');
-        localStorage.unreadCount = maxNewsAmount;
+        if (self.debug) console.log((maxNewsAmount + 1) + ' unread posts (stopped counting)');
+        Browser.setBadgeText(String(maxNewsAmount + 1));
+        localStorage.unreadCount = maxNewsAmount + 1;
         return;
       }
     });
