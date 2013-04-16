@@ -69,27 +69,43 @@ bindAffiliationColorSelector = ->
     # Save the change
     ls[id] = affiliationColor
 
-disableOnlineSpecificFeatures = ->
+disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
   ls.coffeeSubscription = 'false'
   ls.extensionCreator = 'Online'
+  if quick
+    $('label[for="showOffice"]').hide()
+    $('label[for="useInfoscreen"]').hide()
+    $('label[for="coffeeSubscription"]').hide()
+    $('#pageflipline').text 'Online with <3'
+  else
   # Hide office status option
   $('label[for="showOffice"]').slideUp 'slow', ->
-    # Hide coffee subscription option
-    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-      # Change pageflip name
-      changeCreatorName 'Online'
+    # Hide infoscreen option
+    $('label[for="useInfoscreen"]').slideUp 'slow', ->
+      # Hide coffee subscription option
+      $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+        # Change pageflip name
+        changeCreatorName 'Online'
 
-enableOnlineSpecificFeatures = ->
+enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
   ls.coffeeSubscription = 'true'
   ls.extensionCreator = 'dotKom'
-  # Enable office status
-  $('label[for="showOffice"]').slideDown 'slow', ->
-    # Enable coffee subscription
-    $('label[for="coffeeSubscription"]').slideDown 'slow', ->
-      # Change pageflip name
-      changeCreatorName 'dotKom'
+  if quick
+    $('label[for="showOffice"]').hide()
+    $('label[for="useInfoscreen"]').hide()
+    $('label[for="coffeeSubscription"]').hide()
+    $('#pageflipline').text 'Online with <3'
+  else
+    # Enable office status
+    $('label[for="showOffice"]').slideDown 'slow', ->
+      # Enable coffee subscription
+      $('label[for="coffeeSubscription"]').slideDown 'slow', ->
+        # Hide infoscreen option
+        $('label[for="useInfoscreen"]').slideDown 'slow', ->
+          # Change pageflip name
+          changeCreatorName 'dotKom'
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -568,6 +584,10 @@ $ ->
   
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
+
+  # Remove Online specific features if the affiliation is another
+  if ls.affiliationKey isnt 'online'
+    disableOnlineSpecificFeatures true # true means be quick about it!
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->

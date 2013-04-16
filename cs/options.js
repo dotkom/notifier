@@ -82,13 +82,23 @@
     });
   };
 
-  disableOnlineSpecificFeatures = function() {
+  disableOnlineSpecificFeatures = function(quick) {
     ls.showOffice = 'false';
     ls.coffeeSubscription = 'false';
     ls.extensionCreator = 'Online';
+    if (quick) {
+      $('label[for="showOffice"]').hide();
+      $('label[for="useInfoscreen"]').hide();
+      $('label[for="coffeeSubscription"]').hide();
+      $('#pageflipline').text('Online with <3');
+    } else {
+
+    }
     return $('label[for="showOffice"]').slideUp('slow', function() {
-      return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
-        return changeCreatorName('Online');
+      return $('label[for="useInfoscreen"]').slideUp('slow', function() {
+        return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
+          return changeCreatorName('Online');
+        });
       });
     });
   };
@@ -99,7 +109,9 @@
     ls.extensionCreator = 'dotKom';
     return $('label[for="showOffice"]').slideDown('slow', function() {
       return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
-        return changeCreatorName('dotKom');
+        return $('label[for="useInfoscreen"]').slideDown('slow', function() {
+          return changeCreatorName('dotKom');
+        });
       });
     });
   };
@@ -605,6 +617,9 @@
       });
     }
     $.ajaxSetup(AJAX_SETUP);
+    if (ls.affiliationKey !== 'online') {
+      disableOnlineSpecificFeatures(true);
+    }
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;
