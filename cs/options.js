@@ -103,17 +103,24 @@
     });
   };
 
-  enableOnlineSpecificFeatures = function() {
+  enableOnlineSpecificFeatures = function(quick) {
     ls.showOffice = 'true';
     ls.coffeeSubscription = 'true';
     ls.extensionCreator = 'dotKom';
-    return $('label[for="showOffice"]').slideDown('slow', function() {
-      return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
-        return $('label[for="useInfoscreen"]').slideDown('slow', function() {
-          return changeCreatorName('dotKom');
+    if (quick) {
+      $('label[for="showOffice"]').hide();
+      $('label[for="useInfoscreen"]').hide();
+      $('label[for="coffeeSubscription"]').hide();
+      return $('#pageflipline').text('Online with <3');
+    } else {
+      return $('label[for="showOffice"]').slideDown('slow', function() {
+        return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
+          return $('label[for="useInfoscreen"]').slideDown('slow', function() {
+            return changeCreatorName('dotKom');
+          });
         });
       });
-    });
+    }
   };
 
   bindCantinaSelector = function(selector) {
