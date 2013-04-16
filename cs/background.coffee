@@ -94,8 +94,6 @@ $ ->
 
   if ls.extensionName is undefined
     ls.extensionName = 'Online Notifier'
-  if ls.extensionWebsite is undefined
-    ls.extensionWebsite = 'https://online.ntnu.no'
   if ls.extensionCreator is undefined
     ls.extensionCreator = 'dotKom' # Max 8 letters because of styling
 
@@ -103,10 +101,10 @@ $ ->
     ls.showAffiliation = 'true'
   if ls.affiliationKey is undefined
     ls.affiliationKey = 'online'
+  if ls.affiliationIcon is undefined
+    ls.affiliationIcon = '/img/icon-default.png'
   if ls.affiliationColor is undefined
     ls.affiliationColor = 'blue'
-  if ls.affiliationSymbol is undefined
-    ls.affiliationSymbol = '/img/icon-default.png'
 
   # Lists of links (IDs) for news items
   if ls.newsList is undefined

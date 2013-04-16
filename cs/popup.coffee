@@ -295,7 +295,8 @@ $ ->
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
-    Browser.openTab ls.extensionWebsite
+    web = Affiliation.org[ls.affiliationKey].web
+    Browser.openTab web
     window.close()
 
   $('#options_button').click ->

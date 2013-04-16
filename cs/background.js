@@ -127,9 +127,6 @@
     if (ls.extensionName === void 0) {
       ls.extensionName = 'Online Notifier';
     }
-    if (ls.extensionWebsite === void 0) {
-      ls.extensionWebsite = 'https://online.ntnu.no';
-    }
     if (ls.extensionCreator === void 0) {
       ls.extensionCreator = 'dotKom';
     }
@@ -139,11 +136,11 @@
     if (ls.affiliationKey === void 0) {
       ls.affiliationKey = 'online';
     }
+    if (ls.affiliationIcon === void 0) {
+      ls.affiliationIcon = '/img/icon-default.png';
+    }
     if (ls.affiliationColor === void 0) {
       ls.affiliationColor = 'blue';
-    }
-    if (ls.affiliationSymbol === void 0) {
-      ls.affiliationSymbol = '/img/icon-default.png';
     }
     if (ls.newsList === void 0) {
       ls.newsList = JSON.stringify([]);

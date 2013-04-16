@@ -358,7 +358,9 @@
       $('#palette').attr('href', Palettes.getColor(color));
     }
     $('#logo').click(function() {
-      Browser.openTab(ls.extensionWebsite);
+      var web;
+      web = Affiliation.org[ls.affiliationKey].web;
+      Browser.openTab(web);
       return window.close();
     });
     $('#options_button').click(function() {
