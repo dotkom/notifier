@@ -138,7 +138,7 @@ var Affiliation = {
                 image = $(html);
                 // Find the actual image reference
                 image = image.find('.news_item a[href="'+relativeLink+'"] img').attr('src');
-                
+
                 if (image == undefined) {
                   image = placeholder;
                 }
@@ -190,7 +190,7 @@ var Affiliation = {
       logo: './org/dionysos/logo.png',
       icon: './org/dionysos/icon.png',
       placeholder: './org/dionysos/placeholder.png',
-      color: 'grey',
+      color: 'blue', // grey?
       useAltLink: false,
     },
     'erudio': {
@@ -220,7 +220,7 @@ var Affiliation = {
       logo: './org/gengangere/logo.png',
       icon: './org/gengangere/icon.png',
       placeholder: './org/gengangere/placeholder.png',
-      color: 'grey',
+      color: 'blue', // grey?
       useAltLink: false,
     },
     'jump cut': {
@@ -230,7 +230,7 @@ var Affiliation = {
       logo: './org/jump cut/logo.png',
       icon: './org/jump cut/icon.png',
       placeholder: './org/jump cut/placeholder.png',
-      color: 'grey',
+      color: 'blue', // grey?
       useAltLink: false,
     },
     'ludimus': {
