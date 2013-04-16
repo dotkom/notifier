@@ -12,6 +12,7 @@ var Affiliation = {
     'berg': {
       name: 'Bergstuderendes Forening',
       key: 'berg',
+      web: 'http://bergstud.no/',
       feed: 'http://bergstud.no/feed/',
       logo: './org/berg/logo.png',
       icon: './org/berg/icon.png',
@@ -22,6 +23,7 @@ var Affiliation = {
     'delta': {
       name: 'Delta',
       key: 'delta',
+      web: 'http://org.ntnu.no/delta/',
       feed: 'http://org.ntnu.no/delta/wp/?feed=rss2',
       logo: './org/delta/logo.png',
       icon: './org/delta/icon.png',
@@ -32,6 +34,7 @@ var Affiliation = {
     'emil': {
       name: 'Emil',
       key: 'emil',
+      web: 'http://emilweb.no/',
       feed: 'http://emilweb.no/feed/',
       logo: './org/emil/logo.png',
       icon: './org/emil/icon.png',
@@ -42,6 +45,7 @@ var Affiliation = {
     'leonardo': {
       name: 'Leonardo',
       key: 'leonardo',
+      web: 'http://industrielldesign.com/',
       feed: 'http://industrielldesign.com/feed',
       logo: './org/leonardo/logo.png',
       icon: './org/leonardo/icon.png',
@@ -81,6 +85,7 @@ var Affiliation = {
     'online': {
       name: 'Online',
       key: 'online',
+      web: 'https://online.ntnu.no/',
       feed: 'https://online.ntnu.no/feeds/news/',
       logo: './img/logo.png', // Note unique URL pattern
       icon: './img/icon-default.png', // Note unique URL pattern
@@ -113,6 +118,7 @@ var Affiliation = {
     'nabla': {
       name: 'Nabla',
       key: 'nabla',
+      web: 'http://nabla.no/',
       feed: 'http://nabla.no/feed/',
       logo: './org/nabla/logo.png',
       icon: './org/nabla/icon.png',
@@ -164,6 +170,7 @@ var Affiliation = {
     'spanskrøret': {
       name: 'Spanskrøret',
       key: 'spanskrøret',
+      web: 'http://spanskroret.no/',
       feed: 'http://spanskroret.no/feed/',
       logo: './org/spanskrøret/logo.png',
       icon: './org/spanskrøret/icon.png',
@@ -174,6 +181,7 @@ var Affiliation = {
     'volvox': {
       name: 'Volvox & Alkymisten',
       key: 'volvox',
+      web: 'http://org.ntnu.no/volvox/',
       feed: 'http://org.ntnu.no/volvox/feed/',
       logo: './org/volvox/logo.png',
       icon: './org/volvox/icon.png',
@@ -186,6 +194,7 @@ var Affiliation = {
     'dionysos': {
       name: 'Dionysos',
       key: 'dionysos',
+      web: 'http://dionysosntnu.wordpress.com/',
       feed: 'http://dionysosntnu.wordpress.com/feed/',
       logo: './org/dionysos/logo.png',
       icon: './org/dionysos/icon.png',
@@ -196,6 +205,7 @@ var Affiliation = {
     'erudio': {
       name: 'Erudio',
       key: 'erudio',
+      web: 'http://www.erudiontnu.org/',
       feed: 'http://www.erudiontnu.org/?feed=rss2',
       logo: './org/erudio/logo.png',
       icon: './org/erudio/icon.png',
@@ -206,6 +216,7 @@ var Affiliation = {
     'geolf': {
       name: 'Geolf',
       key: 'geolf',
+      web: 'http://geolf.org/',
       feed: 'http://geolf.org/feed/',
       logo: './org/geolf/logo.png',
       icon: './org/geolf/icon.png',
@@ -216,6 +227,7 @@ var Affiliation = {
     'gengangere': {
       name: 'Gengangere',
       key: 'gengangere',
+      web: 'http://www.gengangere.no/',
       feed: 'http://www.gengangere.no/feed/',
       logo: './org/gengangere/logo.png',
       icon: './org/gengangere/icon.png',
@@ -226,6 +238,7 @@ var Affiliation = {
     'jump cut': {
       name: 'Jump Cut',
       key: 'jump cut',
+      web: 'http://jumpcutdragvoll.wordpress.com/',
       feed: 'http://jumpcutdragvoll.wordpress.com/feed/',
       logo: './org/jump cut/logo.png',
       icon: './org/jump cut/icon.png',
@@ -236,6 +249,7 @@ var Affiliation = {
     'ludimus': {
       name: 'Ludimus',
       key: 'ludimus',
+      web: 'http://ludimus.org/',
       feed: 'http://ludimus.org/feed/',
       logo: './org/ludimus/logo.png',
       icon: './org/ludimus/icon.png',
@@ -283,6 +297,7 @@ var Affiliation = {
     'primetime': {
       name: 'Primetime',
       key: 'primetime',
+      web: 'http://www.primetime.trondheim.no/',
       feed: 'http://www.primetime.trondheim.no/feed/',
       logo: './org/primetime/logo.png',
       icon: './org/primetime/icon.png',
@@ -333,6 +348,7 @@ var Affiliation = {
     'sturm und drang': {
       name: 'Sturm Und Drang',
       key: 'sturm und drang',
+      web: 'http://www.sturm.ntnu.no/',
       feed: 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
       logo: './org/sturm und drang/logo.png',
       icon: './org/sturm und drang/icon.png',
@@ -345,6 +361,7 @@ var Affiliation = {
     'fraktur': {
       name: 'Fraktur',
       key: 'fraktur',
+      web: 'http://www.fraktur.no/',
       feed: 'http://www.fraktur.no/feed/',
       logo: './org/fraktur/logo.png',
       icon: './org/fraktur/icon.png',
@@ -355,6 +372,7 @@ var Affiliation = {
     'kom': {
       name: 'KOM',
       key: 'kom',
+      web: 'http://kjemiogmaterial.wordpress.com/',
       feed: 'http://kjemiogmaterial.wordpress.com/feed/',
       logo: './org/kom/logo.png',
       icon: './org/kom/icon.png',
@@ -365,6 +383,7 @@ var Affiliation = {
     'logistikkstudentene': {
       name: 'Logistikkstudentene',
       key: 'logistikkstudentene',
+      web: 'http://www.logistikkstudentene.no/',
       feed: 'http://www.logistikkstudentene.no/?feed=rss2',
       logo: './org/logistikkstudentene/logo.png',
       icon: './org/logistikkstudentene/icon.png',
@@ -375,6 +394,7 @@ var Affiliation = {
     'tihlde': {
       name: 'TIHLDE',
       key: 'tihlde',
+      web: 'http://tihlde.org/',
       feed: 'http://tihlde.org/feed/',
       logo: './org/tihlde/logo.png',
       icon: './org/tihlde/icon.png',
@@ -385,6 +405,7 @@ var Affiliation = {
     'tim og shænko': {
       name: 'Tim & Shænko',
       key: 'tim og shænko',
+      web: 'http://bygging.no/',
       feed: 'http://bygging.no/feed/',
       logo: './org/tim og shænko/logo.png',
       icon: './org/tim og shænko/icon.png',
@@ -395,6 +416,7 @@ var Affiliation = {
     'tjsf': {
       name: 'TJSF',
       key: 'tjsf',
+      web: 'http://tjsf.no/',
       feed: 'http://tjsf.no/feed/',
       logo: './org/tjsf/logo.png',
       icon: './org/tjsf/icon.png',
@@ -407,6 +429,7 @@ var Affiliation = {
     'dusken': {
       name: 'Dusken.no',
       key: 'dusken',
+      web: 'http://dusken.no/',
       feed: 'http://dusken.no/feed/',
       logo: './org/dusken/logo.png',
       icon: './org/dusken/icon.png',
@@ -417,6 +440,7 @@ var Affiliation = {
     'universitetsavisa': {
       name: 'Universitetsavisa',
       key: 'universitetsavisa',
+      web: 'http://www.universitetsavisa.no/',
       feed: 'http://www.universitetsavisa.no/?service=rss',
       logo: './org/universitetsavisa/logo.png',
       icon: './org/universitetsavisa/icon.png',
@@ -429,6 +453,7 @@ var Affiliation = {
     'samfundet': {
       name: 'Studentersamfundet',
       key: 'samfundet',
+      web: 'http://www.samfundet.no/',
       feed: 'http://www.samfundet.no/arrangement/rss',
       logo: './org/samfundet/logo.png',
       icon: './org/samfundet/icon.png',
@@ -461,6 +486,7 @@ var Affiliation = {
     'velferdstinget': {
       name: 'Velferdstinget',
       key: 'velferdstinget',
+      web: 'http://www.velferdstinget.no/',
       feed: 'http://www.velferdstinget.no/feed/rss/',
       logo: './org/velferdstinget/logo.png',
       icon: './org/velferdstinget/icon.png',
@@ -471,6 +497,7 @@ var Affiliation = {
     'studenttinget ntnu': {
       name: 'Studenttinget NTNU',
       key: 'studenttinget ntnu',
+      web: 'http://www.studenttinget.no/',
       feed: 'http://www.studenttinget.no/feed/',
       logo: './org/studenttinget ntnu/logo.png',
       icon: './org/studenttinget ntnu/icon.png',
@@ -481,6 +508,7 @@ var Affiliation = {
     'studentparlamentet hist': {
       name: 'Studentparlamentet HiST',
       key: 'studentparlamentet hist',
+      web: 'http://studentparlamentet.com/',
       feed: 'http://studentparlamentet.com/?feed=rss2',
       logo: './org/studentparlamentet hist/logo.png',
       icon: './org/studentparlamentet hist/icon.png',
@@ -493,6 +521,7 @@ var Affiliation = {
     'ntnu': {
       name: 'NTNU',
       key: 'ntnu',
+      web: 'http://ntnu.no/',
       feed: 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
       logo: './org/ntnu/logo.png',
       icon: './org/ntnu/icon.png',
@@ -503,6 +532,7 @@ var Affiliation = {
     'rektoratet ntnu': {
       name: 'Rektoratet NTNU',
       key: 'rektoratet ntnu',
+      web: 'http://www.ntnu.no/blogger/rektoratet/',
       feed: 'http://www.ntnu.no/blogger/rektoratet/feed/',
       logo: './org/rektoratet ntnu/logo.png',
       icon: './org/rektoratet ntnu/icon.png',
@@ -513,6 +543,7 @@ var Affiliation = {
     'hist': {
       name: 'HiST',
       key: 'hist',
+      web: 'http://hist.no/',
       feed: 'http://hist.no/rss.ap?thisId=1393',
       logo: './org/hist/logo.png',
       icon: './org/hist/icon.png',
@@ -523,6 +554,7 @@ var Affiliation = {
     'dmmh': {
       name: 'DMMH',
       key: 'dmmh',
+      web: 'http://www.dmmh.no/',
       feed: 'http://www.dmmh.no/rss.php?type=site&id=10&location=393',
       logo: './org/dmmh/logo.png',
       icon: './org/dmmh/icon.png',
