@@ -53,13 +53,14 @@ var Affiliation = {
       color: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
+        var web = this.web;
         var placeholder = this.placeholder;
         var placeholders = []
         // In case we don't find any images, prepare an array with placeholders
         for (var i=0; i<links.length; i++)
           placeholders.push(placeholder);
         Ajaxer.getHtml({
-          url: 'http://industrielldesign.com/',
+          url: web,
           success: function(html) {
             try {
               var images = [];
@@ -126,13 +127,14 @@ var Affiliation = {
       color: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
+        var web = this.web;
         var placeholder = this.placeholder;
         var placeholders = []
         // In case we don't find any images, prepare an array with placeholders
         for (var i=0; i<links.length; i++)
           placeholders.push(placeholder);
         Ajaxer.getHtml({
-          url: 'http://nabla.no/',
+          url: web,
           success: function(html) {
             try {
               var images = [];
@@ -257,13 +259,14 @@ var Affiliation = {
       color: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
+        var web = this.web;
         var placeholder = this.placeholder;
         var placeholders = []
         // In case we don't find any images, prepare an array with placeholders
         for (var i=0; i<links.length; i++)
           placeholders.push(placeholder);
         Ajaxer.getHtml({
-          url: 'http://ludimus.org/',
+          url: web,
           success: function(html) {
             try {
               var images = [];
@@ -305,13 +308,14 @@ var Affiliation = {
       color: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
+        var web = this.web;
         var placeholder = this.placeholder;
         var placeholders = []
         // In case we don't find any images, prepare an array with placeholders
         for (var i=0; i<links.length; i++)
           placeholders.push(placeholder);
         Ajaxer.getHtml({
-          url: 'http://www.primetime.trondheim.no/',
+          url: web,
           success: function(html) {
             try {
               var images = [];
