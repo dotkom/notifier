@@ -14,16 +14,16 @@ var Palettes = {
   */
 
   palettes: {
-    'blue': 'less/palette_blue.css',
-    'white': 'less/palette_white.css',
-    'cyan': 'less/palette_cyan.css',
+    'blue': 'less/palettes/blue.css',
+    'white': 'less/palettes/white.css',
+    'cyan': 'less/palettes/cyan.css',
     
-    'pink': 'less/palette_pink.css',
-    'red': 'less/palette_red.css',
-    'purple': 'less/palette_purple.css',
-    'green': 'less/palette_green.css',
-    'grey': 'less/palette_grey.css',
-    'yellow': 'less/palette_yellow.css',
+    'pink': 'less/palettes/pink.css',
+    'red': 'less/palettes/red.css',
+    'purple': 'less/palettes/purple.css',
+    'green': 'less/palettes/green.css',
+    'grey': 'less/palettes/grey.css',
+    'yellow': 'less/palettes/yellow.css',
   },
 
   getColor: function(color) {
