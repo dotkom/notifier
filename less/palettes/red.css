@@ -8,7 +8,7 @@
 }
 
 #background {
-  -webkit-filter: hue-rotate(144deg);
+  -webkit-filter: hue-rotate(144deg) saturate(1.1) brightness(1.1);
 }
 
 #container #bus {
