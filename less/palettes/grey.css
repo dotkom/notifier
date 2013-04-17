@@ -1,0 +1,17 @@
+
+.title {
+  color: white;
+  text-shadow:
+    0 0 10pt #fff,
+    0 0 20pt #fff;
+  text-decoration: none;
+}
+
+#background {
+  -webkit-filter: grayscale(1) saturate(2.6) brightness(2.6);
+}
+
+#bus {
+  background-color: #111;
+  box-shadow: 0 0 10pt #000;
+}
