@@ -183,13 +183,54 @@ var Affiliation = {
     'volvox': {
       name: 'Volvox & Alkymisten',
       key: 'volvox',
-      web: 'http://org.ntnu.no/volvox/',
+      web: 'http://volvox.no/',
       feed: 'http://org.ntnu.no/volvox/feed/',
       logo: './org/volvox/logo.png',
       icon: './org/volvox/icon.png',
       placeholder: './org/volvox/placeholder.png',
       color: 'green',
       useAltLink: false,
+      getImages: function(links, callback) {
+        var web = this.web;
+        var placeholder = this.placeholder;
+        var placeholders = []
+        // In case we don't find any images, prepare an array with placeholders
+        for (var i=0; i<links.length; i++)
+          placeholders.push(placeholder);
+        Ajaxer.getHtml({
+          url: web,
+          success: function(html) {
+            try {
+              var images = [];
+              for (i in links) {
+                // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
+                html = $.trim(html);
+                // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
+                image = $(html);
+                // Find the actual image reference
+                image = image.find('a[href="'+links[i]+'"]:first').parents('div.post').find('img').attr('src');
+
+                if (image == undefined) {
+                  image = placeholder;
+                }
+                if (image.match(/smil(ie|ey)s?/g) !== null) {
+                  image = placeholder;
+                }
+                images.push(image);
+              }
+              callback(links, images);
+            }
+            catch (e) {
+              if (top.debug) console.log('ERROR: could not parse '+this.name+' website');
+              callback(links, placeholders);
+            }
+          },
+          error: function(e) {
+            if (top.debug) console.log('ERROR: could not fetch '+this.name+' website');
+            callback(links, placeholders);
+          },
+        });
+      },
     },
 
     // Linjeforeninger Dragvoll
