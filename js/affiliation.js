@@ -575,7 +575,7 @@ var Affiliation = {
       logo: './org/studenttinget ntnu/logo.png',
       icon: './org/studenttinget ntnu/icon.png',
       placeholder: './org/studenttinget ntnu/placeholder.png',
-      color: 'red',
+      color: 'purple',
       useAltLink: false,
     },
     'studentparlamentet hist': {
