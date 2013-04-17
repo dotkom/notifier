@@ -270,7 +270,7 @@ var Affiliation = {
       logo: './org/dionysos/logo.png',
       icon: './org/dionysos/icon.png',
       placeholder: './org/dionysos/placeholder.png',
-      color: 'blue', // grey?
+      color: 'grey',
       useAltLink: false,
     },
     'erudio': {
@@ -303,7 +303,7 @@ var Affiliation = {
       logo: './org/gengangere/logo.png',
       icon: './org/gengangere/icon.png',
       placeholder: './org/gengangere/placeholder.png',
-      color: 'blue', // grey?
+      color: 'grey',
       useAltLink: false,
     },
     'jump cut': {
@@ -314,7 +314,7 @@ var Affiliation = {
       logo: './org/jump cut/logo.png',
       icon: './org/jump cut/icon.png',
       placeholder: './org/jump cut/placeholder.png',
-      color: 'blue', // grey?
+      color: 'grey',
       useAltLink: false,
     },
     'ludimus': {
