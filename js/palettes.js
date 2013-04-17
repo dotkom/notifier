@@ -2,10 +2,7 @@ var Palettes = {
   
   /*
   background: {
-    'blue':     {'-webkit-filter': 'hue-rotate(0deg)'},
-    'cyan':     {'-webkit-filter': 'hue-rotate(-30deg) saturate(3) brightness(1.5)'},
     'pink':     {'-webkit-filter': 'hue-rotate(92deg)'},
-    'red':      {'-webkit-filter': 'hue-rotate(144deg)'},
     'purple':   {'-webkit-filter': 'hue-rotate(66deg)'},
     'green':    {'-webkit-filter': 'hue-rotate(-85deg)'},
     'grey':     {'-webkit-filter': 'grayscale(1) hue-rotate(0deg)'},
