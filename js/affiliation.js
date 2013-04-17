@@ -19,6 +19,34 @@ var Affiliation = {
       placeholder: './org/berg/placeholder.png',
       color: 'grey',
       useAltLink: false,
+      getImage: function(link, callback) {
+        var placeholder = this.placeholder;
+        Ajaxer.getHtml({
+          url: link,
+          success: function(html) {
+            try {
+              // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
+              html = $.trim(html);
+              // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
+              html = $(html);
+              // Find the actual image reference
+              image = html.find('div.post img:first').attr('src');
+
+              if (image == undefined) {
+                image = placeholder;
+              }
+              callback(link, image);
+            } catch (e) {
+              if (top.debug) console.log('ERROR: wrong format or missing image for link: ' + id);
+              callback(link, placeholder);
+            }
+          },
+          error: function() {
+            if (top.debug) console.log('ERROR: couldn\'t connect to '+link+' to get image links, returning default image');
+            callback(link, placeholder);
+          },
+        });
+      },
     },
     'delta': {
       name: 'Delta',
