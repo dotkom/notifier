@@ -1,10 +1,4 @@
 var Palettes = {
-  
-  /*
-  background: {
-    'purple':   {'-webkit-filter': 'hue-rotate(66deg)'},
-  },
-  */
 
   palettes: {
     'blue': 'less/palettes/blue.css',
@@ -12,11 +6,10 @@ var Palettes = {
     'green': 'less/palettes/green.css',
     'grey': 'less/palettes/grey.css',
     'pink': 'less/palettes/pink.css',
+    'purple': 'less/palettes/purple.css',
     'red': 'less/palettes/red.css',
     'white': 'less/palettes/white.css',
     'yellow': 'less/palettes/yellow.css',
-    
-    'purple': 'less/palettes/purple.css',
   },
 
   getColor: function(color) {
