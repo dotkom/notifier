@@ -72,6 +72,9 @@ var Affiliation = {
       placeholder: './org/emil/placeholder.png',
       color: 'green',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.frontpage', 2);
+      },
     },
     'leonardo': {
       name: 'Leonardo',
