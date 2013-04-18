@@ -262,6 +262,17 @@ var Affiliation = {
     },
 
     // Linjeforeninger Dragvoll
+    'de folkevalgte': {
+      name: 'De Folkevalgte',
+      key: 'de folkevalgte',
+      web: 'http://www.defolkevalgte.net/',
+      feed: 'http://www.defolkevalgte.net/feed/rss/',
+      logo: './org/de folkevalgte/logo.png',
+      icon: './org/de folkevalgte/icon.png',
+      placeholder: './org/de folkevalgte/placeholder.png',
+      color: 'yellow',
+      useAltLink: false,
+    },
     'dionysos': {
       name: 'Dionysos',
       key: 'dionysos',
@@ -282,6 +293,17 @@ var Affiliation = {
       icon: './org/erudio/icon.png',
       placeholder: './org/erudio/placeholder.png',
       color: 'red',
+      useAltLink: false,
+    },
+    'eureka': {
+      name: 'Eureka',
+      key: 'eureka',
+      web: 'http://eurekalf.wordpress.com/',
+      feed: 'http://eurekalf.wordpress.com/feed/',
+      logo: './org/eureka/logo.png',
+      icon: './org/eureka/icon.png',
+      placeholder: './org/eureka/placeholder.png',
+      color: 'yellow',
       useAltLink: false,
     },
     'geolf': {
