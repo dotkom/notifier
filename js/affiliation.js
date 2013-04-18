@@ -308,6 +308,9 @@ var Affiliation = {
       placeholder: './org/eureka/placeholder.png',
       color: 'yellow',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, 'article', links, callback);
+      },
     },
     'geolf': {
       name: 'Geolf',
