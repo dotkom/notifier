@@ -58,6 +58,9 @@ var Affiliation = {
       placeholder: './org/delta/placeholder.png',
       color: 'green',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback);
+      },
     },
     'emil': {
       name: 'Emil',
@@ -207,6 +210,9 @@ var Affiliation = {
       placeholder: './org/spanskrøret/placeholder.png',
       color: 'grey',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback);
+      },
     },
     'volvox': {
       name: 'Volvox & Alkymisten',
@@ -248,6 +254,9 @@ var Affiliation = {
       placeholder: './org/dionysos/placeholder.png',
       color: 'grey',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback);
+      },
     },
     'erudio': {
       name: 'Erudio',
@@ -259,6 +268,9 @@ var Affiliation = {
       placeholder: './org/erudio/placeholder.png',
       color: 'red',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+      },
     },
     'eureka': {
       name: 'Eureka',
@@ -284,6 +296,9 @@ var Affiliation = {
       placeholder: './org/geolf/placeholder.png',
       color: 'blue',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback);
+      },
     },
     'gengangere': {
       name: 'Gengangere',
@@ -295,6 +310,9 @@ var Affiliation = {
       placeholder: './org/gengangere/placeholder.png',
       color: 'grey',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback);
+      },
     },
     'jump cut': {
       name: 'Jump Cut',
@@ -306,6 +324,9 @@ var Affiliation = {
       placeholder: './org/jump cut/placeholder.png',
       color: 'grey',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+      },
     },
     'ludimus': {
       name: 'Ludimus',
@@ -345,6 +366,9 @@ var Affiliation = {
       placeholder: './org/sturm und drang/placeholder.png',
       color: 'red',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback);
+      },
     },
 
     // Linjeforeninger HiST/DMMH/TJSF/BI
