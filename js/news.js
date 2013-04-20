@@ -7,7 +7,7 @@ var News = {
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
 
-  debug: 0,
+  debug: 1,
 
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
@@ -31,6 +31,8 @@ var News = {
 
     var rssUrl = affiliationObject.feed;
 
+    console.log(affiliationObject)
+
     var self = this;
     Ajaxer.getXml({
       url: rssUrl,
@@ -38,7 +40,7 @@ var News = {
         self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR:', self.msgConnectionError);
+        if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
         callback(self.msgConnectionError, affiliationObject.name);
       },
     });

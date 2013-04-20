@@ -67,6 +67,7 @@
         Browser.setIcon(icon);
         ls['affiliationIcon'] = icon;
       }
+      ls.removeItem('feedItems');
       return Browser.getBackgroundProcess().updateNews();
     });
   };

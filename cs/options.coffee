@@ -54,7 +54,9 @@ bindAffiliationSelector = ->
     if icon isnt undefined and icon isnt ''
       Browser.setIcon icon
       ls['affiliationIcon'] = icon
-    # Reload news
+    # Throw out old news
+    ls.removeItem 'feedItems'
+    # Update to new feed
     Browser.getBackgroundProcess().updateNews()
 
 bindAffiliationColorSelector = ->
