@@ -410,6 +410,9 @@ var Affiliation = {
       placeholder: './org/logistikkstudentene/placeholder.png',
       color: 'cyan',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+      },
     },
     'tihlde': {
       name: 'TIHLDE',
@@ -421,6 +424,9 @@ var Affiliation = {
       placeholder: './org/tihlde/placeholder.png',
       color: 'blue',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.entry');
+      },
     },
     'tim og shænko': {
       name: 'Tim & Shænko',
@@ -620,7 +626,7 @@ var Affiliation = {
             // Find all image tags within post
             image = image.find('img');
             // Exclude gifs since they're most likely smilies and the likes
-            image = image.not('img[src$=".gif"]');
+            image = image.not('img[src*=".gif"]');
             // Get the src for the first image left in the array
             image = image.attr('src');
 
