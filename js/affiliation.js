@@ -385,6 +385,9 @@ var Affiliation = {
       placeholder: './org/fraktur/placeholder.png',
       color: 'cyan',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+      },
     },
     'kom': {
       name: 'KOM',
@@ -607,15 +610,26 @@ var Affiliation = {
             html = $.trim(html);
             // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
             image = $(html);
-            // Find the actual image reference
-            image = image.find('a[href="'+links[i]+'"]').eq(index).parents(parentSelector).find('img').attr('src');
+            
+            // Look up link which is likely to exist inside news post
+            image = image.find('a[href="'+links[i]+'"]');
+            // If several links exist, get link at specified index
+            image = image.eq(index);
+            // Find parent 'article' or 'div.post' or the like
+            image = image.parents(parentSelector);
+            // Find all image tags within post
+            image = image.find('img');
+            // Exclude gifs since they're most likely smilies and the likes
+            image = image.not('img[src$=".gif"]');
+            // Get the src for the first image left in the array
+            image = image.attr('src');
 
             if (image == undefined) {
               image = placeholder;
             }
-            if (image.match(/smil(ie|ey)s?/g) !== null) {
-              image = placeholder;
-            }
+            // if (image.match(/smil(ie|ey)s?/g) !== null) {
+            //   image = placeholder;
+            // }
             images.push(image);
           }
           callback(links, images);
