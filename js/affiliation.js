@@ -627,9 +627,6 @@ var Affiliation = {
             if (image == undefined) {
               image = placeholder;
             }
-            // if (image.match(/smil(ie|ey)s?/g) !== null) {
-            //   image = placeholder;
-            // }
             images.push(image);
           }
           callback(links, images);
