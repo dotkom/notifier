@@ -403,8 +403,8 @@ var Affiliation = {
     'logistikkstudentene': {
       name: 'Logistikkstudentene',
       key: 'logistikkstudentene',
-      web: 'http://www.logistikkstudentene.no/',
-      feed: 'http://www.logistikkstudentene.no/?feed=rss2',
+      web: 'http://logistikkstudentene.no/',
+      feed: 'http://logistikkstudentene.no/?feed=rss2',
       logo: './org/logistikkstudentene/logo.png',
       icon: './org/logistikkstudentene/icon.png',
       placeholder: './org/logistikkstudentene/placeholder.png',
@@ -438,6 +438,9 @@ var Affiliation = {
       placeholder: './org/tim og shænko/placeholder.png',
       color: 'blue',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback);
+      },
     },
     'tjsf': {
       name: 'TJSF',
@@ -449,6 +452,9 @@ var Affiliation = {
       placeholder: './org/tjsf/placeholder.png',
       color: 'grey',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+      },
     },
 
     // Studentmedier
@@ -542,7 +548,7 @@ var Affiliation = {
       color: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post', 2);
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
       },
     },
     
@@ -617,10 +623,10 @@ var Affiliation = {
             // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
             image = $(html);
             
-            // Look up link which is likely to exist inside news post
-            image = image.find('a[href="'+links[i]+'"]');
+            // Look up the first post with the link inside it
+            image = image.find(parentSelector + ' a[href="'+links[i]+'"]');
             // If several links exist, get link at specified index
-            image = image.eq(index);
+            image = image.eq(index); // CURRENTLY NOT IN USE
             // Find parent 'article' or 'div.post' or the like
             image = image.parents(parentSelector);
             // Find all image tags within post
