@@ -31,8 +31,6 @@ var News = {
 
     var rssUrl = affiliationObject.feed;
 
-    console.log(affiliationObject)
-
     var self = this;
     Ajaxer.getXml({
       url: rssUrl,
