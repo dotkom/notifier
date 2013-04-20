@@ -399,6 +399,9 @@ var Affiliation = {
       placeholder: './org/kom/placeholder.png',
       color: 'cyan',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+      },
     },
     'logistikkstudentene': {
       name: 'Logistikkstudentene',
