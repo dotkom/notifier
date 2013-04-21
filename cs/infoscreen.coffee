@@ -260,6 +260,25 @@ $ ->
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
+
+  if ls.affiliationKey isnt 'online'
+    # Hide chat button
+    $('#chatter_button').hide()
+    # Hide Notifier Mobile info in Tips box
+    $('#mobile_text').hide()
+    # Show the logo and placeholder image for the correct organization
+    affiliation = ls.affiliationKey
+    # If the affiliation has a defined logo
+    logo = Affiliation.org[affiliation].logo
+    if logo isnt undefined and logo isnt ''
+      if DEBUG then console.log 'Applying affiliation logo', logo
+      $('#header #logo').prop 'src', logo
+  
+  # Show the standard palette or special palette the user has chosen
+  palette = ls.affiliationPalette
+  if palette isnt undefined
+    if DEBUG then console.log 'Applying chosen palette', palette
+    $('#palette').attr 'href', Palettes.get palette
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'

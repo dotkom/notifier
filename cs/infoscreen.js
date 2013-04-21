@@ -301,6 +301,7 @@
   };
 
   $(function() {
+    var affiliation, logo, palette;
     if (DEBUG) {
       $('html').css('cursor', 'auto');
       $('#overlay').hide();
@@ -319,6 +320,25 @@
     }
     if (ls.showBus !== 'true') {
       $('#bus').hide();
+    }
+    if (ls.affiliationKey !== 'online') {
+      $('#chatter_button').hide();
+      $('#mobile_text').hide();
+      affiliation = ls.affiliationKey;
+      logo = Affiliation.org[affiliation].logo;
+      if (logo !== void 0 && logo !== '') {
+        if (DEBUG) {
+          console.log('Applying affiliation logo', logo);
+        }
+        $('#header #logo').prop('src', logo);
+      }
+    }
+    palette = ls.affiliationPalette;
+    if (palette !== void 0) {
+      if (DEBUG) {
+        console.log('Applying chosen palette', palette);
+      }
+      $('#palette').attr('href', Palettes.get(palette));
     }
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
