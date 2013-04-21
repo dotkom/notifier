@@ -9,7 +9,6 @@ var Palettes = {
     'pink': 'less/palettes/pink.css',
     'purple': 'less/palettes/purple.css',
     'red': 'less/palettes/red.css',
-    'white': 'less/palettes/white.css',
     'yellow': 'less/palettes/yellow.css',
     // Special palettes
     'online': Affiliation.org['online'].palettePath,
