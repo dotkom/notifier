@@ -505,7 +505,7 @@
                 'margin-left': '75pt'
               }, speed);
               $('#container #right').animate({
-                'margin-left': '180pt'
+                'margin-left': '160pt'
               }, speed);
               $('header').animate({
                 'top': '40%'

@@ -465,7 +465,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
             $('header #logo_subtext').animate {'margin-left':'265pt'}, speed
             $('header #logo').animate {'margin-left':'75pt'}, speed
             # Move infoscreen preview to the circa middle of the screen
-            $('#container #right').animate {'margin-left':'180pt'}, speed
+            $('#container #right').animate {'margin-left':'160pt'}, speed
             # Move all content a bit up
             $('header').animate {'top':'40%'}, speed
             $('#container').animate {'top':'40%'}, speed, ->
