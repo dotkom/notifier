@@ -395,12 +395,9 @@ body {
   margin-top: -4pt;
   min-height: 30pt;
   cursor: pointer;
-  /*padding-right: @in-post-padding;
-        padding-left: @in-post-padding;*/
-
-  margin-left: -9pt;
-  margin-right: -9pt;
-  padding: 9pt;
+  margin-left: -5pt;
+  margin-right: -5pt;
+  padding: 5pt;
   -webkit-transition: box-shadow 0.3s ease-out 0s;
 }
 #container #news .post .item:hover {

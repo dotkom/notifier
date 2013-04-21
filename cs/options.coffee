@@ -27,60 +27,92 @@ testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
 bindAffiliationSelector = ->
-  selector = 'affiliationKey'
-  chosenAffiliation = ls[selector]
-  # Default values
-  $('#'+selector + '[value="' + chosenAffiliation + '"]').prop 'selected', 'selected'
+  id = 'affiliationKey'
+  affiliationKey = ls[id]
+  # Default values, set only the chosen affiliation as selected, because it is the Chosen One
+  $('#'+id).val affiliationKey
+  # Remove any previous "selected" (by default) attributes
+  # $('#'+id+' option[selected]').removeAttr('selected');
   # React to change
-  $('#'+selector).change ->
-    chosenAffiliation = $(this).val()
+  $('#'+id).change ->
+    affiliationKey = $(this).val()
     # Check if switching from or to Online
-    oldAffiliation = ls[selector]
+    oldAffiliation = ls[id]
     if oldAffiliation is 'online'
       disableOnlineSpecificFeatures()
-    else if chosenAffiliation is 'online'
+    else if affiliationKey is 'online'
       enableOnlineSpecificFeatures()
     # Save the change
-    ls[selector] = chosenAffiliation
-    # Get and save the recommended color palette for the chosen affiliation
-    color = Affiliation.org[chosenAffiliation].color
-    if color isnt undefined and color isnt ''
-      $('#affiliationColorSelector').val color
-      ls['affiliationColor'] = color
+    ls[id] = affiliationKey
+    # Get and save the recommended palette for the chosen affiliation
+    palette = Affiliation.org[affiliationKey].palette
+    if palette isnt undefined
+      $('#affiliationPalette').val palette
+      ls.affiliationPalette = palette
+      if DEBUG then console.log 'Applying chosen palette', palette
+      $('#palette').attr 'href', Palettes.get palette
     # Get and save the icon for the chosen affiliation
-    symbol = Affiliation.org[chosenAffiliation].symbol
-    if symbol isnt undefined and symbol isnt ''
-      Browser.setIcon symbol
-      ls['affiliationSymbol'] = symbol
-    # Reload news
+    icon = Affiliation.org[affiliationKey].icon
+    if icon isnt undefined
+      Browser.setIcon icon
+      ls.affiliationIcon = icon
+    # Throw out old news
+    ls.removeItem 'feedItems'
+    # Update to new feed
     Browser.getBackgroundProcess().updateNews()
 
-bindAffiliationColorSelector = ->
+bindPaletteSelector = ->
+  # Default values
+  $('#affiliationPalette').val ls.affiliationPalette
   # React to change
-  $('#affiliationColorSelector').change ->
-    chosenAffiliation = $(this).val()
-    # Save the change
-    ls['affiliationColor'] = chosenAffiliation
+  $('#affiliationPalette').change ->
+    # Get newly set value
+    palette = $(this).val()
+    # Save it
+    ls.affiliationPalette = palette
+    # Applying palette to options page
+    if DEBUG then console.log 'Applying chosen palette', palette
+    $('#palette').attr 'href', Palettes.get palette
 
-disableOnlineSpecificFeatures = ->
+disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
   ls.coffeeSubscription = 'false'
   ls.extensionCreator = 'Online'
+  if quick
+    $('label[for="showOffice"]').slideUp {duration:0}
+    $('label[for="coffeeSubscription"]').slideUp {duration:0}
+    $('#container').css 'top', '60%'
+    $('header').css 'top', '60%'
+    # No need to change creator name in pageflip when quick-disabling
+  else
   # Hide office status option
-  $('label[for="showOffice"]').slideUp 'slow', ->
-    # Hide coffee subscription option
-    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-      # Change pageflip name
-      changeCreatorName 'Online'
+  $('label[for="showOffice"]').slideUp 'slow'
+  # Hide coffee subscription option
+  $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+    # Move all content back down
+    $('#container').animate {'top':'60%'}, 300
+    $('header').animate {'top':'60%'}, 300
+    # Change pageflip name
+    changeCreatorName 'Online'
 
-enableOnlineSpecificFeatures = ->
+enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
   ls.coffeeSubscription = 'true'
   ls.extensionCreator = 'dotKom'
-  # Enable office status
-  $('label[for="showOffice"]').slideDown 'slow', ->
+  if quick
+    $('label[for="showOffice"]').slideDown {duration:0}
+    $('label[for="coffeeSubscription"]').slideDown {duration:0}
+    $('#container').css 'top', '50%'
+    $('header').css 'top', '50%'
+    # No need to change creator name in pageflip when quick-enabling
+  else
+    # Enable office status
+    $('label[for="showOffice"]').slideDown 'slow'
     # Enable coffee subscription
     $('label[for="coffeeSubscription"]').slideDown 'slow', ->
+      # Move all content back down
+      $('#container').animate {'top':'50%'}, 300
+      $('header').animate {'top':'50%'}, 300
       # Change pageflip name
       changeCreatorName 'dotKom'
 
@@ -443,7 +475,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
             $('header #logo_subtext').animate {'margin-left':'265pt'}, speed
             $('header #logo').animate {'margin-left':'75pt'}, speed
             # Move infoscreen preview to the circa middle of the screen
-            $('#container #right').animate {'margin-left':'180pt'}, speed
+            $('#container #right').animate {'margin-left':'160pt'}, speed
             # Move all content a bit up
             $('header').animate {'top':'40%'}, speed
             $('#container').animate {'top':'40%'}, speed, ->
@@ -475,8 +507,12 @@ revertInfoscreen = ->
   # Remove subtext
   $('#logo_subtext').fadeOut speed, ->
     # Move all content back down
-    $('#container').animate {'top':'50%'}, speed
-    $('header').animate {'top':'50%'}, speed
+    if ls.affiliationKey is 'online'
+      $('#container').animate {'top':'50%'}, speed
+      $('header').animate {'top':'50%'}, speed
+    else
+      $('#container').animate {'top':'60%'}, speed
+      $('header').animate {'top':'60%'}, speed
     # Move infoscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
     # Move logo and subtext back in place (to the left)
@@ -524,26 +560,31 @@ fadeInCanvas = ->
           'swing'
       ), 200
 
-changeCreatorName = (name, build) ->
+changeCreatorName = (name) ->
+  # Stop previous changeCreatorName instance, if any
+  clearTimeout ls.changeCreatorNameTimeoutId
+  # Animate creator name change in the pageflip
+  animateCreatorName name + " with <3"
+
+animateCreatorName = (line, build) ->
   # Animate it
-  text = $('#pageflipline').text()
+  text = $('#pagefliptyping').text()
   if text.length is 0
     build = true
-    name = name + " with <3"
-  random = Math.floor 400 * Math.random() + 50
+  random = Math.floor 350 * Math.random() + 50
   if !build
-    $('#pageflipline').text text.slice 0, text.length-1
-    setTimeout ( ->
-      changeCreatorName name
+    $('#pagefliptyping').text text.slice 0, text.length-1
+    ls.animateCreatorNameTimeoutId = setTimeout ( ->
+      animateCreatorName line
     ), random
   else
-    if text.length isnt name.length
+    if text.length isnt line.length
       if text.length is 0
-        $('#pageflipline').text name.slice 0, 1
+        $('#pagefliptyping').text line.slice 0, 1
       else
-        $('#pageflipline').text name.slice 0, text.length+1
-      setTimeout ( ->
-        changeCreatorName name, true
+        $('#pagefliptyping').text line.slice 0, text.length+1
+      ls.animateCreatorNameTimeoutId = setTimeout ( ->
+        animateCreatorName line, true
       ), random
 
 # Document ready, go!
@@ -555,6 +596,16 @@ $ ->
   
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
+
+  # Remove Online specific features if the affiliation is another
+  if ls.affiliationKey isnt 'online'
+    disableOnlineSpecificFeatures true # true means be quick about it!
+  
+  # Show the standard palette or special palette the user has chosen
+  palette = ls.affiliationPalette
+  if palette isnt undefined
+    if DEBUG then console.log 'Applying chosen palette', palette
+    $('#palette').attr 'href', Palettes.get palette
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
@@ -570,19 +621,19 @@ $ ->
   # Bind the windows resize function
   $(window).bind "resize", resizeBackgroundImage
   resizeBackgroundImage() # Run once in case the window is quite big
+
+  # Uncommented as long as we are not using the Chatter option (noone admits to using it)
+  # # Minor esthetical adjustmenst for Browser
+  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  # $('label[for=openChatter] span').html html
   
   # Minor esthetical adjustments for OS
   if OPERATING_SYSTEM is 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
-
-  # Minor esthetical adjustmenst for Browser
-  html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
-  $('label[for=openChatter] span').html html
-
   # Adding creator name to pageflip
-  $('#pageflipname').text ls.extensionCreator
-
+  changeCreatorName ls.extensionCreator
+  # $('#pageflipname').text ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()
@@ -597,9 +648,9 @@ $ ->
   # $('#notification').click ->
   #   fadeInCanvas()
 
-  # Allow user to change affiliation and colors
+  # Allow user to change affiliation and palette
   bindAffiliationSelector()
-  bindAffiliationColorSelector()
+  bindPaletteSelector()
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'

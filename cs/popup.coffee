@@ -287,15 +287,16 @@ $ ->
       if DEBUG then console.log 'Applying affiliation logo', logo
       $('#header #logo').prop 'src', logo
   
-  # Show the color palette the user has chosen
-  color = ls['affiliationColor']
-  if color isnt 'undefined' and color isnt ''
-    if DEBUG then console.log 'Applying affiliation color', color
-    $('#palette').attr 'href', Palettes.getColor color
+  # Show the standard palette or special palette the user has chosen
+  palette = ls.affiliationPalette
+  if palette isnt undefined
+    if DEBUG then console.log 'Applying chosen palette', palette
+    $('#palette').attr 'href', Palettes.get palette
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
-    Browser.openTab ls.extensionWebsite
+    web = Affiliation.org[ls.affiliationKey].web
+    Browser.openTab web
     window.close()
 
   $('#options_button').click ->

@@ -74,9 +74,9 @@ updateNews = ->
         News.refreshNewsIdList items
 
 loadAffiliationIcon = ->
-  symbol = ls.affiliationSymbol
-  if symbol isnt undefined and symbol isnt ''
-    Browser.setIcon ls.affiliationSymbol
+  icon = ls.affiliationIcon
+  if icon isnt undefined and icon isnt ''
+    Browser.setIcon ls.affiliationIcon
   else
     if DEBUG then console.log 'ERROR: tried to load empty/undefined affiliation icon'
 
@@ -94,8 +94,6 @@ $ ->
 
   if ls.extensionName is undefined
     ls.extensionName = 'Online Notifier'
-  if ls.extensionWebsite is undefined
-    ls.extensionWebsite = 'https://online.ntnu.no'
   if ls.extensionCreator is undefined
     ls.extensionCreator = 'dotKom' # Max 8 letters because of styling
 
@@ -103,10 +101,10 @@ $ ->
     ls.showAffiliation = 'true'
   if ls.affiliationKey is undefined
     ls.affiliationKey = 'online'
-  if ls.affiliationColor is undefined
-    ls.affiliationColor = 'blue'
-  if ls.affiliationSymbol is undefined
-    ls.affiliationSymbol = '/img/icon-default.png'
+  if ls.affiliationIcon is undefined
+    ls.affiliationIcon = '/img/icon-default.png'
+  if ls.affiliationPalette is undefined
+    ls.affiliationPalette = 'online'
 
   # Lists of links (IDs) for news items
   if ls.newsList is undefined
@@ -188,7 +186,7 @@ $ ->
 
   loadAffiliationIcon()
 
-  # Reload the page once every day
+  # Reload the page once every day (in case the extension updates)
   setInterval ( ->
     document.location.reload()
   ), 86400000
