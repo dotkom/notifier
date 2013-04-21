@@ -20,32 +20,7 @@ var Affiliation = {
       color: 'grey',
       useAltLink: false,
       getImage: function(link, callback) {
-        var placeholder = this.placeholder;
-        Ajaxer.getHtml({
-          url: link,
-          success: function(html) {
-            try {
-              // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
-              html = $.trim(html);
-              // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
-              html = $(html);
-              // Find the actual image reference
-              image = html.find('div.post img:first').attr('src');
-
-              if (image == undefined) {
-                image = placeholder;
-              }
-              callback(link, image);
-            } catch (e) {
-              if (top.debug) console.log('ERROR: wrong format or missing image for link: ' + id);
-              callback(link, placeholder);
-            }
-          },
-          error: function() {
-            if (top.debug) console.log('ERROR: couldn\'t connect to '+link+' to get image links, returning default image');
-            callback(link, placeholder);
-          },
-        });
+        Affiliation.getImage(this, link, callback, 'div.post img');
       },
     },
     'delta': {
@@ -457,24 +432,7 @@ var Affiliation = {
       color: 'red',
       useAltLink: false,
       getImage: function(link, callback) {
-        var placeholder = this.placeholder;
-        Ajaxer.getHtml({
-          url: link,
-          success: function(html) {
-            try {
-              var image = $(html).find('img.event').attr('src');
-              callback(link, image);
-            }
-            catch (e) {
-              if (top.debug) console.log('ERROR: could not parse Samfundet\'s website');
-              callback(link, placeholder);
-            }
-          },
-          error: function(e) {
-            if (top.debug) console.log('ERROR: could not fetch Samfundet\'s website');
-            callback(link, placeholder);
-          },
-        });
+        Affiliation.getImage(this, link, callback, 'img.event');
       },
     },
 
@@ -528,7 +486,7 @@ var Affiliation = {
       color: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, '', 2);
+        Affiliation.getImage(this, link, callback, 'img', 2);
       },
     },
     'rektoratet ntnu': {
@@ -542,7 +500,7 @@ var Affiliation = {
       color: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, 'div.entry');
+        Affiliation.getImage(this, link, callback, 'div.entry img');
       },
     },
     'hist': {
@@ -629,7 +587,7 @@ var Affiliation = {
     });
   },
 
-  getImage: function(affiliation, link, callback, parentSelector, index) {
+  getImage: function(affiliation, link, callback, selector, index) {
     var placeholder = affiliation.placeholder;
     if (index == undefined)
       var index = 0;
@@ -641,7 +599,7 @@ var Affiliation = {
         // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
         image = $(html);
         // Get image from parent selector, with optional image index
-        image = image.find(parentSelector+' img').not('img[src*=".gif"]').eq(index).attr('src');
+        image = image.find(selector).not('img[src*=".gif"]').eq(index).attr('src');
 
         if (image != undefined) {
           callback(link, image);
