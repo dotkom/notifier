@@ -445,9 +445,14 @@ header {
   position: fixed;
   top: 10pt;
   right: 10pt;
+  opacity: .05;
   text-align: right;
+  -webkit-transition: all .1s ease-out;
   button {
     /* nothing here yet */
+  }
+  &:hover {
+    opacity: 1;
   }
 }
 

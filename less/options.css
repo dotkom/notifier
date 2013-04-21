@@ -446,11 +446,16 @@ header #notification .saved {
   position: fixed;
   top: 10pt;
   right: 10pt;
+  opacity: .05;
   text-align: right;
+  -webkit-transition: all 0.1s ease-out;
 }
 #debug_links button {
   /* nothing here yet */
 
+}
+#debug_links:hover {
+  opacity: 1;
 }
 /* The pageflip at the bottom */
 /*@-webkit-keyframes terminal {
