@@ -83,7 +83,7 @@ disableOnlineSpecificFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideUp {duration:0}
     $('#container').css 'top', '60%'
     $('header').css 'top', '60%'
-    $('#pageflipline').text 'Online with <3'
+    # No need to change creator name in pageflip when quick-disabling
   else
   # Hide office status option
   $('label[for="showOffice"]').slideUp 'slow'
@@ -104,7 +104,7 @@ enableOnlineSpecificFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideDown {duration:0}
     $('#container').css 'top', '50%'
     $('header').css 'top', '50%'
-    $('#pageflipline').text 'Online with <3'
+    # No need to change creator name in pageflip when quick-enabling
   else
     # Enable office status
     $('label[for="showOffice"]').slideDown 'slow'
@@ -560,28 +560,27 @@ changeCreatorName = (name) ->
   # Stop previous changeCreatorName instance, if any
   clearTimeout ls.changeCreatorNameTimeoutId
   # Animate creator name change in the pageflip
-  animateCreatorName name
+  animateCreatorName name + " with <3"
 
-animateCreatorName = (name, build) ->
+animateCreatorName = (line, build) ->
   # Animate it
-  text = $('#pageflipline').text()
+  text = $('#pagefliptyping').text()
   if text.length is 0
     build = true
-    name = name + " with <3"
   random = Math.floor 350 * Math.random() + 50
   if !build
-    $('#pageflipline').text text.slice 0, text.length-1
+    $('#pagefliptyping').text text.slice 0, text.length-1
     ls.animateCreatorNameTimeoutId = setTimeout ( ->
-      animateCreatorName name
+      animateCreatorName line
     ), random
   else
-    if text.length isnt name.length
+    if text.length isnt line.length
       if text.length is 0
-        $('#pageflipline').text name.slice 0, 1
+        $('#pagefliptyping').text line.slice 0, 1
       else
-        $('#pageflipline').text name.slice 0, text.length+1
+        $('#pagefliptyping').text line.slice 0, text.length+1
       ls.animateCreatorNameTimeoutId = setTimeout ( ->
-        animateCreatorName name, true
+        animateCreatorName line, true
       ), random
 
 # Document ready, go!
@@ -629,7 +628,8 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
-  $('#pageflipname').text ls.extensionCreator
+  changeCreatorName ls.extensionCreator
+  # $('#pageflipname').text ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()

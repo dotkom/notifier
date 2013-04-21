@@ -102,7 +102,6 @@
       });
       $('#container').css('top', '60%');
       $('header').css('top', '60%');
-      $('#pageflipline').text('Online with <3');
     } else {
 
     }
@@ -130,8 +129,7 @@
         duration: 0
       });
       $('#container').css('top', '50%');
-      $('header').css('top', '50%');
-      return $('#pageflipline').text('Online with <3');
+      return $('header').css('top', '50%');
     } else {
       $('label[for="showOffice"]').slideDown('slow');
       return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
@@ -608,31 +606,30 @@
 
   changeCreatorName = function(name) {
     clearTimeout(ls.changeCreatorNameTimeoutId);
-    return animateCreatorName(name);
+    return animateCreatorName(name + " with <3");
   };
 
-  animateCreatorName = function(name, build) {
+  animateCreatorName = function(line, build) {
     var random, text;
-    text = $('#pageflipline').text();
+    text = $('#pagefliptyping').text();
     if (text.length === 0) {
       build = true;
-      name = name + " with <3";
     }
     random = Math.floor(350 * Math.random() + 50);
     if (!build) {
-      $('#pageflipline').text(text.slice(0, text.length - 1));
+      $('#pagefliptyping').text(text.slice(0, text.length - 1));
       return ls.animateCreatorNameTimeoutId = setTimeout((function() {
-        return animateCreatorName(name);
+        return animateCreatorName(line);
       }), random);
     } else {
-      if (text.length !== name.length) {
+      if (text.length !== line.length) {
         if (text.length === 0) {
-          $('#pageflipline').text(name.slice(0, 1));
+          $('#pagefliptyping').text(line.slice(0, 1));
         } else {
-          $('#pageflipline').text(name.slice(0, text.length + 1));
+          $('#pagefliptyping').text(line.slice(0, text.length + 1));
         }
         return ls.animateCreatorNameTimeoutId = setTimeout((function() {
-          return animateCreatorName(name, true);
+          return animateCreatorName(line, true);
         }), random);
       }
     }
@@ -673,7 +670,7 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
-    $('#pageflipname').text(ls.extensionCreator);
+    changeCreatorName(ls.extensionCreator);
     setInterval((function() {
       return pageFlipCursorBlinking();
     }), 600);
