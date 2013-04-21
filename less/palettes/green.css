@@ -7,8 +7,16 @@
   text-decoration: none;
 }
 
-#background, #fadeOutNews, #pageflip {
+#background, #fadeOutNews {
   -webkit-filter: hue-rotate(-85deg) saturate(1.4) brightness(1.4);
+}
+
+#pageflip {
+  -webkit-filter: hue-rotate(-85deg) saturate(1.4) brightness(1);
+}
+
+#pageflipbg {
+  -webkit-filter: grayscale(1) saturate(1.4) brightness(0.5);
 }
 
 #bus {

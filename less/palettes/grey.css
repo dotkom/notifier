@@ -7,8 +7,16 @@
   text-decoration: none;
 }
 
-#background, #fadeOutNews, #pageflip {
+#background, #fadeOutNews {
   -webkit-filter: grayscale(1) saturate(2.6) brightness(2.6);
+}
+
+#pageflip {
+  -webkit-filter: grayscale(1) saturate(2.6) brightness(1.4);
+}
+
+#pageflipbg {
+  -webkit-filter: grayscale(1) saturate(1.4) brightness(0.5);
 }
 
 #bus {

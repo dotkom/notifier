@@ -3,8 +3,12 @@
   color: NavajoWhite;
 }
 
-#background, #fadeOutNews, #pageflip {
+#background, #fadeOutNews {
   -webkit-filter: hue-rotate(-30deg) saturate(3) brightness(1.5);
+}
+
+#pageflip {
+  -webkit-filter: hue-rotate(-40deg) saturate(2.7) brightness(1.1);
 }
 
 #bus {
