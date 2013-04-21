@@ -322,15 +322,13 @@
       $('#bus').hide();
     }
     if (ls.affiliationKey !== 'online') {
-      $('#chatter_button').hide();
-      $('#mobile_text').hide();
       affiliation = ls.affiliationKey;
       logo = Affiliation.org[affiliation].logo;
       if (logo !== void 0 && logo !== '') {
         if (DEBUG) {
           console.log('Applying affiliation logo', logo);
         }
-        $('#header #logo').prop('src', logo);
+        $('#logo').prop('src', logo);
       }
     }
     palette = ls.affiliationPalette;
