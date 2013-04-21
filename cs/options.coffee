@@ -82,11 +82,16 @@ disableOnlineSpecificFeatures = (quick) ->
     $('label[for="showOffice"]').hide()
     $('label[for="coffeeSubscription"]').hide()
     $('#pageflipline').text 'Online with <3'
+    $('#container').css 'top', '60%'
+    $('header').css 'top', '60%'
   else
   # Hide office status option
   $('label[for="showOffice"]').slideUp 'slow', ->
     # Hide coffee subscription option
     $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # Move all content back down
+      $('#container').animate {'top':'60%'}, 300
+      $('header').animate {'top':'60%'}, 300
       # Change pageflip name
       changeCreatorName 'Online'
 
@@ -98,11 +103,16 @@ enableOnlineSpecificFeatures = (quick) ->
     $('label[for="showOffice"]').hide()
     $('label[for="coffeeSubscription"]').hide()
     $('#pageflipline').text 'Online with <3'
+    $('#container').css 'top', '50%'
+    $('header').css 'top', '50%'
   else
     # Enable office status
     $('label[for="showOffice"]').slideDown 'slow', ->
       # Enable coffee subscription
       $('label[for="coffeeSubscription"]').slideDown 'slow', ->
+        # Move all content back down
+        $('#container').animate {'top':'50%'}, 300
+        $('header').animate {'top':'50%'}, 300
         # Change pageflip name
         changeCreatorName 'dotKom'
 

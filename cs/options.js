@@ -97,11 +97,19 @@
       $('label[for="showOffice"]').hide();
       $('label[for="coffeeSubscription"]').hide();
       $('#pageflipline').text('Online with <3');
+      $('#container').css('top', '60%');
+      $('header').css('top', '60%');
     } else {
 
     }
     return $('label[for="showOffice"]').slideUp('slow', function() {
       return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
+        $('#container').animate({
+          'top': '60%'
+        }, 300);
+        $('header').animate({
+          'top': '60%'
+        }, 300);
         return changeCreatorName('Online');
       });
     });
@@ -114,10 +122,18 @@
     if (quick) {
       $('label[for="showOffice"]').hide();
       $('label[for="coffeeSubscription"]').hide();
-      return $('#pageflipline').text('Online with <3');
+      $('#pageflipline').text('Online with <3');
+      $('#container').css('top', '50%');
+      return $('header').css('top', '50%');
     } else {
       return $('label[for="showOffice"]').slideDown('slow', function() {
         return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
+          $('#container').animate({
+            'top': '50%'
+          }, 300);
+          $('header').animate({
+            'top': '50%'
+          }, 300);
           return changeCreatorName('dotKom');
         });
       });
