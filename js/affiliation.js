@@ -18,8 +18,13 @@ var Affiliation = {
   // useAltLink: false,                         // Search news posts for alternative links?
   // getImages: function(links, callback) {},   // getImage(s) will be used if it exists
 
-  // Why do we have the key field? Because it's a practical and easy low-cost
-  // solution to a problem of encapsulation
+  // Standard dimensions:
+
+  // logo         512 x 128, at least 256 x 64
+  // icon         256 x 256, at least  64 x 64
+  // placeholder  512 x 384, at least 128 x 96
+  // All dimensions should be in the power of two in case we decide to
+  // introduce some fancy WebGL graphics later on.
 
   org: {
     // Linjeforeninger Gløshaugen

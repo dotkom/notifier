@@ -44,6 +44,18 @@ var News = {
     });
   },
 
+  // Need to know about the news feeds used in Online Notifier:
+  // These RSS fields are always used:
+  // - title
+  // - link
+  // - desc - often wrapped in <![CDATA[content here]]>
+  // These RSS fields are sometimes used:
+  // - guid - usually the same as link
+  // - pubDate
+  // - category
+  // - dc:creator - author name or username
+  // - enclosure - may contain an image as an XML attribute: url="news_post_image.jpg"
+  // - source
   parseFeed: function(xml, affiliationObject, limit, callback) {
     var items = [];
     var self = this;
