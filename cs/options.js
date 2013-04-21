@@ -617,7 +617,7 @@
   };
 
   $(function() {
-    var text;
+    var palette, text;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -627,6 +627,13 @@
     $.ajaxSetup(AJAX_SETUP);
     if (ls.affiliationKey !== 'online') {
       disableOnlineSpecificFeatures(true);
+    }
+    palette = ls.affiliationPalette;
+    if (palette !== void 0) {
+      if (DEBUG) {
+        console.log('Applying chosen palette', palette);
+      }
+      $('#palette').attr('href', Palettes.get(palette));
     }
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {

@@ -587,6 +587,12 @@ $ ->
   # Remove Online specific features if the affiliation is another
   if ls.affiliationKey isnt 'online'
     disableOnlineSpecificFeatures true # true means be quick about it!
+  
+  # Show the standard palette or special palette the user has chosen
+  palette = ls.affiliationPalette
+  if palette isnt undefined
+    if DEBUG then console.log 'Applying chosen palette', palette
+    $('#palette').attr 'href', Palettes.get palette
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
