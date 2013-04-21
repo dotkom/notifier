@@ -15,7 +15,7 @@ var Palettes = {
     'online': Affiliation.org['online'].palette,
   },
 
-  getPalette: function(palette) {
+  get: function(palette) {
     if (this.palettes[palette] != undefined) {
       return this.palettes[palette];
     }
