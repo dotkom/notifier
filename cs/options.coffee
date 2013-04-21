@@ -507,8 +507,12 @@ revertInfoscreen = ->
   # Remove subtext
   $('#logo_subtext').fadeOut speed, ->
     # Move all content back down
-    $('#container').animate {'top':'50%'}, speed
-    $('header').animate {'top':'50%'}, speed
+    if ls.affiliationKey is 'online'
+      $('#container').animate {'top':'50%'}, speed
+      $('header').animate {'top':'50%'}, speed
+    else
+      $('#container').animate {'top':'60%'}, speed
+      $('header').animate {'top':'60%'}, speed
     # Move infoscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
     # Move logo and subtext back in place (to the left)

@@ -561,12 +561,21 @@
     var speed;
     speed = 300;
     return $('#logo_subtext').fadeOut(speed, function() {
-      $('#container').animate({
-        'top': '50%'
-      }, speed);
-      $('header').animate({
-        'top': '50%'
-      }, speed);
+      if (ls.affiliationKey === 'online') {
+        $('#container').animate({
+          'top': '50%'
+        }, speed);
+        $('header').animate({
+          'top': '50%'
+        }, speed);
+      } else {
+        $('#container').animate({
+          'top': '60%'
+        }, speed);
+        $('header').animate({
+          'top': '60%'
+        }, speed);
+      }
       $('#container #right').animate({
         'margin-left': '0'
       }, speed);
