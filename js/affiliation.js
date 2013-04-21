@@ -301,6 +301,20 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'paideia': {
+      name: 'Paideia',
+      key: 'paideia',
+      web: 'http://paideiantnu.wordpress.com/',
+      feed: 'http://paideiantnu.wordpress.com/rss',
+      logo: './org/paideia/logo.png',
+      icon: './org/paideia/icon.png',
+      placeholder: './org/paideia/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, 'div.post');
+      },
+    },
     'primetime': {
       name: 'Primetime',
       key: 'primetime',
