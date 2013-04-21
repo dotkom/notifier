@@ -7,7 +7,7 @@ body {
   color: Black;
 }
 
-#background {
+#background, #fadeOutNews, #pageflip {
   background-image: url();
   background-color: white;
 }

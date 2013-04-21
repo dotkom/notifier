@@ -6,7 +6,7 @@
   text-decoration: none;
 }
 
-#background {
+#background, #fadeOutNews, #pageflip {
   -webkit-filter: hue-rotate(92deg) saturate(1.4) brightness(1.7);
 }
 
