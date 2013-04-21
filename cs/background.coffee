@@ -186,7 +186,7 @@ $ ->
 
   loadAffiliationIcon()
 
-  # Reload the page once every day
+  # Reload the page once every day (in case the extension updates)
   setInterval ( ->
     document.location.reload()
   ), 86400000
