@@ -157,6 +157,13 @@ header #notification .saved {
   box-shadow: 0 0 15px #333;
   cursor: pointer;
 }
+.item input#showAffiliation {
+  opacity: 0;
+  /* Turning off news feed is not allowed since it would
+    turn off the primary purpose of Online Notifier. Don't
+    show the checkbox, it's disabled anyway. */
+
+}
 .item label {
   cursor: pointer;
 }
