@@ -8,7 +8,7 @@
 }
 
 #background, #fadeOutNews {
-  -webkit-filter: hue-rotate(-85deg) saturate(1.4) brightness(1.4);
+  -webkit-filter: hue-rotate(-85deg) saturate(1.4) brightness(1);
 }
 
 #pageflip {
