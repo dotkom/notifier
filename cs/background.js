@@ -139,8 +139,8 @@
     if (ls.affiliationIcon === void 0) {
       ls.affiliationIcon = '/img/icon-default.png';
     }
-    if (ls.affiliationColor === void 0) {
-      ls.affiliationColor = 'blue';
+    if (ls.affiliationPalette === void 0) {
+      ls.affiliationPalette = 'online';
     }
     if (ls.newsList === void 0) {
       ls.newsList = JSON.stringify([]);
