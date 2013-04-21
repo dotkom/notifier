@@ -252,7 +252,6 @@ $ ->
   $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
-  ls.removeItem 'mostRecentRead'
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
 
@@ -298,11 +297,11 @@ $ ->
     ), 3500
   ), 1800000
 
-  # Reload the page once every day
+  # Reload the page once every day (in case the extension updates)
   unless DEBUG
     setTimeout ( ->
       document.location.reload()
-    ), 3600000 # KILLBUG: set to once every hour for now in order to keep #news alive, set to 86400000 later
+    ), 86400000
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

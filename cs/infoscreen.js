@@ -306,7 +306,6 @@
       $('#overlay').hide();
     }
     $.ajaxSetup(AJAX_SETUP);
-    ls.removeItem('mostRecentRead');
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
     if (ls.showOffice !== 'true') {
@@ -369,7 +368,7 @@
     if (!DEBUG) {
       setTimeout((function() {
         return document.location.reload();
-      }), 3600000);
+      }), 86400000);
     }
     return mainLoop();
   });
