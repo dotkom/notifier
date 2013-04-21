@@ -240,6 +240,34 @@ updateHours = ->
   Hours.get ls.right_cantina, (hours) ->
     $('#cantinas #right .hours').html hours
 
+changeCreatorName = (name) ->
+  # Stop previous changeCreatorName instance, if any
+  clearTimeout ls.changeCreatorNameTimeoutId
+  # Animate creator name change in the pageflip
+  animateCreatorName name
+
+animateCreatorName = (name, build) ->
+  # Animate it
+  text = $('#pagefliptyping').text()
+  if text.length is 0
+    build = true
+    name = name + " with <3"
+  random = Math.floor 350 * Math.random() + 50
+  if !build
+    $('#pagefliptyping').text text.slice 0, text.length-1
+    ls.animateCreatorNameTimeoutId = setTimeout ( ->
+      animateCreatorName name
+    ), random
+  else
+    if text.length isnt name.length
+      if text.length is 0
+        $('#pagefliptyping').text name.slice 0, 1
+      else
+        $('#pagefliptyping').text name.slice 0, text.length+1
+      ls.animateCreatorNameTimeoutId = setTimeout ( ->
+        animateCreatorName name, true
+      ), random
+
 # Document ready, go!
 $ ->
   if DEBUG
@@ -281,7 +309,8 @@ $ ->
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
-  $('#pageflipname').text ls.extensionCreator
+  changeCreatorName ls.extensionCreator
+  # $('#pageflipname').text ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
