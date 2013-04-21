@@ -94,24 +94,27 @@
     ls.coffeeSubscription = 'false';
     ls.extensionCreator = 'Online';
     if (quick) {
-      $('label[for="showOffice"]').hide();
-      $('label[for="coffeeSubscription"]').hide();
-      $('#pageflipline').text('Online with <3');
+      $('label[for="showOffice"]').slideUp({
+        duration: 0
+      });
+      $('label[for="coffeeSubscription"]').slideUp({
+        duration: 0
+      });
       $('#container').css('top', '60%');
       $('header').css('top', '60%');
+      $('#pageflipline').text('Online with <3');
     } else {
 
     }
-    return $('label[for="showOffice"]').slideUp('slow', function() {
-      return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
-        $('#container').animate({
-          'top': '60%'
-        }, 300);
-        $('header').animate({
-          'top': '60%'
-        }, 300);
-        return changeCreatorName('Online');
-      });
+    $('label[for="showOffice"]').slideUp('slow');
+    return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
+      $('#container').animate({
+        'top': '60%'
+      }, 300);
+      $('header').animate({
+        'top': '60%'
+      }, 300);
+      return changeCreatorName('Online');
     });
   };
 
@@ -120,22 +123,25 @@
     ls.coffeeSubscription = 'true';
     ls.extensionCreator = 'dotKom';
     if (quick) {
-      $('label[for="showOffice"]').hide();
-      $('label[for="coffeeSubscription"]').hide();
-      $('#pageflipline').text('Online with <3');
+      $('label[for="showOffice"]').slideDown({
+        duration: 0
+      });
+      $('label[for="coffeeSubscription"]').slideDown({
+        duration: 0
+      });
       $('#container').css('top', '50%');
-      return $('header').css('top', '50%');
+      $('header').css('top', '50%');
+      return $('#pageflipline').text('Online with <3');
     } else {
-      return $('label[for="showOffice"]').slideDown('slow', function() {
-        return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
-          $('#container').animate({
-            'top': '50%'
-          }, 300);
-          $('header').animate({
-            'top': '50%'
-          }, 300);
-          return changeCreatorName('dotKom');
-        });
+      $('label[for="showOffice"]').slideDown('slow');
+      return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
+        $('#container').animate({
+          'top': '50%'
+        }, 300);
+        $('header').animate({
+          'top': '50%'
+        }, 300);
+        return changeCreatorName('dotKom');
       });
     }
   };
