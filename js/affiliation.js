@@ -206,7 +206,7 @@ var Affiliation = {
       logo: './org/dionysos/logo.png',
       icon: './org/dionysos/icon.png',
       placeholder: './org/dionysos/placeholder.png',
-      palette: 'grey',
+      palette: 'purple',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
