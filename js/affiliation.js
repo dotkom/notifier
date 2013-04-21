@@ -458,6 +458,9 @@ var Affiliation = {
       placeholder: './org/studenttinget ntnu/placeholder.png',
       color: 'purple',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
     },
     'studentparlamentet hist': {
       name: 'Studentparlamentet HiST',
@@ -527,6 +530,9 @@ var Affiliation = {
       placeholder: './org/dmmh/placeholder.png',
       color: 'red',
       useAltLink: false,
+      getImage: function(link, callback) {
+        Affiliation.getImage(this, link, callback, 'div.news_article img', 0, 'dmmh.no');
+      },
     },
   },
 
@@ -587,7 +593,7 @@ var Affiliation = {
     });
   },
 
-  getImage: function(affiliation, link, callback, selector, index) {
+  getImage: function(affiliation, link, callback, selector, index, domainUrl) {
     var placeholder = affiliation.placeholder;
     if (index == undefined)
       var index = 0;
@@ -602,6 +608,9 @@ var Affiliation = {
         image = image.find(selector).not('img[src*=".gif"]').eq(index).attr('src');
 
         if (image != undefined) {
+          if (domainUrl != undefined) {
+            image = 'http://' + domainUrl + image;
+          }
           callback(link, image);
         }
         else {
