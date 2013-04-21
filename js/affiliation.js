@@ -4,6 +4,20 @@ var Affiliation = {
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
 
+  // Explanation of organization attributes:
+
+  // name: 'Organization X',
+  // key: 'orgx',
+  // web: 'https://orgx.com',
+  // feed: 'https://orgx.com/feed',
+  // logo: './org/orgx/logo.png',
+  // icon: './org/orgx/icon.png',
+  // placeholder: './org/orgx/placeholder.png',
+  // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
+  // palettePath: './org/orgx/palette.css',     // Optional: Path to the special palette
+  // useAltLink: false,                         // Search news posts for alternative links?
+  // getImages: function(links, callback) {},   // getImage(s) will be used if it exists
+
   // Why do we have the key field? Because it's a practical and easy low-cost
   // solution to a problem of encapsulation
 
@@ -17,7 +31,7 @@ var Affiliation = {
       logo: './org/berg/logo.png',
       icon: './org/berg/icon.png',
       placeholder: './org/berg/placeholder.png',
-      color: 'grey',
+      palette: 'grey',
       useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImage(this, link, callback, 'div.post img');
@@ -31,7 +45,7 @@ var Affiliation = {
       logo: './org/delta/logo.png',
       icon: './org/delta/icon.png',
       placeholder: './org/delta/placeholder.png',
-      color: 'green',
+      palette: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -45,7 +59,7 @@ var Affiliation = {
       logo: './org/emil/logo.png',
       icon: './org/emil/icon.png',
       placeholder: './org/emil/placeholder.png',
-      color: 'green',
+      palette: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.frontpage', 2);
@@ -59,7 +73,7 @@ var Affiliation = {
       logo: './org/leonardo/logo.png',
       icon: './org/leonardo/icon.png',
       placeholder: './org/leonardo/placeholder.png',
-      color: 'cyan',
+      palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
         var web = this.web;
@@ -100,7 +114,8 @@ var Affiliation = {
       logo: './img/logo.png', // Note unique URL pattern
       icon: './img/icon-default.png', // Note unique URL pattern
       placeholder: './img/placeholder.png', // Note unique URL pattern
-      color: 'blue',
+      palette: 'online',
+      palettePath: './org/online/palette.css',
       useAltLink: true,
       getImage: function(link, callback) {
         var placeholder = this.placeholder;
@@ -133,7 +148,7 @@ var Affiliation = {
       logo: './org/nabla/logo.png',
       icon: './org/nabla/icon.png',
       placeholder: './org/nabla/placeholder.png',
-      color: 'red',
+      palette: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, '.news_item', 'nabla.no');
@@ -147,7 +162,7 @@ var Affiliation = {
       logo: './org/spanskrøret/logo.png',
       icon: './org/spanskrøret/icon.png',
       placeholder: './org/spanskrøret/placeholder.png',
-      color: 'grey',
+      palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -161,7 +176,7 @@ var Affiliation = {
       logo: './org/volvox/logo.png',
       icon: './org/volvox/icon.png',
       placeholder: './org/volvox/placeholder.png',
-      color: 'green',
+      palette: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -177,7 +192,7 @@ var Affiliation = {
       logo: './org/de folkevalgte/logo.png',
       icon: './org/de folkevalgte/icon.png',
       placeholder: './org/de folkevalgte/placeholder.png',
-      color: 'yellow',
+      palette: 'yellow',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -191,7 +206,7 @@ var Affiliation = {
       logo: './org/dionysos/logo.png',
       icon: './org/dionysos/icon.png',
       placeholder: './org/dionysos/placeholder.png',
-      color: 'grey',
+      palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -205,7 +220,7 @@ var Affiliation = {
       logo: './org/erudio/logo.png',
       icon: './org/erudio/icon.png',
       placeholder: './org/erudio/placeholder.png',
-      color: 'red',
+      palette: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -219,7 +234,7 @@ var Affiliation = {
       logo: './org/eureka/logo.png',
       icon: './org/eureka/icon.png',
       placeholder: './org/eureka/placeholder.png',
-      color: 'yellow',
+      palette: 'yellow',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -233,7 +248,7 @@ var Affiliation = {
       logo: './org/geolf/logo.png',
       icon: './org/geolf/icon.png',
       placeholder: './org/geolf/placeholder.png',
-      color: 'blue',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -247,7 +262,7 @@ var Affiliation = {
       logo: './org/gengangere/logo.png',
       icon: './org/gengangere/icon.png',
       placeholder: './org/gengangere/placeholder.png',
-      color: 'grey',
+      palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -261,7 +276,7 @@ var Affiliation = {
       logo: './org/jump cut/logo.png',
       icon: './org/jump cut/icon.png',
       placeholder: './org/jump cut/placeholder.png',
-      color: 'grey',
+      palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -275,7 +290,7 @@ var Affiliation = {
       logo: './org/ludimus/logo.png',
       icon: './org/ludimus/icon.png',
       placeholder: './org/ludimus/placeholder.png',
-      color: 'red',
+      palette: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -289,7 +304,7 @@ var Affiliation = {
       logo: './org/primetime/logo.png',
       icon: './org/primetime/icon.png',
       placeholder: './org/primetime/placeholder.png',
-      color: 'cyan',
+      palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -303,7 +318,7 @@ var Affiliation = {
       logo: './org/sturm und drang/logo.png',
       icon: './org/sturm und drang/icon.png',
       placeholder: './org/sturm und drang/placeholder.png',
-      color: 'red',
+      palette: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -319,7 +334,7 @@ var Affiliation = {
       logo: './org/fraktur/logo.png',
       icon: './org/fraktur/icon.png',
       placeholder: './org/fraktur/placeholder.png',
-      color: 'cyan',
+      palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -333,7 +348,7 @@ var Affiliation = {
       logo: './org/kom/logo.png',
       icon: './org/kom/icon.png',
       placeholder: './org/kom/placeholder.png',
-      color: 'cyan',
+      palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -347,7 +362,7 @@ var Affiliation = {
       logo: './org/logistikkstudentene/logo.png',
       icon: './org/logistikkstudentene/icon.png',
       placeholder: './org/logistikkstudentene/placeholder.png',
-      color: 'cyan',
+      palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -361,7 +376,7 @@ var Affiliation = {
       logo: './org/tihlde/logo.png',
       icon: './org/tihlde/icon.png',
       placeholder: './org/tihlde/placeholder.png',
-      color: 'blue',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.entry');
@@ -375,7 +390,7 @@ var Affiliation = {
       logo: './org/tim og shænko/logo.png',
       icon: './org/tim og shænko/icon.png',
       placeholder: './org/tim og shænko/placeholder.png',
-      color: 'blue',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -389,7 +404,7 @@ var Affiliation = {
       logo: './org/tjsf/logo.png',
       icon: './org/tjsf/icon.png',
       placeholder: './org/tjsf/placeholder.png',
-      color: 'grey',
+      palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -405,7 +420,7 @@ var Affiliation = {
       logo: './org/dusken/logo.png',
       icon: './org/dusken/icon.png',
       placeholder: './org/dusken/placeholder.png',
-      color: 'grå',
+      palette: 'grå',
       useAltLink: false,
     },
     'universitetsavisa': {
@@ -416,7 +431,7 @@ var Affiliation = {
       logo: './org/universitetsavisa/logo.png',
       icon: './org/universitetsavisa/icon.png',
       placeholder: './org/universitetsavisa/placeholder.png',
-      color: 'cyan',
+      palette: 'cyan',
       useAltLink: false,
     },
 
@@ -429,7 +444,7 @@ var Affiliation = {
       logo: './org/samfundet/logo.png',
       icon: './org/samfundet/icon.png',
       placeholder: './org/samfundet/placeholder.png',
-      color: 'red',
+      palette: 'red',
       useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImage(this, link, callback, 'img.event');
@@ -445,7 +460,7 @@ var Affiliation = {
       logo: './org/velferdstinget/logo.png',
       icon: './org/velferdstinget/icon.png',
       placeholder: './org/velferdstinget/placeholder.png',
-      color: 'cyan',
+      palette: 'cyan',
       useAltLink: false,
     },
     'studenttinget ntnu': {
@@ -456,7 +471,7 @@ var Affiliation = {
       logo: './org/studenttinget ntnu/logo.png',
       icon: './org/studenttinget ntnu/icon.png',
       placeholder: './org/studenttinget ntnu/placeholder.png',
-      color: 'purple',
+      palette: 'purple',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -470,7 +485,7 @@ var Affiliation = {
       logo: './org/studentparlamentet hist/logo.png',
       icon: './org/studentparlamentet hist/icon.png',
       placeholder: './org/studentparlamentet hist/placeholder.png',
-      color: 'blue',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.post');
@@ -486,7 +501,7 @@ var Affiliation = {
       logo: './org/ntnu/logo.png',
       icon: './org/ntnu/icon.png',
       placeholder: './org/ntnu/placeholder.png',
-      color: 'blue',
+      palette: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImage(this, link, callback, 'img', 2);
@@ -500,7 +515,7 @@ var Affiliation = {
       logo: './org/rektoratet ntnu/logo.png',
       icon: './org/rektoratet ntnu/icon.png',
       placeholder: './org/rektoratet ntnu/placeholder.png',
-      color: 'blue',
+      palette: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImage(this, link, callback, 'div.entry img');
@@ -514,7 +529,7 @@ var Affiliation = {
       logo: './org/hist/logo.png',
       icon: './org/hist/icon.png',
       placeholder: './org/hist/placeholder.png',
-      color: 'blue',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'div.unit', 'hist.no');
@@ -528,7 +543,7 @@ var Affiliation = {
       logo: './org/dmmh/logo.png',
       icon: './org/dmmh/icon.png',
       placeholder: './org/dmmh/placeholder.png',
-      color: 'red',
+      palette: 'red',
       useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImage(this, link, callback, 'div.news_article img', 0, 'dmmh.no');
