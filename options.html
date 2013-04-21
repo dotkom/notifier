@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Notifier</title>
+  <title>Options</title>
   <meta charset="utf-8">
 
   <!-- CSS Less -->
   <link rel="stylesheet" type="text/css" href="less/options.css" />
+  <link rel="stylesheet" type="text/css" href="org/online/palette.css" id="palette" />
 
   <!-- JS Libs -->
-  <script src="libs/jquery-1.9.1.min.js"></script>
+  <script src="libs/jquery-2.0.0.min.js"></script>
 
   <!-- JS Behind the scenes -->
   <script src="js/constants.js"></script>
@@ -76,33 +77,34 @@
   <div id="container">
     <div id="left" class="side">
 
-      <!--
       <div class="item">
         <label for="showAffiliation">
           <input type="checkbox" name="showAffiliation" value="showAffiliation" id="showAffiliation" disabled="disabled" />
           <span>
-            Velg nyhetskilde blant linjeforeninger, studentmedier og mer
+            Velg nyhetskilde blant linjeforeninger og mer til
           </span><br />
         </label>
         <div id="affiliationBox" class="image">
-          <label for="affiliationKey">
+          <label for="showAffiliation">
             <img id="affiliationLogo" src="/img/logo-rss.png" />
           </label>
-          <!- IMPORTANT: Keep the same order here as in options.html and in manifest.json ->
+          <!-- IMPORTANT: Keep the same order here as in options.html -->
           <select id="affiliationKey">
             <optgroup label="Linjeforeninger Gløshaugen">
               <option value="berg">Berg</option>
               <option value="delta">Delta</option>
               <option value="emil">Emil</option>
               <option value="leonardo">Leonardo</option>
-              <option value="online" selected>Online</option>
+              <option value="online">Online</option>
               <option value="nabla">Nabla</option>
               <option value="spanskrøret">Spanskrøret</option>
               <option value="volvox">Volvox</option>
             </optgroup>
             <optgroup label="Linjeforeninger Dragvoll">
+              <option value="de folkevalgte">De Folkevalgte</option>
               <option value="dionysos">Dionysos</option>
               <option value="erudio">Erudio</option>
+              <option value="eureka">Eureka</option>
               <option value="geolf">Geolf</option>
               <option value="gengangere">Gengangere</option>
               <option value="jump cut">Jump Cut</option>
@@ -114,21 +116,29 @@
               <option value="fraktur">Fraktur</option>
               <option value="kom">KOM</option>
               <option value="logistikkstudentene">Logistikkstudentene</option>
-              <option value="tihlde">Tihlde</option>
+              <option value="tihlde">TIHLDE</option>
               <option value="tim og shænko">Tim og Shænko</option>
               <option value="tjsf">TJSF</option>
             </optgroup>
-            <optgroup label="Studentmedier">
+            <!-- <optgroup label="Studentmedier">
               <option value="dusken">Dusken</option>
               <option value="universitetsavisa">Universitetsavisa</option>
             </optgroup>
+            -->
             <optgroup label="Store studentorganisasjoner">
               <option value="samfundet">Samfundet</option>
             </optgroup>
             <optgroup label="Studentdemokrati">
               <option value="velferdstinget">Velferdstinget</option>
-              <option value="studenttinget ntnu">Studenttinget NTNU</option>
               <option value="studentparlamentet hist">Studentparlamentet HiST</option>
+              <option value="studenttinget ntnu">Studenttinget NTNU</option>
+              <!-- <option value="studentrådet ab">Studentrådet AB</option>
+              <option value="studentrådet hf">Studentrådet HF</option>
+              <option value="studentrådet dmf">Studentrådet DMF</option>
+              <option value="studentrådet ime">Studentrådet IME</option>
+              <option value="studentrådet ivt">Studentrådet IVT</option>
+              <option value="studentrådet nt">Studentrådet NT</option>
+              <option value="studentrådet svt">Studentrådet SVT</option> -->
             </optgroup>
             <optgroup label="Institusjoner">
               <option value="ntnu">NTNU</option>
@@ -137,36 +147,22 @@
               <option value="dmmh">DMMH</option>
             </optgroup>
           </select>
-          <select id="affiliationColorSelector">
-            <option value="blue">Blå fargepalett</option>
-            <option value="green">Grønn fargepalett</option>
-            <option value="grey">Grå fargepalett</option>
-            <option value="yellow">Gul fargepalett</option>
-            <option value="purple">Lilla fargepalett</option>
-            <option value="pink">Rosa fargepalett</option>
-            <option value="red">Rød fargepalett</option>
-            <option value="cyan">Turkis fargepalett</option>
+          <select id="affiliationPalette">
+            <optgroup label="Fargepaletter">
+              <option value="blue">Blå fargepalett</option>
+              <option value="green">Grønn fargepalett</option>
+              <option value="grey">Grå fargepalett</option>
+              <option value="yellow">Gul fargepalett</option>
+              <option value="purple">Lilla fargepalett</option>
+              <option value="pink">Rosa fargepalett</option>
+              <option value="red">Rød fargepalett</option>
+              <option value="cyan">Turkis fargepalett</option>
+            </optgroup>
+            <optgroup label="Spesielle paletter">
+              <option value="online">Online - Blå/Oransje</option>
+            </optgroup>
           </select>
         </div>
-      </div>
-      -->
-
-      <div class="item iconitem">
-        <label for="showOffice">
-          <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
-          <span>
-            Vis kontorets status:
-            <img class="icon" src="/img/icon-open.png" />Åpent
-            <img class="icon" src="/img/icon-closed.png" />Lukket
-            <img class="icon" src="/img/icon-meeting.png" />Møte
-            <img class="icon" src="/img/icon-waffle.png"/>
-            <span style="position:relative; left:-4pt;">
-              Vafler
-            </span>
-          </span>
-          <br />
-          <img class="image" src="/img/options-office-plan.png" />
-        </label>
       </div>
 
       <div class="item">
@@ -277,6 +273,25 @@
         </div>
       </div>
 
+      <div class="item iconitem">
+        <label for="showOffice">
+          <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
+          <span>
+            Vis kontorets status:
+            <img class="icon" src="/img/icon-open.png" />Åpent
+            <img class="icon" src="/img/icon-closed.png" />Lukket
+            <img class="icon" src="/img/icon-meeting.png" />Møte
+            <img class="icon" src="/img/icon-waffle.png"/>
+            <span style="position:relative; left:-4pt;">
+              Vafler
+            </span>
+          </span>
+          <br />
+          <img class="image" src="/img/options-office-plan.png" />
+        </label>
+      </div>
+      
+      <!--
       <div class="item">
         <label for="openChatter">
           <input type="checkbox" name="openChatter" value="openChatter" id="openChatter" />
@@ -286,21 +301,23 @@
           <img class="image" src="/img/options-webchat.png" />
         </label>
       </div>
+      -->
 
     </div>
     <div id="right" class="side">
 
-      <div id="infoscreen_slider">
+      <div class="item">
+        <label for="useInfoscreen">
+          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
+          <span>
+            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
+          </span><br />
+          <img class="image" src="/img/options-infoscreen.png" /><br />
+          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
+        </label>
+      </div>
 
-        <div class="item">
-          <label for="coffeeSubscription">
-            <input type="checkbox" name="coffeeSubscription" value="coffeeSubscription" id="coffeeSubscription" />
-            <span>
-              Abonner på nytraktet kaffe
-            </span><br />
-            <img class="image" src="/img/options-coffee-subscription.png" />
-          </label>
-        </div>
+      <div id="infoscreen_slider">
 
         <div class="item">
           <label for="showNotifications">
@@ -312,17 +329,16 @@
           </label>
         </div>
 
-      </div>
+        <div class="item">
+          <label for="coffeeSubscription">
+            <input type="checkbox" name="coffeeSubscription" value="coffeeSubscription" id="coffeeSubscription" />
+            <span>
+              Abonner på nytraktet kaffe
+            </span><br />
+            <img class="image" src="/img/options-coffee-subscription.png" />
+          </label>
+        </div>
 
-      <div class="item">
-        <label for="useInfoscreen">
-          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
-          <span>
-            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
-          </span><br />
-          <img class="image" src="/img/options-infoscreen.png" /><br />
-          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
-        </label>
       </div>
 
     </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
@@ -358,7 +374,7 @@
   <div id="pageflip"></div>
   <div id="pagefliplink">
     <br />
-    <a href="http://github.com/dotkom/online-notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pageflipline"><span id="pageflipname"></span><span id="pageflipheart"> with &lt;3</span></span><span class="pageflipcursor">_</span></a>
+    <a href="http://github.com/dotkom/online-notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pagefliptyping"></span><span class="pageflipcursor">_</span></a>
   </div>
 
   <!-- +1 button -->

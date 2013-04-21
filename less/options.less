@@ -173,6 +173,13 @@ header {
     cursor: pointer;
   }
 
+  input#showAffiliation {
+    opacity: 0;
+    /* Turning off news feed is not allowed since it would
+    turn off the primary purpose of Online Notifier. Don't
+    show the checkbox, it's disabled anyway. */
+  }
+
   label {
     cursor: pointer;
   }
@@ -205,7 +212,7 @@ header {
     padding: 3pt 8pt;
     white-space: nowrap;
     word-wrap: break-word;
-    select#affiliationKey {
+    #affiliationKey {
       .debugred;
       float: left;
       border: 1pt solid #7a7a7a;
@@ -215,7 +222,7 @@ header {
       white-space: nowrap;
       width: 130pt;
     }
-    #affiliationColorSelector {
+    #affiliationPalette {
       .debugred;
       float: left;
       border: 1pt solid #7a7a7a;
@@ -362,6 +369,7 @@ header {
       }
     }
     #bus_logo {
+      .debugred;
       position: relative; /* allows the down-arrow to be painted behind this */
       z-index: 10; /* allows the down-arrow to be painted behind this */
       float: left;
@@ -444,9 +452,14 @@ header {
   position: fixed;
   top: 10pt;
   right: 10pt;
+  opacity: .05;
   text-align: right;
+  -webkit-transition: all .1s ease-out;
   button {
     /* nothing here yet */
+  }
+  &:hover {
+    opacity: 1;
   }
 }
 

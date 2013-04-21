@@ -7,7 +7,7 @@ var News = {
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
 
-  debug: 0,
+  debug: 1,
 
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
@@ -38,12 +38,24 @@ var News = {
         self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR:', self.msgConnectionError);
+        if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
         callback(self.msgConnectionError, affiliationObject.name);
       },
     });
   },
 
+  // Need to know about the news feeds used in Online Notifier:
+  // These RSS fields are always used:
+  // - title
+  // - link
+  // - desc - often wrapped in <![CDATA[content here]]>
+  // These RSS fields are sometimes used:
+  // - guid - usually the same as link
+  // - pubDate
+  // - category
+  // - dc:creator - author name or username
+  // - enclosure - may contain an image as an XML attribute: url="news_post_image.jpg"
+  // - source
   parseFeed: function(xml, affiliationObject, limit, callback) {
     var items = [];
     var self = this;
@@ -190,9 +202,9 @@ var News = {
       
       // Stop counting if unread number is greater than maxNewsAmount
       if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
-        if (self.debug) console.log(maxNewsAmount + '+ unread posts (stopped counting)');
-        Browser.setBadgeText(maxNewsAmount + '+');
-        localStorage.unreadCount = maxNewsAmount;
+        if (self.debug) console.log((maxNewsAmount + 1) + ' unread posts (stopped counting)');
+        Browser.setBadgeText(String(maxNewsAmount + 1));
+        localStorage.unreadCount = maxNewsAmount + 1;
         return;
       }
     });

@@ -35,15 +35,13 @@
 	
   "permissions": [
     "notifications",
-    "*://*.online.ntnu.no/*",
-    "*://*.visuweb.no/*",
-    "*://*.sit.no/*"
+    "<all_urls>"
   ],
 
 	"content_scripts": [
     {
       "matches": ["*://*.online.ntnu.no/*", "*://*.sit.no/*" ],
-      "js": ["libs/jquery-1.9.1.min.js", "includes/on_website.js"]
+      "js": ["libs/jquery-2.0.0.min.js", "includes/on_website.js"]
     }
   ],
 

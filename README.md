@@ -12,8 +12,6 @@ Use this program entirely on your own risk. We do not take any responsibility fo
 
 # Features overview
 
-Features
-
 - Displays status for Onlines office: Open, closed, meeting, free waffles
 - Displays todays meetings and current servant at Onlines office
 - Displays the status of the coffee pot at Onlines office
@@ -25,7 +23,7 @@ Features
 - All pages in the extension are live, they keep themselves updated
 - Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript, jQuery and WebGL
 
-Chronological Credz
+# Chronological Credz
 
 - Michael Johansen is the lead coder
 - Espen Jacobsson wrote Onlines API-service
@@ -47,7 +45,7 @@ Chronological Credz
 	- Magnus Dysthe
 	- Michael Johansen
 
-Issues submitted to the Chromium and Opera teams
+# Issues submitted to the Chromium and Opera teams
 
 - Regex word boundary and ÆØÅ: https://code.google.com/p/chromium/issues/detail?id=223360
 - Desktop Notification logging: https://code.google.com/p/chromium/issues/detail?id=225212

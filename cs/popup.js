@@ -321,7 +321,7 @@
   };
 
   $(function() {
-    var affiliation, color, logo;
+    var affiliation, logo, palette;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -350,15 +350,17 @@
         $('#header #logo').prop('src', logo);
       }
     }
-    color = ls['affiliationColor'];
-    if (color !== 'undefined' && color !== '') {
+    palette = ls.affiliationPalette;
+    if (palette !== void 0) {
       if (DEBUG) {
-        console.log('Applying affiliation color', color);
+        console.log('Applying chosen palette', palette);
       }
-      $('#palette').attr('href', Palettes.getColor(color));
+      $('#palette').attr('href', Palettes.get(palette));
     }
     $('#logo').click(function() {
-      Browser.openTab(ls.extensionWebsite);
+      var web;
+      web = Affiliation.org[ls.affiliationKey].web;
+      Browser.openTab(web);
       return window.close();
     });
     $('#options_button').click(function() {

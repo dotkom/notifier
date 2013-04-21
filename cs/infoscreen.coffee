@@ -240,6 +240,34 @@ updateHours = ->
   Hours.get ls.right_cantina, (hours) ->
     $('#cantinas #right .hours').html hours
 
+changeCreatorName = (name) ->
+  # Stop previous changeCreatorName instance, if any
+  clearTimeout ls.changeCreatorNameTimeoutId
+  # Animate creator name change in the pageflip
+  animateCreatorName name
+
+animateCreatorName = (name, build) ->
+  # Animate it
+  text = $('#pagefliptyping').text()
+  if text.length is 0
+    build = true
+    name = name + " with <3"
+  random = Math.floor 350 * Math.random() + 50
+  if !build
+    $('#pagefliptyping').text text.slice 0, text.length-1
+    ls.animateCreatorNameTimeoutId = setTimeout ( ->
+      animateCreatorName name
+    ), random
+  else
+    if text.length isnt name.length
+      if text.length is 0
+        $('#pagefliptyping').text name.slice 0, 1
+      else
+        $('#pagefliptyping').text name.slice 0, text.length+1
+      ls.animateCreatorNameTimeoutId = setTimeout ( ->
+        animateCreatorName name, true
+      ), random
+
 # Document ready, go!
 $ ->
   if DEBUG
@@ -252,7 +280,6 @@ $ ->
   $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
-  ls.removeItem 'mostRecentRead'
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
 
@@ -261,13 +288,29 @@ $ ->
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
+
+  if ls.affiliationKey isnt 'online'
+    # Show the logo and placeholder image for the correct organization
+    affiliation = ls.affiliationKey
+    # If the affiliation has a defined logo
+    logo = Affiliation.org[affiliation].logo
+    if logo isnt undefined and logo isnt ''
+      if DEBUG then console.log 'Applying affiliation logo', logo
+      $('#logo').prop 'src', logo
+  
+  # Show the standard palette or special palette the user has chosen
+  palette = ls.affiliationPalette
+  if palette isnt undefined
+    if DEBUG then console.log 'Applying chosen palette', palette
+    $('#palette').attr 'href', Palettes.get palette
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
-  $('#pageflipname').text ls.extensionCreator
+  changeCreatorName ls.extensionCreator
+  # $('#pageflipname').text ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
@@ -298,11 +341,11 @@ $ ->
     ), 3500
   ), 1800000
 
-  # Reload the page once every day
+  # Reload the page once every day (in case the extension updates)
   unless DEBUG
     setTimeout ( ->
       document.location.reload()
-    ), 3600000 # KILLBUG: set to once every hour for now in order to keep #news alive, set to 86400000 later
+    ), 86400000
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()
