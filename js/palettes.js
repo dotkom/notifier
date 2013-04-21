@@ -12,7 +12,7 @@ var Palettes = {
     'white': 'less/palettes/white.css',
     'yellow': 'less/palettes/yellow.css',
     // Special palettes
-    'online': Affiliation.org['online'].palette,
+    'online': Affiliation.org['online'].palettePath,
   },
 
   get: function(palette) {
