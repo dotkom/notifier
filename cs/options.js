@@ -77,7 +77,7 @@
     return $('#affiliationPalette').change(function() {
       var affiliationPalette;
       affiliationPalette = $(this).val();
-      return ls[id] = affiliationPalette;
+      return ls.affiliationPalette = affiliationPalette;
     });
   };
 

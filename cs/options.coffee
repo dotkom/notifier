@@ -64,9 +64,10 @@ bindAffiliationPaletteSelector = ->
   $('#affiliationPalette').val ls.affiliationPalette
   # React to change
   $('#affiliationPalette').change ->
+    # Get newly set value
     affiliationPalette = $(this).val()
-    # Save the change
-    ls[id] = affiliationPalette
+    # Save it
+    ls.affiliationPalette = affiliationPalette
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
