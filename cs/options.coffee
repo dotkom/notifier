@@ -75,18 +75,15 @@ disableOnlineSpecificFeatures = (quick) ->
   ls.extensionCreator = 'Online'
   if quick
     $('label[for="showOffice"]').hide()
-    $('label[for="useInfoscreen"]').hide()
     $('label[for="coffeeSubscription"]').hide()
     $('#pageflipline').text 'Online with <3'
   else
   # Hide office status option
   $('label[for="showOffice"]').slideUp 'slow', ->
-    # Hide infoscreen option
-    $('label[for="useInfoscreen"]').slideUp 'slow', ->
-      # Hide coffee subscription option
-      $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-        # Change pageflip name
-        changeCreatorName 'Online'
+    # Hide coffee subscription option
+    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # Change pageflip name
+      changeCreatorName 'Online'
 
 enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
@@ -94,7 +91,6 @@ enableOnlineSpecificFeatures = (quick) ->
   ls.extensionCreator = 'dotKom'
   if quick
     $('label[for="showOffice"]').hide()
-    $('label[for="useInfoscreen"]').hide()
     $('label[for="coffeeSubscription"]').hide()
     $('#pageflipline').text 'Online with <3'
   else
@@ -102,10 +98,8 @@ enableOnlineSpecificFeatures = (quick) ->
     $('label[for="showOffice"]').slideDown 'slow', ->
       # Enable coffee subscription
       $('label[for="coffeeSubscription"]').slideDown 'slow', ->
-        # Hide infoscreen option
-        $('label[for="useInfoscreen"]').slideDown 'slow', ->
-          # Change pageflip name
-          changeCreatorName 'dotKom'
+        # Change pageflip name
+        changeCreatorName 'dotKom'
 
 bindCantinaSelector = (selector) ->
   # Default values
