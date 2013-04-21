@@ -44,32 +44,29 @@ bindAffiliationSelector = ->
       enableOnlineSpecificFeatures()
     # Save the change
     ls[id] = affiliationKey
-    # Get and save the recommended color palette for the chosen affiliation
-    color = Affiliation.org[affiliationKey].color
-    if color isnt undefined and color isnt ''
-      $('#affiliationColor').val color
-      ls['affiliationColor'] = color
+    # Get and save the recommended palette for the chosen affiliation
+    palette = Affiliation.org[affiliationKey].palette
+    if palette isnt undefined
+      $('#affiliationPalette').val palette
+      ls.affiliationPalette = palette
     # Get and save the icon for the chosen affiliation
     icon = Affiliation.org[affiliationKey].icon
-    if icon isnt undefined and icon isnt ''
+    if icon isnt undefined
       Browser.setIcon icon
-      ls['affiliationIcon'] = icon
+      ls.affiliationIcon = icon
     # Throw out old news
     ls.removeItem 'feedItems'
     # Update to new feed
     Browser.getBackgroundProcess().updateNews()
 
-bindAffiliationColorSelector = ->
-  id = 'affiliationColor'
+bindAffiliationPaletteSelector = ->
   # Default values
-  $('#'+id).val ls[id]
-  # Remove any previous "selected" (by default) attributes
-  # $('#'+id+' option[selected]').removeAttr('selected');
+  $('#affiliationPalette').val ls.affiliationPalette
   # React to change
-  $('#'+id).change ->
-    affiliationColor = $(this).val()
+  $('#affiliationPalette').change ->
+    affiliationPalette = $(this).val()
     # Save the change
-    ls[id] = affiliationColor
+    ls[id] = affiliationPalette
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -631,9 +628,9 @@ $ ->
   # $('#notification').click ->
   #   fadeInCanvas()
 
-  # Allow user to change affiliation and colors
+  # Allow user to change affiliation and palette
   bindAffiliationSelector()
-  bindAffiliationColorSelector()
+  bindAffiliationPaletteSelector()
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
