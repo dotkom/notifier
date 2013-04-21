@@ -527,6 +527,9 @@ var Affiliation = {
       placeholder: './org/ntnu/placeholder.png',
       color: 'blue',
       useAltLink: false,
+      getImage: function(link, callback) {
+        Affiliation.getImage(this, link, callback, '', 2);
+      },
     },
     'rektoratet ntnu': {
       name: 'Rektoratet NTNU',
@@ -538,6 +541,9 @@ var Affiliation = {
       placeholder: './org/rektoratet ntnu/placeholder.png',
       color: 'blue',
       useAltLink: false,
+      getImage: function(link, callback) {
+        Affiliation.getImage(this, link, callback, 'div.entry');
+      },
     },
     'hist': {
       name: 'HiST',
@@ -566,7 +572,7 @@ var Affiliation = {
     },
   },
 
-  // Common getImages function
+  // Common getImage[s] function
 
   getImages: function(affiliation, links, callback, parentSelector, domainUrl) {
     var web = affiliation.web;
@@ -619,6 +625,35 @@ var Affiliation = {
       error: function(e) {
         if (top.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
         callback(links, placeholders);
+      },
+    });
+  },
+
+  getImage: function(affiliation, link, callback, parentSelector, index) {
+    var placeholder = affiliation.placeholder;
+    if (index == undefined)
+      var index = 0;
+    Ajaxer.getHtml({
+      url: link,
+      success: function(html) {
+        // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
+        html = $.trim(html);
+        // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
+        image = $(html);
+        // Get image from parent selector, with optional image index
+        image = image.find(parentSelector+' img').not('img[src*=".gif"]').eq(index).attr('src');
+
+        if (image != undefined) {
+          callback(link, image);
+        }
+        else {
+          if (top.debug) console.log('ERROR: no image exists for link', link);
+          callback(link, placeholder);
+        }
+      },
+      error: function() {
+        if (top.debug) console.log('ERROR: couldn\'t load page to get image links', link);
+        callback(link, placeholder);
       },
     });
   },
