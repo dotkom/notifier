@@ -59,7 +59,7 @@ var Affiliation = {
       color: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'emil': {
@@ -73,7 +73,7 @@ var Affiliation = {
       color: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.frontpage', 2);
+        Affiliation.getImages(this, links, callback, 'div.frontpage', 2);
       },
     },
     'leonardo': {
@@ -161,46 +161,7 @@ var Affiliation = {
       color: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
-        var web = this.web;
-        var placeholder = this.placeholder;
-        var placeholders = []
-        // In case we don't find any images, prepare an array with placeholders
-        for (var i=0; i<links.length; i++)
-          placeholders.push(placeholder);
-        Ajaxer.getHtml({
-          url: web,
-          success: function(html) {
-            try {
-              var images = [];
-              for (i in links) {
-                var relativeLink = links[i].split('nabla.no')[1];
-                // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
-                html = $.trim(html);
-                // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
-                image = $(html);
-                // Find the actual image reference
-                image = image.find('.news_item a[href="'+relativeLink+'"] img').attr('src');
-
-                if (image == undefined) {
-                  image = placeholder;
-                }
-                else {
-                  image = 'http://nabla.no' + image;
-                }
-                images.push(image);
-              }
-              callback(links, images);
-            }
-            catch (e) {
-              if (top.debug) console.log('ERROR: could not parse '+this.name+' website');
-              callback(links, placeholders);
-            }
-          },
-          error: function(e) {
-            if (top.debug) console.log('ERROR: could not fetch '+this.name+' website');
-            callback(links, placeholders);
-          },
-        });
+        Affiliation.getImages(this, links, callback, '.news_item', 'nabla.no');
       },
     },
     'spanskrøret': {
@@ -214,7 +175,7 @@ var Affiliation = {
       color: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'volvox': {
@@ -228,7 +189,7 @@ var Affiliation = {
       color: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
 
@@ -244,7 +205,7 @@ var Affiliation = {
       color: 'yellow',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'dionysos': {
@@ -258,7 +219,7 @@ var Affiliation = {
       color: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'erudio': {
@@ -272,7 +233,7 @@ var Affiliation = {
       color: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
     'eureka': {
@@ -286,7 +247,7 @@ var Affiliation = {
       color: 'yellow',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'geolf': {
@@ -300,7 +261,7 @@ var Affiliation = {
       color: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'gengangere': {
@@ -314,7 +275,7 @@ var Affiliation = {
       color: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'jump cut': {
@@ -328,7 +289,7 @@ var Affiliation = {
       color: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
     'ludimus': {
@@ -342,7 +303,7 @@ var Affiliation = {
       color: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'primetime': {
@@ -356,7 +317,7 @@ var Affiliation = {
       color: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'sturm und drang': {
@@ -370,7 +331,7 @@ var Affiliation = {
       color: 'red',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
 
@@ -386,7 +347,7 @@ var Affiliation = {
       color: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
     'kom': {
@@ -400,7 +361,7 @@ var Affiliation = {
       color: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
     'logistikkstudentene': {
@@ -414,7 +375,7 @@ var Affiliation = {
       color: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
     'tihlde': {
@@ -428,7 +389,7 @@ var Affiliation = {
       color: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.entry');
+        Affiliation.getImages(this, links, callback, 'div.entry');
       },
     },
     'tim og shænko': {
@@ -442,7 +403,7 @@ var Affiliation = {
       color: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback);
+        Affiliation.getImages(this, links, callback);
       },
     },
     'tjsf': {
@@ -456,7 +417,7 @@ var Affiliation = {
       color: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
 
@@ -551,7 +512,7 @@ var Affiliation = {
       color: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImagesFromWordpress(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
     
@@ -588,6 +549,9 @@ var Affiliation = {
       placeholder: './org/hist/placeholder.png',
       color: 'blue',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, 'div.unit', 'hist.no');
+      },
     },
     'dmmh': {
       name: 'DMMH',
@@ -602,16 +566,14 @@ var Affiliation = {
     },
   },
 
-  // Common getImage[s] functions
+  // Common getImages function
 
-  getImagesFromWordpress: function(affiliation, links, callback, parentSelector, index) {
+  getImages: function(affiliation, links, callback, parentSelector, domainUrl) {
     var web = affiliation.web;
     var placeholder = affiliation.placeholder;
     var placeholders = []
     if (parentSelector == undefined)
       parentSelector = 'article';
-    if (index == undefined)
-      index = 0;
     // In case we don't find any images, prepare an array with placeholders
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
@@ -621,15 +583,16 @@ var Affiliation = {
         try {
           var images = [];
           for (i in links) {
+            // If posts are using relative links, split by passed string, usually the domain name, like 'hist.no'
+            if (domainUrl)
+              var relativeLink = links[i].split(domainUrl)[1];
             // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
             html = $.trim(html);
             // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
             image = $(html);
             
             // Look up the first post with the link inside it
-            image = image.find(parentSelector + ' a[href="'+links[i]+'"]');
-            // If several links exist, get link at specified index
-            image = image.eq(index); // CURRENTLY NOT IN USE
+            image = image.find(parentSelector + ' a[href="'+(domainUrl ? relativeLink : links[i])+'"]');
             // Find parent 'article' or 'div.post' or the like
             image = image.parents(parentSelector);
             // Find all image tags within post
@@ -639,9 +602,11 @@ var Affiliation = {
             // Get the src for the first image left in the array
             image = image.attr('src');
 
-            if (image == undefined) {
+            if (image == undefined)
               image = placeholder;
-            }
+            else if (domainUrl)
+              image = 'http://' + domainUrl + image
+
             images.push(image);
           }
           callback(links, images);
