@@ -49,6 +49,8 @@ bindAffiliationSelector = ->
     if palette isnt undefined
       $('#affiliationPalette').val palette
       ls.affiliationPalette = palette
+      if DEBUG then console.log 'Applying chosen palette', palette
+      $('#palette').attr 'href', Palettes.get palette
     # Get and save the icon for the chosen affiliation
     icon = Affiliation.org[affiliationKey].icon
     if icon isnt undefined
@@ -59,15 +61,18 @@ bindAffiliationSelector = ->
     # Update to new feed
     Browser.getBackgroundProcess().updateNews()
 
-bindAffiliationPaletteSelector = ->
+bindPaletteSelector = ->
   # Default values
   $('#affiliationPalette').val ls.affiliationPalette
   # React to change
   $('#affiliationPalette').change ->
     # Get newly set value
-    affiliationPalette = $(this).val()
+    palette = $(this).val()
     # Save it
-    ls.affiliationPalette = affiliationPalette
+    ls.affiliationPalette = palette
+    # Applying palette to options page
+    if DEBUG then console.log 'Applying chosen palette', palette
+    $('#palette').attr 'href', Palettes.get palette
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -625,7 +630,7 @@ $ ->
 
   # Allow user to change affiliation and palette
   bindAffiliationSelector()
-  bindAffiliationPaletteSelector()
+  bindPaletteSelector()
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
