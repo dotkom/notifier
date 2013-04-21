@@ -290,8 +290,8 @@ $ ->
     ls.affiliationKey = 'online'
   if ls.affiliationIcon is undefined
     ls.affiliationIcon = '/img/icon-default.png'
-  if ls.affiliationColor is undefined
-    ls.affiliationColor = 'blue'
+  if ls.affiliationPalette is undefined
+    ls.affiliationPalette = 'online'
 
   # Lists of links (IDs) for news items
   if ls.newsList is undefined
