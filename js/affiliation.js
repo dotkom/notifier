@@ -70,6 +70,21 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback, 'div.frontpage', 2);
       },
     },
+    'hybrida': {
+      name: 'Hybrida',
+      key: 'hybrida',
+      web: 'http://hybrida.no/',
+      feed: 'http://hybrida.no/newsfeed/rss',
+      logo: './org/hybrida/logo.png',
+      icon: './org/hybrida/icon.png',
+      placeholder: './org/hybrida/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      // TODO: Bytt til getImages
+      getImage: function(link, callback) {
+        Affiliation.getImage(this, link, callback, 'div.newsView', 0, 'hybrida.no');
+      },
+    },
     'leonardo': {
       name: 'Leonardo',
       key: 'leonardo',
