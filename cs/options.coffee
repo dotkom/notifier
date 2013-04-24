@@ -515,8 +515,8 @@ revertInfoscreen = ->
     # Move infoscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
     # Move logo and subtext back in place (to the left)
-    $('header #logo_subtext').animate {'margin-left':'215pt'}, speed
-    $('header #logo').animate {'margin-left':'25pt'}, speed, ->
+    $('header #logo').animate {'margin-left':'40pt'}, speed
+    $('header #logo_subtext').animate {'margin-left':'235pt'}, speed, ->
       # Animate in the infoscreen preview
       $('#infoscreen_preview').fadeOut speed, ->
         # Slide more options back open

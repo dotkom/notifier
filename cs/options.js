@@ -578,11 +578,11 @@
       $('#container #right').animate({
         'margin-left': '0'
       }, speed);
-      $('header #logo_subtext').animate({
-        'margin-left': '215pt'
+      $('header #logo').animate({
+        'margin-left': '40pt'
       }, speed);
-      return $('header #logo').animate({
-        'margin-left': '25pt'
+      return $('header #logo_subtext').animate({
+        'margin-left': '235pt'
       }, speed, function() {
         return $('#infoscreen_preview').fadeOut(speed, function() {
           return $('#infoscreen_slider').slideDown(speed, function() {
