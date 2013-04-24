@@ -94,9 +94,8 @@ var Affiliation = {
       placeholder: './org/hybrida/placeholder.png',
       palette: 'blue',
       useAltLink: false,
-      // TODO: Bytt til getImages
-      getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, 'div.newsView', 0, 'hybrida.no');
+      getImages: function(link, callback) {
+        Affiliation.getImages(this, link, callback, 'div.element', 'hybrida.no');
       },
     },
     'leonardo': {
@@ -112,7 +111,7 @@ var Affiliation = {
       getImages: function(links, callback) {
         var web = this.web;
         var placeholder = this.placeholder;
-        var placeholders = []
+        var placeholders = [];
         // In case we don't find any images, prepare an array with placeholders
         for (var i=0; i<links.length; i++)
           placeholders.push(placeholder);
