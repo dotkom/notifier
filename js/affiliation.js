@@ -71,7 +71,7 @@ var Affiliation = {
       },
     },
     'entreprenorskolen': {
-      name: 'Entreprenorskolen',
+      name: 'Entreprenørskolen',
       key: 'entreprenorskolen',
       web: 'http://entreprenorskolen.no/',
       feed: 'http://entreprenorskolen.no/feed/',
@@ -189,7 +189,7 @@ var Affiliation = {
       },
     },
     'spanskroret': {
-      name: 'Spanskroret',
+      name: 'Spanskrøret',
       key: 'spanskroret',
       web: 'http://spanskroret.no/',
       feed: 'http://spanskroret.no/feed/',
