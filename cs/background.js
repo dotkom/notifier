@@ -105,15 +105,17 @@
   };
 
   loadAffiliationIcon = function() {
-    var icon;
+    var icon, name;
     icon = ls.affiliationIcon;
     if (icon !== void 0 && icon !== '') {
-      return Browser.setIcon(ls.affiliationIcon);
+      Browser.setIcon(ls.affiliationIcon);
     } else {
       if (DEBUG) {
-        return console.log('ERROR: tried to load empty/undefined affiliation icon');
+        console.log('ERROR: tried to load empty/undefined affiliation icon');
       }
     }
+    name = Affiliation.org[affiliationKey].name;
+    return Browser.setTitle(name + ' Notifier');
   };
 
   $(function() {

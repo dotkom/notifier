@@ -74,11 +74,15 @@ updateNews = ->
         News.refreshNewsIdList items
 
 loadAffiliationIcon = ->
+  # Set badge icon
   icon = ls.affiliationIcon
   if icon isnt undefined and icon isnt ''
     Browser.setIcon ls.affiliationIcon
   else
     if DEBUG then console.log 'ERROR: tried to load empty/undefined affiliation icon'
+  # Set badge title
+  name = Affiliation.org[affiliationKey].name
+  Browser.setTitle name + ' Notifier'
 
 # Document ready, go!
 $ ->

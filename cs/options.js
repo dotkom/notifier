@@ -48,7 +48,7 @@
     affiliationKey = ls[id];
     $('#' + id).val(affiliationKey);
     return $('#' + id).change(function() {
-      var icon, oldAffiliation, palette;
+      var icon, name, oldAffiliation, palette;
       affiliationKey = $(this).val();
       oldAffiliation = ls[id];
       if (oldAffiliation === 'online') {
@@ -71,6 +71,8 @@
         Browser.setIcon(icon);
         ls.affiliationIcon = icon;
       }
+      name = Affiliation.org[affiliationKey].name;
+      Browser.setTitle(name + ' Notifier');
       ls.removeItem('feedItems');
       return Browser.getBackgroundProcess().updateNews();
     });

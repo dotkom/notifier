@@ -56,6 +56,9 @@ bindAffiliationSelector = ->
     if icon isnt undefined
       Browser.setIcon icon
       ls.affiliationIcon = icon
+    # Get and save the affiliation name to the badge title
+    name = Affiliation.org[affiliationKey].name
+    Browser.setTitle name + ' Notifier'
     # Throw out old news
     ls.removeItem 'feedItems'
     # Update to new feed
