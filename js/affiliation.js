@@ -232,6 +232,20 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'dhs': {
+      name: 'Det Historiske Selskab',
+      key: 'dhs',
+      web: 'http://ntnuhistorie.wordpress.com/',
+      feed: 'http://ntnuhistorie.wordpress.com/feed/',
+      logo: './org/dhs/logo.png',
+      icon: './org/dhs/icon.png',
+      placeholder: './org/dhs/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     'dionysos': {
       name: 'Dionysos',
       key: 'dionysos',
