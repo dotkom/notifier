@@ -105,16 +105,11 @@
   };
 
   loadAffiliationIcon = function() {
-    var icon, name;
-    icon = ls.affiliationIcon;
-    if (icon !== void 0 && icon !== '') {
-      Browser.setIcon(ls.affiliationIcon);
-    } else {
-      if (DEBUG) {
-        console.log('ERROR: tried to load empty/undefined affiliation icon');
-      }
-    }
-    name = Affiliation.org[affiliationKey].name;
+    var icon, key, name;
+    key = ls.affiliationKey;
+    icon = Affiliation.org[key].icon;
+    Browser.setIcon(icon);
+    name = Affiliation.org[key].name;
     return Browser.setTitle(name + ' Notifier');
   };
 
@@ -137,9 +132,6 @@
     }
     if (ls.affiliationKey === void 0) {
       ls.affiliationKey = 'online';
-    }
-    if (ls.affiliationIcon === void 0) {
-      ls.affiliationIcon = '/img/icon-default.png';
     }
     if (ls.affiliationPalette === void 0) {
       ls.affiliationPalette = 'online';

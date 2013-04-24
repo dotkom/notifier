@@ -67,10 +67,7 @@
         $('#palette').attr('href', Palettes.get(palette));
       }
       icon = Affiliation.org[affiliationKey].icon;
-      if (icon !== void 0) {
-        Browser.setIcon(icon);
-        ls.affiliationIcon = icon;
-      }
+      Browser.setIcon(icon);
       name = Affiliation.org[affiliationKey].name;
       Browser.setTitle(name + ' Notifier');
       ls.removeItem('feedItems');

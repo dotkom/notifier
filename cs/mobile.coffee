@@ -288,8 +288,6 @@ $ ->
     ls.showAffiliation = 'true'
   if ls.affiliationKey is undefined
     ls.affiliationKey = 'online'
-  if ls.affiliationIcon is undefined
-    ls.affiliationIcon = '/img/icon-default.png'
   if ls.affiliationPalette is undefined
     ls.affiliationPalette = 'online'
 

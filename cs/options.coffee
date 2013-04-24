@@ -51,11 +51,9 @@ bindAffiliationSelector = ->
       ls.affiliationPalette = palette
       if DEBUG then console.log 'Applying chosen palette', palette
       $('#palette').attr 'href', Palettes.get palette
-    # Get and save the icon for the chosen affiliation
+    # Get and save the affiliation icon
     icon = Affiliation.org[affiliationKey].icon
-    if icon isnt undefined
-      Browser.setIcon icon
-      ls.affiliationIcon = icon
+    Browser.setIcon icon
     # Get and save the affiliation name to the badge title
     name = Affiliation.org[affiliationKey].name
     Browser.setTitle name + ' Notifier'

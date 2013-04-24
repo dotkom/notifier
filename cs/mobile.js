@@ -361,9 +361,6 @@
     if (ls.affiliationKey === void 0) {
       ls.affiliationKey = 'online';
     }
-    if (ls.affiliationIcon === void 0) {
-      ls.affiliationIcon = '/img/icon-default.png';
-    }
     if (ls.affiliationPalette === void 0) {
       ls.affiliationPalette = 'online';
     }
