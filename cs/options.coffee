@@ -477,7 +477,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
             # Move all content a bit up
             $('header').animate {'top':'40%'}, speed
             $('#container').animate {'top':'40%'}, speed, ->
-              if force or confirm 'Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
+              name = Affiliation.org[ls.affiliationKey].name
+              if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
                 # Enable, and check the checkbox
                 ls[id] = 'true'
                 $('#'+id).prop 'checked', true

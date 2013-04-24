@@ -530,7 +530,9 @@
               return $('#container').animate({
                 'top': '40%'
               }, speed, function() {
-                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
+                var name;
+                name = Affiliation.org[ls.affiliationKey].name;
+                if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
                   ls[id] = 'true';
                   $('#' + id).prop('checked', true);
                   Browser.setIcon('img/icon-default.png');
