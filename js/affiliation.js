@@ -70,6 +70,20 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback, 'div.frontpage', 2);
       },
     },
+    'entreprenorskolen': {
+      name: 'Entreprenorskolen',
+      key: 'entreprenorskolen',
+      web: 'http://entreprenorskolen.no/',
+      feed: 'http://entreprenorskolen.no/feed/',
+      logo: './org/entreprenorskolen/logo.png',
+      icon: './org/entreprenorskolen/icon.png',
+      placeholder: './org/entreprenorskolen/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, 'div.post');
+      },
+    },
     'hybrida': {
       name: 'Hybrida',
       key: 'hybrida',
@@ -472,20 +486,6 @@ var Affiliation = {
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
-      },
-    },
-    'entreprenorskolen': {
-      name: 'Entreprenorskolen',
-      key: 'entreprenorskolen',
-      web: 'http://entreprenorskolen.no/',
-      feed: 'http://entreprenorskolen.no/feed/',
-      logo: './org/entreprenorskolen/logo.png',
-      icon: './org/entreprenorskolen/icon.png',
-      placeholder: './org/entreprenorskolen/placeholder.png',
-      palette: 'blue',
-      useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
       },
     },
     'soma': {
