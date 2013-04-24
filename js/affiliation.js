@@ -530,7 +530,6 @@ var Affiliation = {
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, 'section.articlepreview', 'dusken.no');
-
       },
     },
     'universitetsavisa': {
