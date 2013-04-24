@@ -48,7 +48,6 @@ bindAffiliationSelector = ->
     palette = Affiliation.org[affiliationKey].palette
     if palette isnt undefined
       $('#affiliationPalette').val palette
-      ls.affiliationPalette = palette
       if DEBUG then console.log 'Applying chosen palette', palette
       $('#palette').attr 'href', Palettes.get palette
     # Get and save the affiliation icon
@@ -64,13 +63,11 @@ bindAffiliationSelector = ->
 
 bindPaletteSelector = ->
   # Default values
-  $('#affiliationPalette').val ls.affiliationPalette
+  $('#affiliationPalette').val Affiliation.org[ls.affiliationKey].palette
   # React to change
   $('#affiliationPalette').change ->
     # Get newly set value
     palette = $(this).val()
-    # Save it
-    ls.affiliationPalette = palette
     # Applying palette to options page
     if DEBUG then console.log 'Applying chosen palette', palette
     $('#palette').attr 'href', Palettes.get palette
@@ -603,10 +600,9 @@ $ ->
     disableOnlineSpecificFeatures true # true means be quick about it!
   
   # Show the standard palette or special palette the user has chosen
-  palette = ls.affiliationPalette
-  if palette isnt undefined
-    if DEBUG then console.log 'Applying chosen palette', palette
-    $('#palette').attr 'href', Palettes.get palette
+  palette = Affiliation.org[ls.affiliationKey].palette
+  if DEBUG then console.log 'Applying chosen palette', palette
+  $('#palette').attr 'href', Palettes.get palette
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->

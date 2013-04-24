@@ -350,13 +350,11 @@
         $('#header #logo').prop('src', logo);
       }
     }
-    palette = ls.affiliationPalette;
-    if (palette !== void 0) {
-      if (DEBUG) {
-        console.log('Applying chosen palette', palette);
-      }
-      $('#palette').attr('href', Palettes.get(palette));
+    palette = Affiliation.org[ls.affiliationKey].palette;
+    if (DEBUG) {
+      console.log('Applying chosen palette', palette);
     }
+    $('#palette').attr('href', Palettes.get(palette));
     $('#logo').click(function() {
       var web;
       web = Affiliation.org[ls.affiliationKey].web;

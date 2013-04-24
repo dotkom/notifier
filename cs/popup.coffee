@@ -288,10 +288,9 @@ $ ->
       $('#header #logo').prop 'src', logo
   
   # Show the standard palette or special palette the user has chosen
-  palette = ls.affiliationPalette
-  if palette isnt undefined
-    if DEBUG then console.log 'Applying chosen palette', palette
-    $('#palette').attr 'href', Palettes.get palette
+  palette = Affiliation.org[ls.affiliationKey].palette
+  if DEBUG then console.log 'Applying chosen palette', palette
+  $('#palette').attr 'href', Palettes.get palette
 
   # Make logo open extension website while closing popup
   $('#logo').click ->

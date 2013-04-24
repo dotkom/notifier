@@ -363,13 +363,11 @@
         $('#logo').prop('src', logo);
       }
     }
-    palette = ls.affiliationPalette;
-    if (palette !== void 0) {
-      if (DEBUG) {
-        console.log('Applying chosen palette', palette);
-      }
-      $('#palette').attr('href', Palettes.get(palette));
+    palette = Affiliation.org[ls.affiliationKey].palette;
+    if (DEBUG) {
+      console.log('Applying chosen palette', palette);
     }
+    $('#palette').attr('href', Palettes.get(palette));
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");

@@ -60,7 +60,6 @@
       palette = Affiliation.org[affiliationKey].palette;
       if (palette !== void 0) {
         $('#affiliationPalette').val(palette);
-        ls.affiliationPalette = palette;
         if (DEBUG) {
           console.log('Applying chosen palette', palette);
         }
@@ -76,11 +75,10 @@
   };
 
   bindPaletteSelector = function() {
-    $('#affiliationPalette').val(ls.affiliationPalette);
+    $('#affiliationPalette').val(Affiliation.org[ls.affiliationKey].palette);
     return $('#affiliationPalette').change(function() {
       var palette;
       palette = $(this).val();
-      ls.affiliationPalette = palette;
       if (DEBUG) {
         console.log('Applying chosen palette', palette);
       }
@@ -655,13 +653,11 @@
     if (ls.affiliationKey !== 'online') {
       disableOnlineSpecificFeatures(true);
     }
-    palette = ls.affiliationPalette;
-    if (palette !== void 0) {
-      if (DEBUG) {
-        console.log('Applying chosen palette', palette);
-      }
-      $('#palette').attr('href', Palettes.get(palette));
+    palette = Affiliation.org[ls.affiliationKey].palette;
+    if (DEBUG) {
+      console.log('Applying chosen palette', palette);
     }
+    $('#palette').attr('href', Palettes.get(palette));
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;
