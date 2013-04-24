@@ -560,7 +560,7 @@ fadeInCanvas = ->
 
 changeCreatorName = (name) ->
   # Stop previous changeCreatorName instance, if any
-  clearTimeout ls.changeCreatorNameTimeoutId
+  clearTimeout Number ls.animateCreatorNameTimeoutId
   # Animate creator name change in the pageflip
   animateCreatorName name + " with <3"
 

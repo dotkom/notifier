@@ -611,7 +611,7 @@
   };
 
   changeCreatorName = function(name) {
-    clearTimeout(ls.changeCreatorNameTimeoutId);
+    clearTimeout(Number(ls.animateCreatorNameTimeoutId));
     return animateCreatorName(name + " with <3");
   };
 
