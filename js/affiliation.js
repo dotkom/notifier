@@ -526,8 +526,12 @@ var Affiliation = {
       logo: './org/dusken/logo.png',
       icon: './org/dusken/icon.png',
       placeholder: './org/dusken/placeholder.png',
-      palette: 'grå',
+      palette: 'grey',
       useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, 'section.articlepreview', 'dusken.no');
+
+      },
     },
     'universitetsavisa': {
       name: 'Universitetsavisa',
@@ -539,6 +543,7 @@ var Affiliation = {
       placeholder: './org/universitetsavisa/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
+      // getImages unnecessary, Universitetsavisa uses <enclosure>-tag for images
     },
     'gemini': {
       name: 'Gemini',
@@ -550,6 +555,7 @@ var Affiliation = {
       placeholder: './org/gemini/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
+      // getImages unnecessary, Universitetsavisa uses <bilde>-tag for images
     },
 
     // Store studentorganisasjoner
