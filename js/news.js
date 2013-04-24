@@ -88,16 +88,21 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // Check for image in rarely used <enclosure>-tag
-    var enclosure = $(item).find('enclosure');
-    if (enclosure != '') {
-      try {
-        // Universitetsavisa does this little trick to get images in their feed
+    // Check for image in rarely used tags <enclosure> and <bilde>
+    try {
+      // Universitetsavisa does this little trick to get images in their feed
+      var enclosure = $(item).find('enclosure').filter(':first');
+      if (enclosure != '') {
         post.image = enclosure['0'].attributes.url.textContent;
       }
-      catch (err) {
-        // Do nothing, we we're just checking, move along quitely
+      // Gemini uses this rather blunt hack to put images in their feed
+      var bilde = $(item).find('bilde');
+      if (bilde != '') {
+        post.image = bilde['0'].textContent;
       }
+    }
+    catch (err) {
+      // Do nothing, we we're just checking, move along quitely
     }
     
     // Check for alternative links in description
