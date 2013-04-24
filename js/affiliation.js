@@ -174,14 +174,14 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback, '.news_item', 'nabla.no');
       },
     },
-    'spanskrøret': {
-      name: 'Spanskrøret',
-      key: 'spanskrøret',
+    'spanskroret': {
+      name: 'Spanskroret',
+      key: 'spanskroret',
       web: 'http://spanskroret.no/',
       feed: 'http://spanskroret.no/feed/',
-      logo: './org/spanskrøret/logo.png',
-      icon: './org/spanskrøret/icon.png',
-      placeholder: './org/spanskrøret/placeholder.png',
+      logo: './org/spanskroret/logo.png',
+      icon: './org/spanskroret/icon.png',
+      placeholder: './org/spanskroret/placeholder.png',
       palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
@@ -445,6 +445,78 @@ var Affiliation = {
       },
     },
 
+    // Masterforeninger, doktorforeninger, internasjonale foreninger
+    'isu': {
+      name: 'International Student Union',
+      key: 'isu',
+      web: 'http://org.ntnu.no/isu/',
+      feed: 'http://org.ntnu.no/isu/feed/',
+      logo: './org/isu/logo.png',
+      icon: './org/isu/icon.png',
+      placeholder: './org/isu/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, 'div.post');
+      },
+    },
+    'projeksjon': {
+      name: 'Projeksjon',
+      key: 'projeksjon',
+      web: 'http://projeksjon.no/',
+      feed: 'http://projeksjon.no/feed/',
+      logo: './org/projeksjon/logo.png',
+      icon: './org/projeksjon/icon.png',
+      placeholder: './org/projeksjon/placeholder.png',
+      palette: 'grey',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'entreprenorskolen': {
+      name: 'Entreprenorskolen',
+      key: 'entreprenorskolen',
+      web: 'http://entreprenorskolen.no/',
+      feed: 'http://entreprenorskolen.no/feed/',
+      logo: './org/entreprenorskolen/logo.png',
+      icon: './org/entreprenorskolen/icon.png',
+      placeholder: './org/entreprenorskolen/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, 'div.post');
+      },
+    },
+    'soma': {
+      name: 'Soma',
+      key: 'soma',
+      web: 'http://somantnu.blogspot.com/',
+      feed: 'http://somantnu.blogspot.com/feeds/posts/default',
+      logo: './org/soma/logo.png',
+      icon: './org/soma/icon.png',
+      placeholder: './org/soma/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, 'div.post');
+      },
+    },
+    'symbiosis': {
+      name: 'Symbiosis',
+      key: 'symbiosis',
+      web: 'http://www.ntnusymbiosis.com/',
+      feed: 'http://www.ntnusymbiosis.com/feed/',
+      logo: './org/symbiosis/logo.png',
+      icon: './org/symbiosis/icon.png',
+      placeholder: './org/symbiosis/placeholder.png',
+      palette: 'green',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+
     // Studentmedier
     'dusken': {
       name: 'Dusken.no',
@@ -465,6 +537,17 @@ var Affiliation = {
       logo: './org/universitetsavisa/logo.png',
       icon: './org/universitetsavisa/icon.png',
       placeholder: './org/universitetsavisa/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+    },
+    'gemini': {
+      name: 'Gemini',
+      key: 'gemini',
+      web: 'http://gemini.no/',
+      feed: 'http://gemini.no/feed/',
+      logo: './org/gemini/logo.png',
+      icon: './org/gemini/icon.png',
+      placeholder: './org/gemini/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
     },
