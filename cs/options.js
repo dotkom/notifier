@@ -535,8 +535,8 @@
                 if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
                   ls[id] = 'true';
                   $('#' + id).prop('checked', true);
-                  Browser.setIcon('img/icon-default.png');
-                  Browser.setTitle('Online Infoscreen');
+                  Browser.setIcon(Affiliation.org[ls.affiliationKey].icon);
+                  Browser.setTitle(Affiliation.org[ls.affiliationKey].name + ' Infoscreen');
                   Browser.setBadgeText('');
                   if (!force) {
                     return Browser.openBackgroundTab('infoscreen.html');
@@ -551,7 +551,12 @@
       });
     } else {
       ls[id] = 'false';
-      Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+      if (ls.affiliationKey === 'online') {
+        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+      } else {
+        Browser.setIcon(Affiliation.org[ls.affiliationKey].icon);
+        Browser.setTitle(Affiliation.org[ls.affiliationKey].name + ' Notifier');
+      }
       return revertInfoscreen();
     }
   };

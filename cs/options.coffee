@@ -483,8 +483,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
                 ls[id] = 'true'
                 $('#'+id).prop 'checked', true
                 # Reset icon, icon title and icon badge
-                Browser.setIcon 'img/icon-default.png'
-                Browser.setTitle 'Online Infoscreen'
+                Browser.setIcon Affiliation.org[ls.affiliationKey].icon
+                Browser.setTitle Affiliation.org[ls.affiliationKey].name + ' Infoscreen'
                 Browser.setBadgeText ''
                 # Create Infoscreen in a new tab
                 if not force
@@ -497,7 +497,11 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+    if ls.affiliationKey is 'online'
+      Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+    else
+      Browser.setIcon Affiliation.org[ls.affiliationKey].icon
+      Browser.setTitle Affiliation.org[ls.affiliationKey].name + ' Notifier'
     # Animations
     revertInfoscreen()
 
