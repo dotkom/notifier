@@ -495,7 +495,7 @@ var Affiliation = {
       logo: './org/projeksjon/logo.png',
       icon: './org/projeksjon/icon.png',
       placeholder: './org/projeksjon/placeholder.png',
-      palette: 'grey',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
