@@ -350,7 +350,7 @@
         $('#header #logo').prop('src', logo);
       }
     }
-    palette = Affiliation.org[ls.affiliationKey].palette;
+    palette = ls.affiliationPalette;
     if (DEBUG) {
       console.log('Applying chosen palette', palette);
     }

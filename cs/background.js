@@ -133,6 +133,9 @@
     if (ls.affiliationKey === void 0) {
       ls.affiliationKey = 'online';
     }
+    if (ls.affiliationPalette === void 0) {
+      ls.affiliationPalette = 'online';
+    }
     if (ls.newsList === void 0) {
       ls.newsList = JSON.stringify([]);
     }

@@ -60,6 +60,7 @@
       palette = Affiliation.org[affiliationKey].palette;
       if (palette !== void 0) {
         $('#affiliationPalette').val(palette);
+        ls.affiliationPalette = palette;
         if (DEBUG) {
           console.log('Applying chosen palette', palette);
         }
@@ -75,10 +76,11 @@
   };
 
   bindPaletteSelector = function() {
-    $('#affiliationPalette').val(Affiliation.org[ls.affiliationKey].palette);
+    $('#affiliationPalette').val(ls.affiliationPalette);
     return $('#affiliationPalette').change(function() {
       var palette;
       palette = $(this).val();
+      ls.affiliationPalette = palette;
       if (DEBUG) {
         console.log('Applying chosen palette', palette);
       }
@@ -660,7 +662,7 @@
     if (ls.affiliationKey !== 'online') {
       disableOnlineSpecificFeatures(true);
     }
-    palette = Affiliation.org[ls.affiliationKey].palette;
+    palette = ls.affiliationPalette;
     if (DEBUG) {
       console.log('Applying chosen palette', palette);
     }

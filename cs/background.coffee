@@ -103,6 +103,8 @@ $ ->
     ls.showAffiliation = 'true'
   if ls.affiliationKey is undefined
     ls.affiliationKey = 'online'
+  if ls.affiliationPalette is undefined
+    ls.affiliationPalette = 'online'
 
   # Lists of links (IDs) for news items
   if ls.newsList is undefined

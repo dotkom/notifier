@@ -299,7 +299,7 @@ $ ->
       $('#logo').prop 'src', logo
   
   # Show the standard palette or special palette the user has chosen
-  palette = Affiliation.org[ls.affiliationKey].palette
+  palette = ls.affiliationPalette
   if DEBUG then console.log 'Applying chosen palette', palette
   $('#palette').attr 'href', Palettes.get palette
   
