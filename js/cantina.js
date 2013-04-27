@@ -7,12 +7,11 @@ var Cantina = {
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
   
-  debug: 1, // General debugging
+  debug: 0, // General debugging
   debugDay: 0, // Whether or not to debug a particular day
   debugThisDay: 'Fredag', // The day in question
-  debugText: 1, // Whether or not to deep debug dinner strings (even in weekends)
-  // debugThisText: 'Vårruller. Servert med ris og salat: 1000,-', // debugText must be true
-  debugThisText: 'Blomkålsuppe. (V,L,G): ', // debugText must be true
+  debugText: 0, // Whether or not to deep debug dinner strings (even in weekends)
+  debugThisText: 'Vårruller. Servert med ris og salat: 1000,-', // debugText must be true
   // Expected format of debugThisText: "Seirett med ris (G): 8 kroner" -> "food: price"
   // Note1: Set the price of debugThisText low to show it first cuz the list is sorted by price
 
