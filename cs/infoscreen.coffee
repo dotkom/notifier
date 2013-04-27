@@ -218,17 +218,22 @@ updateCantinas = ->
   Cantina.get ls.right_cantina, (menu) ->
     $('#cantinas #right .title').html ls.right_cantina
     $('#cantinas #right #dinnerbox').html listDinners(menu)
-  
+
 listDinners = (menu) ->
   dinnerlist = ''
   # If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if typeof menu is 'string'
+    ls.noDinnerInfo = 'true'
     dinnerlist += '<li>' + menu + '</li>'
   else
+    ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        dinner.price = dinner.price + ',- '
-        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>'
+        if not isNaN dinner.price
+          dinner.price = dinner.price + ',-'
+        else
+          dinner.price = dinner.price + ' -'
+        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>'
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist

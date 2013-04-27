@@ -74,8 +74,11 @@ listDinners = (menu) ->
     ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        dinner.price = dinner.price + ',- '
-        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>'
+        if not isNaN dinner.price
+          dinner.price = dinner.price + ',-'
+        else
+          dinner.price = dinner.price + ' -'
+        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>'
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist

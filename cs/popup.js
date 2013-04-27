@@ -102,8 +102,12 @@
       for (_i = 0, _len = menu.length; _i < _len; _i++) {
         dinner = menu[_i];
         if (dinner.price !== null) {
-          dinner.price = dinner.price + ',- ';
-          dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>';
+          if (!isNaN(dinner.price)) {
+            dinner.price = dinner.price + ',-';
+          } else {
+            dinner.price = dinner.price + ' -';
+          }
+          dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>';
         } else {
           dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>';
         }
