@@ -302,7 +302,9 @@ $ ->
     if logo isnt undefined and logo isnt ''
       if DEBUG then console.log 'Applying affiliation logo', logo
       $('#logo').prop 'src', logo
-  
+
+  # Switch to the icon of chosen affiliation
+  $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey].icon
   # Show the standard palette or special palette the user has chosen
   palette = ls.affiliationPalette
   if DEBUG then console.log 'Applying chosen palette', palette

@@ -369,6 +369,7 @@
         $('#logo').prop('src', logo);
       }
     }
+    $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey].icon);
     palette = ls.affiliationPalette;
     if (DEBUG) {
       console.log('Applying chosen palette', palette);

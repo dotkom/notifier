@@ -53,7 +53,8 @@ bindAffiliationSelector = ->
       $('#palette').attr 'href', Palettes.get palette
     # Get and save the affiliation icon
     icon = Affiliation.org[affiliationKey].icon
-    Browser.setIcon icon
+    Browser.setIcon icon # Extension icon
+    $('link[rel="shortcut icon"]').attr 'href', icon # Page favicon
     # Get and save the affiliation name to the badge title
     name = Affiliation.org[affiliationKey].name
     Browser.setTitle name + ' Notifier'
@@ -606,7 +607,9 @@ $ ->
   # Remove Online specific features if the affiliation is another
   if ls.affiliationKey isnt 'online'
     disableOnlineSpecificFeatures true # true means be quick about it!
-  
+
+  # Switch to the icon of chosen affiliation
+  $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey].icon
   # Show the standard palette or special palette the user has chosen
   palette = ls.affiliationPalette
   if DEBUG then console.log 'Applying chosen palette', palette

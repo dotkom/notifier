@@ -68,6 +68,7 @@
       }
       icon = Affiliation.org[affiliationKey].icon;
       Browser.setIcon(icon);
+      $('link[rel="shortcut icon"]').attr('href', icon);
       name = Affiliation.org[affiliationKey].name;
       Browser.setTitle(name + ' Notifier');
       ls.removeItem('feedItems');
@@ -662,6 +663,7 @@
     if (ls.affiliationKey !== 'online') {
       disableOnlineSpecificFeatures(true);
     }
+    $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey].icon);
     palette = ls.affiliationPalette;
     if (DEBUG) {
       console.log('Applying chosen palette', palette);
