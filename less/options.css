@@ -9,8 +9,6 @@
 }
 body {
   background: #001429;
-  /*url('/img/options-jitter.png') left top no-repeat;*/
-
   font-family: helvetica;
   color: #ffffff;
   margin: 0;
@@ -44,24 +42,19 @@ header {
   border-bottom: 1pt solid #eee;
   z-index: 1;
 }
-header #logo {
+header #header_text {
   border: 0pt solid #ffff00;
-  position: relative;
-  float: left;
-  margin-left: 40pt;
-}
-header #logo_subtext {
-  border: 0pt solid #ffff00;
-  position: absolute;
-  float: left;
+  width: 100%;
+  text-align: center;
   margin-top: 1pt;
-  margin-left: 235pt;
   font-size: 44pt;
   font-weight: lighter;
-  /* more precise than italic, the Online logo is skewered exactly 15 degrees */
+  /* For text that is skewed the same amount as the Online logo:
+    - more precise than italic, the Online logo is skewered exactly 15 degrees */
 
-  -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
-  transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+  /*-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);*/
+
 }
 header #notification {
   position: absolute;
@@ -447,11 +440,21 @@ header #notification .saved {
       0 0 40px #011b36,
       0 0 40px #011b36;
 }
+/* logo with link in the top right corner */
+/*#logolink {
+  position: fixed;
+  top: 10pt;
+  right: 10pt;
+  #logo {
+    .debugyellow;
+    width: 120pt;
+  }
+}*/
 /* Debug toolbox in the the top right corner, only shown in debug mode */
 #debug_links {
   display: none;
   position: fixed;
-  top: 10pt;
+  top: 100pt;
   right: 10pt;
   opacity: .05;
   text-align: right;
