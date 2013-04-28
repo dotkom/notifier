@@ -688,6 +688,9 @@
         return $('#plusonebutton').fadeIn(150);
       }), 1100);
     }
+    $('#notification').click(function() {
+      return fadeInCanvas();
+    });
     bindAffiliationSelector();
     bindPaletteSelector();
     bindCantinaSelector('left_cantina');

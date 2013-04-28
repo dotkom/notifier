@@ -654,7 +654,6 @@ $ ->
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
-  # $('#pageflipname').text ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()
