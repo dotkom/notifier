@@ -56,21 +56,46 @@ var News = {
   // - dc:creator - author name or username
   // - enclosure - may contain an image as an XML attribute: url="news_post_image.jpg"
   // - source
+  // In Atom feeds, these are the usual fields:
+  // - id - a useless ID
+  // - published - the publishing date, must be parsed
+  // - updated - the updated date, must be parsed
+  // - title
+  // - content - is the full entry as HTML
+  // - link[rel="self"] - is this entry in XML format, useless
+  // - link[rel="alternate"] - is the entry as text/html, good!
+  // - author -> name
   parseFeed: function(xml, affiliationObject, limit, callback) {
-    var items = [];
+    var posts = [];
     var self = this;
     var count = 0;
-    // Add each item from the feed
-    $(xml).find('item').each( function() {
-      if (count++ < limit) {
-        var item = self.parseItem(this, affiliationObject);
-        items.push(item);
-      }
-    });
-    callback(items);
+    // Add each item from RSS feed
+    if ($(xml).find('item').length != 0) {
+      $(xml).find('item').each( function() {
+        if (count++ < limit) {
+          var item = self.parseRssItem(this, affiliationObject);
+          item = self.postProcess(item);
+          posts.push(item);
+        }
+      });
+    }
+    // Add each item from Atom feed
+    else if ($(xml).find('entry').length != 0) {
+      $(xml).find('entry').each( function() {
+        if (count++ < limit) {
+          var entry = self.parseAtomEntry(this, affiliationObject);
+          entry = self.postProcess(entry);
+          posts.push(entry);
+        }
+      });
+    }
+    else {
+      if (this.debug) console.log('ERROR: Unknown feed type, neither RSS nor Atom');
+    }
+    callback(posts);
   },
 
-  parseItem: function(item, affiliationObject) {
+  parseRssItem: function(item, affiliationObject) {
     var post = {};
 
     // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
@@ -104,14 +129,7 @@ var News = {
     catch (err) {
       // Do nothing, we we're just checking, move along quitely
     }
-    
-    // Check for alternative links in description
-    post.altLink = this.checkForAltLink(post.description);
 
-    // Remove HTML
-    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
-    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
-    
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
       var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
@@ -119,6 +137,57 @@ var News = {
         post.creator = $(this).text().trim();
       });
     }
+
+    return post;
+  },
+
+  parseAtomEntry: function(entry, affiliationObject) {
+    var post = {};
+
+    // The popular fields
+    post.title = $(entry).find("title").filter(':first').text();
+    post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
+    post.description = $(entry).find("content").filter(':first').text();
+    post.creator = $(entry).find("author name").filter(':first').text();
+    post.date = $(entry).find("published").filter(':first').text().substr(5, 11);
+
+    // Locally stored
+    post.image = affiliationObject.placeholder;
+    // Tag the posts with the key and name of the feed they came from
+    post.feedKey = affiliationObject.key;
+    post.feedName = affiliationObject.name;
+
+    // Extract image from content HTML
+    var image = $(entry).find('content').filter(':first').text();
+    if (image != undefined) {
+      image = image.match(/src="(http:\/\/[a-zA-Z0-9.\/\-_]+)"/);
+      if (image != null) {
+        post.image = image[1];
+      }
+    }
+
+    // Empty title field?
+    if (post.title.trim() == '')
+      post.title = 'Uten tittel';
+
+    // Parse date field
+    post.date = new Date(post.date);
+    if (post.date != "Invalid Date")
+      post.date = post.date.toDateString();
+    else
+      post.date = null;
+
+    return post;
+  },
+
+  postProcess: function(post) {
+    // Check for alternative links in description
+    post.altLink = this.checkForAltLink(post.description);
+
+    // Remove HTML from description
+    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
+    
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
       post.creator = post.feedName;
