@@ -92,12 +92,12 @@ var News = {
     try {
       // Universitetsavisa does this little trick to get images in their feed
       var enclosure = $(item).find('enclosure').filter(':first');
-      if (enclosure != '') {
+      if (enclosure.length != 0) {
         post.image = enclosure['0'].attributes.url.textContent;
       }
       // Gemini uses this rather blunt hack to put images in their feed
       var bilde = $(item).find('bilde');
-      if (bilde != '') {
+      if (bilde.length != 0) {
         post.image = bilde['0'].textContent;
       }
     }
