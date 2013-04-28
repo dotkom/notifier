@@ -51,6 +51,11 @@ bindAffiliationSelector = ->
       ls.affiliationPalette = palette
       if DEBUG then console.log 'Applying chosen palette', palette
       $('#palette').attr 'href', Palettes.get palette
+    # # Get and save the affiliation logo, also link website via logo
+    # logo = Affiliation.org[affiliationKey].logo
+    # $('#logo').attr 'src', logo
+    # web = Affiliation.org[affiliationKey].web
+    # $('#logolink').attr 'href', web
     # Get and save the affiliation icon
     icon = Affiliation.org[affiliationKey].icon
     Browser.setIcon icon # Extension icon
@@ -459,11 +464,10 @@ bindSuggestions = ->
 
 toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it's well commented
   speed = 400
-  id = 'useInfoscreen'
   if activate
-    $('#'+id).attr 'checked', false
+    $('#useInfoscreen').attr 'checked', false
     # Remove subtext
-    $('#logo_subtext').fadeOut()
+    $('#header_text').fadeOut()
     # Animate away all other options
     $('#container #left').animate {'width':'0pt'}, speed, ->
       $('#container #left').hide()
@@ -471,11 +475,12 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
         # Animate in the infoscreen preview
         $('#infoscreen_preview').fadeIn speed, ->
           # New logo subtext
-          $('#logo_subtext').html 'infoscreen&nbsp;&nbsp;&nbsp;&nbsp;'
-          $('#logo_subtext').fadeIn ->
+          $('#header_text').html 'Infoscreen'
+          # $('#header_text').html 'infoscreen&nbsp;&nbsp;&nbsp;&nbsp;'
+          $('#header_text').fadeIn ->
             # Move logo and subtext a little to the right
-            $('header #logo_subtext').animate {'margin-left':'265pt'}, speed
-            $('header #logo').animate {'margin-left':'75pt'}, speed
+            # $('header #header_text').animate {'margin-left':'265pt'}, speed
+            # $('header #logo').animate {'margin-left':'75pt'}, speed
             # Move infoscreen preview to the circa middle of the screen
             $('#container #right').animate {'margin-left':'160pt'}, speed
             # Move all content a bit up
@@ -484,8 +489,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
               name = Affiliation.org[ls.affiliationKey].name
               if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
                 # Enable, and check the checkbox
-                ls[id] = 'true'
-                $('#'+id).prop 'checked', true
+                ls['useInfoscreen'] = 'true'
+                $('#useInfoscreen').prop 'checked', true
                 # Reset icon, icon title and icon badge
                 Browser.setIcon Affiliation.org[ls.affiliationKey].icon
                 Browser.setTitle Affiliation.org[ls.affiliationKey].name + ' Infoscreen'
@@ -497,7 +502,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
                 revertInfoscreen()
   else
     # Disable
-    ls[id] = 'false'
+    ls['useInfoscreen'] = 'false'
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
@@ -512,7 +517,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
 revertInfoscreen = ->
   speed = 300
   # Remove subtext
-  $('#logo_subtext').fadeOut speed, ->
+  $('#header_text').fadeOut speed, ->
     # Move all content back down
     if ls.affiliationKey is 'online'
       $('#container').animate {'top':'50%'}, speed
@@ -523,19 +528,19 @@ revertInfoscreen = ->
     # Move infoscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
     # Move logo and subtext back in place (to the left)
-    $('header #logo').animate {'margin-left':'40pt'}, speed
-    $('header #logo_subtext').animate {'margin-left':'235pt'}, speed, ->
-      # Animate in the infoscreen preview
-      $('#infoscreen_preview').fadeOut speed, ->
-        # Slide more options back open
-        $('#infoscreen_slider').slideDown speed, ->
-          # Show the rest of the options again
-          $('#container #left').show()
-          # Animate in the rest of the options
-          $('#container #left').animate {'width':'54%'}, speed, ->
-            # Back to old logo subtext
-            $('#logo_subtext').html 'notifier options'
-            $('#logo_subtext').fadeIn()
+    # $('header #logo').animate {'margin-left':'40pt'}, speed
+    # $('header #header_text').animate {'margin-left':'235pt'}, speed, ->
+    # Animate in the infoscreen preview
+    $('#infoscreen_preview').fadeOut speed, ->
+      # Slide more options back open
+      $('#infoscreen_slider').slideDown speed, ->
+        # Show the rest of the options again
+        $('#container #left').show()
+        # Animate in the rest of the options
+        $('#container #left').animate {'width':'54%'}, speed, ->
+          # Back to old logo subtext
+          $('#header_text').html 'Notifier Options'
+          $('#header_text').fadeIn()
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
@@ -612,8 +617,10 @@ $ ->
   $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey].icon
   # Show the standard palette or special palette the user has chosen
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
-  # Show the logo for the chosen affiliation
-  $('#logo').attr 'src', Affiliation.org[ls.affiliationKey].logo
+  # # Show the logo for the chosen affiliation
+  # $('#logo').attr 'src', Affiliation.org[ls.affiliationKey].logo
+  # # Make sure logo link goes to the right website
+  # $('#logolink').attr 'href', Affiliation.org[ls.affiliationKey].web
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
@@ -692,7 +699,7 @@ $ ->
 
   # CSS tweaks for Opera until they start using WebKit
   if BROWSER is 'Opera'
-    $('#logo_subtext').css 'margin-top', '7pt'
+    $('#header_text').css 'margin-top', '7pt'
     $('#notification').css 'top', '14.5pt'
 
   # Adding a hover class to #bus_box whenever the mouse is hovering over it

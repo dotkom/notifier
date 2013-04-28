@@ -504,26 +504,19 @@
   };
 
   toggleInfoscreen = function(activate, force) {
-    var id, speed;
+    var speed;
     speed = 400;
-    id = 'useInfoscreen';
     if (activate) {
-      $('#' + id).attr('checked', false);
-      $('#logo_subtext').fadeOut();
+      $('#useInfoscreen').attr('checked', false);
+      $('#header_text').fadeOut();
       return $('#container #left').animate({
         'width': '0pt'
       }, speed, function() {
         $('#container #left').hide();
         return $('#infoscreen_slider').slideUp(speed, function() {
           return $('#infoscreen_preview').fadeIn(speed, function() {
-            $('#logo_subtext').html('infoscreen&nbsp;&nbsp;&nbsp;&nbsp;');
-            return $('#logo_subtext').fadeIn(function() {
-              $('header #logo_subtext').animate({
-                'margin-left': '265pt'
-              }, speed);
-              $('header #logo').animate({
-                'margin-left': '75pt'
-              }, speed);
+            $('#header_text').html('Infoscreen');
+            return $('#header_text').fadeIn(function() {
               $('#container #right').animate({
                 'margin-left': '160pt'
               }, speed);
@@ -536,8 +529,8 @@
                 var name;
                 name = Affiliation.org[ls.affiliationKey].name;
                 if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
-                  ls[id] = 'true';
-                  $('#' + id).prop('checked', true);
+                  ls['useInfoscreen'] = 'true';
+                  $('#useInfoscreen').prop('checked', true);
                   Browser.setIcon(Affiliation.org[ls.affiliationKey].icon);
                   Browser.setTitle(Affiliation.org[ls.affiliationKey].name + ' Infoscreen');
                   Browser.setBadgeText('');
@@ -553,7 +546,7 @@
         });
       });
     } else {
-      ls[id] = 'false';
+      ls['useInfoscreen'] = 'false';
       if (ls.affiliationKey === 'online') {
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       } else {
@@ -567,7 +560,7 @@
   revertInfoscreen = function() {
     var speed;
     speed = 300;
-    return $('#logo_subtext').fadeOut(speed, function() {
+    return $('#header_text').fadeOut(speed, function() {
       if (ls.affiliationKey === 'online') {
         $('#container').animate({
           'top': '50%'
@@ -586,21 +579,14 @@
       $('#container #right').animate({
         'margin-left': '0'
       }, speed);
-      $('header #logo').animate({
-        'margin-left': '40pt'
-      }, speed);
-      return $('header #logo_subtext').animate({
-        'margin-left': '235pt'
-      }, speed, function() {
-        return $('#infoscreen_preview').fadeOut(speed, function() {
-          return $('#infoscreen_slider').slideDown(speed, function() {
-            $('#container #left').show();
-            return $('#container #left').animate({
-              'width': '54%'
-            }, speed, function() {
-              $('#logo_subtext').html('notifier options');
-              return $('#logo_subtext').fadeIn();
-            });
+      return $('#infoscreen_preview').fadeOut(speed, function() {
+        return $('#infoscreen_slider').slideDown(speed, function() {
+          $('#container #left').show();
+          return $('#container #left').animate({
+            'width': '54%'
+          }, speed, function() {
+            $('#header_text').html('Notifier Options');
+            return $('#header_text').fadeIn();
           });
         });
       });
@@ -665,7 +651,6 @@
     }
     $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey].icon);
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
-    $('#logo').attr('src', Affiliation.org[ls.affiliationKey].logo);
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;
@@ -709,7 +694,7 @@
       $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
     }
     if (BROWSER === 'Opera') {
-      $('#logo_subtext').css('margin-top', '7pt');
+      $('#header_text').css('margin-top', '7pt');
       $('#notification').css('top', '14.5pt');
     }
     $('#bus_box').hover(function() {
