@@ -339,7 +339,7 @@
   };
 
   $(function() {
-    var affiliation, logo, palette;
+    var affiliation, logo;
     if (DEBUG) {
       $('html').css('cursor', 'auto');
       $('#overlay').hide();
@@ -370,11 +370,7 @@
       }
     }
     $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey].icon);
-    palette = ls.affiliationPalette;
-    if (DEBUG) {
-      console.log('Applying chosen palette', palette);
-    }
-    $('#palette').attr('href', Palettes.get(palette));
+    $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");

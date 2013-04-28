@@ -325,7 +325,7 @@
   };
 
   $(function() {
-    var affiliation, logo, palette;
+    var affiliation, logo;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -354,11 +354,7 @@
         $('#header #logo').prop('src', logo);
       }
     }
-    palette = ls.affiliationPalette;
-    if (DEBUG) {
-      console.log('Applying chosen palette', palette);
-    }
-    $('#palette').attr('href', Palettes.get(palette));
+    $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     $('#logo').click(function() {
       var web;
       web = Affiliation.org[ls.affiliationKey].web;

@@ -306,9 +306,7 @@ $ ->
   # Switch to the icon of chosen affiliation
   $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey].icon
   # Show the standard palette or special palette the user has chosen
-  palette = ls.affiliationPalette
-  if DEBUG then console.log 'Applying chosen palette', palette
-  $('#palette').attr 'href', Palettes.get palette
+  $('#palette').attr 'href', Palettes.get ls.affiliationPalette
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'
