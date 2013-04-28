@@ -652,7 +652,7 @@
   };
 
   $(function() {
-    var palette, text;
+    var text;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -664,11 +664,8 @@
       disableOnlineSpecificFeatures(true);
     }
     $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey].icon);
-    palette = ls.affiliationPalette;
-    if (DEBUG) {
-      console.log('Applying chosen palette', palette);
-    }
-    $('#palette').attr('href', Palettes.get(palette));
+    $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
+    $('#logo').attr('src', Affiliation.org[ls.affiliationKey].logo);
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;
