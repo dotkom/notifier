@@ -484,9 +484,7 @@ var Affiliation = {
       placeholder: './org/soma/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
-      },
+      // getImages unnecessary, images are extracted from HTML in entries
     },
     'symbiosis': {
       name: 'Symbiosis',
