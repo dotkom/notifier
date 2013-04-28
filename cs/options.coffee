@@ -90,6 +90,7 @@ disableOnlineSpecificFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideUp {duration:0}
     $('#container').css 'top', '60%'
     $('header').css 'top', '60%'
+    $('#plusonebutton').fadeOut {duration:0}
     # No need to change creator name in pageflip when quick-disabling
   else
   # Hide office status option
@@ -98,9 +99,11 @@ disableOnlineSpecificFeatures = (quick) ->
   $('label[for="coffeeSubscription"]').slideUp 'slow', ->
     # Move all content back down
     $('#container').animate {'top':'60%'}, 300
-    $('header').animate {'top':'60%'}, 300
-    # Change pageflip name
-    changeCreatorName 'Online'
+    $('header').animate {'top':'60%'}, 300, ->
+      # Fade out the Google +1 Button
+      $('#plusonebutton').fadeOut 'slow', ->
+        # Change pageflip name
+        changeCreatorName 'Online'
 
 enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
@@ -111,6 +114,7 @@ enableOnlineSpecificFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideDown {duration:0}
     $('#container').css 'top', '50%'
     $('header').css 'top', '50%'
+    $('#plusonebutton').fadeIn {duration:0}
     # No need to change creator name in pageflip when quick-enabling
   else
     # Enable office status
@@ -119,9 +123,11 @@ enableOnlineSpecificFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideDown 'slow', ->
       # Move all content back down
       $('#container').animate {'top':'50%'}, 300
-      $('header').animate {'top':'50%'}, 300
-      # Change pageflip name
-      changeCreatorName 'dotKom'
+      $('header').animate {'top':'50%'}, 300, ->
+        # Fade in the Google +1 Button
+        $('#plusonebutton').fadeIn 'slow', ->
+          # Change pageflip name
+          changeCreatorName 'dotKom'
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -655,9 +661,10 @@ $ ->
   ), 600
 
   # Fade in the +1 button when (probably) ready
-  setTimeout ( ->
-    $('#plusonebutton').fadeIn 150
-  ), 1100
+  if ls.affiliationKey is 'online'
+    setTimeout ( ->
+      $('#plusonebutton').fadeIn 150
+    ), 1100
 
   # Bind a click function to the on-page notification for the canvas
   # $('#notification').click ->

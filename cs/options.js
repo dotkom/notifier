@@ -102,6 +102,9 @@
       });
       $('#container').css('top', '60%');
       $('header').css('top', '60%');
+      $('#plusonebutton').fadeOut({
+        duration: 0
+      });
     } else {
 
     }
@@ -110,10 +113,13 @@
       $('#container').animate({
         'top': '60%'
       }, 300);
-      $('header').animate({
+      return $('header').animate({
         'top': '60%'
-      }, 300);
-      return changeCreatorName('Online');
+      }, 300, function() {
+        return $('#plusonebutton').fadeOut('slow', function() {
+          return changeCreatorName('Online');
+        });
+      });
     });
   };
 
@@ -129,17 +135,23 @@
         duration: 0
       });
       $('#container').css('top', '50%');
-      return $('header').css('top', '50%');
+      $('header').css('top', '50%');
+      return $('#plusonebutton').fadeIn({
+        duration: 0
+      });
     } else {
       $('label[for="showOffice"]').slideDown('slow');
       return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
         $('#container').animate({
           'top': '50%'
         }, 300);
-        $('header').animate({
+        return $('header').animate({
           'top': '50%'
-        }, 300);
-        return changeCreatorName('dotKom');
+        }, 300, function() {
+          return $('#plusonebutton').fadeIn('slow', function() {
+            return changeCreatorName('dotKom');
+          });
+        });
       });
     }
   };
@@ -671,9 +683,11 @@
     setInterval((function() {
       return pageFlipCursorBlinking();
     }), 600);
-    setTimeout((function() {
-      return $('#plusonebutton').fadeIn(150);
-    }), 1100);
+    if (ls.affiliationKey === 'online') {
+      setTimeout((function() {
+        return $('#plusonebutton').fadeIn(150);
+      }), 1100);
+    }
     bindAffiliationSelector();
     bindPaletteSelector();
     bindCantinaSelector('left_cantina');
