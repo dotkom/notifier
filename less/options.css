@@ -35,7 +35,7 @@ header {
   top: 50%;
   padding: 10pt;
   width: 580pt;
-  max-height: 50pt;
+  height: 50pt;
   margin-left: -300pt;
   margin-top: -195pt;
   text-align: center;
@@ -58,18 +58,28 @@ header #header_text {
 }
 header #notification {
   position: absolute;
-  left: 23pt;
+  left: 105pt;
   top: 7.5pt;
+  text-align: center;
+  width: 360pt;
   padding: 3pt 15pt 2pt 10pt;
-  background: #001429;
+  background: #FFFF99;
   font-size: 44pt;
-  font-weight: bold;
+  /*font-weight: bold;*/
+
   /* more precise than italic, the Online logo is skewered exactly 15 degrees */
 
-  -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
-  transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+  /*-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);*/
+
   color: white;
-  box-shadow: 0 0 10pt #001429, 0 0 15pt #001429, 0 0 30pt #001429;
+  /*box-shadow: 0 0 10pt @background-dark, 0 0 15pt @background-dark, 0 0 30pt @background-dark;*/
+
+  box-shadow: 0 0 10pt White,
+      0 0 15pt White,
+      0 0 30pt White,
+      0 0 45pt White;
+  border: 1pt solid #FFCC99;
   border-radius: 20pt;
   display: none;
 }
@@ -77,7 +87,9 @@ header #notification .heart {
   color: #ff44f8;
 }
 header #notification .saved {
-  color: #FFFEA8;
+  color: #ff44f8;
+  /*color: #FFFEA8;*/
+
 }
 /* all the options, main content */
 #container {
