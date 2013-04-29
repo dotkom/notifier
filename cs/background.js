@@ -23,6 +23,9 @@
       if (iteration % UPDATE_NEWS_INTERVAL === 0 && navigator.onLine) {
         updateNews();
       }
+      if (iteration % UPDATE_MEDIA_INTERVAL === 0 && ls.showMedia === 'true' && navigator.onLine) {
+        updateMedia();
+      }
     }
     if (10000 < iteration) {
       iteration = 0;
@@ -141,6 +144,18 @@
     }
     if (ls.viewedNewsList === void 0) {
       ls.viewedNewsList = JSON.stringify([]);
+    }
+    if (ls.showMedia === void 0) {
+      ls.showMedia = 'true';
+    }
+    if (ls.mediaKey === void 0) {
+      ls.mediaKey = 'dusken';
+    }
+    if (ls.mediaList === void 0) {
+      ls.mediaList = JSON.stringify([]);
+    }
+    if (ls.viewedMediaList === void 0) {
+      ls.viewedMediaList = JSON.stringify([]);
     }
     if (ls.showBus === void 0) {
       ls.showBus = 'true';

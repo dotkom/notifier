@@ -10,6 +10,7 @@ mainLoop = ->
     updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
     updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online, otherwise keep old news
+    updateMedia() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true' and navigator.onLine # Only if online, otherwise keep old media
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -106,11 +107,19 @@ $ ->
   if ls.affiliationPalette is undefined
     ls.affiliationPalette = 'online'
 
-  # Lists of links (IDs) for news items
   if ls.newsList is undefined
     ls.newsList = JSON.stringify []
   if ls.viewedNewsList is undefined
     ls.viewedNewsList = JSON.stringify []
+
+  if ls.showMedia is undefined
+    ls.showMedia = 'true'
+  if ls.mediaKey is undefined
+    ls.mediaKey = 'dusken'
+  if ls.mediaList is undefined
+    ls.mediaList = JSON.stringify []
+  if ls.viewedMediaList is undefined
+    ls.viewedMediaList = JSON.stringify []
 
   if ls.showBus is undefined
     ls.showBus = 'true'
