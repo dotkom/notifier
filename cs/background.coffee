@@ -9,8 +9,8 @@ mainLoop = ->
   if ls.useInfoscreen isnt 'true'
     updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
-    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online, otherwise keep old news
-    updateMedia() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true' and navigator.onLine # Only if online, otherwise keep old media
+    updateAffiliationNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online, otherwise keep old news
+    updateMediaNews() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true' and navigator.onLine # Only if online, otherwise keep old media
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -55,8 +55,8 @@ updateCoffeeSubscription = ->
       # And remember to update localStorage
       ls.coffeePots = pots
 
-updateNews = ->
-  if DEBUG then console.log 'updateNews'
+updateAffiliationNews = ->
+  if DEBUG then console.log 'updateAffiliationNews'
   # Get affiliation object
   affiliationKey = ls.affiliationKey
   affiliation = Affiliation.org[affiliationKey]
@@ -74,8 +74,8 @@ updateNews = ->
         News.countUnreadNewsAndNotify items
         News.refreshNewsIdList items
 
-updateMedia = ->
-  if DEBUG then console.log 'updateMedia'
+updateMediaNews = ->
+  if DEBUG then console.log 'updateMediaNews'
   # Get affiliation object
   mediaKey = ls.mediaKey
   media = Affiliation.org[mediaKey]
@@ -90,6 +90,7 @@ updateMedia = ->
         if DEBUG then console.log 'ERROR:', items
       else
         ls.mediaFeedItems = JSON.stringify items
+        # TODO: Currently not counting media items
         News.refreshMediaIdList items
 
 loadAffiliationIcon = ->
@@ -125,19 +126,20 @@ $ ->
   if ls.affiliationPalette is undefined
     ls.affiliationPalette = 'online'
 
-  if ls.newsList is undefined
-    ls.newsList = JSON.stringify []
-  if ls.viewedNewsList is undefined
-    ls.viewedNewsList = JSON.stringify []
+  if ls.affiliationNewsList is undefined
+    ls.affiliationNewsList = JSON.stringify []
+  if ls.affiliationViewedList is undefined
+    ls.affiliationViewedList = JSON.stringify []
 
   if ls.showMedia is undefined
     ls.showMedia = 'true'
   if ls.mediaKey is undefined
     ls.mediaKey = 'dusken'
-  if ls.mediaList is undefined
-    ls.mediaList = JSON.stringify []
-  if ls.viewedMediaList is undefined
-    ls.viewedMediaList = JSON.stringify []
+
+  if ls.mediaNewsList is undefined
+    ls.mediaNewsList = JSON.stringify []
+  if ls.mediaViewedList is undefined
+    ls.mediaViewedList = JSON.stringify []
 
   if ls.showBus is undefined
     ls.showBus = 'true'
@@ -224,7 +226,8 @@ $ ->
   # to code rot.
   window.updateOfficeAndMeetings = updateOfficeAndMeetings
   window.updateCoffeeSubscription = updateCoffeeSubscription
-  window.updateNews = updateNews
+  window.updateAffiliationNews = updateAffiliationNews
+  window.updateMediaNews = updateMediaNews
   window.loadAffiliationIcon = loadAffiliationIcon
 
   # Enter main loop, keeping everything up-to-date
