@@ -481,7 +481,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
         # Animate in the infoscreen preview
         $('#infoscreen_preview').fadeIn speed, ->
           # New logo subtext
-          $('#header_text').html 'Infoscreen'
+          $('#header_text').html '<b>Info</b>screen'
           # $('#header_text').html 'infoscreen&nbsp;&nbsp;&nbsp;&nbsp;'
           $('#header_text').fadeIn ->
             # Move logo and subtext a little to the right
@@ -545,7 +545,7 @@ revertInfoscreen = ->
         # Animate in the rest of the options
         $('#container #left').animate {'width':'54%'}, speed, ->
           # Back to old logo subtext
-          $('#header_text').html 'Notifier Options'
+          $('#header_text').html '<b>Notifier</b> Options'
           $('#header_text').fadeIn()
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.

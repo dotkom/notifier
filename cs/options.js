@@ -527,7 +527,7 @@
         $('#container #left').hide();
         return $('#infoscreen_slider').slideUp(speed, function() {
           return $('#infoscreen_preview').fadeIn(speed, function() {
-            $('#header_text').html('Infoscreen');
+            $('#header_text').html('<b>Info</b>screen');
             return $('#header_text').fadeIn(function() {
               $('#container #right').animate({
                 'margin-left': '160pt'
@@ -597,7 +597,7 @@
           return $('#container #left').animate({
             'width': '54%'
           }, speed, function() {
-            $('#header_text').html('Notifier Options');
+            $('#header_text').html('<b>Notifier</b> Options');
             return $('#header_text').fadeIn();
           });
         });
@@ -688,9 +688,6 @@
         return $('#plusonebutton').fadeIn(150);
       }), 1100);
     }
-    $('#notification').click(function() {
-      return fadeInCanvas();
-    });
     bindAffiliationSelector();
     bindPaletteSelector();
     bindCantinaSelector('left_cantina');
