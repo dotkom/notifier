@@ -138,7 +138,7 @@ updateNews = ->
 
 displayItems = (items) ->
   # Empty the newsbox
-  $('#news').html ''
+  $('#news #left').html ''
   # Get feedname
   feedKey = items[0].feedKey
 
@@ -176,13 +176,11 @@ displayItems = (items) ->
         </div>
           <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
-            <div class="textwrapper">
-              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
-              ' + item.description + '
-            </div>
+            <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
+            ' + item.description + '
           </div>
         </div>'
-      $('#news').append htmlItem
+      $('#news #left').append htmlItem
   
   # Store list of last viewed items
   ls.viewedNewsList = JSON.stringify viewedList

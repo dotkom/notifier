@@ -201,7 +201,7 @@
 
   displayItems = function(items) {
     var altLink, feedKey, index, link, newsList, updatedList, viewedList;
-    $('#news').html('');
+    $('#news #left').html('');
     feedKey = items[0].feedKey;
     newsList = JSON.parse(ls.newsList);
     viewedList = JSON.parse(ls.viewedNewsList);
@@ -230,13 +230,11 @@
         </div>\
           <div class="item" data="' + item.link + '"' + altLink + '>\
             <img src="' + item.image + '" width="107" />\
-            <div class="textwrapper">\
-              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>\
-              ' + item.description + '\
-            </div>\
+            <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>\
+            ' + item.description + '\
           </div>\
         </div>';
-        return $('#news').append(htmlItem);
+        return $('#news #left').append(htmlItem);
       }
     });
     ls.viewedNewsList = JSON.stringify(viewedList);

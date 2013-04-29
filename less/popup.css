@@ -407,14 +407,12 @@ body {
             0pt 0pt 10pt white;
 }
 #container #news .post .item img {
+  float: left;
   width: 70pt;
   max-height: 70pt;
   padding: 3pt;
+  margin: 0 5pt 3pt 0;
   box-shadow: 0 0 10pt #bbb;
-}
-#container #news .post .item .textwrapper {
-  margin-left: 7pt;
-  width: 70%;
 }
 #container #news .unread {
   font-size: 8pt;
