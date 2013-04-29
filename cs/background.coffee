@@ -70,9 +70,27 @@ updateNews = ->
         # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
       else
-        ls.feedItems = JSON.stringify items
-        News.unreadCountAndNotify items
+        ls.newsFeedItems = JSON.stringify items
+        News.countUnreadNewsAndNotify items
         News.refreshNewsIdList items
+
+updateMedia = ->
+  if DEBUG then console.log 'updateMedia'
+  # Get affiliation object
+  mediaKey = ls.mediaKey
+  media = Affiliation.org[mediaKey]
+  if media is undefined
+    if DEBUG then console.log 'ERROR: chosen media', mediaKey, 'is not known'
+  else
+    # Get more news than needed to check for old news that have been updated
+    mediaLimit = 10
+    News.get media, mediaLimit, (items) ->
+      if typeof items is 'string'
+        # Error message, log it maybe
+        if DEBUG then console.log 'ERROR:', items
+      else
+        ls.mediaFeedItems = JSON.stringify items
+        News.refreshMediaIdList items
 
 loadAffiliationIcon = ->
   key = ls.affiliationKey
