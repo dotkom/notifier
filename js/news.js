@@ -223,15 +223,26 @@ var News = {
     return post;
   },
 
-  refreshNewsIdList: function(items) {
-    var freshNewsList = [];
+  // News specific
+  refreshAffiliationNewsList: function(items) {
+    var freshList = [];
     items.forEach(function(item, index) {
-      freshNewsList.push(item.link);
+      freshList.push(item.link);
     });
-    localStorage.newsList = JSON.stringify(freshNewsList);
+    localStorage.affiliationNewsList = JSON.stringify(freshList);
   },
 
-  unreadCountAndNotify: function(items) {
+  // Media specific
+  refreshMediaNewsList: function(items) {
+    var freshList = [];
+    items.forEach(function(item, index) {
+      freshList.push(item.link);
+    });
+    localStorage.mediaNewsList = JSON.stringify(freshList);
+  },
+
+  // News specific
+  countAffiliationNewsAndNotify: function(items) {
     var unreadCount = 0;
     var maxNewsAmount = this.unreadMaxCount;
     if (items.length-1 < maxNewsAmount)
