@@ -262,7 +262,10 @@ var News = {
 
         // Send a desktop notification about the first new item
         if (unreadCount == 1) {
-          if (localStorage.lastNotified != link) {
+          if (localStorage.lastNotifiedAffiliationNews != link) {
+            // Remember this
+            localStorage.lastNotifiedAffiliationNews = item.link;
+            // Show it
             self.showNotification(item);
           }
         }
@@ -297,8 +300,6 @@ var News = {
 
   showNotification: function(item) {
     if (localStorage.showNotifications == 'true') {
-      // Remember this
-      localStorage.lastNotified = item.link;
       // Get content
       localStorage.notificationTitle = item.title;
       localStorage.notificationLink = item.link;
