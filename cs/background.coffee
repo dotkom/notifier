@@ -71,7 +71,7 @@ updateAffiliationNews = ->
         if DEBUG then console.log 'ERROR:', items
       else
         ls.newsFeedItems = JSON.stringify items
-        News.countUnreadNewsAndNotify items
+        News.countAffiliationNewsAndNotify items
         News.refreshNewsIdList items
 
 updateMediaNews = ->

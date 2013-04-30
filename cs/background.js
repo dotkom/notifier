@@ -100,7 +100,7 @@
           }
         } else {
           ls.newsFeedItems = JSON.stringify(items);
-          News.countUnreadNewsAndNotify(items);
+          News.countAffiliationNewsAndNotify(items);
           return News.refreshNewsIdList(items);
         }
       });
