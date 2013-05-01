@@ -15,6 +15,7 @@ mainLoop = ->
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
+  updateMedia() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true'
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -61,10 +62,10 @@ listDinners = (menu) ->
     ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        if not isNaN dinner.price
-          dinner.price = dinner.price + ',-'
-        else
-          dinner.price = dinner.price + ' -'
+        # if not isNaN dinner.price
+        dinner.price = dinner.price + ',-'
+        # else
+        #   dinner.price = dinner.price + ' -'
         dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>'
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
@@ -128,24 +129,37 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   # Displaying the news feed (prefetched by the background page)
-  feedItems = ls.feedItems
+  feedItems = ls.affiliationFeedItems
   if feedItems isnt undefined
-    displayItems JSON.parse feedItems
+    feedItems = JSON.parse feedItems
+    displayItems feedItems, '#left', 'affiliationNewsList', 'affiliationViewedList', 'affiliationUnreadCount'
   else
     key = ls.affiliationKey
     name = Affiliation.org[key].name
-    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+    $('#news #left').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
-displayItems = (items) ->
-  # Empty the newsbox
-  $('#news #left').html ''
-  # Get feedname
+updateMedia = ->
+  if DEBUG then console.log 'updateMedia'
+  # Displaying the news feed (prefetched by the background page)
+  feedItems = ls.mediaFeedItems
+  if feedItems isnt undefined
+    feedItems = JSON.parse feedItems
+    displayItems feedItems, '#right', 'mediaNewsList', 'mediaViewedList', 'mediaUnreadCount'
+  else
+    key = ls.mediaKey
+    name = Affiliation.org[key].name
+    $('#news #right').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+
+displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
+  # Empty the news column
+  $('#news '+column).html ''
+  # Get feedkey
   feedKey = items[0].feedKey
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
-  newsList = JSON.parse ls.newsList
-  viewedList = JSON.parse ls.viewedNewsList
+  newsList = JSON.parse ls[newsListName]
+  viewedList = JSON.parse ls[viewedListName]
   updatedList = findUpdatedPosts newsList, viewedList
 
   # Build list of last viewed for the next time the user views the news
@@ -157,8 +171,9 @@ displayItems = (items) ->
     if index < newsLimit
       viewedList.push item.link
       
+      unreadCount = Number ls[unreadCountName]
       htmlItem = '<div class="post"><div class="title">'
-      if index < ls.unreadCount
+      if index < unreadCount
         if item.link in updatedList.indexOf
           htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
         else
@@ -168,26 +183,26 @@ displayItems = (items) ->
       # .item[data] contains the link
       # .item[name] contains the alternative link, if one exists, otherwise null
       date = altLink = ''
-      if item.date isnt null
-        date = ' den ' + item.date
+      # if item.date isnt null
+      #   date = ' den ' + item.date
       if item.altLink isnt null
         altLink = ' name="' + item.altLink + '"'
       htmlItem += item.title + '
         </div>
           <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
-            <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
+            <div class="emphasized">- Av ' + item.creator + date + '</div>
             ' + item.description + '
           </div>
         </div>'
-      $('#news #left').append htmlItem
+      $('#news '+column).append htmlItem
   
   # Store list of last viewed items
-  ls.viewedNewsList = JSON.stringify viewedList
+  ls[viewedListName] = JSON.stringify viewedList
 
   # All items are now considered read
   Browser.setBadgeText ''
-  ls.unreadCount = 0
+  ls[unreadCountName] = 0
 
   # Make news items open extension website while closing popup
   $('.item').click ->
