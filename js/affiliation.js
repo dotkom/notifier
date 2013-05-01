@@ -568,6 +568,9 @@ var Affiliation = {
       placeholder: './org/velferdstinget/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'#innhold'});
+      },
     },
     'studenttinget ntnu': {
       name: 'Studenttinget NTNU',
