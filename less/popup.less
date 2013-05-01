@@ -19,7 +19,7 @@
 // Rules
 
 body {
-  width: 360pt;
+  width: 400pt;
   height: 400pt;
   font-size: 9pt;
   line-height: 11.5pt;
@@ -83,7 +83,7 @@ body {
 
     #buttons {
       .debuglime;
-      width: 160pt;
+      width: 200pt; /*160pt;*/
       float: left;
 
       .popupbutton {
@@ -187,13 +187,21 @@ body {
   #news {
     #left {
       position: relative;
-      width: 46%;
+      width: 45%;
       float: left;
+      img {
+        float: right;
+        margin: 0 5pt 3pt 0;
+      }
     }
     #right {
       position: relative;
-      width: 48%;
+      width: 50%;
       float: right;
+      img {
+        float: right;
+        margin: 0 0 3pt 5pt;
+      }
     }
     .post {
       .item {
@@ -211,11 +219,9 @@ body {
             0pt 0pt 10pt white;
         }
         img {
-          float: left;
           width: 70pt;
           max-height: 70pt;
           padding: 3pt;
-          margin: 0 5pt 3pt 0;
           box-shadow: 0 0 10pt #bbb;
         }
       }
