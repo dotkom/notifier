@@ -223,49 +223,35 @@ var News = {
     return post;
   },
 
-  // News specific
-  refreshAffiliationNewsList: function(items) {
+  refreshNewsList: function(items) {
     var freshList = [];
     items.forEach(function(item, index) {
       freshList.push(item.link);
     });
-    localStorage.affiliationNewsList = JSON.stringify(freshList);
+    return JSON.stringify(freshList);
   },
 
-  // Media specific
-  refreshMediaNewsList: function(items) {
-    var freshList = [];
-    items.forEach(function(item, index) {
-      freshList.push(item.link);
-    });
-    localStorage.mediaNewsList = JSON.stringify(freshList);
-  },
-
-  // News specific
-  countAffiliationNewsAndNotify: function(items) {
+  countNewsAndNotify: function(items, newsList, lastNotifiedName) {
     var unreadCount = 0;
     var maxNewsAmount = this.unreadMaxCount;
     if (items.length-1 < maxNewsAmount)
       maxNewsAmount = items.length-1;
 
-    var newsList = JSON.parse(localStorage.newsList);
-
     // Count feed items
     var self = this;
-    items.forEach(function(item, index) {
-
+    //items.forEach(function(item, index) {
+    for (var i=0; i<items.length; i++) {
+      
+      var item = items[i];
       var link = item.link;
       
       // Counting...
       if (newsList.indexOf(link) === -1) {
         unreadCount++;
-
         // Send a desktop notification about the first new item
         if (unreadCount == 1) {
-          if (localStorage.lastNotifiedAffiliationNews != link) {
-            // Remember this
-            localStorage.lastNotifiedAffiliationNews = item.link;
-            // Show it
+          if (localStorage[lastNotifiedName] != link) {
+            localStorage[lastNotifiedName] = item.link;
             self.showNotification(item);
           }
         }
@@ -274,28 +260,27 @@ var News = {
       else {
         if (unreadCount == 0) {
           if (self.debug) console.log('no new posts');
-          Browser.setBadgeText('');
+          return 0;
         }
         else if (maxNewsAmount <= unreadCount) {
           if (self.debug) console.log(maxNewsAmount + '+ unread posts');
-          Browser.setBadgeText(maxNewsAmount + '+');
+          return maxNewsAmount + 1;
         }
         else {
           if (self.debug) console.log('1-' + (maxNewsAmount - 1) + ' unread posts');
-          Browser.setBadgeText(String(unreadCount));
+          return unreadCount;
         }
-        localStorage.unreadCount = unreadCount;
-        return;
       }
-      
+
       // Stop counting if unread number is greater than maxNewsAmount
-      if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
+      if ((maxNewsAmount - 1) < i) { // Remember i is counting 0
         if (self.debug) console.log((maxNewsAmount + 1) + ' unread posts (stopped counting)');
-        Browser.setBadgeText(String(maxNewsAmount + 1));
-        localStorage.unreadCount = maxNewsAmount + 1;
-        return;
+        return maxNewsAmount + 1;
       }
-    });
+    };
+    // });
+    if (this.debug) console.log('ERROR: unhandled situation returning -1, unreadCount is', unreadCount);
+    return -1;
   },
 
   showNotification: function(item) {
