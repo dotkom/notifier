@@ -71,7 +71,7 @@
       $('link[rel="shortcut icon"]').attr('href', icon);
       name = Affiliation.org[affiliationKey].name;
       Browser.setTitle(name + ' Notifier');
-      ls.removeItem('feedItems');
+      ls.removeItem('affiliationFeedItems');
       return Browser.getBackgroundProcess().updateNews();
     });
   };

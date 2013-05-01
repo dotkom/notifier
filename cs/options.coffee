@@ -64,7 +64,7 @@ bindAffiliationSelector = ->
     name = Affiliation.org[affiliationKey].name
     Browser.setTitle name + ' Notifier'
     # Throw out old news
-    ls.removeItem 'feedItems'
+    ls.removeItem 'affiliationFeedItems'
     # Update to new feed
     Browser.getBackgroundProcess().updateNews()
 
