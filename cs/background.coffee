@@ -70,9 +70,12 @@ updateAffiliationNews = ->
         # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
       else
-        ls.newsFeedItems = JSON.stringify items
-        News.countAffiliationNewsAndNotify items
-        News.refreshNewsIdList items
+        ls.affiliationFeedItems = JSON.stringify items
+        newsList = JSON.parse ls.affiliationNewsList
+        ls.affiliationUnreadCount = News.countNewsAndNotify items, newsList, 'affiliationLastNotified'
+        unreadCount = (Number ls.mediaUnreadCount) + (Number ls.affiliationUnreadCount)
+        Browser.setBadgeText String unreadCount
+        ls.affiliationNewsList = News.refreshNewsList items
 
 updateMediaNews = ->
   if DEBUG then console.log 'updateMediaNews'
@@ -83,15 +86,18 @@ updateMediaNews = ->
     if DEBUG then console.log 'ERROR: chosen media', mediaKey, 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
-    mediaLimit = 10
-    News.get media, mediaLimit, (items) ->
+    newsLimit = 10
+    News.get media, newsLimit, (items) ->
       if typeof items is 'string'
         # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
       else
         ls.mediaFeedItems = JSON.stringify items
-        # TODO: Currently not counting media items
-        News.refreshMediaIdList items
+        newsList = JSON.parse ls.mediaNewsList
+        ls.mediaUnreadCount = News.countNewsAndNotify items, newsList, 'mediaLastNotified'
+        unreadCount = (Number ls.mediaUnreadCount) + (Number ls.affiliationUnreadCount)
+        Browser.setBadgeText String unreadCount
+        ls.mediaNewsList = News.refreshNewsList items
 
 loadAffiliationIcon = ->
   key = ls.affiliationKey
@@ -126,6 +132,8 @@ $ ->
   if ls.affiliationPalette is undefined
     ls.affiliationPalette = 'online'
 
+  if ls.affiliationUnreadCount is undefined
+    ls.affiliationUnreadCount = 0
   if ls.affiliationNewsList is undefined
     ls.affiliationNewsList = JSON.stringify []
   if ls.affiliationViewedList is undefined
@@ -136,6 +144,8 @@ $ ->
   if ls.mediaKey is undefined
     ls.mediaKey = 'dusken'
 
+  if ls.mediaUnreadCount is undefined
+    ls.mediaUnreadCount = 0
   if ls.mediaNewsList is undefined
     ls.mediaNewsList = JSON.stringify []
   if ls.mediaViewedList is undefined

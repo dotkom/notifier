@@ -94,21 +94,25 @@
     } else {
       newsLimit = 10;
       return News.get(affiliation, newsLimit, function(items) {
+        var newsList, unreadCount;
         if (typeof items === 'string') {
           if (DEBUG) {
             return console.log('ERROR:', items);
           }
         } else {
-          ls.newsFeedItems = JSON.stringify(items);
-          News.countAffiliationNewsAndNotify(items);
-          return News.refreshNewsIdList(items);
+          ls.affiliationFeedItems = JSON.stringify(items);
+          newsList = JSON.parse(ls.affiliationNewsList);
+          ls.affiliationUnreadCount = News.countNewsAndNotify(items, newsList, 'affiliationLastNotified');
+          unreadCount = (Number(ls.mediaUnreadCount)) + (Number(ls.affiliationUnreadCount));
+          Browser.setBadgeText(String(unreadCount));
+          return ls.affiliationNewsList = News.refreshNewsList(items);
         }
       });
     }
   };
 
   updateMediaNews = function() {
-    var media, mediaKey, mediaLimit;
+    var media, mediaKey, newsLimit;
     if (DEBUG) {
       console.log('updateMediaNews');
     }
@@ -119,15 +123,20 @@
         return console.log('ERROR: chosen media', mediaKey, 'is not known');
       }
     } else {
-      mediaLimit = 10;
-      return News.get(media, mediaLimit, function(items) {
+      newsLimit = 10;
+      return News.get(media, newsLimit, function(items) {
+        var newsList, unreadCount;
         if (typeof items === 'string') {
           if (DEBUG) {
             return console.log('ERROR:', items);
           }
         } else {
           ls.mediaFeedItems = JSON.stringify(items);
-          return News.refreshMediaIdList(items);
+          newsList = JSON.parse(ls.mediaNewsList);
+          ls.mediaUnreadCount = News.countNewsAndNotify(items, newsList, 'mediaLastNotified');
+          unreadCount = (Number(ls.mediaUnreadCount)) + (Number(ls.affiliationUnreadCount));
+          Browser.setBadgeText(String(unreadCount));
+          return ls.mediaNewsList = News.refreshNewsList(items);
         }
       });
     }
@@ -165,6 +174,9 @@
     if (ls.affiliationPalette === void 0) {
       ls.affiliationPalette = 'online';
     }
+    if (ls.affiliationUnreadCount === void 0) {
+      ls.affiliationUnreadCount = 0;
+    }
     if (ls.affiliationNewsList === void 0) {
       ls.affiliationNewsList = JSON.stringify([]);
     }
@@ -176,6 +188,9 @@
     }
     if (ls.mediaKey === void 0) {
       ls.mediaKey = 'dusken';
+    }
+    if (ls.mediaUnreadCount === void 0) {
+      ls.mediaUnreadCount = 0;
     }
     if (ls.mediaNewsList === void 0) {
       ls.mediaNewsList = JSON.stringify([]);
