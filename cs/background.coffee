@@ -9,7 +9,7 @@ mainLoop = ->
   if ls.useInfoscreen isnt 'true'
     updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
-    updateAffiliationNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online, otherwise keep old news
+    updateAffiliationNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation is 'true' and navigator.onLine # Only if online, otherwise keep old news
     updateMediaNews() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true' and navigator.onLine # Only if online, otherwise keep old media
   
   # No reason to count to infinity

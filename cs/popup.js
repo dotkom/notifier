@@ -33,7 +33,7 @@
     if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
       updateBus();
     }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0) {
+    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation === 'true') {
       updateNews();
     }
     if (iteration % UPDATE_MEDIA_INTERVAL === 0 && ls.showMedia === 'true') {

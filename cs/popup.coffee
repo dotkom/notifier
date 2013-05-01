@@ -14,7 +14,7 @@ mainLoop = ->
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
-  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
+  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation is 'true'
   updateMedia() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true'
   
   # No reason to count to infinity

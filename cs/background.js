@@ -20,7 +20,7 @@
       if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
         updateCoffeeSubscription();
       }
-      if (iteration % UPDATE_NEWS_INTERVAL === 0 && navigator.onLine) {
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation === 'true' && navigator.onLine) {
         updateAffiliationNews();
       }
       if (iteration % UPDATE_MEDIA_INTERVAL === 0 && ls.showMedia === 'true' && navigator.onLine) {
