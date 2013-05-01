@@ -72,7 +72,7 @@
       name = Affiliation.org[affiliationKey].name;
       Browser.setTitle(name + ' Notifier');
       ls.removeItem('affiliationFeedItems');
-      return Browser.getBackgroundProcess().updateNews();
+      return Browser.getBackgroundProcess().updateAffiliationNews();
     });
   };
 

@@ -66,7 +66,7 @@ bindAffiliationSelector = ->
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'
     # Update to new feed
-    Browser.getBackgroundProcess().updateNews()
+    Browser.getBackgroundProcess().updateAffiliationNews()
 
 bindPaletteSelector = ->
   # Default values
