@@ -212,7 +212,7 @@ var News = {
     
     // title + description must not exceed 5 lines
     var line = 50; // conservative estimation
-    var desclength = line * 3;
+    var desclength = line * 2;
     // double line titles will shorten the description by 1 line
     if (line <= post.title.length)
       desclength -= line;
