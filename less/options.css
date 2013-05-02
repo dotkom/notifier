@@ -211,12 +211,14 @@ header #notification .saved {
   float: left;
   white-space: nowrap;
   width: 33pt;
-  margin: 1pt 0 0 0;
+  margin: -5pt 4pt -5pt -8pt;
+  border-right: 1pt solid #aaa;
+  padding: 6pt 6pt;
 }
 .item #affiliationBox .row {
   border: 0pt solid #ff0000;
   float: right;
-  width: 224pt;
+  width: 220pt;
   color: black;
   text-shadow: 0 0 0 black;
 }
@@ -238,7 +240,7 @@ header #notification .saved {
   position: relative;
   margin-top: 2pt;
   white-space: nowrap;
-  width: 115pt;
+  width: 117pt;
 }
 .item #affiliationBox #affiliationPalette {
   border: 0pt solid #ff0000;
@@ -248,7 +250,7 @@ header #notification .saved {
   position: relative;
   margin-top: 2pt;
   white-space: nowrap;
-  width: 100pt;
+  width: 96pt;
 }
 .item #affiliationBox #secondaryAffiliationKey {
   border: 0pt solid #ff0000;
@@ -258,7 +260,7 @@ header #notification .saved {
   position: relative;
   margin-top: 2pt;
   white-space: nowrap;
-  width: 100pt;
+  width: 96pt;
 }
 .item #cantinaBox {
   width: 265pt;
