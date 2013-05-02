@@ -101,7 +101,7 @@
     if (feedItems !== void 0) {
       return displayItems(JSON.parse(feedItems));
     } else {
-      key = ls.affiliationKey;
+      key = ls.affiliationKey1;
       name = Affiliation.org[key].name;
       return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
     }
@@ -153,7 +153,7 @@
     $('.item').click(function() {
       var altLink, useAltLink;
       altLink = $(this).attr('name');
-      useAltLink = Affiliation.org[ls.affiliationKey].useAltLink;
+      useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink;
       if (altLink !== void 0 && useAltLink === true) {
         Browser.openTab($(this).attr('name'));
       } else {
@@ -359,8 +359,8 @@
     if (ls.showBus !== 'true') {
       $('#bus').hide();
     }
-    if (ls.affiliationKey !== 'online') {
-      affiliation = ls.affiliationKey;
+    if (ls.affiliationKey1 !== 'online') {
+      affiliation = ls.affiliationKey1;
       logo = Affiliation.org[affiliation].logo;
       if (logo !== void 0 && logo !== '') {
         if (DEBUG) {
@@ -369,7 +369,7 @@
         $('#logo').prop('src', logo);
       }
     }
-    $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey].icon);
+    $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey1].icon);
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");

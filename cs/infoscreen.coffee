@@ -57,7 +57,7 @@ updateNews = ->
   if feedItems isnt undefined
     displayItems JSON.parse feedItems
   else
-    key = ls.affiliationKey
+    key = ls.affiliationKey1
     name = Affiliation.org[key].name
     $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
@@ -123,7 +123,7 @@ displayItems = (items) ->
     # Note that altLinks are embedded in the name-property of the element,
     # - if preferred by the organization, we should use that instead.
     altLink = $(this).attr 'name'
-    useAltLink = Affiliation.org[ls.affiliationKey].useAltLink
+    useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink
     if altLink isnt undefined and useAltLink is true
       Browser.openTab $(this).attr 'name'
     else
@@ -294,9 +294,9 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  if ls.affiliationKey isnt 'online'
+  if ls.affiliationKey1 isnt 'online'
     # Show the logo and placeholder image for the correct organization
-    affiliation = ls.affiliationKey
+    affiliation = ls.affiliationKey1
     # If the affiliation has a defined logo
     logo = Affiliation.org[affiliation].logo
     if logo isnt undefined and logo isnt ''
@@ -304,7 +304,7 @@ $ ->
       $('#logo').prop 'src', logo
 
   # Switch to the icon of chosen affiliation
-  $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey].icon
+  $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey1].icon
   # Show the standard palette or special palette the user has chosen
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
   

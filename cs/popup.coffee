@@ -14,8 +14,8 @@ mainLoop = ->
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
-  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation is 'true'
-  updateAffiliationNews2() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+  updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
+  updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -126,29 +126,19 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
         $(busStop+' .'+spans[i]+' .line').append lines['destination'][i]
         $(busStop+' .'+spans[i]+' .time').append lines['departures'][i]
 
-updateNews = ->
-  if DEBUG then console.log 'updateNews'
+updateAffiliationNews = (number) ->
+  if DEBUG then console.log 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
-  feedItems = ls.affiliationFeedItems
+  feedItems = ls['affiliationFeedItems'+number]
   if feedItems isnt undefined
     feedItems = JSON.parse feedItems
-    displayItems feedItems, '#left', 'affiliationNewsList', 'affiliationViewedList', 'affiliationUnreadCount'
+    selector = if number is '1' then '#left' else '#right'
+    displayItems feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
   else
-    key = ls.affiliationKey
+    key = ls['affiliationKey'+number]
     name = Affiliation.org[key].name
-    $('#news #left').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
-
-updateAffiliationNews2 = ->
-  if DEBUG then console.log 'updateAffiliationNews2'
-  # Displaying the news feed (prefetched by the background page)
-  feedItems = ls.affiliationFeedItems2
-  if feedItems isnt undefined
-    feedItems = JSON.parse feedItems
-    displayItems feedItems, '#right', 'affiliationNewsList2', 'affiliationViewedList2', 'affiliationUnreadCount2'
-  else
-    key = ls.affiliationKey2
-    name = Affiliation.org[key].name
-    $('#news #right').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+    selector = if number is '1' then '#left' else '#right'
+    $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
 displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Empty the news column
@@ -211,7 +201,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     # Note that altLinks are embedded in the name-property of the element,
     # - if preferred by the organization, we should use that instead.
     altLink = $(this).attr 'name'
-    useAltLink = Affiliation.org[ls.affiliationKey].useAltLink
+    useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink
     if altLink isnt undefined and useAltLink is true
       Browser.openTab $(this).attr 'name'
     else
@@ -290,13 +280,13 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  if ls.affiliationKey isnt 'online'
+  if ls.affiliationKey1 isnt 'online'
     # Hide chat button
     $('#chatter_button').hide()
     # Hide Notifier Mobile info in Tips box
     $('#mobile_text').hide()
     # Show the logo and placeholder image for the correct organization
-    affiliation = ls.affiliationKey
+    affiliation = ls.affiliationKey1
     # If the affiliation has a defined logo
     logo = Affiliation.org[affiliation].logo
     if logo isnt undefined and logo isnt ''
@@ -308,7 +298,7 @@ $ ->
 
   # Make logo open extension website while closing popup
   $('#logo').click ->
-    web = Affiliation.org[ls.affiliationKey].web
+    web = Affiliation.org[ls.affiliationKey1].web
     Browser.openTab web
     window.close()
 

@@ -9,8 +9,8 @@ mainLoop = ->
   if ls.useInfoscreen isnt 'true'
     updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
-    updateAffiliationNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation is 'true' and navigator.onLine # Only if online, otherwise keep old news
-    updateAffiliationNews2() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
+    updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
+    updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -55,13 +55,13 @@ updateCoffeeSubscription = ->
       # And remember to update localStorage
       ls.coffeePots = pots
 
-updateAffiliationNews = ->
-  if DEBUG then console.log 'updateAffiliationNews'
+updateAffiliationNews = (number) ->
+  if DEBUG then console.log 'updateAffiliationNews'+number
   # Get affiliation object
-  affiliationKey = ls.affiliationKey
+  affiliationKey = ls['affiliationKey'+number]
   affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey, 'is not known'
+    if DEBUG then console.log 'ERROR: chosen affiliation', 'affiliationKey'+number, 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
@@ -70,37 +70,26 @@ updateAffiliationNews = ->
         # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
       else
-        ls.affiliationFeedItems = JSON.stringify items
-        newsList = JSON.parse ls.affiliationNewsList
-        ls.affiliationUnreadCount = News.countNewsAndNotify items, newsList, 'affiliationLastNotified'
-        unreadCount = (Number ls.affiliationUnreadCount2) + (Number ls.affiliationUnreadCount)
-        Browser.setBadgeText String unreadCount
-        ls.affiliationNewsList = News.refreshNewsList items
+        countNews items, number
+        updateUnreadCount()
 
-updateAffiliationNews2 = ->
-  if DEBUG then console.log 'updateAffiliationNews2'
-  # Get affiliation object
-  affiliationKey2 = ls.affiliationKey2
-  affiliation = Affiliation.org[affiliationKey2]
-  if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey2, 'is not known'
-  else
-    # Get more news than needed to check for old news that have been updated
-    newsLimit = 10
-    News.get affiliation, newsLimit, (items) ->
-      if typeof items is 'string'
-        # Error message, log it maybe
-        if DEBUG then console.log 'ERROR:', items
-      else
-        ls.affiliationFeedItems2 = JSON.stringify items
-        newsList = JSON.parse ls.affiliationNewsList2
-        ls.affiliationUnreadCount2 = News.countNewsAndNotify items, newsList, 'affiliationLastNotified2'
-        unreadCount = (Number ls.affiliationUnreadCount2) + (Number ls.affiliationUnreadCount)
-        Browser.setBadgeText String unreadCount
-        ls.affiliationNewsList2 = News.refreshNewsList items
+countNews = (items, number) ->
+  feedItems = 'affiliationFeedItems'+number
+  newsList = 'affiliationNewsList'+number
+  unreadCount = 'affiliationUnreadCount'+number
+  lastNotified = 'affiliationLastNotified'+number
+
+  ls[feedItems] = JSON.stringify items
+  list = JSON.parse ls[newsList]
+  ls[unreadCount] = News.countNewsAndNotify items, list, lastNotified
+  ls[newsList] = News.refreshNewsList items
+
+updateUnreadCount = (count1, count2) ->
+  unreadCount = (Number ls.affiliationUnreadCount1) + (Number ls.affiliationUnreadCount2)
+  Browser.setBadgeText String unreadCount
 
 loadAffiliationIcon = ->
-  key = ls.affiliationKey
+  key = ls.affiliationKey1
   # Set badge icon
   icon = Affiliation.org[key].icon
   Browser.setIcon icon
@@ -125,25 +114,26 @@ $ ->
   if ls.extensionCreator is undefined
     ls.extensionCreator = 'dotKom' # Max 8 letters because of styling
 
-  if ls.showAffiliation is undefined
-    ls.showAffiliation = 'true'
-  if ls.affiliationKey is undefined
-    ls.affiliationKey = 'online'
+  # Primary affiliation
+  if ls.showAffiliation1 is undefined
+    ls.showAffiliation1 = 'true'
+  if ls.affiliationKey1 is undefined
+    ls.affiliationKey1 = 'online'
+  if ls.affiliationUnreadCount1 is undefined
+    ls.affiliationUnreadCount1 = 0
+  if ls.affiliationNewsList1 is undefined
+    ls.affiliationNewsList1 = JSON.stringify []
+  if ls.affiliationViewedList1 is undefined
+    ls.affiliationViewedList1 = JSON.stringify []
+  
   if ls.affiliationPalette is undefined
     ls.affiliationPalette = 'online'
 
-  if ls.affiliationUnreadCount is undefined
-    ls.affiliationUnreadCount = 0
-  if ls.affiliationNewsList is undefined
-    ls.affiliationNewsList = JSON.stringify []
-  if ls.affiliationViewedList is undefined
-    ls.affiliationViewedList = JSON.stringify []
-
+  # Secondary affiliation
   if ls.showAffiliation2 is undefined
     ls.showAffiliation2 = 'true'
   if ls.affiliationKey2 is undefined
     ls.affiliationKey2 = 'universitetsavisa'
-
   if ls.affiliationUnreadCount2 is undefined
     ls.affiliationUnreadCount2 = 0
   if ls.affiliationNewsList2 is undefined
@@ -237,7 +227,6 @@ $ ->
   window.updateOfficeAndMeetings = updateOfficeAndMeetings
   window.updateCoffeeSubscription = updateCoffeeSubscription
   window.updateAffiliationNews = updateAffiliationNews
-  window.updateAffiliationNews2 = updateAffiliationNews2
   window.loadAffiliationIcon = loadAffiliationIcon
 
   # Enter main loop, keeping everything up-to-date

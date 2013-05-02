@@ -162,7 +162,7 @@ header #notification .saved {
   box-shadow: 0 0 15px #333;
   cursor: pointer;
 }
-.item input#showAffiliation {
+.item input#showAffiliation1 {
   opacity: 0;
   /* Turning off news feed is not allowed since it would
     turn off the primary purpose of Online Notifier. Don't
@@ -210,6 +210,7 @@ header #notification .saved {
   border: 0pt solid #ff0000;
   float: left;
   white-space: nowrap;
+  cursor: pointer;
   width: 33pt;
   margin: -5pt 4pt -5pt -8pt;
   border-right: 1pt solid #aaa;
@@ -232,7 +233,7 @@ header #notification .saved {
 .item #affiliationBox #bottomRow select {
   top: -3pt;
 }
-.item #affiliationBox #affiliationKey {
+.item #affiliationBox #affiliationKey1 {
   border: 0pt solid #ff0000;
   display: inline-block;
   float: left;
@@ -252,7 +253,7 @@ header #notification .saved {
   white-space: nowrap;
   width: 96pt;
 }
-.item #affiliationBox #secondaryAffiliationKey {
+.item #affiliationBox #affiliationKey2 {
   border: 0pt solid #ff0000;
   display: inline-block;
   border: 1pt solid #7a7a7a;
