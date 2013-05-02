@@ -26,54 +26,54 @@ testDesktopNotification = ->
 testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
-bindAffiliationSelector = ->
-  id = 'affiliationKey1'
-  affiliationKey1 = ls[id]
+bindAffiliationSelector = (number, isPrimaryAffiliation) ->
+  id = 'affiliationKey'+number
+  affiliationKey = ls[id]
   # Default values, set only the chosen affiliation as selected, because it is the Chosen One
-  $('#'+id).val affiliationKey1
-  # Remove any previous "selected" (by default) attributes
-  # $('#'+id+' option[selected]').removeAttr('selected');
+  $('#'+id).val affiliationKey
   # React to change
   $('#'+id).change ->
-    affiliationKey1 = $(this).val()
-    # Check if switching from or to Online
+    affiliationKey = $(this).val()
     oldAffiliation = ls[id]
-    if oldAffiliation is 'online'
-      disableOnlineSpecificFeatures()
-    else if affiliationKey1 is 'online'
-      enableOnlineSpecificFeatures()
     # Save the change
-    ls[id] = affiliationKey1
-    
-    # Get and save the recommended palette for the chosen affiliation
-    palette = Affiliation.org[affiliationKey1].palette
-    if palette isnt undefined
-      $('#affiliationPalette').val palette
-      ls.affiliationPalette = palette
-      if DEBUG then console.log 'Applying chosen palette', palette
-      $('#palette').attr 'href', Palettes.get palette
-    
-    # Extension icon
-    icon = Affiliation.org[affiliationKey1].icon
-    Browser.setIcon icon
-    # Favicon
-    $('link[rel="shortcut icon"]').attr 'href', icon
-    # Symbol
-    symbol = Affiliation.org[affiliationKey1].symbol
-    $('#affiliationSymbol').attr 'src', symbol
-    # Website link
-    web = Affiliation.org[affiliationKey1].web
-    $('#affiliationSymbol').unbind 'click'
-    $('#affiliationSymbol').click ->
-      Browser.openTab web
-    # Name to badge title
-    name = Affiliation.org[affiliationKey1].name
-    Browser.setTitle name + ' Notifier'
+    ls[id] = affiliationKey
+
+    if isPrimaryAffiliation
+      # Check if switching from or to Online
+      if oldAffiliation is 'online'
+        disableOnlineSpecificFeatures()
+      else if affiliationKey is 'online'
+        enableOnlineSpecificFeatures()
+      
+      # Palette
+      palette = Affiliation.org[affiliationKey].palette
+      if palette isnt undefined
+        $('#affiliationPalette').val palette
+        ls.affiliationPalette = palette
+        if DEBUG then console.log 'Applying chosen palette', palette
+        $('#palette').attr 'href', Palettes.get palette
+      
+      # Extension icon
+      icon = Affiliation.org[affiliationKey].icon
+      Browser.setIcon icon
+      # Favicon
+      $('link[rel="shortcut icon"]').attr 'href', icon
+      # Symbol
+      symbol = Affiliation.org[affiliationKey].symbol
+      $('#affiliationSymbol').attr 'src', symbol
+      # Website link
+      web = Affiliation.org[affiliationKey].web
+      $('#affiliationSymbol').unbind 'click'
+      $('#affiliationSymbol').click ->
+        Browser.openTab web
+      # Name to badge title
+      name = Affiliation.org[affiliationKey].name
+      Browser.setTitle name + ' Notifier'
     
     # Throw out old news
-    ls.removeItem 'affiliationFeedItems'
+    ls.removeItem 'affiliationFeedItems'+number
     # Update to new feed
-    Browser.getBackgroundProcess().updateAffiliationNews()
+    Browser.getBackgroundProcess().updateAffiliationNews number
 
 bindPaletteSelector = ->
   # Default values
@@ -683,7 +683,8 @@ $ ->
   #   fadeInCanvas()
 
   # Allow user to change affiliation and palette
-  bindAffiliationSelector()
+  bindAffiliationSelector '1', true
+  bindAffiliationSelector '2', false
   bindPaletteSelector()
 
   # Allow user to select cantinas

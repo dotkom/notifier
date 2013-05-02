@@ -42,44 +42,46 @@
     return Browser.createNotification('subscription.html');
   };
 
-  bindAffiliationSelector = function() {
-    var affiliationKey1, id;
-    id = 'affiliationKey1';
-    affiliationKey1 = ls[id];
-    $('#' + id).val(affiliationKey1);
+  bindAffiliationSelector = function(number, isPrimaryAffiliation) {
+    var affiliationKey, id;
+    id = 'affiliationKey' + number;
+    affiliationKey = ls[id];
+    $('#' + id).val(affiliationKey);
     return $('#' + id).change(function() {
       var icon, name, oldAffiliation, palette, symbol, web;
-      affiliationKey1 = $(this).val();
+      affiliationKey = $(this).val();
       oldAffiliation = ls[id];
-      if (oldAffiliation === 'online') {
-        disableOnlineSpecificFeatures();
-      } else if (affiliationKey1 === 'online') {
-        enableOnlineSpecificFeatures();
-      }
-      ls[id] = affiliationKey1;
-      palette = Affiliation.org[affiliationKey1].palette;
-      if (palette !== void 0) {
-        $('#affiliationPalette').val(palette);
-        ls.affiliationPalette = palette;
-        if (DEBUG) {
-          console.log('Applying chosen palette', palette);
+      ls[id] = affiliationKey;
+      if (isPrimaryAffiliation) {
+        if (oldAffiliation === 'online') {
+          disableOnlineSpecificFeatures();
+        } else if (affiliationKey === 'online') {
+          enableOnlineSpecificFeatures();
         }
-        $('#palette').attr('href', Palettes.get(palette));
+        palette = Affiliation.org[affiliationKey].palette;
+        if (palette !== void 0) {
+          $('#affiliationPalette').val(palette);
+          ls.affiliationPalette = palette;
+          if (DEBUG) {
+            console.log('Applying chosen palette', palette);
+          }
+          $('#palette').attr('href', Palettes.get(palette));
+        }
+        icon = Affiliation.org[affiliationKey].icon;
+        Browser.setIcon(icon);
+        $('link[rel="shortcut icon"]').attr('href', icon);
+        symbol = Affiliation.org[affiliationKey].symbol;
+        $('#affiliationSymbol').attr('src', symbol);
+        web = Affiliation.org[affiliationKey].web;
+        $('#affiliationSymbol').unbind('click');
+        $('#affiliationSymbol').click(function() {
+          return Browser.openTab(web);
+        });
+        name = Affiliation.org[affiliationKey].name;
+        Browser.setTitle(name + ' Notifier');
       }
-      icon = Affiliation.org[affiliationKey1].icon;
-      Browser.setIcon(icon);
-      $('link[rel="shortcut icon"]').attr('href', icon);
-      symbol = Affiliation.org[affiliationKey1].symbol;
-      $('#affiliationSymbol').attr('src', symbol);
-      web = Affiliation.org[affiliationKey1].web;
-      $('#affiliationSymbol').unbind('click');
-      $('#affiliationSymbol').click(function() {
-        return Browser.openTab(web);
-      });
-      name = Affiliation.org[affiliationKey1].name;
-      Browser.setTitle(name + ' Notifier');
-      ls.removeItem('affiliationFeedItems');
-      return Browser.getBackgroundProcess().updateAffiliationNews();
+      ls.removeItem('affiliationFeedItems' + number);
+      return Browser.getBackgroundProcess().updateAffiliationNews(number);
     });
   };
 
@@ -703,7 +705,8 @@
         return $('#plusonebutton').fadeIn(150);
       }), 1100);
     }
-    bindAffiliationSelector();
+    bindAffiliationSelector('1', true);
+    bindAffiliationSelector('2', false);
     bindPaletteSelector();
     bindCantinaSelector('left_cantina');
     bindCantinaSelector('right_cantina');
