@@ -10,7 +10,7 @@ mainLoop = ->
     updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
     updateAffiliationNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation is 'true' and navigator.onLine # Only if online, otherwise keep old news
-    updateMediaNews() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true' and navigator.onLine # Only if online, otherwise keep old media
+    updateAffiliationNews2() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -73,31 +73,31 @@ updateAffiliationNews = ->
         ls.affiliationFeedItems = JSON.stringify items
         newsList = JSON.parse ls.affiliationNewsList
         ls.affiliationUnreadCount = News.countNewsAndNotify items, newsList, 'affiliationLastNotified'
-        unreadCount = (Number ls.mediaUnreadCount) + (Number ls.affiliationUnreadCount)
+        unreadCount = (Number ls.affiliationUnreadCount2) + (Number ls.affiliationUnreadCount)
         Browser.setBadgeText String unreadCount
         ls.affiliationNewsList = News.refreshNewsList items
 
-updateMediaNews = ->
-  if DEBUG then console.log 'updateMediaNews'
+updateAffiliationNews2 = ->
+  if DEBUG then console.log 'updateAffiliationNews2'
   # Get affiliation object
-  mediaKey = ls.mediaKey
-  media = Affiliation.org[mediaKey]
-  if media is undefined
-    if DEBUG then console.log 'ERROR: chosen media', mediaKey, 'is not known'
+  affiliationKey2 = ls.affiliationKey2
+  affiliation = Affiliation.org[affiliationKey2]
+  if affiliation is undefined
+    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey2, 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
-    News.get media, newsLimit, (items) ->
+    News.get affiliation, newsLimit, (items) ->
       if typeof items is 'string'
         # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
       else
-        ls.mediaFeedItems = JSON.stringify items
-        newsList = JSON.parse ls.mediaNewsList
-        ls.mediaUnreadCount = News.countNewsAndNotify items, newsList, 'mediaLastNotified'
-        unreadCount = (Number ls.mediaUnreadCount) + (Number ls.affiliationUnreadCount)
+        ls.affiliationFeedItems2 = JSON.stringify items
+        newsList = JSON.parse ls.affiliationNewsList2
+        ls.affiliationUnreadCount2 = News.countNewsAndNotify items, newsList, 'affiliationLastNotified2'
+        unreadCount = (Number ls.affiliationUnreadCount2) + (Number ls.affiliationUnreadCount)
         Browser.setBadgeText String unreadCount
-        ls.mediaNewsList = News.refreshNewsList items
+        ls.affiliationNewsList2 = News.refreshNewsList items
 
 loadAffiliationIcon = ->
   key = ls.affiliationKey
@@ -139,17 +139,17 @@ $ ->
   if ls.affiliationViewedList is undefined
     ls.affiliationViewedList = JSON.stringify []
 
-  if ls.showMedia is undefined
-    ls.showMedia = 'true'
-  if ls.mediaKey is undefined
-    ls.mediaKey = 'universitetsavisa'
+  if ls.showAffiliation2 is undefined
+    ls.showAffiliation2 = 'true'
+  if ls.affiliationKey2 is undefined
+    ls.affiliationKey2 = 'universitetsavisa'
 
-  if ls.mediaUnreadCount is undefined
-    ls.mediaUnreadCount = 0
-  if ls.mediaNewsList is undefined
-    ls.mediaNewsList = JSON.stringify []
-  if ls.mediaViewedList is undefined
-    ls.mediaViewedList = JSON.stringify []
+  if ls.affiliationUnreadCount2 is undefined
+    ls.affiliationUnreadCount2 = 0
+  if ls.affiliationNewsList2 is undefined
+    ls.affiliationNewsList2 = JSON.stringify []
+  if ls.affiliationViewedList2 is undefined
+    ls.affiliationViewedList2 = JSON.stringify []
 
   if ls.showBus is undefined
     ls.showBus = 'true'
@@ -237,7 +237,7 @@ $ ->
   window.updateOfficeAndMeetings = updateOfficeAndMeetings
   window.updateCoffeeSubscription = updateCoffeeSubscription
   window.updateAffiliationNews = updateAffiliationNews
-  window.updateMediaNews = updateMediaNews
+  window.updateAffiliationNews2 = updateAffiliationNews2
   window.loadAffiliationIcon = loadAffiliationIcon
 
   # Enter main loop, keeping everything up-to-date

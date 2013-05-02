@@ -15,7 +15,7 @@ mainLoop = ->
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation is 'true'
-  updateMedia() if iteration % UPDATE_MEDIA_INTERVAL is 0 and ls.showMedia is 'true'
+  updateAffiliationNews2() if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -138,15 +138,15 @@ updateNews = ->
     name = Affiliation.org[key].name
     $('#news #left').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
-updateMedia = ->
-  if DEBUG then console.log 'updateMedia'
+updateAffiliationNews2 = ->
+  if DEBUG then console.log 'updateAffiliationNews2'
   # Displaying the news feed (prefetched by the background page)
-  feedItems = ls.mediaFeedItems
+  feedItems = ls.affiliationFeedItems2
   if feedItems isnt undefined
     feedItems = JSON.parse feedItems
-    displayItems feedItems, '#right', 'mediaNewsList', 'mediaViewedList', 'mediaUnreadCount'
+    displayItems feedItems, '#right', 'affiliationNewsList2', 'affiliationViewedList2', 'affiliationUnreadCount2'
   else
-    key = ls.mediaKey
+    key = ls.affiliationKey2
     name = Affiliation.org[key].name
     $('#news #right').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
