@@ -427,8 +427,8 @@ body {
             0pt 0pt 10pt white;
 }
 #container #news .post .item img {
-  width: 70pt;
-  max-height: 70pt;
+  width: 60pt;
+  max-height: 60pt;
   padding: 3pt;
   box-shadow: 0 0 10pt #bbb;
 }
