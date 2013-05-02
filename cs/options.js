@@ -81,7 +81,9 @@
         Browser.setTitle(name + ' Notifier');
       }
       ls.removeItem('affiliationFeedItems' + number);
-      return Browser.getBackgroundProcess().updateAffiliationNews(number);
+      if (ls['showAffiliation' + number] === 'true') {
+        return Browser.getBackgroundProcess().updateAffiliationNews(number);
+      }
     });
   };
 
@@ -708,6 +710,9 @@
     bindAffiliationSelector('1', true);
     bindAffiliationSelector('2', false);
     bindPaletteSelector();
+    if (ls.showAffiliation2 !== 'true') {
+      $('#affiliationKey2').attr('disabled', 'disabled');
+    }
     bindCantinaSelector('left_cantina');
     bindCantinaSelector('right_cantina');
     bindBusFields('firstBus');
@@ -739,6 +744,12 @@
         return toggleInfoscreen(this.checked);
       } else {
         ls[this.id] = this.checked;
+        if (this.id === 'showAffiliation2' && this.checked === false) {
+          $('#affiliationKey2').attr('disabled', 'disabled');
+        }
+        if (this.id === 'showAffiliation2' && this.checked === true) {
+          $('#affiliationKey2').removeAttr('disabled');
+        }
         if (this.id === 'showOffice' && this.checked === true) {
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
         }

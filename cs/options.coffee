@@ -72,8 +72,10 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
-    # Update to new feed
-    Browser.getBackgroundProcess().updateAffiliationNews number
+
+    if ls['showAffiliation'+number] is 'true'
+      # Update to new feed
+      Browser.getBackgroundProcess().updateAffiliationNews number
 
 bindPaletteSelector = ->
   # Default values
@@ -686,6 +688,8 @@ $ ->
   bindAffiliationSelector '1', true
   bindAffiliationSelector '2', false
   bindPaletteSelector()
+  if ls.showAffiliation2 isnt 'true'
+    $('#affiliationKey2').attr 'disabled', 'disabled'
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
@@ -738,6 +742,11 @@ $ ->
     # All the other checkboxes (not Infoscreen)
     else
       ls[this.id] = this.checked;
+
+      if this.id is 'showAffiliation2' and this.checked is false
+        $('#affiliationKey2').attr 'disabled', 'disabled'
+      if this.id is 'showAffiliation2' and this.checked is true
+        $('#affiliationKey2').removeAttr 'disabled'
       
       if this.id is 'showOffice' and this.checked is true
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
