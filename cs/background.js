@@ -187,7 +187,7 @@
       ls.showMedia = 'true';
     }
     if (ls.mediaKey === void 0) {
-      ls.mediaKey = 'dusken';
+      ls.mediaKey = 'universitetsavisa';
     }
     if (ls.mediaUnreadCount === void 0) {
       ls.mediaUnreadCount = 0;

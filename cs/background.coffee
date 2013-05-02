@@ -142,7 +142,7 @@ $ ->
   if ls.showMedia is undefined
     ls.showMedia = 'true'
   if ls.mediaKey is undefined
-    ls.mediaKey = 'dusken'
+    ls.mediaKey = 'universitetsavisa'
 
   if ls.mediaUnreadCount is undefined
     ls.mediaUnreadCount = 0
