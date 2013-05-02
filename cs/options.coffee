@@ -60,6 +60,9 @@ bindAffiliationSelector = ->
     icon = Affiliation.org[affiliationKey].icon
     Browser.setIcon icon # Extension icon
     $('link[rel="shortcut icon"]').attr 'href', icon # Page favicon
+    # Get and save the affiliation symbol
+    symbol = Affiliation.org[affiliationKey].symbol
+    $('#affiliationSymbol').attr 'src', symbol # Affiliation selector icon
     # Get and save the affiliation name to the badge title
     name = Affiliation.org[affiliationKey].name
     Browser.setTitle name + ' Notifier'
@@ -620,7 +623,9 @@ $ ->
     disableOnlineSpecificFeatures true # true means be quick about it!
 
   # Switch to the icon of chosen affiliation
-  $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey].icon
+  icon = Affiliation.org[ls.affiliationKey].icon
+  $('link[rel="shortcut icon"]').attr 'href', icon
+  $('#affiliationSymbol').attr 'src', icon
   # Show the standard palette or special palette the user has chosen
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
   # # Show the logo for the chosen affiliation
