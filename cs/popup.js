@@ -189,9 +189,12 @@
       console.log('updateAffiliationNews' + number);
     }
     feedItems = ls['affiliationFeedItems' + number];
+    selector = number === '1' ? '#left' : '#right';
+    if (ls.showAffiliation2 !== 'true') {
+      selector = '#full';
+    }
     if (feedItems !== void 0) {
       feedItems = JSON.parse(feedItems);
-      selector = number === '1' ? '#left' : '#right';
       return displayItems(feedItems, selector, 'affiliationNewsList' + number, 'affiliationViewedList' + number, 'affiliationUnreadCount' + number);
     } else {
       key = ls['affiliationKey' + number];
@@ -330,6 +333,11 @@
       setTimeout((function() {
         return window.close();
       }), 250);
+    }
+    if (ls.showAffiliation2 !== 'true') {
+      $('body').attr('style', 'width:360pt;');
+      $('#news #right').hide();
+      $('#news #left').attr('id', 'full');
     }
     if (ls.showOffice !== 'true') {
       $('#todays').hide();

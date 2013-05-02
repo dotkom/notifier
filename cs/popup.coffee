@@ -130,9 +130,12 @@ updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
   feedItems = ls['affiliationFeedItems'+number]
+  # Detect selector
+  selector = if number is '1' then '#left' else '#right'
+  if ls.showAffiliation2 isnt 'true' then selector = '#full'
+
   if feedItems isnt undefined
     feedItems = JSON.parse feedItems
-    selector = if number is '1' then '#left' else '#right'
     displayItems feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
   else
     key = ls['affiliationKey'+number]
@@ -274,6 +277,12 @@ $ ->
     setTimeout ( ->
       window.close()
     ), 250
+
+  # If only one affiliation is to be shown, reduce window width and remove second column
+  if ls.showAffiliation2 isnt 'true'
+    $('body').attr 'style', 'width:360pt;'
+    $('#news #right').hide()
+    $('#news #left').attr 'id', 'full'
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
