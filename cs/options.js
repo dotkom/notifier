@@ -48,7 +48,7 @@
     affiliationKey = ls[id];
     $('#' + id).val(affiliationKey);
     return $('#' + id).change(function() {
-      var icon, name, oldAffiliation, palette, symbol;
+      var icon, name, oldAffiliation, palette, symbol, web;
       affiliationKey = $(this).val();
       oldAffiliation = ls[id];
       if (oldAffiliation === 'online') {
@@ -71,6 +71,11 @@
       $('link[rel="shortcut icon"]').attr('href', icon);
       symbol = Affiliation.org[affiliationKey].symbol;
       $('#affiliationSymbol').attr('src', symbol);
+      web = Affiliation.org[affiliationKey].web;
+      $('#affiliationSymbol').unbind('click');
+      $('#affiliationSymbol').click(function() {
+        return Browser.openTab(web);
+      });
       name = Affiliation.org[affiliationKey].name;
       Browser.setTitle(name + ' Notifier');
       ls.removeItem('affiliationFeedItems');
@@ -652,7 +657,7 @@
   };
 
   $(function() {
-    var icon, text;
+    var icon, symbol, text, web;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -665,7 +670,13 @@
     }
     icon = Affiliation.org[ls.affiliationKey].icon;
     $('link[rel="shortcut icon"]').attr('href', icon);
-    $('#affiliationSymbol').attr('src', icon);
+    symbol = Affiliation.org[ls.affiliationKey].symbol;
+    $('#affiliationSymbol').attr('src', symbol);
+    web = Affiliation.org[ls.affiliationKey].web;
+    $('#affiliationSymbol').unbind('click');
+    $('#affiliationSymbol').click(function() {
+      return Browser.openTab(web);
+    });
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {

@@ -44,6 +44,7 @@ bindAffiliationSelector = ->
       enableOnlineSpecificFeatures()
     # Save the change
     ls[id] = affiliationKey
+    
     # Get and save the recommended palette for the chosen affiliation
     palette = Affiliation.org[affiliationKey].palette
     if palette isnt undefined
@@ -51,21 +52,24 @@ bindAffiliationSelector = ->
       ls.affiliationPalette = palette
       if DEBUG then console.log 'Applying chosen palette', palette
       $('#palette').attr 'href', Palettes.get palette
-    # # Get and save the affiliation logo, also link website via logo
-    # logo = Affiliation.org[affiliationKey].logo
-    # $('#logo').attr 'src', logo
-    # web = Affiliation.org[affiliationKey].web
-    # $('#logolink').attr 'href', web
-    # Get and save the affiliation icon
+    
+    # Extension icon
     icon = Affiliation.org[affiliationKey].icon
-    Browser.setIcon icon # Extension icon
-    $('link[rel="shortcut icon"]').attr 'href', icon # Page favicon
-    # Get and save the affiliation symbol
+    Browser.setIcon icon
+    # Favicon
+    $('link[rel="shortcut icon"]').attr 'href', icon
+    # Symbol
     symbol = Affiliation.org[affiliationKey].symbol
-    $('#affiliationSymbol').attr 'src', symbol # Affiliation selector icon
-    # Get and save the affiliation name to the badge title
+    $('#affiliationSymbol').attr 'src', symbol
+    # Website link
+    web = Affiliation.org[affiliationKey].web
+    $('#affiliationSymbol').unbind 'click'
+    $('#affiliationSymbol').click ->
+      Browser.openTab web
+    # Name to badge title
     name = Affiliation.org[affiliationKey].name
     Browser.setTitle name + ' Notifier'
+    
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'
     # Update to new feed
@@ -622,16 +626,20 @@ $ ->
   if ls.affiliationKey isnt 'online'
     disableOnlineSpecificFeatures true # true means be quick about it!
 
-  # Switch to the icon of chosen affiliation
+  # Apply affiliation specific features
+  # favicon
   icon = Affiliation.org[ls.affiliationKey].icon
   $('link[rel="shortcut icon"]').attr 'href', icon
-  $('#affiliationSymbol').attr 'src', icon
-  # Show the standard palette or special palette the user has chosen
+  # news symbol
+  symbol = Affiliation.org[ls.affiliationKey].symbol
+  $('#affiliationSymbol').attr 'src', symbol
+  # website
+  web = Affiliation.org[ls.affiliationKey].web
+  $('#affiliationSymbol').unbind 'click'
+  $('#affiliationSymbol').click ->
+    Browser.openTab web
+  # palette
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
-  # # Show the logo for the chosen affiliation
-  # $('#logo').attr 'src', Affiliation.org[ls.affiliationKey].logo
-  # # Make sure logo link goes to the right website
-  # $('#logolink').attr 'href', Affiliation.org[ls.affiliationKey].web
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
