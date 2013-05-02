@@ -178,7 +178,7 @@ var Affiliation = {
       icon: './org/spanskroeret/icon.png',
       symbol: './org/spanskroeret/symbol.png',
       placeholder: './org/spanskroeret/placeholder.png',
-      palette: 'grey',
+      palette: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
