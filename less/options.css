@@ -211,10 +211,15 @@ header #notification .saved {
   float: left;
   white-space: nowrap;
   cursor: pointer;
-  width: 33pt;
+  width: 44pt;
   margin: -5pt 4pt -5pt -8pt;
   border-right: 1pt solid #aaa;
-  padding: 6pt 6pt;
+  background-position: center center;
+  background-size: 33pt 33pt;
+  background-repeat: no-repeat;
+  background-image: url(./org/online/symbol.png);
+  /* is switched for affiliation logo */
+
 }
 .item #affiliationBox .row {
   border: 0pt solid #ff0000;
