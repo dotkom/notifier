@@ -10,6 +10,7 @@
     random = 1 + Math.floor(Math.random() * amount);
     image = './meme/' + random + '.jpg';
     $('#subscription').click(function() {
+      _gaq.push(['_trackEvent', 'subscription', 'click', image]);
       Browser.openTab('options.html');
       return window.close;
     });
