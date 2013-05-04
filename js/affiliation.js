@@ -165,8 +165,8 @@ var Affiliation = {
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, {newsSelector:'.news_item', domainUrl:'nabla.no'});
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
       },
     },
     'spanskroeret': {
