@@ -153,6 +153,7 @@
         duration: 0
       });
     } else {
+      Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       $('label[for="showOffice"]').slideDown('slow');
       return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
         $('#container').animate({

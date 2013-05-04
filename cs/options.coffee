@@ -131,9 +131,11 @@ enableOnlineSpecificFeatures = (quick) ->
     $('#plusonebutton').fadeIn {duration:0}
     # No need to change creator name in pageflip when quick-enabling
   else
-    # Enable office status
+    # Update office status
+    Browser.getBackgroundProcess().updateOfficeAndMeetings true
+    # Show office status option
     $('label[for="showOffice"]').slideDown 'slow'
-    # Enable coffee subscription
+    # Show coffee subscription option
     $('label[for="coffeeSubscription"]').slideDown 'slow', ->
       # Move all content back down
       $('#container').animate {'top':'50%'}, 300
@@ -527,7 +529,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # closeInfoscreenTabs()
     # Refresh office status
     if ls.affiliationKey1 is 'online'
-      Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+      Browser.getBackgroundProcess().updateOfficeAndMeetings true
     else
       Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
       Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Notifier'
