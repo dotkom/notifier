@@ -26,47 +26,59 @@ testDesktopNotification = ->
 testCoffeeSubscription = ->
   Browser.createNotification 'subscription.html'
 
-bindAffiliationSelector = ->
-  id = 'affiliationKey'
+bindAffiliationSelector = (number, isPrimaryAffiliation) ->
+  id = 'affiliationKey'+number
   affiliationKey = ls[id]
   # Default values, set only the chosen affiliation as selected, because it is the Chosen One
   $('#'+id).val affiliationKey
-  # Remove any previous "selected" (by default) attributes
-  # $('#'+id+' option[selected]').removeAttr('selected');
   # React to change
   $('#'+id).change ->
     affiliationKey = $(this).val()
-    # Check if switching from or to Online
     oldAffiliation = ls[id]
-    if oldAffiliation is 'online'
-      disableOnlineSpecificFeatures()
-    else if affiliationKey is 'online'
-      enableOnlineSpecificFeatures()
     # Save the change
     ls[id] = affiliationKey
-    # Get and save the recommended palette for the chosen affiliation
-    palette = Affiliation.org[affiliationKey].palette
-    if palette isnt undefined
-      $('#affiliationPalette').val palette
-      ls.affiliationPalette = palette
-      if DEBUG then console.log 'Applying chosen palette', palette
-      $('#palette').attr 'href', Palettes.get palette
-    # # Get and save the affiliation logo, also link website via logo
-    # logo = Affiliation.org[affiliationKey].logo
-    # $('#logo').attr 'src', logo
-    # web = Affiliation.org[affiliationKey].web
-    # $('#logolink').attr 'href', web
-    # Get and save the affiliation icon
-    icon = Affiliation.org[affiliationKey].icon
-    Browser.setIcon icon # Extension icon
-    $('link[rel="shortcut icon"]').attr 'href', icon # Page favicon
-    # Get and save the affiliation name to the badge title
-    name = Affiliation.org[affiliationKey].name
-    Browser.setTitle name + ' Notifier'
+
+    if isPrimaryAffiliation
+      # Check if switching from or to Online
+      if oldAffiliation is 'online'
+        disableOnlineSpecificFeatures()
+      else if affiliationKey is 'online'
+        enableOnlineSpecificFeatures()
+      
+      # Palette
+      palette = Affiliation.org[affiliationKey].palette
+      if palette isnt undefined
+        $('#affiliationPalette').val palette
+        ls.affiliationPalette = palette
+        if DEBUG then console.log 'Applying chosen palette', palette
+        $('#palette').attr 'href', Palettes.get palette
+      
+      # Extension icon
+      icon = Affiliation.org[affiliationKey].icon
+      Browser.setIcon icon
+      # Favicon
+      $('link[rel="shortcut icon"]').attr 'href', icon
+      # Symbol
+      symbol = Affiliation.org[affiliationKey].symbol
+      $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # Website link
+      web = Affiliation.org[affiliationKey].web
+      $('#affiliationSymbol').unbind 'click'
+      $('#affiliationSymbol').click ->
+        Browser.openTab web
+      # Name to badge title
+      name = Affiliation.org[affiliationKey].name
+      Browser.setTitle name + ' Notifier'
+    
     # Throw out old news
-    ls.removeItem 'feedItems'
-    # Update to new feed
-    Browser.getBackgroundProcess().updateNews()
+    ls.removeItem 'affiliationFeedItems'+number
+
+    if ls['showAffiliation'+number] is 'true'
+      # Update to new feed
+      Browser.getBackgroundProcess().updateAffiliationNews number
+    
+    # Display Saved<3
+    displayOnPageNotification()
 
 bindPaletteSelector = ->
   # Default values
@@ -80,6 +92,8 @@ bindPaletteSelector = ->
     # Applying palette to options page
     if DEBUG then console.log 'Applying chosen palette', palette
     $('#palette').attr 'href', Palettes.get palette
+    # Display Saved<3
+    displayOnPageNotification()
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -117,13 +131,15 @@ enableOnlineSpecificFeatures = (quick) ->
     $('#plusonebutton').fadeIn {duration:0}
     # No need to change creator name in pageflip when quick-enabling
   else
-    # Enable office status
-    $('label[for="showOffice"]').slideDown 'slow'
-    # Enable coffee subscription
-    $('label[for="coffeeSubscription"]').slideDown 'slow', ->
-      # Move all content back down
-      $('#container').animate {'top':'50%'}, 300
-      $('header').animate {'top':'50%'}, 300, ->
+    # Update office status
+    Browser.getBackgroundProcess().updateOfficeAndMeetings true
+    # Move all content back up
+    $('#container').animate {'top':'50%'}, 300
+    $('header').animate {'top':'50%'}, 300, ->
+      # Show office status option
+      $('label[for="showOffice"]').slideDown 'slow'
+      # Show coffee subscription option
+      $('label[for="coffeeSubscription"]').slideDown 'slow', ->
         # Fade in the Google +1 Button
         $('#plusonebutton').fadeIn 'slow', ->
           # Change pageflip name
@@ -478,45 +494,43 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     $('#container #left').animate {'width':'0pt'}, speed, ->
       $('#container #left').hide()
       $('#infoscreen_slider').slideUp speed, ->
-        # Animate in the infoscreen preview
-        $('#infoscreen_preview').fadeIn speed, ->
-          # New logo subtext
-          $('#header_text').html '<b>Info</b>screen'
-          # $('#header_text').html 'infoscreen&nbsp;&nbsp;&nbsp;&nbsp;'
-          $('#header_text').fadeIn ->
-            # Move logo and subtext a little to the right
-            # $('header #header_text').animate {'margin-left':'265pt'}, speed
-            # $('header #logo').animate {'margin-left':'75pt'}, speed
-            # Move infoscreen preview to the circa middle of the screen
-            $('#container #right').animate {'margin-left':'160pt'}, speed
-            # Move all content a bit up
-            $('header').animate {'top':'40%'}, speed
-            $('#container').animate {'top':'40%'}, speed, ->
-              name = Affiliation.org[ls.affiliationKey].name
-              if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
-                # Enable, and check the checkbox
-                ls['useInfoscreen'] = 'true'
-                $('#useInfoscreen').prop 'checked', true
-                # Reset icon, icon title and icon badge
-                Browser.setIcon Affiliation.org[ls.affiliationKey].icon
-                Browser.setTitle Affiliation.org[ls.affiliationKey].name + ' Infoscreen'
-                Browser.setBadgeText ''
-                # Create Infoscreen in a new tab
-                if not force
-                  Browser.openBackgroundTab 'infoscreen.html'
-              else
-                revertInfoscreen()
+        # Animate the useInfoscreen image
+        $('img#useInfoscreen').slideUp speed, ->
+          # Animate in the infoscreen preview
+          $('#infoscreen_preview').slideDown speed, ->
+            # New logo subtext
+            $('#header_text').html '<b>Info</b>screen'
+            $('#header_text').fadeIn ->
+              # Move infoscreen preview to the circa middle of the screen
+              $('#container #right').animate {'margin-left':'160pt'}, speed
+              # Move all content a bit up
+              $('header').animate {'top':'50%'}, speed
+              $('#container').animate {'top':'50%'}, speed, ->
+                name = Affiliation.org[ls.affiliationKey1].name
+                if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
+                  # Enable, and check the checkbox
+                  ls['useInfoscreen'] = 'true'
+                  $('#useInfoscreen').prop 'checked', true
+                  # Reset icon, icon title and icon badge
+                  Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
+                  Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Infoscreen'
+                  Browser.setBadgeText ''
+                  # Create Infoscreen in a new tab
+                  if not force
+                    Browser.openBackgroundTab 'infoscreen.html'
+                else
+                  revertInfoscreen()
   else
     # Disable
     ls['useInfoscreen'] = 'false'
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    if ls.affiliationKey is 'online'
-      Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+    if ls.affiliationKey1 is 'online'
+      Browser.getBackgroundProcess().updateOfficeAndMeetings true
     else
-      Browser.setIcon Affiliation.org[ls.affiliationKey].icon
-      Browser.setTitle Affiliation.org[ls.affiliationKey].name + ' Notifier'
+      Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
+      Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Notifier'
     # Animations
     revertInfoscreen()
 
@@ -525,7 +539,7 @@ revertInfoscreen = ->
   # Remove subtext
   $('#header_text').fadeOut speed, ->
     # Move all content back down
-    if ls.affiliationKey is 'online'
+    if ls.affiliationKey1 is 'online'
       $('#container').animate {'top':'50%'}, speed
       $('header').animate {'top':'50%'}, speed
     else
@@ -533,20 +547,19 @@ revertInfoscreen = ->
       $('header').animate {'top':'60%'}, speed
     # Move infoscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
-    # Move logo and subtext back in place (to the left)
-    # $('header #logo').animate {'margin-left':'40pt'}, speed
-    # $('header #header_text').animate {'margin-left':'235pt'}, speed, ->
     # Animate in the infoscreen preview
-    $('#infoscreen_preview').fadeOut speed, ->
-      # Slide more options back open
-      $('#infoscreen_slider').slideDown speed, ->
-        # Show the rest of the options again
-        $('#container #left').show()
-        # Animate in the rest of the options
-        $('#container #left').animate {'width':'54%'}, speed, ->
-          # Back to old logo subtext
-          $('#header_text').html '<b>Notifier</b> Options'
-          $('#header_text').fadeIn()
+    $('#infoscreen_preview').slideUp speed, ->
+      # Animate the useInfoscreen image
+      $('img#useInfoscreen').slideDown speed, ->
+        # Slide more options back open
+        $('#infoscreen_slider').slideDown speed, ->
+          # Show the rest of the options again
+          $('#container #left').show()
+          # Animate in the rest of the options
+          $('#container #left').animate {'width':'54%'}, speed, ->
+            # Back to old logo subtext
+            $('#header_text').html '<b>Notifier</b> Options'
+            $('#header_text').fadeIn()
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
@@ -616,17 +629,23 @@ $ ->
   $.ajaxSetup AJAX_SETUP
 
   # Remove Online specific features if the affiliation is another
-  if ls.affiliationKey isnt 'online'
+  if ls.affiliationKey1 isnt 'online'
     disableOnlineSpecificFeatures true # true means be quick about it!
 
-  # Switch to the icon of chosen affiliation
-  $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey].icon
-  # Show the standard palette or special palette the user has chosen
+  # Apply affiliation specific features
+  # favicon
+  icon = Affiliation.org[ls.affiliationKey1].icon
+  $('link[rel="shortcut icon"]').attr 'href', icon
+  # news symbol
+  symbol = Affiliation.org[ls.affiliationKey1].symbol
+  $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+  # website
+  web = Affiliation.org[ls.affiliationKey1].web
+  $('#affiliationSymbol').unbind 'click'
+  $('#affiliationSymbol').click ->
+    Browser.openTab web
+  # palette
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
-  # # Show the logo for the chosen affiliation
-  # $('#logo').attr 'src', Affiliation.org[ls.affiliationKey].logo
-  # # Make sure logo link goes to the right website
-  # $('#logolink').attr 'href', Affiliation.org[ls.affiliationKey].web
 
   # Restore checks to boxes from localStorage
   $('input:checkbox').each (index, element) ->
@@ -660,7 +679,7 @@ $ ->
   ), 600
 
   # Fade in the +1 button when (probably) ready
-  if ls.affiliationKey is 'online'
+  if ls.affiliationKey1 is 'online'
     setTimeout ( ->
       $('#plusonebutton').fadeIn 150
     ), 1100
@@ -670,8 +689,11 @@ $ ->
   #   fadeInCanvas()
 
   # Allow user to change affiliation and palette
-  bindAffiliationSelector()
+  bindAffiliationSelector '1', true
+  bindAffiliationSelector '2', false
   bindPaletteSelector()
+  if ls.showAffiliation2 isnt 'true'
+    $('#affiliationKey2').attr 'disabled', 'disabled'
 
   # Allow user to select cantinas
   bindCantinaSelector 'left_cantina'
@@ -724,6 +746,11 @@ $ ->
     # All the other checkboxes (not Infoscreen)
     else
       ls[this.id] = this.checked;
+
+      if this.id is 'showAffiliation2' and this.checked is false
+        $('#affiliationKey2').attr 'disabled', 'disabled'
+      if this.id is 'showAffiliation2' and this.checked is true
+        $('#affiliationKey2').removeAttr 'disabled'
       
       if this.id is 'showOffice' and this.checked is true
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);

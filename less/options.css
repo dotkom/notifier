@@ -37,7 +37,7 @@ header {
   width: 580pt;
   height: 50pt;
   margin-left: -300pt;
-  margin-top: -195pt;
+  margin-top: -205pt;
   text-align: center;
   border-bottom: 1pt solid #eee;
   z-index: 1;
@@ -98,9 +98,9 @@ header #notification .saved {
   left: 50%;
   top: 50%;
   width: 600pt;
-  height: 260pt;
+  height: 310pt;
   margin-left: -300pt;
-  margin-top: -115pt;
+  margin-top: -130pt;
   z-index: 10;
 }
 #container .side {
@@ -162,7 +162,7 @@ header #notification .saved {
   box-shadow: 0 0 15px #333;
   cursor: pointer;
 }
-.item input#showAffiliation {
+.item input#showAffiliation1 {
   opacity: 0;
   /* Turning off news feed is not allowed since it would
     turn off the primary purpose of Online Notifier. Don't
@@ -184,8 +184,8 @@ header #notification .saved {
 }
 .item #affiliationBox {
   width: 265pt;
+  height: 35pt;
   margin: 5pt 0 0 15pt;
-  overflow: hidden;
   border-top: 1pt solid white;
   border-bottom: 1pt solid #7a7a7a;
   border-radius: 3pt;
@@ -201,36 +201,72 @@ header #notification .saved {
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
 
-  padding: 3pt 8pt;
+  padding: 4pt 8pt;
+  overflow: hidden;
   white-space: nowrap;
   word-wrap: break-word;
 }
-.item #affiliationBox #affiliationKey {
+.item #affiliationBox #affiliationSymbol {
   border: 0pt solid #ff0000;
+  float: left;
+  white-space: nowrap;
+  cursor: pointer;
+  width: 44pt;
+  margin: -5pt 4pt -5pt -8pt;
+  border-right: 1pt solid #aaa;
+  background-position: center center;
+  background-size: 33pt 33pt;
+  background-repeat: no-repeat;
+  background-image: url(./org/online/symbol.png);
+  /* is switched for affiliation logo */
+
+}
+.item #affiliationBox .row {
+  border: 0pt solid #ff0000;
+  float: right;
+  width: 220pt;
+  color: black;
+  text-shadow: 0 0 0 black;
+}
+.item #affiliationBox .row select {
+  position: relative;
+}
+.item #affiliationBox #bottomRow {
+  font-size: 10pt;
+  margin-top: 3pt;
+}
+.item #affiliationBox #bottomRow select {
+  top: -3pt;
+}
+.item #affiliationBox #affiliationKey1 {
+  border: 0pt solid #ff0000;
+  display: inline-block;
   float: left;
   border: 1pt solid #7a7a7a;
   position: relative;
   margin-top: 2pt;
-  margin-left: 8pt;
   white-space: nowrap;
-  width: 130pt;
+  width: 117pt;
 }
 .item #affiliationBox #affiliationPalette {
   border: 0pt solid #ff0000;
-  float: left;
+  display: inline-block;
+  float: right;
   border: 1pt solid #7a7a7a;
   position: relative;
   margin-top: 2pt;
-  margin-left: 8pt;
   white-space: nowrap;
-  width: 98pt;
+  width: 96pt;
 }
-.item #affiliationBox #affiliationLogo {
+.item #affiliationBox #affiliationKey2 {
   border: 0pt solid #ff0000;
-  float: left;
+  display: inline-block;
+  border: 1pt solid #7a7a7a;
+  float: right;
+  position: relative;
+  margin-top: 2pt;
   white-space: nowrap;
-  width: 19pt;
-  margin: 0 0;
+  width: 96pt;
 }
 .item #cantinaBox {
   width: 265pt;
@@ -302,7 +338,7 @@ header #notification .saved {
 }
 .item #bus_box .bus_stop input {
   width: 102pt;
-  box-shadow: 0 0 0px black;
+  box-shadow: 0 0 0 black;
 }
 .item #bus_box .bus_stop select {
   z-index: 10;

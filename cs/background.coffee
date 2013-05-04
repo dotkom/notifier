@@ -9,7 +9,8 @@ mainLoop = ->
   if ls.useInfoscreen isnt 'true'
     updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
-    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0 and navigator.onLine # Only if online, otherwise keep old news
+    updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
+    updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -54,13 +55,13 @@ updateCoffeeSubscription = ->
       # And remember to update localStorage
       ls.coffeePots = pots
 
-updateNews = ->
-  if DEBUG then console.log 'updateNews'
+updateAffiliationNews = (number) ->
+  if DEBUG then console.log 'updateAffiliationNews'+number
   # Get affiliation object
-  affiliationKey = ls.affiliationKey
+  affiliationKey = ls['affiliationKey'+number]
   affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey, 'is not known'
+    if DEBUG then console.log 'ERROR: chosen affiliation', 'affiliationKey'+number, 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
@@ -69,12 +70,26 @@ updateNews = ->
         # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
       else
-        ls.feedItems = JSON.stringify items
-        News.unreadCountAndNotify items
-        News.refreshNewsIdList items
+        countNews items, number
+        updateUnreadCount()
+
+countNews = (items, number) ->
+  feedItems = 'affiliationFeedItems'+number
+  newsList = 'affiliationNewsList'+number
+  unreadCount = 'affiliationUnreadCount'+number
+  lastNotified = 'affiliationLastNotified'+number
+
+  ls[feedItems] = JSON.stringify items
+  list = JSON.parse ls[newsList]
+  ls[unreadCount] = News.countNewsAndNotify items, list, lastNotified
+  ls[newsList] = News.refreshNewsList items
+
+updateUnreadCount = (count1, count2) ->
+  unreadCount = (Number ls.affiliationUnreadCount1) + (Number ls.affiliationUnreadCount2)
+  Browser.setBadgeText String unreadCount
 
 loadAffiliationIcon = ->
-  key = ls.affiliationKey
+  key = ls.affiliationKey1
   # Set badge icon
   icon = Affiliation.org[key].icon
   Browser.setIcon icon
@@ -99,18 +114,32 @@ $ ->
   if ls.extensionCreator is undefined
     ls.extensionCreator = 'dotKom' # Max 8 letters because of styling
 
-  if ls.showAffiliation is undefined
-    ls.showAffiliation = 'true'
-  if ls.affiliationKey is undefined
-    ls.affiliationKey = 'online'
+  # Primary affiliation
+  if ls.showAffiliation1 is undefined
+    ls.showAffiliation1 = 'true'
+  if ls.affiliationKey1 is undefined
+    ls.affiliationKey1 = 'online'
+  if ls.affiliationUnreadCount1 is undefined
+    ls.affiliationUnreadCount1 = 0
+  if ls.affiliationNewsList1 is undefined
+    ls.affiliationNewsList1 = JSON.stringify []
+  if ls.affiliationViewedList1 is undefined
+    ls.affiliationViewedList1 = JSON.stringify []
+  
   if ls.affiliationPalette is undefined
     ls.affiliationPalette = 'online'
 
-  # Lists of links (IDs) for news items
-  if ls.newsList is undefined
-    ls.newsList = JSON.stringify []
-  if ls.viewedNewsList is undefined
-    ls.viewedNewsList = JSON.stringify []
+  # Secondary affiliation
+  if ls.showAffiliation2 is undefined
+    ls.showAffiliation2 = 'true'
+  if ls.affiliationKey2 is undefined
+    ls.affiliationKey2 = 'dusken'
+  if ls.affiliationUnreadCount2 is undefined
+    ls.affiliationUnreadCount2 = 0
+  if ls.affiliationNewsList2 is undefined
+    ls.affiliationNewsList2 = JSON.stringify []
+  if ls.affiliationViewedList2 is undefined
+    ls.affiliationViewedList2 = JSON.stringify []
 
   if ls.showBus is undefined
     ls.showBus = 'true'
@@ -197,7 +226,7 @@ $ ->
   # to code rot.
   window.updateOfficeAndMeetings = updateOfficeAndMeetings
   window.updateCoffeeSubscription = updateCoffeeSubscription
-  window.updateNews = updateNews
+  window.updateAffiliationNews = updateAffiliationNews
   window.loadAffiliationIcon = loadAffiliationIcon
 
   # Enter main loop, keeping everything up-to-date

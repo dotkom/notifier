@@ -1,4 +1,4 @@
-var DEBUG = 0;
+var DEBUG = 1;
 
 // AJAX setup
 var AJAX_SETUP = {
@@ -19,7 +19,7 @@ var UPDATE_COFFEE_INTERVAL = 1; // recommended: 1
 var UPDATE_HOURS_INTERVAL = 60; // recommended: 60
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
 var UPDATE_BUS_INTERVAL = 1; // recommended: 1
-var UPDATE_NEWS_INTERVAL = 20; // recommended: 30
+var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
 
 // OS detection
 var OPERATING_SYSTEM = "Unknown";

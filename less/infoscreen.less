@@ -12,7 +12,7 @@
 }
 
 .emphasized {
-  font-size: 14pt;
+  font-size: 24pt;
   margin-bottom: 8pt;
 }
 
@@ -173,29 +173,65 @@ body {
   }
 
   #news {
+    /* #full for using a single column */
+    #full {
+      position: relative;
+      width: 100%;
+      float: left;
+      img {
+        float: left;
+        width: 150pt;
+        max-height: 150pt;
+        margin: 0 7pt 5pt 0;
+      }
+    }
+    /* #left and #right for using double columns */
+    #left {
+      position: relative;
+      width: 45%;
+      float: left;
+      img {
+        float: right;
+        margin: 0 0pt 3pt 3pt;
+      }
+    }
+    #right {
+      position: relative;
+      width: 50%;
+      float: right;
+      .title {
+        color: LightGrey;
+      }
+      img {
+        float: right;
+        margin: 0 0 3pt 3pt;
+      }
+    }
     .post {
       .item {
+        margin-top: -4pt;
         min-height: 40pt;
+        cursor: pointer;
+        margin-left: -5pt;
+        margin-right: -5pt;
+        padding: 5pt;
+        -webkit-transition: box-shadow 0.3s ease-out 0s;
 
+        &:hover {
+          box-shadow:
+            inset 0pt 0pt 2pt #bbb,
+            0pt 0pt 10pt white;
+        }
         img {
-          width: 170pt;
-          max-height: 140pt;
+          width: 120pt;
+          max-height: 120pt;
           padding: 6pt;
           box-shadow: 0 0 20pt #bbb;
         }
-        .textwrapper {
-          margin-left: 18pt;
-          width: 73%;
-
-          .date {
-            text-transform: uppercase;
-            font-size: 24pt;
-          }
-        }
       }
-      .unread {
-        font-size: 18pt;
-      }
+    }
+    .unread {
+      font-size: 8pt;
     }
   }
 

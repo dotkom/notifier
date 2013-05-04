@@ -205,15 +205,15 @@
   };
 
   updateNews = function() {
-    var affiliation, affiliationKey, getNewsAmount;
+    var affiliation, affiliationKey1, getNewsAmount;
     if (DEBUG) {
       console.log('updateNews');
     }
-    affiliationKey = ls['affiliationKey'];
-    affiliation = Affiliation.org[affiliationKey];
+    affiliationKey1 = ls['affiliationKey1'];
+    affiliation = Affiliation.org[affiliationKey1];
     if (affiliation === void 0) {
       if (DEBUG) {
-        return console.log('ERROR: chosen affiliation', affiliationKey, 'is not known');
+        return console.log('ERROR: chosen affiliation', affiliationKey1, 'is not known');
       }
     } else {
       getNewsAmount = 10;
@@ -223,7 +223,7 @@
           if (DEBUG) {
             console.log('ERROR:', items);
           }
-          name = Affiliation.org[affiliationKey].name;
+          name = Affiliation.org[affiliationKey1].name;
           return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
         } else {
           ls.feedItems = JSON.stringify(items);
@@ -280,7 +280,7 @@
     $('.item').click(function() {
       var altLink, useAltLink;
       altLink = $(this).attr('name');
-      useAltLink = Affiliation.org[ls.affiliationKey].useAltLink;
+      useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink;
       if (altLink !== void 0 && useAltLink === true) {
         Browser.openTab($(this).attr('name'));
       } else {
@@ -359,11 +359,11 @@
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
-    if (ls.showAffiliation === void 0) {
-      ls.showAffiliation = 'true';
+    if (ls.showAffiliation1 === void 0) {
+      ls.showAffiliation1 = 'true';
     }
-    if (ls.affiliationKey === void 0) {
-      ls.affiliationKey = 'online';
+    if (ls.affiliationKey1 === void 0) {
+      ls.affiliationKey1 = 'online';
     }
     if (ls.affiliationPalette === void 0) {
       ls.affiliationPalette = 'online';

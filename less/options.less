@@ -21,7 +21,7 @@
 @header-height: 50pt;
 @header-padding: 10pt;
 @content-width: 600pt;
-@content-height: 260pt;
+@content-height: 310pt;
 
 // Rules
 
@@ -57,7 +57,7 @@ header {
   width: @content-width - (@header-padding * 2);
   height: @header-height;
   margin-left: -(@content-width / 2);
-  margin-top: -(@content-height / 2) - (@header-height) - 15pt;
+  margin-top: -(@content-height / 2) - (@header-height);
   text-align: center;
   border-bottom: 1pt solid #eee;
   z-index: 1;
@@ -118,7 +118,7 @@ header {
   width: @content-width;
   height: @content-height;
   margin-left: -(@content-width / 2);
-  margin-top: -(@content-height / 2) + (@header-height / 2) - 10pt;
+  margin-top: -(@content-height / 2) + (@header-height / 2);
   z-index: 10;
 
   .side {
@@ -175,7 +175,7 @@ header {
     cursor: pointer;
   }
 
-  input#showAffiliation {
+  input#showAffiliation1 {
     opacity: 0;
     /* Turning off news feed is not allowed since it would
     turn off the primary purpose of Online Notifier. Don't
@@ -202,8 +202,8 @@ header {
 
   #affiliationBox {
     width: 265pt;
+    height: 35pt;
     margin: 5pt 0 0 15pt;
-    overflow: hidden;
     border-top: 1pt solid white;
     border-bottom: 1pt solid #7a7a7a;
     border-radius: 3pt;
@@ -211,35 +211,71 @@ header {
     background: -webkit-linear-gradient(top, #e6e5e5 0%,#cececf 100%); /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #e6e5e5 0%,#cececf 100%); /* Opera 11.10+ */
     background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%); /* W3C */
-    padding: 3pt 8pt;
+    padding: 4pt 8pt;
+    overflow: hidden;
     white-space: nowrap;
     word-wrap: break-word;
-    #affiliationKey {
+    #affiliationSymbol {
       .debugred;
+      float: left;
+      white-space: nowrap;
+      cursor: pointer;
+      width: 44pt;
+      margin: -5pt 4pt -5pt -8pt;
+      border-right: 1pt solid #aaa;
+      background-position: center center;
+      background-size: 33pt 33pt;
+      background-repeat: no-repeat;
+      background-image: url(./org/online/symbol.png); /* is switched for affiliation logo */
+    }
+    .row {
+      .debugred;
+      float: right;
+      width: 220pt;
+      color: black;
+      text-shadow: 0 0 0 black;
+      select {
+        position: relative;
+      }
+    }
+    #topRow {
+    }
+    #bottomRow {
+      font-size: 10pt;
+      margin-top: 3pt;
+      select {
+        top: -3pt;
+      }
+    }
+    #affiliationKey1 {
+      .debugred;
+      display: inline-block;
       float: left;
       border: 1pt solid #7a7a7a;
       position: relative;
       margin-top: 2pt;
-      margin-left: 8pt;
       white-space: nowrap;
-      width: 130pt;
+      width: 117pt;
     }
     #affiliationPalette {
       .debugred;
-      float: left;
+      display: inline-block;
+      float: right;
       border: 1pt solid #7a7a7a;
       position: relative;
       margin-top: 2pt;
-      margin-left: 8pt;
       white-space: nowrap;
-      width: 98pt;
+      width: 96pt;
     }
-    #affiliationLogo {
+    #affiliationKey2 {
       .debugred;
-      float: left;
+      display: inline-block;
+      border: 1pt solid #7a7a7a;
+      float: right;
+      position: relative;
+      margin-top: 2pt;
       white-space: nowrap;
-      width: 19pt;
-      margin: 0 0;
+      width: 96pt;
     }
   }
 
@@ -299,7 +335,7 @@ header {
       white-space: nowrap;
       input {
         width: 102pt;
-        box-shadow: 0 0 0px black;
+        box-shadow: 0 0 0 black;
       }
       select {
         z-index: 10; /* allows the down-arrow to be painted behind this */
