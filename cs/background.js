@@ -169,7 +169,7 @@
       ls.showAffiliation2 = 'true';
     }
     if (ls.affiliationKey2 === void 0) {
-      ls.affiliationKey2 = 'universitetsavisa';
+      ls.affiliationKey2 = 'dusken';
     }
     if (ls.affiliationUnreadCount2 === void 0) {
       ls.affiliationUnreadCount2 = 0;
