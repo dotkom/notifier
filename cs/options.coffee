@@ -725,11 +725,6 @@ $ ->
     text = text.trim()
     $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
 
-  # CSS tweaks for Opera until they start using WebKit
-  if BROWSER is 'Opera'
-    $('#header_text').css 'margin-top', '7pt'
-    $('#notification').css 'top', '14.5pt'
-
   # Adding a hover class to #bus_box whenever the mouse is hovering over it
   $('#bus_box').hover ->
     $(this).addClass 'hover'

@@ -737,10 +737,6 @@
       text = text.trim();
       $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
     }
-    if (BROWSER === 'Opera') {
-      $('#header_text').css('margin-top', '7pt');
-      $('#notification').css('top', '14.5pt');
-    }
     $('#bus_box').hover(function() {
       return $(this).addClass('hover');
     }, function() {
