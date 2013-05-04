@@ -60,7 +60,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       $('link[rel="shortcut icon"]').attr 'href', icon
       # Symbol
       symbol = Affiliation.org[affiliationKey].symbol
-      $('#affiliationSymbol').attr 'src', symbol
+      $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
       # Website link
       web = Affiliation.org[affiliationKey].web
       $('#affiliationSymbol').unbind 'click'
@@ -76,6 +76,9 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     if ls['showAffiliation'+number] is 'true'
       # Update to new feed
       Browser.getBackgroundProcess().updateAffiliationNews number
+    
+    # Display Saved<3
+    displayOnPageNotification()
 
 bindPaletteSelector = ->
   # Default values
@@ -89,6 +92,8 @@ bindPaletteSelector = ->
     # Applying palette to options page
     if DEBUG then console.log 'Applying chosen palette', palette
     $('#palette').attr 'href', Palettes.get palette
+    # Display Saved<3
+    displayOnPageNotification()
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -634,7 +639,7 @@ $ ->
   $('link[rel="shortcut icon"]').attr 'href', icon
   # news symbol
   symbol = Affiliation.org[ls.affiliationKey1].symbol
-  $('#affiliationSymbol').attr 'src', symbol
+  $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
   # website
   web = Affiliation.org[ls.affiliationKey1].web
   $('#affiliationSymbol').unbind 'click'

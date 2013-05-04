@@ -71,7 +71,7 @@
         Browser.setIcon(icon);
         $('link[rel="shortcut icon"]').attr('href', icon);
         symbol = Affiliation.org[affiliationKey].symbol;
-        $('#affiliationSymbol').attr('src', symbol);
+        $('#affiliationSymbol').attr('style', 'background-image:url("' + symbol + '");');
         web = Affiliation.org[affiliationKey].web;
         $('#affiliationSymbol').unbind('click');
         $('#affiliationSymbol').click(function() {
@@ -82,8 +82,9 @@
       }
       ls.removeItem('affiliationFeedItems' + number);
       if (ls['showAffiliation' + number] === 'true') {
-        return Browser.getBackgroundProcess().updateAffiliationNews(number);
+        Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
+      return displayOnPageNotification();
     });
   };
 
@@ -96,7 +97,8 @@
       if (DEBUG) {
         console.log('Applying chosen palette', palette);
       }
-      return $('#palette').attr('href', Palettes.get(palette));
+      $('#palette').attr('href', Palettes.get(palette));
+      return displayOnPageNotification();
     });
   };
 
@@ -675,7 +677,7 @@
     icon = Affiliation.org[ls.affiliationKey1].icon;
     $('link[rel="shortcut icon"]').attr('href', icon);
     symbol = Affiliation.org[ls.affiliationKey1].symbol;
-    $('#affiliationSymbol').attr('src', symbol);
+    $('#affiliationSymbol').attr('style', 'background-image:url("' + symbol + '");');
     web = Affiliation.org[ls.affiliationKey1].web;
     $('#affiliationSymbol').unbind('click');
     $('#affiliationSymbol').click(function() {
