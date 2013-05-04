@@ -280,7 +280,7 @@ $ ->
 
   # If only one affiliation is to be shown, reduce window width and remove second column
   if ls.showAffiliation2 isnt 'true'
-    $('body').attr 'style', 'width:360pt;'
+    $('body').attr 'style', 'width:350pt;'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
 
