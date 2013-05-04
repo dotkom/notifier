@@ -154,14 +154,14 @@
       });
     } else {
       Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
-      $('label[for="showOffice"]').slideDown('slow');
-      return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
-        $('#container').animate({
-          'top': '50%'
-        }, 300);
-        return $('header').animate({
-          'top': '50%'
-        }, 300, function() {
+      $('#container').animate({
+        'top': '50%'
+      }, 300);
+      return $('header').animate({
+        'top': '50%'
+      }, 300, function() {
+        $('label[for="showOffice"]').slideDown('slow');
+        return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
           return $('#plusonebutton').fadeIn('slow', function() {
             return changeCreatorName('dotKom');
           });
@@ -540,32 +540,34 @@
       }, speed, function() {
         $('#container #left').hide();
         return $('#infoscreen_slider').slideUp(speed, function() {
-          return $('#infoscreen_preview').fadeIn(speed, function() {
-            $('#header_text').html('<b>Info</b>screen');
-            return $('#header_text').fadeIn(function() {
-              $('#container #right').animate({
-                'margin-left': '160pt'
-              }, speed);
-              $('header').animate({
-                'top': '40%'
-              }, speed);
-              return $('#container').animate({
-                'top': '40%'
-              }, speed, function() {
-                var name;
-                name = Affiliation.org[ls.affiliationKey1].name;
-                if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
-                  ls['useInfoscreen'] = 'true';
-                  $('#useInfoscreen').prop('checked', true);
-                  Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-                  Browser.setTitle(Affiliation.org[ls.affiliationKey1].name + ' Infoscreen');
-                  Browser.setBadgeText('');
-                  if (!force) {
-                    return Browser.openBackgroundTab('infoscreen.html');
+          return $('img#useInfoscreen').slideUp(speed, function() {
+            return $('#infoscreen_preview').slideDown(speed, function() {
+              $('#header_text').html('<b>Info</b>screen');
+              return $('#header_text').fadeIn(function() {
+                $('#container #right').animate({
+                  'margin-left': '160pt'
+                }, speed);
+                $('header').animate({
+                  'top': '45%'
+                }, speed);
+                return $('#container').animate({
+                  'top': '45%'
+                }, speed, function() {
+                  var name;
+                  name = Affiliation.org[ls.affiliationKey1].name;
+                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
+                    ls['useInfoscreen'] = 'true';
+                    $('#useInfoscreen').prop('checked', true);
+                    Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
+                    Browser.setTitle(Affiliation.org[ls.affiliationKey1].name + ' Infoscreen');
+                    Browser.setBadgeText('');
+                    if (!force) {
+                      return Browser.openBackgroundTab('infoscreen.html');
+                    }
+                  } else {
+                    return revertInfoscreen();
                   }
-                } else {
-                  return revertInfoscreen();
-                }
+                });
               });
             });
           });
@@ -605,14 +607,16 @@
       $('#container #right').animate({
         'margin-left': '0'
       }, speed);
-      return $('#infoscreen_preview').fadeOut(speed, function() {
-        return $('#infoscreen_slider').slideDown(speed, function() {
-          $('#container #left').show();
-          return $('#container #left').animate({
-            'width': '54%'
-          }, speed, function() {
-            $('#header_text').html('<b>Notifier</b> Options');
-            return $('#header_text').fadeIn();
+      return $('#infoscreen_preview').slideUp(speed, function() {
+        return $('img#useInfoscreen').slideDown(speed, function() {
+          return $('#infoscreen_slider').slideDown(speed, function() {
+            $('#container #left').show();
+            return $('#container #left').animate({
+              'width': '54%'
+            }, speed, function() {
+              $('#header_text').html('<b>Notifier</b> Options');
+              return $('#header_text').fadeIn();
+            });
           });
         });
       });

@@ -21,7 +21,7 @@
 @header-height: 50pt;
 @header-padding: 10pt;
 @content-width: 600pt;
-@content-height: 260pt;
+@content-height: 310pt;
 
 // Rules
 
@@ -57,7 +57,7 @@ header {
   width: @content-width - (@header-padding * 2);
   height: @header-height;
   margin-left: -(@content-width / 2);
-  margin-top: -(@content-height / 2) - (@header-height) - 15pt;
+  margin-top: -(@content-height / 2) - (@header-height);
   text-align: center;
   border-bottom: 1pt solid #eee;
   z-index: 1;
@@ -118,7 +118,7 @@ header {
   width: @content-width;
   height: @content-height;
   margin-left: -(@content-width / 2);
-  margin-top: -(@content-height / 2) + (@header-height / 2) - 10pt;
+  margin-top: -(@content-height / 2) + (@header-height / 2);
   z-index: 10;
 
   .side {

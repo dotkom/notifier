@@ -37,7 +37,7 @@ header {
   width: 580pt;
   height: 50pt;
   margin-left: -300pt;
-  margin-top: -195pt;
+  margin-top: -205pt;
   text-align: center;
   border-bottom: 1pt solid #eee;
   z-index: 1;
@@ -98,9 +98,9 @@ header #notification .saved {
   left: 50%;
   top: 50%;
   width: 600pt;
-  height: 260pt;
+  height: 310pt;
   margin-left: -300pt;
-  margin-top: -115pt;
+  margin-top: -130pt;
   z-index: 10;
 }
 #container .side {

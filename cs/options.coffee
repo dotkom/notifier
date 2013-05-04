@@ -133,13 +133,13 @@ enableOnlineSpecificFeatures = (quick) ->
   else
     # Update office status
     Browser.getBackgroundProcess().updateOfficeAndMeetings true
-    # Show office status option
-    $('label[for="showOffice"]').slideDown 'slow'
-    # Show coffee subscription option
-    $('label[for="coffeeSubscription"]').slideDown 'slow', ->
-      # Move all content back down
-      $('#container').animate {'top':'50%'}, 300
-      $('header').animate {'top':'50%'}, 300, ->
+    # Move all content back up
+    $('#container').animate {'top':'50%'}, 300
+    $('header').animate {'top':'50%'}, 300, ->
+      # Show office status option
+      $('label[for="showOffice"]').slideDown 'slow'
+      # Show coffee subscription option
+      $('label[for="coffeeSubscription"]').slideDown 'slow', ->
         # Fade in the Google +1 Button
         $('#plusonebutton').fadeIn 'slow', ->
           # Change pageflip name
@@ -494,34 +494,32 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     $('#container #left').animate {'width':'0pt'}, speed, ->
       $('#container #left').hide()
       $('#infoscreen_slider').slideUp speed, ->
-        # Animate in the infoscreen preview
-        $('#infoscreen_preview').fadeIn speed, ->
-          # New logo subtext
-          $('#header_text').html '<b>Info</b>screen'
-          # $('#header_text').html 'infoscreen&nbsp;&nbsp;&nbsp;&nbsp;'
-          $('#header_text').fadeIn ->
-            # Move logo and subtext a little to the right
-            # $('header #header_text').animate {'margin-left':'265pt'}, speed
-            # $('header #logo').animate {'margin-left':'75pt'}, speed
-            # Move infoscreen preview to the circa middle of the screen
-            $('#container #right').animate {'margin-left':'160pt'}, speed
-            # Move all content a bit up
-            $('header').animate {'top':'40%'}, speed
-            $('#container').animate {'top':'40%'}, speed, ->
-              name = Affiliation.org[ls.affiliationKey1].name
-              if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
-                # Enable, and check the checkbox
-                ls['useInfoscreen'] = 'true'
-                $('#useInfoscreen').prop 'checked', true
-                # Reset icon, icon title and icon badge
-                Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
-                Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Infoscreen'
-                Browser.setBadgeText ''
-                # Create Infoscreen in a new tab
-                if not force
-                  Browser.openBackgroundTab 'infoscreen.html'
-              else
-                revertInfoscreen()
+        # Animate the useInfoscreen image
+        $('img#useInfoscreen').slideUp speed, ->
+          # Animate in the infoscreen preview
+          $('#infoscreen_preview').slideDown speed, ->
+            # New logo subtext
+            $('#header_text').html '<b>Info</b>screen'
+            $('#header_text').fadeIn ->
+              # Move infoscreen preview to the circa middle of the screen
+              $('#container #right').animate {'margin-left':'160pt'}, speed
+              # Move all content a bit up
+              $('header').animate {'top':'45%'}, speed
+              $('#container').animate {'top':'45%'}, speed, ->
+                name = Affiliation.org[ls.affiliationKey1].name
+                if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
+                  # Enable, and check the checkbox
+                  ls['useInfoscreen'] = 'true'
+                  $('#useInfoscreen').prop 'checked', true
+                  # Reset icon, icon title and icon badge
+                  Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
+                  Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Infoscreen'
+                  Browser.setBadgeText ''
+                  # Create Infoscreen in a new tab
+                  if not force
+                    Browser.openBackgroundTab 'infoscreen.html'
+                else
+                  revertInfoscreen()
   else
     # Disable
     ls['useInfoscreen'] = 'false'
@@ -549,20 +547,19 @@ revertInfoscreen = ->
       $('header').animate {'top':'60%'}, speed
     # Move infoscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
-    # Move logo and subtext back in place (to the left)
-    # $('header #logo').animate {'margin-left':'40pt'}, speed
-    # $('header #header_text').animate {'margin-left':'235pt'}, speed, ->
     # Animate in the infoscreen preview
-    $('#infoscreen_preview').fadeOut speed, ->
-      # Slide more options back open
-      $('#infoscreen_slider').slideDown speed, ->
-        # Show the rest of the options again
-        $('#container #left').show()
-        # Animate in the rest of the options
-        $('#container #left').animate {'width':'54%'}, speed, ->
-          # Back to old logo subtext
-          $('#header_text').html '<b>Notifier</b> Options'
-          $('#header_text').fadeIn()
+    $('#infoscreen_preview').slideUp speed, ->
+      # Animate the useInfoscreen image
+      $('img#useInfoscreen').slideDown speed, ->
+        # Slide more options back open
+        $('#infoscreen_slider').slideDown speed, ->
+          # Show the rest of the options again
+          $('#container #left').show()
+          # Animate in the rest of the options
+          $('#container #left').animate {'width':'54%'}, speed, ->
+            # Back to old logo subtext
+            $('#header_text').html '<b>Notifier</b> Options'
+            $('#header_text').fadeIn()
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
