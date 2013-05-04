@@ -77,8 +77,8 @@ var Affiliation = {
     'entreprenoerskolen': {
       name: 'Entreprenørskolen',
       key: 'entreprenoerskolen',
-      web: 'http://entreprenoerskolen.no/',
-      feed: 'http://entreprenoerskolen.no/feed/',
+      web: 'http://entreprenorskolen.no/',
+      feed: 'http://entreprenorskolen.no/feed/',
       logo: './org/entreprenoerskolen/logo.png',
       icon: './org/entreprenoerskolen/icon.png',
       symbol: './org/entreprenoerskolen/symbol.png',
@@ -172,8 +172,8 @@ var Affiliation = {
     'spanskroeret': {
       name: 'Spanskrøret',
       key: 'spanskroeret',
-      web: 'http://spanskroeret.no/',
-      feed: 'http://spanskroeret.no/feed/',
+      web: 'http://spanskroret.no/',
+      feed: 'http://spanskroret.no/feed/',
       logo: './org/spanskroeret/logo.png',
       icon: './org/spanskroeret/icon.png',
       symbol: './org/spanskroeret/symbol.png',
