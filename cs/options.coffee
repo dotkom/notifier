@@ -117,7 +117,7 @@ disableOnlineSpecificFeatures = (quick) ->
       # Fade out the Google +1 Button
       $('#plusonebutton').fadeOut 'slow', ->
         # Change pageflip name
-        changeCreatorName 'Online'
+        changeCreatorName ls.extensionCreator
 
 enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
@@ -143,7 +143,7 @@ enableOnlineSpecificFeatures = (quick) ->
         # Fade in the Google +1 Button
         $('#plusonebutton').fadeIn 'slow', ->
           # Change pageflip name
-          changeCreatorName 'dotKom'
+          changeCreatorName ls.extensionCreator
 
 bindCantinaSelector = (selector) ->
   # Default values

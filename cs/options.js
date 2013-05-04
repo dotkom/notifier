@@ -130,7 +130,7 @@
         'top': '60%'
       }, 300, function() {
         return $('#plusonebutton').fadeOut('slow', function() {
-          return changeCreatorName('Online');
+          return changeCreatorName(ls.extensionCreator);
         });
       });
     });
@@ -163,7 +163,7 @@
         $('label[for="showOffice"]').slideDown('slow');
         return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
           return $('#plusonebutton').fadeIn('slow', function() {
-            return changeCreatorName('dotKom');
+            return changeCreatorName(ls.extensionCreator);
           });
         });
       });
