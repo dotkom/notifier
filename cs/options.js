@@ -548,10 +548,10 @@
                   'margin-left': '160pt'
                 }, speed);
                 $('header').animate({
-                  'top': '45%'
+                  'top': '50%'
                 }, speed);
                 return $('#container').animate({
-                  'top': '45%'
+                  'top': '50%'
                 }, speed, function() {
                   var name;
                   name = Affiliation.org[ls.affiliationKey1].name;

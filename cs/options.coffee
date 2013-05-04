@@ -504,8 +504,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
               # Move infoscreen preview to the circa middle of the screen
               $('#container #right').animate {'margin-left':'160pt'}, speed
               # Move all content a bit up
-              $('header').animate {'top':'45%'}, speed
-              $('#container').animate {'top':'45%'}, speed, ->
+              $('header').animate {'top':'50%'}, speed
+              $('#container').animate {'top':'50%'}, speed, ->
                 name = Affiliation.org[ls.affiliationKey1].name
                 if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter\n- Infoskjermen åpnes nå!'
                   # Enable, and check the checkbox
