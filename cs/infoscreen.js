@@ -243,7 +243,7 @@
       return $(busStop + ' .first .line').html('<div class="error">' + lines + '</div>');
     } else {
       if (lines['departures'].length === 0) {
-        return $(busStop + ' .first .line').html('<div class="error">....zzzZZZzzz....</div>');
+        return $(busStop + ' .first .line').html('<div class="error">....zzzZZZzzz....<br />(etter midnatt vises ikke)</div>');
       } else {
         _results = [];
         for (i in spans) {

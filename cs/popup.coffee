@@ -118,7 +118,7 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....</div>'
+      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....<br />(etter midnatt vises ikke)</div>'
     else
       # Display line for line with according times
       for i of spans
