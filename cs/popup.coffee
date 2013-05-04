@@ -278,11 +278,14 @@ $ ->
       window.close()
     ), 250
 
-  # If only one affiliation is to be shown, reduce window width and remove second column
+  # If only one affiliation is to be shown remove the second news column
   if ls.showAffiliation2 isnt 'true'
-    $('body').attr 'style', 'width:350pt;'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
+  # If using two affiliation columns, increase the popup window size (better than
+  # decreasing the window size after opening it cuz that looks kinda stupid)
+  else
+    $('body').attr 'style', 'width:400pt;'
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'

@@ -335,9 +335,10 @@
       }), 250);
     }
     if (ls.showAffiliation2 !== 'true') {
-      $('body').attr('style', 'width:350pt;');
       $('#news #right').hide();
       $('#news #left').attr('id', 'full');
+    } else {
+      $('body').attr('style', 'width:400pt;');
     }
     if (ls.showOffice !== 'true') {
       $('#todays').hide();
