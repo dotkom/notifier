@@ -245,7 +245,7 @@ body {
   padding-bottom: 9pt;
 }
 .emphasized {
-  font-size: 14pt;
+  font-size: 24pt;
   margin-bottom: 8pt;
 }
 html {
@@ -390,25 +390,65 @@ body {
     opacity: 1.0;
   }
 }
+#container #news {
+  /* #full for using a single column */
+
+  /* #left and #right for using double columns */
+
+}
+#container #news #full {
+  position: relative;
+  width: 100%;
+  float: left;
+}
+#container #news #full img {
+  float: left;
+  width: 150pt;
+  max-height: 150pt;
+  margin: 0 7pt 5pt 0;
+}
+#container #news #left {
+  position: relative;
+  width: 45%;
+  float: left;
+}
+#container #news #left img {
+  float: right;
+  margin: 0 0pt 3pt 3pt;
+}
+#container #news #right {
+  position: relative;
+  width: 50%;
+  float: right;
+}
+#container #news #right .title {
+  color: LightGrey;
+}
+#container #news #right img {
+  float: right;
+  margin: 0 0 3pt 3pt;
+}
 #container #news .post .item {
+  margin-top: -4pt;
   min-height: 40pt;
+  cursor: pointer;
+  margin-left: -5pt;
+  margin-right: -5pt;
+  padding: 5pt;
+  -webkit-transition: box-shadow 0.3s ease-out 0s;
+}
+#container #news .post .item:hover {
+  box-shadow: inset 0pt 0pt 2pt #bbb,
+            0pt 0pt 10pt white;
 }
 #container #news .post .item img {
-  width: 170pt;
-  max-height: 140pt;
+  width: 120pt;
+  max-height: 120pt;
   padding: 6pt;
   box-shadow: 0 0 20pt #bbb;
 }
-#container #news .post .item .textwrapper {
-  margin-left: 18pt;
-  width: 73%;
-}
-#container #news .post .item .textwrapper .date {
-  text-transform: uppercase;
-  font-size: 24pt;
-}
-#container #news .post .unread {
-  font-size: 18pt;
+#container #news .unread {
+  font-size: 8pt;
 }
 /* the affiliation logo or sponsor logo */
 #logo {

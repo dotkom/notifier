@@ -42,37 +42,49 @@
     return Browser.createNotification('subscription.html');
   };
 
-  bindAffiliationSelector = function() {
+  bindAffiliationSelector = function(number, isPrimaryAffiliation) {
     var affiliationKey, id;
-    id = 'affiliationKey';
+    id = 'affiliationKey' + number;
     affiliationKey = ls[id];
     $('#' + id).val(affiliationKey);
     return $('#' + id).change(function() {
-      var icon, oldAffiliation, palette;
+      var icon, name, oldAffiliation, palette, symbol, web;
       affiliationKey = $(this).val();
       oldAffiliation = ls[id];
-      if (oldAffiliation === 'online') {
-        disableOnlineSpecificFeatures();
-      } else if (affiliationKey === 'online') {
-        enableOnlineSpecificFeatures();
-      }
       ls[id] = affiliationKey;
-      palette = Affiliation.org[affiliationKey].palette;
-      if (palette !== void 0) {
-        $('#affiliationPalette').val(palette);
-        ls.affiliationPalette = palette;
-        if (DEBUG) {
-          console.log('Applying chosen palette', palette);
+      if (isPrimaryAffiliation) {
+        if (oldAffiliation === 'online') {
+          disableOnlineSpecificFeatures();
+        } else if (affiliationKey === 'online') {
+          enableOnlineSpecificFeatures();
         }
-        $('#palette').attr('href', Palettes.get(palette));
-      }
-      icon = Affiliation.org[affiliationKey].icon;
-      if (icon !== void 0) {
+        palette = Affiliation.org[affiliationKey].palette;
+        if (palette !== void 0) {
+          $('#affiliationPalette').val(palette);
+          ls.affiliationPalette = palette;
+          if (DEBUG) {
+            console.log('Applying chosen palette', palette);
+          }
+          $('#palette').attr('href', Palettes.get(palette));
+        }
+        icon = Affiliation.org[affiliationKey].icon;
         Browser.setIcon(icon);
-        ls.affiliationIcon = icon;
+        $('link[rel="shortcut icon"]').attr('href', icon);
+        symbol = Affiliation.org[affiliationKey].symbol;
+        $('#affiliationSymbol').attr('style', 'background-image:url("' + symbol + '");');
+        web = Affiliation.org[affiliationKey].web;
+        $('#affiliationSymbol').unbind('click');
+        $('#affiliationSymbol').click(function() {
+          return Browser.openTab(web);
+        });
+        name = Affiliation.org[affiliationKey].name;
+        Browser.setTitle(name + ' Notifier');
       }
-      ls.removeItem('feedItems');
-      return Browser.getBackgroundProcess().updateNews();
+      ls.removeItem('affiliationFeedItems' + number);
+      if (ls['showAffiliation' + number] === 'true') {
+        Browser.getBackgroundProcess().updateAffiliationNews(number);
+      }
+      return displayOnPageNotification();
     });
   };
 
@@ -85,7 +97,8 @@
       if (DEBUG) {
         console.log('Applying chosen palette', palette);
       }
-      return $('#palette').attr('href', Palettes.get(palette));
+      $('#palette').attr('href', Palettes.get(palette));
+      return displayOnPageNotification();
     });
   };
 
@@ -102,6 +115,9 @@
       });
       $('#container').css('top', '60%');
       $('header').css('top', '60%');
+      $('#plusonebutton').fadeOut({
+        duration: 0
+      });
     } else {
 
     }
@@ -110,10 +126,13 @@
       $('#container').animate({
         'top': '60%'
       }, 300);
-      $('header').animate({
+      return $('header').animate({
         'top': '60%'
-      }, 300);
-      return changeCreatorName('Online');
+      }, 300, function() {
+        return $('#plusonebutton').fadeOut('slow', function() {
+          return changeCreatorName('Online');
+        });
+      });
     });
   };
 
@@ -129,17 +148,24 @@
         duration: 0
       });
       $('#container').css('top', '50%');
-      return $('header').css('top', '50%');
+      $('header').css('top', '50%');
+      return $('#plusonebutton').fadeIn({
+        duration: 0
+      });
     } else {
-      $('label[for="showOffice"]').slideDown('slow');
-      return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
-        $('#container').animate({
-          'top': '50%'
-        }, 300);
-        $('header').animate({
-          'top': '50%'
-        }, 300);
-        return changeCreatorName('dotKom');
+      Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+      $('#container').animate({
+        'top': '50%'
+      }, 300);
+      return $('header').animate({
+        'top': '50%'
+      }, 300, function() {
+        $('label[for="showOffice"]').slideDown('slow');
+        return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
+          return $('#plusonebutton').fadeIn('slow', function() {
+            return changeCreatorName('dotKom');
+          });
+        });
       });
     }
   };
@@ -504,55 +530,57 @@
   };
 
   toggleInfoscreen = function(activate, force) {
-    var id, speed;
+    var speed;
     speed = 400;
-    id = 'useInfoscreen';
     if (activate) {
-      $('#' + id).attr('checked', false);
-      $('#logo_subtext').fadeOut();
+      $('#useInfoscreen').attr('checked', false);
+      $('#header_text').fadeOut();
       return $('#container #left').animate({
         'width': '0pt'
       }, speed, function() {
         $('#container #left').hide();
         return $('#infoscreen_slider').slideUp(speed, function() {
-          return $('#infoscreen_preview').fadeIn(speed, function() {
-            $('#logo_subtext').html('infoscreen&nbsp;&nbsp;&nbsp;&nbsp;');
-            return $('#logo_subtext').fadeIn(function() {
-              $('header #logo_subtext').animate({
-                'margin-left': '265pt'
-              }, speed);
-              $('header #logo').animate({
-                'margin-left': '75pt'
-              }, speed);
-              $('#container #right').animate({
-                'margin-left': '160pt'
-              }, speed);
-              $('header').animate({
-                'top': '40%'
-              }, speed);
-              return $('#container').animate({
-                'top': '40%'
-              }, speed, function() {
-                if (force || confirm('Sikker på at du vil skru på Online Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
-                  ls[id] = 'true';
-                  $('#' + id).prop('checked', true);
-                  Browser.setIcon('img/icon-default.png');
-                  Browser.setTitle('Online Infoscreen');
-                  Browser.setBadgeText('');
-                  if (!force) {
-                    return Browser.openBackgroundTab('infoscreen.html');
+          return $('img#useInfoscreen').slideUp(speed, function() {
+            return $('#infoscreen_preview').slideDown(speed, function() {
+              $('#header_text').html('<b>Info</b>screen');
+              return $('#header_text').fadeIn(function() {
+                $('#container #right').animate({
+                  'margin-left': '160pt'
+                }, speed);
+                $('header').animate({
+                  'top': '50%'
+                }, speed);
+                return $('#container').animate({
+                  'top': '50%'
+                }, speed, function() {
+                  var name;
+                  name = Affiliation.org[ls.affiliationKey1].name;
+                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
+                    ls['useInfoscreen'] = 'true';
+                    $('#useInfoscreen').prop('checked', true);
+                    Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
+                    Browser.setTitle(Affiliation.org[ls.affiliationKey1].name + ' Infoscreen');
+                    Browser.setBadgeText('');
+                    if (!force) {
+                      return Browser.openBackgroundTab('infoscreen.html');
+                    }
+                  } else {
+                    return revertInfoscreen();
                   }
-                } else {
-                  return revertInfoscreen();
-                }
+                });
               });
             });
           });
         });
       });
     } else {
-      ls[id] = 'false';
-      Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+      ls['useInfoscreen'] = 'false';
+      if (ls.affiliationKey1 === 'online') {
+        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+      } else {
+        Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
+        Browser.setTitle(Affiliation.org[ls.affiliationKey1].name + ' Notifier');
+      }
       return revertInfoscreen();
     }
   };
@@ -560,8 +588,8 @@
   revertInfoscreen = function() {
     var speed;
     speed = 300;
-    return $('#logo_subtext').fadeOut(speed, function() {
-      if (ls.affiliationKey === 'online') {
+    return $('#header_text').fadeOut(speed, function() {
+      if (ls.affiliationKey1 === 'online') {
         $('#container').animate({
           'top': '50%'
         }, speed);
@@ -579,20 +607,15 @@
       $('#container #right').animate({
         'margin-left': '0'
       }, speed);
-      $('header #logo_subtext').animate({
-        'margin-left': '215pt'
-      }, speed);
-      return $('header #logo').animate({
-        'margin-left': '25pt'
-      }, speed, function() {
-        return $('#infoscreen_preview').fadeOut(speed, function() {
+      return $('#infoscreen_preview').slideUp(speed, function() {
+        return $('img#useInfoscreen').slideDown(speed, function() {
           return $('#infoscreen_slider').slideDown(speed, function() {
             $('#container #left').show();
             return $('#container #left').animate({
               'width': '54%'
             }, speed, function() {
-              $('#logo_subtext').html('notifier options');
-              return $('#logo_subtext').fadeIn();
+              $('#header_text').html('<b>Notifier</b> Options');
+              return $('#header_text').fadeIn();
             });
           });
         });
@@ -614,7 +637,7 @@
   };
 
   changeCreatorName = function(name) {
-    clearTimeout(ls.changeCreatorNameTimeoutId);
+    clearTimeout(Number(ls.animateCreatorNameTimeoutId));
     return animateCreatorName(name + " with <3");
   };
 
@@ -645,7 +668,7 @@
   };
 
   $(function() {
-    var palette, text;
+    var icon, symbol, text, web;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -653,16 +676,19 @@
       });
     }
     $.ajaxSetup(AJAX_SETUP);
-    if (ls.affiliationKey !== 'online') {
+    if (ls.affiliationKey1 !== 'online') {
       disableOnlineSpecificFeatures(true);
     }
-    palette = ls.affiliationPalette;
-    if (palette !== void 0) {
-      if (DEBUG) {
-        console.log('Applying chosen palette', palette);
-      }
-      $('#palette').attr('href', Palettes.get(palette));
-    }
+    icon = Affiliation.org[ls.affiliationKey1].icon;
+    $('link[rel="shortcut icon"]').attr('href', icon);
+    symbol = Affiliation.org[ls.affiliationKey1].symbol;
+    $('#affiliationSymbol').attr('style', 'background-image:url("' + symbol + '");');
+    web = Affiliation.org[ls.affiliationKey1].web;
+    $('#affiliationSymbol').unbind('click');
+    $('#affiliationSymbol').click(function() {
+      return Browser.openTab(web);
+    });
+    $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     $('input:checkbox').each(function(index, element) {
       if (ls[element.id] === 'true') {
         return element.checked = true;
@@ -683,11 +709,17 @@
     setInterval((function() {
       return pageFlipCursorBlinking();
     }), 600);
-    setTimeout((function() {
-      return $('#plusonebutton').fadeIn(150);
-    }), 1100);
-    bindAffiliationSelector();
+    if (ls.affiliationKey1 === 'online') {
+      setTimeout((function() {
+        return $('#plusonebutton').fadeIn(150);
+      }), 1100);
+    }
+    bindAffiliationSelector('1', true);
+    bindAffiliationSelector('2', false);
     bindPaletteSelector();
+    if (ls.showAffiliation2 !== 'true') {
+      $('#affiliationKey2').attr('disabled', 'disabled');
+    }
     bindCantinaSelector('left_cantina');
     bindCantinaSelector('right_cantina');
     bindBusFields('firstBus');
@@ -706,7 +738,7 @@
       $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
     }
     if (BROWSER === 'Opera') {
-      $('#logo_subtext').css('margin-top', '7pt');
+      $('#header_text').css('margin-top', '7pt');
       $('#notification').css('top', '14.5pt');
     }
     $('#bus_box').hover(function() {
@@ -719,6 +751,12 @@
         return toggleInfoscreen(this.checked);
       } else {
         ls[this.id] = this.checked;
+        if (this.id === 'showAffiliation2' && this.checked === false) {
+          $('#affiliationKey2').attr('disabled', 'disabled');
+        }
+        if (this.id === 'showAffiliation2' && this.checked === true) {
+          $('#affiliationKey2').removeAttr('disabled');
+        }
         if (this.id === 'showOffice' && this.checked === true) {
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
         }

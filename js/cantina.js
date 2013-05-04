@@ -184,6 +184,9 @@ var Cantina = {
           }
           else {
             price = price.match(/\d+/g);
+            // if (price == null) {
+            //   price = NaN;
+            // }
             if (self.debug) console.log('Price from "'+dinner.price+'" to "'+price+'"');
           }
           dinner.price = price;
@@ -249,6 +252,16 @@ var Cantina = {
           return(a.price>b.price)?1:((b.price>a.price)?-1:0);
         });
       }
+      
+      // // Check for NaN-prices and set to question mark
+      // // See also cantina.js:187-189, popup.coffee:65,67-68
+      // dinnerObjects.forEach( function(dinner) {
+      //   if (dinner.price != null) {
+      //     if (isNaN(dinner.price)) {
+      //       dinner.price = '??';
+      //     }
+      //   }
+      // });
       
       callback(dinnerObjects);
     }

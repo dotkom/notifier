@@ -1,4 +1,8 @@
+
+// Create google analytics array
 var _gaq = _gaq || [];
+
+// Set account vars and set to track page views
 _gaq.push(['_setAccount', 'UA-9905766-3']);
 _gaq.push(['_trackPageview']);
 

@@ -56,21 +56,46 @@ var News = {
   // - dc:creator - author name or username
   // - enclosure - may contain an image as an XML attribute: url="news_post_image.jpg"
   // - source
+  // In Atom feeds, these are the usual fields:
+  // - id - a useless ID
+  // - published - the publishing date, must be parsed
+  // - updated - the updated date, must be parsed
+  // - title
+  // - content - is the full entry as HTML
+  // - link[rel="self"] - is this entry in XML format, useless
+  // - link[rel="alternate"] - is the entry as text/html, good!
+  // - author -> name
   parseFeed: function(xml, affiliationObject, limit, callback) {
-    var items = [];
+    var posts = [];
     var self = this;
     var count = 0;
-    // Add each item from the feed
-    $(xml).find('item').each( function() {
-      if (count++ < limit) {
-        var item = self.parseItem(this, affiliationObject);
-        items.push(item);
-      }
-    });
-    callback(items);
+    // Add each item from RSS feed
+    if ($(xml).find('item').length != 0) {
+      $(xml).find('item').each( function() {
+        if (count++ < limit) {
+          var item = self.parseRssItem(this, affiliationObject);
+          item = self.postProcess(item);
+          posts.push(item);
+        }
+      });
+    }
+    // Add each item from Atom feed
+    else if ($(xml).find('entry').length != 0) {
+      $(xml).find('entry').each( function() {
+        if (count++ < limit) {
+          var entry = self.parseAtomEntry(this, affiliationObject);
+          entry = self.postProcess(entry);
+          posts.push(entry);
+        }
+      });
+    }
+    else {
+      if (this.debug) console.log('ERROR: Unknown feed type, neither RSS nor Atom');
+    }
+    callback(posts);
   },
 
-  parseItem: function(item, affiliationObject) {
+  parseRssItem: function(item, affiliationObject) {
     var post = {};
 
     // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
@@ -88,25 +113,23 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // Check for image in rarely used <enclosure>-tag
-    var enclosure = $(item).find('enclosure');
-    if (enclosure != '') {
-      try {
-        // Universitetsavisa does this little trick to get images in their feed
+    // Check for image in rarely used tags <enclosure> and <bilde>
+    try {
+      // Universitetsavisa does this little trick to get images in their feed
+      var enclosure = $(item).find('enclosure').filter(':first');
+      if (enclosure.length != 0) {
         post.image = enclosure['0'].attributes.url.textContent;
       }
-      catch (err) {
-        // Do nothing, we we're just checking, move along quitely
+      // Gemini uses this rather blunt hack to put images in their feed
+      var bilde = $(item).find('bilde');
+      if (bilde.length != 0) {
+        post.image = bilde['0'].textContent;
       }
     }
-    
-    // Check for alternative links in description
-    post.altLink = this.checkForAltLink(post.description);
+    catch (err) {
+      // Do nothing, we we're just checking, move along quitely
+    }
 
-    // Remove HTML
-    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
-    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
-    
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
       var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
@@ -114,6 +137,57 @@ var News = {
         post.creator = $(this).text().trim();
       });
     }
+
+    return post;
+  },
+
+  parseAtomEntry: function(entry, affiliationObject) {
+    var post = {};
+
+    // The popular fields
+    post.title = $(entry).find("title").filter(':first').text();
+    post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
+    post.description = $(entry).find("content").filter(':first').text();
+    post.creator = $(entry).find("author name").filter(':first').text();
+    post.date = $(entry).find("published").filter(':first').text().substr(5, 11);
+
+    // Locally stored
+    post.image = affiliationObject.placeholder;
+    // Tag the posts with the key and name of the feed they came from
+    post.feedKey = affiliationObject.key;
+    post.feedName = affiliationObject.name;
+
+    // Extract image from content HTML
+    var image = $(entry).find('content').filter(':first').text();
+    if (image != undefined) {
+      image = image.match(/src="(http:\/\/[a-zA-Z0-9.\/\-_]+)"/);
+      if (image != null) {
+        post.image = image[1];
+      }
+    }
+
+    // Empty title field?
+    if (post.title.trim() == '')
+      post.title = 'Uten tittel';
+
+    // Parse date field
+    post.date = new Date(post.date);
+    if (post.date != "Invalid Date")
+      post.date = post.date.toDateString();
+    else
+      post.date = null;
+
+    return post;
+  },
+
+  postProcess: function(post) {
+    // Check for alternative links in description
+    post.altLink = this.checkForAltLink(post.description);
+
+    // Remove HTML from description
+    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
+    
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
       post.creator = post.feedName;
@@ -138,7 +212,7 @@ var News = {
     
     // title + description must not exceed 5 lines
     var line = 50; // conservative estimation
-    var desclength = line * 3;
+    var desclength = line * 2;
     // double line titles will shorten the description by 1 line
     if (line <= post.title.length)
       desclength -= line;
@@ -149,35 +223,35 @@ var News = {
     return post;
   },
 
-  refreshNewsIdList: function(items) {
-    var freshNewsList = [];
+  refreshNewsList: function(items) {
+    var freshList = [];
     items.forEach(function(item, index) {
-      freshNewsList.push(item.link);
+      freshList.push(item.link);
     });
-    localStorage.newsList = JSON.stringify(freshNewsList);
+    return JSON.stringify(freshList);
   },
 
-  unreadCountAndNotify: function(items) {
+  countNewsAndNotify: function(items, newsList, lastNotifiedName) {
     var unreadCount = 0;
     var maxNewsAmount = this.unreadMaxCount;
     if (items.length-1 < maxNewsAmount)
       maxNewsAmount = items.length-1;
 
-    var newsList = JSON.parse(localStorage.newsList);
-
     // Count feed items
     var self = this;
-    items.forEach(function(item, index) {
-
+    //items.forEach(function(item, index) {
+    for (var i=0; i<items.length; i++) {
+      
+      var item = items[i];
       var link = item.link;
       
       // Counting...
       if (newsList.indexOf(link) === -1) {
         unreadCount++;
-
         // Send a desktop notification about the first new item
         if (unreadCount == 1) {
-          if (localStorage.lastNotified != link) {
+          if (localStorage[lastNotifiedName] != link) {
+            localStorage[lastNotifiedName] = item.link;
             self.showNotification(item);
           }
         }
@@ -186,34 +260,31 @@ var News = {
       else {
         if (unreadCount == 0) {
           if (self.debug) console.log('no new posts');
-          Browser.setBadgeText('');
+          return 0;
         }
         else if (maxNewsAmount <= unreadCount) {
           if (self.debug) console.log(maxNewsAmount + '+ unread posts');
-          Browser.setBadgeText(maxNewsAmount + '+');
+          return maxNewsAmount + 1;
         }
         else {
           if (self.debug) console.log('1-' + (maxNewsAmount - 1) + ' unread posts');
-          Browser.setBadgeText(String(unreadCount));
+          return unreadCount;
         }
-        localStorage.unreadCount = unreadCount;
-        return;
       }
-      
+
       // Stop counting if unread number is greater than maxNewsAmount
-      if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
+      if ((maxNewsAmount - 1) < i) { // Remember i is counting 0
         if (self.debug) console.log((maxNewsAmount + 1) + ' unread posts (stopped counting)');
-        Browser.setBadgeText(String(maxNewsAmount + 1));
-        localStorage.unreadCount = maxNewsAmount + 1;
-        return;
+        return maxNewsAmount + 1;
       }
-    });
+    };
+    // });
+    if (this.debug) console.log('ERROR: unhandled situation returning -1, unreadCount is', unreadCount);
+    return -1;
   },
 
   showNotification: function(item) {
     if (localStorage.showNotifications == 'true') {
-      // Remember this
-      localStorage.lastNotified = item.link;
       // Get content
       localStorage.notificationTitle = item.title;
       localStorage.notificationLink = item.link;

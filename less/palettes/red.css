@@ -9,7 +9,7 @@
 }
 
 #pageflip {
-  -webkit-filter: hue-rotate(134deg) saturate(1) brightness(0.8);
+  -webkit-filter: hue-rotate(134deg) saturate(1.8) brightness(1.1);
 }
 
 #pageflipbg {

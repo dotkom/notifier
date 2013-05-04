@@ -44,6 +44,9 @@ var Browser = {
   },
 
   setBadgeText: function(text) {
+    if (typeof text == 'undefined' || text == null || text == 0 || text == '0') {
+      text = '';
+    }
     if (BROWSER == 'Chrome') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setBadgeText({text: text});

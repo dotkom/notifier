@@ -122,8 +122,12 @@
       for (_i = 0, _len = menu.length; _i < _len; _i++) {
         dinner = menu[_i];
         if (dinner.price !== null) {
-          dinner.price = dinner.price + ',- ';
-          dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>';
+          if (!isNaN(dinner.price)) {
+            dinner.price = dinner.price + ',-';
+          } else {
+            dinner.price = dinner.price + ' -';
+          }
+          dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>';
         } else {
           dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>';
         }
@@ -201,15 +205,15 @@
   };
 
   updateNews = function() {
-    var affiliation, affiliationKey, getNewsAmount;
+    var affiliation, affiliationKey1, getNewsAmount;
     if (DEBUG) {
       console.log('updateNews');
     }
-    affiliationKey = ls['affiliationKey'];
-    affiliation = Affiliation.org[affiliationKey];
+    affiliationKey1 = ls['affiliationKey1'];
+    affiliation = Affiliation.org[affiliationKey1];
     if (affiliation === void 0) {
       if (DEBUG) {
-        return console.log('ERROR: chosen affiliation', affiliationKey, 'is not known');
+        return console.log('ERROR: chosen affiliation', affiliationKey1, 'is not known');
       }
     } else {
       getNewsAmount = 10;
@@ -219,7 +223,7 @@
           if (DEBUG) {
             console.log('ERROR:', items);
           }
-          name = Affiliation.org[affiliationKey].name;
+          name = Affiliation.org[affiliationKey1].name;
           return $('#news').html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
         } else {
           ls.feedItems = JSON.stringify(items);
@@ -276,7 +280,7 @@
     $('.item').click(function() {
       var altLink, useAltLink;
       altLink = $(this).attr('name');
-      useAltLink = Affiliation.org[ls.affiliationKey].useAltLink;
+      useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink;
       if (altLink !== void 0 && useAltLink === true) {
         Browser.openTab($(this).attr('name'));
       } else {
@@ -348,21 +352,18 @@
   };
 
   $(function() {
-    var firstBusOk, firstBusProps, prop, secondBusOk, secondBusProps, _i, _j, _len, _len1;
+    var firstBusOk, firstBusProps, palette, prop, secondBusOk, secondBusProps, _i, _j, _len, _len1;
     $.ajaxSetup(AJAX_SETUP);
     if (DEBUG) {
       ls.clear();
     }
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
-    if (ls.showAffiliation === void 0) {
-      ls.showAffiliation = 'true';
+    if (ls.showAffiliation1 === void 0) {
+      ls.showAffiliation1 = 'true';
     }
-    if (ls.affiliationKey === void 0) {
-      ls.affiliationKey = 'online';
-    }
-    if (ls.affiliationIcon === void 0) {
-      ls.affiliationIcon = '/img/icon-default.png';
+    if (ls.affiliationKey1 === void 0) {
+      ls.affiliationKey1 = 'online';
     }
     if (ls.affiliationPalette === void 0) {
       ls.affiliationPalette = 'online';
@@ -428,6 +429,11 @@
       $('body').attr('style', 'background-attachment:fixed;background-image:' + BACKGROUND_IMAGE);
       ls.background_image = BACKGROUND_IMAGE;
     }
+    palette = ls.affiliationPalette;
+    if (DEBUG) {
+      console.log('Applying chosen palette', palette);
+    }
+    $('#palette').attr('href', Palettes.get(palette));
     return mainLoop();
   });
 

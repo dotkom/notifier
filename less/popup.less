@@ -59,6 +59,8 @@ body {
     }
     a {
       outline: none;
+      text-decoration: underline;
+      color: DarkBlue;
     }
   }
 }
@@ -81,7 +83,7 @@ body {
 
     #buttons {
       .debuglime;
-      width: 160pt;
+      width: 170pt;
       float: left;
 
       .popupbutton {
@@ -104,6 +106,7 @@ body {
       display: none;
       position: relative;
       float: left;
+      width: 170pt;
       font-weight: bold;
       text-shadow:
         0 0 10pt white,
@@ -183,6 +186,40 @@ body {
   }
 
   #news {
+    /* #full for using a single column */
+    #full {
+      position: relative;
+      width: 100%;
+      float: left;
+      img {
+        float: left;
+        width: 70pt;
+        max-height: 70pt;
+        margin: 0 5pt 3pt 0;
+      }
+    }
+    /* #left and #right for using double columns */
+    #left {
+      position: relative;
+      width: 45%;
+      float: left;
+      img {
+        float: right;
+        margin: 0 0pt 3pt 3pt;
+      }
+    }
+    #right {
+      position: relative;
+      width: 50%;
+      float: right;
+      .title {
+        color: LightGrey;
+      }
+      img {
+        float: right;
+        margin: 0 0 3pt 3pt;
+      }
+    }
     .post {
       .item {
         margin-top: -4pt;
@@ -199,14 +236,10 @@ body {
             0pt 0pt 10pt white;
         }
         img {
-          width: 70pt;
-          max-height: 70pt;
+          width: 60pt;
+          max-height: 60pt;
           padding: 3pt;
           box-shadow: 0 0 10pt #bbb;
-        }
-        .textwrapper {
-          margin-left: 7pt;
-          width: 70%;
         }
       }
     }

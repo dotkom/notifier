@@ -74,8 +74,11 @@ listDinners = (menu) ->
     ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        dinner.price = dinner.price + ',- '
-        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>'
+        if not isNaN dinner.price
+          dinner.price = dinner.price + ',-'
+        else
+          dinner.price = dinner.price + ' -'
+        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>'
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist
@@ -140,10 +143,10 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 updateNews = ->
   if DEBUG then console.log 'updateNews'
   # Get affiliation object
-  affiliationKey = ls['affiliationKey']
-  affiliation = Affiliation.org[affiliationKey]
+  affiliationKey1 = ls['affiliationKey1']
+  affiliation = Affiliation.org[affiliationKey1]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey, 'is not known'
+    if DEBUG then console.log 'ERROR: chosen affiliation', affiliationKey1, 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     getNewsAmount = 10
@@ -151,7 +154,7 @@ updateNews = ->
       if typeof items is 'string'
         # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
-        name = Affiliation.org[affiliationKey].name
+        name = Affiliation.org[affiliationKey1].name
         $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
       else
         ls.feedItems = JSON.stringify items
@@ -220,7 +223,7 @@ displayItems = (items) ->
     # Note that altLinks are embedded in the name-property of the element,
     # - if preferred by the organization, we should use that instead.
     altLink = $(this).attr 'name'
-    useAltLink = Affiliation.org[ls.affiliationKey].useAltLink
+    useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink
     if altLink isnt undefined and useAltLink is true
       Browser.openTab $(this).attr 'name'
     else
@@ -284,12 +287,10 @@ $ ->
   
   # Set default choices if undefined, in the same order as on the options page
 
-  if ls.showAffiliation is undefined
-    ls.showAffiliation = 'true'
-  if ls.affiliationKey is undefined
-    ls.affiliationKey = 'online'
-  if ls.affiliationIcon is undefined
-    ls.affiliationIcon = '/img/icon-default.png'
+  if ls.showAffiliation1 is undefined
+    ls.showAffiliation1 = 'true'
+  if ls.affiliationKey1 is undefined
+    ls.affiliationKey1 = 'online'
   if ls.affiliationPalette is undefined
     ls.affiliationPalette = 'online'
 
@@ -362,6 +363,11 @@ $ ->
     $('head').append '<script src="mimg/background_image.js"></script>'
     $('body').attr 'style', 'background-attachment:fixed;background-image:' + BACKGROUND_IMAGE
     ls.background_image = BACKGROUND_IMAGE
+  
+  # Show the standard palette or special palette the user has chosen
+  palette = ls.affiliationPalette
+  if DEBUG then console.log 'Applying chosen palette', palette
+  $('#palette').attr 'href', Palettes.get palette
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

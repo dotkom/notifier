@@ -10,13 +10,14 @@ var Affiliation = {
   // key: 'orgx',
   // web: 'https://orgx.com',
   // feed: 'https://orgx.com/feed',
-  // logo: './org/orgx/logo.png',
-  // icon: './org/orgx/icon.png',
-  // placeholder: './org/orgx/placeholder.png',
+  // logo: './org/orgx/logo.png',               // 512x128 transparent logo, for dark background
+  // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
+  // symbol: './org/orgx/symbol.png',           // 256x256 symbol, big version of the icon
+  // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',     // Optional: Path to the special palette
   // useAltLink: false,                         // Search news posts for alternative links?
-  // getImages: function(links, callback) {},   // getImage(s) will be used if it exists
+  // getImages: function(links, callback) {},   // getImages will be used if it exists
 
   // Standard dimensions:
 
@@ -35,11 +36,12 @@ var Affiliation = {
       feed: 'http://bergstud.no/feed/',
       logo: './org/berg/logo.png',
       icon: './org/berg/icon.png',
+      symbol: './org/berg/symbol.png',
       placeholder: './org/berg/placeholder.png',
       palette: 'grey',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, 'div.post img');
+        Affiliation.getImages(this, link, callback);
       },
     },
     'delta': {
@@ -49,6 +51,7 @@ var Affiliation = {
       feed: 'http://org.ntnu.no/delta/wp/?feed=rss2',
       logo: './org/delta/logo.png',
       icon: './org/delta/icon.png',
+      symbol: './org/delta/symbol.png',
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
       useAltLink: false,
@@ -63,11 +66,42 @@ var Affiliation = {
       feed: 'http://emilweb.no/feed/',
       logo: './org/emil/logo.png',
       icon: './org/emil/icon.png',
+      symbol: './org/emil/symbol.png',
       placeholder: './org/emil/placeholder.png',
       palette: 'green',
       useAltLink: false,
+      getImages: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
+      },
+    },
+    'entreprenoerskolen': {
+      name: 'Entreprenørskolen',
+      key: 'entreprenoerskolen',
+      web: 'http://entreprenorskolen.no/',
+      feed: 'http://entreprenorskolen.no/feed/',
+      logo: './org/entreprenoerskolen/logo.png',
+      icon: './org/entreprenoerskolen/icon.png',
+      symbol: './org/entreprenoerskolen/symbol.png',
+      placeholder: './org/entreprenoerskolen/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.frontpage', 2);
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'hybrida': {
+      name: 'Hybrida',
+      key: 'hybrida',
+      web: 'http://hybrida.no/',
+      feed: 'http://hybrida.no/newsfeed/rss',
+      logo: './org/hybrida/logo.png',
+      icon: './org/hybrida/icon.png',
+      symbol: './org/hybrida/symbol.png',
+      placeholder: './org/hybrida/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.element', domainUrl:'hybrida.no'});
       },
     },
     'leonardo': {
@@ -77,38 +111,12 @@ var Affiliation = {
       feed: 'http://industrielldesign.com/feed',
       logo: './org/leonardo/logo.png',
       icon: './org/leonardo/icon.png',
+      symbol: './org/leonardo/symbol.png',
       placeholder: './org/leonardo/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        var web = this.web;
-        var placeholder = this.placeholder;
-        var placeholders = []
-        // In case we don't find any images, prepare an array with placeholders
-        for (var i=0; i<links.length; i++)
-          placeholders.push(placeholder);
-        Ajaxer.getHtml({
-          url: web,
-          success: function(html) {
-            try {
-              var images = [];
-              for (i in links) {
-                var realLink = links[i].split('?')[0];
-                var image = $(html).find('a[href="'+realLink+'"] img').attr('src');
-                images.push(image);
-              }
-              callback(links, images);
-            }
-            catch (e) {
-              if (top.debug) console.log('ERROR: could not parse '+this.name+' website');
-              callback(links, placeholders);
-            }
-          },
-          error: function(e) {
-            if (top.debug) console.log('ERROR: could not fetch '+this.name+' website');
-            callback(links, placeholders);
-          },
-        });
+        Affiliation.getImages(this, links, callback, {newsSelector:'div.post_wrapper', linkDelimiter:'?'});
       },
     },
     'online': {
@@ -117,7 +125,8 @@ var Affiliation = {
       web: 'https://online.ntnu.no/',
       feed: 'https://online.ntnu.no/feeds/news/',
       logo: './img/logo.png', // Note unique URL pattern
-      icon: './img/icon-default.png', // Note unique URL pattern
+      icon: './org/online/icon.png',
+      symbol: './org/online/symbol.png',
       placeholder: './img/placeholder.png', // Note unique URL pattern
       palette: 'online',
       palettePath: './org/online/palette.css',
@@ -152,22 +161,24 @@ var Affiliation = {
       feed: 'http://nabla.no/feed/',
       logo: './org/nabla/logo.png',
       icon: './org/nabla/icon.png',
+      symbol: './org/nabla/symbol.png',
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, '.news_item', 'nabla.no');
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
       },
     },
-    'spanskrøret': {
+    'spanskroeret': {
       name: 'Spanskrøret',
-      key: 'spanskrøret',
+      key: 'spanskroeret',
       web: 'http://spanskroret.no/',
       feed: 'http://spanskroret.no/feed/',
-      logo: './org/spanskrøret/logo.png',
-      icon: './org/spanskrøret/icon.png',
-      placeholder: './org/spanskrøret/placeholder.png',
-      palette: 'grey',
+      logo: './org/spanskroeret/logo.png',
+      icon: './org/spanskroeret/icon.png',
+      symbol: './org/spanskroeret/symbol.png',
+      placeholder: './org/spanskroeret/placeholder.png',
+      palette: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -180,11 +191,12 @@ var Affiliation = {
       feed: 'http://org.ntnu.no/volvox/feed/',
       logo: './org/volvox/logo.png',
       icon: './org/volvox/icon.png',
+      symbol: './org/volvox/symbol.png',
       placeholder: './org/volvox/placeholder.png',
       palette: 'green',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback);
       },
     },
 
@@ -196,10 +208,26 @@ var Affiliation = {
       feed: 'http://www.defolkevalgte.net/feed/rss/',
       logo: './org/de folkevalgte/logo.png',
       icon: './org/de folkevalgte/icon.png',
+      symbol: './org/de folkevalgte/symbol.png',
       placeholder: './org/de folkevalgte/placeholder.png',
       palette: 'yellow',
       useAltLink: false,
       getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'dhs': {
+      name: 'Det Historiske Selskab',
+      key: 'dhs',
+      web: 'http://ntnuhistorie.wordpress.com/',
+      feed: 'http://ntnuhistorie.wordpress.com/feed/',
+      logo: './org/dhs/logo.png',
+      icon: './org/dhs/icon.png',
+      symbol: './org/dhs/symbol.png',
+      placeholder: './org/dhs/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
@@ -210,6 +238,7 @@ var Affiliation = {
       feed: 'http://dionysosntnu.wordpress.com/feed/',
       logo: './org/dionysos/logo.png',
       icon: './org/dionysos/icon.png',
+      symbol: './org/dionysos/symbol.png',
       placeholder: './org/dionysos/placeholder.png',
       palette: 'purple',
       useAltLink: false,
@@ -224,11 +253,12 @@ var Affiliation = {
       feed: 'http://www.erudiontnu.org/?feed=rss2',
       logo: './org/erudio/logo.png',
       icon: './org/erudio/icon.png',
+      symbol: './org/erudio/symbol.png',
       placeholder: './org/erudio/placeholder.png',
       palette: 'red',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+      getImage: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
       },
     },
     'eureka': {
@@ -238,6 +268,7 @@ var Affiliation = {
       feed: 'http://eurekalf.wordpress.com/feed/',
       logo: './org/eureka/logo.png',
       icon: './org/eureka/icon.png',
+      symbol: './org/eureka/symbol.png',
       placeholder: './org/eureka/placeholder.png',
       palette: 'yellow',
       useAltLink: false,
@@ -252,6 +283,7 @@ var Affiliation = {
       feed: 'http://geolf.org/feed/',
       logo: './org/geolf/logo.png',
       icon: './org/geolf/icon.png',
+      symbol: './org/geolf/symbol.png',
       placeholder: './org/geolf/placeholder.png',
       palette: 'blue',
       useAltLink: false,
@@ -266,6 +298,7 @@ var Affiliation = {
       feed: 'http://www.gengangere.no/feed/',
       logo: './org/gengangere/logo.png',
       icon: './org/gengangere/icon.png',
+      symbol: './org/gengangere/symbol.png',
       placeholder: './org/gengangere/placeholder.png',
       palette: 'grey',
       useAltLink: false,
@@ -280,11 +313,12 @@ var Affiliation = {
       feed: 'http://jumpcutdragvoll.wordpress.com/feed/',
       logo: './org/jump cut/logo.png',
       icon: './org/jump cut/icon.png',
+      symbol: './org/jump cut/symbol.png',
       placeholder: './org/jump cut/placeholder.png',
       palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback);
       },
     },
     'ludimus': {
@@ -294,8 +328,24 @@ var Affiliation = {
       feed: 'http://ludimus.org/feed/',
       logo: './org/ludimus/logo.png',
       icon: './org/ludimus/icon.png',
+      symbol: './org/ludimus/symbol.png',
       placeholder: './org/ludimus/placeholder.png',
       palette: 'red',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'paideia': {
+      name: 'Paideia',
+      key: 'paideia',
+      web: 'http://paideiantnu.wordpress.com/',
+      feed: 'http://paideiantnu.wordpress.com/rss',
+      logo: './org/paideia/logo.png',
+      icon: './org/paideia/icon.png',
+      symbol: './org/paideia/symbol.png',
+      placeholder: './org/paideia/placeholder.png',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -308,6 +358,7 @@ var Affiliation = {
       feed: 'http://www.primetime.trondheim.no/feed/',
       logo: './org/primetime/logo.png',
       icon: './org/primetime/icon.png',
+      symbol: './org/primetime/symbol.png',
       placeholder: './org/primetime/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
@@ -322,6 +373,7 @@ var Affiliation = {
       feed: 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
       logo: './org/sturm und drang/logo.png',
       icon: './org/sturm und drang/icon.png',
+      symbol: './org/sturm und drang/symbol.png',
       placeholder: './org/sturm und drang/placeholder.png',
       palette: 'red',
       useAltLink: false,
@@ -338,11 +390,12 @@ var Affiliation = {
       feed: 'http://www.fraktur.no/feed/',
       logo: './org/fraktur/logo.png',
       icon: './org/fraktur/icon.png',
+      symbol: './org/fraktur/symbol.png',
       placeholder: './org/fraktur/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback);
       },
     },
     'kom': {
@@ -352,11 +405,12 @@ var Affiliation = {
       feed: 'http://kjemiogmaterial.wordpress.com/feed/',
       logo: './org/kom/logo.png',
       icon: './org/kom/icon.png',
+      symbol: './org/kom/symbol.png',
       placeholder: './org/kom/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback);
       },
     },
     'logistikkstudentene': {
@@ -366,11 +420,12 @@ var Affiliation = {
       feed: 'http://logistikkstudentene.no/?feed=rss2',
       logo: './org/logistikkstudentene/logo.png',
       icon: './org/logistikkstudentene/icon.png',
+      symbol: './org/logistikkstudentene/symbol.png',
       placeholder: './org/logistikkstudentene/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback);
       },
     },
     'tihlde': {
@@ -380,21 +435,23 @@ var Affiliation = {
       feed: 'http://tihlde.org/feed/',
       logo: './org/tihlde/logo.png',
       icon: './org/tihlde/icon.png',
+      symbol: './org/tihlde/symbol.png',
       placeholder: './org/tihlde/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.entry');
+        Affiliation.getImages(this, links, callback);
       },
     },
-    'tim og shænko': {
+    'tim og shaenko': {
       name: 'Tim & Shænko',
-      key: 'tim og shænko',
+      key: 'tim og shaenko',
       web: 'http://bygging.no/',
       feed: 'http://bygging.no/feed/',
-      logo: './org/tim og shænko/logo.png',
-      icon: './org/tim og shænko/icon.png',
-      placeholder: './org/tim og shænko/placeholder.png',
+      logo: './org/tim og shaenko/logo.png',
+      icon: './org/tim og shaenko/icon.png',
+      symbol: './org/tim og shaenko/symbol.png',
+      placeholder: './org/tim og shaenko/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
@@ -408,11 +465,72 @@ var Affiliation = {
       feed: 'http://tjsf.no/feed/',
       logo: './org/tjsf/logo.png',
       icon: './org/tjsf/icon.png',
+      symbol: './org/tjsf/symbol.png',
       placeholder: './org/tjsf/placeholder.png',
       palette: 'grey',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+
+    // Masterforeninger, doktorforeninger, internasjonale foreninger
+    'isu': {
+      name: 'International Student Union',
+      key: 'isu',
+      web: 'http://org.ntnu.no/isu/',
+      feed: 'http://org.ntnu.no/isu/feed/',
+      logo: './org/isu/logo.png',
+      icon: './org/isu/icon.png',
+      symbol: './org/isu/symbol.png',
+      placeholder: './org/isu/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'projeksjon': {
+      name: 'Projeksjon',
+      key: 'projeksjon',
+      web: 'http://projeksjon.no/',
+      feed: 'http://projeksjon.no/feed/',
+      logo: './org/projeksjon/logo.png',
+      icon: './org/projeksjon/icon.png',
+      symbol: './org/projeksjon/symbol.png',
+      placeholder: './org/projeksjon/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'soma': {
+      name: 'Soma',
+      key: 'soma',
+      web: 'http://somantnu.blogspot.com/',
+      feed: 'http://somantnu.blogspot.com/feeds/posts/default',
+      logo: './org/soma/logo.png',
+      icon: './org/soma/icon.png',
+      symbol: './org/soma/symbol.png',
+      placeholder: './org/soma/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      // getImages unnecessary, images are extracted from HTML in entries
+    },
+    'symbiosis': {
+      name: 'Symbiosis',
+      key: 'symbiosis',
+      web: 'http://www.ntnusymbiosis.com/',
+      feed: 'http://www.ntnusymbiosis.com/feed/',
+      logo: './org/symbiosis/logo.png',
+      icon: './org/symbiosis/icon.png',
+      symbol: './org/symbiosis/symbol.png',
+      placeholder: './org/symbiosis/placeholder.png',
+      palette: 'green',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
       },
     },
 
@@ -424,9 +542,15 @@ var Affiliation = {
       feed: 'http://dusken.no/feed/',
       logo: './org/dusken/logo.png',
       icon: './org/dusken/icon.png',
+      symbol: './org/dusken/symbol.png',
       placeholder: './org/dusken/placeholder.png',
-      palette: 'grå',
+      palette: 'grey',
       useAltLink: false,
+      getImage: function(link, callback) {
+        // Affiliation.getImages(this, links, callback, {newsSelector:'section.articlepreview', domainUrl:'dusken.no'});
+        // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.span8:first', domainUrl:'dusken.no'});
+      },
     },
     'universitetsavisa': {
       name: 'Universitetsavisa',
@@ -435,9 +559,24 @@ var Affiliation = {
       feed: 'http://www.universitetsavisa.no/?service=rss',
       logo: './org/universitetsavisa/logo.png',
       icon: './org/universitetsavisa/icon.png',
+      symbol: './org/universitetsavisa/symbol.png',
       placeholder: './org/universitetsavisa/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
+      // getImages unnecessary, Universitetsavisa uses <enclosure>-tag for images
+    },
+    'gemini': {
+      name: 'Gemini',
+      key: 'gemini',
+      web: 'http://gemini.no/',
+      feed: 'http://gemini.no/feed/',
+      logo: './org/gemini/logo.png',
+      icon: './org/gemini/icon.png',
+      symbol: './org/gemini/symbol.png',
+      placeholder: './org/gemini/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      // getImages unnecessary, Gemini uses <bilde>-tag for images
     },
 
     // Store studentorganisasjoner
@@ -448,11 +587,12 @@ var Affiliation = {
       feed: 'http://www.samfundet.no/arrangement/rss',
       logo: './org/samfundet/logo.png',
       icon: './org/samfundet/icon.png',
+      symbol: './org/samfundet/symbol.png',
       placeholder: './org/samfundet/placeholder.png',
       palette: 'red',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, 'img.event');
+        Affiliation.getImages(this, link, callback, {newsSelector:'div#banner'});
       },
     },
 
@@ -464,9 +604,13 @@ var Affiliation = {
       feed: 'http://www.velferdstinget.no/feed/rss/',
       logo: './org/velferdstinget/logo.png',
       icon: './org/velferdstinget/icon.png',
+      symbol: './org/velferdstinget/symbol.png',
       placeholder: './org/velferdstinget/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'#innhold'});
+      },
     },
     'studenttinget ntnu': {
       name: 'Studenttinget NTNU',
@@ -475,6 +619,7 @@ var Affiliation = {
       feed: 'http://www.studenttinget.no/feed/',
       logo: './org/studenttinget ntnu/logo.png',
       icon: './org/studenttinget ntnu/icon.png',
+      symbol: './org/studenttinget ntnu/symbol.png',
       placeholder: './org/studenttinget ntnu/placeholder.png',
       palette: 'purple',
       useAltLink: false,
@@ -489,11 +634,12 @@ var Affiliation = {
       feed: 'http://studentparlamentet.com/?feed=rss2',
       logo: './org/studentparlamentet hist/logo.png',
       icon: './org/studentparlamentet hist/icon.png',
+      symbol: './org/studentparlamentet hist/symbol.png',
       placeholder: './org/studentparlamentet hist/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.post');
+        Affiliation.getImages(this, links, callback);
       },
     },
     
@@ -505,11 +651,23 @@ var Affiliation = {
       feed: 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
       logo: './org/ntnu/logo.png',
       icon: './org/ntnu/icon.png',
+      symbol: './org/ntnu/symbol.png',
       placeholder: './org/ntnu/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, 'img', 2);
+        if (link.indexOf('tu.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div#topImage'});
+        }
+        else if (link.indexOf('adressa.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.media'});
+        }
+        else if (link.indexOf('stfk.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.documentbody', domainUrl:'www.stfk.no'});
+        }
+        else if (link.indexOf('nrk.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/});
+        }
       },
     },
     'rektoratet ntnu': {
@@ -519,11 +677,12 @@ var Affiliation = {
       feed: 'http://www.ntnu.no/blogger/rektoratet/feed/',
       logo: './org/rektoratet ntnu/logo.png',
       icon: './org/rektoratet ntnu/icon.png',
+      symbol: './org/rektoratet ntnu/symbol.png',
       placeholder: './org/rektoratet ntnu/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, 'div.entry img');
+        Affiliation.getImages(this, link, callback);
       },
     },
     'hist': {
@@ -533,11 +692,12 @@ var Affiliation = {
       feed: 'http://hist.no/rss.ap?thisId=1393',
       logo: './org/hist/logo.png',
       icon: './org/hist/icon.png',
+      symbol: './org/hist/symbol.png',
       placeholder: './org/hist/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, 'div.unit', 'hist.no');
+        Affiliation.getImages(this, links, callback, {newsSelector:'div.unit', domainUrl:'hist.no'});
       },
     },
     'dmmh': {
@@ -547,55 +707,129 @@ var Affiliation = {
       feed: 'http://www.dmmh.no/rss.php?type=site&id=10&location=393',
       logo: './org/dmmh/logo.png',
       icon: './org/dmmh/icon.png',
+      symbol: './org/dmmh/symbol.png',
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImage(this, link, callback, 'div.news_article img', 0, 'dmmh.no');
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.news_article', domainUrl:'dmmh.no'});
       },
     },
   },
 
-  // Common getImage[s] function
+  getImages: function(affiliation, links, callback, options) {
 
-  getImages: function(affiliation, links, callback, parentSelector, domainUrl) {
-    var web = affiliation.web;
+    // Possible values in options:
+    // options = {
+    //   newsSelector: 'div.news_item', // if website uses unpopuplar selectors for news containers it must be defined here
+    //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
+    //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
+    //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
+    // };
+
+    // Create empty object to avoid crashes when looking up undefined props of undefined object
+    if (options == undefined)
+      options = {};
+
+    var url = affiliation.web;
+    if (typeof links == 'string') {
+      url = links;
+      // If links is just a single link, convert to single item array
+      links = [links];
+    }
+
+    // Array of possible news containers sorted by estimated probabilty
+    var containers = [
+      'article',
+      'div.post',
+      'div.entry',
+    ];
+    
+    // In case we don't find any images, prepare an array with placeholders
     var placeholder = affiliation.placeholder;
     var placeholders = []
-    if (parentSelector == undefined)
-      parentSelector = 'article';
-    // In case we don't find any images, prepare an array with placeholders
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
+
     Ajaxer.getHtml({
-      url: web,
+      url: url,
       success: function(html) {
         try {
-          var images = [];
-          for (i in links) {
-            // If posts are using relative links, split by passed string, usually the domain name, like 'hist.no'
-            if (domainUrl)
-              var relativeLink = links[i].split(domainUrl)[1];
-            // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
-            html = $.trim(html);
-            // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
-            image = $(html);
-            
-            // Look up the first post with the link inside it
-            image = image.find(parentSelector + ' a[href="'+(domainUrl ? relativeLink : links[i])+'"]');
-            // Find parent 'article' or 'div.post' or the like
-            image = image.parents(parentSelector);
-            // Find all image tags within post
-            image = image.find('img');
-            // Exclude gifs since they're most likely smilies and the likes
-            image = image.not('img[src*=".gif"]');
-            // Get the src for the first image left in the array
-            image = image.attr('src');
+          // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
+          html = $.trim(html);
+          // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
+          var doc = $(html);
 
-            if (image == undefined)
+          // Decide which selector to use for identifying news containers
+          var newsSelector = null;
+          if (options.newsSelector) {
+            newsSelector = options.newsSelector;
+          }
+          else {
+            for (var i=0; i<containers.length; i++) {
+              var current = containers[i];
+              if (doc.find(current).length != 0) {
+                newsSelector = current;
+                if (top.debug) console.log('Selector for news on remote site is', current);
+                break;
+              }
+            }
+          }
+
+          // A place to store all the image links
+          var images = [];
+
+          for (i in links) {
+            
+            var link = links[i];
+
+            // If posts are using relative links, split by domainUrl, like 'hist.no'
+            if (options.domainUrl)
+              link = links[i].split(options.domainUrl)[1];
+
+            // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
+            if (options.linkDelimiter)
+              link = links[i].split(options.linkDelimiter)[0];
+
+            // Look up the first post with the link inside it
+            image = doc.find(newsSelector + ' a[href="' + link + '"]');
+
+            // Find parent 'article' or 'div.post' or the like
+            if (image.length != 0) {
+              image = image.parents(newsSelector);
+            }
+            else {
+              image = doc.find(newsSelector);
+            }
+
+            if (options.noscriptMatching) {
+              // If a <noscript> tag is used, we'll just find the image URL by matching
+              // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
+              image = image.html().match(options.noscriptMatching)[1];
+            }
+            else {
+              // Find all image tags within post
+              image = image.find('img');
+              
+              // Exclude gifs since they're most likely smilies and the likes
+              image = image.not('img[src*=".gif"]');
+              image = image.not('img[src*="data:image/gif"]');
+              
+              // Use image at specified index if requested
+              if (options.imageIndex)
+                image = image.eq(options.imageIndex);
+
+              // Get the src for the first image left in the array
+              image = image.attr('src');
+            }
+
+            if (image == undefined) {
+              if (top.debug) console.log('ERROR: no image exists for link', link);
               image = placeholder;
-            else if (domainUrl)
-              image = 'http://' + domainUrl + image
+            }
+            else if (options.domainUrl) {
+              image = 'http://' + options.domainUrl + image;
+            }
 
             images.push(image);
           }
@@ -609,38 +843,6 @@ var Affiliation = {
       error: function(e) {
         if (top.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
         callback(links, placeholders);
-      },
-    });
-  },
-
-  getImage: function(affiliation, link, callback, selector, index, domainUrl) {
-    var placeholder = affiliation.placeholder;
-    if (index == undefined)
-      var index = 0;
-    Ajaxer.getHtml({
-      url: link,
-      success: function(html) {
-        // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
-        html = $.trim(html);
-        // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
-        image = $(html);
-        // Get image from parent selector, with optional image index
-        image = image.find(selector).not('img[src*=".gif"]').eq(index).attr('src');
-
-        if (image != undefined) {
-          if (domainUrl != undefined) {
-            image = 'http://' + domainUrl + image;
-          }
-          callback(link, image);
-        }
-        else {
-          if (top.debug) console.log('ERROR: no image exists for link', link);
-          callback(link, placeholder);
-        }
-      },
-      error: function() {
-        if (top.debug) console.log('ERROR: couldn\'t load page to get image links', link);
-        callback(link, placeholder);
       },
     });
   },
