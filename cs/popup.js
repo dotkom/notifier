@@ -343,7 +343,7 @@
       _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
     } else {
       $('body').attr('style', 'width:400pt;');
-      _gaq.push(['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1 + '_' + ls.affiliationKey2]);
+      _gaq.push(['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1], ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]);
     }
     if (ls.showOffice !== 'true') {
       $('#todays').hide();

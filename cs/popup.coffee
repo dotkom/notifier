@@ -290,7 +290,10 @@ $ ->
   # decreasing the window size after opening it cuz that looks kinda stupid)
   else
     $('body').attr 'style', 'width:400pt;'
-    _gaq.push(['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1 + '_' + ls.affiliationKey2]);
+    _gaq.push(
+      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1],
+      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]
+    );
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
