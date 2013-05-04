@@ -39,6 +39,9 @@
     if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true' && navigator.onLine) {
       updateAffiliationNews('1');
     }
+    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true' && navigator.onLine) {
+      updateAffiliationNews('2');
+    }
     if (10000 < iteration) {
       iteration = 0;
     } else {
