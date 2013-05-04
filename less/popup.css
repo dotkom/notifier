@@ -425,6 +425,9 @@ body {
   width: 50%;
   float: right;
 }
+#container #news #right .title {
+  color: LightGrey;
+}
 #container #news #right img {
   float: right;
   margin: 0 0 3pt 3pt;
