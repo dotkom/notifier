@@ -1,4 +1,9 @@
 
+// Tracking Basics (Asynchronous Syntax)
+// https://developers.google.com/analytics/devguides/collection/gajs/
+// Event Tracking - Web Tracking (ga.js):
+// https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
+
 // Create google analytics array
 var _gaq = _gaq || [];
 
