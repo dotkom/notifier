@@ -217,7 +217,7 @@ header #notification .saved {
   background-position: center center;
   background-size: 33pt 33pt;
   background-repeat: no-repeat;
-  background-image: url(./org/online/symbol.png);
+  background-image: url(../org/online/symbol.png);
   /* is switched for affiliation logo */
 
 }
