@@ -382,12 +382,10 @@ getFavoriteLines = (busField) ->
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
-  
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
   busStopId = Stops.nameAndDirectionToId stopName, direction
-  
   # Get active/inactive lines
   activeLines = []
   $(cssSelector + ' .lines .active').each ->
@@ -395,17 +393,17 @@ saveBus = (busField) ->
   inactiveLines = []
   $(cssSelector + ' .lines .inactive').each ->
     inactiveLines.push Number $(this).text()
-  
   # Save all to localStorage
   ls[busField] = busStopId
   ls[busField + 'Name'] = stopName
   ls[busField + 'Direction'] = direction
   ls[busField + 'ActiveLines'] = JSON.stringify activeLines
   ls[busField + 'InactiveLines'] = JSON.stringify inactiveLines
-  if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"' ######################################
-  if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"' ######################################
+  if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"'
+  if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"'
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
   displayOnPageNotification()
+  # Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 
 loadBus = (busField) ->
   cssSelector = '#' + busField
@@ -578,6 +576,7 @@ revertInfoscreen = ->
 #               chrome.tabs.remove tab.id # OPERA?
 
 fadeInCanvas = ->
+  _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
   webGLStart()
   $('#LessonCanvas').animate
     opacity:1,
@@ -671,6 +670,9 @@ $ ->
   if OPERATING_SYSTEM is 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
+  # Google Analytics
+  $('#pagefliplink').click ->
+    _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
@@ -733,6 +735,7 @@ $ ->
 
   # Catch new clicks
   $('input:checkbox').click ->
+    _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
     
     # Special case for 'useInfoscreen'
     if this.id is 'useInfoscreen'

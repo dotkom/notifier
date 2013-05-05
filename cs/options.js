@@ -624,6 +624,7 @@
   };
 
   fadeInCanvas = function() {
+    _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
     webGLStart();
     return $('#LessonCanvas').animate({
       opacity: 1
@@ -705,6 +706,9 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
+    $('#pagefliplink').click(function() {
+      return _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+    });
     changeCreatorName(ls.extensionCreator);
     setInterval((function() {
       return pageFlipCursorBlinking();
@@ -743,6 +747,7 @@
       return $(this).removeClass('hover');
     });
     return $('input:checkbox').click(function() {
+      _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);
       } else {
