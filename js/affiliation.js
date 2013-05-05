@@ -321,6 +321,21 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'kwakiutl': {
+      name: 'Kwakiutl',
+      key: 'kwakiutl',
+      web: 'http://sosantntnu.wordpress.com/',
+      feed: 'http://sosantntnu.wordpress.com/feed/',
+      logo: './org/kwakiutl/logo.png',
+      icon: './org/kwakiutl/icon.png',
+      symbol: './org/kwakiutl/symbol.png',
+      placeholder: './org/kwakiutl/placeholder.png',
+      palette: 'green',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     'ludimus': {
       name: 'Ludimus',
       key: 'ludimus',
