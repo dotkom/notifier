@@ -4,6 +4,10 @@
 // Event Tracking - Web Tracking (ga.js):
 // https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
 
+// Event tracking:
+// Params: _trackEvent, "event", "category", "action", "label", value (num), noninteraction (bool)
+// Snippet: _gaq.push(['_trackEvent', 'subscription', 'click', image]);
+
 // Create google analytics array
 var _gaq = _gaq || [];
 
