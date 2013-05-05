@@ -214,7 +214,7 @@
     updatedList = findUpdatedPosts(newsList, viewedList);
     viewedList = [];
     $.each(items, function(index, item) {
-      var altLink, date, htmlItem, unreadCount, _ref;
+      var altLink, date, descLimit, htmlItem, unreadCount, _ref;
       if (index < newsLimit) {
         viewedList.push(item.link);
         unreadCount = Number(ls[unreadCountName]);
@@ -229,6 +229,16 @@
         date = altLink = '';
         if (item.altLink !== null) {
           altLink = ' name="' + item.altLink + '"';
+        }
+        if (item.date !== null && ls.showAffiliation2 === 'false') {
+          date = ' den ' + item.date;
+        }
+        descLimit = 140;
+        if (ls.showAffiliation2 === 'true') {
+          descLimit = 100;
+        }
+        if (item.description.length > descLimit) {
+          item.description = item.description.substr(0, descLimit) + '...';
         }
         htmlItem += item.title + '\
         </div>\

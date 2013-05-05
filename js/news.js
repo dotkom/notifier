@@ -209,16 +209,6 @@ var News = {
     // Shorten 'bedriftspresentasjon' to 'bedpres'
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
-    
-    // title + description must not exceed 5 lines
-    var line = 50; // conservative estimation
-    var desclength = line * 2;
-    // double line titles will shorten the description by 1 line
-    if (line <= post.title.length)
-      desclength -= line;
-    // shorten description according to desclength
-    if (desclength < post.description.length)
-      post.description = post.description.substr(0, desclength) + '...';
 
     return post;
   },

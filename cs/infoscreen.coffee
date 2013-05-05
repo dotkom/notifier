@@ -179,10 +179,16 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       # .item[data] contains the link
       # .item[name] contains the alternative link, if one exists, otherwise null
       date = altLink = ''
-      if item.date isnt null
-        date = ' den ' + item.date
       if item.altLink isnt null
         altLink = ' name="' + item.altLink + '"'
+      if item.date isnt null and ls.showAffiliation2 is 'false'
+        date = ' den ' + item.date
+      descLimit = 140
+      if ls.showAffiliation2 is 'true'
+        descLimit = 100
+      if item.description.length > descLimit
+        item.description = item.description.substr(0, descLimit) + '...'
+        
       htmlItem += item.title + '
         </div>
           <div class="item" data="' + item.link + '"' + altLink + '>
