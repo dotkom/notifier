@@ -79,6 +79,8 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     
     # Display Saved<3
     displayOnPageNotification()
+    # Analytics
+    _gaq.push(['_trackEvent', 'options', 'setAffiliation'+number, affiliationKey]);
 
 bindPaletteSelector = ->
   # Default values
@@ -94,6 +96,8 @@ bindPaletteSelector = ->
     $('#palette').attr 'href', Palettes.get palette
     # Display Saved<3
     displayOnPageNotification()
+    # Analytics
+    _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -117,7 +121,7 @@ disableOnlineSpecificFeatures = (quick) ->
       # Fade out the Google +1 Button
       $('#plusonebutton').fadeOut 'slow', ->
         # Change pageflip name
-        changeCreatorName 'Online'
+        changeCreatorName ls.extensionCreator
 
 enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
@@ -143,14 +147,16 @@ enableOnlineSpecificFeatures = (quick) ->
         # Fade in the Google +1 Button
         $('#plusonebutton').fadeIn 'slow', ->
           # Change pageflip name
-          changeCreatorName 'dotKom'
+          changeCreatorName ls.extensionCreator
 
 bindCantinaSelector = (selector) ->
   # Default values
   $('#' + selector).val ls[selector]
   # React to change
   $('#' + selector).change ->
-    ls[selector] = $(this).prop('value')
+    cantina = $(this).prop 'value'
+    ls[selector] = cantina
+    _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
@@ -382,12 +388,10 @@ getFavoriteLines = (busField) ->
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
-  
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
   direction = $(cssSelector + ' select').val()
   busStopId = Stops.nameAndDirectionToId stopName, direction
-  
   # Get active/inactive lines
   activeLines = []
   $(cssSelector + ' .lines .active').each ->
@@ -395,17 +399,17 @@ saveBus = (busField) ->
   inactiveLines = []
   $(cssSelector + ' .lines .inactive').each ->
     inactiveLines.push Number $(this).text()
-  
   # Save all to localStorage
   ls[busField] = busStopId
   ls[busField + 'Name'] = stopName
   ls[busField + 'Direction'] = direction
   ls[busField + 'ActiveLines'] = JSON.stringify activeLines
   ls[busField + 'InactiveLines'] = JSON.stringify inactiveLines
-  if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"' ######################################
-  if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"' ######################################
+  if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"'
+  if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"'
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
   displayOnPageNotification()
+  # Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 
 loadBus = (busField) ->
   cssSelector = '#' + busField
@@ -578,6 +582,7 @@ revertInfoscreen = ->
 #               chrome.tabs.remove tab.id # OPERA?
 
 fadeInCanvas = ->
+  _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
   webGLStart()
   $('#LessonCanvas').animate
     opacity:1,
@@ -671,6 +676,9 @@ $ ->
   if OPERATING_SYSTEM is 'Windows'
     $('#pagefliptext').attr "style", "bottom:9px;"
     $('#pagefliplink').attr "style", "bottom:9px;"
+  # Google Analytics
+  $('#pagefliplink').click ->
+    _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
@@ -725,11 +733,6 @@ $ ->
     text = text.trim()
     $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
 
-  # CSS tweaks for Opera until they start using WebKit
-  if BROWSER is 'Opera'
-    $('#header_text').css 'margin-top', '7pt'
-    $('#notification').css 'top', '14.5pt'
-
   # Adding a hover class to #bus_box whenever the mouse is hovering over it
   $('#bus_box').hover ->
     $(this).addClass 'hover'
@@ -738,6 +741,7 @@ $ ->
 
   # Catch new clicks
   $('input:checkbox').click ->
+    _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
     
     # Special case for 'useInfoscreen'
     if this.id is 'useInfoscreen'

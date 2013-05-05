@@ -84,7 +84,8 @@
       if (ls['showAffiliation' + number] === 'true') {
         Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
-      return displayOnPageNotification();
+      displayOnPageNotification();
+      return _gaq.push(['_trackEvent', 'options', 'setAffiliation' + number, affiliationKey]);
     });
   };
 
@@ -98,7 +99,8 @@
         console.log('Applying chosen palette', palette);
       }
       $('#palette').attr('href', Palettes.get(palette));
-      return displayOnPageNotification();
+      displayOnPageNotification();
+      return _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
     });
   };
 
@@ -130,7 +132,7 @@
         'top': '60%'
       }, 300, function() {
         return $('#plusonebutton').fadeOut('slow', function() {
-          return changeCreatorName('Online');
+          return changeCreatorName(ls.extensionCreator);
         });
       });
     });
@@ -163,7 +165,7 @@
         $('label[for="showOffice"]').slideDown('slow');
         return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
           return $('#plusonebutton').fadeIn('slow', function() {
-            return changeCreatorName('dotKom');
+            return changeCreatorName(ls.extensionCreator);
           });
         });
       });
@@ -173,7 +175,10 @@
   bindCantinaSelector = function(selector) {
     $('#' + selector).val(ls[selector]);
     return $('#' + selector).change(function() {
-      return ls[selector] = $(this).prop('value');
+      var cantina;
+      cantina = $(this).prop('value');
+      ls[selector] = cantina;
+      return _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
     });
   };
 
@@ -624,6 +629,7 @@
   };
 
   fadeInCanvas = function() {
+    _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
     webGLStart();
     return $('#LessonCanvas').animate({
       opacity: 1
@@ -705,6 +711,9 @@
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
+    $('#pagefliplink').click(function() {
+      return _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+    });
     changeCreatorName(ls.extensionCreator);
     setInterval((function() {
       return pageFlipCursorBlinking();
@@ -737,16 +746,13 @@
       text = text.trim();
       $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
     }
-    if (BROWSER === 'Opera') {
-      $('#header_text').css('margin-top', '7pt');
-      $('#notification').css('top', '14.5pt');
-    }
     $('#bus_box').hover(function() {
       return $(this).addClass('hover');
     }, function() {
       return $(this).removeClass('hover');
     });
     return $('input:checkbox').click(function() {
+      _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);
       } else {

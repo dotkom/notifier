@@ -22,6 +22,7 @@
         description = description.substring(0, maxlength) + '...';
       }
       $('#notification').click(function() {
+        _gaq.push(['_trackEvent', 'notification', 'click', link]);
         Browser.openTab(link);
         return window.close;
       });

@@ -73,6 +73,7 @@ listDinners = (menu) ->
 
 clickDinnerLink = (cssSelector) ->
   $(cssSelector).click ->
+    _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
     Browser.openTab Cantina.url
     window.close()
 
@@ -203,12 +204,13 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     # <a> anchors because it creates an ugly box marking the focus element.
     # Note that altLinks are embedded in the name-property of the element,
     # - if preferred by the organization, we should use that instead.
+    link = $(this).attr 'data'
     altLink = $(this).attr 'name'
     useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink
     if altLink isnt undefined and useAltLink is true
-      Browser.openTab $(this).attr 'name'
-    else
-      Browser.openTab $(this).attr 'data'
+      link = $(this).attr 'name'
+    Browser.openTab link
+    _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
     window.close()
 
   # If organization prefers alternative links, use them
@@ -274,6 +276,7 @@ $ ->
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
+    _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
     setTimeout ( ->
       window.close()
     ), 250
@@ -282,10 +285,15 @@ $ ->
   if ls.showAffiliation2 isnt 'true'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
+    _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
   # If using two affiliation columns, increase the popup window size (better than
   # decreasing the window size after opening it cuz that looks kinda stupid)
   else
     $('body').attr 'style', 'width:400pt;'
+    _gaq.push(
+      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1],
+      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]
+    );
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
@@ -306,20 +314,45 @@ $ ->
       $('#header #logo').prop 'src', logo
   
   # Show the standard palette or special palette the user has chosen
-  $('#palette').attr 'href', Palettes.get ls.affiliationPalette
+  palette = Palettes.get ls.affiliationPalette
+  $('#palette').attr 'href', palette
+  _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
 
-  # Make logo open extension website while closing popup
+  # Click events
   $('#logo').click ->
+    name = Affiliation.org[ls.affiliationKey1].name
+    _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
     web = Affiliation.org[ls.affiliationKey1].web
     Browser.openTab web
     window.close()
 
   $('#options_button').click ->
     Browser.openTab 'options.html'
+    _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
+    window.close()
+
+  $('#tips_button').click ->
+    if $('#tips').filter(':visible').length is 1
+      $('#tips').fadeOut 'fast'
+    else
+      $('#tips').fadeIn 'fast'
+      _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
+  $('#tips:not(a)').click ->
+    $('#tips').fadeOut 'fast'
+  $('#tips a').click ->
+    link = $(this).attr 'href'
+    Browser.openTab link
+    _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
     window.close()
 
   $('#chatter_button').click ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
+    _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
+    window.close()
+  
+  $('#bus #atb_logo').click ->
+    Browser.openTab 'http://www.atb.no'
+    _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
     window.close()
 
   # Bind buttons to hovertext
@@ -338,26 +371,11 @@ $ ->
   $('#tips_button').mouseleave ->
     tipsText false
 
-  # Bind the Tips button and the Tips dialog
-  $('#tips_button').click ->
-    if $('#tips').filter(':visible').length is 1
-      $('#tips').fadeOut 'fast'
-    else
-      $('#tips').fadeIn 'fast'
-  $('#tips:not(a)').click ->
-    $('#tips').fadeOut 'fast'
-  $('#tips a').click ->
-    Browser.openTab $(this).attr 'href'
-    window.close()
-
-  $('#bus #atb_logo').click ->
-    Browser.openTab 'http://www.atb.no'
-    window.close()
-
   # React to Konami code
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
+      _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
           0% { -webkit-filter: hue-rotate(0deg); }
