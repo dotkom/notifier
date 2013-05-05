@@ -84,7 +84,8 @@
       if (ls['showAffiliation' + number] === 'true') {
         Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
-      return displayOnPageNotification();
+      displayOnPageNotification();
+      return _gaq.push(['_trackEvent', 'options', 'setAffiliation' + number, affiliationKey]);
     });
   };
 
@@ -98,7 +99,8 @@
         console.log('Applying chosen palette', palette);
       }
       $('#palette').attr('href', Palettes.get(palette));
-      return displayOnPageNotification();
+      displayOnPageNotification();
+      return _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
     });
   };
 
@@ -173,7 +175,10 @@
   bindCantinaSelector = function(selector) {
     $('#' + selector).val(ls[selector]);
     return $('#' + selector).change(function() {
-      return ls[selector] = $(this).prop('value');
+      var cantina;
+      cantina = $(this).prop('value');
+      ls[selector] = cantina;
+      return _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
     });
   };
 

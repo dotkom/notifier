@@ -79,6 +79,8 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     
     # Display Saved<3
     displayOnPageNotification()
+    # Analytics
+    _gaq.push(['_trackEvent', 'options', 'setAffiliation'+number, affiliationKey]);
 
 bindPaletteSelector = ->
   # Default values
@@ -94,6 +96,8 @@ bindPaletteSelector = ->
     $('#palette').attr 'href', Palettes.get palette
     # Display Saved<3
     displayOnPageNotification()
+    # Analytics
+    _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -150,7 +154,9 @@ bindCantinaSelector = (selector) ->
   $('#' + selector).val ls[selector]
   # React to change
   $('#' + selector).change ->
-    ls[selector] = $(this).prop('value')
+    cantina = $(this).prop 'value'
+    ls[selector] = cantina
+    _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
