@@ -231,6 +231,9 @@ header #notification .saved {
 .item #affiliationBox .row select {
   position: relative;
 }
+.item #affiliationBox .row input {
+  box-shadow: 0 0 0 black;
+}
 .item #affiliationBox #bottomRow {
   font-size: 10pt;
   margin-top: 3pt;
