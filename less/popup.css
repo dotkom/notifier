@@ -287,6 +287,11 @@ body {
 #tips .text .big {
   font-size: 14pt;
 }
+#tips .text .url {
+  display: inline;
+  color: grey;
+  font-style: italic;
+}
 #tips .text a {
   outline: none;
   text-decoration: underline;
