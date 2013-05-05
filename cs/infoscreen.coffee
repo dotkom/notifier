@@ -298,6 +298,15 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
+  # Run analytics to figure out which organizations use the infoscreen feature
+  if ls.showAffiliation2 isnt 'true'
+    _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
+  else
+    _gaq.push(
+      ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey1],
+      ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey2]
+    );
+
   if ls.affiliationKey1 isnt 'online'
     # Show the logo and placeholder image for the correct organization
     affiliation = ls.affiliationKey1
@@ -318,7 +327,6 @@ $ ->
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
-  # $('#pageflipname').text ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
