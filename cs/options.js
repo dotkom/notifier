@@ -745,6 +745,7 @@
       text = $('label[for=coffeeSubscription] span').text();
       text = text.trim();
       $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
+      $('#affiliationPalette').prop("disabled", "disabled");
     }
     $('#bus_box').hover(function() {
       return $(this).addClass('hover');

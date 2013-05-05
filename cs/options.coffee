@@ -732,6 +732,8 @@ $ ->
     text = $('label[for=coffeeSubscription] span').text()
     text = text.trim()
     $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
+    # Turn off palette feature
+    $('#affiliationPalette').prop "disabled", "disabled"
 
   # Adding a hover class to #bus_box whenever the mouse is hovering over it
   $('#bus_box').hover ->
