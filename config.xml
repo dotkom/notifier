@@ -19,7 +19,6 @@
   
   <content src="background.html" type="text/html" encoding="utf-8" />
 
-  <access origin="https://*/*" subdomains="true" />
-  <access origin="http://*/*" subdomains="true" />
+  <access origin="*" subdomains="true" />
 
 </widget>
