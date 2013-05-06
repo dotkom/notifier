@@ -270,7 +270,7 @@ var Affiliation = {
       icon: './org/eureka/icon.png',
       symbol: './org/eureka/symbol.png',
       placeholder: './org/eureka/placeholder.png',
-      palette: 'yellow',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
