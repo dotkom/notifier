@@ -1,5 +1,5 @@
 var Bus = {
-  api: 'http://api.visuweb.no/bybussen/3.0/Departure/Route/',
+  api: 'http://api.visuweb.no/bybussen/4.0/Departure/Route/',
   apiKey: '/f6975f3c1a3d838dc69724b9445b3466',
   msgDisconnected: 'Frakoblet fra api.visuweb.no',
   msgDisconnectedShort: 'Oops, frakoblet',
@@ -71,7 +71,7 @@ var Bus = {
 
     for (i in departures) {
 
-      var line = departures[i]['line'];
+      var line = departures[i]['l'];
 
       // Usually controlled by favorite lines
       if (favoriteLines.length != 0)
@@ -80,9 +80,9 @@ var Bus = {
       // Otherwise controlled with counter
       else if (count++ >= nLines) break;
 
-      var time = departures[i]['time'];
-      var isRealtime = departures[i]['isRealtime'];
-      var destination = departures[i]['destination'].trim();
+      var time = departures[i]['t'];
+      var isRealtime = departures[i]['r'];
+      var destination = departures[i]['d'].trim();
       destination = this.prettifyDestination(destination);
 
       // Add destination
