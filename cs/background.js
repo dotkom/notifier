@@ -98,6 +98,8 @@
           if (DEBUG) {
             return console.log('ERROR:', items);
           }
+        } else if (items.length === 0) {
+          return updateUnreadCount(0, 0);
         } else {
           countNews(items, number);
           return updateUnreadCount();
@@ -169,7 +171,7 @@
       ls.showAffiliation2 = 'true';
     }
     if (ls.affiliationKey2 === void 0) {
-      ls.affiliationKey2 = 'dusken';
+      ls.affiliationKey2 = 'adressa';
     }
     if (ls.affiliationUnreadCount2 === void 0) {
       ls.affiliationUnreadCount2 = 0;

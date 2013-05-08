@@ -66,9 +66,13 @@ updateAffiliationNews = (number) ->
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
     News.get affiliation, newsLimit, (items) ->
+      # Error message, log it maybe
       if typeof items is 'string'
-        # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
+      # Empty news items, don't count
+      else if items.length is 0
+        updateUnreadCount 0, 0
+      # News is here! NEWS IS HERE! FRESH FROM THE PRESS!
       else
         countNews items, number
         updateUnreadCount()
@@ -133,7 +137,7 @@ $ ->
   if ls.showAffiliation2 is undefined
     ls.showAffiliation2 = 'true'
   if ls.affiliationKey2 is undefined
-    ls.affiliationKey2 = 'dusken'
+    ls.affiliationKey2 = 'adressa'
   if ls.affiliationUnreadCount2 is undefined
     ls.affiliationUnreadCount2 = 0
   if ls.affiliationNewsList2 is undefined
