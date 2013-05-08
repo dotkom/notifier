@@ -565,7 +565,7 @@ var Affiliation = {
       getImage: function(link, callback) {
         // Affiliation.getImages(this, links, callback, {newsSelector:'section.articlepreview', domainUrl:'dusken.no'});
         // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.span8:first', domainUrl:'dusken.no'});
+        Affiliation.getImages(this, link, callback, {newsSelector:'section.article', domainUrl:'dusken.no'});
       },
     },
     'universitetsavisa': {
