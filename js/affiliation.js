@@ -1,5 +1,6 @@
 var Affiliation = {
   top: this,
+  
   debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
