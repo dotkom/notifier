@@ -371,9 +371,13 @@
       $('#bus').hide();
     }
     if (ls.showAffiliation2 !== 'true') {
-      _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
+      }
     } else {
-      _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey1], ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey2]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey1], ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey2]);
+      }
     }
     if (ls.affiliationKey1 !== 'online') {
       affiliation = ls.affiliationKey1;

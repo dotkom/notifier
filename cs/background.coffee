@@ -207,15 +207,15 @@ $ ->
   # Open options page after install
   if ls.everConnected is undefined and !DEBUG
     Browser.openTab 'options.html'
-    _gaq.push(['_trackEvent', 'background', 'freshInstall']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'background', 'freshInstall']);
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    _gaq.push(['_trackEvent', 'background', 'runInfoscreen']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'background', 'runInfoscreen']);
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
     Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
-    _gaq.push(['_trackEvent', 'background', 'openChatter']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'background', 'openChatter']);
 
   # Set default vars for main loop
   ls.everConnected = ls.wasConnected = 'false'

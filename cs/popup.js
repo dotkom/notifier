@@ -117,7 +117,9 @@
 
   clickDinnerLink = function(cssSelector) {
     return $(cssSelector).click(function() {
-      _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
+      }
       Browser.openTab(Cantina.url);
       return window.close();
     });
@@ -263,7 +265,9 @@
         link = $(this).attr('name');
       }
       Browser.openTab(link);
-      _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
+      }
       return window.close();
     });
     if (Affiliation.org[feedKey].useAltLink) {
@@ -342,7 +346,9 @@
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
-      _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
+      }
       setTimeout((function() {
         return window.close();
       }), 250);
@@ -350,10 +356,14 @@
     if (ls.showAffiliation2 !== 'true') {
       $('#news #right').hide();
       $('#news #left').attr('id', 'full');
-      _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
+      }
     } else {
       $('body').attr('style', 'width:400pt;');
-      _gaq.push(['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1], ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1], ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]);
+      }
     }
     if (ls.showOffice !== 'true') {
       $('#todays').hide();
@@ -378,18 +388,24 @@
     }
     palette = Palettes.get(ls.affiliationPalette);
     $('#palette').attr('href', palette);
-    _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
+    if (DEBUG) {
+      _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
+    }
     $('#logo').click(function() {
       var name, web;
       name = Affiliation.org[ls.affiliationKey1].name;
-      _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
+      }
       web = Affiliation.org[ls.affiliationKey1].web;
       Browser.openTab(web);
       return window.close();
     });
     $('#options_button').click(function() {
       Browser.openTab('options.html');
-      _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
+      }
       return window.close();
     });
     $('#tips_button').click(function() {
@@ -397,7 +413,9 @@
         return $('#tips').fadeOut('fast');
       } else {
         $('#tips').fadeIn('fast');
-        return _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
+        if (DEBUG) {
+          return _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
+        }
       }
     });
     $('#tips:not(a)').click(function() {
@@ -407,17 +425,23 @@
       var link;
       link = $(this).attr('href');
       Browser.openTab(link);
-      _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
+      }
       return window.close();
     });
     $('#chatter_button').click(function() {
       Browser.openTab('http://webchat.freenode.net/?channels=online');
-      _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
+      }
       return window.close();
     });
     $('#bus #atb_logo').click(function() {
       Browser.openTab('http://www.atb.no');
-      _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
+      }
       return window.close();
     });
     $('#options_button').mouseenter(function() {
@@ -441,7 +465,9 @@
     $(document).konami({
       code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
       callback: function() {
-        _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
+        if (DEBUG) {
+          _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
+        }
         $('head').append('<style type="text/css">\
         @-webkit-keyframes adjustHue {\
           0% { -webkit-filter: hue-rotate(0deg); }\

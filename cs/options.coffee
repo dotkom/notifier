@@ -80,7 +80,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     # Display Saved<3
     displayOnPageNotification()
     # Analytics
-    _gaq.push(['_trackEvent', 'options', 'setAffiliation'+number, affiliationKey]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'setAffiliation'+number, affiliationKey]);
 
 bindPaletteSelector = ->
   # Default values
@@ -97,7 +97,7 @@ bindPaletteSelector = ->
     # Display Saved<3
     displayOnPageNotification()
     # Analytics
-    _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -157,7 +157,7 @@ bindCantinaSelector = (selector) ->
   $('#' + selector).change ->
     cantina = $(this).prop 'value'
     ls[selector] = cantina
-    _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
@@ -589,7 +589,7 @@ restoreChecksToBoxes = ->
       element.checked = true
 
 fadeInCanvas = ->
-  _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
+  if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
   webGLStart()
   $('#LessonCanvas').animate
     opacity:1,
@@ -682,7 +682,7 @@ $ ->
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Google Analytics
   $('#pagefliplink').click ->
-    _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
@@ -747,7 +747,7 @@ $ ->
 
   # Catch new clicks
   $('input:checkbox').click ->
-    _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
     
     # Special case for 'useInfoscreen'
     if this.id is 'useInfoscreen'

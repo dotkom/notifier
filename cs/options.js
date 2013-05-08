@@ -85,7 +85,9 @@
         Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
       displayOnPageNotification();
-      return _gaq.push(['_trackEvent', 'options', 'setAffiliation' + number, affiliationKey]);
+      if (DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'setAffiliation' + number, affiliationKey]);
+      }
     });
   };
 
@@ -100,7 +102,9 @@
       }
       $('#palette').attr('href', Palettes.get(palette));
       displayOnPageNotification();
-      return _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
+      if (DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
+      }
     });
   };
 
@@ -179,7 +183,9 @@
       var cantina;
       cantina = $(this).prop('value');
       ls[selector] = cantina;
-      return _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
+      if (DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
+      }
     });
   };
 
@@ -638,7 +644,9 @@
   };
 
   fadeInCanvas = function() {
-    _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
+    if (DEBUG) {
+      _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
+    }
     webGLStart();
     return $('#LessonCanvas').animate({
       opacity: 1
@@ -717,7 +725,9 @@
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
     $('#pagefliplink').click(function() {
-      return _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+      if (DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+      }
     });
     changeCreatorName(ls.extensionCreator);
     setInterval((function() {
@@ -758,7 +768,9 @@
       return $(this).removeClass('hover');
     });
     return $('input:checkbox').click(function() {
-      _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
+      if (DEBUG) {
+        _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
+      }
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);
       } else {

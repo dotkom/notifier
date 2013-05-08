@@ -73,7 +73,7 @@ listDinners = (menu) ->
 
 clickDinnerLink = (cssSelector) ->
   $(cssSelector).click ->
-    _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
     Browser.openTab Cantina.url
     window.close()
 
@@ -216,7 +216,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     if altLink isnt undefined and useAltLink is true
       link = $(this).attr 'name'
     Browser.openTab link
-    _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
     window.close()
 
   # If organization prefers alternative links, use them
@@ -282,7 +282,7 @@ $ ->
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
     setTimeout ( ->
       window.close()
     ), 250
@@ -291,12 +291,12 @@ $ ->
   if ls.showAffiliation2 isnt 'true'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
-    _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
   # If using two affiliation columns, increase the popup window size (better than
   # decreasing the window size after opening it cuz that looks kinda stupid)
   else
     $('body').attr 'style', 'width:400pt;'
-    _gaq.push(
+    if (DEBUG) then _gaq.push(
       ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1],
       ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]
     );
@@ -322,19 +322,19 @@ $ ->
   # Show the standard palette or special palette the user has chosen
   palette = Palettes.get ls.affiliationPalette
   $('#palette').attr 'href', palette
-  _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
+  if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
 
   # Click events
   $('#logo').click ->
     name = Affiliation.org[ls.affiliationKey1].name
-    _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
     web = Affiliation.org[ls.affiliationKey1].web
     Browser.openTab web
     window.close()
 
   $('#options_button').click ->
     Browser.openTab 'options.html'
-    _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
     window.close()
 
   $('#tips_button').click ->
@@ -342,23 +342,23 @@ $ ->
       $('#tips').fadeOut 'fast'
     else
       $('#tips').fadeIn 'fast'
-      _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
+      if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
   $('#tips:not(a)').click ->
     $('#tips').fadeOut 'fast'
   $('#tips a').click ->
     link = $(this).attr 'href'
     Browser.openTab link
-    _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
     window.close()
 
   $('#chatter_button').click ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
-    _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
     window.close()
   
   $('#bus #atb_logo').click ->
     Browser.openTab 'http://www.atb.no'
-    _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
     window.close()
 
   # Bind buttons to hovertext
@@ -381,7 +381,7 @@ $ ->
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
-      _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
+      if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
           0% { -webkit-filter: hue-rotate(0deg); }

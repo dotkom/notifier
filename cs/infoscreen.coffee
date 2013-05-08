@@ -306,9 +306,9 @@ $ ->
 
   # Run analytics to figure out which organizations use the infoscreen feature
   if ls.showAffiliation2 isnt 'true'
-    _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
+    if (DEBUG) then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
   else
-    _gaq.push(
+    if (DEBUG) then _gaq.push(
       ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey1],
       ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey2]
     );
