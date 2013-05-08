@@ -45,7 +45,7 @@ Use this program entirely on your own risk. We do not take any responsibility fo
 	- Magnus Dysthe
 	- Michael Johansen
 
-# Issues submitted to the Chromium and Opera teams
+# Issues submitted to Chromium/Opera
 
 - Regex word boundary and ÆØÅ: https://code.google.com/p/chromium/issues/detail?id=223360
 - Desktop Notification logging: https://code.google.com/p/chromium/issues/detail?id=225212
@@ -58,40 +58,27 @@ General
 - All pages keep themselves fresh and updated when running
 - Separate script containing some constants, for changeability
 - Fancy HTML5, CSS3 and jQuery design on all pages
-- Runs google analytics on all pages
+- Runs Google Analytics on all pages, tracking both pages and events anonymously
 - Detects network status adjusts all affected values accordingly
 - Dev mode: Faster updates, frequent clearing of localstorage
 - Automatic determination of whether or not dev mode should be enabled
 
 Affiliation
 
-- *Work in progress*
+- Many different organizations and institutions are supported
+- Each organization has it's own logos and symbols
+- Each organizations' news feed is fetched and parsed
+- Each organization has a recommended color palette
+- Support for organization specific color palettes is also implemented
+- The affiliation script also contains a highly customizable function for fetching images from each affiliations' website since the RSS-feeds usually doesn't contain image links
+- Each affiliation references the function for getting images in it's own way
 
 Palettes
 
-- *Work in progress*
-
-News
-
-- Fetches and parses feed from Onlines website, through https://online.ntnu.no/feeds/news/
-- Counts unread news and presents unread number in icon badge
-- Separates between new, updated and read items
-- Serves HTML5 desktop notifications on news / updates
-- Images are not present in the news feed, instead they are fetched asynchronously from Onlines API and injected when needed, API at https://online.ntnu.no/api/<API_KEY>/news_image_by_id/
-
-Office
-
-- Office status is fetched from multiple sources, including Google Calendar and two Arduinos running on a Raspberry Pi
-- Reads roof light intensity from an Arduino Uno at http://draug.online.ntnu.no/lys.txt
-- Uses a stable border value, fairly unaffected by sunlight
-- Reads the light value frequently in order to react quickly to changes
-- Reads events from Onlines systems which in turn is parsed from Onlines GoogleCal, service running at https://online.ntnu.no/service_static/office_status
-- Retrieves very lightweight requests with event information from GCal
-- Updates often in order to react to changes quickly
-- Icon changes based on light values and calendar events.
-- Uses title text containing the name of the event, or other appropriate text
-- Separate icon showing when you are offline or when an error has occured
-- All states: Default, open, closed, meeting, waffles, disconnected
+- Stored as plain, short CSS stylesheets
+- Override common CSS selectors in options, popup and the infoscreen
+- Primarily changing style of the background image via CSS3 hue-rotation and such
+- Palettes may also change colors of titles, pageflip and other details
 
 Cantinas
 
@@ -109,18 +96,40 @@ Bus
 - Frequently updated in order to always show correct information
 - Support for favorite bus lines, simplifying finding a particular bus at a busy stop
 - Smart selection of bus stops at the options page, quickly determining which stop the user wants
+- The complete list of bus stops is fetched and parsed every now and then
 
-Meetings
+News
+
+- Fetches and parses feeds from affiliations' websites, both for primary and secondary affiliation
+- Counts unread news and presents unread number in icon badge
+- Separates between new, updated and read items
+- Serves HTML5 desktop notifications on news / updates
+
+Office (Online specific)
+
+- Office status is fetched from multiple sources, including Google Calendar and two Arduinos running on a Raspberry Pi
+- Reads roof light intensity from an Arduino Uno at http://draug.online.ntnu.no/lys.txt
+- Uses a stable border value, fairly unaffected by sunlight
+- Reads the light value frequently in order to react quickly to changes
+- Reads events from Onlines systems which in turn is parsed from Onlines GoogleCal, service running at https://online.ntnu.no/service_static/office_status
+- Retrieves very lightweight requests with event information from GCal
+- Updates often in order to react to changes quickly
+- Icon changes based on light values and calendar events.
+- Uses title text containing the name of the event, or other appropriate text
+- Separate icon showing when you are offline or when an error has occured
+- All states: Default, open, closed, meeting, waffles, disconnected
+
+Meetings (Online specific)
 
 - Showing the rest of the days meetings so users may easily spot when to grab a coffee
 - Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/service_static/meeting_plan
 
-Servant
+Servant (Online specific)
 
 - Shows who is responsible for the Online office at any given time
 - Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/service_static/servant_list
 
-Coffee
+Coffee (Online specific)
 
 - An arduino is connected to a big button at the Online office, to be pushed whenever someone is cooking a new pot of coffee
 - Whenever a new coffee pot is made users get a HTML desktop notification with a random coffee meme
@@ -131,7 +140,7 @@ Options page
 
 - All options react to changes immediately
 - Github link to the open source repository
-- Google +1 button for Onlines website
+- Google +1 button for Onlines website when affiliation is Online
 - May contain easter egg
 
 Injected script
