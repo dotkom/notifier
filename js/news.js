@@ -38,8 +38,15 @@ var News = {
         self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
-        callback(self.msgConnectionError, affiliationObject.name);
+        // Check for XML lodged into an HTML page
+        if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
+          xml = jqXHR.responseText;
+          self.parseFeed(xml, affiliationObject, limit, callback);
+        }
+        else {
+          if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
+          callback(self.msgConnectionError, affiliationObject.name);
+        }
       },
     });
   },
@@ -115,7 +122,7 @@ var News = {
 
     // Check for image in rarely used tags <enclosure> and <bilde>
     try {
-      // Universitetsavisa does this little trick to get images in their feed
+      // Universitetsavisa/Adressa does this little trick to get images in their feed
       var enclosure = $(item).find('enclosure').filter(':first');
       if (enclosure.length != 0) {
         post.image = enclosure['0'].attributes.url.textContent;
@@ -166,10 +173,6 @@ var News = {
       }
     }
 
-    // Empty title field?
-    if (post.title.trim() == '')
-      post.title = 'Uten tittel';
-
     // Parse date field
     post.date = new Date(post.date);
     if (post.date != "Invalid Date")
@@ -184,7 +187,21 @@ var News = {
     // Check for alternative links in description
     post.altLink = this.checkForAltLink(post.description);
 
-    // Remove HTML from description
+    // Remove CDATA tags from title and description
+    if (post.title.match(/\<\!\[CDATA\[/g) != null) {
+      console.log('TITLE BEFORE', post.title);
+      post.title = post.title.replace(/\<\!\[CDATA\[/g, '');
+      post.title = post.title.replace(/\]\]\>/g, '');
+      console.log('TITLE #AFTER', post.title);
+    }
+    if (post.description.match(/\<\!\-\-\[CDATA\[/g) != null) {
+      console.log('DESC BEFORE', post.title);
+      post.description = post.description.replace(/\<\!\-\-\[CDATA\[/g, '');
+      post.description = post.description.replace(/\]\]\-\-\>/g, '');
+      console.log('DESC #AFTER', post.title);
+    }
+
+    // Remove HTML from description (must be done AFTER checking for CDATA tags)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
     
@@ -198,9 +215,8 @@ var News = {
     post.creator = this.abbreviateName(post.creator);
 
     // In case pubDate didn't exist, set to null
-    if (post.date == '') {
+    if (post.date == '')
       post.date = null;
-    }
 
     // Trimming
     post.title = post.title.trim();
@@ -209,6 +225,12 @@ var News = {
     // Shorten 'bedriftspresentasjon' to 'bedpres'
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
+
+    // Empty title field?
+    if (post.title.trim() == '')
+      post.title = 'Uten tittel';
+    if (post.description.trim() == '')
+      post.description = 'Uten tekst';
 
     return post;
   },
@@ -229,7 +251,6 @@ var News = {
 
     // Count feed items
     var self = this;
-    //items.forEach(function(item, index) {
     for (var i=0; i<items.length; i++) {
       
       var item = items[i];
@@ -268,39 +289,55 @@ var News = {
         return maxNewsAmount + 1;
       }
     };
-    // });
-    if (this.debug) console.log('ERROR: unhandled situation returning -1, unreadCount is', unreadCount);
-    return -1;
+
+    // We'll usually not end up here
+    if (items.length == 0) {
+      if (this.debug) console.log('no items to count!');
+    }
+    else {
+      if (this.debug) console.log('ERROR: something went wrong trying to count these items:', items);
+    }
+    return 0;
   },
 
   showNotification: function(item) {
-    if (localStorage.showNotifications == 'true') {
-      // Get content
-      localStorage.notificationTitle = item.title;
-      localStorage.notificationLink = item.link;
-      localStorage.notificationDescription = item.description;
-      localStorage.notificationCreator = item.creator;
-      localStorage.notificationImage = item.image;
-      localStorage.notificationFeedKey = item.feedKey;
-      localStorage.notificationFeedName = item.feedName;
-      // Show desktop notification
-      Browser.createNotification('notification.html');
+    if (typeof item != 'undefined') {
+      if (localStorage.showNotifications == 'true') {
+        // Get content
+        localStorage.notificationTitle = item.title;
+        localStorage.notificationLink = item.link;
+        localStorage.notificationDescription = item.description;
+        localStorage.notificationCreator = item.creator;
+        localStorage.notificationImage = item.image;
+        localStorage.notificationFeedKey = item.feedKey;
+        localStorage.notificationFeedName = item.feedName;
+        // Show desktop notification
+        Browser.createNotification('notification.html');
+      }
+    }
+    else {
+      if (this.debug) console.log('ERROR: notification item was undefined');
     }
   },
 
   checkForAltLink: function(description) {
     // Looking for alternative link, find the first and best full link
-    var altLink = description.match(/href="(http[^"]*)"/);
-    if (altLink != null) {
-      if (typeof altLink[1] == 'string') {
-        return altLink[1];
+    if (typeof description != 'undefined') {
+      var altLink = description.match(/href="(http[^"]*)"/);
+      if (altLink != null) {
+        if (typeof altLink[1] == 'string') {
+          return altLink[1];
+        }
       }
+    }
+    else {
+      if (this.debug) console.log('ERROR: checking for alternative link in undefined var post.description');
     }
     return null;
   },
 
   abbreviateName: function(oldName) {
-    if (oldName != undefined) {
+    if (typeof oldName != 'undefined') {
       // Abbreviate middle names if name is long
       if (18 < oldName.length) {
         var pieces = oldName.split(' ');
