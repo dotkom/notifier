@@ -127,6 +127,7 @@ enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
   ls.coffeeSubscription = 'true'
   ls.extensionCreator = 'dotKom'
+  restoreChecksToBoxes()
   if quick
     $('label[for="showOffice"]').slideDown {duration:0}
     $('label[for="coffeeSubscription"]').slideDown {duration:0}
@@ -581,6 +582,12 @@ revertInfoscreen = ->
 #             if urlIndex >= 0
 #               chrome.tabs.remove tab.id # OPERA?
 
+restoreChecksToBoxes = ->
+  # Restore checks to boxes from localStorage
+  $('input:checkbox').each (index, element) ->
+    if ls[element.id] is 'true'
+      element.checked = true
+
 fadeInCanvas = ->
   _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
   webGLStart()
@@ -652,10 +659,7 @@ $ ->
   # palette
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
 
-  # Restore checks to boxes from localStorage
-  $('input:checkbox').each (index, element) ->
-    if ls[element.id] is 'true'
-      element.checked = true
+  restoreChecksToBoxes()
 
   # If useInfoscreen is on, slide away the rest of the options and switch the logo subtext
   if ls.useInfoscreen is 'true'
