@@ -1,6 +1,6 @@
 var Affiliation = {
   top: this,
-  debug: 1,
+  debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
 
@@ -592,6 +592,19 @@ var Affiliation = {
       palette: 'cyan',
       useAltLink: false,
       // getImages unnecessary, Gemini uses <bilde>-tag for images
+    },
+    'adressa': {
+      name: 'Adresseavisen',
+      key: 'adressa',
+      web: 'http://adressa.no/',
+      feed: 'http://www.adressa.no/?widgetName=polarisFeeds&widgetId=3185248&getXmlFeed=true',
+      logo: './org/adressa/logo.png',
+      icon: './org/adressa/icon.png',
+      symbol: './org/adressa/symbol.png',
+      placeholder: './org/adressa/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      // getImages unnecessary, Adresseavisen uses <enclosure>-tag, attribute "url", for images
     },
 
     // Store studentorganisasjoner
