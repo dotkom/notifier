@@ -187,20 +187,6 @@ var News = {
     // Check for alternative links in description
     post.altLink = this.checkForAltLink(post.description);
 
-    // Remove CDATA tags from title and description
-    if (post.title.match(/\<\!\[CDATA\[/g) != null) {
-      console.log('TITLE BEFORE', post.title);
-      post.title = post.title.replace(/\<\!\[CDATA\[/g, '');
-      post.title = post.title.replace(/\]\]\>/g, '');
-      console.log('TITLE #AFTER', post.title);
-    }
-    if (post.description.match(/\<\!\-\-\[CDATA\[/g) != null) {
-      console.log('DESC BEFORE', post.title);
-      post.description = post.description.replace(/\<\!\-\-\[CDATA\[/g, '');
-      post.description = post.description.replace(/\]\]\-\-\>/g, '');
-      console.log('DESC #AFTER', post.title);
-    }
-
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
