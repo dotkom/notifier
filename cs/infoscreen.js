@@ -251,8 +251,8 @@
         </div>\
           <div class="item" data="' + item.link + '"' + altLink + '>\
             <img src="' + item.image + '" width="107" />\
-            <div class="emphasized">- Av ' + item.creator + date + '</div>\
             ' + item.description + '\
+            <div class="emphasized">- Av ' + item.creator + date + '</div>\
           </div>\
         </div>';
         return $('#news ' + column).append(htmlItem);
