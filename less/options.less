@@ -606,6 +606,63 @@ header {
   z-index: 1;
 }
 
+/* "Popup is here"-bubble */
+
+#popupHere {
+  .debugred;
+  position: absolute;
+  display: none;
+  top: 0;
+  right: 0;
+  margin: 15pt;
+  padding: 10pt;
+  background: white;
+  border-radius: 20pt;
+  width: 180pt;
+  box-shadow:
+    0 0 15pt white,
+    0 0 25pt white,
+    0 0 45pt white;
+  font-family: helvetica;
+  color: #333;
+  opacity: .9;
+  z-index: 1000;
+  .icon {
+    .debugred;
+    position: relative;
+    display: inline;
+    float: left;
+    width: 30pt;
+    height: 30pt;
+    margin-right: 3pt;
+  }
+  .arrow {
+    .debugred;
+    position: relative;
+    display: inline;
+    float: right;
+    width: 25pt;
+    height: 19pt;
+    top: -4pt;
+    left: -11pt;
+  }
+  .text {
+    .debugred;
+    position: relative;
+    display: inline;
+    float: left;
+    font-size: 14pt;
+    top: 2pt;
+  }
+  .subtext {
+    .debugred;
+    position: relative;
+    display: inline;
+    float: left;
+    font-size: 9pt;
+  }
+}
+
 /* Canvas with webGL */
 
 canvas {
