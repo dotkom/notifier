@@ -1,5 +1,4 @@
 var Affiliation = {
-  top: this,
   
   debug: 0,
   
@@ -144,12 +143,12 @@ var Affiliation = {
               callback(link, image);
             }
             else {
-              if (top.debug) console.log('ERROR: no image exists for id: ' + id);
+              if (Affiliation.debug) console.log('ERROR: no image exists for id: ' + id);
               callback(link, placeholder);
             }
           },
           error: function() {
-            if (top.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
+            if (Affiliation.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
             callback(link, placeholder);
           },
         });
@@ -517,8 +516,8 @@ var Affiliation = {
       placeholder: './org/projeksjon/placeholder.png',
       palette: 'blue',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
       },
     },
     'soma': {
@@ -761,17 +760,19 @@ var Affiliation = {
       options = {};
 
     var url = affiliation.web;
+    var isSingleLink = false;
     if (typeof links == 'string') {
       url = links;
       // If links is just a single link, convert to single item array
       links = [links];
+      isSingleLink = true;
     }
 
     // Array of possible news containers sorted by estimated probabilty
     var containers = [
-      'article',
       'div.post',
       'div.entry',
+      'article', // leave <article> at the bottom of the preferred list, it's a bit misused
     ];
     
     // In case we don't find any images, prepare an array with placeholders
@@ -780,6 +781,7 @@ var Affiliation = {
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
+    var self = this;
     Ajaxer.getHtml({
       url: url,
       success: function(html) {
@@ -799,7 +801,7 @@ var Affiliation = {
               var current = containers[i];
               if (doc.find(current).length != 0) {
                 newsSelector = current;
-                if (top.debug) console.log('Selector for news on remote site is', current);
+                if (self.debug) console.log('Using selector', '"'+current+'" for news at '+url+'\n');
                 break;
               }
             }
@@ -811,6 +813,13 @@ var Affiliation = {
           for (i in links) {
             
             var link = links[i];
+
+            if (self.debug) {
+              if (isSingleLink)
+                console.log('Checking for image at', link);
+              else
+                console.log('Checking for posts with link', link);
+            }
 
             // If posts are using relative links, split by domainUrl, like 'hist.no'
             if (options.domainUrl)
@@ -825,10 +834,11 @@ var Affiliation = {
 
             // Find parent 'article' or 'div.post' or the like
             if (image.length != 0) {
+              console.log('Found something with the link, finding parent..');
               image = image.parents(newsSelector);
             }
             else {
-              if (typeof links == 'string') {
+              if (isSingleLink) {
                 // On a specific news page (not a frontpage) we can allow ourselves to search
                 // more broadly if we didn't find anything while searching for the link, we'll
                 // search for the newsSelector instead.
@@ -857,25 +867,39 @@ var Affiliation = {
               image = image.attr('src');
             }
 
-            if (image == undefined) {
-              if (top.debug) console.log('ERROR: no image exists for link', link);
+            // If image is undefined
+            if (typeof image == 'undefined') {
+              if (self.debug) console.log('No image exists for link', link);
               image = placeholder;
             }
+            // If image needs to be prefixed with the domain name
             else if (options.domainUrl) {
               image = 'http://' + options.domainUrl + image;
+              if (self.debug) console.log('Found a good image at', image);
             }
+            // If image is something useless like "//assets.pinterest.com/whatever.png"
+            // NOTE: Must be done after adding "http" and domainUrl
+            else if (image.match('^https?://') == null) {
+              if (self.debug) console.log('No good image exists for link', link);
+              image = placeholder;
+            }
+            // If all is good
+            else {
+              if (self.debug) console.log('Found a good image at', image);
+            }
+            if (self.debug) console.log('\n');
 
             images.push(image);
           }
           callback(links, images);
         }
         catch (e) {
-          if (top.debug) console.log('ERROR: could not parse '+affiliation.name+' website');
+          if (self.debug) console.log('ERROR: could not parse '+affiliation.name+' website');
           callback(links, placeholders);
         }
       },
       error: function(e) {
-        if (top.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
+        if (self.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
         callback(links, placeholders);
       },
     });
