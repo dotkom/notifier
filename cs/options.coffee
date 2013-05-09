@@ -61,6 +61,8 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # Symbol
       symbol = Affiliation.org[affiliationKey].symbol
       $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # "Popup here"-bubble
+      $('#popupHere img.icon').attr 'src', symbol
       # Website link
       web = Affiliation.org[affiliationKey].web
       $('#affiliationSymbol').unbind 'click'
@@ -637,7 +639,7 @@ $ ->
     $('#debug_links').show()
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
-  
+
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
 
@@ -690,6 +692,29 @@ $ ->
   setInterval ( ->
     pageFlipCursorBlinking()
   ), 600
+
+  # Fade in the "popup here"-bubble if options page haven't been used before
+  # Also blink the first affiliation-selection field with light green colors to attract the bees
+  if ls.everOpenedOptions is 'false'
+    ls.everOpenedOptions = 'true'
+    setTimeout ( ->
+      $('#popupHere').fadeIn 'slow'
+      setTimeout ( ->
+        $('#popupHere').fadeOut 6000
+      ), 30000
+    ), 2500
+    blinkAffiliation = (iteration) ->
+      if 0 < iteration
+        setTimeout ( ->
+          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1pt solid black;'
+          setTimeout ( ->
+            $('#affiliationKey1').attr 'style', ''
+            blinkAffiliation iteration-1
+          ), 140
+        ), 140
+    setTimeout ( ->
+      blinkAffiliation 5
+    ), 5000
 
   # Fade in the +1 button when (probably) ready
   if ls.affiliationKey1 is 'online'

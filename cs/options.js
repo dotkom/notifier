@@ -72,6 +72,7 @@
         $('link[rel="shortcut icon"]').attr('href', icon);
         symbol = Affiliation.org[affiliationKey].symbol;
         $('#affiliationSymbol').attr('style', 'background-image:url("' + symbol + '");');
+        $('#popupHere img.icon').attr('src', symbol);
         web = Affiliation.org[affiliationKey].web;
         $('#affiliationSymbol').unbind('click');
         $('#affiliationSymbol').click(function() {
@@ -692,7 +693,7 @@
   };
 
   $(function() {
-    var icon, symbol, text, web;
+    var blinkAffiliation, icon, symbol, text, web;
     if (DEBUG) {
       $('#debug_links').show();
       $('button.debug').click(function() {
@@ -734,6 +735,29 @@
     setInterval((function() {
       return pageFlipCursorBlinking();
     }), 600);
+    if (ls.everOpenedOptions === 'false') {
+      ls.everOpenedOptions = 'true';
+      setTimeout((function() {
+        $('#popupHere').fadeIn('slow');
+        return setTimeout((function() {
+          return $('#popupHere').fadeOut(6000);
+        }), 30000);
+      }), 2500);
+      blinkAffiliation = function(iteration) {
+        if (0 < iteration) {
+          return setTimeout((function() {
+            $('#affiliationKey1').attr('style', 'background-color:#87d677; color:black; border:1pt solid black;');
+            return setTimeout((function() {
+              $('#affiliationKey1').attr('style', '');
+              return blinkAffiliation(iteration - 1);
+            }), 140);
+          }), 140);
+        }
+      };
+      setTimeout((function() {
+        return blinkAffiliation(5);
+      }), 5000);
+    }
     if (ls.affiliationKey1 === 'online') {
       setTimeout((function() {
         return $('#plusonebutton').fadeIn(150);
