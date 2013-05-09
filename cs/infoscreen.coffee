@@ -128,20 +128,29 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 
 updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
-  # Displaying the news feed (prefetched by the background page)
-  feedItems = ls['affiliationFeedItems'+number]
   # Detect selector
   selector = if number is '1' then '#left' else '#right'
   if ls.showAffiliation2 isnt 'true' then selector = '#full'
-
-  if feedItems isnt undefined
-    feedItems = JSON.parse feedItems
-    displayItems feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
+  # Get affiliation object
+  affiliationKey = ls['affiliationKey'+number]
+  affiliation = Affiliation.org[affiliationKey]
+  if affiliation is undefined
+    if DEBUG then console.log 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
   else
-    key = ls['affiliationKey'+number]
-    name = Affiliation.org[key].name
-    selector = if number is '1' then '#left' else '#right'
-    $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+    # Get more news than needed to check for old news that have been updated
+    newsLimit = 10
+    News.get affiliation, newsLimit, (items) ->
+      # Error message (log it maybe), or zero items in news feed
+      if typeof items is 'string' or items.length is 0
+        if DEBUG then console.log 'ERROR:', items
+        key = ls['affiliationKey'+number]
+        name = Affiliation.org[key].name
+        $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+      # News is here! NEWS IS HERE! FRESH FROM THE PRESS!
+      else
+        newsList = 'affiliationNewsList'+number
+        ls[newsList] = News.refreshNewsList items
+        displayItems items, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
 
 displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Empty the news column

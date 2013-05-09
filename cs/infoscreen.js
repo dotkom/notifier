@@ -192,23 +192,37 @@
   };
 
   updateAffiliationNews = function(number) {
-    var feedItems, key, name, selector;
+    var affiliation, affiliationKey, selector;
     if (DEBUG) {
       console.log('updateAffiliationNews' + number);
     }
-    feedItems = ls['affiliationFeedItems' + number];
     selector = number === '1' ? '#left' : '#right';
     if (ls.showAffiliation2 !== 'true') {
       selector = '#full';
     }
-    if (feedItems !== void 0) {
-      feedItems = JSON.parse(feedItems);
-      return displayItems(feedItems, selector, 'affiliationNewsList' + number, 'affiliationViewedList' + number, 'affiliationUnreadCount' + number);
+    affiliationKey = ls['affiliationKey' + number];
+    affiliation = Affiliation.org[affiliationKey];
+    if (affiliation === void 0) {
+      if (DEBUG) {
+        return console.log('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
+      }
     } else {
-      key = ls['affiliationKey' + number];
-      name = Affiliation.org[key].name;
-      selector = number === '1' ? '#left' : '#right';
-      return $('#news ' + selector).html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
+      newsLimit = 10;
+      return News.get(affiliation, newsLimit, function(items) {
+        var key, name, newsList;
+        if (typeof items === 'string' || items.length === 0) {
+          if (DEBUG) {
+            console.log('ERROR:', items);
+          }
+          key = ls['affiliationKey' + number];
+          name = Affiliation.org[key].name;
+          return $('#news ' + selector).html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
+        } else {
+          newsList = 'affiliationNewsList' + number;
+          ls[newsList] = News.refreshNewsList(items);
+          return displayItems(items, selector, 'affiliationNewsList' + number, 'affiliationViewedList' + number, 'affiliationUnreadCount' + number);
+        }
+      });
     }
   };
 
