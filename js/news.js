@@ -38,7 +38,7 @@ var News = {
         self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {
-        // Check for XML lodged into an HTML page
+        // Check for XML sent with HTML headers
         if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
           xml = jqXHR.responseText;
           self.parseFeed(xml, affiliationObject, limit, callback);
@@ -119,6 +119,19 @@ var News = {
     // Tag the posts with the key and name of the feed they came from
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
+
+    // If feed uses CDATA-tags in title and description we need to be more clever
+    var handleCDATA = function(item, field, postField) {
+      if (postField.trim() == '' || postField.match('CDATA') != null) {
+        var string = $(item).find(field).filter(':first')['0']['innerHTML'];
+        string = string.replace(/(\<|&lt;)?!(\-\-)?\[CDATA\[/g, '');
+        string = string.replace(/\]\](\-\-)?(\>|&gt;)?/g, '');
+        return string;
+      }
+      return postField;
+    };
+    post.title = handleCDATA(item, 'title', post.title);
+    post.description = handleCDATA(item, 'description', post.description);
 
     // Check for image in rarely used tags <enclosure> and <bilde>
     try {
