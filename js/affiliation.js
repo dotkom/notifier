@@ -1,6 +1,6 @@
 var Affiliation = {
-  top: this,
-  debug: 1,
+  
+  debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
 
@@ -143,12 +143,12 @@ var Affiliation = {
               callback(link, image);
             }
             else {
-              if (top.debug) console.log('ERROR: no image exists for id: ' + id);
+              if (Affiliation.debug) console.log('ERROR: no image exists for id: ' + id);
               callback(link, placeholder);
             }
           },
           error: function() {
-            if (top.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
+            if (Affiliation.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
             callback(link, placeholder);
           },
         });
@@ -516,8 +516,8 @@ var Affiliation = {
       placeholder: './org/projeksjon/placeholder.png',
       palette: 'blue',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
       },
     },
     'soma': {
@@ -564,7 +564,8 @@ var Affiliation = {
       getImage: function(link, callback) {
         // Affiliation.getImages(this, links, callback, {newsSelector:'section.articlepreview', domainUrl:'dusken.no'});
         // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.span8:first', domainUrl:'dusken.no'});
+        // Affiliation.getImages(this, link, callback, {newsSelector:'section.article', domainUrl:'dusken.no'});
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
       },
     },
     'universitetsavisa': {
@@ -592,6 +593,19 @@ var Affiliation = {
       palette: 'cyan',
       useAltLink: false,
       // getImages unnecessary, Gemini uses <bilde>-tag for images
+    },
+    'adressa': {
+      name: 'Adresseavisen',
+      key: 'adressa',
+      web: 'http://adressa.no/',
+      feed: 'http://www.adressa.no/?widgetName=polarisFeeds&widgetId=3185248&getXmlFeed=true',
+      logo: './org/adressa/logo.png',
+      icon: './org/adressa/icon.png',
+      symbol: './org/adressa/symbol.png',
+      placeholder: './org/adressa/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      // getImages unnecessary, Adresseavisen uses <enclosure>-tag, attribute "url", for images
     },
 
     // Store studentorganisasjoner
@@ -736,7 +750,7 @@ var Affiliation = {
 
     // Possible values in options:
     // options = {
-    //   newsSelector: 'div.news_item', // if website uses unpopuplar selectors for news containers it must be defined here
+    //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
     //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
     //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
     //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
@@ -747,17 +761,19 @@ var Affiliation = {
       options = {};
 
     var url = affiliation.web;
+    var isSingleLink = false;
     if (typeof links == 'string') {
       url = links;
       // If links is just a single link, convert to single item array
       links = [links];
+      isSingleLink = true;
     }
 
     // Array of possible news containers sorted by estimated probabilty
     var containers = [
-      'article',
       'div.post',
       'div.entry',
+      'article', // leave <article> at the bottom of the preferred list, it's a bit misused
     ];
     
     // In case we don't find any images, prepare an array with placeholders
@@ -766,6 +782,7 @@ var Affiliation = {
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
+    var self = this;
     Ajaxer.getHtml({
       url: url,
       success: function(html) {
@@ -775,7 +792,10 @@ var Affiliation = {
           // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
           var doc = $(html);
 
+          //
           // Decide which selector to use for identifying news containers
+          //
+
           var newsSelector = null;
           if (options.newsSelector) {
             newsSelector = options.newsSelector;
@@ -785,7 +805,7 @@ var Affiliation = {
               var current = containers[i];
               if (doc.find(current).length != 0) {
                 newsSelector = current;
-                if (top.debug) console.log('Selector for news on remote site is', current);
+                if (self.debug) console.log('Using selector', '"'+current+'" for news at '+url+'\n');
                 break;
               }
             }
@@ -795,27 +815,49 @@ var Affiliation = {
           var images = [];
 
           for (i in links) {
+
+            //
+            // Find the news container which contains the news image, using our selector
+            //
             
             var link = links[i];
 
+            if (self.debug) console.log('Checking for '+(isSingleLink? 'image at' : 'posts with link'), link);
+
             // If posts are using relative links, split by domainUrl, like 'hist.no'
-            if (options.domainUrl)
+            if (options.domainUrl) {
+              if (self.debug) console.log('Splitting link by domain url', options.domainUrl);
               link = links[i].split(options.domainUrl)[1];
+            }
 
             // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
-            if (options.linkDelimiter)
+            if (options.linkDelimiter) {
+              if (self.debug) console.log('Splitting link by delimiter', options.linkDelimiter);
               link = links[i].split(options.linkDelimiter)[0];
+            }
 
-            // Look up the first post with the link inside it
+            // Look up the first post with the link inside it...
             image = doc.find(newsSelector + ' a[href="' + link + '"]');
 
-            // Find parent 'article' or 'div.post' or the like
+            // ...then find parent 'article' or 'div.post' or the like...
             if (image.length != 0) {
+              if (self.debug) console.log('Found something with the link, finding the parent (the news box');
               image = image.parents(newsSelector);
             }
-            else {
+            // ...unless we didn't find anything with the link, in which case we just look for the news selector
+            else if (isSingleLink) {
+              if (self.debug) console.log('Found nothing with the link, trying news selector instead');
+              // On a specific news page (not a frontpage) we can allow ourselves to search
+              // more broadly if we didn't find anything while searching for the link. We'll
+              // search for the newsSelector instead and assume that the first news container
+              // we find contains the image we're looking for (which is highly likely based
+              // on experience).
               image = doc.find(newsSelector);
             }
+
+            //
+            // Presumably we've found the news container here, now we need to find the image within it
+            //
 
             if (options.noscriptMatching) {
               // If a <noscript> tag is used, we'll just find the image URL by matching
@@ -838,25 +880,43 @@ var Affiliation = {
               image = image.attr('src');
             }
 
-            if (image == undefined) {
-              if (top.debug) console.log('ERROR: no image exists for link', link);
+            //
+            // Here we determine whether we have found an image or not, and callback the image or a placeholder
+            //
+
+            // If image is undefined
+            if (typeof image == 'undefined') {
+              if (self.debug) console.log('No image exists for link', link);
               image = placeholder;
             }
+            // If image needs to be prefixed with the domain name
             else if (options.domainUrl) {
               image = 'http://' + options.domainUrl + image;
+              if (self.debug) console.log('Found a good image at', image);
             }
+            // If image is something useless like "//assets.pinterest.com/whatever.png"
+            // NOTE: Must be done after adding "http" and domainUrl
+            else if (image.match('^https?://') == null) {
+              if (self.debug) console.log('No good image exists for link', link);
+              image = placeholder;
+            }
+            // If all is good
+            else {
+              if (self.debug) console.log('Found a good image at', image);
+            }
+            if (self.debug) console.log('\n');
 
             images.push(image);
           }
           callback(links, images);
         }
         catch (e) {
-          if (top.debug) console.log('ERROR: could not parse '+affiliation.name+' website');
+          if (self.debug) console.log('ERROR: could not parse '+affiliation.name+' website');
           callback(links, placeholders);
         }
       },
       error: function(e) {
-        if (top.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
+        if (self.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
         callback(links, placeholders);
       },
     });

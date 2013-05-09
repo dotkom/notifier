@@ -61,19 +61,23 @@ updateAffiliationNews = (number) ->
   affiliationKey = ls['affiliationKey'+number]
   affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', 'affiliationKey'+number, 'is not known'
+    if DEBUG then console.log 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
     News.get affiliation, newsLimit, (items) ->
+      # Error message, log it maybe
       if typeof items is 'string'
-        # Error message, log it maybe
         if DEBUG then console.log 'ERROR:', items
+      # Empty news items, don't count
+      else if items.length is 0
+        updateUnreadCount 0, 0
+      # News is here! NEWS IS HERE! FRESH FROM THE PRESS!
       else
-        countNews items, number
+        saveAndCountNews items, number
         updateUnreadCount()
 
-countNews = (items, number) ->
+saveAndCountNews = (items, number) ->
   feedItems = 'affiliationFeedItems'+number
   newsList = 'affiliationNewsList'+number
   unreadCount = 'affiliationUnreadCount'+number
@@ -199,22 +203,22 @@ $ ->
   
   if ls.useInfoscreen is undefined
     ls.useInfoscreen = 'false'
+  
+  if ls.everOpenedOptions is undefined
+    ls.everOpenedOptions = 'false'
 
   # Open options page after install
-  if ls.everConnected is undefined and !DEBUG
+  if ls.everOpenedOptions is 'false' and !DEBUG
     Browser.openTab 'options.html'
-    _gaq.push(['_trackEvent', 'background', 'freshInstall']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)'])
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    _gaq.push(['_trackEvent', 'background', 'runInfoscreen']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadInfoscreen'])
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
     Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
-    _gaq.push(['_trackEvent', 'background', 'openChatter']);
-
-  # Set default vars for main loop
-  ls.everConnected = ls.wasConnected = 'false'
+    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadChatter'])
 
   loadAffiliationIcon()
 

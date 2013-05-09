@@ -62,10 +62,7 @@ listDinners = (menu) ->
     ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        # if not isNaN dinner.price
         dinner.price = dinner.price + ',-'
-        # else
-        #   dinner.price = dinner.price + ' -'
         dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>'
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
@@ -73,7 +70,7 @@ listDinners = (menu) ->
 
 clickDinnerLink = (cssSelector) ->
   $(cssSelector).click ->
-    _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()])
     Browser.openTab Cantina.url
     window.close()
 
@@ -141,7 +138,6 @@ updateAffiliationNews = (number) ->
   else
     key = ls['affiliationKey'+number]
     name = Affiliation.org[key].name
-    selector = if number is '1' then '#left' else '#right'
     $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
 displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
@@ -166,12 +162,12 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       viewedList.push item.link
       
       unreadCount = Number ls[unreadCountName]
-      htmlItem = '<div class="post"><div class="title">'
+      readUnread = ''
       if index < unreadCount
         if item.link in updatedList.indexOf
-          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+          readUnread += '<span class="unread">UPDATED <b>::</b> </span>'
         else
-          htmlItem += '<span class="unread">NEW <b>::</b> </span>'
+          readUnread += '<span class="unread">NEW <b>::</b> </span>'
 
       # EXPLANATION NEEDED:
       # .item[data] contains the link
@@ -187,12 +183,13 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       if item.description.length > descLimit
         item.description = item.description.substr(0, descLimit) + '...'
 
-      htmlItem += item.title + '
-        </div>
+      htmlItem = '
+        <div class="post">
           <div class="item" data="' + item.link + '"' + altLink + '>
+            <div class="title">' + readUnread + item.title + '</div>
             <img src="' + item.image + '" width="107" />
-            <div class="emphasized">- Av ' + item.creator + date + '</div>
             ' + item.description + '
+            <div class="emphasized">- Av ' + item.creator + date + '</div>
           </div>
         </div>'
       $('#news '+column).append htmlItem
@@ -205,7 +202,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   ls[unreadCountName] = 0
 
   # Make news items open extension website while closing popup
-  $('.item').click ->
+  $('#news '+column+' .item').click ->
     # The link is embedded as the ID of the element, we don't want to use
     # <a> anchors because it creates an ugly box marking the focus element.
     # Note that altLinks are embedded in the name-property of the element,
@@ -216,7 +213,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     if altLink isnt undefined and useAltLink is true
       link = $(this).attr 'name'
     Browser.openTab link
-    _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickNews', link])
     window.close()
 
   # If organization prefers alternative links, use them
@@ -282,7 +279,7 @@ $ ->
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleInfoscreen'])
     setTimeout ( ->
       window.close()
     ), 250
@@ -291,15 +288,12 @@ $ ->
   if ls.showAffiliation2 isnt 'true'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
-    _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1])
   # If using two affiliation columns, increase the popup window size (better than
   # decreasing the window size after opening it cuz that looks kinda stupid)
   else
     $('body').attr 'style', 'width:400pt;'
-    _gaq.push(
-      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1],
-      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]
-    );
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
@@ -322,19 +316,19 @@ $ ->
   # Show the standard palette or special palette the user has chosen
   palette = Palettes.get ls.affiliationPalette
   $('#palette').attr 'href', palette
-  _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
+  if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', palette])
 
   # Click events
   $('#logo').click ->
     name = Affiliation.org[ls.affiliationKey1].name
-    _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickLogo', name])
     web = Affiliation.org[ls.affiliationKey1].web
     Browser.openTab web
     window.close()
 
   $('#options_button').click ->
     Browser.openTab 'options.html'
-    _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickOptions'])
     window.close()
 
   $('#tips_button').click ->
@@ -342,23 +336,23 @@ $ ->
       $('#tips').fadeOut 'fast'
     else
       $('#tips').fadeIn 'fast'
-      _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTips'])
   $('#tips:not(a)').click ->
     $('#tips').fadeOut 'fast'
   $('#tips a').click ->
     link = $(this).attr 'href'
     Browser.openTab link
-    _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link])
     window.close()
 
   $('#chatter_button').click ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
-    _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
     window.close()
   
   $('#bus #atb_logo').click ->
     Browser.openTab 'http://www.atb.no'
-    _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickAtb'])
     window.close()
 
   # Bind buttons to hovertext
@@ -381,7 +375,7 @@ $ ->
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
-      _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
           0% { -webkit-filter: hue-rotate(0deg); }

@@ -61,14 +61,17 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # Symbol
       symbol = Affiliation.org[affiliationKey].symbol
       $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # "Popup here"-bubble
+      $('#popupHere img.icon').attr 'src', symbol
       # Website link
       web = Affiliation.org[affiliationKey].web
       $('#affiliationSymbol').unbind 'click'
       $('#affiliationSymbol').click ->
         Browser.openTab web
-      # Name to badge title
+      # Name to badge title and localstorage
       name = Affiliation.org[affiliationKey].name
       Browser.setTitle name + ' Notifier'
+      ls.extensionName = name + ' Notifier'
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
@@ -80,7 +83,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     # Display Saved<3
     displayOnPageNotification()
     # Analytics
-    _gaq.push(['_trackEvent', 'options', 'setAffiliation'+number, affiliationKey]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickAffiliation'+number, affiliationKey])
 
 bindPaletteSelector = ->
   # Default values
@@ -97,7 +100,7 @@ bindPaletteSelector = ->
     # Display Saved<3
     displayOnPageNotification()
     # Analytics
-    _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPalette', palette])
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -127,6 +130,7 @@ enableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'true'
   ls.coffeeSubscription = 'true'
   ls.extensionCreator = 'dotKom'
+  restoreChecksToBoxes()
   if quick
     $('label[for="showOffice"]').slideDown {duration:0}
     $('label[for="coffeeSubscription"]').slideDown {duration:0}
@@ -156,7 +160,7 @@ bindCantinaSelector = (selector) ->
   $('#' + selector).change ->
     cantina = $(this).prop 'value'
     ls[selector] = cantina
-    _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickCantina', cantina])
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
@@ -581,8 +585,14 @@ revertInfoscreen = ->
 #             if urlIndex >= 0
 #               chrome.tabs.remove tab.id # OPERA?
 
+restoreChecksToBoxes = ->
+  # Restore checks to boxes from localStorage
+  $('input:checkbox').each (index, element) ->
+    if ls[element.id] is 'true'
+      element.checked = true
+
 fadeInCanvas = ->
-  _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
+  if !DEBUG then _gaq.push(['_trackEvent', 'options', 'toggleCanvas'])
   webGLStart()
   $('#LessonCanvas').animate
     opacity:1,
@@ -629,7 +639,7 @@ $ ->
     $('#debug_links').show()
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
-  
+
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
 
@@ -652,10 +662,7 @@ $ ->
   # palette
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
 
-  # Restore checks to boxes from localStorage
-  $('input:checkbox').each (index, element) ->
-    if ls[element.id] is 'true'
-      element.checked = true
+  restoreChecksToBoxes()
 
   # If useInfoscreen is on, slide away the rest of the options and switch the logo subtext
   if ls.useInfoscreen is 'true'
@@ -678,13 +685,36 @@ $ ->
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Google Analytics
   $('#pagefliplink').click ->
-    _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPageflip'])
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
   setInterval ( ->
     pageFlipCursorBlinking()
   ), 600
+
+  # Fade in the "popup here"-bubble if options page haven't been used before
+  # Also blink the first affiliation-selection field with light green colors to attract the bees
+  if ls.everOpenedOptions is 'false'
+    ls.everOpenedOptions = 'true'
+    setTimeout ( ->
+      $('#popupHere').fadeIn 'slow'
+      setTimeout ( ->
+        $('#popupHere').fadeOut 6000
+      ), 30000
+    ), 2500
+    blinkAffiliation = (iteration) ->
+      if 0 < iteration
+        setTimeout ( ->
+          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1pt solid black;'
+          setTimeout ( ->
+            $('#affiliationKey1').attr 'style', ''
+            blinkAffiliation iteration-1
+          ), 140
+        ), 140
+    setTimeout ( ->
+      blinkAffiliation 6
+    ), 5000
 
   # Fade in the +1 button when (probably) ready
   if ls.affiliationKey1 is 'online'
@@ -743,7 +773,8 @@ $ ->
 
   # Catch new clicks
   $('input:checkbox').click ->
-    _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
+    _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1)
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'click'+_capitalized, this.checked])
     
     # Special case for 'useInfoscreen'
     if this.id is 'useInfoscreen'

@@ -192,23 +192,37 @@
   };
 
   updateAffiliationNews = function(number) {
-    var feedItems, key, name, selector;
+    var affiliation, affiliationKey, selector;
     if (DEBUG) {
       console.log('updateAffiliationNews' + number);
     }
-    feedItems = ls['affiliationFeedItems' + number];
     selector = number === '1' ? '#left' : '#right';
     if (ls.showAffiliation2 !== 'true') {
       selector = '#full';
     }
-    if (feedItems !== void 0) {
-      feedItems = JSON.parse(feedItems);
-      return displayItems(feedItems, selector, 'affiliationNewsList' + number, 'affiliationViewedList' + number, 'affiliationUnreadCount' + number);
+    affiliationKey = ls['affiliationKey' + number];
+    affiliation = Affiliation.org[affiliationKey];
+    if (affiliation === void 0) {
+      if (DEBUG) {
+        return console.log('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
+      }
     } else {
-      key = ls['affiliationKey' + number];
-      name = Affiliation.org[key].name;
-      selector = number === '1' ? '#left' : '#right';
-      return $('#news ' + selector).html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
+      newsLimit = 10;
+      return News.get(affiliation, newsLimit, function(items) {
+        var key, name, newsList;
+        if (typeof items === 'string' || items.length === 0) {
+          if (DEBUG) {
+            console.log('ERROR:', items);
+          }
+          key = ls['affiliationKey' + number];
+          name = Affiliation.org[key].name;
+          return $('#news ' + selector).html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
+        } else {
+          newsList = 'affiliationNewsList' + number;
+          ls[newsList] = News.refreshNewsList(items);
+          return displayItems(items, selector, 'affiliationNewsList' + number, 'affiliationViewedList' + number, 'affiliationUnreadCount' + number);
+        }
+      });
     }
   };
 
@@ -221,16 +235,16 @@
     updatedList = findUpdatedPosts(newsList, viewedList);
     viewedList = [];
     $.each(items, function(index, item) {
-      var altLink, date, descLimit, htmlItem, unreadCount, _ref;
+      var altLink, date, descLimit, htmlItem, readUnread, unreadCount, _ref;
       if (index < newsLimit) {
         viewedList.push(item.link);
         unreadCount = Number(ls[unreadCountName]);
-        htmlItem = '<div class="post"><div class="title">';
+        readUnread = '';
         if (index < unreadCount) {
           if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
-            htmlItem += '<span class="unread">UPDATED <b>::</b> </span>';
+            readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
           } else {
-            htmlItem += '<span class="unread">NEW <b>::</b> </span>';
+            readUnread += '<span class="unread">NEW <b>::</b> </span>';
           }
         }
         date = altLink = '';
@@ -247,12 +261,13 @@
         if (item.description.length > descLimit) {
           item.description = item.description.substr(0, descLimit) + '...';
         }
-        htmlItem += item.title + '\
-        </div>\
+        htmlItem = '\
+        <div class="post">\
           <div class="item" data="' + item.link + '"' + altLink + '>\
+            <div class="title">' + readUnread + item.title + '</div>\
             <img src="' + item.image + '" width="107" />\
-            <div class="emphasized">- Av ' + item.creator + date + '</div>\
             ' + item.description + '\
+            <div class="emphasized">- Av ' + item.creator + date + '</div>\
           </div>\
         </div>';
         return $('#news ' + column).append(htmlItem);
@@ -371,9 +386,13 @@
       $('#bus').hide();
     }
     if (ls.showAffiliation2 !== 'true') {
-      _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1]);
+      }
     } else {
-      _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey1], ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey2]);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
+      }
     }
     if (ls.affiliationKey1 !== 'online') {
       affiliation = ls.affiliationKey1;
@@ -387,6 +406,9 @@
     }
     $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey1].icon);
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
+    if (!DEBUG) {
+      _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', palette]);
+    }
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
       $('#pagefliplink').attr("style", "bottom:9px;");

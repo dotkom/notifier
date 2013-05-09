@@ -30,7 +30,7 @@ var Servant = {
         // 12:00-13:00: Michael Johansen
         if (currentServant.match(/\d+:\d+\-\d+:\d+/)) {
           // Match out the name from the line
-          var pieces = currentServant.match(/(\d+:\d+\-\d+:\d+) ([0-9a-zA-ZæøåÆØÅ ]+)/);
+          var pieces = currentServant.match(/(\d+:\d+\-\d+:\d+) ([0-9a-zA-ZæøåÆØÅ \-]+)/);
           var timeSlot = pieces[1];
           var servantName = pieces[2];
 

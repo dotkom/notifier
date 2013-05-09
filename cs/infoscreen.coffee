@@ -70,10 +70,7 @@ listDinners = (menu) ->
     ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        # if not isNaN dinner.price
         dinner.price = dinner.price + ',-'
-        # else
-        #   dinner.price = dinner.price + ' -'
         dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>'
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
@@ -131,20 +128,29 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 
 updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
-  # Displaying the news feed (prefetched by the background page)
-  feedItems = ls['affiliationFeedItems'+number]
   # Detect selector
   selector = if number is '1' then '#left' else '#right'
   if ls.showAffiliation2 isnt 'true' then selector = '#full'
-
-  if feedItems isnt undefined
-    feedItems = JSON.parse feedItems
-    displayItems feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
+  # Get affiliation object
+  affiliationKey = ls['affiliationKey'+number]
+  affiliation = Affiliation.org[affiliationKey]
+  if affiliation is undefined
+    if DEBUG then console.log 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
   else
-    key = ls['affiliationKey'+number]
-    name = Affiliation.org[key].name
-    selector = if number is '1' then '#left' else '#right'
-    $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+    # Get more news than needed to check for old news that have been updated
+    newsLimit = 10
+    News.get affiliation, newsLimit, (items) ->
+      # Error message (log it maybe), or zero items in news feed
+      if typeof items is 'string' or items.length is 0
+        if DEBUG then console.log 'ERROR:', items
+        key = ls['affiliationKey'+number]
+        name = Affiliation.org[key].name
+        $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+      # News is here! NEWS IS HERE! FRESH FROM THE PRESS!
+      else
+        newsList = 'affiliationNewsList'+number
+        ls[newsList] = News.refreshNewsList items
+        displayItems items, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
 
 displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Empty the news column
@@ -168,12 +174,12 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       viewedList.push item.link
       
       unreadCount = Number ls[unreadCountName]
-      htmlItem = '<div class="post"><div class="title">'
+      readUnread = ''
       if index < unreadCount
         if item.link in updatedList.indexOf
-          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+          readUnread += '<span class="unread">UPDATED <b>::</b> </span>'
         else
-          htmlItem += '<span class="unread">NEW <b>::</b> </span>'
+          readUnread += '<span class="unread">NEW <b>::</b> </span>'
 
       # EXPLANATION NEEDED:
       # .item[data] contains the link
@@ -188,13 +194,14 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
         descLimit = 100
       if item.description.length > descLimit
         item.description = item.description.substr(0, descLimit) + '...'
-        
-      htmlItem += item.title + '
-        </div>
+
+      htmlItem = '
+        <div class="post">
           <div class="item" data="' + item.link + '"' + altLink + '>
+            <div class="title">' + readUnread + item.title + '</div>
             <img src="' + item.image + '" width="107" />
-            <div class="emphasized">- Av ' + item.creator + date + '</div>
             ' + item.description + '
+            <div class="emphasized">- Av ' + item.creator + date + '</div>
           </div>
         </div>'
       $('#news '+column).append htmlItem
@@ -306,12 +313,9 @@ $ ->
 
   # Run analytics to figure out which organizations use the infoscreen feature
   if ls.showAffiliation2 isnt 'true'
-    _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1])
   else
-    _gaq.push(
-      ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey1],
-      ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey2]
-    );
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
 
   if ls.affiliationKey1 isnt 'online'
     # Show the logo and placeholder image for the correct organization
@@ -326,6 +330,7 @@ $ ->
   $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey1].icon
   # Show the standard palette or special palette the user has chosen
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
+  if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', palette])
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'

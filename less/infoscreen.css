@@ -246,7 +246,7 @@ body {
 }
 .emphasized {
   font-size: 24pt;
-  margin-bottom: 8pt;
+  margin-top: 8pt;
 }
 html {
   cursor: none;
@@ -428,6 +428,9 @@ body {
   float: right;
   margin: 0 0 3pt 3pt;
 }
+#container #news .post {
+  margin-top: 25pt;
+}
 #container #news .post .item {
   margin-top: -4pt;
   min-height: 40pt;
@@ -440,6 +443,11 @@ body {
 #container #news .post .item:hover {
   box-shadow: inset 0pt 0pt 2pt #bbb,
             0pt 0pt 10pt white;
+}
+#container #news .post .item .title {
+  padding-top: 0pt;
+  /* overrides default value */
+
 }
 #container #news .post .item img {
   width: 120pt;
