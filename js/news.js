@@ -120,7 +120,7 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // If feed uses CDATA-tags in title and description we need to be more clever
+    // If feed uses CDATA-tags in title and description we need to be more clever (Adressa)
     var handleCDATA = function(item, field, postField) {
       if (postField.trim() == '' || postField.match('CDATA') != null) {
         var string = $(item).find(field).filter(':first')['0']['innerHTML'];
@@ -132,6 +132,14 @@ var News = {
     };
     post.title = handleCDATA(item, 'title', post.title);
     post.description = handleCDATA(item, 'description', post.description);
+
+    // If link field is broken in any way, check GUID field for link instead (Adressa)
+    if (post.link.trim() == '') {
+      var guid = $(item).find('guid').filter(':first').text();
+      if (guid.indexOf('http') != -1) {
+        post.link = guid;
+      }
+    }
 
     // Check for image in rarely used tags <enclosure> and <bilde>
     try {
