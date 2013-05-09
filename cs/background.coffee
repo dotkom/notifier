@@ -61,7 +61,7 @@ updateAffiliationNews = (number) ->
   affiliationKey = ls['affiliationKey'+number]
   affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', 'affiliationKey'+number, 'is not known'
+    if DEBUG then console.log 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
@@ -74,10 +74,10 @@ updateAffiliationNews = (number) ->
         updateUnreadCount 0, 0
       # News is here! NEWS IS HERE! FRESH FROM THE PRESS!
       else
-        countNews items, number
+        saveAndCountNews items, number
         updateUnreadCount()
 
-countNews = (items, number) ->
+saveAndCountNews = (items, number) ->
   feedItems = 'affiliationFeedItems'+number
   newsList = 'affiliationNewsList'+number
   unreadCount = 'affiliationUnreadCount'+number

@@ -202,7 +202,6 @@
     } else {
       key = ls['affiliationKey' + number];
       name = Affiliation.org[key].name;
-      selector = number === '1' ? '#left' : '#right';
       return $('#news ' + selector).html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');
     }
   };

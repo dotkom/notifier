@@ -138,7 +138,6 @@ updateAffiliationNews = (number) ->
   else
     key = ls['affiliationKey'+number]
     name = Affiliation.org[key].name
-    selector = if number is '1' then '#left' else '#right'
     $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
 
 displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
