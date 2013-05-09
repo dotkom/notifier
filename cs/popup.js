@@ -256,7 +256,7 @@
     ls[viewedListName] = JSON.stringify(viewedList);
     Browser.setBadgeText('');
     ls[unreadCountName] = 0;
-    $('.item').click(function() {
+    $('#news ' + column + ' .item').click(function() {
       var altLink, link, useAltLink;
       link = $(this).attr('data');
       altLink = $(this).attr('name');

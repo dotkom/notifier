@@ -202,7 +202,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   ls[unreadCountName] = 0
 
   # Make news items open extension website while closing popup
-  $('.item').click ->
+  $('#news '+column+' .item').click ->
     # The link is embedded as the ID of the element, we don't want to use
     # <a> anchors because it creates an ugly box marking the focus element.
     # Note that altLinks are embedded in the name-property of the element,
