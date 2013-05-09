@@ -249,6 +249,9 @@ var Cantina = {
           return(a.price>b.price)?1:((b.price>a.price)?-1:0);
         });
       }
+
+      // If any objects have empty text fields, remove them
+      dinnerObjects = this.removeEmptyDinnerObjects(dinnerObjects);
       
       callback(dinnerObjects);
     }
@@ -277,6 +280,16 @@ var Cantina = {
     var dayNames = ["Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag"];
     var today = dayNames[new Date().getDay()];
     return today;
+  },
+
+  removeEmptyDinnerObjects: function(dinnerObjects) {
+    var nonEmptyDinnerObjects = [];
+    dinnerObjects.forEach(function(dinner) {
+      if (dinner.text.trim() != '') {
+        nonEmptyDinnerObjects.push(dinner);
+      }
+    });
+    return nonEmptyDinnerObjects;
   },
 
   // Welcome to the department of key removal, how may we help you?

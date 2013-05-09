@@ -10,6 +10,7 @@ setSubscription = ->
 
   # Capture clicks
   $('#subscription').click ->
+    if !DEBUG then _gaq.push(['_trackEvent', 'subscription', 'clickMeme', image])
     Browser.openTab 'options.html'
     window.close
 

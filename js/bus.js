@@ -1,6 +1,6 @@
 var Bus = {
   api: 'http://api.visuweb.no/bybussen/4.0/Departure/Route/',
-  apiKey: '/f6975f3c1a3d838dc69724b9445b3466',
+  apiKey: '/5ce70df7d7ffa2a6728aef4eaf9200db', // phasing out oldkey: f6975f3c1a3d838dc69724b9445b3466
   msgDisconnected: 'Frakoblet fra api.visuweb.no',
   msgDisconnectedShort: 'Oops, frakoblet',
   msgConnectionError: 'Tilkoblingsfeil',

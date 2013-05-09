@@ -246,7 +246,7 @@ body {
 }
 .emphasized {
   font-size: 9pt;
-  margin-bottom: 3pt;
+  margin-top: 3pt;
 }
 body {
   width: 350pt;
@@ -287,8 +287,15 @@ body {
 #tips .text .big {
   font-size: 14pt;
 }
+#tips .text .url {
+  display: inline;
+  color: grey;
+  font-style: italic;
+}
 #tips .text a {
   outline: none;
+  text-decoration: underline;
+  color: DarkBlue;
 }
 #background {
   background-image: url('/img/background-popup.png');
@@ -309,7 +316,7 @@ body {
 }
 #container #header #buttons {
   border: 0pt solid #00ff00;
-  width: 160pt;
+  width: 170pt;
   float: left;
 }
 #container #header #buttons .popupbutton {
@@ -329,6 +336,7 @@ body {
   display: none;
   position: relative;
   float: left;
+  width: 170pt;
   font-weight: bold;
   text-shadow: 0 0 10pt white,
         0 0 15pt white,
@@ -391,6 +399,47 @@ body {
   height: 46pt;
   cursor: pointer;
 }
+#container #news {
+  /* #full for using a single column */
+
+  /* #left and #right for using double columns */
+
+}
+#container #news #full {
+  position: relative;
+  width: 100%;
+  float: left;
+}
+#container #news #full img {
+  float: left;
+  width: 70pt;
+  max-height: 70pt;
+  margin: 0 5pt 3pt 0;
+}
+#container #news #left {
+  position: relative;
+  width: 45%;
+  float: left;
+}
+#container #news #left img {
+  float: right;
+  margin: 0 0pt 3pt 3pt;
+}
+#container #news #right {
+  position: relative;
+  width: 50%;
+  float: right;
+}
+#container #news #right .title {
+  color: LightGrey;
+}
+#container #news #right img {
+  float: right;
+  margin: 0 0 3pt 3pt;
+}
+#container #news .post {
+  margin-top: 10pt;
+}
 #container #news .post .item {
   margin-top: -4pt;
   min-height: 30pt;
@@ -404,15 +453,16 @@ body {
   box-shadow: inset 0pt 0pt 2pt #bbb,
             0pt 0pt 10pt white;
 }
+#container #news .post .item .title {
+  padding-top: 0pt;
+  /* overrides default value */
+
+}
 #container #news .post .item img {
-  width: 70pt;
-  max-height: 70pt;
+  width: 60pt;
+  max-height: 60pt;
   padding: 3pt;
   box-shadow: 0 0 10pt #bbb;
-}
-#container #news .post .item .textwrapper {
-  margin-left: 7pt;
-  width: 70%;
 }
 #container #news .unread {
   font-size: 8pt;

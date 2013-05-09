@@ -9,8 +9,6 @@
 }
 body {
   background: #001429;
-  /*url('/img/options-jitter.png') left top no-repeat;*/
-
   font-family: helvetica;
   color: #ffffff;
   margin: 0;
@@ -37,46 +35,51 @@ header {
   top: 50%;
   padding: 10pt;
   width: 580pt;
-  max-height: 50pt;
+  height: 50pt;
   margin-left: -300pt;
-  margin-top: -195pt;
+  margin-top: -205pt;
   text-align: center;
   border-bottom: 1pt solid #eee;
   z-index: 1;
 }
-header #logo {
+header #header_text {
   border: 0pt solid #ffff00;
-  position: relative;
-  float: left;
-  margin-left: 40pt;
-}
-header #logo_subtext {
-  border: 0pt solid #ffff00;
-  position: absolute;
-  float: left;
+  width: 100%;
+  text-align: center;
   margin-top: 1pt;
-  margin-left: 235pt;
   font-size: 44pt;
   font-weight: lighter;
-  /* more precise than italic, the Online logo is skewered exactly 15 degrees */
+  /* For text that is skewed the same amount as the Online logo:
+    - more precise than italic, the Online logo is skewered exactly 15 degrees */
 
-  -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
-  transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+  /*-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);*/
+
 }
 header #notification {
   position: absolute;
-  left: 23pt;
+  left: 105pt;
   top: 7.5pt;
+  text-align: center;
+  width: 360pt;
   padding: 3pt 15pt 2pt 10pt;
-  background: #001429;
+  background: #FFFF99;
   font-size: 44pt;
-  font-weight: bold;
+  /*font-weight: bold;*/
+
   /* more precise than italic, the Online logo is skewered exactly 15 degrees */
 
-  -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
-  transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+  /*-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);*/
+
   color: white;
-  box-shadow: 0 0 10pt #001429, 0 0 15pt #001429, 0 0 30pt #001429;
+  /*box-shadow: 0 0 10pt @background-dark, 0 0 15pt @background-dark, 0 0 30pt @background-dark;*/
+
+  box-shadow: 0 0 10pt White,
+      0 0 15pt White,
+      0 0 30pt White,
+      0 0 45pt White;
+  border: 1pt solid #FFCC99;
   border-radius: 20pt;
   display: none;
 }
@@ -84,7 +87,9 @@ header #notification .heart {
   color: #ff44f8;
 }
 header #notification .saved {
-  color: #FFFEA8;
+  color: #ff44f8;
+  /*color: #FFFEA8;*/
+
 }
 /* all the options, main content */
 #container {
@@ -93,9 +98,9 @@ header #notification .saved {
   left: 50%;
   top: 50%;
   width: 600pt;
-  height: 260pt;
+  height: 310pt;
   margin-left: -300pt;
-  margin-top: -115pt;
+  margin-top: -130pt;
   z-index: 10;
 }
 #container .side {
@@ -157,7 +162,7 @@ header #notification .saved {
   box-shadow: 0 0 15px #333;
   cursor: pointer;
 }
-.item input#showAffiliation {
+.item input#showAffiliation1 {
   opacity: 0;
   /* Turning off news feed is not allowed since it would
     turn off the primary purpose of Online Notifier. Don't
@@ -179,8 +184,8 @@ header #notification .saved {
 }
 .item #affiliationBox {
   width: 265pt;
+  height: 35pt;
   margin: 5pt 0 0 15pt;
-  overflow: hidden;
   border-top: 1pt solid white;
   border-bottom: 1pt solid #7a7a7a;
   border-radius: 3pt;
@@ -196,36 +201,75 @@ header #notification .saved {
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
 
-  padding: 3pt 8pt;
+  padding: 4pt 8pt;
+  overflow: hidden;
   white-space: nowrap;
   word-wrap: break-word;
 }
-.item #affiliationBox #affiliationKey {
+.item #affiliationBox #affiliationSymbol {
   border: 0pt solid #ff0000;
+  float: left;
+  white-space: nowrap;
+  cursor: pointer;
+  width: 44pt;
+  margin: -5pt 4pt -5pt -8pt;
+  border-right: 1pt solid #aaa;
+  background-position: center center;
+  background-size: 33pt 33pt;
+  background-repeat: no-repeat;
+  background-image: url(../org/online/symbol.png);
+  /* is switched for affiliation logo */
+
+}
+.item #affiliationBox .row {
+  border: 0pt solid #ff0000;
+  float: right;
+  width: 220pt;
+  color: black;
+  text-shadow: 0 0 0 black;
+}
+.item #affiliationBox .row select {
+  position: relative;
+}
+.item #affiliationBox .row input {
+  box-shadow: 0 0 0 black;
+}
+.item #affiliationBox #bottomRow {
+  font-size: 10pt;
+  margin-top: 3pt;
+}
+.item #affiliationBox #bottomRow select {
+  top: -3pt;
+}
+.item #affiliationBox #affiliationKey1 {
+  border: 0pt solid #ff0000;
+  display: inline-block;
   float: left;
   border: 1pt solid #7a7a7a;
   position: relative;
   margin-top: 2pt;
-  margin-left: 8pt;
   white-space: nowrap;
-  width: 130pt;
+  width: 117pt;
 }
 .item #affiliationBox #affiliationPalette {
   border: 0pt solid #ff0000;
-  float: left;
+  display: inline-block;
+  float: right;
   border: 1pt solid #7a7a7a;
   position: relative;
   margin-top: 2pt;
-  margin-left: 8pt;
   white-space: nowrap;
-  width: 98pt;
+  width: 96pt;
 }
-.item #affiliationBox #affiliationLogo {
+.item #affiliationBox #affiliationKey2 {
   border: 0pt solid #ff0000;
-  float: left;
+  display: inline-block;
+  border: 1pt solid #7a7a7a;
+  float: right;
+  position: relative;
+  margin-top: 2pt;
   white-space: nowrap;
-  width: 19pt;
-  margin: 0 0;
+  width: 96pt;
 }
 .item #cantinaBox {
   width: 265pt;
@@ -297,7 +341,7 @@ header #notification .saved {
 }
 .item #bus_box .bus_stop input {
   width: 102pt;
-  box-shadow: 0 0 0px black;
+  box-shadow: 0 0 0 black;
 }
 .item #bus_box .bus_stop select {
   z-index: 10;
@@ -447,6 +491,16 @@ header #notification .saved {
       0 0 40px #011b36,
       0 0 40px #011b36;
 }
+/* logo with link in the top right corner */
+/*#logolink {
+  position: fixed;
+  top: 10pt;
+  right: 10pt;
+  #logo {
+    .debugyellow;
+    width: 120pt;
+  }
+}*/
 /* Debug toolbox in the the top right corner, only shown in debug mode */
 #debug_links {
   display: none;
@@ -549,10 +603,67 @@ header #notification .saved {
   width: 170px;
   z-index: 1;
 }
+/* "Popup is here"-bubble */
+#popupHere {
+  border: 0pt solid #ff0000;
+  position: absolute;
+  display: none;
+  top: 0;
+  right: 0;
+  margin: 15pt;
+  padding: 10pt;
+  background: white;
+  border-radius: 20pt;
+  width: 180pt;
+  box-shadow: 0 0 15pt white,
+    0 0 25pt white,
+    0 0 45pt white;
+  font-family: helvetica;
+  color: #333;
+  opacity: .9;
+  z-index: 1000;
+}
+#popupHere .icon {
+  border: 0pt solid #ff0000;
+  position: relative;
+  display: inline;
+  float: left;
+  width: 30pt;
+  height: 30pt;
+  margin-right: 3pt;
+}
+#popupHere .arrow {
+  border: 0pt solid #ff0000;
+  position: relative;
+  display: inline;
+  float: right;
+  width: 25pt;
+  height: 19pt;
+  top: -4pt;
+  left: -11pt;
+}
+#popupHere .text {
+  border: 0pt solid #ff0000;
+  position: relative;
+  display: inline;
+  float: left;
+  font-size: 14pt;
+  top: 2pt;
+}
+#popupHere .subtext {
+  border: 0pt solid #ff0000;
+  position: relative;
+  display: inline;
+  float: left;
+  font-size: 9pt;
+}
 /* Canvas with webGL */
 canvas {
   border: 0pt solid #ffff00;
+  position: absolute;
+  top: 100pt;
+  left: 100pt;
   background: transparent;
   opacity: 0;
-  z-index: 10;
+  z-index: 1000;
 }

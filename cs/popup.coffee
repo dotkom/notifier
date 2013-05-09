@@ -14,7 +14,8 @@ mainLoop = ->
   updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
-  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
+  updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
+  updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -61,14 +62,15 @@ listDinners = (menu) ->
     ls.noDinnerInfo = 'false'
     for dinner in menu
       if dinner.price != null
-        dinner.price = dinner.price + ',- '
-        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + dinner.text + '</li>'
+        dinner.price = dinner.price + ',-'
+        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>'
       else
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist
 
 clickDinnerLink = (cssSelector) ->
   $(cssSelector).click ->
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()])
     Browser.openTab Cantina.url
     window.close()
 
@@ -114,7 +116,7 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....</div>'
+      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....<br />(etter midnatt vises ikke)</div>'
     else
       # Display line for line with according times
       for i of spans
@@ -122,27 +124,32 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
         $(busStop+' .'+spans[i]+' .line').append lines['destination'][i]
         $(busStop+' .'+spans[i]+' .time').append lines['departures'][i]
 
-updateNews = ->
-  if DEBUG then console.log 'updateNews'
+updateAffiliationNews = (number) ->
+  if DEBUG then console.log 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
-  feedItems = ls.feedItems
-  if feedItems isnt undefined
-    displayItems JSON.parse feedItems
-  else
-    key = ls.affiliationKey
-    name = Affiliation.org[key].name
-    $('#news').html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+  feedItems = ls['affiliationFeedItems'+number]
+  # Detect selector
+  selector = if number is '1' then '#left' else '#right'
+  if ls.showAffiliation2 isnt 'true' then selector = '#full'
 
-displayItems = (items) ->
-  # Empty the newsbox
-  $('#news').html ''
-  # Get feedname
+  if feedItems isnt undefined
+    feedItems = JSON.parse feedItems
+    displayItems feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
+  else
+    key = ls['affiliationKey'+number]
+    name = Affiliation.org[key].name
+    $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+
+displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
+  # Empty the news column
+  $('#news '+column).html ''
+  # Get feedkey
   feedKey = items[0].feedKey
 
   # Get list of last viewed items and check for news that are just
   # updated rather than being actual news
-  newsList = JSON.parse ls.newsList
-  viewedList = JSON.parse ls.viewedNewsList
+  newsList = JSON.parse ls[newsListName]
+  viewedList = JSON.parse ls[viewedListName]
   updatedList = findUpdatedPosts newsList, viewedList
 
   # Build list of last viewed for the next time the user views the news
@@ -154,52 +161,59 @@ displayItems = (items) ->
     if index < newsLimit
       viewedList.push item.link
       
-      htmlItem = '<div class="post"><div class="title">'
-      if index < ls.unreadCount
+      unreadCount = Number ls[unreadCountName]
+      readUnread = ''
+      if index < unreadCount
         if item.link in updatedList.indexOf
-          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+          readUnread += '<span class="unread">UPDATED <b>::</b> </span>'
         else
-          htmlItem += '<span class="unread">NEW <b>::</b> </span>'
+          readUnread += '<span class="unread">NEW <b>::</b> </span>'
 
       # EXPLANATION NEEDED:
       # .item[data] contains the link
       # .item[name] contains the alternative link, if one exists, otherwise null
       date = altLink = ''
-      if item.date isnt null
-        date = ' den ' + item.date
       if item.altLink isnt null
         altLink = ' name="' + item.altLink + '"'
-      htmlItem += item.title + '
-        </div>
+      if item.date isnt null and ls.showAffiliation2 is 'false'
+        date = ' den ' + item.date
+      descLimit = 140
+      if ls.showAffiliation2 is 'true'
+        descLimit = 100
+      if item.description.length > descLimit
+        item.description = item.description.substr(0, descLimit) + '...'
+
+      htmlItem = '
+        <div class="post">
           <div class="item" data="' + item.link + '"' + altLink + '>
+            <div class="title">' + readUnread + item.title + '</div>
             <img src="' + item.image + '" width="107" />
-            <div class="textwrapper">
-              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
-              ' + item.description + '
-            </div>
+            ' + item.description + '
+            <div class="emphasized">- Av ' + item.creator + date + '</div>
           </div>
         </div>'
-      $('#news').append htmlItem
+      $('#news '+column).append htmlItem
   
   # Store list of last viewed items
-  ls.viewedNewsList = JSON.stringify viewedList
+  ls[viewedListName] = JSON.stringify viewedList
 
   # All items are now considered read
   Browser.setBadgeText ''
-  ls.unreadCount = 0
+  ls[unreadCountName] = 0
 
   # Make news items open extension website while closing popup
-  $('.item').click ->
+  $('#news '+column+' .item').click ->
     # The link is embedded as the ID of the element, we don't want to use
     # <a> anchors because it creates an ugly box marking the focus element.
     # Note that altLinks are embedded in the name-property of the element,
     # - if preferred by the organization, we should use that instead.
+    link = $(this).attr 'data'
     altLink = $(this).attr 'name'
-    useAltLink = Affiliation.org[ls.affiliationKey].useAltLink
+    useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink
     if altLink isnt undefined and useAltLink is true
-      Browser.openTab $(this).attr 'name'
-    else
-      Browser.openTab $(this).attr 'data'
+      link = $(this).attr 'name'
+    Browser.openTab link
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickNews', link])
     window.close()
 
   # If organization prefers alternative links, use them
@@ -265,22 +279,34 @@ $ ->
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleInfoscreen'])
     setTimeout ( ->
       window.close()
     ), 250
+
+  # If only one affiliation is to be shown remove the second news column
+  if ls.showAffiliation2 isnt 'true'
+    $('#news #right').hide()
+    $('#news #left').attr 'id', 'full'
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1])
+  # If using two affiliation columns, increase the popup window size (better than
+  # decreasing the window size after opening it cuz that looks kinda stupid)
+  else
+    $('body').attr 'style', 'width:400pt;'
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  if ls.affiliationKey isnt 'online'
+  if ls.affiliationKey1 isnt 'online'
     # Hide chat button
     $('#chatter_button').hide()
     # Hide Notifier Mobile info in Tips box
     $('#mobile_text').hide()
     # Show the logo and placeholder image for the correct organization
-    affiliation = ls.affiliationKey
+    affiliation = ls.affiliationKey1
     # If the affiliation has a defined logo
     logo = Affiliation.org[affiliation].logo
     if logo isnt undefined and logo isnt ''
@@ -288,23 +314,45 @@ $ ->
       $('#header #logo').prop 'src', logo
   
   # Show the standard palette or special palette the user has chosen
-  palette = ls.affiliationPalette
-  if palette isnt undefined
-    if DEBUG then console.log 'Applying chosen palette', palette
-    $('#palette').attr 'href', Palettes.get palette
+  palette = Palettes.get ls.affiliationPalette
+  $('#palette').attr 'href', palette
+  if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', palette])
 
-  # Make logo open extension website while closing popup
+  # Click events
   $('#logo').click ->
-    web = Affiliation.org[ls.affiliationKey].web
+    name = Affiliation.org[ls.affiliationKey1].name
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickLogo', name])
+    web = Affiliation.org[ls.affiliationKey1].web
     Browser.openTab web
     window.close()
 
   $('#options_button').click ->
     Browser.openTab 'options.html'
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickOptions'])
+    window.close()
+
+  $('#tips_button').click ->
+    if $('#tips').filter(':visible').length is 1
+      $('#tips').fadeOut 'fast'
+    else
+      $('#tips').fadeIn 'fast'
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTips'])
+  $('#tips:not(a)').click ->
+    $('#tips').fadeOut 'fast'
+  $('#tips a').click ->
+    link = $(this).attr 'href'
+    Browser.openTab link
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link])
     window.close()
 
   $('#chatter_button').click ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
+    window.close()
+  
+  $('#bus #atb_logo').click ->
+    Browser.openTab 'http://www.atb.no'
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickAtb'])
     window.close()
 
   # Bind buttons to hovertext
@@ -323,26 +371,11 @@ $ ->
   $('#tips_button').mouseleave ->
     tipsText false
 
-  # Bind the Tips button and the Tips dialog
-  $('#tips_button').click ->
-    if $('#tips').filter(':visible').length is 1
-      $('#tips').fadeOut 'fast'
-    else
-      $('#tips').fadeIn 'fast'
-  $('#tips:not(a)').click ->
-    $('#tips').fadeOut 'fast'
-  $('#tips a').click ->
-    Browser.openTab $(this).attr 'href'
-    window.close()
-
-  $('#bus #atb_logo').click ->
-    Browser.openTab 'http://www.atb.no'
-    window.close()
-
   # React to Konami code
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
           0% { -webkit-filter: hue-rotate(0deg); }

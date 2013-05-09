@@ -7,7 +7,7 @@ var News = {
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
 
-  debug: 1,
+  debug: 0,
 
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
@@ -38,8 +38,15 @@ var News = {
         self.parseFeed(xml, affiliationObject, limit, callback);
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
-        callback(self.msgConnectionError, affiliationObject.name);
+        // Check for XML sent with HTML headers
+        if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
+          xml = jqXHR.responseText;
+          self.parseFeed(xml, affiliationObject, limit, callback);
+        }
+        else {
+          if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
+          callback(self.msgConnectionError, affiliationObject.name);
+        }
       },
     });
   },
@@ -56,21 +63,46 @@ var News = {
   // - dc:creator - author name or username
   // - enclosure - may contain an image as an XML attribute: url="news_post_image.jpg"
   // - source
+  // In Atom feeds, these are the usual fields:
+  // - id - a useless ID
+  // - published - the publishing date, must be parsed
+  // - updated - the updated date, must be parsed
+  // - title
+  // - content - is the full entry as HTML
+  // - link[rel="self"] - is this entry in XML format, useless
+  // - link[rel="alternate"] - is the entry as text/html, good!
+  // - author -> name
   parseFeed: function(xml, affiliationObject, limit, callback) {
-    var items = [];
+    var posts = [];
     var self = this;
     var count = 0;
-    // Add each item from the feed
-    $(xml).find('item').each( function() {
-      if (count++ < limit) {
-        var item = self.parseItem(this, affiliationObject);
-        items.push(item);
-      }
-    });
-    callback(items);
+    // Add each item from RSS feed
+    if ($(xml).find('item').length != 0) {
+      $(xml).find('item').each( function() {
+        if (count++ < limit) {
+          var item = self.parseRssItem(this, affiliationObject);
+          item = self.postProcess(item);
+          posts.push(item);
+        }
+      });
+    }
+    // Add each item from Atom feed
+    else if ($(xml).find('entry').length != 0) {
+      $(xml).find('entry').each( function() {
+        if (count++ < limit) {
+          var entry = self.parseAtomEntry(this, affiliationObject);
+          entry = self.postProcess(entry);
+          posts.push(entry);
+        }
+      });
+    }
+    else {
+      if (this.debug) console.log('ERROR: Unknown feed type, neither RSS nor Atom');
+    }
+    callback(posts);
   },
 
-  parseItem: function(item, affiliationObject) {
+  parseRssItem: function(item, affiliationObject) {
     var post = {};
 
     // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
@@ -88,25 +120,46 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // Check for image in rarely used <enclosure>-tag
-    var enclosure = $(item).find('enclosure');
-    if (enclosure != '') {
-      try {
-        // Universitetsavisa does this little trick to get images in their feed
-        post.image = enclosure['0'].attributes.url.textContent;
+    // If feed uses CDATA-tags in title and description we need to be more clever (Adressa)
+    var handleCDATA = function(item, field, postField) {
+      if (postField.trim() == '' || postField.match('CDATA') != null) {
+        var string = $(item).find(field).filter(':first')['0']['innerHTML'];
+        if (typeof string != 'undefined') {
+          string = string.replace(/(\<|&lt;)?!(\-\-)?\[CDATA\[/g, '');
+          string = string.replace(/\]\](\-\-)?(\>|&gt;)?/g, '');
+          return string;
+        }
       }
-      catch (err) {
-        // Do nothing, we we're just checking, move along quitely
+      return postField;
+    };
+    post.title = handleCDATA(item, 'title', post.title);
+    post.description = handleCDATA(item, 'description', post.description);
+
+    // If link field is broken by jQuery, check GUID field for link instead (Adressa)
+    if (post.link.trim() == '') {
+      var guid = $(item).find('guid').filter(':first').text();
+      if (guid.indexOf('http') != -1) {
+        post.link = guid;
       }
     }
-    
-    // Check for alternative links in description
-    post.altLink = this.checkForAltLink(post.description);
 
-    // Remove HTML
-    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
-    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
-    
+    // Check for image in rarely used tags <enclosure> and <bilde>
+    try {
+      // Universitetsavisa/Adressa does this little trick to get images in their feed
+      var enclosure = $(item).find('enclosure').filter(':first');
+      if (enclosure.length != 0) {
+        post.image = enclosure['0'].attributes.url.textContent;
+      }
+      // Gemini uses this rather blunt hack to put images in their feed
+      var bilde = $(item).find('bilde');
+      if (bilde.length != 0) {
+        post.image = bilde['0'].textContent;
+      }
+    }
+    catch (err) {
+      // Do nothing, we we're just checking, move along quitely
+    }
+
     // In case browser does not grok tags with colons, stupid browser
     if (post.creator == '') {
       var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
@@ -114,6 +167,53 @@ var News = {
         post.creator = $(this).text().trim();
       });
     }
+
+    return post;
+  },
+
+  parseAtomEntry: function(entry, affiliationObject) {
+    var post = {};
+
+    // The popular fields
+    post.title = $(entry).find("title").filter(':first').text();
+    post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
+    post.description = $(entry).find("content").filter(':first').text();
+    post.creator = $(entry).find("author name").filter(':first').text();
+    post.date = $(entry).find("published").filter(':first').text().substr(5, 11);
+
+    // Locally stored
+    post.image = affiliationObject.placeholder;
+    // Tag the posts with the key and name of the feed they came from
+    post.feedKey = affiliationObject.key;
+    post.feedName = affiliationObject.name;
+
+    // Extract image from content HTML
+    var image = $(entry).find('content').filter(':first').text();
+    if (image != undefined) {
+      image = image.match(/src="(http:\/\/[a-zA-Z0-9.\/\-_]+)"/);
+      if (image != null) {
+        post.image = image[1];
+      }
+    }
+
+    // Parse date field
+    post.date = new Date(post.date);
+    if (post.date != "Invalid Date")
+      post.date = post.date.toDateString();
+    else
+      post.date = null;
+
+    return post;
+  },
+
+  postProcess: function(post) {
+    // Check for alternative links in description
+    post.altLink = this.checkForAltLink(post.description);
+
+    // Remove HTML from description (must be done AFTER checking for CDATA tags)
+    post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
+    
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
       post.creator = post.feedName;
@@ -124,9 +224,8 @@ var News = {
     post.creator = this.abbreviateName(post.creator);
 
     // In case pubDate didn't exist, set to null
-    if (post.date == '') {
+    if (post.date == '')
       post.date = null;
-    }
 
     // Trimming
     post.title = post.title.trim();
@@ -135,49 +234,44 @@ var News = {
     // Shorten 'bedriftspresentasjon' to 'bedpres'
     post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
     post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
-    
-    // title + description must not exceed 5 lines
-    var line = 50; // conservative estimation
-    var desclength = line * 3;
-    // double line titles will shorten the description by 1 line
-    if (line <= post.title.length)
-      desclength -= line;
-    // shorten description according to desclength
-    if (desclength < post.description.length)
-      post.description = post.description.substr(0, desclength) + '...';
+
+    // Empty title field?
+    if (post.title.trim() == '')
+      post.title = 'Uten tittel';
+    if (post.description.trim() == '')
+      post.description = 'Uten tekst';
 
     return post;
   },
 
-  refreshNewsIdList: function(items) {
-    var freshNewsList = [];
+  refreshNewsList: function(items) {
+    var freshList = [];
     items.forEach(function(item, index) {
-      freshNewsList.push(item.link);
+      freshList.push(item.link);
     });
-    localStorage.newsList = JSON.stringify(freshNewsList);
+    return JSON.stringify(freshList);
   },
 
-  unreadCountAndNotify: function(items) {
+  countNewsAndNotify: function(items, newsList, lastNotifiedName) {
     var unreadCount = 0;
     var maxNewsAmount = this.unreadMaxCount;
     if (items.length-1 < maxNewsAmount)
       maxNewsAmount = items.length-1;
 
-    var newsList = JSON.parse(localStorage.newsList);
-
     // Count feed items
     var self = this;
-    items.forEach(function(item, index) {
-
+    for (var i=0; i<items.length; i++) {
+      
+      var item = items[i];
       var link = item.link;
       
       // Counting...
       if (newsList.indexOf(link) === -1) {
         unreadCount++;
-
         // Send a desktop notification about the first new item
         if (unreadCount == 1) {
-          if (localStorage.lastNotified != link) {
+          if (localStorage[lastNotifiedName] != link) {
+            localStorage[lastNotifiedName] = item.link;
             self.showNotification(item);
           }
         }
@@ -186,60 +280,73 @@ var News = {
       else {
         if (unreadCount == 0) {
           if (self.debug) console.log('no new posts');
-          Browser.setBadgeText('');
+          return 0;
         }
         else if (maxNewsAmount <= unreadCount) {
           if (self.debug) console.log(maxNewsAmount + '+ unread posts');
-          Browser.setBadgeText(maxNewsAmount + '+');
+          return maxNewsAmount + 1;
         }
         else {
           if (self.debug) console.log('1-' + (maxNewsAmount - 1) + ' unread posts');
-          Browser.setBadgeText(String(unreadCount));
+          return unreadCount;
         }
-        localStorage.unreadCount = unreadCount;
-        return;
       }
-      
+
       // Stop counting if unread number is greater than maxNewsAmount
-      if ((maxNewsAmount - 1) < index) { // Remember index is counting 0
+      if ((maxNewsAmount - 1) < i) { // Remember i is counting 0
         if (self.debug) console.log((maxNewsAmount + 1) + ' unread posts (stopped counting)');
-        Browser.setBadgeText(String(maxNewsAmount + 1));
-        localStorage.unreadCount = maxNewsAmount + 1;
-        return;
+        return maxNewsAmount + 1;
       }
-    });
+    };
+
+    // We'll usually not end up here
+    if (items.length == 0) {
+      if (this.debug) console.log('no items to count!');
+    }
+    else {
+      if (this.debug) console.log('ERROR: something went wrong trying to count these items:', items);
+    }
+    return 0;
   },
 
   showNotification: function(item) {
-    if (localStorage.showNotifications == 'true') {
-      // Remember this
-      localStorage.lastNotified = item.link;
-      // Get content
-      localStorage.notificationTitle = item.title;
-      localStorage.notificationLink = item.link;
-      localStorage.notificationDescription = item.description;
-      localStorage.notificationCreator = item.creator;
-      localStorage.notificationImage = item.image;
-      localStorage.notificationFeedKey = item.feedKey;
-      localStorage.notificationFeedName = item.feedName;
-      // Show desktop notification
-      Browser.createNotification('notification.html');
+    if (typeof item != 'undefined') {
+      if (localStorage.showNotifications == 'true') {
+        // Get content
+        localStorage.notificationTitle = item.title;
+        localStorage.notificationLink = item.link;
+        localStorage.notificationDescription = item.description;
+        localStorage.notificationCreator = item.creator;
+        localStorage.notificationImage = item.image;
+        localStorage.notificationFeedKey = item.feedKey;
+        localStorage.notificationFeedName = item.feedName;
+        // Show desktop notification
+        Browser.createNotification('notification.html');
+      }
+    }
+    else {
+      if (this.debug) console.log('ERROR: notification item was undefined');
     }
   },
 
   checkForAltLink: function(description) {
     // Looking for alternative link, find the first and best full link
-    var altLink = description.match(/href="(http[^"]*)"/);
-    if (altLink != null) {
-      if (typeof altLink[1] == 'string') {
-        return altLink[1];
+    if (typeof description != 'undefined') {
+      var altLink = description.match(/href="(http[^"]*)"/);
+      if (altLink != null) {
+        if (typeof altLink[1] == 'string') {
+          return altLink[1];
+        }
       }
+    }
+    else {
+      if (this.debug) console.log('ERROR: checking for alternative link in undefined var post.description');
     }
     return null;
   },
 
   abbreviateName: function(oldName) {
-    if (oldName != undefined) {
+    if (typeof oldName != 'undefined') {
       // Abbreviate middle names if name is long
       if (18 < oldName.length) {
         var pieces = oldName.split(' ');

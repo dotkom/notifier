@@ -19,6 +19,7 @@ setNotification = ->
     
     # Capture clicks
     $('#notification').click ->
+      if !DEBUG then _gaq.push(['_trackEvent', 'notification', 'clickNotification', link])
       Browser.openTab link
       window.close
 

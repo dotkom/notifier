@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" id="extensions:onlinenotifier" version="2.5.0">
+<widget xmlns="http://www.w3.org/ns/widgets" id="extensions:onlinenotifier" version="3.0.0">
 	
   <name short="Notifier">
     Online Notifier
@@ -19,7 +19,6 @@
   
   <content src="background.html" type="text/html" encoding="utf-8" />
 
-  <access origin="https://*/*" subdomains="true" />
-  <access origin="http://*/*" subdomains="true" />
+  <access origin="*" subdomains="true" />
 
 </widget>

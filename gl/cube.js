@@ -95,6 +95,7 @@
 			neheTexture.image.onload = function () {
 				handleLoadedTexture(neheTexture)
 			}
+			// logo = Affiliation.org[localStorage.affiliationKey].logo;
 			neheTexture.image.src = "gl/128.png";
 		}
 
