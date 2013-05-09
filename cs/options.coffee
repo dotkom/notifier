@@ -81,7 +81,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     # Display Saved<3
     displayOnPageNotification()
     # Analytics
-    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'setAffiliation'+number, affiliationKey]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickAffiliation'+number, affiliationKey])
 
 bindPaletteSelector = ->
   # Default values
@@ -98,7 +98,7 @@ bindPaletteSelector = ->
     # Display Saved<3
     displayOnPageNotification()
     # Analytics
-    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPalette', palette])
 
 disableOnlineSpecificFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -158,7 +158,7 @@ bindCantinaSelector = (selector) ->
   $('#' + selector).change ->
     cantina = $(this).prop 'value'
     ls[selector] = cantina
-    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickCantina', cantina])
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
@@ -590,7 +590,7 @@ restoreChecksToBoxes = ->
       element.checked = true
 
 fadeInCanvas = ->
-  if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
+  if !DEBUG then _gaq.push(['_trackEvent', 'options', 'toggleCanvas'])
   webGLStart()
   $('#LessonCanvas').animate
     opacity:1,
@@ -683,7 +683,7 @@ $ ->
     $('#pagefliplink').attr "style", "bottom:9px;"
   # Google Analytics
   $('#pagefliplink').click ->
-    if (DEBUG) then _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPageflip'])
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
@@ -748,7 +748,8 @@ $ ->
 
   # Catch new clicks
   $('input:checkbox').click ->
-    if (DEBUG) then _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
+    _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1)
+    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'click'+_capitalized, this.checked])
     
     # Special case for 'useInfoscreen'
     if this.id is 'useInfoscreen'

@@ -303,12 +303,9 @@ $ ->
 
   # Run analytics to figure out which organizations use the infoscreen feature
   if ls.showAffiliation2 isnt 'true'
-    if (DEBUG) then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleColumn', ls.affiliationKey1]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1])
   else
-    if (DEBUG) then _gaq.push(
-      ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey1],
-      ['_trackEvent', 'infoscreen', 'loadDoubleColumn', ls.affiliationKey2]
-    );
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
 
   if ls.affiliationKey1 isnt 'online'
     # Show the logo and placeholder image for the correct organization
@@ -323,6 +320,7 @@ $ ->
   $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey1].icon
   # Show the standard palette or special palette the user has chosen
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
+  if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', palette])
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'

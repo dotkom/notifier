@@ -70,7 +70,7 @@ listDinners = (menu) ->
 
 clickDinnerLink = (cssSelector) ->
   $(cssSelector).click ->
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()])
     Browser.openTab Cantina.url
     window.close()
 
@@ -213,7 +213,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     if altLink isnt undefined and useAltLink is true
       link = $(this).attr 'name'
     Browser.openTab link
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickNews', link])
     window.close()
 
   # If organization prefers alternative links, use them
@@ -279,7 +279,7 @@ $ ->
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleInfoscreen'])
     setTimeout ( ->
       window.close()
     ), 250
@@ -288,15 +288,12 @@ $ ->
   if ls.showAffiliation2 isnt 'true'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1])
   # If using two affiliation columns, increase the popup window size (better than
   # decreasing the window size after opening it cuz that looks kinda stupid)
   else
     $('body').attr 'style', 'width:400pt;'
-    if (DEBUG) then _gaq.push(
-      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1],
-      ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]
-    );
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
@@ -319,19 +316,19 @@ $ ->
   # Show the standard palette or special palette the user has chosen
   palette = Palettes.get ls.affiliationPalette
   $('#palette').attr 'href', palette
-  if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
+  if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', palette])
 
   # Click events
   $('#logo').click ->
     name = Affiliation.org[ls.affiliationKey1].name
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickLogo', name])
     web = Affiliation.org[ls.affiliationKey1].web
     Browser.openTab web
     window.close()
 
   $('#options_button').click ->
     Browser.openTab 'options.html'
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickOptions'])
     window.close()
 
   $('#tips_button').click ->
@@ -339,23 +336,23 @@ $ ->
       $('#tips').fadeOut 'fast'
     else
       $('#tips').fadeIn 'fast'
-      if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTips'])
   $('#tips:not(a)').click ->
     $('#tips').fadeOut 'fast'
   $('#tips a').click ->
     link = $(this).attr 'href'
     Browser.openTab link
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link])
     window.close()
 
   $('#chatter_button').click ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
     window.close()
   
   $('#bus #atb_logo').click ->
     Browser.openTab 'http://www.atb.no'
-    if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickAtb'])
     window.close()
 
   # Bind buttons to hovertext
@@ -378,7 +375,7 @@ $ ->
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
-      if (DEBUG) then _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
           0% { -webkit-filter: hue-rotate(0deg); }

@@ -244,20 +244,20 @@
     }
     if (ls.everConnected === void 0 && !DEBUG) {
       Browser.openTab('options.html');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'background', 'freshInstall']);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)']);
       }
     }
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'background', 'runInfoscreen']);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'background', 'loadInfoscreen']);
       }
     }
     if (ls.openChatter === 'true') {
       Browser.openBackgroundTab('http://webchat.freenode.net/?channels=online');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'background', 'openChatter']);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'background', 'loadChatter']);
       }
     }
     ls.everConnected = ls.wasConnected = 'false';

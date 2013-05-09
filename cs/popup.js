@@ -117,7 +117,7 @@
 
   clickDinnerLink = function(cssSelector) {
     return $(cssSelector).click(function() {
-      if (DEBUG) {
+      if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
       }
       Browser.openTab(Cantina.url);
@@ -265,8 +265,8 @@
         link = $(this).attr('name');
       }
       Browser.openTab(link);
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickLink', link]);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickNews', link]);
       }
       return window.close();
     });
@@ -346,8 +346,8 @@
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'openInfoscreen']);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'toggleInfoscreen']);
       }
       setTimeout((function() {
         return window.close();
@@ -356,13 +356,13 @@
     if (ls.showAffiliation2 !== 'true') {
       $('#news #right').hide();
       $('#news #left').attr('id', 'full');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'loadSingleColumn', ls.affiliationKey1]);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1]);
       }
     } else {
       $('body').attr('style', 'width:400pt;');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey1], ['_trackEvent', 'popup', 'loadDoubleColumn', ls.affiliationKey2]);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
       }
     }
     if (ls.showOffice !== 'true') {
@@ -388,13 +388,13 @@
     }
     palette = Palettes.get(ls.affiliationPalette);
     $('#palette').attr('href', palette);
-    if (DEBUG) {
-      _gaq.push(['_trackEvent', 'popup', 'setPalette', palette]);
+    if (!DEBUG) {
+      _gaq.push(['_trackEvent', 'popup', 'loadPalette', palette]);
     }
     $('#logo').click(function() {
       var name, web;
       name = Affiliation.org[ls.affiliationKey1].name;
-      if (DEBUG) {
+      if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
       }
       web = Affiliation.org[ls.affiliationKey1].web;
@@ -403,8 +403,8 @@
     });
     $('#options_button').click(function() {
       Browser.openTab('options.html');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickButton', 'options']);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickOptions']);
       }
       return window.close();
     });
@@ -413,8 +413,8 @@
         return $('#tips').fadeOut('fast');
       } else {
         $('#tips').fadeIn('fast');
-        if (DEBUG) {
-          return _gaq.push(['_trackEvent', 'popup', 'clickButton', 'tips']);
+        if (!DEBUG) {
+          return _gaq.push(['_trackEvent', 'popup', 'clickTips']);
         }
       }
     });
@@ -425,22 +425,22 @@
       var link;
       link = $(this).attr('href');
       Browser.openTab(link);
-      if (DEBUG) {
+      if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
       }
       return window.close();
     });
     $('#chatter_button').click(function() {
       Browser.openTab('http://webchat.freenode.net/?channels=online');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickButton', 'chatter']);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickChatter']);
       }
       return window.close();
     });
     $('#bus #atb_logo').click(function() {
       Browser.openTab('http://www.atb.no');
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickLogo', 'AtB']);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'clickAtb']);
       }
       return window.close();
     });
@@ -465,8 +465,8 @@
     $(document).konami({
       code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
       callback: function() {
-        if (DEBUG) {
-          _gaq.push(['_trackEvent', 'popup', 'konamiCode']);
+        if (!DEBUG) {
+          _gaq.push(['_trackEvent', 'popup', 'toggleKonami']);
         }
         $('head').append('<style type="text/css">\
         @-webkit-keyframes adjustHue {\

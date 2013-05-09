@@ -10,8 +10,8 @@
     random = 1 + Math.floor(Math.random() * amount);
     image = './meme/' + random + '.jpg';
     $('#subscription').click(function() {
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'subscription', 'click', image]);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'subscription', 'clickMeme', image]);
       }
       Browser.openTab('options.html');
       return window.close;

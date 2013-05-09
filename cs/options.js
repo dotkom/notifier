@@ -86,8 +86,8 @@
         Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
       displayOnPageNotification();
-      if (DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'setAffiliation' + number, affiliationKey]);
+      if (!DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'clickAffiliation' + number, affiliationKey]);
       }
     });
   };
@@ -103,8 +103,8 @@
       }
       $('#palette').attr('href', Palettes.get(palette));
       displayOnPageNotification();
-      if (DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'setPalette', palette]);
+      if (!DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'clickPalette', palette]);
       }
     });
   };
@@ -184,8 +184,8 @@
       var cantina;
       cantina = $(this).prop('value');
       ls[selector] = cantina;
-      if (DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'setCantina', cantina]);
+      if (!DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'clickCantina', cantina]);
       }
     });
   };
@@ -645,8 +645,8 @@
   };
 
   fadeInCanvas = function() {
-    if (DEBUG) {
-      _gaq.push(['_trackEvent', 'options', 'fadeInCanvas']);
+    if (!DEBUG) {
+      _gaq.push(['_trackEvent', 'options', 'toggleCanvas']);
     }
     webGLStart();
     return $('#LessonCanvas').animate({
@@ -726,8 +726,8 @@
       $('#pagefliplink').attr("style", "bottom:9px;");
     }
     $('#pagefliplink').click(function() {
-      if (DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'pageFlipLink']);
+      if (!DEBUG) {
+        return _gaq.push(['_trackEvent', 'options', 'clickPageflip']);
       }
     });
     changeCreatorName(ls.extensionCreator);
@@ -769,8 +769,10 @@
       return $(this).removeClass('hover');
     });
     return $('input:checkbox').click(function() {
-      if (DEBUG) {
-        _gaq.push(['_trackEvent', 'options', this.id, this.checked]);
+      var _capitalized;
+      _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'options', 'click' + _capitalized, this.checked]);
       }
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);
