@@ -124,9 +124,11 @@ var News = {
     var handleCDATA = function(item, field, postField) {
       if (postField.trim() == '' || postField.match('CDATA') != null) {
         var string = $(item).find(field).filter(':first')['0']['innerHTML'];
-        string = string.replace(/(\<|&lt;)?!(\-\-)?\[CDATA\[/g, '');
-        string = string.replace(/\]\](\-\-)?(\>|&gt;)?/g, '');
-        return string;
+        if (typeof string != 'undefined') {
+          string = string.replace(/(\<|&lt;)?!(\-\-)?\[CDATA\[/g, '');
+          string = string.replace(/\]\](\-\-)?(\>|&gt;)?/g, '');
+          return string;
+        }
       }
       return postField;
     };
