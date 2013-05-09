@@ -713,7 +713,7 @@ $ ->
           ), 140
         ), 140
     setTimeout ( ->
-      blinkAffiliation 5
+      blinkAffiliation 6
     ), 5000
 
   # Fade in the +1 button when (probably) ready

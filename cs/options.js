@@ -755,7 +755,7 @@
         }
       };
       setTimeout((function() {
-        return blinkAffiliation(5);
+        return blinkAffiliation(6);
       }), 5000);
     }
     if (ls.affiliationKey1 === 'online') {
