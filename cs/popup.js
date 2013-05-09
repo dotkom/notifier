@@ -216,16 +216,16 @@
     updatedList = findUpdatedPosts(newsList, viewedList);
     viewedList = [];
     $.each(items, function(index, item) {
-      var altLink, date, descLimit, htmlItem, unreadCount, _ref;
+      var altLink, date, descLimit, htmlItem, readUnread, unreadCount, _ref;
       if (index < newsLimit) {
         viewedList.push(item.link);
         unreadCount = Number(ls[unreadCountName]);
-        htmlItem = '<div class="post"><div class="title">';
+        readUnread = '';
         if (index < unreadCount) {
           if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
-            htmlItem += '<span class="unread">UPDATED <b>::</b> </span>';
+            readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
           } else {
-            htmlItem += '<span class="unread">NEW <b>::</b> </span>';
+            readUnread += '<span class="unread">NEW <b>::</b> </span>';
           }
         }
         date = altLink = '';
@@ -242,9 +242,10 @@
         if (item.description.length > descLimit) {
           item.description = item.description.substr(0, descLimit) + '...';
         }
-        htmlItem += item.title + '\
-        </div>\
+        htmlItem = '\
+        <div class="post">\
           <div class="item" data="' + item.link + '"' + altLink + '>\
+            <div class="title">' + readUnread + item.title + '</div>\
             <img src="' + item.image + '" width="107" />\
             ' + item.description + '\
             <div class="emphasized">- Av ' + item.creator + date + '</div>\

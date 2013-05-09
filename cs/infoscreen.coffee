@@ -165,12 +165,12 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       viewedList.push item.link
       
       unreadCount = Number ls[unreadCountName]
-      htmlItem = '<div class="post"><div class="title">'
+      readUnread = ''
       if index < unreadCount
         if item.link in updatedList.indexOf
-          htmlItem += '<span class="unread">UPDATED <b>::</b> </span>'
+          readUnread += '<span class="unread">UPDATED <b>::</b> </span>'
         else
-          htmlItem += '<span class="unread">NEW <b>::</b> </span>'
+          readUnread += '<span class="unread">NEW <b>::</b> </span>'
 
       # EXPLANATION NEEDED:
       # .item[data] contains the link
@@ -185,10 +185,11 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
         descLimit = 100
       if item.description.length > descLimit
         item.description = item.description.substr(0, descLimit) + '...'
-        
-      htmlItem += item.title + '
-        </div>
+
+      htmlItem = '
+        <div class="post">
           <div class="item" data="' + item.link + '"' + altLink + '>
+            <div class="title">' + readUnread + item.title + '</div>
             <img src="' + item.image + '" width="107" />
             ' + item.description + '
             <div class="emphasized">- Av ' + item.creator + date + '</div>
