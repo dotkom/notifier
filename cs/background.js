@@ -242,7 +242,10 @@
     if (ls.useInfoscreen === void 0) {
       ls.useInfoscreen = 'false';
     }
-    if (ls.everConnected === void 0 && !DEBUG) {
+    if (ls.everOpenedOptions === void 0) {
+      ls.everOpenedOptions = 'false';
+    }
+    if (ls.everOpenedOptions === 'false' && !DEBUG) {
       Browser.openTab('options.html');
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)']);
@@ -260,7 +263,6 @@
         _gaq.push(['_trackEvent', 'background', 'loadChatter']);
       }
     }
-    ls.everConnected = ls.wasConnected = 'false';
     loadAffiliationIcon();
     setInterval((function() {
       return document.location.reload();

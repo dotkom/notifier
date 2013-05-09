@@ -203,9 +203,12 @@ $ ->
   
   if ls.useInfoscreen is undefined
     ls.useInfoscreen = 'false'
+  
+  if ls.everOpenedOptions is undefined
+    ls.everOpenedOptions = 'false'
 
   # Open options page after install
-  if ls.everConnected is undefined and !DEBUG
+  if ls.everOpenedOptions is 'false' and !DEBUG
     Browser.openTab 'options.html'
     if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)'])
   # Open Infoscreen if the option is set
@@ -216,9 +219,6 @@ $ ->
   if ls.openChatter is 'true'
     Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
     if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadChatter'])
-
-  # Set default vars for main loop
-  ls.everConnected = ls.wasConnected = 'false'
 
   loadAffiliationIcon()
 
