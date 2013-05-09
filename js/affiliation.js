@@ -750,7 +750,7 @@ var Affiliation = {
 
     // Possible values in options:
     // options = {
-    //   newsSelector: 'div.news_item', // if website uses unpopuplar selectors for news containers it must be defined here
+    //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
     //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
     //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
     //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
@@ -828,7 +828,12 @@ var Affiliation = {
               image = image.parents(newsSelector);
             }
             else {
-              image = doc.find(newsSelector);
+              if (typeof links == 'string') {
+                // On a specific news page (not a frontpage) we can allow ourselves to search
+                // more broadly if we didn't find anything while searching for the link, we'll
+                // search for the newsSelector instead.
+                image = doc.find(newsSelector);
+              }
             }
 
             if (options.noscriptMatching) {
