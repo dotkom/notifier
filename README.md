@@ -4,7 +4,7 @@ This is a both a Chrome/Opera extension and a WebApp from the student organizati
 
 * Install for Chrome: https://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf
 * Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
-* Add WebApp for Mobile: Navigate to http://informatikk.org/mobile and tap "Add to Home Screen"
+* Add WebApp for Mobile: Navigate to http://informatikk.org/mobile and tap "Add to Home Screen" in the context menu of the browser
 
 # Terms of use
 
@@ -18,7 +18,7 @@ Use this program entirely on your own risk. We do not take any responsibility fo
 - Displays todays dinner menu and opening hours from SiT cantinas
 - Displays bus data from AtB in real time
 - Displays and notifies about news from Online
-- Can be used as a webapp (for iOS and Android) by putting all the code on a PHP-enabled server
+- Can be used as a webapp (for iOS/Android) by simply putting all the code on a PHP-enabled server
 - Can be used as an infoscreen (full HD vertical screen) for continous use
 - All pages in the extension are live, they keep themselves updated
 - Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript, jQuery and WebGL
@@ -146,3 +146,12 @@ Options page
 Injected script
 
 - Detects when user is visiting the Online website, nullifying the counter badge
+
+Google Analytics
+
+- All statistics are anonymously collected and helps develop the project further
+- Runs page tracking on all pages which gives general traffic, OS, browsers, countries etc.
+- Runs event tracking on key events throughout all coffeescript files in /cs/
+- Event tracking is split into categories which have the same name as the page name it originates from, this is done because there are so few pages in the project
+- Categories are split into actions which are either clickSomething, loadSomething or toggleSomething
+- An action may have a label, which is usually the clicked link, the loaded file, and so on
