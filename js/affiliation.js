@@ -564,7 +564,8 @@ var Affiliation = {
       getImage: function(link, callback) {
         // Affiliation.getImages(this, links, callback, {newsSelector:'section.articlepreview', domainUrl:'dusken.no'});
         // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
-        Affiliation.getImages(this, link, callback, {newsSelector:'section.article', domainUrl:'dusken.no'});
+        // Affiliation.getImages(this, link, callback, {newsSelector:'section.article', domainUrl:'dusken.no'});
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
       },
     },
     'universitetsavisa': {
@@ -791,7 +792,10 @@ var Affiliation = {
           // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
           var doc = $(html);
 
+          //
           // Decide which selector to use for identifying news containers
+          //
+
           var newsSelector = null;
           if (options.newsSelector) {
             newsSelector = options.newsSelector;
@@ -811,40 +815,49 @@ var Affiliation = {
           var images = [];
 
           for (i in links) {
+
+            //
+            // Find the news container which contains the news image, using our selector
+            //
             
             var link = links[i];
 
-            if (self.debug) {
-              if (isSingleLink)
-                console.log('Checking for image at', link);
-              else
-                console.log('Checking for posts with link', link);
-            }
+            if (self.debug) console.log('Checking for '+(isSingleLink? 'image at' : 'posts with link'), link);
 
             // If posts are using relative links, split by domainUrl, like 'hist.no'
-            if (options.domainUrl)
+            if (options.domainUrl) {
+              if (self.debug) console.log('Splitting link by domain url', options.domainUrl);
               link = links[i].split(options.domainUrl)[1];
+            }
 
             // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
-            if (options.linkDelimiter)
+            if (options.linkDelimiter) {
+              if (self.debug) console.log('Splitting link by delimiter', options.linkDelimiter);
               link = links[i].split(options.linkDelimiter)[0];
+            }
 
-            // Look up the first post with the link inside it
+            // Look up the first post with the link inside it...
             image = doc.find(newsSelector + ' a[href="' + link + '"]');
 
-            // Find parent 'article' or 'div.post' or the like
+            // ...then find parent 'article' or 'div.post' or the like...
             if (image.length != 0) {
-              console.log('Found something with the link, finding parent..');
+              if (self.debug) console.log('Found something with the link, finding the parent (the news box');
               image = image.parents(newsSelector);
             }
-            else {
-              if (isSingleLink) {
-                // On a specific news page (not a frontpage) we can allow ourselves to search
-                // more broadly if we didn't find anything while searching for the link, we'll
-                // search for the newsSelector instead.
-                image = doc.find(newsSelector);
-              }
+            // ...unless we didn't find anything with the link, in which case we just look for the news selector
+            else if (isSingleLink) {
+              if (self.debug) console.log('Found nothing with the link, trying news selector instead');
+              // On a specific news page (not a frontpage) we can allow ourselves to search
+              // more broadly if we didn't find anything while searching for the link. We'll
+              // search for the newsSelector instead and assume that the first news container
+              // we find contains the image we're looking for (which is highly likely based
+              // on experience).
+              image = doc.find(newsSelector);
             }
+
+            //
+            // Presumably we've found the news container here, now we need to find the image within it
+            //
 
             if (options.noscriptMatching) {
               // If a <noscript> tag is used, we'll just find the image URL by matching
@@ -866,6 +879,10 @@ var Affiliation = {
               // Get the src for the first image left in the array
               image = image.attr('src');
             }
+
+            //
+            // Here we determine whether we have found an image or not, and callback the image or a placeholder
+            //
 
             // If image is undefined
             if (typeof image == 'undefined') {
