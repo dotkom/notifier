@@ -79,6 +79,7 @@
         });
         name = Affiliation.org[affiliationKey].name;
         Browser.setTitle(name + ' Notifier');
+        ls.extensionName = name + ' Notifier';
       }
       ls.removeItem('affiliationFeedItems' + number);
       if (ls['showAffiliation' + number] === 'true') {

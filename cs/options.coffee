@@ -66,9 +66,10 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       $('#affiliationSymbol').unbind 'click'
       $('#affiliationSymbol').click ->
         Browser.openTab web
-      # Name to badge title
+      # Name to badge title and localstorage
       name = Affiliation.org[affiliationKey].name
       Browser.setTitle name + ' Notifier'
+      ls.extensionName = name + ' Notifier'
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
