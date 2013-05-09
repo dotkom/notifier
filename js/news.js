@@ -133,7 +133,7 @@ var News = {
     post.title = handleCDATA(item, 'title', post.title);
     post.description = handleCDATA(item, 'description', post.description);
 
-    // If link field is broken in any way, check GUID field for link instead (Adressa)
+    // If link field is broken by jQuery, check GUID field for link instead (Adressa)
     if (post.link.trim() == '') {
       var guid = $(item).find('guid').filter(':first').text();
       if (guid.indexOf('http') != -1) {
