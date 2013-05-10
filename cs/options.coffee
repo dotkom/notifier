@@ -338,7 +338,7 @@ getFavoriteLines = (busField) ->
   
   Bus.getLines busStopId, (json) ->
     # Did the json even reach us? Is the result an error message?
-    console.log json
+    # HOTFIX console.log json ############################################################
     errorMessage = null
     if typeof json is 'undefined' then errorMessage = 'Oops, frakoblet'
     if typeof json is 'string' then errorMessage = json
