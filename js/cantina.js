@@ -242,11 +242,16 @@ var Cantina = {
       });
       
       // Turn prices into Number vars and sort dinnerobjects by price
-      if (dinnerObjects[0].price !== null) {
+      if (typeof dinnerObjects[0].price != 'undefined') {
         dinnerObjects.sort(function(a,b){
           a.price = Number(a.price);
           b.price = Number(b.price);
           return(a.price>b.price)?1:((b.price>a.price)?-1:0);
+        });
+        // Missing prices are turned into 0's by the sort function,
+        // - Set prices back to null to make sure it doesn't count as a number
+        dinnerObjects.forEach(function(dinner){
+          if (dinner.price == 0) dinner.price = null;
         });
       }
 
