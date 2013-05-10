@@ -374,6 +374,7 @@
     if (ls.showBus !== 'true') {
       $('#bus').hide();
     }
+    hotFixBusLines();
     if (ls.affiliationKey1 !== 'online') {
       $('#chatter_button').hide();
       $('#mobile_text').hide();

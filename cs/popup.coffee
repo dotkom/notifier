@@ -300,6 +300,11 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
+  #####################
+  # HOTFIX
+  #####################
+  hotFixBusLines()
+
   if ls.affiliationKey1 isnt 'online'
     # Hide chat button
     $('#chatter_button').hide()
