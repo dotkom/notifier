@@ -373,6 +373,17 @@
     $.ajaxSetup(AJAX_SETUP);
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
+    if (ls.showAffiliation2 !== 'true') {
+      $('#news #right').hide();
+      $('#news #left').attr('id', 'full');
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1]);
+      }
+    } else {
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
+      }
+    }
     if (ls.showOffice !== 'true') {
       $('#office').hide();
     }
@@ -384,15 +395,6 @@
     }
     if (ls.showBus !== 'true') {
       $('#bus').hide();
-    }
-    if (ls.showAffiliation2 !== 'true') {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1]);
-      }
-    } else {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
-      }
     }
     if (ls.affiliationKey1 !== 'online') {
       affiliation = ls.affiliationKey1;
