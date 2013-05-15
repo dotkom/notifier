@@ -33,6 +33,29 @@ var Cantina = {
     // 'oya': '...', // Mangler
   },
 
+  names: {
+    'dmmh': 'DMMH',
+    'dragvoll': 'Dragvoll',
+    'elektro': 'Elektro',
+    'hangaren': 'Hangaren',
+    'kalvskinnet': 'Kalvskinnet',
+    'kjel': 'Kjelhuset',
+    'moholt': 'Moholt',
+    'mtfs': 'MTFS',
+    'ranheimsveien': 'Ranheimsveien',
+    'realfag': 'Realfag',
+    'rotvoll': 'Rotvoll',
+    'tyholt': 'Tyholt',
+    'oya': 'Øya',
+    'storkiosk dragvoll': 'Storkiosk Dragvoll',
+    'storkiosk gloshaugen': 'Storkiosk Gløshaugen',
+    'storkiosk oya': 'Storkiosk Øya',
+    'idretts. dragvoll': 'Idretts. Dragvoll',
+    'sito dragvoll': 'Sito Dragvoll',
+    'sito realfag': 'Sito Realfag',
+    'sito stripa': 'Sito Stripa',
+  },
+
   // SiTs new format for ajaxing dinner:
   // NOT used, we use RSS instead, so far this is just saved here for the sake of interest
   // https://www.sit.no/ajaxdinner/get
