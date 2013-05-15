@@ -7,7 +7,7 @@ var Cantina = {
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
   
-  debug: 0, // General debugging
+  debug: 1, // General debugging
   debugDay: 0, // Whether or not to debug a particular day
   debugThisDay: 'Fredag', // The day in question
   debugText: 0, // Whether or not to deep debug dinner strings (even in weekends)
@@ -202,7 +202,12 @@ var Cantina = {
             // Split and compare prices
             var price1 = price.split(delimiter)[0].match(/\d+/g);
             var price2 = price.split(delimiter)[1].match(/\d+/g);
-            price = ( Number(price1) < Number(price2) ? price1 : price2 );
+            if (price1 == null)
+              price = price2;
+            else if (price2 == null)
+              price = price1;
+            else
+              price = ( Number(price1) < Number(price2) ? price1 : price2 );
             if (self.debug) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
           }
           else {
