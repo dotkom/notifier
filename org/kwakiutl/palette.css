@@ -1,0 +1,22 @@
+
+.title {
+  color: #e37c00;
+  text-decoration: none;
+}
+
+#background, #fadeOutNews {
+  -webkit-filter: grayscale(1) saturate(2.6) brightness(.9);
+}
+
+#pageflip {
+  -webkit-filter: grayscale(1) brightness(.9);
+}
+
+#pageflipbg {
+  -webkit-filter: grayscale(1) brightness(0.5);
+}
+
+#container #bus {
+  background-color: #111;
+  box-shadow: 0 0 10pt #e37c00;
+}
