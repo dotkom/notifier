@@ -18,7 +18,7 @@
 }
 .title {
   border: 0pt solid #ffff00;
-  color: #ee861f;
+  color: NavajoWhite;
   display: block;
   font-weight: bold;
   text-transform: uppercase;
@@ -141,7 +141,7 @@ body {
   padding: 0;
   width: 100%;
   position: relative;
-  background-color: #000f1d;
+  background-color: #111;
   width: 110%;
   margin-left: -5%;
 }

@@ -18,7 +18,7 @@
 }
 .title {
   border: 0pt solid #ffff00;
-  color: #ee861f;
+  color: NavajoWhite;
   display: block;
   font-weight: bold;
   text-transform: uppercase;
@@ -141,7 +141,7 @@ body {
   padding: 0;
   width: 100%;
   position: relative;
-  background-color: #000f1d;
+  background-color: #111;
   width: 110%;
   margin-left: -5%;
 }
@@ -386,7 +386,7 @@ body {
   line-height: 11.5pt;
   height: 65pt;
   margin-bottom: 15pt;
-  box-shadow: 0 0 20pt #88b;
+  box-shadow: 0 0 15pt #ccc;
 }
 #container #bus .name {
   margin-bottom: 4pt;
