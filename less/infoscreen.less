@@ -7,13 +7,12 @@
 
 .title {
   font-size: 24pt;
-  padding-top: 25pt;
-  padding-bottom: 9pt;
+  margin-top: 25pt;
+  margin-bottom: 8pt;
 }
 
 .emphasized {
-  font-size: 24pt;
-  margin-top: 8pt;
+  margin-bottom: 8pt;
 }
 
 // Rules
@@ -88,19 +87,19 @@ body {
   #todays {
     #schedule {
       #servant {
-        margin-bottom: 5pt;
+        .emphasized;
       }
     }
     #coffee {
       #pots {
-        margin-bottom: 5pt;
+        .emphasized;
       }
     }
   }
 
   #cantinas {
     .hours {
-      padding-bottom: 3pt;
+      .emphasized;
     }
   }
 
@@ -110,7 +109,7 @@ body {
     line-height: 25pt;
     height: 144pt;
     margin-bottom: 45pt;
-    box-shadow: 0 0 35pt #88b;
+    box-shadow: 0 0 25pt #ccc;
 
     .name {
       margin-bottom: 3pt;
@@ -224,7 +223,7 @@ body {
             0pt 0pt 10pt white;
         }
         .title {
-          padding-top: 0pt; /* overrides default value */
+          margin-top: 0pt; /* overrides default value */
         }
         img {
           width: 120pt;

@@ -56,13 +56,13 @@ updateCoffee = ->
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
   Cantina.get ls.left_cantina, (menu) ->
-    $('#cantinas #left .title').html ls.left_cantina
+    cantinaName = Cantina.names[ls.left_cantina]
+    $('#cantinas #left .title').html cantinaName
     $('#cantinas #left #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #left #dinnerbox li'
   Cantina.get ls.right_cantina, (menu) ->
-    $('#cantinas #right .title').html ls.right_cantina
+    cantinaName = Cantina.names[ls.right_cantina]
+    $('#cantinas #right .title').html cantinaName
     $('#cantinas #right #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #right #dinnerbox li'
 
 listDinners = (menu) ->
   dinnerlist = ''
@@ -202,7 +202,7 @@ displayItems = (items) ->
           <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
             <div class="textwrapper">
-              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
+              <div class="author">&ndash; Skrevet av ' + item.creator + date + '</div>
               ' + item.description + '
             </div>
           </div>

@@ -23,7 +23,7 @@ var Hours = {
     'elektro': 2518,
     'hangaren': 2519,
     'kalvskinnet': 2529,
-    'kjelhuset': 2520,
+    'kjel': 2520,
     'moholt': 2530,
     'mtfs': 2526,
     'ranheimsveien': 2531,
@@ -31,10 +31,10 @@ var Hours = {
     'rotvoll': 2532,
     'tunga': 2533,
     'tyholt': 2525,
-    'øya': 2527,
+    'oya': 2527,
     'storkiosk dragvoll': 2393,
-    'storkiosk gløshaugen': 2524,
-    'storkiosk øya': 2528,
+    'storkiosk gloshaugen': 2524,
+    'storkiosk oya': 2528,
     'sito dragvoll': 2602,
     'sito realfag': 2522,
     'sito stripa': 2523,
@@ -70,11 +70,16 @@ var Hours = {
         todaysHours = self.findTodaysHours(allHours);
         if (self.debug) console.log('Todays hours:', todaysHours);
 
-        // Prettify todays hours
-        prettyHours = self.prettifyTodaysHours(todaysHours);
-        if (self.debug) console.log('Pretty hours:', prettyHours);
-
-        callback(prettyHours);
+        if (todaysHours.match(/e[ksx]+[ame]+ns? ?[åÅ][pen]+t?/gi) == null) {
+          // Prettify todays hours
+          prettyHours = self.prettifyTodaysHours(todaysHours);
+          if (self.debug) console.log('Pretty hours:', prettyHours);
+          callback(prettyHours);
+        }
+        else {
+          if (self.debug) console.log('Not prettifying exam period hours');
+          callback(todaysHours);
+        }
       },
       error: function(jqXHR, text, err) {
         callback(self.msgConnectionError);
@@ -95,26 +100,72 @@ var Hours = {
     if (this.debugText) {
       return '- ' + pieces[0] + '<br />- ' + pieces[1];
     }
-    // Monday - Thursday on the first line
-    else if (1 <= day && day <= 4) {
-      return '- ' + pieces[0];
-    }
-    // Friday on the second line
-    else if (day === 5) {
-      if (pieces[1].match(/[a-zA-Z]+dag/) != null) {
-        return '- ' + pieces[1];
+    
+    // Remove lines from pieces containing contact information and such
+    for (var i = pieces.length - 1; i >= 0; i--) {
+      // Identify by '@sit.no' from the email address or the phone number
+      if (pieces[i].indexOf('@sit.no') != -1 || pieces[i].match(/\d(\d|\s)+\d/g) != null) {
+        pieces.splice(i, 1);
       }
-      else {
-        // Some cantinas have just one opening hour for monday - friday
-        return '- ' + pieces[0];
+    };
+
+    var dailyHours = [];
+    // It is important to have this loop counting upwards, this is because
+    // overriding information for specific days might be posted later in
+    // the pieces array. E.g. pieces[0] might contain something about monday,
+    // but pieces[4] might have overriding information about the current monday.
+    for (var i=0; i<pieces.length; i++) {
+      if (pieces[i].match(/e[ksx]+[ame]+ns? ?[åÅ][pen]+t?/gi) != null) {
+        var exams = pieces.slice(i).join('<br />- ');
+        dailyHours[0] = exams;
+        dailyHours[6] = exams;
       }
-    }
-    else if (day === 0 || day === 6) {
+      // These if-statements violates the DRY-principle, but please don't
+      // overengineer this, - at least these are trivial to understand
+      if (pieces[i].match(/søndag/gi) != null) {
+        dailyHours[0] = pieces[i];
+      }
+      if (pieces[i].match(/mandag/gi) != null) {
+        dailyHours[1] = pieces[i];
+      }
+      if (pieces[i].match(/tirsdag/gi) != null) {
+        dailyHours[2] = pieces[i];
+      }
+      if (pieces[i].match(/onsdag/gi) != null) {
+        dailyHours[3] = pieces[i];
+      }
+      if (pieces[i].match(/torsdag/gi) != null) {
+        dailyHours[4] = pieces[i];
+      }
+      if (pieces[i].match(/fredag/gi) != null) {
+        dailyHours[5] = pieces[i];
+      }
+      if (pieces[i].match(/lørdag/gi) != null) {
+        dailyHours[6] = pieces[i];
+      }
+    };
+
+    // Filling ranges from monday to e.g. thursday, this is
+    // fairly naïve, but interestingly accurate
+    var lastDay = dailyHours[1]; // Starting with monday
+    for (var i = 1; i < 6; i++) {
+      if (typeof dailyHours[i] == 'undefined') {
+        if (typeof lastDay != 'undefined') {
+          dailyHours[i] = lastDay;
+        }
+      }
+      lastDay = dailyHours[i];
+    };
+
+    // Returning todays, if info exist about it
+    var today = dailyHours[day];
+    if (typeof today == 'undefined') {
+      if (this.debug) console.log('findTodaysHours returns', this.msgClosed);
       return this.msgClosed;
     }
     else {
-      console.log('ERROR: How in the world did you get here?');
-      return this.msgMalformedHours;
+      if (this.debug) console.log('findTodaysHours returns', dailyHours[day], 'from', dailyHours);
+      return '- ' + dailyHours[day];
     }
   },
 

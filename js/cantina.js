@@ -23,14 +23,37 @@ var Cantina = {
     'elektro': 'https://www.sit.no/rss.ap?thisId=40227',
     'hangaren': 'https://www.sit.no/rss.ap?thisId=36444',
     'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453',
-    // 'kjelhuset': 'https://www.sit.no/rss.ap?thisId=31681', // Har aldri innhold
+    // 'kjel': 'https://www.sit.no/rss.ap?thisId=31681', // Har aldri innhold
     'moholt': 'https://www.sit.no/rss.ap?thisId=36456',
     // 'mtfs': '...', // Mangler
     'ranheimsveien': 'https://www.sit.no/rss.ap?thisId=38753',
     'realfag': 'https://www.sit.no/rss.ap?thisId=36447',
     'rotvoll': 'https://www.sit.no/rss.ap?thisId=38910',
     'tyholt': 'https://www.sit.no/rss.ap?thisId=36450',
-    // 'øya': '...', // Mangler
+    // 'oya': '...', // Mangler
+  },
+
+  names: {
+    'dmmh': 'DMMH',
+    'dragvoll': 'Dragvoll',
+    'elektro': 'Elektro',
+    'hangaren': 'Hangaren',
+    'kalvskinnet': 'Kalvskinnet',
+    'kjel': 'Kjelhuset',
+    'moholt': 'Moholt',
+    'mtfs': 'MTFS',
+    'ranheimsveien': 'Ranheimsveien',
+    'realfag': 'Realfag',
+    'rotvoll': 'Rotvoll',
+    'tyholt': 'Tyholt',
+    'oya': 'Øya',
+    'storkiosk dragvoll': 'Storkiosk Dragvoll',
+    'storkiosk gloshaugen': 'Storkiosk Gløshaugen',
+    'storkiosk oya': 'Storkiosk Øya',
+    'idretts. dragvoll': 'Idretts. Dragvoll',
+    'sito dragvoll': 'Sito Dragvoll',
+    'sito realfag': 'Sito Realfag',
+    'sito stripa': 'Sito Stripa',
   },
 
   // SiTs new format for ajaxing dinner:
@@ -179,7 +202,12 @@ var Cantina = {
             // Split and compare prices
             var price1 = price.split(delimiter)[0].match(/\d+/g);
             var price2 = price.split(delimiter)[1].match(/\d+/g);
-            price = ( Number(price1) < Number(price2) ? price1 : price2 );
+            if (price1 == null)
+              price = price2;
+            else if (price2 == null)
+              price = price1;
+            else
+              price = ( Number(price1) < Number(price2) ? price1 : price2 );
             if (self.debug) console.log('Price from "'+dinner.price+'" to "'+price+'" (DUAL price)');
           }
           else {
@@ -242,11 +270,16 @@ var Cantina = {
       });
       
       // Turn prices into Number vars and sort dinnerobjects by price
-      if (dinnerObjects[0].price !== null) {
+      if (typeof dinnerObjects[0].price != 'undefined') {
         dinnerObjects.sort(function(a,b){
           a.price = Number(a.price);
           b.price = Number(b.price);
           return(a.price>b.price)?1:((b.price>a.price)?-1:0);
+        });
+        // Missing prices are turned into 0's by the sort function,
+        // - Set prices back to null to make sure it doesn't count as a number
+        dinnerObjects.forEach(function(dinner){
+          if (dinner.price == 0) dinner.price = null;
         });
       }
 

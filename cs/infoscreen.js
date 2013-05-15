@@ -100,11 +100,15 @@
       console.log('updateCantinas');
     }
     Cantina.get(ls.left_cantina, function(menu) {
-      $('#cantinas #left .title').html(ls.left_cantina);
+      var cantinaName;
+      cantinaName = Cantina.names[ls.left_cantina];
+      $('#cantinas #left .title').html(cantinaName);
       return $('#cantinas #left #dinnerbox').html(listDinners(menu));
     });
     return Cantina.get(ls.right_cantina, function(menu) {
-      $('#cantinas #right .title').html(ls.right_cantina);
+      var cantinaName;
+      cantinaName = Cantina.names[ls.right_cantina];
+      $('#cantinas #right .title').html(cantinaName);
       return $('#cantinas #right #dinnerbox').html(listDinners(menu));
     });
   };
@@ -267,7 +271,7 @@
             <div class="title">' + readUnread + item.title + '</div>\
             <img src="' + item.image + '" width="107" />\
             ' + item.description + '\
-            <div class="emphasized">- Av ' + item.creator + date + '</div>\
+            <div class="author">&ndash; Av ' + item.creator + date + '</div>\
           </div>\
         </div>';
         return $('#news ' + column).append(htmlItem);
@@ -373,6 +377,17 @@
     $.ajaxSetup(AJAX_SETUP);
     ls.removeItem('currentStatus');
     ls.removeItem('currentStatusMessage');
+    if (ls.showAffiliation2 !== 'true') {
+      $('#news #right').hide();
+      $('#news #left').attr('id', 'full');
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1]);
+      }
+    } else {
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
+      }
+    }
     if (ls.showOffice !== 'true') {
       $('#office').hide();
     }
@@ -384,15 +399,6 @@
     }
     if (ls.showBus !== 'true') {
       $('#bus').hide();
-    }
-    if (ls.showAffiliation2 !== 'true') {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1]);
-      }
-    } else {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
-      }
     }
     if (ls.affiliationKey1 !== 'online') {
       affiliation = ls.affiliationKey1;

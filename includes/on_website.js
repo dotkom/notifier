@@ -17,14 +17,41 @@
 var host = window.location.host;
 
 if (host == 'online.ntnu.no') {
-	if (typeof chrome != "undefined") {
-		// Reset badge counter
-		chrome.extension.sendRequest({'action':'resetCounterWhenOnWebsite'});
-		// Hide Notifier install button
-		$('#install_notifier').hide();
-	}
-	else if (typeof opera != "undefined") {
-		// Reset badge counter
-		opera.extension.postMessage('resetCounterWhenOnWebsite');
-	}
+  if (typeof chrome != "undefined") {
+    // Reset badge counter
+    chrome.extension.sendMessage({'action':'resetCounterWhenOnWebsite'});
+    // Hide Notifier install button
+    $('#install_notifier').hide();
+  }
+  else if (typeof opera != "undefined") {
+    // Reset badge counter
+    opera.extension.postMessage('resetCounterWhenOnWebsite');
+  }
+}
+else if (host == 'www.sit.no') {
+  var callback = function(clickedCantina) {
+    // Kick out SiTs own change function, which doesn't play
+    // well with our more updated version of jQuery
+    $('#displayWeek').unbind('change');
+    // Rebind the cantina selector with SiT's own function
+    $('#displayWeek').change(function(){
+      var selectedDiner = $(this).val();
+      $.ajax({
+        url: 'ajaxdinner/get',
+        type: 'POST',
+        data: { diner: selectedDiner, trigger: 'week' },
+        success: function(menu){
+          $('#dinner-output').html(menu.html);
+        }
+      });
+    });
+    // Change cantina and trigger the change
+    $('#displayWeek').val(clickedCantina).trigger('change');
+  };
+  if (typeof chrome != "undefined") {
+    chrome.extension.sendMessage({'action':'getClickedCantina'}, callback);
+  }
+  else if (typeof opera != "undefined") {
+    opera.extension.postMessage('getClickedCantina', callback);
+  }
 }

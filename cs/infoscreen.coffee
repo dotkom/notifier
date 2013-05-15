@@ -54,10 +54,12 @@ updateCoffee = ->
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
   Cantina.get ls.left_cantina, (menu) ->
-    $('#cantinas #left .title').html ls.left_cantina
+    cantinaName = Cantina.names[ls.left_cantina]
+    $('#cantinas #left .title').html cantinaName
     $('#cantinas #left #dinnerbox').html listDinners(menu)
   Cantina.get ls.right_cantina, (menu) ->
-    $('#cantinas #right .title').html ls.right_cantina
+    cantinaName = Cantina.names[ls.right_cantina]
+    $('#cantinas #right .title').html cantinaName
     $('#cantinas #right #dinnerbox').html listDinners(menu)
 
 listDinners = (menu) ->
@@ -201,7 +203,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
             <div class="title">' + readUnread + item.title + '</div>
             <img src="' + item.image + '" width="107" />
             ' + item.description + '
-            <div class="emphasized">- Av ' + item.creator + date + '</div>
+            <div class="author">&ndash; Av ' + item.creator + date + '</div>
           </div>
         </div>'
       $('#news '+column).append htmlItem
@@ -305,17 +307,20 @@ $ ->
   ls.removeItem 'currentStatus'
   ls.removeItem 'currentStatusMessage'
 
+  # If only one affiliation is to be shown remove the second news column
+  if ls.showAffiliation2 isnt 'true'
+    $('#news #right').hide()
+    $('#news #left').attr 'id', 'full'
+    # Run analytics to figure out which organizations use the infoscreen feature
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1])
+  else
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
+
   # Hide stuff the user does not want to see
   $('#office').hide() if ls.showOffice isnt 'true'
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
-
-  # Run analytics to figure out which organizations use the infoscreen feature
-  if ls.showAffiliation2 isnt 'true'
-    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1])
-  else
-    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
 
   if ls.affiliationKey1 isnt 'online'
     # Show the logo and placeholder image for the correct organization

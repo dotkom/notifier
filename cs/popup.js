@@ -83,14 +83,18 @@
       console.log('updateCantinas');
     }
     Cantina.get(ls.left_cantina, function(menu) {
-      $('#cantinas #left .title').html(ls.left_cantina);
+      var cantinaName;
+      cantinaName = Cantina.names[ls.left_cantina];
+      $('#cantinas #left .title').html(cantinaName);
       $('#cantinas #left #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #left #dinnerbox li');
+      return clickDinnerLink('#cantinas #left #dinnerbox li', ls.left_cantina);
     });
     return Cantina.get(ls.right_cantina, function(menu) {
-      $('#cantinas #right .title').html(ls.right_cantina);
+      var cantinaName;
+      cantinaName = Cantina.names[ls.right_cantina];
+      $('#cantinas #right .title').html(cantinaName);
       $('#cantinas #right #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #right #dinnerbox li');
+      return clickDinnerLink('#cantinas #right #dinnerbox li', ls.right_cantina);
     });
   };
 
@@ -115,11 +119,12 @@
     return dinnerlist;
   };
 
-  clickDinnerLink = function(cssSelector) {
+  clickDinnerLink = function(cssSelector, cantina) {
     return $(cssSelector).click(function() {
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
       }
+      ls.clickedCantina = cantina;
       Browser.openTab(Cantina.url);
       return window.close();
     });
@@ -247,7 +252,7 @@
             <div class="title">' + readUnread + item.title + '</div>\
             <img src="' + item.image + '" width="107" />\
             ' + item.description + '\
-            <div class="emphasized">- Av ' + item.creator + date + '</div>\
+            <div class="author">&ndash; Av ' + item.creator + date + '</div>\
           </div>\
         </div>';
         return $('#news ' + column).append(htmlItem);
@@ -374,6 +379,7 @@
     if (ls.showBus !== 'true') {
       $('#bus').hide();
     }
+    hotFixBusLines();
     if (ls.affiliationKey1 !== 'online') {
       $('#chatter_button').hide();
       $('#mobile_text').hide();

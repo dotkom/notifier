@@ -20,7 +20,8 @@
 }
 
 .title {
-  color: #ee861f;
+  .debugyellow;
+  color: NavajoWhite;
   display: block;
   font-weight: bold;
   text-transform: uppercase;
@@ -30,6 +31,7 @@
 }
 
 .emphasized {
+  .debuglime;
   font-style: italic;
 }
 
@@ -80,7 +82,7 @@ body {
       float: left;
       width: 48%;
       #servant {
-        font-style: italic;
+        .emphasized;
       }
     }
     #coffee {
@@ -89,7 +91,7 @@ body {
       float: right;
       width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
       #pots {
-        font-style: italic;
+        .emphasized;
       }
     }
   }
@@ -99,9 +101,7 @@ body {
     .fullbox;
 
     .hours {
-      font-weight: normal;
-      font-style: italic;
-      text-transform: none;
+      .emphasized;
     }
     #left {
       .debugpink;
@@ -133,9 +133,9 @@ body {
   #bus {
     .debugred;
     .fullbox;
-
+    
     position: relative;
-    background-color: #000f1d;
+    background-color: #111;
     width: 110%;
     margin-left: -5%;
 
@@ -207,16 +207,14 @@ body {
         .debugyellow;
         text-overflow: ellipsis;
         overflow: hidden;
-
+        .author {
+          display: inline;
+          position: relative;
+          font-style: italic;
+        }
         img {
           float: left;
           background: snow;
-        }
-        .textwrapper {
-          .debuglime;
-          position: relative;
-          float: left;
-          text-align: left;
         }
       }
     }

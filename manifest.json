@@ -1,10 +1,10 @@
 {
   "name": "Online Notifier",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "manifest_version": 2,
   "offline_enabled": false,
 	
-  "description": "Nyheter, kontorstatus, sanntidsbuss, kaffeabonnement, middagsmeny og mer.",
+  "description": "Linjeforeningsnyheter, middagsmeny, sanntidsbuss og mer.",
   "homepage_url": "https://online.ntnu.no/",
   
   "options_page": "options.html",
@@ -21,8 +21,8 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "default": "Ctrl+K",
-        "mac": "Ctrl+K"
+        "default": "Alt+A",
+        "mac": "Alt+A"
       }
     }
   },

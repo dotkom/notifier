@@ -365,7 +365,6 @@
     busStopId = Stops.nameAndDirectionToId(stopName, direction);
     return Bus.getLines(busStopId, function(json) {
       var arrayOfLines, counter, errorMessage, item, line, _i, _j, _len, _len1, _ref;
-      console.log(json);
       errorMessage = null;
       if (typeof json === 'undefined') {
         errorMessage = 'Oops, frakoblet';

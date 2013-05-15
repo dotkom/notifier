@@ -44,13 +44,15 @@ updateCoffee = ->
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
   Cantina.get ls.left_cantina, (menu) ->
-    $('#cantinas #left .title').html ls.left_cantina
+    cantinaName = Cantina.names[ls.left_cantina]
+    $('#cantinas #left .title').html cantinaName
     $('#cantinas #left #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #left #dinnerbox li'
+    clickDinnerLink '#cantinas #left #dinnerbox li', ls.left_cantina
   Cantina.get ls.right_cantina, (menu) ->
-    $('#cantinas #right .title').html ls.right_cantina
+    cantinaName = Cantina.names[ls.right_cantina]
+    $('#cantinas #right .title').html cantinaName
     $('#cantinas #right #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #right #dinnerbox li'
+    clickDinnerLink '#cantinas #right #dinnerbox li', ls.right_cantina
 
 listDinners = (menu) ->
   dinnerlist = ''
@@ -68,9 +70,10 @@ listDinners = (menu) ->
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist
 
-clickDinnerLink = (cssSelector) ->
+clickDinnerLink = (cssSelector, cantina) ->
   $(cssSelector).click ->
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()])
+    ls.clickedCantina = cantina
     Browser.openTab Cantina.url
     window.close()
 
@@ -189,7 +192,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
             <div class="title">' + readUnread + item.title + '</div>
             <img src="' + item.image + '" width="107" />
             ' + item.description + '
-            <div class="emphasized">- Av ' + item.creator + date + '</div>
+            <div class="author">&ndash; Av ' + item.creator + date + '</div>
           </div>
         </div>'
       $('#news '+column).append htmlItem
@@ -299,6 +302,11 @@ $ ->
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
+
+  #####################
+  # HOTFIX
+  #####################
+  hotFixBusLines()
 
   if ls.affiliationKey1 isnt 'online'
     # Hide chat button

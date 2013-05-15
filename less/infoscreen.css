@@ -17,7 +17,8 @@
   width: 100%;
 }
 .title {
-  color: #ee861f;
+  border: 0pt solid #ffff00;
+  color: NavajoWhite;
   display: block;
   font-weight: bold;
   text-transform: uppercase;
@@ -26,6 +27,7 @@
   color: white;
 }
 .emphasized {
+  border: 0pt solid #00ff00;
   font-style: italic;
 }
 body {
@@ -75,7 +77,9 @@ body {
   width: 48%;
 }
 #container #todays #schedule #servant {
+  border: 0pt solid #00ff00;
   font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #todays #coffee {
   border: 0pt solid #ffc0cb;
@@ -86,7 +90,9 @@ body {
 
 }
 #container #todays #coffee #pots {
+  border: 0pt solid #00ff00;
   font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #cantinas {
   border: 0pt solid #ff0000;
@@ -96,9 +102,9 @@ body {
   width: 100%;
 }
 #container #cantinas .hours {
-  font-weight: normal;
+  border: 0pt solid #00ff00;
   font-style: italic;
-  text-transform: none;
+  margin-bottom: 8pt;
 }
 #container #cantinas #left {
   border: 0pt solid #ffc0cb;
@@ -135,7 +141,7 @@ body {
   padding: 0;
   width: 100%;
   position: relative;
-  background-color: #000f1d;
+  background-color: #111;
   width: 110%;
   margin-left: -5%;
 }
@@ -218,15 +224,14 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+#container #news .post .item .author {
+  display: inline;
+  position: relative;
+  font-style: italic;
+}
 #container #news .post .item img {
   float: left;
   background: snow;
-}
-#container #news .post .item .textwrapper {
-  border: 0pt solid #00ff00;
-  position: relative;
-  float: left;
-  text-align: left;
 }
 #container #news .unread {
   text-shadow: 0 0 10px white,
@@ -241,12 +246,11 @@ body {
 /* This file contains infoscreen-additions to common.less */
 .title {
   font-size: 24pt;
-  padding-top: 25pt;
-  padding-bottom: 9pt;
+  margin-top: 25pt;
+  margin-bottom: 8pt;
 }
 .emphasized {
-  font-size: 24pt;
-  margin-top: 8pt;
+  margin-bottom: 8pt;
 }
 html {
   cursor: none;
@@ -316,13 +320,19 @@ body {
   text-shadow: 0 0 15pt black, 0 0 20pt black;
 }
 #container #todays #schedule #servant {
-  margin-bottom: 5pt;
+  border: 0pt solid #00ff00;
+  font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #todays #coffee #pots {
-  margin-bottom: 5pt;
+  border: 0pt solid #00ff00;
+  font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #cantinas .hours {
-  padding-bottom: 3pt;
+  border: 0pt solid #00ff00;
+  font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #bus {
   top: 35pt;
@@ -330,7 +340,7 @@ body {
   line-height: 25pt;
   height: 144pt;
   margin-bottom: 45pt;
-  box-shadow: 0 0 35pt #88b;
+  box-shadow: 0 0 25pt #ccc;
 }
 #container #bus .name {
   margin-bottom: 3pt;
@@ -445,7 +455,7 @@ body {
             0pt 0pt 10pt white;
 }
 #container #news .post .item .title {
-  padding-top: 0pt;
+  margin-top: 0pt;
   /* overrides default value */
 
 }
