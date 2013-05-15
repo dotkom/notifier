@@ -455,7 +455,7 @@ body {
             0pt 0pt 10pt white;
 }
 #container #news .post .item .title {
-  padding-top: 0pt;
+  margin-top: 0pt;
   /* overrides default value */
 
 }
