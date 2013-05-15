@@ -17,6 +17,7 @@
   width: 100%;
 }
 .title {
+  border: 0pt solid #ffff00;
   color: #ee861f;
   display: block;
   font-weight: bold;
@@ -26,6 +27,7 @@
   color: white;
 }
 .emphasized {
+  border: 0pt solid #00ff00;
   font-style: italic;
 }
 body {
@@ -75,7 +77,9 @@ body {
   width: 48%;
 }
 #container #todays #schedule #servant {
+  border: 0pt solid #00ff00;
   font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #todays #coffee {
   border: 0pt solid #ffc0cb;
@@ -86,7 +90,9 @@ body {
 
 }
 #container #todays #coffee #pots {
+  border: 0pt solid #00ff00;
   font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #cantinas {
   border: 0pt solid #ff0000;
@@ -96,8 +102,9 @@ body {
   width: 100%;
 }
 #container #cantinas .hours {
-  font-weight: normal;
+  border: 0pt solid #00ff00;
   font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #cantinas #left {
   border: 0pt solid #ffc0cb;
@@ -217,6 +224,11 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+#container #news .post .item .author {
+  display: inline;
+  position: relative;
+  font-style: italic;
+}
 #container #news .post .item img {
   float: left;
   background: snow;
@@ -234,11 +246,11 @@ body {
 /* This file contains infoscreen-additions to common.less */
 .title {
   font-size: 24pt;
-  padding-top: 25pt;
-  padding-bottom: 9pt;
+  margin-top: 25pt;
+  margin-bottom: 8pt;
 }
 .emphasized {
-  margin-top: 8pt;
+  margin-bottom: 8pt;
 }
 html {
   cursor: none;
@@ -308,13 +320,19 @@ body {
   text-shadow: 0 0 15pt black, 0 0 20pt black;
 }
 #container #todays #schedule #servant {
-  margin-bottom: 5pt;
+  border: 0pt solid #00ff00;
+  font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #todays #coffee #pots {
-  margin-bottom: 5pt;
+  border: 0pt solid #00ff00;
+  font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #cantinas .hours {
-  padding-bottom: 3pt;
+  border: 0pt solid #00ff00;
+  font-style: italic;
+  margin-bottom: 8pt;
 }
 #container #bus {
   top: 35pt;
