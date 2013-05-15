@@ -1,7 +1,6 @@
 
 .title {
   color: #e37c00;
-  text-decoration: none;
 }
 
 #background, #fadeOutNews {
@@ -17,6 +16,5 @@
 }
 
 #container #bus {
-  background-color: #111;
   box-shadow: 0 0 10pt #e37c00;
 }

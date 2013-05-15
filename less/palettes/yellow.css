@@ -13,8 +13,3 @@
 #pageflip {
   -webkit-filter: hue-rotate(-181deg) saturate(1.9) brightness(1.4);
 }
-
-#container #bus {
-  background-color: #111;
-  box-shadow: 0 0 15pt #ccc;
-}

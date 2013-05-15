@@ -1,8 +1,4 @@
 
-.title {
-  color: NavajoWhite;
-}
-
 #background, #fadeOutNews {
   -webkit-filter: hue-rotate(-85deg) saturate(1.4) brightness(1);
 }
@@ -13,9 +9,4 @@
 
 #pageflipbg {
   -webkit-filter: grayscale(1) saturate(1.4) brightness(0.5);
-}
-
-#container #bus {
-  background-color: #111;
-  box-shadow: 0 0 15pt #ccc;
 }
