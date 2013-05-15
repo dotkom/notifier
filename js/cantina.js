@@ -23,7 +23,7 @@ var Cantina = {
     'elektro': 'https://www.sit.no/rss.ap?thisId=40227',
     'hangaren': 'https://www.sit.no/rss.ap?thisId=36444',
     'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453',
-    // 'kjel': 'https://www.sit.no/rss.ap?thisId=31681', // Har aldri innhold
+    'kjel': 'https://www.sit.no/rss.ap?thisId=31681', // Har aldri innhold
     'moholt': 'https://www.sit.no/rss.ap?thisId=36456',
     // 'mtfs': '...', // Mangler
     'ranheimsveien': 'https://www.sit.no/rss.ap?thisId=38753',
