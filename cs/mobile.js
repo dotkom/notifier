@@ -100,14 +100,16 @@
       console.log('updateCantinas');
     }
     Cantina.get(ls.left_cantina, function(menu) {
-      $('#cantinas #left .title').html(ls.left_cantina);
-      $('#cantinas #left #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #left #dinnerbox li');
+      var cantinaName;
+      cantinaName = Cantina.names[ls.left_cantina];
+      $('#cantinas #left .title').html(cantinaName);
+      return $('#cantinas #left #dinnerbox').html(listDinners(menu));
     });
     return Cantina.get(ls.right_cantina, function(menu) {
-      $('#cantinas #right .title').html(ls.right_cantina);
-      $('#cantinas #right #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #right #dinnerbox li');
+      var cantinaName;
+      cantinaName = Cantina.names[ls.right_cantina];
+      $('#cantinas #right .title').html(cantinaName);
+      return $('#cantinas #right #dinnerbox').html(listDinners(menu));
     });
   };
 
