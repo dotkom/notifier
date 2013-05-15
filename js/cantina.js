@@ -7,7 +7,7 @@ var Cantina = {
   msgMalformedMenu: 'Galt format på meny',
   dinnerWordLimit: 4, // 4-7 is good, depends on screen size
   
-  debug: 1, // General debugging
+  debug: 0, // General debugging
   debugDay: 0, // Whether or not to debug a particular day
   debugThisDay: 'Fredag', // The day in question
   debugText: 0, // Whether or not to deep debug dinner strings (even in weekends)
