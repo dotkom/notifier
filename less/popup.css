@@ -222,12 +222,6 @@ body {
   float: left;
   background: snow;
 }
-#container #news .post .item .textwrapper {
-  border: 0pt solid #00ff00;
-  position: relative;
-  float: left;
-  text-align: left;
-}
 #container #news .unread {
   text-shadow: 0 0 10px white,
         0 0 15px white,
