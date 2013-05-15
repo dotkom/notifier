@@ -85,12 +85,12 @@
     Cantina.get(ls.left_cantina, function(menu) {
       $('#cantinas #left .title').html(ls.left_cantina);
       $('#cantinas #left #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #left #dinnerbox li');
+      return clickDinnerLink('#cantinas #left #dinnerbox li', ls.left_cantina);
     });
     return Cantina.get(ls.right_cantina, function(menu) {
       $('#cantinas #right .title').html(ls.right_cantina);
       $('#cantinas #right #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #right #dinnerbox li');
+      return clickDinnerLink('#cantinas #right #dinnerbox li', ls.right_cantina);
     });
   };
 
@@ -115,11 +115,12 @@
     return dinnerlist;
   };
 
-  clickDinnerLink = function(cssSelector) {
+  clickDinnerLink = function(cssSelector, cantina) {
     return $(cssSelector).click(function() {
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
       }
+      ls.clickedCantina = cantina;
       Browser.openTab(Cantina.url);
       return window.close();
     });

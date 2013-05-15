@@ -46,11 +46,11 @@ updateCantinas = ->
   Cantina.get ls.left_cantina, (menu) ->
     $('#cantinas #left .title').html ls.left_cantina
     $('#cantinas #left #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #left #dinnerbox li'
+    clickDinnerLink '#cantinas #left #dinnerbox li', ls.left_cantina
   Cantina.get ls.right_cantina, (menu) ->
     $('#cantinas #right .title').html ls.right_cantina
     $('#cantinas #right #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #right #dinnerbox li'
+    clickDinnerLink '#cantinas #right #dinnerbox li', ls.right_cantina
 
 listDinners = (menu) ->
   dinnerlist = ''
@@ -68,9 +68,10 @@ listDinners = (menu) ->
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist
 
-clickDinnerLink = (cssSelector) ->
+clickDinnerLink = (cssSelector, cantina) ->
   $(cssSelector).click ->
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()])
+    ls.clickedCantina = cantina
     Browser.openTab Cantina.url
     window.close()
 
