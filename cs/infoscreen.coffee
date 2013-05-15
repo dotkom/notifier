@@ -201,7 +201,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
             <div class="title">' + readUnread + item.title + '</div>
             <img src="' + item.image + '" width="107" />
             ' + item.description + '
-            <div class="emphasized">- Av ' + item.creator + date + '</div>
+            <div class="author">&ndash; Av ' + item.creator + date + '</div>
           </div>
         </div>'
       $('#news '+column).append htmlItem

@@ -202,7 +202,7 @@ displayItems = (items) ->
           <div class="item" data="' + item.link + '"' + altLink + '>
             <img src="' + item.image + '" width="107" />
             <div class="textwrapper">
-              <div class="emphasized">- Skrevet av ' + item.creator + date + '</div>
+              <div class="author">&ndash; Skrevet av ' + item.creator + date + '</div>
               ' + item.description + '
             </div>
           </div>

@@ -267,7 +267,7 @@
             <div class="title">' + readUnread + item.title + '</div>\
             <img src="' + item.image + '" width="107" />\
             ' + item.description + '\
-            <div class="emphasized">- Av ' + item.creator + date + '</div>\
+            <div class="author">&ndash; Av ' + item.creator + date + '</div>\
           </div>\
         </div>';
         return $('#news ' + column).append(htmlItem);
