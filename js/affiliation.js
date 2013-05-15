@@ -330,7 +330,8 @@ var Affiliation = {
       icon: './org/kwakiutl/icon.png',
       symbol: './org/kwakiutl/symbol.png',
       placeholder: './org/kwakiutl/placeholder.png',
-      palette: 'green',
+      palette: 'kwakiutl',
+      palettePath: './org/kwakiutl/palette.css',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
