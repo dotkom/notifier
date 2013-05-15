@@ -12,7 +12,7 @@
   -webkit-filter: hue-rotate(0deg) saturate(1) brightness(1.1);
 }
 
-#bus {
+#container #bus {
   background-color: #111;
   box-shadow: 0 0 15pt #ccc;
 }
