@@ -1,1 +1,10 @@
-/* online is default, do nothing */
+/* onlines colors are default, mostly */
+
+.title {
+  color: #ee861f;
+}
+
+#container #bus {
+  background-color: #000f1d;
+  box-shadow: 0 0 20pt #88b;
+}
