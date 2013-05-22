@@ -167,6 +167,15 @@ var News = {
         post.creator = $(this).text().trim();
       });
     }
+    // Check for author in rarely used <author> field
+    if (post.creator == '') {
+      // - Universitetsavisa uses this
+      var author = $(item).find("author").filter(':first').text();
+      if (author != '') {
+        var pieces = author.match(/[a-zA-Z0-9æøåÆØÅ ]+/g);
+        post.creator = pieces[pieces.length-1];
+      }
+    }
 
     return post;
   },
