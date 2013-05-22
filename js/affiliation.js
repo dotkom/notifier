@@ -698,6 +698,12 @@ var Affiliation = {
         else if (link.indexOf('nrk.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/});
         }
+        else if (link.indexOf('utdanningsnytt.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div#hovedartikkelContainer', domainUrl:'utdanningsnytt.no'});
+        }
+        else if (link.indexOf('regjeringen.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.imagecontainer', domainUrl:'regjeringen.no'});
+        }
       },
     },
     'rektoratet ntnu': {
