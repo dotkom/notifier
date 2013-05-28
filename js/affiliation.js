@@ -60,7 +60,7 @@ var Affiliation = {
       },
     },
     'emil': {
-      name: 'Emil',
+      name: 'EMIL',
       key: 'emil',
       web: 'http://emilweb.no/',
       feed: 'http://emilweb.no/feed/',
@@ -692,11 +692,23 @@ var Affiliation = {
         else if (link.indexOf('adressa.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.media'});
         }
-        else if (link.indexOf('stfk.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div.documentbody', domainUrl:'www.stfk.no'});
+        else if (link.indexOf('dn.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div#content'});
+        }
+        else if (link.indexOf('forskningsradet.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
         }
         else if (link.indexOf('nrk.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/});
+        }
+        else if (link.indexOf('regjeringen.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.imagecontainer', domainUrl:'regjeringen.no'});
+        }
+        else if (link.indexOf('stfk.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.documentbody', domainUrl:'www.stfk.no'});
+        }
+        else if (link.indexOf('utdanningsnytt.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div#hovedartikkelContainer', domainUrl:'utdanningsnytt.no'});
         }
       },
     },

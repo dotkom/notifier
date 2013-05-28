@@ -6,6 +6,11 @@ This is a both a Chrome/Opera extension and a WebApp from the student organizati
 * Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
 * Add WebApp for Mobile: Navigate to http://informatikk.org/mobile and tap "Add to Home Screen" in the context menu of the browser
 
+# Media coverage
+
+* 2013.05.28 "Siste nytt - og om
+litt er kaffen klar": http://www.universitetsavisa.no/campus/article17115.ece
+
 # Terms of use
 
 Use this program entirely on your own risk. We do not take any responsibility for consequences that might arise from using this program in any way imaginable.
