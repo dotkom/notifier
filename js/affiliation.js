@@ -724,7 +724,7 @@ var Affiliation = {
       palette: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback);
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.entry'});
       },
     },
     'hist': {
@@ -784,8 +784,8 @@ var Affiliation = {
 
     // Array of possible news containers sorted by estimated probabilty
     var containers = [
-      'div.post',
       'div.entry',
+      'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
       'article', // leave <article> at the bottom of the preferred list, it's a bit misused
     ];
     
@@ -884,6 +884,9 @@ var Affiliation = {
               // Exclude gifs since they're most likely smilies and the likes
               image = image.not('img[src*=".gif"]');
               image = image.not('img[src*="data:image/gif"]');
+
+              // Exclude social image icons (only applies for some blogs)
+              image = image.not('img[src*="sociable"]');
               
               // Use image at specified index if requested
               if (options.imageIndex)
