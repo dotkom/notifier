@@ -169,11 +169,14 @@ var News = {
     }
     // Check for author in rarely used <author> field
     if (post.creator == '') {
-      // - Universitetsavisa uses this
+      // - Universitetsavisa and Adressa uses this
       var author = $(item).find("author").filter(':first').text();
       if (author != '') {
-        var pieces = author.match(/[a-zA-Z0-9æøåÆØÅ\. ]+/g);
-        post.creator = pieces[pieces.length-1];
+        author = author.trim();
+        var pieces = author.match(/[a-zA-Z0-9æøåÆØÅ\.\- ]+/g);
+        if (pieces != null) {
+          post.creator = pieces[pieces.length-1];
+        }
       }
     }
 
