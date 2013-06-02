@@ -413,7 +413,7 @@
     $('link[rel="shortcut icon"]').attr('href', Affiliation.org[ls.affiliationKey1].icon);
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', palette]);
+      _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette]);
     }
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pagefliptext').attr("style", "bottom:9px;");
