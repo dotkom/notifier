@@ -320,7 +320,7 @@ body {
 }
 #container #header #buttons {
   border: 0pt solid #00ff00;
-  width: 170pt;
+  width: 160pt;
   float: left;
 }
 #container #header #buttons .popupbutton {
@@ -340,7 +340,7 @@ body {
   display: none;
   position: relative;
   float: left;
-  width: 170pt;
+  width: 160pt;
   font-weight: bold;
   text-shadow: 0 0 10pt white,
         0 0 15pt white,
