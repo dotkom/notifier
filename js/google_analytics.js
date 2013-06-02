@@ -22,7 +22,7 @@ if (!DEBUG) {
   // events unless necessary. Therefore we fire a 'read'-event after 4 seconds.
   var timeout = 4000;
   setTimeout(function() {
-    _gaq.push(['_trackEvent', 'analytics', 'antibounce', timeout]),
+    _gaq.push(['_trackEvent', 'analytics', 'antibounce', timeout])
   }, timeout);
 
   (function() {
