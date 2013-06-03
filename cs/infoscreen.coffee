@@ -335,7 +335,7 @@ $ ->
   $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey1].icon
   # Show the standard palette or special palette the user has chosen
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
-  if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', palette])
+  if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette])
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'

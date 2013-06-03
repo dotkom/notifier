@@ -395,7 +395,7 @@
     palette = Palettes.get(ls.affiliationPalette);
     $('#palette').attr('href', palette);
     if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'popup', 'loadPalette', palette]);
+      _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette]);
     }
     $('#logo').click(function() {
       var name, web;

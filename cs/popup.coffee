@@ -324,7 +324,7 @@ $ ->
   # Show the standard palette or special palette the user has chosen
   palette = Palettes.get ls.affiliationPalette
   $('#palette').attr 'href', palette
-  if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', palette])
+  if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette])
 
   # Click events
   $('#logo').click ->
