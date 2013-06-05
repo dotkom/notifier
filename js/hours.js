@@ -72,8 +72,8 @@ var Hours = {
         todaysHours = self.findTodaysHours(allHours);
         if (self.debug) console.log('Todays hours:', todaysHours);
 
-        // Special cases are usually either exam periods, or contains messages (and line breaks)
-        if (todaysHours.match(self.examRegex) == null && todaysHours.match(/<br \/>/gi) == null) {
+        // Special cases are usually either exam periods or contains a long message
+        if (todaysHours.match(self.examRegex) == null && todaysHours.length < 50) {
           // Prettify todays hours
           prettyHours = self.prettifyTodaysHours(todaysHours);
           if (self.debug) console.log('Pretty hours:', prettyHours);
@@ -144,7 +144,7 @@ var Hours = {
           // In special cases where an opening time is not found, expect a
           // longer message on the next multiple lines
           if (pieces[i].match(noTimeFoundRegex) == null) {
-            dailyHours[dayNum] = pieces.slice(i).join('<br />- ');
+            dailyHours[dayNum] = pieces.slice(i).join(' ');
           }
         }
       };
