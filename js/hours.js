@@ -16,6 +16,8 @@ var Hours = {
   debugThisText: 'Mandag- Torsdag 10.00 -17.30\nFredag 08.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugText must be true
   // debugThisText is expected to be pre-stripped of JSON and HTML, otherwise intact
   
+  examRegex: /e[ksx]+[ame]+ns? ?[åÅ][pen]+t?/gi,
+
   cantinas: {
     'administrasjon': 2379,
     'dmmh': 2534,
@@ -70,14 +72,15 @@ var Hours = {
         todaysHours = self.findTodaysHours(allHours);
         if (self.debug) console.log('Todays hours:', todaysHours);
 
-        if (todaysHours.match(/e[ksx]+[ame]+ns? ?[åÅ][pen]+t?/gi) == null) {
+        // Special cases are usually either exam periods, or contains messages (and line breaks)
+        if (todaysHours.match(self.examRegex) == null && todaysHours.match(/<br \/>/gi) == null) {
           // Prettify todays hours
           prettyHours = self.prettifyTodaysHours(todaysHours);
           if (self.debug) console.log('Pretty hours:', prettyHours);
           callback(prettyHours);
         }
         else {
-          if (self.debug) console.log('Not prettifying exam period hours');
+          if (self.debug) console.log('Not prettifying exam period hours and other special cases');
           callback(todaysHours);
         }
       },
@@ -109,40 +112,42 @@ var Hours = {
       }
     };
 
+    // Remove empty lines from pieces
+    for (var i = pieces.length - 1; i >= 0; i--) {
+      if (pieces[i].trim() == '' || pieces[i].trim() == '&nbsp;') {
+        pieces.splice(i, 1);
+      }
+    };
+
+    var noTimeFoundRegex = /\d\d[.:;]?\d\d( ?\-? ?\d\d[.:;]?(\d\d)?)?/gi;
+    var dayNames = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+
     var dailyHours = [];
     // It is important to have this loop counting upwards, this is because
     // overriding information for specific days might be posted later in
     // the pieces array. E.g. pieces[0] might contain something about monday,
     // but pieces[4] might have overriding information about the current monday.
     for (var i=0; i<pieces.length; i++) {
-      if (pieces[i].match(/e[ksx]+[ame]+ns? ?[åÅ][pen]+t?/gi) != null) {
+
+      // Special case for exam periods
+      if (pieces[i].match(this.examRegex) != null) {
         var exams = pieces.slice(i).join('<br />- ');
         dailyHours[0] = exams;
         dailyHours[6] = exams;
       }
-      // These if-statements violates the DRY-principle, but please don't
-      // overengineer this, - at least these are trivial to understand
-      if (pieces[i].match(/søndag/gi) != null) {
-        dailyHours[0] = pieces[i];
-      }
-      if (pieces[i].match(/mandag/gi) != null) {
-        dailyHours[1] = pieces[i];
-      }
-      if (pieces[i].match(/tirsdag/gi) != null) {
-        dailyHours[2] = pieces[i];
-      }
-      if (pieces[i].match(/onsdag/gi) != null) {
-        dailyHours[3] = pieces[i];
-      }
-      if (pieces[i].match(/torsdag/gi) != null) {
-        dailyHours[4] = pieces[i];
-      }
-      if (pieces[i].match(/fredag/gi) != null) {
-        dailyHours[5] = pieces[i];
-      }
-      if (pieces[i].match(/lørdag/gi) != null) {
-        dailyHours[6] = pieces[i];
-      }
+
+      // Filling the day array, some days might not be defined
+      for (var dayNum=0; dayNum<=6; dayNum++) {
+        var dayRegex = new RegExp(dayNames[dayNum],'gi');
+        if (pieces[i].match(dayRegex) != null) {
+          dailyHours[dayNum] = pieces[i];
+          // In special cases where an opening time is not found, expect a
+          // longer message on the next multiple lines
+          if (pieces[i].match(noTimeFoundRegex) == null) {
+            dailyHours[dayNum] = pieces.slice(i).join('<br />- ');
+          }
+        }
+      };
     };
 
     // Filling ranges from monday to e.g. thursday, this is
