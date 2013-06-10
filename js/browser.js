@@ -141,7 +141,7 @@ var Browser = {
     if (BROWSER == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
       if (chrome.idle) {
-        chrome.idle.queryState(15, function (state) {
+        chrome.idle.queryState(30, function (state) {
           if (state == 'active') {
             notification = webkitNotifications.createHTMLNotification(path);
             notification.show();
