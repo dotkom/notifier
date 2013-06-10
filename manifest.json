@@ -34,6 +34,7 @@
   },
 	
   "permissions": [
+    "idle",
     "notifications",
     "<all_urls>"
   ],
