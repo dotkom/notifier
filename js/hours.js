@@ -103,21 +103,22 @@ var Hours = {
     if (this.debugText) {
       return '- ' + pieces[0] + '<br />- ' + pieces[1];
     }
-    
-    // Remove lines from pieces containing contact information and such
+
     for (var i = pieces.length - 1; i >= 0; i--) {
-      // Identify by '@sit.no' from the email address or the phone number
+      // Remove contact information, indentify by '@sit.no' from email or by phone number
       if (pieces[i].indexOf('@sit.no') != -1 || pieces[i].match(/\d(\d|\s)+\d/g) != null) {
         pieces.splice(i, 1);
       }
-    };
-
-    // Remove empty lines from pieces
+    }
+    
     for (var i = pieces.length - 1; i >= 0; i--) {
-      if (pieces[i].trim() == '' || pieces[i].trim() == '&nbsp;') {
+      // Trim
+      pieces[i] = pieces[i].trim();
+      // Remove empty lines
+      if (pieces[i] == '' || pieces[i] == '&nbsp;') {
         pieces.splice(i, 1);
       }
-    };
+    }
 
     var noTimeFoundRegex = /\d\d[.:;]?\d\d( ?\-? ?\d\d[.:;]?(\d\d)?)?/gi;
     var dayNames = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
