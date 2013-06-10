@@ -139,8 +139,21 @@ var Browser = {
     // For future reference, support for webkit notifications can be
     // tested with (!window.webkitNotifications)
     if (BROWSER == 'Chrome') {
-      notification = webkitNotifications.createHTMLNotification(path);
-      notification.show();
+      // Check if browser is active, not "idle" or "locked"
+      if (chrome.idle) {
+        chrome.idle.queryState(15, function (state) {
+          if (state == 'active') {
+            notification = webkitNotifications.createHTMLNotification(path);
+            notification.show();
+          }
+          else {
+            if (DEBUG) console.log('Notification not sent, state was', state);
+          }
+        });
+      }
+      else {
+        if (DEBUG) console.log('ERROR: This version of Chrome does not support chrome.idle');
+      }
     }
     else if (BROWSER == 'Opera') {
       // Desktop Notifications will be available in Opera 12.50

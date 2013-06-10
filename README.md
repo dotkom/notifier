@@ -17,16 +17,19 @@ Use this program entirely on your own risk. We do not take any responsibility fo
 
 # Features overview
 
+For all the included affiliations:
+- Displays and notifies about news from the selected "linjeforening"
+- Displays todays dinner menu and opening hours from SiT cantinas, cafés and kiosks
+- Displays bus data from AtB in real time
+- Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript, jQuery and WebGL
+- All pages in the extension are live, they keep themselves updated
+- Can be used as an infoscreen (full HD vertical screen) for continous use
+
+Additional Online-specific features (requires some hardware):
 - Displays status for Onlines office: Open, closed, meeting, free waffles
 - Displays todays meetings and current servant at Onlines office
 - Displays the status of the coffee pot at Onlines office
-- Displays todays dinner menu and opening hours from SiT cantinas
-- Displays bus data from AtB in real time
-- Displays and notifies about news from Online
-- Can be used as a webapp (for iOS/Android) by simply putting all the code on a PHP-enabled server
-- Can be used as an infoscreen (full HD vertical screen) for continous use
-- All pages in the extension are live, they keep themselves updated
-- Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript, jQuery and WebGL
+- Usable as a webapp for iOS/Android by simply putting all the code on a PHP-enabled server
 
 # Chronological Credz
 
@@ -64,7 +67,7 @@ General
 - Separate script containing some constants, for changeability
 - Fancy HTML5, CSS3 and jQuery design on all pages
 - Runs Google Analytics on all pages, tracking both pages and events anonymously
-- Detects network status adjusts all affected values accordingly
+- Detects network status, adjusts all affected values accordingly
 - Dev mode: Faster updates, frequent clearing of localstorage
 - Automatic determination of whether or not dev mode should be enabled
 
