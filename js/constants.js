@@ -1,4 +1,4 @@
-var DEBUG = 0;
+var DEBUG = 1;
 
 // AJAX setup
 var AJAX_SETUP = {
