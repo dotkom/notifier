@@ -15,8 +15,6 @@ var Hours = {
   debugText: 0, // Deep debugging of a specific string, insert below
   debugThisText: 'Mandag- Torsdag 10.00 -17.30\nFredag 08.00 - 14.00\nRealfagbygget på Gløshaugen 73 55 12 52 sit.kafe.realfag@sit.no', // debugText must be true
   // debugThisText is expected to be pre-stripped of JSON and HTML, otherwise intact
-  
-  examRegex: /e[ksx]+[ame]+ns? ?[åÅ][pen]+t?/gi,
 
   cantinas: {
     'administrasjon': 2379,
@@ -65,24 +63,11 @@ var Hours = {
         allHours = self.stripJsonAndHtml(json);
         if (self.debug) console.log('Entire string:', allHours);
 
-        // Debugging a particular string now?
-        if (self.debugText) allHours = self.debugThisText;
-
         // Find todays hours
-        todaysHours = self.findTodaysHours(allHours);
+        var todaysHours = self.findTodaysHours(allHours);
         if (self.debug) console.log('Todays hours:', todaysHours);
 
-        // Special cases are usually either exam periods or contains a long message
-        if (todaysHours.match(self.examRegex) == null && todaysHours.length < 50) {
-          // Prettify todays hours
-          prettyHours = self.prettifyTodaysHours(todaysHours);
-          if (self.debug) console.log('Pretty hours:', prettyHours);
-          callback(prettyHours);
-        }
-        else {
-          if (self.debug) console.log('Not prettifying exam period hours and other special cases');
-          callback(todaysHours);
-        }
+        callback(todaysHours);
       },
       error: function(jqXHR, text, err) {
         callback(self.msgConnectionError);
@@ -92,25 +77,106 @@ var Hours = {
 
   stripJsonAndHtml: function(data) {
     var htmlString = data.html;
-    return htmlString.replace(/<(?:.|\n)*?>/gm, '');
+    // return htmlString.replace(/<(?:.|\n)*?>/gm, ''); // removes all tags
+    return htmlString.replace(/<\/?(div|ul|li|p|a|br|\n).*?>/gi, ''); // keeps the <strong> tag
   },
 
   findTodaysHours: function(allHours) {
-    var day = new Date().getDay();
-    if (this.debugDay)
-      day = this.debugThisDay;
+    // Debugging a particular string now?
+    if (this.debugText) return '- ' + this.debugThisText.split('\n').join('<br />- ');
+    
     var pieces = allHours.split('\n');
-    if (this.debugText) {
-      return '- ' + pieces[0] + '<br />- ' + pieces[1];
-    }
+    var dayNames = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+    var dailyHours = [];
 
-    for (var i = pieces.length - 1; i >= 0; i--) {
-      // Remove contact information, indentify by '@sit.no' from email or by phone number
-      if (pieces[i].indexOf('@sit.no') != -1 || pieces[i].match(/\d(\d|\s)+\d/g) != null) {
-        pieces.splice(i, 1);
+    // Strip away useless lines
+    pieces = this.stripUselessLines(pieces);
+
+    // Regular daily hours (not special cases)
+
+    // Monday to Friday allowed at line 0
+    if (typeof pieces[0] != 'undefined') {
+      // Filling the day array, some days might not be defined
+      for (var dayNum=1; dayNum<=5; dayNum++) {
+        var dayRegex = new RegExp(dayNames[dayNum],'gi');
+        if (pieces[0].match(dayRegex) != null) {
+          dailyHours[dayNum] = pieces[0];
+        }
       }
     }
+    // Friday or Saturday allowed at line 1
+    if (typeof pieces[1] != 'undefined') {
+      // Filling the day array, some days might not be defined
+      for (var dayNum=5; dayNum<=6; dayNum++) {
+        var dayRegex = new RegExp(dayNames[dayNum],'gi');
+        if (pieces[1].match(dayRegex) != null) {
+          dailyHours[dayNum] = pieces[1];
+        }
+      }
+    }
+    // Saturday or Sunday allowed at line 2
+    if (typeof pieces[2] != 'undefined') {
+      // Filling the day array, some days might not be defined
+      for (var dayNum=0; dayNum==0 || dayNum == 6; dayNum+=6) {
+        var dayRegex = new RegExp(dayNames[dayNum],'gi');
+        if (pieces[2].match(dayRegex) != null) {
+          dailyHours[dayNum] = pieces[2];
+        }
+      }
+    }
+
+    // Filling empty ranges from monday to friday, and inbetween,
+    // this is fairly naïve, but interestingly accurate
+    var lastDay = dailyHours[1]; // Starting with monday (not sunday)
+    for (var i=1; i<=5; i++) {
+      if (typeof dailyHours[i] == 'undefined') {
+        if (typeof lastDay != 'undefined') {
+          dailyHours[i] = lastDay;
+        }
+      }
+      lastDay = dailyHours[i];
+    }
+
+    var currentDay = new Date().getDay();
+
+    // Debugging a particular day now?
+    if (this.debugDay) currentDay = this.debugThisDay;
     
+    var today = dailyHours[currentDay];
+
+    // Prettifying
+    if (typeof today != 'undefined') {
+      today = this.prettifyTodaysHours(today);
+    }
+
+    var specialCase = null;
+
+    // Adding any extra info to the end of the string,
+    // special info might be e.g. eksamensåpent or vacations
+    for (var i=1; i<pieces.length; i++) {
+      // Special case titles contains neiter days nor hours
+      if (pieces[i].match(/\w+(dag)/gi) == null && pieces[i].match(/\d?\d[\.:]\d\d/gi) == null) {
+        specialCase = pieces.slice(i).join('<br />- ');
+        specialCase = '<br />- ' + specialCase;
+        break;
+      }
+    }
+    if (specialCase != null) {
+      today += specialCase;
+    }
+
+    // Returning todays
+    if (typeof today != 'undefined') {
+      if (this.debug) console.log('findTodaysHours returns', today, 'from', dailyHours, 'with special case', specialCase);
+      return '- ' + today;
+    }
+    else {
+      if (this.debug) console.log('findTodaysHours returns', this.msgClosed);
+      return this.msgClosed;
+    }
+  },
+
+  stripUselessLines: function(pieces) {
     for (var i = pieces.length - 1; i >= 0; i--) {
       // Trim
       pieces[i] = pieces[i].trim();
@@ -118,61 +184,16 @@ var Hours = {
       if (pieces[i] == '' || pieces[i] == '&nbsp;') {
         pieces.splice(i, 1);
       }
-    }
-
-    var noTimeFoundRegex = /\d\d[.:;]?\d\d( ?\-? ?\d\d[.:;]?(\d\d)?)?/gi;
-    var dayNames = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
-
-    var dailyHours = [];
-    // It is important to have this loop counting upwards, this is because
-    // overriding information for specific days might be posted later in
-    // the pieces array. E.g. pieces[0] might contain something about monday,
-    // but pieces[4] might have overriding information about the current monday.
-    for (var i=0; i<pieces.length; i++) {
-
-      // Special case for exam periods
-      if (pieces[i].match(this.examRegex) != null) {
-        var exams = pieces.slice(i).join('<br />- ');
-        dailyHours[0] = exams;
-        dailyHours[6] = exams;
+      // Remove irrelevant lines
+      else if (pieces[i].match(/ha\sen\s|god\s/gi) != null) {
+        pieces.splice(i, 1);
       }
-
-      // Filling the day array, some days might not be defined
-      for (var dayNum=0; dayNum<=6; dayNum++) {
-        var dayRegex = new RegExp(dayNames[dayNum],'gi');
-        if (pieces[i].match(dayRegex) != null) {
-          dailyHours[dayNum] = pieces[i];
-          // In special cases where an opening time is not found, expect a
-          // longer message on the next multiple lines
-          if (pieces[i].match(noTimeFoundRegex) == null) {
-            dailyHours[dayNum] = pieces.slice(i).join(' ');
-          }
-        }
-      };
-    };
-
-    // Filling ranges from monday to e.g. thursday, this is
-    // fairly naïve, but interestingly accurate
-    var lastDay = dailyHours[1]; // Starting with monday
-    for (var i = 1; i < 6; i++) {
-      if (typeof dailyHours[i] == 'undefined') {
-        if (typeof lastDay != 'undefined') {
-          dailyHours[i] = lastDay;
-        }
+      // Remove contact information, indentify by '@sit.no' from email or by phone number
+      else if (pieces[i].indexOf('@sit.no') != -1 || pieces[i].match(/\d(\d|\s)+\d/g) != null) {
+        pieces.splice(i, 1);
       }
-      lastDay = dailyHours[i];
-    };
-
-    // Returning todays, if info exist about it
-    var today = dailyHours[day];
-    if (typeof today == 'undefined') {
-      if (this.debug) console.log('findTodaysHours returns', this.msgClosed);
-      return this.msgClosed;
     }
-    else {
-      if (this.debug) console.log('findTodaysHours returns', dailyHours[day], 'from', dailyHours);
-      return '- ' + dailyHours[day];
-    }
+    return pieces;
   },
 
   prettifyTodaysHours: function(todays) {
