@@ -30,7 +30,9 @@ function onMessage(request, sender, callback) {
 
 // wire up the message listener function
 if (BROWSER == "Chrome")
-  chrome.extension.onMessage.addListener(onMessage);
+  if (typeof chrome.extension.onMessage != 'undefined')
+    chrome.extension.onMessage.addListener(onMessage);
+  else if (DEBUG) console.log('ERROR: old version of chrom(e|ium), messaging API not supported');
 else if (BROWSER == "Opera")
   opera.extension.onmessage = function(event) {
     // event.data contains the message
