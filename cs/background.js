@@ -245,16 +245,13 @@
     if (ls.everOpenedOptions === void 0) {
       ls.everOpenedOptions = 'false';
     }
-    if (ls.justReloadingBgProcess === void 0) {
-      ls.justReloadingBgProcess = 'false';
-    }
     if (ls.everOpenedOptions === 'false' && !DEBUG) {
       Browser.openTab('options.html');
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)']);
       }
     }
-    if (ls.useInfoscreen === 'true' && ls.justReloadingBgProcess === 'false') {
+    if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'background', 'loadInfoscreen']);
@@ -267,11 +264,6 @@
       }
     }
     loadAffiliationIcon();
-    ls.justReloadingBgProcess = 'false';
-    setInterval((function() {
-      ls.justReloadingBgProcess = 'true';
-      return document.location.reload();
-    }), 86400000);
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
     window.updateCoffeeSubscription = updateCoffeeSubscription;
     window.updateAffiliationNews = updateAffiliationNews;

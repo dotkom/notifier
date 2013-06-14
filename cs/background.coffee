@@ -207,15 +207,12 @@ $ ->
   if ls.everOpenedOptions is undefined
     ls.everOpenedOptions = 'false'
 
-  if ls.justReloadingBgProcess is undefined
-    ls.justReloadingBgProcess = 'false'
-
   # Open options page after install
   if ls.everOpenedOptions is 'false' and !DEBUG
     Browser.openTab 'options.html'
     if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)'])
   # Open Infoscreen if the option is set
-  if ls.useInfoscreen is 'true' and ls.justReloadingBgProcess is 'false'
+  if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
     if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadInfoscreen'])
   # Open Chatter if the option is set
@@ -224,13 +221,6 @@ $ ->
     if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadChatter'])
 
   loadAffiliationIcon()
-
-  # Reload the page once every day (in case the extension updates)
-  ls.justReloadingBgProcess = 'false'
-  setInterval ( ->
-    ls.justReloadingBgProcess = 'true'
-    document.location.reload()
-  ), 86400000
 
   # Attaching the update-functions to the window (global) object so other pages
   # may lend these functions via Browser.getBackgroundProcess().function()
