@@ -157,12 +157,17 @@ var Hours = {
       // Special case titles contains neiter days nor hours
       if (pieces[i].match(/\w+(dag)/gi) == null && pieces[i].match(/\d?\d[\.:]\d\d/gi) == null) {
         specialCase = pieces.slice(i).join('<br />- ');
-        specialCase = '<br />- ' + specialCase;
         break;
       }
     }
     if (specialCase != null) {
-      today += specialCase;
+      if (typeof today != 'undefined') {
+        specialCase = '<br />- ' + specialCase;
+        today += specialCase;
+      }
+      else {
+        today = specialCase;
+      }
     }
 
     // Returning todays
