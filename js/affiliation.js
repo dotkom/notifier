@@ -378,8 +378,8 @@ var Affiliation = {
       placeholder: './org/primetime/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
       },
     },
     'sturm und drang': {
