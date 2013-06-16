@@ -169,12 +169,12 @@ body {
   padding-top: 10pt;
   width: 40%;
 }
-#container #bus .loading_left {
+#container #bus .loadingLeft {
   position: relative;
   z-index: 100;
   -webkit-transform: scaleX(-1);
 }
-#container #bus .loading_right {
+#container #bus .loadingRight {
   position: relative;
   z-index: 100;
 }
@@ -345,18 +345,18 @@ body {
 #container #bus .name {
   margin-bottom: 3pt;
 }
-#container #bus .loading_left {
+#container #bus .loadingLeft {
   width: 160px;
   bottom: 16pt;
 }
-#container #bus .loading_right {
+#container #bus .loadingRight {
   width: 160px;
   bottom: 16pt;
 }
 #container #bus #middle {
   width: 14%;
 }
-#container #bus #middle #atb_logo {
+#container #bus #middle #atbLogo {
   border: 0pt solid #00ff00;
   height: 85pt;
   margin-top: 2pt;

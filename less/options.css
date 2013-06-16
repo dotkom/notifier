@@ -42,7 +42,7 @@ header {
   border-bottom: 1pt solid #eee;
   z-index: 1;
 }
-header #header_text {
+header #headerText {
   border: 0pt solid #ffff00;
   width: 100%;
   text-align: center;
@@ -310,7 +310,7 @@ header #notification .saved {
   width: 87pt;
   margin: 0 8pt;
 }
-.item #bus_box {
+.item #busBox {
   width: 265pt;
   /*260pt*/
 
@@ -335,22 +335,22 @@ header #notification .saved {
   white-space: nowrap;
   word-wrap: break-word;
 }
-.item #bus_box .bus_stop {
+.item #busBox .busStop {
   float: left;
   white-space: nowrap;
 }
-.item #bus_box .bus_stop input {
+.item #busBox .busStop input {
   width: 102pt;
   box-shadow: 0 0 0 black;
 }
-.item #bus_box .bus_stop select {
+.item #busBox .busStop select {
   z-index: 10;
   position: relative;
   /* allows the down-arrow to be painted behind this */
 
   width: 106pt;
 }
-.item #bus_box .bus_stop .lines {
+.item #busBox .busStop .lines {
   z-index: 10;
   position: relative;
   /* allows the down-arrow to be painted behind this */
@@ -377,52 +377,52 @@ header #notification .saved {
   /* resets inhertied value from parent element */
 
 }
-.item #bus_box .bus_stop .lines table {
+.item #busBox .busStop .lines table {
   border: 0pt solid #ff0000;
   width: 100%;
   table-layout: fixed;
   text-align: center;
 }
-.item #bus_box .bus_stop .lines table td {
+.item #busBox .busStop .lines table td {
   border: 0pt solid #ffff00;
   padding: 1pt 0;
 }
-.item #bus_box .bus_stop .lines .active {
+.item #busBox .busStop .lines .active {
   cursor: pointer;
   color: black;
 }
-.item #bus_box .bus_stop .lines .active:hover {
+.item #busBox .busStop .lines .active:hover {
   font-weight: bold;
 }
-.item #bus_box .bus_stop .lines .inactive {
+.item #busBox .busStop .lines .inactive {
   cursor: pointer;
   color: gray;
 }
-.item #bus_box .bus_stop .lines .inactive:hover {
+.item #busBox .busStop .lines .inactive:hover {
   font-weight: bold;
 }
-.item #bus_box .bus_stop .lines .error {
+.item #busBox .busStop .lines .error {
   color: black;
   text-align: center;
   font-size: 9pt;
 }
-.item #bus_box .bus_stop .lines .retry {
+.item #busBox .busStop .lines .retry {
   color: black;
   text-align: center;
   font-size: 9pt;
   text-decoration: underline;
   cursor: pointer;
 }
-.item #bus_box .bus_stop .lines .loading_left {
+.item #busBox .busStop .lines .loadingLeft {
   position: relative;
   width: 80px;
   -webkit-transform: scaleX(-1);
 }
-.item #bus_box .bus_stop .lines .loading_right {
+.item #busBox .busStop .lines .loadingRight {
   position: relative;
   width: 80px;
 }
-.item #bus_box #bus_logo {
+.item #busBox #busLogo {
   border: 0pt solid #ff0000;
   position: relative;
   z-index: 10;
@@ -433,7 +433,7 @@ header #notification .saved {
   width: 34pt;
   margin: 0 8pt;
 }
-.item #bus_box #arrow_down {
+.item #busBox #arrowDown {
   position: relative;
   z-index: 2;
   /* paint behind other stuff */
@@ -441,14 +441,14 @@ header #notification .saved {
   left: -135pt;
   top: 29pt;
 }
-.item #bus_box #arrow_down img {
+.item #busBox #arrowDown img {
   width: 9pt;
 }
-.item #infoscreen_preview {
+.item #infoscreenPreview {
   display: none;
 }
 /* Suggestions for bus stops */
-#bus_suggestions {
+#busSuggestions {
   border: 0pt solid #00ff00;
   position: fixed;
   width: 150pt;
@@ -460,13 +460,13 @@ header #notification .saved {
   left: 0pt;
   bottom: 0pt;
 }
-#bus_suggestions .suggestion {
+#busSuggestions .suggestion {
   font-size: 10pt;
   line-height: 1.5;
   letter-spacing: .7pt;
   -webkit-transition: all 0.1s ease-out;
 }
-#bus_suggestions .suggestion:hover {
+#busSuggestions .suggestion:hover {
   cursor: pointer;
   text-shadow: 0 0 10pt #bbb,
         0 0 15pt #bbb,
@@ -476,10 +476,10 @@ header #notification .saved {
         0 0 10pt #fff,
         0 0 20pt #fff;
 }
-#bus_suggestions .suggestion .matched_character {
+#busSuggestions .suggestion .matched_character {
   font-weight: bold;
 }
-#bus_suggestions .correct {
+#busSuggestions .correct {
   color: white;
   font-size: 10pt;
   font-weight: bold;
@@ -502,7 +502,7 @@ header #notification .saved {
   }
 }*/
 /* Debug toolbox in the the top right corner, only shown in debug mode */
-#debug_links {
+#debugLinks {
   display: none;
   position: fixed;
   top: 10pt;
@@ -511,11 +511,11 @@ header #notification .saved {
   text-align: right;
   -webkit-transition: all 0.1s ease-out;
 }
-#debug_links button {
+#debugLinks button {
   /* nothing here yet */
 
 }
-#debug_links:hover {
+#debugLinks:hover {
   opacity: 1;
 }
 /* The pageflip at the bottom */
