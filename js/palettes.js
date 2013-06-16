@@ -36,6 +36,8 @@ var Palettes = {
   },
 
   load: function(elementId) {
+    // For speed and esthetical reasons this script runs
+    // before jQuery is loaded so don't use jQuery here.
     var paletteLink = document.getElementById(elementId);
     if (paletteLink != null) {
       // Show the standard palette or special palette the user has chosen
