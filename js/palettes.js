@@ -35,4 +35,20 @@ var Palettes = {
     return this.palettes['blue'];
   },
 
+  load: function(elementId) {
+    var paletteLink = document.getElementById(elementId);
+    if (paletteLink != null) {
+      // Show the standard palette or special palette the user has chosen
+      var stored = localStorage.affiliationPalette;
+      var palette = this.get(stored);
+      paletteLink.href = palette;
+    }
+    else {
+      if (DEBUG) console.log('ERROR: palette link element with ID "#' + elementId + '" not found');
+    }
+  }
+
 }
+
+// Palette self-loading
+Palettes.load('palette');
