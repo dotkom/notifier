@@ -26,12 +26,12 @@ var Palettes = {
         return path;
       }
       else {
-        console.log('ERROR: a special palette has not yet been created for the affiliation', palette);
+        if (DEBUG) console.log('ERROR: a special palette has not yet been created for the affiliation', palette);
         return this.palettes['blue'];
       }
     }
 
-    console.log('ERROR: unsupported palette', palette);
+    if (DEBUG) console.log('ERROR: unsupported palette', palette);
     return this.palettes['blue'];
   },
 
