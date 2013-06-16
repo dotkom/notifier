@@ -333,8 +333,8 @@ $ ->
 
   # Switch to the icon of chosen affiliation
   $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey1].icon
-  # Show the standard palette or special palette the user has chosen
-  $('#palette').attr 'href', Palettes.get ls.affiliationPalette
+  # Track popularity of the chosen palette, the palette
+  # itself is loaded a lot earlier for perceived speed
   if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette])
   
   # Minor esthetical adjustments for OS version

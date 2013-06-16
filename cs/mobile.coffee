@@ -364,10 +364,9 @@ $ ->
     $('body').attr 'style', 'background-attachment:fixed;background-image:' + BACKGROUND_IMAGE
     ls.background_image = BACKGROUND_IMAGE
   
-  # Show the standard palette or special palette the user has chosen
-  palette = ls.affiliationPalette
-  if DEBUG then console.log 'Applying chosen palette', palette
-  $('#palette').attr 'href', Palettes.get palette
+  # Now done in palettes.js  
+  # # Show the standard palette or special palette the user has chosen
+  # $('#palette').attr 'href', Palettes.get ls.affiliationPalette
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

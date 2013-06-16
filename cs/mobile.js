@@ -354,7 +354,7 @@
   };
 
   $(function() {
-    var firstBusOk, firstBusProps, palette, prop, secondBusOk, secondBusProps, _i, _j, _len, _len1;
+    var firstBusOk, firstBusProps, prop, secondBusOk, secondBusProps, _i, _j, _len, _len1;
     $.ajaxSetup(AJAX_SETUP);
     if (DEBUG) {
       ls.clear();
@@ -431,11 +431,6 @@
       $('body').attr('style', 'background-attachment:fixed;background-image:' + BACKGROUND_IMAGE);
       ls.background_image = BACKGROUND_IMAGE;
     }
-    palette = ls.affiliationPalette;
-    if (DEBUG) {
-      console.log('Applying chosen palette', palette);
-    }
-    $('#palette').attr('href', Palettes.get(palette));
     return mainLoop();
   });
 

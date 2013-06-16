@@ -347,7 +347,7 @@
   };
 
   $(function() {
-    var affiliation, logo, palette;
+    var affiliation, logo;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -392,8 +392,6 @@
         $('#header #logo').prop('src', logo);
       }
     }
-    palette = Palettes.get(ls.affiliationPalette);
-    $('#palette').attr('href', palette);
     if (!DEBUG) {
       _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette]);
     }

@@ -321,9 +321,8 @@ $ ->
       if DEBUG then console.log 'Applying affiliation logo', logo
       $('#header #logo').prop 'src', logo
   
-  # Show the standard palette or special palette the user has chosen
-  palette = Palettes.get ls.affiliationPalette
-  $('#palette').attr 'href', palette
+  # Track popularity of the chosen palette, the palette
+  # itself is loaded a lot earlier for perceived speed
   if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette])
 
   # Click events
