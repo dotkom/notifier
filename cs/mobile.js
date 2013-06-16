@@ -99,15 +99,15 @@
     if (DEBUG) {
       console.log('updateCantinas');
     }
-    Cantina.get(ls.left_cantina, function(menu) {
+    Cantina.get(ls.leftCantina, function(menu) {
       var cantinaName;
-      cantinaName = Cantina.names[ls.left_cantina];
+      cantinaName = Cantina.names[ls.leftCantina];
       $('#cantinas #left .title').html(cantinaName);
       return $('#cantinas #left #dinnerbox').html(listDinners(menu));
     });
-    return Cantina.get(ls.right_cantina, function(menu) {
+    return Cantina.get(ls.rightCantina, function(menu) {
       var cantinaName;
-      cantinaName = Cantina.names[ls.right_cantina];
+      cantinaName = Cantina.names[ls.rightCantina];
       $('#cantinas #right .title').html(cantinaName);
       return $('#cantinas #right #dinnerbox').html(listDinners(menu));
     });
@@ -149,10 +149,10 @@
     if (DEBUG) {
       console.log('updateHours');
     }
-    Hours.get(ls.left_cantina, function(hours) {
+    Hours.get(ls.leftCantina, function(hours) {
       return $('#cantinas #left .hours').html(hours);
     });
-    return Hours.get(ls.right_cantina, function(hours) {
+    return Hours.get(ls.rightCantina, function(hours) {
       return $('#cantinas #right .hours').html(hours);
     });
   };
@@ -341,7 +341,7 @@
       console.log('busLoading:', cssIdentificator);
     }
     cssSelector = '#' + cssIdentificator;
-    loading = cssIdentificator === 'first_bus' ? 'loading_left' : 'loading_right';
+    loading = cssIdentificator === 'firstBus' ? 'loadingLeft' : 'loadingRight';
     $(cssSelector + ' .name').html('<img class="' + loading + '" src="mimg/loading.gif" />');
     spans = ['first', 'second', 'third', 'fourth'];
     _results = [];
@@ -354,76 +354,9 @@
   };
 
   $(function() {
-    var firstBusOk, firstBusProps, prop, secondBusOk, secondBusProps, _i, _j, _len, _len1;
     $.ajaxSetup(AJAX_SETUP);
-    if (DEBUG) {
-      ls.clear();
-    }
-    ls.removeItem('currentStatus');
-    ls.removeItem('currentStatusMessage');
-    if (ls.showAffiliation1 === void 0) {
-      ls.showAffiliation1 = 'true';
-    }
-    if (ls.affiliationKey1 === void 0) {
-      ls.affiliationKey1 = 'online';
-    }
-    if (ls.affiliationPalette === void 0) {
-      ls.affiliationPalette = 'online';
-    }
-    if (ls.newsList === void 0) {
-      ls.newsList = JSON.stringify([]);
-    }
-    if (ls.viewedNewsList === void 0) {
-      ls.viewedNewsList = JSON.stringify([]);
-    }
-    if (ls.showBus === void 0) {
-      ls.showBus = 'true';
-    }
-    firstBusProps = [ls.firstBus, ls.firstBusName, ls.firstBusDirection, ls.firstBusActiveLines, ls.firstBusInactiveLines];
-    secondBusProps = [ls.secondBus, ls.secondBusName, ls.secondBusDirection, ls.secondBusActiveLines, ls.secondBusInactiveLines];
-    firstBusOk = true;
-    secondBusOk = true;
-    for (_i = 0, _len = firstBusProps.length; _i < _len; _i++) {
-      prop = firstBusProps[_i];
-      if (prop === void 0) {
-        firstBusOk = false;
-      }
-    }
-    for (_j = 0, _len1 = secondBusProps.length; _j < _len1; _j++) {
-      prop = secondBusProps[_j];
-      if (prop === void 0) {
-        secondBusOk = false;
-      }
-    }
-    if (!firstBusOk) {
-      ls.firstBus = 16011333;
-      ls.firstBusName = 'Gløshaugen Nord';
-      ls.firstBusDirection = 'til byen';
-      ls.firstBusActiveLines = JSON.stringify([5, 22]);
-      ls.firstBusInactiveLines = JSON.stringify([169]);
-    }
-    if (!secondBusOk) {
-      ls.secondBus = 16010333;
-      ls.secondBusName = 'Gløshaugen Nord';
-      ls.secondBusDirection = 'fra byen';
-      ls.secondBusActiveLines = JSON.stringify([5, 22]);
-      ls.secondBusInactiveLines = JSON.stringify([169]);
-    }
-    if (ls.showOffice === void 0) {
-      ls.showOffice = 'true';
-    }
-    if (ls.showCantina === void 0) {
-      ls.showCantina = 'true';
-    }
-    if (ls.left_cantina === void 0) {
-      ls.left_cantina = 'hangaren';
-    }
-    if (ls.right_cantina === void 0) {
-      ls.right_cantina = 'realfag';
-    }
-    ls.everConnected = ls.wasConnected = 'false';
-    busLoading('first_bus');
-    busLoading('second_bus');
+    busLoading('firstBus');
+    busLoading('secondBus');
     if (ls.background_image !== void 0) {
       $('body').attr('style', 'background-attachment:fixed;background-image:' + ls.background_image);
     } else {

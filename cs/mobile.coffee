@@ -55,12 +55,12 @@ updateCoffee = ->
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
-  Cantina.get ls.left_cantina, (menu) ->
-    cantinaName = Cantina.names[ls.left_cantina]
+  Cantina.get ls.leftCantina, (menu) ->
+    cantinaName = Cantina.names[ls.leftCantina]
     $('#cantinas #left .title').html cantinaName
     $('#cantinas #left #dinnerbox').html listDinners(menu)
-  Cantina.get ls.right_cantina, (menu) ->
-    cantinaName = Cantina.names[ls.right_cantina]
+  Cantina.get ls.rightCantina, (menu) ->
+    cantinaName = Cantina.names[ls.rightCantina]
     $('#cantinas #right .title').html cantinaName
     $('#cantinas #right #dinnerbox').html listDinners(menu)
 
@@ -90,9 +90,9 @@ clickDinnerLink = (cssSelector) ->
 
 updateHours = ->
   if DEBUG then console.log 'updateHours'
-  Hours.get ls.left_cantina, (hours) ->
+  Hours.get ls.leftCantina, (hours) ->
     $('#cantinas #left .hours').html hours
-  Hours.get ls.right_cantina, (hours) ->
+  Hours.get ls.rightCantina, (hours) ->
     $('#cantinas #right .hours').html hours
 
 updateBus = ->
@@ -268,7 +268,7 @@ findUpdatedPosts = (newsList, viewedList) ->
 busLoading = (cssIdentificator) ->
   if DEBUG then console.log 'busLoading:', cssIdentificator
   cssSelector = '#' + cssIdentificator
-  loading = if cssIdentificator is 'first_bus' then 'loading_left' else 'loading_right'
+  loading = if cssIdentificator is 'firstBus' then 'loadingLeft' else 'loadingRight'
   $(cssSelector + ' .name').html '<img class="'+loading+'" src="mimg/loading.gif" />'
   spans = ['first', 'second', 'third', 'fourth']
   for span in spans
@@ -279,80 +279,10 @@ busLoading = (cssIdentificator) ->
 $ ->
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
-  
-  # Clear previous thoughts
-  if DEBUG then ls.clear()
-  ls.removeItem 'currentStatus'
-  ls.removeItem 'currentStatusMessage'
-  
-  # Set default choices if undefined, in the same order as on the options page
-
-  if ls.showAffiliation1 is undefined
-    ls.showAffiliation1 = 'true'
-  if ls.affiliationKey1 is undefined
-    ls.affiliationKey1 = 'online'
-  if ls.affiliationPalette is undefined
-    ls.affiliationPalette = 'online'
-
-  # Lists of links (IDs) for news items
-  if ls.newsList is undefined
-    ls.newsList = JSON.stringify []
-  if ls.viewedNewsList is undefined
-    ls.viewedNewsList = JSON.stringify []
-
-  if ls.showBus is undefined
-    ls.showBus = 'true'
-
-  # If any of these properties are undefined we'll reset all of them
-  firstBusProps = [
-    ls.firstBus,
-    ls.firstBusName,
-    ls.firstBusDirection,
-    ls.firstBusActiveLines,
-    ls.firstBusInactiveLines,
-  ]
-  secondBusProps = [
-    ls.secondBus,
-    ls.secondBusName,
-    ls.secondBusDirection,
-    ls.secondBusActiveLines,
-    ls.secondBusInactiveLines,
-  ]
-  firstBusOk = true
-  secondBusOk = true
-  firstBusOk = false for prop in firstBusProps when prop is undefined
-  secondBusOk = false for prop in secondBusProps when prop is undefined
-  if !firstBusOk
-    ls.firstBus = 16011333
-    ls.firstBusName = 'Gløshaugen Nord'
-    ls.firstBusDirection = 'til byen'
-    ls.firstBusActiveLines = JSON.stringify [5, 22]
-    ls.firstBusInactiveLines = JSON.stringify [169]
-  if !secondBusOk
-    ls.secondBus = 16010333
-    ls.secondBusName = 'Gløshaugen Nord'
-    ls.secondBusDirection = 'fra byen'
-    ls.secondBusActiveLines = JSON.stringify [5, 22]
-    ls.secondBusInactiveLines = JSON.stringify [169]
-  
-  if ls.showOffice is undefined
-    ls.showOffice = 'true'
-  
-  if ls.showCantina is undefined
-    ls.showCantina = 'true'
-  if ls.left_cantina is undefined
-    ls.left_cantina = 'hangaren'
-  if ls.right_cantina is undefined
-    ls.right_cantina = 'realfag'
-  
-  # Set default vars for main loop
-  ls.everConnected = ls.wasConnected = 'false'
-
-  # ABOVE FROM BACKGROUND.COFFEE
 
   # Show loading gifs
-  busLoading 'first_bus'
-  busLoading 'second_bus'
+  busLoading 'firstBus'
+  busLoading 'secondBus'
 
   # Adding the background image, from localstorage or from file
   if ls.background_image isnt undefined
@@ -363,10 +293,6 @@ $ ->
     $('head').append '<script src="mimg/background_image.js"></script>'
     $('body').attr 'style', 'background-attachment:fixed;background-image:' + BACKGROUND_IMAGE
     ls.background_image = BACKGROUND_IMAGE
-  
-  # Now done in palettes.js  
-  # # Show the standard palette or special palette the user has chosen
-  # $('#palette').attr 'href', Palettes.get ls.affiliationPalette
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

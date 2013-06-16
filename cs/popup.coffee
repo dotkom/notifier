@@ -43,16 +43,16 @@ updateCoffee = ->
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
-  Cantina.get ls.left_cantina, (menu) ->
-    cantinaName = Cantina.names[ls.left_cantina]
+  Cantina.get ls.leftCantina, (menu) ->
+    cantinaName = Cantina.names[ls.leftCantina]
     $('#cantinas #left .title').html cantinaName
     $('#cantinas #left #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #left #dinnerbox li', ls.left_cantina
-  Cantina.get ls.right_cantina, (menu) ->
-    cantinaName = Cantina.names[ls.right_cantina]
+    clickDinnerLink '#cantinas #left #dinnerbox li', ls.leftCantina
+  Cantina.get ls.rightCantina, (menu) ->
+    cantinaName = Cantina.names[ls.rightCantina]
     $('#cantinas #right .title').html cantinaName
     $('#cantinas #right #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #right #dinnerbox li', ls.right_cantina
+    clickDinnerLink '#cantinas #right #dinnerbox li', ls.rightCantina
 
 listDinners = (menu) ->
   dinnerlist = ''
@@ -79,9 +79,9 @@ clickDinnerLink = (cssSelector, cantina) ->
 
 updateHours = ->
   if DEBUG then console.log 'updateHours'
-  Hours.get ls.left_cantina, (hours) ->
+  Hours.get ls.leftCantina, (hours) ->
     $('#cantinas #left .hours').html hours
-  Hours.get ls.right_cantina, (hours) ->
+  Hours.get ls.rightCantina, (hours) ->
     $('#cantinas #right .hours').html hours
 
 updateBus = ->
@@ -310,9 +310,9 @@ $ ->
 
   if ls.affiliationKey1 isnt 'online'
     # Hide chat button
-    $('#chatter_button').hide()
+    $('#chatterButton').hide()
     # Hide Notifier Mobile info in Tips box
-    $('#mobile_text').hide()
+    $('#mobileText').hide()
     # Show the logo and placeholder image for the correct organization
     affiliation = ls.affiliationKey1
     # If the affiliation has a defined logo
@@ -333,12 +333,12 @@ $ ->
     Browser.openTab web
     window.close()
 
-  $('#options_button').click ->
+  $('#optionsButton').click ->
     Browser.openTab 'options.html'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickOptions'])
     window.close()
 
-  $('#tips_button').click ->
+  $('#tipsButton').click ->
     if $('#tips').filter(':visible').length is 1
       $('#tips').fadeOut 'fast'
     else
@@ -352,30 +352,30 @@ $ ->
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link])
     window.close()
 
-  $('#chatter_button').click ->
+  $('#chatterButton').click ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
     window.close()
   
-  $('#bus #atb_logo').click ->
+  $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickAtb'])
     window.close()
 
   # Bind buttons to hovertext
-  $('#options_button').mouseenter ->
+  $('#optionsButton').mouseenter ->
     optionsText true
-  $('#options_button').mouseleave ->
+  $('#optionsButton').mouseleave ->
     optionsText false
 
-  $('#chatter_button').mouseenter ->
+  $('#chatterButton').mouseenter ->
     chatterText true
-  $('#chatter_button').mouseleave ->
+  $('#chatterButton').mouseleave ->
     chatterText false
 
-  $('#tips_button').mouseenter ->
+  $('#tipsButton').mouseenter ->
     tipsText true
-  $('#tips_button').mouseleave ->
+  $('#tipsButton').mouseleave ->
     tipsText false
 
   # React to Konami code

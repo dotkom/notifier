@@ -192,13 +192,13 @@ bindBusFields = (busField) ->
       if DEBUG then console.log 'focusout - empty field or invalid input, return to last saved value'
       if ls.busStopClickedAway isnt null
         $(stop).val ls.busStopClickedAway
-      $('#bus_suggestions').html ''
+      $('#busSuggestions').html ''
     # 1 suggestion, go for it!
     else if suggestions.length is 1
       if DEBUG then console.log 'focusout - 1 suggestion, save it'
       correctStop = suggestions[0]
       $(stop).val correctStop
-      $('#bus_suggestions').html ''
+      $('#busSuggestions').html ''
       getDirections busField, correctStop
       getFavoriteLines busField
       saveBus busField
@@ -206,8 +206,8 @@ bindBusFields = (busField) ->
     else if suggestions.length > 1
       if DEBUG then console.log 'focusout - several suggestions, remove them'
       setTimeout ( ->
-        $('#bus_suggestions .suggestion').fadeOut ->
-          $('#bus_suggestions').html ''
+        $('#busSuggestions .suggestion').fadeOut ->
+          $('#busSuggestions').html ''
       ), 5000
     else
       if DEBUG then console.log 'focusout - nothing to do'
@@ -227,15 +227,15 @@ bindBusFields = (busField) ->
         realStopName = Stops.idToName suggestions[0]
         $(stop).val realStopName
         # then empty the suggestion list
-        $('#bus_suggestions').html ''
+        $('#busSuggestions').html ''
         # then show only the correct stop for a little over a second
         suggestion = $('<div class="correct">' + realStopName + '</div>').hide()
-        $('#bus_suggestions').append suggestion
+        $('#busSuggestions').append suggestion
         $(suggestion).fadeIn()
         setTimeout ( ->
-          $('#bus_suggestions .correct').fadeOut fadeTime
+          $('#busSuggestions .correct').fadeOut fadeTime
           setTimeout ( ->
-            $('#bus_suggestions').html ''
+            $('#busSuggestions').html ''
           ), 300
         ), 1200
         # and of course, save and get directions
@@ -254,12 +254,12 @@ bindBusFields = (busField) ->
       if nameStart.length > 0
         # Suggestions
         suggestions = Stops.partialNameToPotentialNames nameStart
-        $('#bus_suggestions').html ''
+        $('#busSuggestions').html ''
         for i of suggestions
           _text = suggestions[i]
           suggestion = $('<div class="suggestion">' + _text + '</div>').hide()
 
-          $('#bus_suggestions').append suggestion
+          $('#busSuggestions').append suggestion
           $(suggestion).fadeIn()
 
         # Only one suggestion? Inject it
@@ -267,14 +267,14 @@ bindBusFields = (busField) ->
           correctStop = suggestions[0]
           $(stop).val correctStop
           $(stop).blur()
-          $('#bus_suggestions').html ''
+          $('#busSuggestions').html ''
           suggestion = $('<div class="correct">' + correctStop + '</div>').hide()
-          $('#bus_suggestions').append suggestion
+          $('#busSuggestions').append suggestion
           $(suggestion).fadeIn()
           setTimeout ( ->
-            $('#bus_suggestions .correct').fadeOut fadeTime
+            $('#busSuggestions .correct').fadeOut fadeTime
             setTimeout ( ->
-              $('#bus_suggestions').html ''
+              $('#busSuggestions').html ''
             ), 300
           ), 1200
           getDirections busField, correctStop
@@ -282,8 +282,8 @@ bindBusFields = (busField) ->
           saveBus busField
       # All characters removed, remove suggestions
       else
-        $('#bus_suggestions .suggestion').fadeOut fadeTime, ->
-          $('#bus_suggestions').html ''  
+        $('#busSuggestions .suggestion').fadeOut fadeTime, ->
+          $('#busSuggestions').html ''  
       # After inserting new results, rebind suggestions, making them clickable
       bindSuggestions()
 
@@ -322,13 +322,13 @@ getFavoriteLines = (busField) ->
   cssSelector = '#' + busField
   # Loading gif
   if -1 isnt busField.indexOf 'first'
-    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loading_left" src="img/loading-atb.gif" /></div>'
+    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loadingLeft" src="img/loading-atb.gif" /></div>'
   else if -1 isnt busField.indexOf 'second'
-    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loading_right" src="img/loading-atb.gif" /></div>'
+    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loadingRight" src="img/loading-atb.gif" /></div>'
 
   # Show it
-  $('#bus_box .lines').slideDown()
-  $('#bus_box #arrow_down').fadeOut()
+  $('#busBox .lines').slideDown()
+  $('#busBox #arrowDown').fadeOut()
 
   # Get stopname, direction, stopid
   stopName = $(cssSelector + ' input').val()
@@ -348,7 +348,7 @@ getFavoriteLines = (busField) ->
       # Show error message
       $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
       # Show retry-button
-      clearTimeout $('#bus_box').data 'timeoutId'
+      clearTimeout $('#busBox').data 'timeoutId'
       setTimeout ( ->
         $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
         $(cssSelector + ' .lines .retry').click ->
@@ -385,9 +385,9 @@ getFavoriteLines = (busField) ->
 
     # Hide the favorite lines after a short timeout
     setTimeout ( ->
-      if not $('#bus_box').hasClass 'hover'
-        $('#bus_box .lines').slideUp()
-        $('#bus_box #arrow_down').fadeIn()
+      if not $('#busBox').hasClass 'hover'
+        $('#busBox .lines').slideUp()
+        $('#busBox #arrowDown').fadeIn()
     ), 2500
 
 saveBus = (busField) ->
@@ -463,23 +463,23 @@ loadBus = (busField) ->
 slideFavoriteBusLines = ->
   # Hide the favorite bus line spans from the start
   setTimeout (->
-    if not $('#bus_box').hasClass 'hover'
-      $('#bus_box .lines').slideUp()
-      $('#bus_box #arrow_down').fadeIn()
+    if not $('#busBox').hasClass 'hover'
+      $('#busBox .lines').slideUp()
+      $('#busBox #arrowDown').fadeIn()
   ), 1500
   # Show favorite bus line spans when hovering
-  $('#bus_box').mouseenter ->
+  $('#busBox').mouseenter ->
     clearTimeout $(this).data 'timeoutId'
-    $('#bus_box .lines').slideDown()
-    $('#bus_box #arrow_down').fadeOut()
-  $('#bus_box').mouseleave ->
+    $('#busBox .lines').slideDown()
+    $('#busBox #arrowDown').fadeOut()
+  $('#busBox').mouseleave ->
     timeoutId = setTimeout (->
-      if $('#bus_box .lines img').length is 0 # currently displaying loading gifs?
-        $('#bus_box .lines').slideUp()
-        $('#bus_box #arrow_down').fadeIn()
+      if $('#busBox .lines img').length is 0 # currently displaying loading gifs?
+        $('#busBox .lines').slideUp()
+        $('#busBox #arrowDown').fadeIn()
     ), 500
     # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
-    $('#bus_box').data 'timeoutId', timeoutId
+    $('#busBox').data 'timeoutId', timeoutId
 
 bindSuggestions = ->
   $('.suggestion').click ->
@@ -489,26 +489,26 @@ bindSuggestions = ->
       getDirections ls.busInFocus, text
       getFavoriteLines ls.busInFocus
       saveBus ls.busInFocus
-      $('#bus_suggestions .suggestion').fadeOut 50, ->
-        $('#bus_suggestions').html ''
+      $('#busSuggestions .suggestion').fadeOut 50, ->
+        $('#busSuggestions').html ''
 
 toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it's well commented
   speed = 400
   if activate
     $('#useInfoscreen').attr 'checked', false
     # Remove subtext
-    $('#header_text').fadeOut()
+    $('#headerText').fadeOut()
     # Animate away all other options
     $('#container #left').animate {'width':'0pt'}, speed, ->
       $('#container #left').hide()
-      $('#infoscreen_slider').slideUp speed, ->
+      $('#infoscreenSlider').slideUp speed, ->
         # Animate the useInfoscreen image
         $('img#useInfoscreen').slideUp speed, ->
           # Animate in the infoscreen preview
-          $('#infoscreen_preview').slideDown speed, ->
+          $('#infoscreenPreview').slideDown speed, ->
             # New logo subtext
-            $('#header_text').html '<b>Info</b>screen'
-            $('#header_text').fadeIn ->
+            $('#headerText').html '<b>Info</b>screen'
+            $('#headerText').fadeIn ->
               # Move infoscreen preview to the circa middle of the screen
               $('#container #right').animate {'margin-left':'160pt'}, speed
               # Move all content a bit up
@@ -545,7 +545,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
 revertInfoscreen = ->
   speed = 300
   # Remove subtext
-  $('#header_text').fadeOut speed, ->
+  $('#headerText').fadeOut speed, ->
     # Move all content back down
     if ls.affiliationKey1 is 'online'
       $('#container').animate {'top':'50%'}, speed
@@ -556,18 +556,18 @@ revertInfoscreen = ->
     # Move infoscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
     # Animate in the infoscreen preview
-    $('#infoscreen_preview').slideUp speed, ->
+    $('#infoscreenPreview').slideUp speed, ->
       # Animate the useInfoscreen image
       $('img#useInfoscreen').slideDown speed, ->
         # Slide more options back open
-        $('#infoscreen_slider').slideDown speed, ->
+        $('#infoscreenSlider').slideDown speed, ->
           # Show the rest of the options again
           $('#container #left').show()
           # Animate in the rest of the options
           $('#container #left').animate {'width':'54%'}, speed, ->
             # Back to old logo subtext
-            $('#header_text').html '<b>Notifier</b> Options'
-            $('#header_text').fadeIn()
+            $('#headerText').html '<b>Notifier</b> Options'
+            $('#headerText').fadeIn()
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
@@ -636,7 +636,7 @@ animateCreatorName = (line, build) ->
 # Document ready, go!
 $ ->
   if DEBUG
-    $('#debug_links').show()
+    $('#debugLinks').show()
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
 
@@ -734,8 +734,8 @@ $ ->
     $('#affiliationKey2').attr 'disabled', 'disabled'
 
   # Allow user to select cantinas
-  bindCantinaSelector 'left_cantina'
-  bindCantinaSelector 'right_cantina'
+  bindCantinaSelector 'leftCantina'
+  bindCantinaSelector 'rightCantina'
 
   # Give user suggestions for autocomplete of bus stops
   bindBusFields 'firstBus'
@@ -765,8 +765,8 @@ $ ->
     # Turn off palette feature
     $('#affiliationPalette').prop "disabled", "disabled"
 
-  # Adding a hover class to #bus_box whenever the mouse is hovering over it
-  $('#bus_box').hover ->
+  # Adding a hover class to #busBox whenever the mouse is hovering over it
+  $('#busBox').hover ->
     $(this).addClass 'hover'
   , ->
     $(this).removeClass 'hover'

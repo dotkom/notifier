@@ -53,12 +53,12 @@ updateCoffee = ->
 
 updateCantinas = ->
   if DEBUG then console.log 'updateCantinas'
-  Cantina.get ls.left_cantina, (menu) ->
-    cantinaName = Cantina.names[ls.left_cantina]
+  Cantina.get ls.leftCantina, (menu) ->
+    cantinaName = Cantina.names[ls.leftCantina]
     $('#cantinas #left .title').html cantinaName
     $('#cantinas #left #dinnerbox').html listDinners(menu)
-  Cantina.get ls.right_cantina, (menu) ->
-    cantinaName = Cantina.names[ls.right_cantina]
+  Cantina.get ls.rightCantina, (menu) ->
+    cantinaName = Cantina.names[ls.rightCantina]
     $('#cantinas #right .title').html cantinaName
     $('#cantinas #right #dinnerbox').html listDinners(menu)
 
@@ -80,9 +80,9 @@ listDinners = (menu) ->
 
 updateHours = ->
   if DEBUG then console.log 'updateHours'
-  Hours.get ls.left_cantina, (hours) ->
+  Hours.get ls.leftCantina, (hours) ->
     $('#cantinas #left .hours').html hours
-  Hours.get ls.right_cantina, (hours) ->
+  Hours.get ls.rightCantina, (hours) ->
     $('#cantinas #right .hours').html hours
 
 updateBus = ->

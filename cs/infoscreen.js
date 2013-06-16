@@ -99,15 +99,15 @@
     if (DEBUG) {
       console.log('updateCantinas');
     }
-    Cantina.get(ls.left_cantina, function(menu) {
+    Cantina.get(ls.leftCantina, function(menu) {
       var cantinaName;
-      cantinaName = Cantina.names[ls.left_cantina];
+      cantinaName = Cantina.names[ls.leftCantina];
       $('#cantinas #left .title').html(cantinaName);
       return $('#cantinas #left #dinnerbox').html(listDinners(menu));
     });
-    return Cantina.get(ls.right_cantina, function(menu) {
+    return Cantina.get(ls.rightCantina, function(menu) {
       var cantinaName;
-      cantinaName = Cantina.names[ls.right_cantina];
+      cantinaName = Cantina.names[ls.rightCantina];
       $('#cantinas #right .title').html(cantinaName);
       return $('#cantinas #right #dinnerbox').html(listDinners(menu));
     });
@@ -138,10 +138,10 @@
     if (DEBUG) {
       console.log('updateHours');
     }
-    Hours.get(ls.left_cantina, function(hours) {
+    Hours.get(ls.leftCantina, function(hours) {
       return $('#cantinas #left .hours').html(hours);
     });
-    return Hours.get(ls.right_cantina, function(hours) {
+    return Hours.get(ls.rightCantina, function(hours) {
       return $('#cantinas #right .hours').html(hours);
     });
   };

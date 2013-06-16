@@ -217,14 +217,14 @@
         if (ls.busStopClickedAway !== null) {
           $(stop).val(ls.busStopClickedAway);
         }
-        return $('#bus_suggestions').html('');
+        return $('#busSuggestions').html('');
       } else if (suggestions.length === 1) {
         if (DEBUG) {
           console.log('focusout - 1 suggestion, save it');
         }
         correctStop = suggestions[0];
         $(stop).val(correctStop);
-        $('#bus_suggestions').html('');
+        $('#busSuggestions').html('');
         getDirections(busField, correctStop);
         getFavoriteLines(busField);
         return saveBus(busField);
@@ -233,8 +233,8 @@
           console.log('focusout - several suggestions, remove them');
         }
         return setTimeout((function() {
-          return $('#bus_suggestions .suggestion').fadeOut(function() {
-            return $('#bus_suggestions').html('');
+          return $('#busSuggestions .suggestion').fadeOut(function() {
+            return $('#busSuggestions').html('');
           });
         }), 5000);
       } else {
@@ -258,14 +258,14 @@
         if (suggestions.length !== 0) {
           realStopName = Stops.idToName(suggestions[0]);
           $(stop).val(realStopName);
-          $('#bus_suggestions').html('');
+          $('#busSuggestions').html('');
           suggestion = $('<div class="correct">' + realStopName + '</div>').hide();
-          $('#bus_suggestions').append(suggestion);
+          $('#busSuggestions').append(suggestion);
           $(suggestion).fadeIn();
           setTimeout((function() {
-            $('#bus_suggestions .correct').fadeOut(fadeTime);
+            $('#busSuggestions .correct').fadeOut(fadeTime);
             return setTimeout((function() {
-              return $('#bus_suggestions').html('');
+              return $('#busSuggestions').html('');
             }), 300);
           }), 1200);
           getDirections(busField, realStopName);
@@ -280,25 +280,25 @@
         nameStart = $(stop).val();
         if (nameStart.length > 0) {
           suggestions = Stops.partialNameToPotentialNames(nameStart);
-          $('#bus_suggestions').html('');
+          $('#busSuggestions').html('');
           for (i in suggestions) {
             _text = suggestions[i];
             suggestion = $('<div class="suggestion">' + _text + '</div>').hide();
-            $('#bus_suggestions').append(suggestion);
+            $('#busSuggestions').append(suggestion);
             $(suggestion).fadeIn();
           }
           if (suggestions.length === 1) {
             correctStop = suggestions[0];
             $(stop).val(correctStop);
             $(stop).blur();
-            $('#bus_suggestions').html('');
+            $('#busSuggestions').html('');
             suggestion = $('<div class="correct">' + correctStop + '</div>').hide();
-            $('#bus_suggestions').append(suggestion);
+            $('#busSuggestions').append(suggestion);
             $(suggestion).fadeIn();
             setTimeout((function() {
-              $('#bus_suggestions .correct').fadeOut(fadeTime);
+              $('#busSuggestions .correct').fadeOut(fadeTime);
               return setTimeout((function() {
-                return $('#bus_suggestions').html('');
+                return $('#busSuggestions').html('');
               }), 300);
             }), 1200);
             getDirections(busField, correctStop);
@@ -306,8 +306,8 @@
             saveBus(busField);
           }
         } else {
-          $('#bus_suggestions .suggestion').fadeOut(fadeTime, function() {
-            return $('#bus_suggestions').html('');
+          $('#busSuggestions .suggestion').fadeOut(fadeTime, function() {
+            return $('#busSuggestions').html('');
           });
         }
         return bindSuggestions();
@@ -354,12 +354,12 @@
     var busStopId, cssSelector, direction, stopName;
     cssSelector = '#' + busField;
     if (-1 !== busField.indexOf('first')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loading_left" src="img/loading-atb.gif" /></div>');
+      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingLeft" src="img/loading-atb.gif" /></div>');
     } else if (-1 !== busField.indexOf('second')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loading_right" src="img/loading-atb.gif" /></div>');
+      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingRight" src="img/loading-atb.gif" /></div>');
     }
-    $('#bus_box .lines').slideDown();
-    $('#bus_box #arrow_down').fadeOut();
+    $('#busBox .lines').slideDown();
+    $('#busBox #arrowDown').fadeOut();
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Stops.nameAndDirectionToId(stopName, direction);
@@ -377,7 +377,7 @@
       }
       if (errorMessage !== null) {
         $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
-        clearTimeout($('#bus_box').data('timeoutId'));
+        clearTimeout($('#busBox').data('timeoutId'));
         setTimeout((function() {
           $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
           $(cssSelector + ' .lines .retry').click(function() {
@@ -414,9 +414,9 @@
         bindFavoriteBusLines(busField);
       }
       return setTimeout((function() {
-        if (!$('#bus_box').hasClass('hover')) {
-          $('#bus_box .lines').slideUp();
-          return $('#bus_box #arrow_down').fadeIn();
+        if (!$('#busBox').hasClass('hover')) {
+          $('#busBox .lines').slideUp();
+          return $('#busBox #arrowDown').fadeIn();
         }
       }), 2500);
     });
@@ -504,25 +504,25 @@
 
   slideFavoriteBusLines = function() {
     setTimeout((function() {
-      if (!$('#bus_box').hasClass('hover')) {
-        $('#bus_box .lines').slideUp();
-        return $('#bus_box #arrow_down').fadeIn();
+      if (!$('#busBox').hasClass('hover')) {
+        $('#busBox .lines').slideUp();
+        return $('#busBox #arrowDown').fadeIn();
       }
     }), 1500);
-    $('#bus_box').mouseenter(function() {
+    $('#busBox').mouseenter(function() {
       clearTimeout($(this).data('timeoutId'));
-      $('#bus_box .lines').slideDown();
-      return $('#bus_box #arrow_down').fadeOut();
+      $('#busBox .lines').slideDown();
+      return $('#busBox #arrowDown').fadeOut();
     });
-    return $('#bus_box').mouseleave(function() {
+    return $('#busBox').mouseleave(function() {
       var timeoutId;
       timeoutId = setTimeout((function() {
-        if ($('#bus_box .lines img').length === 0) {
-          $('#bus_box .lines').slideUp();
-          return $('#bus_box #arrow_down').fadeIn();
+        if ($('#busBox .lines img').length === 0) {
+          $('#busBox .lines').slideUp();
+          return $('#busBox #arrowDown').fadeIn();
         }
       }), 500);
-      return $('#bus_box').data('timeoutId', timeoutId);
+      return $('#busBox').data('timeoutId', timeoutId);
     });
   };
 
@@ -535,8 +535,8 @@
         getDirections(ls.busInFocus, text);
         getFavoriteLines(ls.busInFocus);
         saveBus(ls.busInFocus);
-        return $('#bus_suggestions .suggestion').fadeOut(50, function() {
-          return $('#bus_suggestions').html('');
+        return $('#busSuggestions .suggestion').fadeOut(50, function() {
+          return $('#busSuggestions').html('');
         });
       }
     });
@@ -547,16 +547,16 @@
     speed = 400;
     if (activate) {
       $('#useInfoscreen').attr('checked', false);
-      $('#header_text').fadeOut();
+      $('#headerText').fadeOut();
       return $('#container #left').animate({
         'width': '0pt'
       }, speed, function() {
         $('#container #left').hide();
-        return $('#infoscreen_slider').slideUp(speed, function() {
+        return $('#infoscreenSlider').slideUp(speed, function() {
           return $('img#useInfoscreen').slideUp(speed, function() {
-            return $('#infoscreen_preview').slideDown(speed, function() {
-              $('#header_text').html('<b>Info</b>screen');
-              return $('#header_text').fadeIn(function() {
+            return $('#infoscreenPreview').slideDown(speed, function() {
+              $('#headerText').html('<b>Info</b>screen');
+              return $('#headerText').fadeIn(function() {
                 $('#container #right').animate({
                   'margin-left': '160pt'
                 }, speed);
@@ -601,7 +601,7 @@
   revertInfoscreen = function() {
     var speed;
     speed = 300;
-    return $('#header_text').fadeOut(speed, function() {
+    return $('#headerText').fadeOut(speed, function() {
       if (ls.affiliationKey1 === 'online') {
         $('#container').animate({
           'top': '50%'
@@ -620,15 +620,15 @@
       $('#container #right').animate({
         'margin-left': '0'
       }, speed);
-      return $('#infoscreen_preview').slideUp(speed, function() {
+      return $('#infoscreenPreview').slideUp(speed, function() {
         return $('img#useInfoscreen').slideDown(speed, function() {
-          return $('#infoscreen_slider').slideDown(speed, function() {
+          return $('#infoscreenSlider').slideDown(speed, function() {
             $('#container #left').show();
             return $('#container #left').animate({
               'width': '54%'
             }, speed, function() {
-              $('#header_text').html('<b>Notifier</b> Options');
-              return $('#header_text').fadeIn();
+              $('#headerText').html('<b>Notifier</b> Options');
+              return $('#headerText').fadeIn();
             });
           });
         });
@@ -694,7 +694,7 @@
   $(function() {
     var blinkAffiliation, icon, symbol, text, web;
     if (DEBUG) {
-      $('#debug_links').show();
+      $('#debugLinks').show();
       $('button.debug').click(function() {
         return Browser.openTab($(this).attr('data'));
       });
@@ -768,8 +768,8 @@
     if (ls.showAffiliation2 !== 'true') {
       $('#affiliationKey2').attr('disabled', 'disabled');
     }
-    bindCantinaSelector('left_cantina');
-    bindCantinaSelector('right_cantina');
+    bindCantinaSelector('leftCantina');
+    bindCantinaSelector('rightCantina');
     bindBusFields('firstBus');
     bindBusFields('secondBus');
     slideFavoriteBusLines();
@@ -786,7 +786,7 @@
       $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 12.50</b>');
       $('#affiliationPalette').prop("disabled", "disabled");
     }
-    $('#bus_box').hover(function() {
+    $('#busBox').hover(function() {
       return $(this).addClass('hover');
     }, function() {
       return $(this).removeClass('hover');
