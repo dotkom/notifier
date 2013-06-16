@@ -795,6 +795,11 @@ var Affiliation = {
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
+    // If jQuery or Ajaxer.js is not loaded yet, just return placeholders
+    if (typeof $ == 'undefined' || typeof Ajaxer == 'undefined') {
+      return placeholders;
+    }
+
     var self = this;
     Ajaxer.getHtml({
       url: url,
