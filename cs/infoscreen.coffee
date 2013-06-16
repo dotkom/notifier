@@ -373,11 +373,5 @@ $ ->
     ), 3500
   ), 1800000
 
-  # Reload the page once every day (in case the extension updates)
-  unless DEBUG
-    setTimeout ( ->
-      document.location.reload()
-    ), 86400000
-
   # Enter main loop, keeping everything up-to-date
   mainLoop()
