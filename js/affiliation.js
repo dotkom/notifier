@@ -686,11 +686,11 @@ var Affiliation = {
       palette: 'blue',
       useAltLink: false,
       getImage: function(link, callback) {
-        if (link.indexOf('tu.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div#topImage'});
-        }
-        else if (link.indexOf('adressa.no') !== -1) {
+        if (link.indexOf('adressa.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.media'});
+        }
+        else if (link.indexOf('byggfakta.no') !== -1 || link.indexOf('byggaktuelt.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.body-content'});
         }
         else if (link.indexOf('dn.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div#content'});
@@ -706,6 +706,12 @@ var Affiliation = {
         }
         else if (link.indexOf('stfk.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.documentbody', domainUrl:'www.stfk.no'});
+        }
+        else if (link.indexOf('trondheim.kommune.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {domainUrl:'www.trondheim.kommune.no'});
+        }
+        else if (link.indexOf('tu.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div#topImage'});
         }
         else if (link.indexOf('utdanningsnytt.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div#hovedartikkelContainer', domainUrl:'utdanningsnytt.no'});
@@ -797,6 +803,7 @@ var Affiliation = {
 
     // If jQuery or Ajaxer.js is not loaded yet, just return placeholders
     if (typeof $ == 'undefined' || typeof Ajaxer == 'undefined') {
+      if (this.debug) console.log('ERROR: getImages called before $ and Ajaxer was ready');
       return placeholders;
     }
 
