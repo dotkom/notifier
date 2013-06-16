@@ -45,31 +45,16 @@
   <link rel="stylesheet" type="text/css" href="less/mobile.css" />
   <link rel="stylesheet" type="text/css" href="org/online/palette.css" id="palette" />
 
-  <!-- JS Libs -->
-  <script src="libs/jquery-2.0.0.min.js"></script>
-
   <!-- JS Behind the scenes -->
   <script src="js/constants.js"></script>
+  <script src="js/defaults.js"></script>
   <script src="js/missing_functions.js"></script>
   <script src="js/missing_prototypes.js"></script>
   <script src="js/google_analytics.js"></script>
-  
-  <!-- JS Services -->
-  <script src="js/affiliation.js"></script>
-  <script src="js/ajaxer.js"></script>
-  <script src="js/browser.js"></script>
-  <script src="js/bus.js"></script>
-  <script src="js/cantina.js"></script>
-  <script src="js/coffee.js"></script>
-  <script src="js/hours.js"></script>
-  <script src="js/meetings.js"></script>
-  <script src="js/news.js"></script>
-  <script src="js/office.js"></script>
-  <script src="js/palettes.js"></script>
-  <script src="js/servant.js"></script>
 
-  <!-- Document ready sript -->
-  <script src="cs/mobile.js"></script>
+  <!-- JS Affiliation and Palette, palette loads itself -->
+  <script src="js/affiliation.js"></script>
+  <script src="js/palettes.js"></script>
 
 </head>
 
@@ -114,7 +99,7 @@
     <div id="bus">
       <div id="firstBus">
         <div class="name">
-          <img class="loading_left" src="img/loading.gif" />
+          <img class="loadingLeft" src="img/loading.gif" />
         </div>
         <div class="first">
           <span class="line"></span>
@@ -134,7 +119,7 @@
       </div>
       <div id="secondBus">
         <div class="name">
-          <img class="loading_right" src="img/loading.gif" />
+          <img class="loadingRight" src="img/loading.gif" />
         </div>
         <div class="first">
           <span class="time"></span>
@@ -204,8 +189,8 @@
     <div id="options">
       <span class="title">Bussvalg</span>
 
-      <div id="bus_box">
-        <div id="first_bus" class="bus_stop">
+      <div id="busBox">
+        <div id="firstBus" class="busStop">
           <input type="text" placeholder="Busstopp" style="z-index:300;"></input><br />
           <select>
             <option>til byen</option>
@@ -213,9 +198,9 @@
           </select>
         </div>
         <label for="showBus">
-          <img id="bus_logo" src="/mobile/mimg/logo-atb-small.png" />
+          <img id="busLogo" src="/mobile/mimg/logo-atb-small.png" />
         </label>
-        <div id="second_bus" class="bus_stop">
+        <div id="secondBus" class="busStop">
           <input type="text" placeholder="Busstopp"></input><br />
           <select>
             <option selected="selected">til byen</option>
@@ -224,11 +209,30 @@
         </div>
     </div>
 
-    <div id="bus_suggestions">
+    <div id="busSuggestions">
     </div>
     -->
     
   </div>
+
+  <!-- JS Libs -->
+  <script src="libs/jquery-2.0.0.min.js"></script>
+  
+  <!-- JS Services -->
+  <script src="js/ajaxer.js"></script>
+  <script src="js/browser.js"></script>
+  <script src="js/bus.js"></script>
+  <script src="js/cantina.js"></script>
+  <script src="js/coffee.js"></script>
+  <script src="js/hours.js"></script>
+  <script src="js/meetings.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/office.js"></script>
+  <script src="js/servant.js"></script>
+
+  <!-- Document ready sript -->
+  <script src="cs/mobile.js"></script>
+  
 </body>
 </html>
 

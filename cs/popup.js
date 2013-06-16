@@ -82,19 +82,19 @@
     if (DEBUG) {
       console.log('updateCantinas');
     }
-    Cantina.get(ls.left_cantina, function(menu) {
+    Cantina.get(ls.leftCantina, function(menu) {
       var cantinaName;
-      cantinaName = Cantina.names[ls.left_cantina];
+      cantinaName = Cantina.names[ls.leftCantina];
       $('#cantinas #left .title').html(cantinaName);
       $('#cantinas #left #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #left #dinnerbox li', ls.left_cantina);
+      return clickDinnerLink('#cantinas #left #dinnerbox li', ls.leftCantina);
     });
-    return Cantina.get(ls.right_cantina, function(menu) {
+    return Cantina.get(ls.rightCantina, function(menu) {
       var cantinaName;
-      cantinaName = Cantina.names[ls.right_cantina];
+      cantinaName = Cantina.names[ls.rightCantina];
       $('#cantinas #right .title').html(cantinaName);
       $('#cantinas #right #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #right #dinnerbox li', ls.right_cantina);
+      return clickDinnerLink('#cantinas #right #dinnerbox li', ls.rightCantina);
     });
   };
 
@@ -134,10 +134,10 @@
     if (DEBUG) {
       console.log('updateHours');
     }
-    Hours.get(ls.left_cantina, function(hours) {
+    Hours.get(ls.leftCantina, function(hours) {
       return $('#cantinas #left .hours').html(hours);
     });
-    return Hours.get(ls.right_cantina, function(hours) {
+    return Hours.get(ls.rightCantina, function(hours) {
       return $('#cantinas #right .hours').html(hours);
     });
   };
@@ -347,7 +347,7 @@
   };
 
   $(function() {
-    var affiliation, logo, palette;
+    var affiliation, logo;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -381,8 +381,8 @@
     }
     hotFixBusLines();
     if (ls.affiliationKey1 !== 'online') {
-      $('#chatter_button').hide();
-      $('#mobile_text').hide();
+      $('#chatterButton').hide();
+      $('#mobileText').hide();
       affiliation = ls.affiliationKey1;
       logo = Affiliation.org[affiliation].logo;
       if (logo !== void 0 && logo !== '') {
@@ -392,8 +392,6 @@
         $('#header #logo').prop('src', logo);
       }
     }
-    palette = Palettes.get(ls.affiliationPalette);
-    $('#palette').attr('href', palette);
     if (!DEBUG) {
       _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette]);
     }
@@ -407,14 +405,14 @@
       Browser.openTab(web);
       return window.close();
     });
-    $('#options_button').click(function() {
+    $('#optionsButton').click(function() {
       Browser.openTab('options.html');
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickOptions']);
       }
       return window.close();
     });
-    $('#tips_button').click(function() {
+    $('#tipsButton').click(function() {
       if ($('#tips').filter(':visible').length === 1) {
         return $('#tips').fadeOut('fast');
       } else {
@@ -436,36 +434,36 @@
       }
       return window.close();
     });
-    $('#chatter_button').click(function() {
+    $('#chatterButton').click(function() {
       Browser.openTab('http://webchat.freenode.net/?channels=online');
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickChatter']);
       }
       return window.close();
     });
-    $('#bus #atb_logo').click(function() {
+    $('#bus #atbLogo').click(function() {
       Browser.openTab('http://www.atb.no');
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickAtb']);
       }
       return window.close();
     });
-    $('#options_button').mouseenter(function() {
+    $('#optionsButton').mouseenter(function() {
       return optionsText(true);
     });
-    $('#options_button').mouseleave(function() {
+    $('#optionsButton').mouseleave(function() {
       return optionsText(false);
     });
-    $('#chatter_button').mouseenter(function() {
+    $('#chatterButton').mouseenter(function() {
       return chatterText(true);
     });
-    $('#chatter_button').mouseleave(function() {
+    $('#chatterButton').mouseleave(function() {
       return chatterText(false);
     });
-    $('#tips_button').mouseenter(function() {
+    $('#tipsButton').mouseenter(function() {
       return tipsText(true);
     });
-    $('#tips_button').mouseleave(function() {
+    $('#tipsButton').mouseleave(function() {
       return tipsText(false);
     });
     $(document).konami({

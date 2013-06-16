@@ -9,60 +9,24 @@
   <link rel="stylesheet" type="text/css" href="less/options.css" />
   <link rel="stylesheet" type="text/css" href="org/online/palette.css" id="palette" />
 
-  <!-- JS Libs -->
-  <script src="libs/jquery-2.0.0.min.js"></script>
-
   <!-- JS Behind the scenes -->
   <script src="js/constants.js"></script>
   <script src="js/missing_functions.js"></script>
   <script src="js/missing_prototypes.js"></script>
   <script src="js/google_analytics.js"></script>
   <script src="js/google_plus_one.js"></script>
-  
-  <!-- JS Services -->
+
+  <!-- JS Affiliation and Palette, palette loads itself -->
   <script src="js/affiliation.js"></script>
-  <script src="js/ajaxer.js"></script>
-  <script src="js/browser.js"></script>
-  <script src="js/bus.js"></script>
-  <script src="js/meetings.js"></script>
-  <script src="js/news.js"></script>
-  <script src="js/office.js"></script>
   <script src="js/palettes.js"></script>
-  <script src="js/stops.js"></script>
 
-  <!-- begin GL -->
-  <script src="gl/glMatrix-0.9.5.min.js"></script>
-  <script src="gl/webgl-utils.js"></script>
-  <script id="shader-fs" type="x-shader/x-fragment">
-    precision mediump float;
-    varying vec2 vTextureCoord;
-    uniform sampler2D uSampler;
-    void main(void) {
-      gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-    }
-  </script>
-  <script id="shader-vs" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
-    attribute vec2 aTextureCoord;
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-    varying vec2 vTextureCoord;
-    void main(void) {
-      gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition * vec3(1,1,1), 1.0); // (something and cube size, zoom)
-      vTextureCoord = aTextureCoord;
-    }
-  </script>
-  <script src="gl/cube.js"></script>
-
-  <!-- Document ready sript -->
-  <script src="cs/options.js"></script>
 </head>
 
 <body>
   <div id="background"></div>
 
   <header>
-    <div id="header_text">
+    <div id="headerText">
       <b>Notifier</b> Options
     </div>
     <!-- "Options saved <3" -->
@@ -255,7 +219,7 @@
           </span><br />
         </label>
         <div id="cantinaBox" class="image">
-          <select class="cantina_selector" id="left_cantina">
+          <select id="leftCantina">
             <optgroup label="Kantiner">
               <option value="dmmh">DMMH</option>
               <option value="dragvoll">Dragvoll</option>
@@ -286,7 +250,7 @@
           <label for="showCantina">
             <img id="cantinaLogo" src="/img/logo-sit.png" />
           </label>
-          <select class="cantina_selector" id="right_cantina">
+          <select id="rightCantina">
             <optgroup label="Kantiner">
               <option value="dmmh">DMMH</option>
               <option value="dragvoll">Dragvoll</option>
@@ -324,8 +288,8 @@
             Vis sanntidsbuss fra AtB
           </span><br />
         </label>
-        <div id="bus_box" class="image">
-          <div id="firstBus" class="bus_stop">
+        <div id="busBox" class="image">
+          <div id="firstBus" class="busStop">
             <input type="text" placeholder="Busstopp"></input><br />
             <select>
               <option>til byen</option>
@@ -339,9 +303,9 @@
             -->
           </div>
           <label for="showBus">
-            <img id="bus_logo" src="/img/logo-atb.png" />
+            <img id="busLogo" src="/img/logo-atb.png" />
           </label>
-          <div id="secondBus" class="bus_stop">
+          <div id="secondBus" class="busStop">
             <input type="text" placeholder="Busstopp"></input><br />
             <select>
               <option selected="selected">til byen</option>
@@ -355,7 +319,7 @@
             -->
           </div>
           <!-- HOTFIX -->
-          <!-- <div id="arrow_down">
+          <!-- <div id="arrowDown">
             <img src="img/options-arrow-down.png" />
           </div> -->
         </div>
@@ -401,11 +365,11 @@
             Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
           </span><br />
           <img id="useInfoscreen" class="image" src="/img/options-infoscreen.png" />
-          <img id="infoscreen_preview" class="image" src="/img/options-infoscreen-preview.png" />
+          <img id="infoscreenPreview" class="image" src="/img/options-infoscreen-preview.png" />
         </label>
       </div>
 
-      <div id="infoscreen_slider">
+      <div id="infoscreenSlider">
 
         <div class="item">
           <label for="showNotifications">
@@ -433,10 +397,10 @@
   </div>
 
   <!-- Suggestions for bus stops -->
-  <div id="bus_suggestions"></div>
+  <div id="busSuggestions"></div>
 
   <!-- DEBUG: Links to the other pages in the app -->
-  <div id="debug_links">
+  <div id="debugLinks">
     pages<br />
     <button type="button" class="debug" data="subscription.html">subscription.html</button><br />
     <button type="button" class="debug" data="notification.html">notification.html</button><br />
@@ -480,6 +444,45 @@
   
   <!-- GL easter egg -->
   <!-- <canvas id="LessonCanvas" width="256px" height="256px"></canvas> -->
+
+  <!-- JS Libs -->
+  <script src="libs/jquery-2.0.0.min.js"></script>
+  
+  <!-- JS Services -->
+  <script src="js/ajaxer.js"></script>
+  <script src="js/browser.js"></script>
+  <script src="js/bus.js"></script>
+  <script src="js/meetings.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/office.js"></script>
+  <script src="js/stops.js"></script>
+
+  <!-- begin GL -->
+  <script src="gl/glMatrix-0.9.5.min.js"></script>
+  <script src="gl/webgl-utils.js"></script>
+  <script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec2 vTextureCoord;
+    uniform sampler2D uSampler;
+    void main(void) {
+      gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    }
+  </script>
+  <script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    varying vec2 vTextureCoord;
+    void main(void) {
+      gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition * vec3(1,1,1), 1.0); // (something and cube size, zoom)
+      vTextureCoord = aTextureCoord;
+    }
+  </script>
+  <script src="gl/cube.js"></script>
+
+  <!-- Document ready sript -->
+  <script src="cs/options.js"></script>
 
 </body>
 </html>

@@ -169,12 +169,12 @@ body {
   padding-top: 10pt;
   width: 40%;
 }
-#container #bus .loading_left {
+#container #bus .loadingLeft {
   position: relative;
   z-index: 100;
   -webkit-transform: scaleX(-1);
 }
-#container #bus .loading_right {
+#container #bus .loadingRight {
   position: relative;
   z-index: 100;
 }
@@ -391,18 +391,18 @@ body {
 #container #bus .name {
   margin-bottom: 4pt;
 }
-#container #bus .loading_left {
+#container #bus .loadingLeft {
   width: 80px;
   bottom: 3pt;
 }
-#container #bus .loading_right {
+#container #bus .loadingRight {
   width: 80px;
   bottom: 3pt;
 }
 #container #bus #middle {
   width: 18%;
 }
-#container #bus #middle #atb_logo {
+#container #bus #middle #atbLogo {
   position: relative;
   left: -0.5pt;
   margin: 11pt auto;
@@ -469,7 +469,9 @@ body {
 
 }
 #container #news .post .item img {
-  width: 60pt;
+  width: auto;
+  height: auto;
+  max-width: 60pt;
   max-height: 60pt;
   padding: 3pt;
   box-shadow: 0 0 10pt #bbb;
