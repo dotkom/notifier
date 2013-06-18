@@ -375,11 +375,7 @@ body {
   text-shadow: 0 0 7pt white,
         0 0 10pt white,
         0 0 15pt white,
-        0 0 20pt white,
-        0 0 30pt #011b36,
-        0 0 30pt #011b36,
-        0 0 50pt #011b36,
-        0 0 50pt #011b36;
+        0 0 20pt white;
 }
 #container #bus {
   top: 12pt;
