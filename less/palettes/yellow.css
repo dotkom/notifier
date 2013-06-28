@@ -1,15 +1,40 @@
 
+body {
+  text-shadow:
+  	0 0 1pt #000,
+  	0 0 1pt #000,
+  	0 0 1pt #000;
+}
+
+/* Override body text-shadow, popup */
+#tips {
+  text-shadow: 0 0 0 white;
+}
+
+/* Override body text-shadow, options */
+#popupHere {
+  text-shadow: 0 0 0 white;
+}
+
+.item .icon {
+  -webkit-filter: drop-shadow(0 0 3pt black);
+  filter: drop-shadow(0 0 3pt black);
+}
+
 .title {
   color: white;
   text-shadow:
-    0 0 10pt #444,
-    0 0 20pt #444;
+  	0 0 1pt #000,
+  	0 0 1pt #000,
+    0 0 2pt #000,
+    0 0 2pt #000,
+  	0 0 2pt #000;
 }
 
 #background, #fadeOutNews {
-  -webkit-filter: hue-rotate(-151deg) saturate(2.7) brightness(2.7);
+  -webkit-filter: hue-rotate(-151deg) saturate(2.7) brightness(3.2);
 }
 
 #pageflip {
-  -webkit-filter: hue-rotate(-181deg) saturate(1.9) brightness(1.4);
+  -webkit-filter: hue-rotate(-181deg) saturate(2.0) brightness(2.3);
 }
