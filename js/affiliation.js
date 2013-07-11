@@ -47,8 +47,8 @@ var Affiliation = {
     'delta': {
       name: 'Delta',
       key: 'delta',
-      web: 'http://org.ntnu.no/delta/',
-      feed: 'http://org.ntnu.no/delta/wp/?feed=rss2',
+      web: 'http://www.deltahouse.no/',
+      feed: 'http://www.deltahouse.no/?feed=rss2',
       logo: './org/delta/logo.png',
       icon: './org/delta/icon.png',
       symbol: './org/delta/symbol.png',
