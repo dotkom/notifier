@@ -148,6 +148,8 @@ header #notification .saved {
   position: relative;
   margin: 0;
   top: 3pt;
+  -webkit-filter: drop-shadow(0 0 3pt #000000);
+  filter: drop-shadow(0 0 3pt #000000);
 }
 .item .logo {
   box-shadow: 0 0 10pt 0pt #333;
@@ -177,10 +179,7 @@ header #notification .saved {
       0 0 15px #fff,
       0 0 20px #fff,
       0 0 30px #fff,
-      0 0 40px #011b36,
-      0 0 40px #011b36,
-      0 0 70px #011b36,
-      0 0 70px #011b36;
+      0 0 40px #011b36;
 }
 .item #affiliationBox {
   width: 265pt;

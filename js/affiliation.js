@@ -47,8 +47,8 @@ var Affiliation = {
     'delta': {
       name: 'Delta',
       key: 'delta',
-      web: 'http://org.ntnu.no/delta/',
-      feed: 'http://org.ntnu.no/delta/wp/?feed=rss2',
+      web: 'http://www.deltahouse.no/',
+      feed: 'http://www.deltahouse.no/?feed=rss2',
       logo: './org/delta/logo.png',
       icon: './org/delta/icon.png',
       symbol: './org/delta/symbol.png',
@@ -85,7 +85,7 @@ var Affiliation = {
       placeholder: './org/entreprenoerskolen/placeholder.png',
       palette: 'blue',
       useAltLink: false,
-      getImages: function(links, callback) {
+      getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
@@ -689,6 +689,9 @@ var Affiliation = {
         if (link.indexOf('adressa.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.media'});
         }
+        else if (link.indexOf('bygg.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div#article'});
+        }
         else if (link.indexOf('byggfakta.no') !== -1 || link.indexOf('byggaktuelt.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.body-content'});
         }
@@ -697,6 +700,9 @@ var Affiliation = {
         }
         else if (link.indexOf('forskningsradet.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
+        }
+        else if (link.indexOf('npolar.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.paragraph', domainUrl:'www.npolar.no'});
         }
         else if (link.indexOf('nrk.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/});
@@ -715,6 +721,10 @@ var Affiliation = {
         }
         else if (link.indexOf('utdanningsnytt.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div#hovedartikkelContainer', domainUrl:'utdanningsnytt.no'});
+        }
+        else {
+          // Just try something, might work!
+          Affiliation.getImages(this, link, callback);
         }
       },
     },

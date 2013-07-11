@@ -459,11 +459,6 @@
         return $('#overlay').css('opacity', 0);
       }), 3500);
     }), 1800000);
-    if (!DEBUG) {
-      setTimeout((function() {
-        return document.location.reload();
-      }), 86400000);
-    }
     return mainLoop();
   });
 

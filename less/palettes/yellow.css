@@ -1,15 +1,47 @@
 
+/*
+Being the only palette with an inherently bright color, this palette
+has more overriding values than the other palettes, it was difficult
+to make this pretty.
+*/
+
+body {
+  text-shadow:
+  	0 0 1pt #444,
+  	0 0 1pt #444,
+  	0 0 1pt #444;
+}
+
+/* Overrides in Options */
+#popupHere {
+  text-shadow: 0 0 0 white;
+}
+.item input {
+  box-shadow: 0 0 0 white;
+}
+
+/* Overrides in Popup */
+#tips {
+  text-shadow: 0 0 0 white;
+}
+
+/* Override title text-shadow, popup */
 .title {
   color: white;
   text-shadow:
-    0 0 10pt #444,
-    0 0 20pt #444;
+  	0 0 1pt #444,
+  	0 0 1pt #444,
+    0 0 2pt #444,
+    0 0 2pt #444,
+  	0 0 2pt #444;
 }
 
+/* allround stuff */
+
 #background, #fadeOutNews {
-  -webkit-filter: hue-rotate(-151deg) saturate(2.7) brightness(2.7);
+  -webkit-filter: hue-rotate(-151deg) saturate(2.7) brightness(3.2);
 }
 
 #pageflip {
-  -webkit-filter: hue-rotate(-181deg) saturate(1.9) brightness(1.4);
+  -webkit-filter: hue-rotate(-181deg) saturate(2.0) brightness(2.3);
 }

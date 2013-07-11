@@ -1,5 +1,6 @@
 var Meetings = {
   api: 'https://online.ntnu.no/service_static/meeting_plan',
+  msgNone: 'Ingen flere møter i dag',
   msgError: 'Frakoblet fra møteplan',
   
   debug: 0,
@@ -25,11 +26,17 @@ var Meetings = {
         if (self.debugString)
           meetings = self.debugThisString;
 
-        // Prettify todays meetings
-        var prettyMeetings = self.prettifyTodaysMeetings(meetings);
-        if (self.debug) console.log('Pretty meetings:', prettyMeetings);
+        if (meetings != '') {
+          // Prettify todays meetings
+          var prettyMeetings = self.prettifyTodaysMeetings(meetings);
+          if (self.debug) console.log('Pretty meetings:', prettyMeetings);
 
-        callback(prettyMeetings);
+          callback(prettyMeetings);
+        }
+        else {
+          // Empty string returned from API
+          callback(self.msgNone);
+        }
       },
       error: function(jqXHR, text, err) {
         if (DEBUG) console.log('ERROR: Failed to get todays meeting plan.');
