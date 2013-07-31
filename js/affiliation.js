@@ -29,6 +29,21 @@ var Affiliation = {
 
   org: {
     // Linjeforeninger Gløshaugen
+    'alf': {
+      name: 'Alf',
+      key: 'alf',
+      web: 'http://org.ntnu.no/alf/',
+      feed: 'http://org.ntnu.no/alf/?feed=rss2',
+      logo: './org/alf/logo.png',
+      icon: './org/alf/icon.png',
+      symbol: './org/alf/symbol.png',
+      placeholder: './org/alf/placeholder.png',
+      palette: 'green',
+      useAltLink: false,
+      getImages: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
+      },
+    },
     'berg': {
       name: 'Bergstuderendes Forening',
       key: 'berg',
