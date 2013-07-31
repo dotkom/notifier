@@ -29,6 +29,21 @@ var Affiliation = {
 
   org: {
     // Linjeforeninger Gløshaugen
+    'aarhonen': {
+      name: 'H.M. Aarhønen',
+      key: 'aarhonen',
+      web: 'http://www.aarhonen.ntnu.no/',
+      feed: 'http://www.aarhonen.ntnu.no/?q=rss.xml',
+      logo: './org/aarhonen/logo.png',
+      icon: './org/aarhonen/icon.png',
+      symbol: './org/aarhonen/symbol.png',
+      placeholder: './org/aarhonen/placeholder.png',
+      palette: 'purple',
+      useAltLink: false,
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.content'});
+      },
+    },
     'alf': {
       name: 'Alf',
       key: 'alf',
