@@ -367,6 +367,22 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'panoptikon': {
+      name: 'Panoptikon',
+      key: 'panoptikon',
+      web: 'http://panoptikon.blogg.no/',
+      feed: 'http://feeds.blogg.no/259521/post.rss',
+      logo: './org/panoptikon/logo.png',
+      icon: './org/panoptikon/icon.png',
+      symbol: './org/panoptikon/symbol.png',
+      placeholder: './org/panoptikon/placeholder.png',
+      palette: 'kwakiutl',
+      palettePath: './org/kwakiutl/palette.css',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     'primetime': {
       name: 'Primetime',
       key: 'primetime',
