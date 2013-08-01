@@ -421,8 +421,7 @@ var Affiliation = {
       icon: './org/panoptikon/icon.png',
       symbol: './org/panoptikon/symbol.png',
       placeholder: './org/panoptikon/placeholder.png',
-      palette: 'kwakiutl',
-      palettePath: './org/kwakiutl/palette.css',
+      palette: 'blue',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
