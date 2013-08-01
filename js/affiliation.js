@@ -169,10 +169,10 @@ var Affiliation = {
       key: 'online',
       web: 'https://online.ntnu.no/',
       feed: 'https://online.ntnu.no/feeds/news/',
-      logo: './img/logo.png', // Note unique URL pattern
+      logo: './org/online/logo.png',
       icon: './org/online/icon.png',
       symbol: './org/online/symbol.png',
-      placeholder: './img/placeholder.png', // Note unique URL pattern
+      placeholder: './org/online/placeholder.png',
       palette: 'online',
       palettePath: './org/online/palette.css',
       useAltLink: true,
