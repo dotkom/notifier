@@ -1,6 +1,6 @@
 var Affiliation = {
   
-  debug: 0,
+  debug: 1,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
 
@@ -147,6 +147,21 @@ var Affiliation = {
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, {newsSelector:'div.post_wrapper', linkDelimiter:'?'});
+      },
+    },
+    'mannhullet': {
+      name: 'Mannhullet',
+      key: 'mannhullet',
+      web: 'http://mannhullet.no/',
+      feed: 'http://mannhullet.no/index.php?format=feed&type=rss',
+      logo: './org/mannhullet/logo.png',
+      icon: './org/mannhullet/icon.png',
+      symbol: './org/mannhullet/symbol.png',
+      placeholder: './org/mannhullet/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImage: function(links, callback) {
+        Affiliation.getImages(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
       },
     },
     'online': {
@@ -880,6 +895,7 @@ var Affiliation = {
           var newsSelector = null;
           if (options.newsSelector) {
             newsSelector = options.newsSelector;
+            if (self.debug) console.log('Using selector', '"'+newsSelector+'" for news at '+url+'\n');
           }
           else {
             for (var i=0; i<containers.length; i++) {
@@ -927,7 +943,7 @@ var Affiliation = {
             }
             // ...unless we didn't find anything with the link, in which case we just look for the news selector
             else if (isSingleLink) {
-              if (self.debug) console.log('Found nothing with the link, trying news selector instead');
+              if (self.debug) console.log('Found nothing with a[href=url], trying news selector instead');
               // On a specific news page (not a frontpage) we can allow ourselves to search
               // more broadly if we didn't find anything while searching for the link. We'll
               // search for the newsSelector instead and assume that the first news container
