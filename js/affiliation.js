@@ -1,6 +1,6 @@
 var Affiliation = {
   
-  debug: 1,
+  debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html and in manifest.json
 
@@ -439,6 +439,21 @@ var Affiliation = {
       palette: 'cyan',
       useAltLink: false,
       getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
+      },
+    },
+    'psi': {
+      name: 'Psi',
+      key: 'psi',
+      web: 'http://psilinjeforening.wordpress.com/',
+      feed: 'http://psilinjeforening.wordpress.com/feed/',
+      logo: './org/psi/logo.png',
+      icon: './org/psi/icon.png',
+      symbol: './org/psi/symbol.png',
+      placeholder: './org/psi/placeholder.png',
+      palette: 'red',
+      useAltLink: false,
+      getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
     },
