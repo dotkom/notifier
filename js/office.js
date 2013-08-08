@@ -60,7 +60,7 @@ var Office = {
           case 0: callback('open', self.titleOpen, self.msgOpen); break;
           case 1: callback('meeting', self.titleMeeting, title); break;
           case 2: callback('waffle', self.titleWaffles, title); break;
-          default: callback('error', self.titleError, 'eventStatus was "'+status+'"');
+          default: callback('error', self.titleError, self.msgError);
         }
       },
       error: function(jqXHR, text, err) {
