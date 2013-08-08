@@ -29,6 +29,71 @@ var Affiliation = {
 
   org: {
     // Linjeforeninger Gløshaugen
+    'abakus': {
+      name: 'Abakus',
+      key: 'abakus',
+      web: 'http://abakus.no/',
+      // feed not available, use getNews instead
+      logo: './org/abakus/logo.png',
+      icon: './org/abakus/icon.png',
+      symbol: './org/abakus/symbol.png',
+      placeholder: './org/abakus/placeholder.png',
+      palette: 'red',
+      useAltLink: false,
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(limit, callback) {
+        if (typeof callback == 'undefined') {
+          console.log('ERROR: callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getHtml({
+          url: self.web,
+          success: function(html) {
+            html = html.trim(); // Why all the newlines in the start of the file? jQuery doesn't liek dat.
+            var posts = [];
+            var count = 0;
+            // Add each item from news tags
+            if ($(html).find('.article').length != 0) {
+              $(html).find('.article').each( function() {
+                if (count++ < limit) {
+                  var post = {};
+                  
+                  // The popular fields
+                  post.title = $(this).find("h2").filter(':first').text();
+                  post.link = $(this).find("a").filter(':first').attr('href');
+                  post.description = $(this).find(".introtext p").filter(':first').text();
+                  // Less used fields
+                  post.creator = self.name;
+                  post.date = ''
+                  // Locally stored
+                  post.image = $(this).find("img").filter(':first').attr('src');
+                  // Tag the posts with the key and name of the feed they came from
+                  post.feedKey = self.key;
+                  post.feedName = self.name;
+
+                  // Link fixing
+                  post.link = 'http://abakus.no' + post.link;
+                  if (typeof post.image != 'undefined')
+                    post.image = 'http://abakus.no' + post.image;
+                  else
+                    post.image = self.placeholder;
+
+                  posts.push(post);
+                }
+              });
+            }
+            else {
+              if (self.debug) console.log('ERROR: No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+          },
+        });
+      },
+    },
     'aarhonen': {
       name: 'H.M. Aarhønen',
       key: 'aarhonen',
