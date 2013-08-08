@@ -6,6 +6,7 @@ var News = {
   msgConnectionError: 'Frakoblet fra feeden til ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
+  msgNoNewsSource: 'Ingen nyhetskilde funnet for valgt tilhørightet',
 
   debug: 0,
 
@@ -13,42 +14,52 @@ var News = {
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
   get: function(affiliationObject, limit, callback) {
-    if (affiliationObject === undefined) {
+    if (typeof affiliationObject == 'undefined') {
       if (this.debug) console.log('ERROR:', this.msgUnsupportedFeed);
-      callback(this.msgUnsupportedFeed);
       return;
     }
     if (!isNumber(limit) || (limit < 1 && 20 < limit)) {
       if (this.debug) console.log('ERROR:', this.msgNewsLimit);
-      callback(this.msgNewsLimit);
       return;
     }
-    if (callback == undefined) {
-      console.log('ERROR:', this.msgCallbackRequired);
-      callback(this.msgCallbackRequired);
+    if (typeof callback == 'undefined') {
+      if (this.debug) console.log('ERROR:', this.msgCallbackRequired);
       return;
     }
-
-    var rssUrl = affiliationObject.feed;
 
     var self = this;
-    Ajaxer.getXml({
-      url: rssUrl,
-      success: function(xml) {
-        self.parseFeed(xml, affiliationObject, limit, callback);
-      },
-      error: function(jqXHR, text, err) {
-        // Check for XML sent with HTML headers
-        if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
-          xml = jqXHR.responseText;
+    // Get news the regular way (RSS or Atom feeds)
+    if (typeof affiliationObject.feed != 'undefined') {
+      Ajaxer.getXml({
+        url: affiliationObject.feed,
+        success: function(xml) {
           self.parseFeed(xml, affiliationObject, limit, callback);
+        },
+        error: function(jqXHR, text, err) {
+          // Check for XML sent with HTML headers
+          if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
+            xml = jqXHR.responseText;
+            self.parseFeed(xml, affiliationObject, limit, callback);
+          }
+          else {
+            if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
+            callback(self.msgConnectionError, affiliationObject.name);
+          }
+        },
+      });
+    }
+    // Get news the irregular way, through a getNews function defined in the affiliation object
+    else if (typeof affiliationObject.getNews != 'undefined') {
+      affiliationObject.getNews(limit, function(posts) {
+        for (i in posts) {
+          posts[i] = self.postProcess(posts[i]);
         }
-        else {
-          if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
-          callback(self.msgConnectionError, affiliationObject.name);
-        }
-      },
-    });
+        callback(posts);
+      });
+    }
+    else {
+      console.log('ERROR:', self.msgNoNewsSource);
+    }
   },
 
   // Need to know about the news feeds used in Online Notifier:
