@@ -2,19 +2,9 @@ var Browser = {
   msgUnsupported: 'ERROR: Unsupported browser',
 
   setIcon: function(path) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setIcon({path: path});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        OPERA_BUTTON.icon = path;
-      }
-      // If this is another page reference button through background process
-      else {
-        this.getBackgroundProcess().OPERA_BUTTON.icon = path;
       }
     }
     else {
@@ -23,19 +13,9 @@ var Browser = {
   },
 
   setTitle: function(title) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setTitle({title: title});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        OPERA_BUTTON.title = title;
-      }
-      // If this is another page reference button through background process
-      else {
-        this.getBackgroundProcess().OPERA_BUTTON.title = title;
       }
     }
     else {
@@ -47,19 +27,9 @@ var Browser = {
     if (typeof text == 'undefined' || text == null || text == 0 || text == '0') {
       text = '';
     }
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setBadgeText({text: text});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        OPERA_BUTTON.badge.textContent = text;
-      }
-      // If this is another page reference button through background process
-      else {
-        this.getBackgroundProcess().OPERA_BUTTON.badge.textContent = text;
       }
     }
     else {
@@ -68,24 +38,9 @@ var Browser = {
   },
 
   openTab: function(url) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: true});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        if (opera.extension.tabs) {
-          opera.extension.tabs.create({url: url, focused: true});
-        }
-        else {
-          console.log('ERROR: Opera tab creation not avaliable');
-        }
-      }
-      // Recurse to the background page
-      else {
-        this.getBackgroundProcess().Browser.openTab(url);
       }
     }
     else {
@@ -94,24 +49,9 @@ var Browser = {
   },
 
   openBackgroundTab: function(url) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: false});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        if (opera.extension.tabs) {
-          opera.extension.tabs.create({url: url, focused: false});
-        }
-        else {
-          console.log('ERROR: Opera tab creation not avaliable');
-        }
-      }
-      // Recurse to the background page
-      else {
-        this.getBackgroundProcess().Browser.openBackgroundTab(url);
       }
     }
     else {
@@ -120,13 +60,10 @@ var Browser = {
   },
 
   getBackgroundProcess: function() {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.extension != undefined) {
         return chrome.extension.getBackgroundPage();
       }
-    }
-    else if (BROWSER == 'Opera') {
-      return opera.extension.bgProcess;
     }
     else {
       console.log(this.msgUnsupported);
@@ -157,7 +94,7 @@ var Browser = {
     }
     else if (BROWSER == 'Opera') {
       // Desktop Notifications will be available in Opera 12.50
-      console.log('BROWSER.JS: createNotification, will not be avaliable in Opera until 12.50');
+      console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
     }
     else {
       console.log(this.msgUnsupported);
@@ -165,11 +102,8 @@ var Browser = {
   },
 
   // getUrl: function(path) {
-  //   if (BROWSER == 'Chrome') {
+  //   if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
   //     return chrome.extension.getURL(path);
-  //   }
-  //   else if (BROWSER == 'Opera') {
-  //     console.log('BROWSER.JS: getUrl');
   //   }
   //   else {
   //     console.log(this.msgUnsupported);
