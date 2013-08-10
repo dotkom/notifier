@@ -33,27 +33,30 @@ else if (navigator.appVersion.indexOf("Mac")!==-1) {
 	}
 }
 else {
-	console.log("ERROR: Potentially unsupported operating system");
+	console.log('WARNING: Potentially unsupported operating system');
 }
 
 // Browser detection
 var BROWSER = "Unknown";
-if (typeof chrome != "undefined")
+if (typeof chrome != "undefined" && typeof opr == "undefined")
 	BROWSER = "Chrome";
-else if (typeof opera != "undefined")
+else if (typeof chrome != "undefined" && typeof opr != "undefined")
 	BROWSER = "Opera";
-else {
-	console.log("ERROR: Potentially unsupported browser");
-}
+else
+	console.log('WARNING: Potentially unsupported browser');
 
 // Production detection
-if (BROWSER == "Chrome") {
-	if (typeof chrome.i18n != "undefined") {
-		if (chrome.i18n.getMessage('@@extension_id') === "hfgffimlnajpbenfpaofmmffcdmgkllf") {
+if (BROWSER == 'Chrome') {
+	if (typeof chrome.i18n != 'undefined')
+		if (chrome.i18n.getMessage('@@extension_id') === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
 			DEBUG = 0;
-		}
-	}
+	else
+		console.log('WARNING: Is this browser no longer using Chrome based webkit?');
 }
-else if (BROWSER == "Opera") {
-	// TODO: Implement this
+else if (BROWSER == 'Opera') {
+	if (typeof chrome.i18n != 'undefined')
+		if (chrome.i18n.getMessage('@@extension_id') === 'TODO: OPERA EXTENSION ID HER')
+			DEBUG = 0;
+	else
+		console.log('WARNING: Is this browser no longer using Chrome based webkit?');
 }
