@@ -46,17 +46,11 @@ else
 	console.log('WARNING: Potentially unsupported browser');
 
 // Production detection
-if (BROWSER == 'Chrome') {
+if (BROWSER == 'Chrome')
 	if (typeof chrome.i18n != 'undefined')
 		if (chrome.i18n.getMessage('@@extension_id') === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
 			DEBUG = 0;
-	else
-		console.log('WARNING: Is this browser no longer using Chrome based webkit?');
-}
-// else if (BROWSER == 'Opera') {
+// else if (BROWSER == 'Opera')
 // 	if (typeof chrome.i18n != 'undefined')
 // 		if (chrome.i18n.getMessage('@@extension_id') === 'TODO: OPERA EXTENSION ID HER')
 // 			DEBUG = 0;
-// 	else
-// 		console.log('WARNING: Is this browser no longer using Chrome based webkit?');
-// }
