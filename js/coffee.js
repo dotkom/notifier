@@ -1,5 +1,5 @@
 var Coffee = {
-  api: 'http://draug.online.ntnu.no/coffee.txt',
+  api: Affiliation.org[localStorage.affiliationKey1].coffeeApi,
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
   msgFormatError: 'Feil i kaffeformat',

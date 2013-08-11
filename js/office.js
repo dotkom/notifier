@@ -1,7 +1,6 @@
 var Office = {
-  
-  eventApi: 'https://online.ntnu.no/service_static/office_status',
-  lightApi: 'http://draug.online.ntnu.no/lys.txt',
+  eventApi: Affiliation.org[localStorage.affiliationKey1].eventApi,
+  lightApi: Affiliation.org[localStorage.affiliationKey1].lightApi,
   titleError: 'Oops',
   titleOpen: 'Åpent',
   titleClosed: 'Lukket',

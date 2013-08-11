@@ -1,5 +1,5 @@
 var Servant = {
-  api: 'https://online.ntnu.no/service_static/servant_list',
+  api: Affiliation.org[localStorage.affiliationKey1].servantApi,
   msgNone: 'Ingen kontorvakt nå',
   msgError: 'Frakoblet fra vaktplan',
   

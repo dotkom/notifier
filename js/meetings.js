@@ -1,5 +1,5 @@
 var Meetings = {
-  api: 'https://online.ntnu.no/service_static/meeting_plan',
+  api: Affiliation.org[localStorage.affiliationKey1].meetingsApi,
   msgNone: 'Ingen flere møter i dag',
   msgError: 'Frakoblet fra møteplan',
   
