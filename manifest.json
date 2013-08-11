@@ -46,11 +46,6 @@
     }
   ],
 
-  "web_accessible_resources": [
-    "options.html",
-    "img/logo-48.png"
-  ],
-
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com; object-src 'self'"
 }
 
