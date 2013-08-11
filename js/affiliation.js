@@ -149,6 +149,11 @@ var Affiliation = {
       symbol: './org/delta/symbol.png',
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
+      coffeeApi: 'http://informatikk.org/delta/coffee.txt',
+      lightApi: 'http://informatikk.org/delta/lys.txt',
+      eventApi: 'https://informatikk.org/delta/office_status.txt',
+      servantApi: 'https://informatikk.org/delta/servant_list.txt',
+      meetingsApi: 'https://informatikk.org/delta/meeting_plan.txt',
       useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -241,6 +246,11 @@ var Affiliation = {
       palette: 'online',
       palettePath: './org/online/palette.css',
       useAltLink: true,
+      coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
+      lightApi: 'http://draug.online.ntnu.no/lys.txt',
+      eventApi: 'https://online.ntnu.no/service_static/office_status',
+      servantApi: 'https://online.ntnu.no/service_static/servant_list',
+      meetingsApi: 'https://online.ntnu.no/service_static/meeting_plan',
       getImage: function(link, callback) {
         var placeholder = this.placeholder;
         var id = link.split('/')[4]; // id is stored in the link
