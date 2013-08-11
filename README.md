@@ -150,7 +150,6 @@ Options page
 - All options react to changes immediately
 - Github link to the open source repository
 - Google +1 button for Onlines website when affiliation is Online
-- May contain easter egg
 
 Injected script
 
