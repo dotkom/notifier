@@ -39,11 +39,13 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     ls[id] = affiliationKey
 
     if isPrimaryAffiliation
-      # Check if switching from or to Online
-      if oldAffiliation is 'online'
-        disableOnlineSpecificFeatures()
-      else if affiliationKey is 'online'
-        enableOnlineSpecificFeatures()
+      # Check if switching from or to an affiliation with fancy features
+      old_has_hardware = Affiliation.org[oldAffiliation].hardwareFeatures
+      new_has_hardware = Affiliation.org[affiliationKey].hardwareFeatures
+      if old_has_hardware && !new_has_hardware
+        disableHardwareFeatures()
+      else if !old_has_hardware && new_has_hardware
+        enableHardwareFeatures()
       
       # Palette
       palette = Affiliation.org[affiliationKey].palette
@@ -72,6 +74,11 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       name = Affiliation.org[affiliationKey].name
       Browser.setTitle name + ' Notifier'
       ls.extensionName = name + ' Notifier'
+      # Extension creator name
+      if oldAffiliation is 'online'
+        ls.extensionCreator = 'Online'
+      else if affiliationKey is 'online'
+        ls.extensionCreator = 'dotKom'
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
@@ -102,10 +109,9 @@ bindPaletteSelector = ->
     # Analytics
     if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPalette', palette])
 
-disableOnlineSpecificFeatures = (quick) ->
+disableHardwareFeatures = (quick) ->
   ls.showOffice = 'false'
   ls.coffeeSubscription = 'false'
-  ls.extensionCreator = 'Online'
   if quick
     $('label[for="showOffice"]').slideUp {duration:0}
     $('label[for="coffeeSubscription"]').slideUp {duration:0}
@@ -126,10 +132,9 @@ disableOnlineSpecificFeatures = (quick) ->
         # Change pageflip name
         changeCreatorName ls.extensionCreator
 
-enableOnlineSpecificFeatures = (quick) ->
+enableHardwareFeatures = (quick) ->
   ls.showOffice = 'true'
   ls.coffeeSubscription = 'true'
-  ls.extensionCreator = 'dotKom'
   restoreChecksToBoxes()
   if quick
     $('label[for="showOffice"]').slideDown {duration:0}
@@ -534,7 +539,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    if ls.affiliationKey1 is 'online'
+    if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
       Browser.getBackgroundProcess().updateOfficeAndMeetings true
     else
       Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
@@ -547,7 +552,7 @@ revertInfoscreen = ->
   # Remove subtext
   $('#headerText').fadeOut speed, ->
     # Move all content back down
-    if ls.affiliationKey1 is 'online'
+    if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
       $('#container').animate {'top':'50%'}, speed
       $('header').animate {'top':'50%'}, speed
     else
@@ -643,9 +648,9 @@ $ ->
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
 
-  # Remove Online specific features if the affiliation is another
-  if ls.affiliationKey1 isnt 'online'
-    disableOnlineSpecificFeatures true # true means be quick about it!
+  # Remove hardware features if the affiliation does not have it
+  if Affiliation.org[ls.affiliationKey1].hardwareFeatures isnt true
+    disableHardwareFeatures true # true means be quick about it!
 
   # Apply affiliation specific features
   # favicon
@@ -716,7 +721,7 @@ $ ->
       blinkAffiliation 6
     ), 5000
 
-  # Fade in the +1 button when (probably) ready
+  # Fade in the +1 button when (probably) ready, PS: Online specific
   if ls.affiliationKey1 is 'online'
     setTimeout ( ->
       $('#plusonebutton').fadeIn 150
