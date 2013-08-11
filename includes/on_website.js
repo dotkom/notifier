@@ -1,7 +1,3 @@
-// ==UserScript==
-// @include https://online.ntnu.no/*
-// ==/UserScript==
-
 // This is a injected script.
 
 // That means the script is called when any page is loaded. This script does
@@ -22,10 +18,6 @@ if (host == 'online.ntnu.no') {
     chrome.extension.sendMessage({'action':'resetCounterWhenOnWebsite'});
     // Hide Notifier install button
     $('#install_notifier').hide();
-  }
-  else if (typeof opera != "undefined") {
-    // Reset badge counter
-    opera.extension.postMessage('resetCounterWhenOnWebsite');
   }
 }
 else if (host == 'www.sit.no') {
@@ -48,10 +40,7 @@ else if (host == 'www.sit.no') {
     // Change cantina and trigger the change
     $('#displayWeek').val(clickedCantina).trigger('change');
   };
-  if (typeof chrome != "undefined") {
+  if (typeof chrome != "undefined" || ) {
     chrome.extension.sendMessage({'action':'getClickedCantina'}, callback);
-  }
-  else if (typeof opera != "undefined") {
-    opera.extension.postMessage('getClickedCantina', callback);
   }
 }
