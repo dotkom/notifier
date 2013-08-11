@@ -596,21 +596,6 @@ restoreChecksToBoxes = ->
     if ls[element.id] is 'true'
       element.checked = true
 
-fadeInCanvas = ->
-  if !DEBUG then _gaq.push(['_trackEvent', 'options', 'toggleCanvas'])
-  webGLStart()
-  $('#LessonCanvas').animate
-    opacity:1,
-    1300,
-    'swing',
-    ->
-      setTimeout ( ->
-        $('#LessonCanvas').animate
-          opacity:0,
-          1300,
-          'swing'
-      ), 200
-
 changeCreatorName = (name) ->
   # Stop previous changeCreatorName instance, if any
   clearTimeout Number ls.animateCreatorNameTimeoutId
@@ -726,10 +711,6 @@ $ ->
     setTimeout ( ->
       $('#plusonebutton').fadeIn 150
     ), 1100
-
-  # Bind a click function to the on-page notification for the canvas
-  # $('#notification').click ->
-  #   fadeInCanvas()
 
   # Allow user to change affiliation and palette
   bindAffiliationSelector '1', true
