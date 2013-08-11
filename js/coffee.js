@@ -75,7 +75,7 @@ var Coffee = {
     // Get now
     var now = new Date();
     // Figure out which date the coffee was made
-    var dateObject = ageString.match(/\d+\. [a-zA-Z]+/); // Operas JS-engine makes an object instead of a string
+    var dateObject = ageString.match(/\d+\. [a-zA-Z]+/);
     var dateString = String(dateObject);
     dateString = dateString.replace('.', ''); // Remove period
     dateString = dateString + ', ' + now.getFullYear();
