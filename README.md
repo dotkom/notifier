@@ -77,7 +77,8 @@ Affiliation
 - Each organization has it's own logos and symbols
 - Each organizations' news feed is fetched and parsed
 - Each organization has a recommended color palette
-- Support for organization specific color palettes is also implemented
+- Support for organization specific color palettes
+- Support for a separate news fetching function specific to an organization, even without RSS/Atom feeds
 - The affiliation script also contains a highly customizable function for fetching images from each affiliations' website since the RSS-feeds usually doesn't contain image links
 - Each affiliation references the function for getting images in it's own way
 
