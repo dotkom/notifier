@@ -40,7 +40,7 @@ else if (host == 'www.sit.no') {
     // Change cantina and trigger the change
     $('#displayWeek').val(clickedCantina).trigger('change');
   };
-  if (typeof chrome != "undefined" || ) {
+  if (typeof chrome != "undefined") {
     chrome.extension.sendMessage({'action':'getClickedCantina'}, callback);
   }
 }
