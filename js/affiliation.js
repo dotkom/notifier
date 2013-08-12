@@ -504,6 +504,21 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'pareto': {
+      name: 'Pareto',
+      key: 'pareto',
+      web: 'http://pareto-ntnu.no/',
+      feed: 'http://pareto-ntnu.no/?format=feed&type=rss',
+      logo: './org/pareto/logo.png',
+      icon: './org/pareto/icon.png',
+      symbol: './org/pareto/symbol.png',
+      placeholder: './org/pareto/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     'primetime': {
       name: 'Primetime',
       key: 'primetime',
