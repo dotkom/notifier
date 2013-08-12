@@ -658,6 +658,21 @@ var Affiliation = {
     },
 
     // Masterforeninger, doktorforeninger, internasjonale foreninger
+    // 'iaeste': {
+    //   name: 'IAESTE',
+    //   key: 'iaeste',
+    //   web: 'http://iaeste.no/',
+    //   feed: 'http://iaeste.no/wp/?feed=rss2',
+    //   logo: './org/iaeste/logo.png',
+    //   icon: './org/iaeste/icon.png',
+    //   symbol: './org/iaeste/symbol.png',
+    //   placeholder: './org/iaeste/placeholder.png',
+    //   palette: 'blue',
+    //   useAltLink: false,
+    //   getImages: function(links, callback) {
+    //     Affiliation.getImages(this, links, callback);
+    //   },
+    // },
     'isu': {
       name: 'International Student Union',
       key: 'isu',
