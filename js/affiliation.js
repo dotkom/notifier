@@ -688,6 +688,21 @@ var Affiliation = {
         Affiliation.getImages(this, link, callback);
       },
     },
+    // 'signifikant': {
+    //   name: 'Signifikant',
+    //   key: 'signifikant',
+    //   web: 'http://org.ntnu.no/signifikant/',
+    //   feed: 'http://org.ntnu.no/signifikant/?q=rss.xml',
+    //   logo: './org/signifikant/logo.png',
+    //   icon: './org/signifikant/icon.png',
+    //   symbol: './org/signifikant/symbol.png',
+    //   placeholder: './org/signifikant/placeholder.png',
+    //   palette: 'cyan',
+    //   useAltLink: false,
+    //   getImages: function(links, callback) {
+    //     Affiliation.getImages(this, links, callback);
+    //   },
+    // },
     'soma': {
       name: 'Soma',
       key: 'soma',
