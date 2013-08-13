@@ -131,7 +131,8 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // If feed uses CDATA-tags in title and description we need to be more clever (Adressa)
+    // If feed uses CDATA-tags in title and description we need to be more clever
+    // to get the information we want outta there (e.g. Adressa)
     var handleCDATA = function(item, field, postField) {
       if (postField.trim() == '' || postField.match('CDATA') != null) {
         var string = $(item).find(field).filter(':first')['0']['innerHTML'];
@@ -146,7 +147,8 @@ var News = {
     post.title = handleCDATA(item, 'title', post.title);
     post.description = handleCDATA(item, 'description', post.description);
 
-    // If link field is broken by jQuery, check GUID field for link instead (Adressa)
+    // If link field is broken by jQuery (dammit moon moon)
+    // then check GUID field for a link instead (e.g. Adressa)
     if (post.link.trim() == '') {
       var guid = $(item).find('guid').filter(':first').text();
       if (guid.indexOf('http') != -1) {
@@ -230,8 +232,8 @@ var News = {
   },
 
   postProcess: function(post) {
-    // Check for alternative links in description
-    post.altLink = this.checkForAltLink(post.description);
+    post.image = this.checkDescriptionForImageLink(post.image, post.description);
+    post.altLink = this.checkDescriptionForAltLink(post.description);
 
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
@@ -352,7 +354,16 @@ var News = {
     }
   },
 
-  checkForAltLink: function(description) {
+  checkDescriptionForImageLink: function(oldImage, description) {
+    var regex = new RegExp('https?:\/\/.*(.(png|jpe?g|bmp|gif))');
+    var pieces = description.match(regex);
+    if (pieces != null)
+      return pieces[0];
+    else
+      return oldImage;
+  },
+
+  checkDescriptionForAltLink: function(description) {
     // Looking for alternative link, find the first and best full link
     if (typeof description != 'undefined') {
       var altLink = description.match(/href="(http[^"]*)"/);
