@@ -238,16 +238,19 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # If the organization has it's own getImage function, use it
   if Affiliation.org[feedKey].getImage isnt undefined
     for index, link of viewedList
+      # It's important to get the link from the callback within the function below,
+      # not the above code, - because of race conditions mixing up the news posts, async ftw.
       Affiliation.org[feedKey].getImage link, (link, image) ->
-        # It's important to get the link from the callback, not the above code
-        # in order to have the right link at the right time, async ftw.
-        $('.item[data="'+link+'"] img').attr 'src', image
+        # Also, check whether there's already a qualified image before replacing it.
+        if ($('.item[data="'+link+'"] img').attr('src').indexOf('http') == -1)
+          $('.item[data="'+link+'"] img').attr 'src', image
 
-  # If the organization has it's own getImages function, use it
+  # If the organization has it's own getImages (plural) function, use it
   if Affiliation.org[feedKey].getImages isnt undefined
     Affiliation.org[feedKey].getImages viewedList, (links, images) ->
       for index of links
-        $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
+        if ($('.item[data="'+links[index]+'"] img').attr('src').indexOf('http') == -1)
+          $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->

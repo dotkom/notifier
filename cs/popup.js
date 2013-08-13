@@ -9,7 +9,7 @@
 
   iteration = 0;
 
-  newsLimit = 4;
+  newsLimit = 7;
 
   mainLoop = function() {
     if (DEBUG) {
@@ -285,7 +285,9 @@
       for (index in viewedList) {
         link = viewedList[index];
         Affiliation.org[feedKey].getImage(link, function(link, image) {
-          return $('.item[data="' + link + '"] img').attr('src', image);
+          if ($('.item[data="' + link + '"] img').attr('src').indexOf('http') === -1) {
+            return $('.item[data="' + link + '"] img').attr('src', image);
+          }
         });
       }
     }
@@ -294,7 +296,11 @@
         var _results;
         _results = [];
         for (index in links) {
-          _results.push($('.item[data="' + links[index] + '"] img').attr('src', images[index]));
+          if ($('.item[data="' + links[index] + '"] img').attr('src').indexOf('http') === -1) {
+            _results.push($('.item[data="' + links[index] + '"] img').attr('src', images[index]));
+          } else {
+            _results.push(void 0);
+          }
         }
         return _results;
       });
