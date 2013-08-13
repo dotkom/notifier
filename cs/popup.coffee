@@ -3,7 +3,7 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
-newsLimit = 7 # The best amount of news for the popup, IMO
+newsLimit = 4 # The best amount of news for the popup, IMO
 
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration

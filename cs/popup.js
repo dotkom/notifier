@@ -9,7 +9,7 @@
 
   iteration = 0;
 
-  newsLimit = 7;
+  newsLimit = 4;
 
   mainLoop = function() {
     if (DEBUG) {
