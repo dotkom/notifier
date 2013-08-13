@@ -515,9 +515,7 @@ var Affiliation = {
       placeholder: './org/pareto/placeholder.png',
       palette: 'blue',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
-      },
+      // Images will be found automatically in the HTML of each news post
     },
     'primetime': {
       name: 'Primetime',
@@ -1038,7 +1036,8 @@ var Affiliation = {
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
-    // If jQuery or Ajaxer.js is not loaded yet, just return placeholders
+    // If jQuery or Ajaxer.js is not loaded yet, just return placeholders.
+    // This could occur with like one in a million probability, but like almost everything else it's handled.
     if (typeof $ == 'undefined' || typeof Ajaxer == 'undefined') {
       if (this.debug) console.log('ERROR: getImages called before $ and Ajaxer was ready');
       return placeholders;
