@@ -2,7 +2,7 @@ var Affiliation = {
   
   debug: 0,
   
-  // IMPORTANT: Keep the same order here as in options.html and in manifest.json
+  // IMPORTANT: Keep the same order here as in options.html
 
   // Explanation of organization attributes:
 
@@ -17,7 +17,19 @@ var Affiliation = {
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',     // Optional: Path to the special palette
   // useAltLink: false,                         // Search news posts for alternative links?
+  // hardwareFeatures: true,                    // Whether or not the affiliation has hardware
+  // statusIcons: {                             // Array with statusicons (if hardwarefeatures)
+  //   open: './org/orgx/icon-open.png',        // The office open icon
+  //   closed: './org/orgx/icon-closed.png',    // The office closed icon
+  //   meeting: './org/orgx/icon-meeting.png',  // The office meeting icon
+  // },
+  // coffeeApi: 'http://orgx.no/coffee',        // API for fetching coffee data
+  // lightApi: 'http://orgx.no/lys',            // API for fetching light data
+  // eventApi: 'http://orgx.no/status',         // API for fetching current meeting status
+  // servantApi: 'http://orgx.no/servant',      // API for fetching todays servant list
+  // meetingsApi: 'http://orgx.no/meetings',    // API for fetching todays meetings
   // getImages: function(links, callback) {},   // getImages will be used if it exists
+  // getNews: function(limit, callback) {},     // getNews may override standard RSS/Atom fetching
 
   // Standard dimensions:
 
