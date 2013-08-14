@@ -153,8 +153,12 @@ header #notification .saved {
   -webkit-filter: drop-shadow(0 0 3pt #000000);
   filter: drop-shadow(0 0 3pt #000000);
 }
-.item .waffle {
+.item #officeStatusOverlay {
   position: relative;
+  width: 15pt;
+  height: 15pt;
+  top: -29pt;
+  right: 47pt;
 }
 .item .logo {
   box-shadow: 0 0 10pt 0pt #333;
