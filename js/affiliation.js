@@ -151,6 +151,11 @@ var Affiliation = {
       palette: 'green',
       useAltLink: false,
       hardwareFeatures: true,
+      statusIcons: {
+        open: './org/delta/icon-open.png',
+        closed: './org/delta/icon-closed.png',
+        meeting: './org/delta/icon-meeting.png',
+      },
       coffeeApi: 'http://informatikk.org/delta/coffee.txt',
       lightApi: 'http://informatikk.org/delta/lys.txt',
       eventApi: 'http://informatikk.org/delta/office_status.txt',
