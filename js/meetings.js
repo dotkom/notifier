@@ -15,6 +15,11 @@ var Meetings = {
       return;
     }
 
+    // check if the affiliation has changed
+    if (this.api != Affiliation.org[localStorage.affiliationKey1].meetingsApi) {
+      this.api = Affiliation.org[localStorage.affiliationKey1].meetingsApi;
+    }
+
     // Receives the meeting plan for today
     var self = this;
     Ajaxer.getPlainText({

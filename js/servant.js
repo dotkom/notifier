@@ -12,6 +12,11 @@ var Servant = {
       return;
     }
 
+    // check if the affiliation has changed
+    if (this.api != Affiliation.org[localStorage.affiliationKey1].servantApi) {
+      this.api = Affiliation.org[localStorage.affiliationKey1].servantApi;
+    }
+
     // Receives the meeting plan for today
     var self = this;
     Ajaxer.getPlainText({
