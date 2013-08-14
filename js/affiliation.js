@@ -248,6 +248,11 @@ var Affiliation = {
       palettePath: './org/online/palette.css',
       useAltLink: true,
       hardwareFeatures: true,
+      statusIcons: {
+        open: './org/online/icon-open.png',
+        closed: './org/online/icon-closed.png',
+        meeting: './org/online/icon-meeting.png',
+      },
       coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
       lightApi: 'http://draug.online.ntnu.no/lys.txt',
       eventApi: 'https://online.ntnu.no/service_static/office_status',
