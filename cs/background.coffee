@@ -31,7 +31,9 @@ updateOfficeAndMeetings = (force) ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
     if force or ls.currentStatus isnt status or ls.currentStatusMessage isnt message
-      Browser.setIcon 'img/icon-'+status+'.png'
+      statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status]
+      if statusIcon isnt undefined
+        Browser.setIcon statusIcon
       ls.currentStatus = status
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings

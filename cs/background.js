@@ -47,8 +47,12 @@
       console.log('updateOfficeAndMeetings');
     }
     return Office.get(function(status, title, message) {
+      var statusIcon;
       if (force || ls.currentStatus !== status || ls.currentStatusMessage !== message) {
-        Browser.setIcon('img/icon-' + status + '.png');
+        statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status];
+        if (statusIcon !== void 0) {
+          Browser.setIcon(statusIcon);
+        }
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
           var today;
