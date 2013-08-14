@@ -814,7 +814,7 @@
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
         }
         if (this.id === 'showOffice' && this.checked === false) {
-          Browser.setIcon('img/icon-default.png');
+          Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
           Browser.setTitle(ls.extensionName);
         }
         if (this.id === 'showNotifications' && this.checked === true) {

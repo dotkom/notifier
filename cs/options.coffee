@@ -792,7 +792,7 @@ $ ->
       if this.id is 'showOffice' and this.checked is true
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
-        Browser.setIcon 'img/icon-default.png'
+        Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
         Browser.setTitle ls.extensionName
       
       if this.id is 'showNotifications' and this.checked is true

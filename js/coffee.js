@@ -15,6 +15,11 @@ var Coffee = {
       return;
     }
 
+    // check if the affiliation has changed
+    if (this.api != Affiliation.org[localStorage.affiliationKey1].coffeeApi) {
+      this.api = Affiliation.org[localStorage.affiliationKey1].coffeeApi;
+    }
+
     // Receives the status for the coffee pot
     var self = this;
     Ajaxer.getPlainText({

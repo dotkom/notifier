@@ -20,6 +20,12 @@ var Office = {
       return;
     }
 
+    // check if the affiliation has changed
+    if (this.eventApi != Affiliation.org[localStorage.affiliationKey1].eventApi) {
+      this.eventApi = Affiliation.org[localStorage.affiliationKey1].eventApi;
+      this.lightApi = Affiliation.org[localStorage.affiliationKey1].lightApi;
+    }
+
     var self = this;
     this.getEventData( function(status, title, message) {
       if (status == 'open') {
