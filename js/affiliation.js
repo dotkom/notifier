@@ -52,6 +52,17 @@ var Affiliation = {
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
       useAltLink: false,
+      hardwareFeatures: true,
+      statusIcons: {
+        open: './org/abakus/icon-open.png',
+        closed: './org/abakus/icon-closed.png',
+        meeting: './org/abakus/icon-meeting.png',
+      },
+      coffeeApi: 'http://informatikk.org/abakus/coffee.txt',
+      lightApi: 'http://informatikk.org/abakus/lys.txt',
+      eventApi: 'http://informatikk.org/abakus/office_status.txt',
+      servantApi: 'http://informatikk.org/abakus/servant_list.txt',
+      meetingsApi: 'http://informatikk.org/abakus/meeting_plan.txt',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(limit, callback) {
         if (typeof callback == 'undefined') {
