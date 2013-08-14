@@ -671,21 +671,21 @@ var Affiliation = {
     //     Affiliation.getImages(this, links, callback);
     //   },
     // },
-    // 'esn': {
-    //   name: 'ESN',
-    //   key: 'esn',
-    //   web: 'http://www.trondheim.esn.no/',
-    //   feed: 'http://www.trondheim.esn.no/feed',
-    //   logo: './org/esn/logo.png',
-    //   icon: './org/esn/icon.png',
-    //   symbol: './org/esn/symbol.png',
-    //   placeholder: './org/esn/placeholder.png',
-    //   palette: 'cyan',
-    //   useAltLink: false,
-    //   getImages: function(links, callback) {
-    //     Affiliation.getImages(this, links, callback);
-    //   },
-    // },
+    'esn': {
+      name: 'ESN',
+      key: 'esn',
+      web: 'http://www.trondheim.esn.no/',
+      feed: 'http://www.trondheim.esn.no/feed',
+      logo: './org/esn/logo.png',
+      icon: './org/esn/icon.png',
+      symbol: './org/esn/symbol.png',
+      placeholder: './org/esn/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     // 'iaeste': {
     //   name: 'IAESTE',
     //   key: 'iaeste',
