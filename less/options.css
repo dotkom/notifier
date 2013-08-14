@@ -153,6 +153,9 @@ header #notification .saved {
   -webkit-filter: drop-shadow(0 0 3pt #000000);
   filter: drop-shadow(0 0 3pt #000000);
 }
+.item .waffle {
+  position: relative;
+}
 .item .logo {
   box-shadow: 0 0 10pt 0pt #333;
   margin: 5pt 0 0 5pt;
