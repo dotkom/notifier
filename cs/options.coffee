@@ -49,6 +49,10 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # either way, change the icons shown in the office status feature
       if new_has_hardware
         changeOfficeStatusIcons()
+        # Update office status
+        ls.removeItem 'currentStatus'
+        ls.removeItem 'currentStatusMessage'
+        Browser.getBackgroundProcess().updateOfficeAndMeetings true
 
       # Palette
       palette = Affiliation.org[affiliationKey].palette
