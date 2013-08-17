@@ -319,25 +319,30 @@ $ ->
   else
     if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
 
-  # Hide stuff the user does not want to see
+  # Hide stuff that the user has disabled in options
   $('#office').hide() if ls.showOffice isnt 'true'
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  if ls.affiliationKey1 isnt 'online'
-    # Show the logo and placeholder image for the correct organization
-    affiliation = ls.affiliationKey1
-    # If the affiliation has a defined logo
-    logo = Affiliation.org[affiliation].logo
-    if logo isnt undefined and logo isnt ''
-      if DEBUG then console.log 'Applying affiliation logo', logo
-      $('#logo').prop 'src', logo
+  # Show the affiliation logo and placeholder image
+  if DEBUG then console.log 'Applying affiliation features'
+  key = ls.affiliationKey1
+  logo = Affiliation.org[key].logo
+  icon = Affiliation.org[key].icon
+  placeholder = Affiliation.org[key].placeholder
+  sponsor = Affiliation.org[key].sponsor
+  # Icon
+  $('link[rel="shortcut icon"]').attr 'href', icon
+  # Logo or Sponsor logo
+  if sponsor isnt undefined
+    $('#logo').prop 'src', sponsor
+  else
+    $('#logo').prop 'src', logo
+  # Placeholder
+  $('#news .post img').attr 'src', placeholder
 
-  # Switch to the icon of chosen affiliation
-  $('link[rel="shortcut icon"]').attr 'href', Affiliation.org[ls.affiliationKey1].icon
-  # Track popularity of the chosen palette, the palette
-  # itself is loaded a lot earlier for perceived speed
+  # Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
   if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette])
   
   # Minor esthetical adjustments for OS version
