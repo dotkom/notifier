@@ -14,6 +14,7 @@ var Affiliation = {
   // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
   // symbol: './org/orgx/symbol.png',           // 256x256 symbol, big version of the icon
   // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
+  // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',     // Optional: Path to the special palette
   // useAltLink: false,                         // Search news posts for alternative links?
@@ -272,6 +273,7 @@ var Affiliation = {
       icon: './org/online/icon.png',
       symbol: './org/online/symbol.png',
       placeholder: './org/online/placeholder.png',
+      sponsor: './org/online/sponsor.png',
       palette: 'online',
       palettePath: './org/online/palette.css',
       useAltLink: true,
