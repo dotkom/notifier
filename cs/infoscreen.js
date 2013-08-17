@@ -407,19 +407,19 @@
       $('#bus').hide();
     }
     if (DEBUG) {
-      console.log('Applying affiliation features');
+      console.log('Applying affiliation graphics');
     }
     key = ls.affiliationKey1;
     logo = Affiliation.org[key].logo;
     icon = Affiliation.org[key].icon;
     placeholder = Affiliation.org[key].placeholder;
     sponsor = Affiliation.org[key].sponsor;
-    $('link[rel="shortcut icon"]').attr('href', icon);
     if (sponsor !== void 0) {
       $('#logo').prop('src', sponsor);
     } else {
       $('#logo').prop('src', logo);
     }
+    $('link[rel="shortcut icon"]').attr('href', icon);
     $('#news .post img').attr('src', placeholder);
     if (!DEBUG) {
       _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette]);

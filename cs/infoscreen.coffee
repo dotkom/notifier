@@ -325,21 +325,17 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  # Show the affiliation logo and placeholder image
-  if DEBUG then console.log 'Applying affiliation features'
+  if DEBUG then console.log 'Applying affiliation graphics'
   key = ls.affiliationKey1
   logo = Affiliation.org[key].logo
   icon = Affiliation.org[key].icon
   placeholder = Affiliation.org[key].placeholder
   sponsor = Affiliation.org[key].sponsor
-  # Icon
-  $('link[rel="shortcut icon"]').attr 'href', icon
-  # Logo or Sponsor logo
   if sponsor isnt undefined
     $('#logo').prop 'src', sponsor
   else
     $('#logo').prop 'src', logo
-  # Placeholder
+  $('link[rel="shortcut icon"]').attr 'href', icon
   $('#news .post img').attr 'src', placeholder
 
   # Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed

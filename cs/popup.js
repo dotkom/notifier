@@ -353,7 +353,7 @@
   };
 
   $(function() {
-    var affiliation, logo;
+    var icon, key, logo, placeholder;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -389,15 +389,17 @@
     if (ls.affiliationKey1 !== 'online') {
       $('#chatterButton').hide();
       $('#mobileText').hide();
-      affiliation = ls.affiliationKey1;
-      logo = Affiliation.org[affiliation].logo;
-      if (logo !== void 0 && logo !== '') {
-        if (DEBUG) {
-          console.log('Applying affiliation logo', logo);
-        }
-        $('#header #logo').prop('src', logo);
-      }
     }
+    if (DEBUG) {
+      console.log('Applying affiliation graphics');
+    }
+    key = ls.affiliationKey1;
+    logo = Affiliation.org[key].logo;
+    icon = Affiliation.org[key].icon;
+    placeholder = Affiliation.org[key].placeholder;
+    $('#logo').prop('src', logo);
+    $('link[rel="shortcut icon"]').attr('href', icon);
+    $('#news .post img').attr('src', placeholder);
     if (!DEBUG) {
       _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette]);
     }

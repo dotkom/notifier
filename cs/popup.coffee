@@ -312,17 +312,17 @@ $ ->
   hotFixBusLines()
 
   if ls.affiliationKey1 isnt 'online'
-    # Hide chat button
-    $('#chatterButton').hide()
-    # Hide Notifier Mobile info in Tips box
-    $('#mobileText').hide()
-    # Show the logo and placeholder image for the correct organization
-    affiliation = ls.affiliationKey1
-    # If the affiliation has a defined logo
-    logo = Affiliation.org[affiliation].logo
-    if logo isnt undefined and logo isnt ''
-      if DEBUG then console.log 'Applying affiliation logo', logo
-      $('#header #logo').prop 'src', logo
+    $('#chatterButton').hide() # Hide chat button
+    $('#mobileText').hide() # Hide Notifier Mobile info in Tips box
+
+  if DEBUG then console.log 'Applying affiliation graphics'
+  key = ls.affiliationKey1
+  logo = Affiliation.org[key].logo
+  icon = Affiliation.org[key].icon
+  placeholder = Affiliation.org[key].placeholder
+  $('#logo').prop 'src', logo
+  $('link[rel="shortcut icon"]').attr 'href', icon
+  $('#news .post img').attr 'src', placeholder
   
   # Track popularity of the chosen palette, the palette
   # itself is loaded a lot earlier for perceived speed
