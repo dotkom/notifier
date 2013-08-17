@@ -689,21 +689,21 @@ var Affiliation = {
     },
 
     // Masterforeninger, doktorforeninger, internasjonale foreninger
-    // 'dion': {
-    //   name: 'DION',
-    //   key: 'dion',
-    //   web: 'http://www.dion.ntnu.no/',
-    //   feed: 'http://www.dion.ntnu.no/nb_NO/feeds/news-en_US/',
-    //   logo: './org/dion/logo.png',
-    //   icon: './org/dion/icon.png',
-    //   symbol: './org/dion/symbol.png',
-    //   placeholder: './org/dion/placeholder.png',
-    //   palette: 'cyan',
-    //   useAltLink: false,
-    //   getImages: function(links, callback) {
-    //     Affiliation.getImages(this, links, callback);
-    //   },
-    // },
+    'dion': {
+      name: 'DION',
+      key: 'dion',
+      web: 'http://www.dion.ntnu.no/',
+      feed: 'http://www.dion.ntnu.no/en_US/feeds/news-en_US/',
+      logo: './org/dion/logo.png',
+      icon: './org/dion/icon.png',
+      symbol: './org/dion/symbol.png',
+      placeholder: './org/dion/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     'esn': {
       name: 'ESN',
       key: 'esn',
