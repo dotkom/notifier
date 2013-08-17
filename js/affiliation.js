@@ -204,15 +204,15 @@ var Affiliation = {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
       },
     },
-    'entreprenoerskolen': {
-      name: 'Entreprenørskolen',
-      key: 'entreprenoerskolen',
+    'solan': {
+      name: 'Solan',
+      key: 'solan',
       web: 'http://entreprenorskolen.no/',
       feed: 'http://entreprenorskolen.no/feed/',
-      logo: './org/entreprenoerskolen/logo.png',
-      icon: './org/entreprenoerskolen/icon.png',
-      symbol: './org/entreprenoerskolen/symbol.png',
-      placeholder: './org/entreprenoerskolen/placeholder.png',
+      logo: './org/solan/logo.png',
+      icon: './org/solan/icon.png',
+      symbol: './org/solan/symbol.png',
+      placeholder: './org/solan/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImage: function(links, callback) {
