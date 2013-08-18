@@ -31,10 +31,15 @@ updateOfficeAndMeetings = (force) ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
   Office.get (status, title, message) ->
     if force or ls.currentStatus isnt status or ls.currentStatusMessage isnt message
+      # Extension icon
       statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status]
       if statusIcon isnt undefined
         Browser.setIcon statusIcon
+      else
+        errorIcon = Affiliation.org[ls.affiliationKey1].icon
+        Browser.setIcon errorIcon
       ls.currentStatus = status
+      # Extension title (hovering mouse over icon shows the title text)
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
         Browser.setTitle today
