@@ -25,10 +25,12 @@ For all the included affiliations:
 - All pages in the extension are live, they keep themselves updated
 - Can be used as an infoscreen (full HD vertical screen) for continous use
 
-Additional Online-specific features (requires some hardware):
-- Displays status for Onlines office: Open, closed, meeting, free waffles
-- Displays todays meetings and current servant at Onlines office
-- Displays the status of the coffee pot at Onlines office
+Additional features for affiliations who have installed hardware:
+- Displays office status: Open, closed, meeting, free waffles
+- Displays todays meetings and current servant at the office
+- Displays the status of the coffee pot at the office
+
+Additional features currently only available for Online:
 - Usable as a webapp for iOS/Android by simply putting all the code on a PHP-enabled server
 
 # Chronological Credz
@@ -114,31 +116,31 @@ News
 - Separates between new, updated and read items
 - Serves HTML5 desktop notifications on news / updates
 
-Office (Online specific)
+Office (requires hardware)
 
 - Office status is fetched from multiple sources, including Google Calendar and two Arduinos running on a Raspberry Pi
-- Reads roof light intensity from an Arduino Uno at http://draug.online.ntnu.no/lys.txt
+- Reads roof light intensity from an Arduino Uno, the service displays a file like this: http://draug.online.ntnu.no/lys.txt
 - Uses a stable border value, fairly unaffected by sunlight
 - Reads the light value frequently in order to react quickly to changes
-- Reads events from Onlines systems which in turn is parsed from Onlines GoogleCal, service running at https://online.ntnu.no/service_static/office_status
+- Reads events which are parsed from the affiliation systems which in turn is parsed from a GoogleCal, the running service displays a file like this: https://online.ntnu.no/service_static/office_status
 - Retrieves very lightweight requests with event information from GCal
 - Updates often in order to react to changes quickly
-- Icon changes based on light values and calendar events.
+- Icon changes based on light values and calendar events
 - Uses title text containing the name of the event, or other appropriate text
 - Separate icon showing when you are offline or when an error has occured
-- All states: Default, open, closed, meeting, waffles, disconnected
+- All states: Default, open, closed, meeting, waffles, error (error usually means disconnected)
 
-Meetings (Online specific)
+Meetings (requires hardware)
 
 - Showing the rest of the days meetings so users may easily spot when to grab a coffee
 - Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/service_static/meeting_plan
 
-Servant (Online specific)
+Servant (requires hardware)
 
 - Shows who is responsible for the Online office at any given time
 - Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/service_static/servant_list
 
-Coffee (Online specific)
+Coffee (requires hardware)
 
 - An arduino is connected to a big button at the Online office, to be pushed whenever someone is cooking a new pot of coffee
 - Whenever a new coffee pot is made users get a HTML desktop notification with a random coffee meme
@@ -153,7 +155,7 @@ Options page
 
 Injected script
 
-- Detects when user is visiting the Online website, nullifying the counter badge
+- Detects when user is visiting the affiliation website, nullifying the counter badge
 
 Google Analytics
 
