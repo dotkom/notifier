@@ -170,7 +170,7 @@ var News = {
       }
     }
     catch (err) {
-      // Do nothing, we we're just checking, move along quitely
+      // Do nothing, we were just checking, move along quitely
     }
 
     // In case browser does not grok tags with colons, stupid browser
@@ -212,15 +212,6 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // Extract image from content HTML
-    var image = $(entry).find('content').filter(':first').text();
-    if (image != undefined) {
-      image = image.match(/src="(http:\/\/[a-zA-Z0-9.\/\-_]+)"/);
-      if (image != null) {
-        post.image = image[1];
-      }
-    }
-
     // Parse date field
     post.date = new Date(post.date);
     if (post.date != "Invalid Date")
@@ -237,7 +228,7 @@ var News = {
 
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
-    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities, this works, but ppl should be allowed to use entitites
     
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
@@ -355,10 +346,10 @@ var News = {
   },
 
   checkDescriptionForImageLink: function(oldImage, description) {
-    var regex = new RegExp('https?:\/\/.*(.(png|jpe?g|bmp|gif))');
+    var regex = new RegExp('src="(http[^"]*(png|jpe?g|bmp))"');
     var pieces = description.match(regex);
     if (pieces != null)
-      return pieces[0];
+      return pieces[1];
     else
       return oldImage;
   },
