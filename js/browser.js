@@ -1,4 +1,5 @@
 var Browser = {
+  msgCallbackMissing: 'ERROR: Callback is missing',
   msgUnsupported: 'ERROR: Unsupported browser',
 
   setIcon: function(path) {
@@ -23,12 +24,29 @@ var Browser = {
     }
   },
 
+  getBadgeText: function(callback) {
+    if (typeof callback == 'undefined') {
+      console.log(this.msgCallbackMissing);
+    }
+    else {
+      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+        chrome.browserAction.getBadgeText({}, function(badgeText) {
+          callback(badgeText);
+        });
+      }
+      else {
+        console.log(this.msgUnsupported);
+      }
+    }
+  },
+
   setBadgeText: function(text) {
-    if (typeof text == 'undefined' || text == null || text == 0 || text == '0') {
+    if (typeof text == 'undefined' || text == null || isNaN(Number(text)) || Number(text) <= 0) {
       text = '';
     }
     if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
+        text = String(text);
         chrome.browserAction.setBadgeText({text: text});
       }
     }
