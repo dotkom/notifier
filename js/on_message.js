@@ -21,8 +21,8 @@ function onConnect(port) {
   // affiliationCounter is a conversation regarding resetting of the badge counter
   // when a user visits the site of one of his/her affiliations
   if (port.name == "affiliationCounter") {
-    if (DEBUG) console.log('onConnect: affiliationCounter');
     port.onMessage.addListener(function(message) {
+      if (DEBUG) console.log('onConnect: affiliationCounter');
       // first contact
       if (message.getAffiliationWeb == '1' || message.getAffiliationWeb == '2') {
         var number = message.getAffiliationWeb;
