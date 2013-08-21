@@ -3,7 +3,7 @@ var DEBUG = 1;
 // AJAX setup
 var AJAX_SETUP = {
 	timeout: 9000,
-	cache: false,
+	cache: false, // this little sentence killed a lot of little bugs that was actually one big big
 }
 
 // Loops & intervals
@@ -20,6 +20,25 @@ var UPDATE_HOURS_INTERVAL = 60; // recommended: 60
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
 var UPDATE_BUS_INTERVAL = 2; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
+
+// Meme detection
+var urlExists = function(url) {
+	try {
+	    var http = new XMLHttpRequest();
+	    http.open('HEAD', url, false);
+	    http.send();
+	    return http.status!=404;
+	}
+	catch (e) {
+		return false;
+	}
+}
+var MEME_AMOUNT = 0;
+var __counter__ = 1;
+while (urlExists('meme/'+__counter__+'.jpg')) {
+	MEME_AMOUNT++;
+	__counter__++;
+}
 
 // OS detection
 var OPERATING_SYSTEM = "Unknown";
