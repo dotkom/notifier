@@ -326,22 +326,40 @@ var News = {
   },
 
   showNotification: function(item) {
-    if (typeof item != 'undefined') {
-      if (localStorage.showNotifications == 'true') {
-        // Get content
-        localStorage.notificationTitle = item.title;
-        localStorage.notificationLink = item.link;
-        localStorage.notificationDescription = item.description;
-        localStorage.notificationCreator = item.creator;
-        localStorage.notificationImage = item.image;
-        localStorage.notificationFeedKey = item.feedKey;
-        localStorage.notificationFeedName = item.feedName;
-        // Show desktop notification
-        Browser.createNotification('notification.html');
+    var showIt = function() {
+      if (typeof item != 'undefined') {
+        if (localStorage.showNotifications == 'true') {
+          // Get content
+          localStorage.notificationTitle = item.title;
+          localStorage.notificationLink = item.link;
+          localStorage.notificationDescription = item.description;
+          localStorage.notificationCreator = item.creator;
+          localStorage.notificationImage = item.image;
+          localStorage.notificationFeedKey = item.feedKey;
+          localStorage.notificationFeedName = item.feedName;
+          // Save timestamp
+          localStorage.lastNotifiedTime = new Date().getTime();
+          // Show desktop notification
+          Browser.createNotification('notification.html');
+        }
+      }
+      else {
+        if (this.debug) console.log('ERROR: notification item was undefined');
+      }
+    }
+    // Make sure notifications are sent with at least 10 seconds inbetween
+    var lastTime = localStorage.lastNotifiedTime;
+    if (isNumber(lastTime)) {
+      var diff = new Date().getTime() - lastTime;
+      if (diff < 10000) { // less than 10 seconds?
+        setTimeout(showIt, 10000);
+      }
+      else {
+        showIt();
       }
     }
     else {
-      if (this.debug) console.log('ERROR: notification item was undefined');
+      showIt();
     }
   },
 
