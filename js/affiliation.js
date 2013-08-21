@@ -29,6 +29,9 @@ var Affiliation = {
   // eventApi: 'http://orgx.no/status',         // API for fetching current meeting status
   // servantApi: 'http://orgx.no/servant',      // API for fetching todays servant list
   // meetingsApi: 'http://orgx.no/meetings',    // API for fetching todays meetings
+  // hasMemes: true,                            // Whether or not the affiliation has a /meme/ folder
+  // numberOfMemes: 4,                          // How many pictures in /meme/ with the format 1...N.jpg
+  // memePath: './org/delta/meme/',             // Where the memes are located
   // getImages: function(links, callback) {},   // getImages will be used if it exists
   // getNews: function(limit, callback) {},     // getNews may override standard RSS/Atom fetching
 
@@ -185,6 +188,9 @@ var Affiliation = {
       eventApi: 'http://informatikk.org/delta/office_status.txt',
       servantApi: 'http://informatikk.org/delta/servant_list.txt',
       meetingsApi: 'http://informatikk.org/delta/meeting_plan.txt',
+      hasMemes: true,
+      numberOfMemes: 1,
+      memePath: './org/delta/meme/',
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -288,6 +294,9 @@ var Affiliation = {
       eventApi: 'https://online.ntnu.no/service_static/office_status',
       servantApi: 'https://online.ntnu.no/service_static/servant_list',
       meetingsApi: 'https://online.ntnu.no/service_static/meeting_plan',
+      hasMemes: true,
+      numberOfMemes: 4,
+      memePath: './org/online/meme/',
       getImage: function(link, callback) {
         var placeholder = this.placeholder;
         var id = link.split('/')[4]; // id is stored in the link
