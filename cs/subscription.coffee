@@ -1,12 +1,25 @@
 # Notify Coffeescript that jQuery is here
 $ = jQuery
+ls = localStorage
 
 setSubscription = ->
 
+  memes = []
+
+  # Add regular memes
+  amount = MEME_AMOUNT # Number of memes, in regular human numbers, not zero-indexed
+  memes.push './meme/'+num+'.jpg' for num in [1..amount]
+
+  # Add affiliation memes
+  if Affiliation.org[ls.affiliationKey1].hasMemes
+    amount = Affiliation.org[ls.affiliationKey1].numberOfMemes
+    path = Affiliation.org[ls.affiliationKey1].memePath
+    memes.push path+num+'.jpg' for num in [1..amount]
+
   # Randomize image
-  amount = 27 # Number of memes, in regular human numbers, not zero-indexed
-  random = 1 + Math.floor Math.random() * amount
-  image = './meme/' + random + '.jpg'
+  random = 1 + Math.floor Math.random() * memes.length
+  if DEBUG then console.log 'memes[',random-1,'] of',0,'-',memes.length-1,'-> we found',memes[random-1]
+  image = memes[random - 1] # the list is zero-indexed
 
   # Capture clicks
   $('#subscription').click ->
