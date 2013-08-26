@@ -1,5 +1,4 @@
 var Meetings = {
-  api: Affiliation.org[localStorage.affiliationKey1].meetingsApi,
   msgNone: 'Ingen flere møter i dag',
   msgError: 'Frakoblet fra møteplan',
   
@@ -14,16 +13,13 @@ var Meetings = {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
-
-    // check if the affiliation has changed
-    if (this.api != Affiliation.org[localStorage.affiliationKey1].meetingsApi) {
-      this.api = Affiliation.org[localStorage.affiliationKey1].meetingsApi;
-    }
-
+    
+    var api = Affiliation.org[localStorage.affiliationKey1].meetingsApi;
+    
     // Receives the meeting plan for today
     var self = this;
     Ajaxer.getPlainText({
-      url: (self.debugApi ? self.debugThisApi : self.api),
+      url: (self.debugApi ? self.debugThisApi : api),
       success: function(meetings) {
         if (self.debug) console.log('Raw meetings:\n\n', meetings);
         
