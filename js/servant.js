@@ -1,5 +1,4 @@
 var Servant = {
-  api: Affiliation.org[localStorage.affiliationKey1].servantApi,
   msgNone: 'Ingen kontorvakt nå',
   msgError: 'Frakoblet fra vaktplan',
   
@@ -12,15 +11,12 @@ var Servant = {
       return;
     }
 
-    // check if the affiliation has changed
-    if (this.api != Affiliation.org[localStorage.affiliationKey1].servantApi) {
-      this.api = Affiliation.org[localStorage.affiliationKey1].servantApi;
-    }
+    var api = Affiliation.org[localStorage.affiliationKey1].servantApi;
 
     // Receives the meeting plan for today
     var self = this;
     Ajaxer.getPlainText({
-      url: self.api,
+      url: api,
       success: function(servant) {
 
         // If servant debugging is enabled
