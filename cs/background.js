@@ -163,6 +163,7 @@
       }
     }
     loadAffiliationIcon();
+    Browser.registerNotificationListeners();
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
     window.updateCoffeeSubscription = updateCoffeeSubscription;
     window.updateAffiliationNews = updateAffiliationNews;

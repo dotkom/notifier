@@ -127,6 +127,8 @@ $ ->
     if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadChatter'])
 
   loadAffiliationIcon()
+  
+  Browser.registerNotificationListeners()
 
   # Attaching the update-functions to the window (global) object so other pages
   # may lend these functions via Browser.getBackgroundProcess().function()
