@@ -21,10 +21,16 @@ pageFlipCursorBlinking = ->
     $(@).animate opacity: 1, "fast", "swing",
 
 testDesktopNotification = ->
-  Browser.createNotification 'notification.html'
+  key = ls.affiliationKey1
+  item =
+    title: Affiliation.org[key].name + ' Notifier'
+    description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"'
+    link: Affiliation.org[key].web
+    feedKey: key
+  Browser.createNotification item
 
 testCoffeeSubscription = ->
-  Browser.createNotification 'subscription.html'
+  Coffee.showNotification true
 
 bindAffiliationSelector = (number, isPrimaryAffiliation) ->
   id = 'affiliationKey'+number
