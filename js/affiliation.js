@@ -655,6 +655,21 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'nutrix': {
+      name: 'Nutrix',
+      key: 'nutrix',
+      web: 'http://nutrix.hist.no/',
+      feed: 'http://nutrix.hist.no/?feed=rss2',
+      logo: './org/nutrix/logo.png',
+      icon: './org/nutrix/icon.png',
+      symbol: './org/nutrix/symbol.png',
+      placeholder: './org/nutrix/placeholder.png',
+      palette: 'green',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     'tihlde': {
       name: 'TIHLDE',
       key: 'tihlde',
