@@ -177,7 +177,7 @@ var Affiliation = {
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
       useAltLink: false,
-      hardwareFeatures: true,
+      hardwareFeatures: false,
       statusIcons: {
         open: './org/delta/icon-open.png',
         closed: './org/delta/icon-closed.png',
