@@ -1,10 +1,10 @@
 var Coffee = {
-  api: Affiliation.org[localStorage.affiliationKey1].coffeeApi,
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
   msgFormatError: 'Feil i kaffeformat',
   msgConnectionError: 'Frakoblet fra kaffeknappen',
-  msgComforting: 'Så, så. Det er sikkert kaffe :)',
+  msgComforting: 'Så så, det er sikkert kaffe :)',
+  msgNotification: 'Kaffen er satt på, straks klar :)',
   
   debug: 0,
   debugString: "200\n1. March 14:28:371",
@@ -15,15 +15,12 @@ var Coffee = {
       return;
     }
 
-    // check if the affiliation has changed
-    if (this.api != Affiliation.org[localStorage.affiliationKey1].coffeeApi) {
-      this.api = Affiliation.org[localStorage.affiliationKey1].coffeeApi;
-    }
+    var api = Affiliation.org[localStorage.affiliationKey1].coffeeApi;
 
     // Receives the status for the coffee pot
     var self = this;
     Ajaxer.getPlainText({
-      url: self.api,
+      url: api,
       success: function(data) {
 
         // If coffee debugging is enabled
@@ -113,7 +110,7 @@ var Coffee = {
     return (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
   },
 
-  showNotification: function(pots, age) { // Parameter vars not in use yet.
+  showNotification: function(force, pots, age) { // Parameters 'pots' and 'age' not in use yet.
     // If the computer has slept for a while and there are
     // suddenly four new coffeepots then they will all be
     // lined up for notifications, giving the user four
@@ -130,9 +127,41 @@ var Coffee = {
     catch (err) {
       if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
     }
-    if (showIt) {
+    if (showIt || force) {
       localStorage.lastSubscriptionTime = JSON.stringify(new Date());
-      Browser.createNotification('subscription.html');
+      
+      var key = localStorage.affiliationKey1;
+      var memes = [];
+
+      // Add regular memes
+      var amount = MEME_AMOUNT; // Number of memes, in regular human numbers, not zero-indexed
+      for (var i = 1; i <= amount; i++) {
+        memes.push('./meme/'+i+'.jpg');
+      }
+
+      // Add affiliation memes
+      if (Affiliation.org[key].hasMemes) {
+        amount = Affiliation.org[key].numberOfMemes;
+        var path = Affiliation.org[key].memePath;
+        for (var i = 1; i <= amount; i++) {
+          memes.push(path+i+'.jpg');
+        }
+      }
+
+      // Randomize image
+      var random = 1 + (Math.floor(Math.random() * memes.length));
+      if (DEBUG) console.log('memes['+(random-1)+'] of '+0+'-'+(memes.length-1)+' is "'+memes[random-1]+'"');
+      var image = memes[random - 1]; // the list is zero-indexed
+
+      // Create the notification
+      item = {
+        title: Affiliation.org[key].name + ' Notifier',
+        description: this.msgNotification,
+        image: image,
+        link: 'options.html',
+        feedKey: key,
+      }
+      Browser.createNotification(item);
     }
     else {
       if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
