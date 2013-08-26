@@ -88,18 +88,57 @@ var Browser = {
     }
   },
 
-  // FUNCTIONS BELOW ARE NOT YET FULLY IMPLEMENTED
-
-  createNotification: function(path) {
-    // For future reference, support for webkit notifications can be
-    // tested with (!window.webkitNotifications)
+  createNotification: function(item) {
     if (BROWSER == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
       if (chrome.idle) {
         chrome.idle.queryState(30, function (state) {
           if (state == 'active') {
-            notification = webkitNotifications.createHTMLNotification(path);
-            notification.show();
+
+            // Load affiliation icon
+            var icon = Affiliation.org[item.feedKey].icon;
+
+            // Set options
+            var options = {
+               type: 'basic',
+               iconUrl: icon,
+               title: item.title,
+               message: item.description,
+               priority: 0,
+            };
+
+            // We'll show an "image"-type notification if image exists and is not a placeholder
+            if (typeof item.image != 'undefined') {
+              if (item.image != Affiliation.org[item.feedKey].placeholder) {
+                options.type = 'image';
+                options.imageUrl = item.image;
+              }
+            }
+
+            // Shorten messages to fit nicely
+            var maxLength = 63;
+            if (maxLength < item.description.length) {
+              options.message = item.description.substring(0, maxLength) + '...';
+            }
+            // If basic type is used, we should also provide expandedMessage
+            if (options.type == 'basic') {
+              options.expandedMessage = item.description;
+              var expandedMaxLength = 180;
+              if (expandedMaxLength < item.description.length) {
+                options.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
+              }
+            }
+
+            // Save the link to make the notification clickable
+            localStorage.lastNotificationLink = item.link;
+            
+            // Generate random ID
+            var id = String(Math.round(Math.random()*100000));
+
+            // Show the notification
+            chrome.notifications.create(id, options, function(notID) {
+              if (DEBUG) console.log("Succesfully created notification with ID " + notID);
+            });
           }
           else {
             if (DEBUG) console.log('Notification not sent, state was', state);
@@ -119,13 +158,47 @@ var Browser = {
     }
   },
 
-  // getUrl: function(path) {
-  //   if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
-  //     return chrome.extension.getURL(path);
-  //   }
-  //   else {
-  //     console.log(this.msgUnsupported);
-  //   }
-  // },
+  // Event handlers for the various notification events
+
+  registerNotificationListeners: function() {
+    if (BROWSER == 'Chrome') {
+      window.addEventListener("load", function() {
+        chrome.notifications.onClosed.addListener(Browser.notificationClosed);
+        chrome.notifications.onClicked.addListener(Browser.notificationClicked);
+        chrome.notifications.onButtonClicked.addListener(Browser.notificationBtnClick);
+      });
+    }
+    else if (BROWSER == 'Opera') {
+      console.log(this.msgUnsupported);
+    }
+    else {
+      console.log(this.msgUnsupported);
+    }
+  },
+  
+  notificationClosed: function(notID, bByUser) {
+    if (!DEBUG) {
+      if (bByUser) {
+        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'byUser']);
+      }
+      else {
+        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'automatic']);
+      }
+    }
+  },
+
+  notificationClicked: function(notID) {
+    var link = localStorage.lastNotificationLink;
+    if (!DEBUG) {
+      _gaq.push(['_trackEvent', 'notification', 'clickNotification', link]);
+    }
+    Browser.openTab(link);
+  },
+
+  notificationBtnClick: function(notID, iBtn) {
+    if (!DEBUG) {
+      _gaq.push(['_trackEvent', 'notification', 'clickNotificationButton', iBtn]);
+    }
+  },
 
 }
