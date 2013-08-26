@@ -298,7 +298,7 @@ var Affiliation = {
       numberOfMemes: 4,
       memePath: './org/online/meme/',
       getImage: function(link, callback) {
-        var placeholder = this.placeholder;
+        var placeholder = [this.placeholder]; // the placeholder image, as array
         var id = link.split('/')[4]; // id is stored in the link
         var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
         Ajaxer.getJson({
@@ -306,6 +306,8 @@ var Affiliation = {
           success: function(json) {
             if (json['online_news_image']) {
               image = json['online_news_image']['0']['image'];
+              // Always return images as an array, even with just one image
+              image = [image];
               callback(link, image);
             }
             else {
