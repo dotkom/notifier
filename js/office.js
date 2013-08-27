@@ -1,7 +1,6 @@
 var Office = {
-  
-  eventApi: 'https://online.ntnu.no/service_static/office_status',
-  lightApi: 'http://draug.online.ntnu.no/lys.txt',
+  eventApi: Affiliation.org[localStorage.affiliationKey1].eventApi,
+  lightApi: Affiliation.org[localStorage.affiliationKey1].lightApi,
   titleError: 'Oops',
   titleOpen: 'Åpent',
   titleClosed: 'Lukket',
@@ -19,6 +18,12 @@ var Office = {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
+    }
+
+    // check if the affiliation has changed
+    if (this.eventApi != Affiliation.org[localStorage.affiliationKey1].eventApi) {
+      this.eventApi = Affiliation.org[localStorage.affiliationKey1].eventApi;
+      this.lightApi = Affiliation.org[localStorage.affiliationKey1].lightApi;
     }
 
     var self = this;
@@ -60,7 +65,7 @@ var Office = {
           case 0: callback('open', self.titleOpen, self.msgOpen); break;
           case 1: callback('meeting', self.titleMeeting, title); break;
           case 2: callback('waffle', self.titleWaffles, title); break;
-          default: callback('error', self.titleError, 'eventStatus was "'+status+'"');
+          default: callback('error', self.titleError, self.msgError);
         }
       },
       error: function(jqXHR, text, err) {

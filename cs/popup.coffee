@@ -228,16 +228,19 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # If the organization has it's own getImage function, use it
   if Affiliation.org[feedKey].getImage isnt undefined
     for index, link of viewedList
+      # It's important to get the link from the callback within the function below,
+      # not the above code, - because of race conditions mixing up the news posts, async ftw.
       Affiliation.org[feedKey].getImage link, (link, image) ->
-        # It's important to get the link from the callback, not the above code
-        # in order to have the right link at the right time, async ftw.
-        $('.item[data="'+link+'"] img').attr 'src', image
+        # Also, check whether there's already a qualified image before replacing it.
+        if ($('.item[data="'+link+'"] img').attr('src').indexOf('http') == -1)
+          $('.item[data="'+link+'"] img').attr 'src', image
 
-  # If the organization has it's own getImages function, use it
+  # If the organization has it's own getImages (plural) function, use it
   if Affiliation.org[feedKey].getImages isnt undefined
     Affiliation.org[feedKey].getImages viewedList, (links, images) ->
       for index of links
-        $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
+        if ($('.item[data="'+links[index]+'"] img').attr('src').indexOf('http') == -1)
+          $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
@@ -309,17 +312,17 @@ $ ->
   hotFixBusLines()
 
   if ls.affiliationKey1 isnt 'online'
-    # Hide chat button
-    $('#chatterButton').hide()
-    # Hide Notifier Mobile info in Tips box
-    $('#mobileText').hide()
-    # Show the logo and placeholder image for the correct organization
-    affiliation = ls.affiliationKey1
-    # If the affiliation has a defined logo
-    logo = Affiliation.org[affiliation].logo
-    if logo isnt undefined and logo isnt ''
-      if DEBUG then console.log 'Applying affiliation logo', logo
-      $('#header #logo').prop 'src', logo
+    $('#chatterButton').hide() # Hide chat button
+    $('#mobileText').hide() # Hide Notifier Mobile info in Tips box
+
+  if DEBUG then console.log 'Applying affiliation graphics'
+  key = ls.affiliationKey1
+  logo = Affiliation.org[key].logo
+  icon = Affiliation.org[key].icon
+  placeholder = Affiliation.org[key].placeholder
+  $('#logo').prop 'src', logo
+  $('link[rel="shortcut icon"]').attr 'href', icon
+  $('#news .post img').attr 'src', placeholder
   
   # Track popularity of the chosen palette, the palette
   # itself is loaded a lot earlier for perceived speed

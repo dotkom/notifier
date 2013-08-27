@@ -21,10 +21,16 @@ pageFlipCursorBlinking = ->
     $(@).animate opacity: 1, "fast", "swing",
 
 testDesktopNotification = ->
-  Browser.createNotification 'notification.html'
+  key = ls.affiliationKey1
+  item =
+    title: Affiliation.org[key].name + ' Notifier'
+    description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"'
+    link: Affiliation.org[key].web
+    feedKey: key
+  Browser.createNotification item
 
 testCoffeeSubscription = ->
-  Browser.createNotification 'subscription.html'
+  Coffee.showNotification true
 
 bindAffiliationSelector = (number, isPrimaryAffiliation) ->
   id = 'affiliationKey'+number
@@ -39,12 +45,21 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     ls[id] = affiliationKey
 
     if isPrimaryAffiliation
-      # Check if switching from or to Online
-      if oldAffiliation is 'online'
-        disableOnlineSpecificFeatures()
-      else if affiliationKey is 'online'
-        enableOnlineSpecificFeatures()
-      
+      # Check if switching from or to an affiliation with fancy features
+      old_has_hardware = Affiliation.org[oldAffiliation].hardwareFeatures
+      new_has_hardware = Affiliation.org[affiliationKey].hardwareFeatures
+      if old_has_hardware && !new_has_hardware
+        disableHardwareFeatures()
+      else if !old_has_hardware && new_has_hardware
+        enableHardwareFeatures()
+      # either way, change the icons shown in the office status feature
+      if new_has_hardware
+        changeOfficeStatusIcons()
+        # Update office status
+        ls.removeItem 'currentStatus'
+        ls.removeItem 'currentStatusMessage'
+        Browser.getBackgroundProcess().updateOfficeAndMeetings true
+
       # Palette
       palette = Affiliation.org[affiliationKey].palette
       if palette isnt undefined
@@ -72,6 +87,11 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       name = Affiliation.org[affiliationKey].name
       Browser.setTitle name + ' Notifier'
       ls.extensionName = name + ' Notifier'
+      # Extension creator name
+      if oldAffiliation is 'online'
+        ls.extensionCreator = 'Online'
+      else if affiliationKey is 'online'
+        ls.extensionCreator = 'dotKom'
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
@@ -102,10 +122,9 @@ bindPaletteSelector = ->
     # Analytics
     if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPalette', palette])
 
-disableOnlineSpecificFeatures = (quick) ->
+disableHardwareFeatures = (quick) ->
   ls.showOffice = 'false'
   ls.coffeeSubscription = 'false'
-  ls.extensionCreator = 'Online'
   if quick
     $('label[for="showOffice"]').slideUp {duration:0}
     $('label[for="coffeeSubscription"]').slideUp {duration:0}
@@ -114,22 +133,21 @@ disableOnlineSpecificFeatures = (quick) ->
     $('#plusonebutton').fadeOut {duration:0}
     # No need to change creator name in pageflip when quick-disabling
   else
-  # Hide office status option
-  $('label[for="showOffice"]').slideUp 'slow'
-  # Hide coffee subscription option
-  $('label[for="coffeeSubscription"]').slideUp 'slow', ->
-    # Move all content back down
-    $('#container').animate {'top':'60%'}, 300
-    $('header').animate {'top':'60%'}, 300, ->
-      # Fade out the Google +1 Button
-      $('#plusonebutton').fadeOut 'slow', ->
-        # Change pageflip name
-        changeCreatorName ls.extensionCreator
+    # Hide office status option
+    $('label[for="showOffice"]').slideUp 'slow'
+    # Hide coffee subscription option
+    $('label[for="coffeeSubscription"]').slideUp 'slow', ->
+      # Move all content back down
+      $('#container').animate {'top':'60%'}, 300
+      $('header').animate {'top':'60%'}, 300, ->
+        # Fade out the Google +1 Button
+        $('#plusonebutton').fadeOut 'slow', ->
+          # Change pageflip name
+          changeCreatorName ls.extensionCreator
 
-enableOnlineSpecificFeatures = (quick) ->
+enableHardwareFeatures = (quick) ->
   ls.showOffice = 'true'
   ls.coffeeSubscription = 'true'
-  ls.extensionCreator = 'dotKom'
   restoreChecksToBoxes()
   if quick
     $('label[for="showOffice"]').slideDown {duration:0}
@@ -152,6 +170,13 @@ enableOnlineSpecificFeatures = (quick) ->
         $('#plusonebutton').fadeIn 'slow', ->
           # Change pageflip name
           changeCreatorName ls.extensionCreator
+
+changeOfficeStatusIcons = () ->
+  if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
+    $('img.icon.open').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.open
+    $('img.icon.closed').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.closed
+    $('img.icon.meeting').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.meeting
+    $('#officeStatusOverlay').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.open
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -534,7 +559,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    if ls.affiliationKey1 is 'online'
+    if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
       Browser.getBackgroundProcess().updateOfficeAndMeetings true
     else
       Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
@@ -547,7 +572,7 @@ revertInfoscreen = ->
   # Remove subtext
   $('#headerText').fadeOut speed, ->
     # Move all content back down
-    if ls.affiliationKey1 is 'online'
+    if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
       $('#container').animate {'top':'50%'}, speed
       $('header').animate {'top':'50%'}, speed
     else
@@ -591,21 +616,6 @@ restoreChecksToBoxes = ->
     if ls[element.id] is 'true'
       element.checked = true
 
-fadeInCanvas = ->
-  if !DEBUG then _gaq.push(['_trackEvent', 'options', 'toggleCanvas'])
-  webGLStart()
-  $('#LessonCanvas').animate
-    opacity:1,
-    1300,
-    'swing',
-    ->
-      setTimeout ( ->
-        $('#LessonCanvas').animate
-          opacity:0,
-          1300,
-          'swing'
-      ), 200
-
 changeCreatorName = (name) ->
   # Stop previous changeCreatorName instance, if any
   clearTimeout Number ls.animateCreatorNameTimeoutId
@@ -643,9 +653,9 @@ $ ->
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
 
-  # Remove Online specific features if the affiliation is another
-  if ls.affiliationKey1 isnt 'online'
-    disableOnlineSpecificFeatures true # true means be quick about it!
+  # Remove hardware features if the affiliation does not have it
+  if Affiliation.org[ls.affiliationKey1].hardwareFeatures isnt true
+    disableHardwareFeatures true # true means be quick about it!
 
   # Apply affiliation specific features
   # favicon
@@ -661,6 +671,8 @@ $ ->
     Browser.openTab web
   # palette
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
+  # icons
+  changeOfficeStatusIcons()
 
   restoreChecksToBoxes()
 
@@ -716,15 +728,11 @@ $ ->
       blinkAffiliation 6
     ), 5000
 
-  # Fade in the +1 button when (probably) ready
+  # Fade in the +1 button when (probably) ready, PS: Online specific
   if ls.affiliationKey1 is 'online'
     setTimeout ( ->
       $('#plusonebutton').fadeIn 150
     ), 1100
-
-  # Bind a click function to the on-page notification for the canvas
-  # $('#notification').click ->
-  #   fadeInCanvas()
 
   # Allow user to change affiliation and palette
   bindAffiliationSelector '1', true
@@ -755,15 +763,13 @@ $ ->
     $('input#showNotifications').prop "disabled", "disabled"
     $('input#showNotifications').prop "checked", "false"
     text = 'Varsle om nyheter'
-    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 17</b>')
     # Turn off coffeeSubscription feature
     $('input#coffeeSubscription').prop "disabled", "disabled"
     $('input#coffeeSubscription').prop "checked", "false"
     text = $('label[for=coffeeSubscription] span').text()
     text = text.trim()
-    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 12.50</b>')
-    # Turn off palette feature
-    $('#affiliationPalette').prop "disabled", "disabled"
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 17</b>')
 
   # Adding a hover class to #busBox whenever the mouse is hovering over it
   $('#busBox').hover ->
@@ -792,7 +798,7 @@ $ ->
       if this.id is 'showOffice' and this.checked is true
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
-        Browser.setIcon 'img/icon-default.png'
+        Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
         Browser.setTitle ls.extensionName
       
       if this.id is 'showNotifications' and this.checked is true

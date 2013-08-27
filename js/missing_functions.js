@@ -43,3 +43,9 @@ function hotFixBusLines() {
   }
   if (DEBUG) console.log('hotfixed!')
 }
+
+// HOTFIX affiliation stuff, remove after november 2013
+if (localStorage.affiliationKey1 == 'entreprenoerskolen')
+  localStorage.affiliationKey1 = 'solan';
+if (localStorage.affiliationKey2 == 'entreprenoerskolen')
+  localStorage.affiliationKey2 = 'solan';

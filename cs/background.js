@@ -47,8 +47,15 @@
       console.log('updateOfficeAndMeetings');
     }
     return Office.get(function(status, title, message) {
+      var errorIcon, statusIcon;
       if (force || ls.currentStatus !== status || ls.currentStatusMessage !== message) {
-        Browser.setIcon('img/icon-' + status + '.png');
+        statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status];
+        if (statusIcon !== void 0) {
+          Browser.setIcon(statusIcon);
+        } else {
+          errorIcon = Affiliation.org[ls.affiliationKey1].icon;
+          Browser.setIcon(errorIcon);
+        }
         ls.currentStatus = status;
         return Meetings.get(function(meetings) {
           var today;
@@ -156,6 +163,7 @@
       }
     }
     loadAffiliationIcon();
+    Browser.registerNotificationListeners();
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
     window.updateCoffeeSubscription = updateCoffeeSubscription;
     window.updateAffiliationNews = updateAffiliationNews;

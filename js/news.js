@@ -6,6 +6,7 @@ var News = {
   msgConnectionError: 'Frakoblet fra feeden til ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
+  msgNoNewsSource: 'Ingen nyhetskilde funnet for valgt tilhørightet',
 
   debug: 0,
 
@@ -13,42 +14,52 @@ var News = {
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
   get: function(affiliationObject, limit, callback) {
-    if (affiliationObject === undefined) {
+    if (typeof affiliationObject == 'undefined') {
       if (this.debug) console.log('ERROR:', this.msgUnsupportedFeed);
-      callback(this.msgUnsupportedFeed);
       return;
     }
     if (!isNumber(limit) || (limit < 1 && 20 < limit)) {
       if (this.debug) console.log('ERROR:', this.msgNewsLimit);
-      callback(this.msgNewsLimit);
       return;
     }
-    if (callback == undefined) {
-      console.log('ERROR:', this.msgCallbackRequired);
-      callback(this.msgCallbackRequired);
+    if (typeof callback == 'undefined') {
+      if (this.debug) console.log('ERROR:', this.msgCallbackRequired);
       return;
     }
-
-    var rssUrl = affiliationObject.feed;
 
     var self = this;
-    Ajaxer.getXml({
-      url: rssUrl,
-      success: function(xml) {
-        self.parseFeed(xml, affiliationObject, limit, callback);
-      },
-      error: function(jqXHR, text, err) {
-        // Check for XML sent with HTML headers
-        if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
-          xml = jqXHR.responseText;
+    // Get news the regular way (RSS or Atom feeds)
+    if (typeof affiliationObject.feed != 'undefined') {
+      Ajaxer.getXml({
+        url: affiliationObject.feed,
+        success: function(xml) {
           self.parseFeed(xml, affiliationObject, limit, callback);
+        },
+        error: function(jqXHR, text, err) {
+          // Check for XML sent with HTML headers
+          if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
+            xml = jqXHR.responseText;
+            self.parseFeed(xml, affiliationObject, limit, callback);
+          }
+          else {
+            if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
+            callback(self.msgConnectionError, affiliationObject.name);
+          }
+        },
+      });
+    }
+    // Get news the irregular way, through a getNews function defined in the affiliation object
+    else if (typeof affiliationObject.getNews != 'undefined') {
+      affiliationObject.getNews(limit, function(posts) {
+        for (i in posts) {
+          posts[i] = self.postProcess(posts[i]);
         }
-        else {
-          if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
-          callback(self.msgConnectionError, affiliationObject.name);
-        }
-      },
-    });
+        callback(posts);
+      });
+    }
+    else {
+      console.log('ERROR:', self.msgNoNewsSource);
+    }
   },
 
   // Need to know about the news feeds used in Online Notifier:
@@ -120,7 +131,8 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // If feed uses CDATA-tags in title and description we need to be more clever (Adressa)
+    // If feed uses CDATA-tags in title and description we need to be more clever
+    // to get the information we want outta there (e.g. Adressa)
     var handleCDATA = function(item, field, postField) {
       if (postField.trim() == '' || postField.match('CDATA') != null) {
         var string = $(item).find(field).filter(':first')['0']['innerHTML'];
@@ -135,7 +147,8 @@ var News = {
     post.title = handleCDATA(item, 'title', post.title);
     post.description = handleCDATA(item, 'description', post.description);
 
-    // If link field is broken by jQuery, check GUID field for link instead (Adressa)
+    // If link field is broken by jQuery (dammit moon moon)
+    // then check GUID field for a link instead (e.g. Adressa)
     if (post.link.trim() == '') {
       var guid = $(item).find('guid').filter(':first').text();
       if (guid.indexOf('http') != -1) {
@@ -157,7 +170,7 @@ var News = {
       }
     }
     catch (err) {
-      // Do nothing, we we're just checking, move along quitely
+      // Do nothing, we were just checking, move along quitely
     }
 
     // In case browser does not grok tags with colons, stupid browser
@@ -199,15 +212,6 @@ var News = {
     post.feedKey = affiliationObject.key;
     post.feedName = affiliationObject.name;
 
-    // Extract image from content HTML
-    var image = $(entry).find('content').filter(':first').text();
-    if (image != undefined) {
-      image = image.match(/src="(http:\/\/[a-zA-Z0-9.\/\-_]+)"/);
-      if (image != null) {
-        post.image = image[1];
-      }
-    }
-
     // Parse date field
     post.date = new Date(post.date);
     if (post.date != "Invalid Date")
@@ -219,12 +223,12 @@ var News = {
   },
 
   postProcess: function(post) {
-    // Check for alternative links in description
-    post.altLink = this.checkForAltLink(post.description);
+    post.image = this.checkDescriptionForImageLink(post.image, post.description);
+    post.altLink = this.checkDescriptionForAltLink(post.description);
 
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
-    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities
+    // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities, this works, but ppl should be allowed to use entitites
     
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
@@ -322,26 +326,71 @@ var News = {
   },
 
   showNotification: function(item) {
-    if (typeof item != 'undefined') {
-      if (localStorage.showNotifications == 'true') {
-        // Get content
-        localStorage.notificationTitle = item.title;
-        localStorage.notificationLink = item.link;
-        localStorage.notificationDescription = item.description;
-        localStorage.notificationCreator = item.creator;
-        localStorage.notificationImage = item.image;
-        localStorage.notificationFeedKey = item.feedKey;
-        localStorage.notificationFeedName = item.feedName;
-        // Show desktop notification
-        Browser.createNotification('notification.html');
+    var showIt = function() {
+      if (typeof item != 'undefined') {
+        if (localStorage.showNotifications == 'true') {
+
+          // Save timestamp
+          localStorage.lastNotifiedTime = new Date().getTime();
+
+          // If the organization has an image API, use it
+          if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
+            Affiliation.org[item.feedKey].getImage(item.link, function(link, image) {
+              item.image = image[0];
+              // Show desktop notification
+              Browser.createNotification(item);
+            });
+          }
+          else if (typeof Affiliation.org[item.feedKey].getImages != 'undefined') {
+            var links = [];
+            links.push(item.link);
+            Affiliation.org[item.feedKey].getImages(links, function(links, images) {
+              item.image = images[0];
+              // Show desktop notification
+              Browser.createNotification(item);
+            });
+          }
+          else {
+            // Show desktop notification
+            Browser.createNotification(item);
+          }
+        }
+      }
+      else {
+        if (this.debug) console.log('ERROR: notification item was undefined');
+      }
+    }
+    // Make sure notifications are sent with at least 10 seconds inbetween
+    if (!DEBUG) {
+      var lastTime = localStorage.lastNotifiedTime;
+      if (isNumber(lastTime)) {
+        var diff = new Date().getTime() - lastTime;
+        if (diff < 10000) { // less than 10 seconds?
+          setTimeout(showIt, 10000);
+        }
+        else {
+          showIt();
+        }
+      }
+      else {
+        showIt();
       }
     }
     else {
-      if (this.debug) console.log('ERROR: notification item was undefined');
+      showIt();
     }
   },
 
-  checkForAltLink: function(description) {
+  checkDescriptionForImageLink: function(oldImage, description) {
+    var regex = new RegExp('src="(http[^"]*(png|jpe?g|bmp))"');
+    var pieces = description.match(regex);
+    if (pieces != null)
+      return pieces[1];
+    else
+      return oldImage;
+  },
+
+  checkDescriptionForAltLink: function(description) {
     // Looking for alternative link, find the first and best full link
     if (typeof description != 'undefined') {
       var altLink = description.match(/href="(http[^"]*)"/);

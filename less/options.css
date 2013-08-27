@@ -145,11 +145,20 @@ header #notification .saved {
 
 }
 .item .icon {
+  width: 15pt;
+  height: 15pt;
   position: relative;
   margin: 0;
   top: 3pt;
   -webkit-filter: drop-shadow(0 0 3pt #000000);
   filter: drop-shadow(0 0 3pt #000000);
+}
+.item #officeStatusOverlay {
+  position: relative;
+  width: 15pt;
+  height: 15pt;
+  top: -29pt;
+  right: 47pt;
 }
 .item .logo {
   box-shadow: 0 0 10pt 0pt #333;
@@ -192,10 +201,7 @@ header #notification .saved {
   /* Old browsers */
 
   background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Chrome10+,Safari5.1+ */
-
-  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Opera 11.10+ */
+  /* Chrome10+,Safari5.1+,Opera15+ */
 
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
@@ -281,10 +287,7 @@ header #notification .saved {
   /* Old browsers */
 
   background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Chrome10+,Safari5.1+ */
-
-  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Opera 11.10+ */
+  /* Chrome10+,Safari5.1+,Opera15+ */
 
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
@@ -322,10 +325,7 @@ header #notification .saved {
   /* Old browsers */
 
   background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Chrome10+,Safari5.1+ */
-
-  background: -o-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
-  /* Opera 11.10+ */
+  /* Chrome10+,Safari5.1+,Opera15+ */
 
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
@@ -361,10 +361,7 @@ header #notification .saved {
   box-shadow: 0 1pt 2pt #888;
   border-radius: 3pt;
   background: -webkit-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
-  /* Chrome10+,Safari5.1+ */
-
-  background: -o-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
-  /* Opera 11.10+ */
+  /* Chrome10+,Safari5.1+,Opera15+ */
 
   background: linear-gradient(to bottom, #e8e8e8 0%, #c0c0c0 100%);
   /* W3C */
@@ -543,7 +540,7 @@ header #notification .saved {
   position: fixed;
   left: 0;
   bottom: 0;
-  background: transparent url('/img/pageflipbg.png') no-repeat left bottom;
+  background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
   width: 185px;
   height: 98px;
   z-index: 105;
@@ -568,7 +565,7 @@ header #notification .saved {
   position: fixed;
   left: 0;
   bottom: 0;
-  background: transparent url('/img/pageflip.png') no-repeat left bottom;
+  background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
   width: 185px;
   height: 98px;
   z-index: 107;
@@ -655,14 +652,4 @@ header #notification .saved {
   display: inline;
   float: left;
   font-size: 9pt;
-}
-/* Canvas with webGL */
-canvas {
-  border: 0pt solid #ffff00;
-  position: absolute;
-  top: 100pt;
-  left: 100pt;
-  background: transparent;
-  opacity: 0;
-  z-index: 1000;
 }

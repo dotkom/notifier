@@ -1,6 +1,6 @@
 {
   "name": "Online Notifier",
-  "version": "3.0.8",
+  "version": "3.1.0",
   "manifest_version": 2,
   "offline_enabled": false,
 	
@@ -8,12 +8,11 @@
   "homepage_url": "https://online.ntnu.no/",
   
   "options_page": "options.html",
-	"background": {
-		"page": "background.html"
-	},
+  "background": {
+    "page": "background.html"
+  },
 
   "browser_action": {
-    "default_icon": "img/icon-default.png",
     "default_title": "Notifier",
     "default_popup": "popup.html"
   },
@@ -41,14 +40,9 @@
 
 	"content_scripts": [
     {
-      "matches": ["*://*.online.ntnu.no/*", "*://*.sit.no/*" ],
-      "js": ["libs/jquery-2.0.0.min.js", "includes/on_website.js"]
+      "matches": ["*://*/*"],
+      "js": ["libs/jquery-2.0.0.min.js", "js/on_website.js"]
     }
-  ],
-
-  "web_accessible_resources": [
-    "options.html",
-    "img/logo-48.png"
   ],
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com; object-src 'self'"
