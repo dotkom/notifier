@@ -1,20 +1,11 @@
 var Browser = {
+  msgCallbackMissing: 'ERROR: Callback is missing',
   msgUnsupported: 'ERROR: Unsupported browser',
 
   setIcon: function(path) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setIcon({path: path});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        OPERA_BUTTON.icon = path;
-      }
-      // If this is another page reference button through background process
-      else {
-        this.getBackgroundProcess().OPERA_BUTTON.icon = path;
       }
     }
     else {
@@ -23,19 +14,9 @@ var Browser = {
   },
 
   setTitle: function(title) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setTitle({title: title});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        OPERA_BUTTON.title = title;
-      }
-      // If this is another page reference button through background process
-      else {
-        this.getBackgroundProcess().OPERA_BUTTON.title = title;
       }
     }
     else {
@@ -43,23 +24,30 @@ var Browser = {
     }
   },
 
+  getBadgeText: function(callback) {
+    if (typeof callback == 'undefined') {
+      console.log(this.msgCallbackMissing);
+    }
+    else {
+      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+        chrome.browserAction.getBadgeText({}, function(badgeText) {
+          callback(badgeText);
+        });
+      }
+      else {
+        console.log(this.msgUnsupported);
+      }
+    }
+  },
+
   setBadgeText: function(text) {
-    if (typeof text == 'undefined' || text == null || text == 0 || text == '0') {
+    if (typeof text == 'undefined' || text == null || isNaN(Number(text)) || Number(text) <= 0) {
       text = '';
     }
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
+        text = String(text);
         chrome.browserAction.setBadgeText({text: text});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        OPERA_BUTTON.badge.textContent = text;
-      }
-      // If this is another page reference button through background process
-      else {
-        this.getBackgroundProcess().OPERA_BUTTON.badge.textContent = text;
       }
     }
     else {
@@ -68,24 +56,9 @@ var Browser = {
   },
 
   openTab: function(url) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: true});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        if (opera.extension.tabs) {
-          opera.extension.tabs.create({url: url, focused: true});
-        }
-        else {
-          console.log('ERROR: Opera tab creation not avaliable');
-        }
-      }
-      // Recurse to the background page
-      else {
-        this.getBackgroundProcess().Browser.openTab(url);
       }
     }
     else {
@@ -94,24 +67,9 @@ var Browser = {
   },
 
   openBackgroundTab: function(url) {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: false});
-      }
-    }
-    else if (BROWSER == 'Opera') {
-      // If this is the background page
-      if (typeof OPERA_BUTTON != "undefined") {
-        if (opera.extension.tabs) {
-          opera.extension.tabs.create({url: url, focused: false});
-        }
-        else {
-          console.log('ERROR: Opera tab creation not avaliable');
-        }
-      }
-      // Recurse to the background page
-      else {
-        this.getBackgroundProcess().Browser.openBackgroundTab(url);
       }
     }
     else {
@@ -120,31 +78,67 @@ var Browser = {
   },
 
   getBackgroundProcess: function() {
-    if (BROWSER == 'Chrome') {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.extension != undefined) {
         return chrome.extension.getBackgroundPage();
       }
-    }
-    else if (BROWSER == 'Opera') {
-      return opera.extension.bgProcess;
     }
     else {
       console.log(this.msgUnsupported);
     }
   },
 
-  // FUNCTIONS BELOW ARE NOT YET FULLY IMPLEMENTED
-
-  createNotification: function(path) {
-    // For future reference, support for webkit notifications can be
-    // tested with (!window.webkitNotifications)
+  createNotification: function(item) {
     if (BROWSER == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
       if (chrome.idle) {
         chrome.idle.queryState(30, function (state) {
           if (state == 'active') {
-            notification = webkitNotifications.createHTMLNotification(path);
-            notification.show();
+
+            // Load affiliation icon
+            var icon = Affiliation.org[item.feedKey].icon;
+
+            // Set options
+            var options = {
+               type: 'basic',
+               iconUrl: icon,
+               title: item.title,
+               message: item.description,
+               priority: 0,
+            };
+
+            // We'll show an "image"-type notification if image exists and is not a placeholder
+            if (typeof item.image != 'undefined') {
+              if (item.image != Affiliation.org[item.feedKey].placeholder) {
+                options.type = 'image';
+                options.imageUrl = item.image;
+              }
+            }
+
+            // Shorten messages to fit nicely
+            var maxLength = 63;
+            if (maxLength < item.description.length) {
+              options.message = item.description.substring(0, maxLength) + '...';
+            }
+            // If basic type is used, we should also provide expandedMessage
+            if (options.type == 'basic') {
+              options.expandedMessage = item.description;
+              var expandedMaxLength = 180;
+              if (expandedMaxLength < item.description.length) {
+                options.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
+              }
+            }
+
+            // Save the link to make the notification clickable
+            localStorage.lastNotificationLink = item.link;
+            
+            // Generate random ID
+            var id = String(Math.round(Math.random()*100000));
+
+            // Show the notification
+            chrome.notifications.create(id, options, function(notID) {
+              if (DEBUG) console.log("Succesfully created notification with ID " + notID);
+            });
           }
           else {
             if (DEBUG) console.log('Notification not sent, state was', state);
@@ -156,24 +150,55 @@ var Browser = {
       }
     }
     else if (BROWSER == 'Opera') {
-      // Desktop Notifications will be available in Opera 12.50
-      console.log('BROWSER.JS: createNotification, will not be avaliable in Opera until 12.50');
+      // Desktop Notifications not yet available
+      if (DEBUG) console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
     }
     else {
       console.log(this.msgUnsupported);
     }
   },
 
-  // getUrl: function(path) {
-  //   if (BROWSER == 'Chrome') {
-  //     return chrome.extension.getURL(path);
-  //   }
-  //   else if (BROWSER == 'Opera') {
-  //     console.log('BROWSER.JS: getUrl');
-  //   }
-  //   else {
-  //     console.log(this.msgUnsupported);
-  //   }
-  // },
+  // Event handlers for the various notification events
+
+  registerNotificationListeners: function() {
+    if (BROWSER == 'Chrome') {
+      window.addEventListener("load", function() {
+        chrome.notifications.onClosed.addListener(Browser.notificationClosed);
+        chrome.notifications.onClicked.addListener(Browser.notificationClicked);
+        chrome.notifications.onButtonClicked.addListener(Browser.notificationBtnClick);
+      });
+    }
+    else if (BROWSER == 'Opera') {
+      console.log(this.msgUnsupported);
+    }
+    else {
+      console.log(this.msgUnsupported);
+    }
+  },
+  
+  notificationClosed: function(notID, bByUser) {
+    if (!DEBUG) {
+      if (bByUser) {
+        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'byUser']);
+      }
+      else {
+        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'automatic']);
+      }
+    }
+  },
+
+  notificationClicked: function(notID) {
+    var link = localStorage.lastNotificationLink;
+    if (!DEBUG) {
+      _gaq.push(['_trackEvent', 'notification', 'clickNotification', link]);
+    }
+    Browser.openTab(link);
+  },
+
+  notificationBtnClick: function(notID, iBtn) {
+    if (!DEBUG) {
+      _gaq.push(['_trackEvent', 'notification', 'clickNotificationButton', iBtn]);
+    }
+  },
 
 }

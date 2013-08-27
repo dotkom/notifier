@@ -126,10 +126,8 @@ var Bus = {
   },
 
   prettifyDestination: function(destination) {
-    if (destination.match(/Munkegata|Dronningens gt/) !== null)
+    if (destination.match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/) !== null)
       destination = "Sentrum";
-    if (destination.indexOf('Lohove snuplass') !== -1)
-      destination = "Lohove";
     return destination;
   },
 

@@ -2,7 +2,7 @@ var Affiliation = {
   
   debug: 0,
   
-  // IMPORTANT: Keep the same order here as in options.html and in manifest.json
+  // IMPORTANT: Keep the same order here as in options.html
 
   // Explanation of organization attributes:
 
@@ -14,10 +14,26 @@ var Affiliation = {
   // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
   // symbol: './org/orgx/symbol.png',           // 256x256 symbol, big version of the icon
   // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
+  // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',     // Optional: Path to the special palette
   // useAltLink: false,                         // Search news posts for alternative links?
+  // hardwareFeatures: true,                    // Whether or not the affiliation has hardware
+  // statusIcons: {                             // Array with statusicons (if hardwarefeatures)
+  //   open: './org/orgx/icon-open.png',        // The office open icon
+  //   closed: './org/orgx/icon-closed.png',    // The office closed icon
+  //   meeting: './org/orgx/icon-meeting.png',  // The office meeting icon
+  // },
+  // coffeeApi: 'http://orgx.no/coffee',        // API for fetching coffee data
+  // lightApi: 'http://orgx.no/lys',            // API for fetching light data
+  // eventApi: 'http://orgx.no/status',         // API for fetching current meeting status
+  // servantApi: 'http://orgx.no/servant',      // API for fetching todays servant list
+  // meetingsApi: 'http://orgx.no/meetings',    // API for fetching todays meetings
+  // hasMemes: true,                            // Whether or not the affiliation has a /meme/ folder
+  // numberOfMemes: 4,                          // How many pictures in /meme/ with the format 1...N.jpg
+  // memePath: './org/delta/meme/',             // Where the memes are located
   // getImages: function(links, callback) {},   // getImages will be used if it exists
+  // getNews: function(limit, callback) {},     // getNews may override standard RSS/Atom fetching
 
   // Standard dimensions:
 
@@ -29,6 +45,112 @@ var Affiliation = {
 
   org: {
     // Linjeforeninger Gløshaugen
+    'abakus': {
+      name: 'Abakus',
+      key: 'abakus',
+      web: 'http://abakus.no/',
+      // feed not available, use getNews instead
+      logo: './org/abakus/logo.png',
+      icon: './org/abakus/icon.png',
+      symbol: './org/abakus/symbol.png',
+      placeholder: './org/abakus/placeholder.png',
+      palette: 'red',
+      useAltLink: false,
+      hardwareFeatures: true,
+      statusIcons: {
+        open: './org/abakus/icon-open.png',
+        closed: './org/abakus/icon-closed.png',
+        meeting: './org/abakus/icon-meeting.png',
+      },
+      coffeeApi: 'http://informatikk.org/abakus/coffee.txt',
+      lightApi: 'http://informatikk.org/abakus/lys.txt',
+      eventApi: 'http://informatikk.org/abakus/office_status.txt',
+      servantApi: 'http://informatikk.org/abakus/servant_list.txt',
+      meetingsApi: 'http://informatikk.org/abakus/meeting_plan.txt',
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(limit, callback) {
+        if (typeof callback == 'undefined') {
+          console.log('ERROR: callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getHtml({
+          url: self.web,
+          success: function(html) {
+            html = html.trim(); // Why all the newlines in the start of the file? jQuery doesn't liek dat.
+            var posts = [];
+            var count = 0;
+            // Add each item from news tags
+            if ($(html).find('.article').length != 0) {
+              $(html).find('.article').each( function() {
+                if (count++ < limit) {
+                  var post = {};
+                  
+                  // The popular fields
+                  post.title = $(this).find("h2").filter(':first').text();
+                  post.link = $(this).find("a").filter(':first').attr('href');
+                  post.description = $(this).find(".introtext p").filter(':first').text();
+                  // Less used fields
+                  post.creator = self.name;
+                  post.date = ''
+                  // Locally stored
+                  post.image = $(this).find("img").filter(':first').attr('src');
+                  // Tag the posts with the key and name of the feed they came from
+                  post.feedKey = self.key;
+                  post.feedName = self.name;
+
+                  // Link fixing
+                  post.link = 'http://abakus.no' + post.link;
+                  if (typeof post.image != 'undefined')
+                    post.image = 'http://abakus.no' + post.image;
+                  else
+                    post.image = self.placeholder;
+
+                  posts.push(post);
+                }
+              });
+            }
+            else {
+              if (self.debug) console.log('ERROR: No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+          },
+        });
+      },
+    },
+    'aarhonen': {
+      name: 'H.M. Aarhønen',
+      key: 'aarhonen',
+      web: 'http://www.aarhonen.ntnu.no/',
+      feed: 'http://www.aarhonen.ntnu.no/?q=rss.xml',
+      logo: './org/aarhonen/logo.png',
+      icon: './org/aarhonen/icon.png',
+      symbol: './org/aarhonen/symbol.png',
+      placeholder: './org/aarhonen/placeholder.png',
+      palette: 'purple',
+      useAltLink: false,
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.content'});
+      },
+    },
+    'alf': {
+      name: 'Alf',
+      key: 'alf',
+      web: 'http://org.ntnu.no/alf/',
+      feed: 'http://org.ntnu.no/alf/?feed=rss2',
+      logo: './org/alf/logo.png',
+      icon: './org/alf/icon.png',
+      symbol: './org/alf/symbol.png',
+      placeholder: './org/alf/placeholder.png',
+      palette: 'green',
+      useAltLink: false,
+      getImages: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
+      },
+    },
     'berg': {
       name: 'Bergstuderendes Forening',
       key: 'berg',
@@ -55,6 +177,20 @@ var Affiliation = {
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
       useAltLink: false,
+      hardwareFeatures: false,
+      statusIcons: {
+        open: './org/delta/icon-open.png',
+        closed: './org/delta/icon-closed.png',
+        meeting: './org/delta/icon-meeting.png',
+      },
+      coffeeApi: 'http://informatikk.org/delta/coffee.txt',
+      lightApi: 'http://informatikk.org/delta/lys.txt',
+      eventApi: 'http://informatikk.org/delta/office_status.txt',
+      servantApi: 'http://informatikk.org/delta/servant_list.txt',
+      meetingsApi: 'http://informatikk.org/delta/meeting_plan.txt',
+      hasMemes: true,
+      numberOfMemes: 1,
+      memePath: './org/delta/meme/',
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -74,15 +210,15 @@ var Affiliation = {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
       },
     },
-    'entreprenoerskolen': {
-      name: 'Entreprenørskolen',
-      key: 'entreprenoerskolen',
+    'solan': {
+      name: 'Solan',
+      key: 'solan',
       web: 'http://entreprenorskolen.no/',
       feed: 'http://entreprenorskolen.no/feed/',
-      logo: './org/entreprenoerskolen/logo.png',
-      icon: './org/entreprenoerskolen/icon.png',
-      symbol: './org/entreprenoerskolen/symbol.png',
-      placeholder: './org/entreprenoerskolen/placeholder.png',
+      logo: './org/solan/logo.png',
+      icon: './org/solan/icon.png',
+      symbol: './org/solan/symbol.png',
+      placeholder: './org/solan/placeholder.png',
       palette: 'blue',
       useAltLink: false,
       getImage: function(links, callback) {
@@ -119,20 +255,50 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback, {newsSelector:'div.post_wrapper', linkDelimiter:'?'});
       },
     },
+    'mannhullet': {
+      name: 'Mannhullet',
+      key: 'mannhullet',
+      web: 'http://mannhullet.no/',
+      feed: 'http://mannhullet.no/index.php?format=feed&type=rss',
+      logo: './org/mannhullet/logo.png',
+      icon: './org/mannhullet/icon.png',
+      symbol: './org/mannhullet/symbol.png',
+      placeholder: './org/mannhullet/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImage: function(links, callback) {
+        Affiliation.getImages(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
+      },
+    },
     'online': {
       name: 'Online',
       key: 'online',
       web: 'https://online.ntnu.no/',
       feed: 'https://online.ntnu.no/feeds/news/',
-      logo: './img/logo.png', // Note unique URL pattern
+      logo: './org/online/logo.png',
       icon: './org/online/icon.png',
       symbol: './org/online/symbol.png',
-      placeholder: './img/placeholder.png', // Note unique URL pattern
+      placeholder: './org/online/placeholder.png',
+      sponsor: './org/online/sponsor.png',
       palette: 'online',
       palettePath: './org/online/palette.css',
       useAltLink: true,
+      hardwareFeatures: true,
+      statusIcons: {
+        open: './org/online/icon-open.png',
+        closed: './org/online/icon-closed.png',
+        meeting: './org/online/icon-meeting.png',
+      },
+      coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
+      lightApi: 'http://draug.online.ntnu.no/lys.txt',
+      eventApi: 'https://online.ntnu.no/service_static/office_status',
+      servantApi: 'https://online.ntnu.no/service_static/servant_list',
+      meetingsApi: 'https://online.ntnu.no/service_static/meeting_plan',
+      hasMemes: true,
+      numberOfMemes: 4,
+      memePath: './org/online/meme/',
       getImage: function(link, callback) {
-        var placeholder = this.placeholder;
+        var placeholder = [this.placeholder]; // the placeholder image, as array
         var id = link.split('/')[4]; // id is stored in the link
         var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
         Ajaxer.getJson({
@@ -140,6 +306,8 @@ var Affiliation = {
           success: function(json) {
             if (json['online_news_image']) {
               image = json['online_news_image']['0']['image'];
+              // Always return images as an array, even with just one image
+              image = [image];
               callback(link, image);
             }
             else {
@@ -367,6 +535,34 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'panoptikon': {
+      name: 'Panoptikon',
+      key: 'panoptikon',
+      web: 'http://panoptikon.blogg.no/',
+      feed: 'http://feeds.blogg.no/259521/post.rss',
+      logo: './org/panoptikon/logo.png',
+      icon: './org/panoptikon/icon.png',
+      symbol: './org/panoptikon/symbol.png',
+      placeholder: './org/panoptikon/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'pareto': {
+      name: 'Pareto',
+      key: 'pareto',
+      web: 'http://pareto-ntnu.no/',
+      feed: 'http://pareto-ntnu.no/?format=feed&type=rss',
+      logo: './org/pareto/logo.png',
+      icon: './org/pareto/icon.png',
+      symbol: './org/pareto/symbol.png',
+      placeholder: './org/pareto/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      // Images will be found automatically in the HTML of each news post
+    },
     'primetime': {
       name: 'Primetime',
       key: 'primetime',
@@ -379,6 +575,21 @@ var Affiliation = {
       palette: 'cyan',
       useAltLink: false,
       getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
+      },
+    },
+    'psi': {
+      name: 'Psi',
+      key: 'psi',
+      web: 'http://psilinjeforening.wordpress.com/',
+      feed: 'http://psilinjeforening.wordpress.com/feed/',
+      logo: './org/psi/logo.png',
+      icon: './org/psi/icon.png',
+      symbol: './org/psi/symbol.png',
+      placeholder: './org/psi/placeholder.png',
+      palette: 'red',
+      useAltLink: false,
+      getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
     },
@@ -444,6 +655,21 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'nutrix': {
+      name: 'Nutrix',
+      key: 'nutrix',
+      web: 'http://nutrix.hist.no/',
+      feed: 'http://nutrix.hist.no/?feed=rss2',
+      logo: './org/nutrix/logo.png',
+      icon: './org/nutrix/icon.png',
+      symbol: './org/nutrix/symbol.png',
+      placeholder: './org/nutrix/placeholder.png',
+      palette: 'green',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
     'tihlde': {
       name: 'TIHLDE',
       key: 'tihlde',
@@ -491,6 +717,51 @@ var Affiliation = {
     },
 
     // Masterforeninger, doktorforeninger, internasjonale foreninger
+    'dion': {
+      name: 'DION',
+      key: 'dion',
+      web: 'http://www.dion.ntnu.no/',
+      feed: 'http://www.dion.ntnu.no/en_US/feeds/news-en_US/',
+      logo: './org/dion/logo.png',
+      icon: './org/dion/icon.png',
+      symbol: './org/dion/symbol.png',
+      placeholder: './org/dion/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    'esn': {
+      name: 'ESN',
+      key: 'esn',
+      web: 'http://www.trondheim.esn.no/',
+      feed: 'http://www.trondheim.esn.no/feed',
+      logo: './org/esn/logo.png',
+      icon: './org/esn/icon.png',
+      symbol: './org/esn/symbol.png',
+      placeholder: './org/esn/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+    // 'iaeste': {
+    //   name: 'IAESTE',
+    //   key: 'iaeste',
+    //   web: 'http://iaeste.no/',
+    //   feed: 'http://iaeste.no/wp/?feed=rss2',
+    //   logo: './org/iaeste/logo.png',
+    //   icon: './org/iaeste/icon.png',
+    //   symbol: './org/iaeste/symbol.png',
+    //   placeholder: './org/iaeste/placeholder.png',
+    //   palette: 'blue',
+    //   useAltLink: false,
+    //   getImages: function(links, callback) {
+    //     Affiliation.getImages(this, links, callback);
+    //   },
+    // },
     'isu': {
       name: 'International Student Union',
       key: 'isu',
@@ -521,6 +792,21 @@ var Affiliation = {
         Affiliation.getImages(this, link, callback);
       },
     },
+    // 'signifikant': {
+    //   name: 'Signifikant',
+    //   key: 'signifikant',
+    //   web: 'http://org.ntnu.no/signifikant/',
+    //   feed: 'http://org.ntnu.no/signifikant/?q=rss.xml',
+    //   logo: './org/signifikant/logo.png',
+    //   icon: './org/signifikant/icon.png',
+    //   symbol: './org/signifikant/symbol.png',
+    //   placeholder: './org/signifikant/placeholder.png',
+    //   palette: 'cyan',
+    //   useAltLink: false,
+    //   getImages: function(links, callback) {
+    //     Affiliation.getImages(this, links, callback);
+    //   },
+    // },
     'soma': {
       name: 'Soma',
       key: 'soma',
@@ -811,7 +1097,8 @@ var Affiliation = {
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
-    // If jQuery or Ajaxer.js is not loaded yet, just return placeholders
+    // If jQuery or Ajaxer.js is not loaded yet, just return placeholders.
+    // This could occur with like one in a million probability, but like almost everything else it's handled.
     if (typeof $ == 'undefined' || typeof Ajaxer == 'undefined') {
       if (this.debug) console.log('ERROR: getImages called before $ and Ajaxer was ready');
       return placeholders;
@@ -834,6 +1121,7 @@ var Affiliation = {
           var newsSelector = null;
           if (options.newsSelector) {
             newsSelector = options.newsSelector;
+            if (self.debug) console.log('Using selector', '"'+newsSelector+'" for news at '+url+'\n');
           }
           else {
             for (var i=0; i<containers.length; i++) {
@@ -881,7 +1169,7 @@ var Affiliation = {
             }
             // ...unless we didn't find anything with the link, in which case we just look for the news selector
             else if (isSingleLink) {
-              if (self.debug) console.log('Found nothing with the link, trying news selector instead');
+              if (self.debug) console.log('Found nothing with a[href=url], trying news selector instead');
               // On a specific news page (not a frontpage) we can allow ourselves to search
               // more broadly if we didn't find anything while searching for the link. We'll
               // search for the newsSelector instead and assume that the first news container

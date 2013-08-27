@@ -3,11 +3,11 @@
 <head>
   <title>Options</title>
   <meta charset="utf-8">
-  <link rel="shortcut icon" href="img/icon-default.png"/>
+  <link rel="shortcut icon" href="img/blank.png"/>
 
   <!-- CSS Less -->
   <link rel="stylesheet" type="text/css" href="less/options.css" />
-  <link rel="stylesheet" type="text/css" href="org/online/palette.css" id="palette" />
+  <link rel="stylesheet" type="text/css" href="less/palettes/blue.css" id="palette" />
 
   <!-- JS Behind the scenes -->
   <script src="js/constants.js"></script>
@@ -49,14 +49,18 @@
             <!-- IMPORTANT: Keep the same order here as in affiliation.js -->
             <select id="affiliationKey1">
               <optgroup label="Linjeforeninger Gløshaugen">
+                <!-- <option value="abakus">Abakus</option> -->
+                <option value="alf">Alf</option>
                 <option value="berg">Berg</option>
                 <option value="delta">Delta</option>
                 <option value="emil">EMIL</option>
-                <option value="entreprenoerskolen">Entreprenørskolen</option>
+                <option value="aarhonen">H.M. Aarhønen</option>
                 <option value="hybrida">Hybrida</option>
                 <option value="leonardo">Leonardo</option>
+                <option value="mannhullet">Mannhullet</option>
                 <option value="online">Online</option>
                 <option value="nabla">Nabla</option>
+                <option value="solan">Solan</option>
                 <option value="spanskroeret">Spanskrøret</option>
                 <option value="volvox">Volvox</option>
               </optgroup>
@@ -72,12 +76,19 @@
                 <option value="kwakiutl">Kwakiutl</option>
                 <option value="ludimus">Ludimus</option>
                 <option value="paideia">Paideia</option>
+                <option value="panoptikon">Panoptikon</option>
+                <option value="pareto">Pareto</option>
                 <option value="primetime">Primetime</option>
+                <option value="psi">Psi</option>
                 <option value="sturm und drang">Sturm und Drang</option>
               </optgroup>
-              <optgroup label="Master-/internasjonale foreninger">
+              <optgroup label="Master-/doktor/-internasjonale foreninger">
+                <option value="dion">DION</option>
+                <option value="esn">ESN</option>
+                <!-- <option value="iaeste">IAESTE</option> -->
                 <option value="isu">ISU</option>
                 <option value="projeksjon">Projeksjon</option>
+                <!-- <option value="signifikant">Signifikant</option> -->
                 <option value="soma">Soma</option>
                 <option value="symbiosis">Symbiosis</option>
               </optgroup>
@@ -85,6 +96,7 @@
                 <option value="fraktur">Fraktur</option>
                 <option value="kom">KOM</option>
                 <option value="logistikkstudentene">Logistikkstudentene</option>
+                <option value="nutrix">Nutrix</option>
                 <option value="tihlde">TIHLDE</option>
                 <option value="tim og shaenko">Tim &amp; Shænko</option>
                 <option value="tjsf">TJSF</option>
@@ -139,14 +151,18 @@
             <!-- IMPORTANT: Keep the same order here as in affiliation.js -->
             <select id="affiliationKey2">
               <optgroup label="Linjeforeninger Gløshaugen">
+                <!-- <option value="abakus">Abakus</option> -->
+                <option value="alf">Alf</option>
                 <option value="berg">Berg</option>
                 <option value="delta">Delta</option>
                 <option value="emil">EMIL</option>
-                <option value="entreprenoerskolen">Entreprenørskolen</option>
+                <option value="aarhonen">H.M. Aarhønen</option>
                 <option value="hybrida">Hybrida</option>
                 <option value="leonardo">Leonardo</option>
+                <option value="mannhullet">Mannhullet</option>
                 <option value="online">Online</option>
                 <option value="nabla">Nabla</option>
+                <option value="solan">Solan</option>
                 <option value="spanskroeret">Spanskrøret</option>
                 <option value="volvox">Volvox</option>
               </optgroup>
@@ -162,12 +178,19 @@
                 <option value="kwakiutl">Kwakiutl</option>
                 <option value="ludimus">Ludimus</option>
                 <option value="paideia">Paideia</option>
+                <option value="panoptikon">Panoptikon</option>
+                <option value="pareto">Pareto</option>
                 <option value="primetime">Primetime</option>
+                <option value="psi">Psi</option>
                 <option value="sturm und drang">Sturm und Drang</option>
               </optgroup>
-              <optgroup label="Master-/internasjonale foreninger">
+              <optgroup label="Master-/doktor/-internasjonale foreninger">
+                <option value="dion">DION</option>
+                <option value="esn">ESN</option>
+                <!-- <option value="iaeste">IAESTE</option> -->
                 <option value="isu">ISU</option>
                 <option value="projeksjon">Projeksjon</option>
+                <!-- <option value="signifikant">Signifikant</option> -->
                 <option value="soma">Soma</option>
                 <option value="symbiosis">Symbiosis</option>
               </optgroup>
@@ -175,6 +198,7 @@
                 <option value="fraktur">Fraktur</option>
                 <option value="kom">KOM</option>
                 <option value="logistikkstudentene">Logistikkstudentene</option>
+                <option value="nutrix">Nutrix</option>
                 <option value="tihlde">TIHLDE</option>
                 <option value="tim og shaenko">Tim &amp; Shænko</option>
                 <option value="tjsf">TJSF</option>
@@ -329,17 +353,15 @@
         <label for="showOffice">
           <input type="checkbox" name="showOffice" value="showOffice" id="showOffice" />
           <span>
-            Vis kontorets status:
-            <img class="icon" src="/img/icon-open.png" />Åpent
-            <img class="icon" src="/img/icon-closed.png" />Lukket
-            <img class="icon" src="/img/icon-meeting.png" />Møte
-            <img class="icon" src="/img/icon-waffle.png"/>
-            <span style="position:relative; left:-4pt;">
-              Vafler
-            </span>
+            Vis kontorstatus:
+            <img class="icon open" src="/org/online/icon-open.png" />Åpent
+            <img class="icon closed" src="/org/online/icon-closed.png" />Lukket
+            <img class="icon meeting" src="/org/online/icon-meeting.png" />Møte
+            <img class="icon waffle" src="/img/icon-waffle.png"/>Vafler
           </span>
           <br />
           <img class="image" src="/img/options-office-plan.png" />
+          <img id="officeStatusOverlay" src="/org/online/icon-open.png" />
         </label>
       </div>
       
@@ -402,8 +424,6 @@
   <!-- DEBUG: Links to the other pages in the app -->
   <div id="debugLinks">
     pages<br />
-    <button type="button" class="debug" data="subscription.html">subscription.html</button><br />
-    <button type="button" class="debug" data="notification.html">notification.html</button><br />
     <button type="button" class="debug" data="infoscreen.html">infoscreen.html</button><br />
     <button type="button" class="debug" data="popup.html">popup.html</button><br />
     <br />cantina feeds<br />
@@ -441,9 +461,6 @@
     <div class="text">Notifier is up here</div>
     <div class="subtext"><b>Alt+A</b> opens the popup</div>
   </div>
-  
-  <!-- GL easter egg -->
-  <!-- <canvas id="LessonCanvas" width="256px" height="256px"></canvas> -->
 
   <!-- JS Libs -->
   <script src="libs/jquery-2.0.0.min.js"></script>
@@ -452,34 +469,11 @@
   <script src="js/ajaxer.js"></script>
   <script src="js/browser.js"></script>
   <script src="js/bus.js"></script>
+  <script src="js/coffee.js"></script>
   <script src="js/meetings.js"></script>
   <script src="js/news.js"></script>
   <script src="js/office.js"></script>
   <script src="js/stops.js"></script>
-
-  <!-- begin GL -->
-  <script src="gl/glMatrix-0.9.5.min.js"></script>
-  <script src="gl/webgl-utils.js"></script>
-  <script id="shader-fs" type="x-shader/x-fragment">
-    precision mediump float;
-    varying vec2 vTextureCoord;
-    uniform sampler2D uSampler;
-    void main(void) {
-      gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-    }
-  </script>
-  <script id="shader-vs" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
-    attribute vec2 aTextureCoord;
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-    varying vec2 vTextureCoord;
-    void main(void) {
-      gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition * vec3(1,1,1), 1.0); // (something and cube size, zoom)
-      vTextureCoord = aTextureCoord;
-    }
-  </script>
-  <script src="gl/cube.js"></script>
 
   <!-- Document ready sript -->
   <script src="cs/options.js"></script>

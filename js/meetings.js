@@ -1,5 +1,4 @@
 var Meetings = {
-  api: 'https://online.ntnu.no/service_static/meeting_plan',
   msgNone: 'Ingen flere møter i dag',
   msgError: 'Frakoblet fra møteplan',
   
@@ -14,11 +13,13 @@ var Meetings = {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
-
+    
+    var api = Affiliation.org[localStorage.affiliationKey1].meetingsApi;
+    
     // Receives the meeting plan for today
     var self = this;
     Ajaxer.getPlainText({
-      url: (self.debugApi ? self.debugThisApi : self.api),
+      url: (self.debugApi ? self.debugThisApi : api),
       success: function(meetings) {
         if (self.debug) console.log('Raw meetings:\n\n', meetings);
         
