@@ -69,7 +69,7 @@ if (BROWSER == 'Chrome')
 	if (typeof chrome.i18n != 'undefined')
 		if (chrome.i18n.getMessage('@@extension_id') === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
 			DEBUG = 0;
-// else if (BROWSER == 'Opera')
-// 	if (typeof chrome.i18n != 'undefined')
-// 		if (chrome.i18n.getMessage('@@extension_id') === 'TODO: OPERA EXTENSION ID HER')
-// 			DEBUG = 0;
+else if (BROWSER == 'Opera')
+	if (typeof chrome.i18n != 'undefined')
+		if (chrome.i18n.getMessage('@@extension_id') === 'npnpbddfcaibgnegafofkmffmbmflelj')
+			DEBUG = 0;
