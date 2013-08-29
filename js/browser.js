@@ -96,12 +96,12 @@ var Browser = {
           if (state == 'active') {
 
             // Load affiliation icon
-            var icon = Affiliation.org[item.feedKey].icon;
+            var symbol = Affiliation.org[item.feedKey].symbol;
 
             // Set options
             var options = {
                type: 'basic',
-               iconUrl: icon,
+               iconUrl: symbol,
                title: item.title,
                message: item.description,
                priority: 0,
