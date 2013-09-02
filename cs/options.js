@@ -819,9 +819,11 @@
           $('#affiliationKey2').removeAttr('disabled');
         }
         if (this.id === 'showOffice' && this.checked === true) {
+          ls.activelySetOffice = 'true';
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
         }
         if (this.id === 'showOffice' && this.checked === false) {
+          ls.activelySetOffice = 'false';
           Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
           Browser.setTitle(ls.extensionName);
         }
@@ -829,7 +831,11 @@
           testDesktopNotification();
         }
         if (this.id === 'coffeeSubscription' && this.checked === true) {
+          ls.activelySetCoffee = 'true';
           testCoffeeSubscription();
+        }
+        if (this.id === 'coffeeSubscription' && this.checked === false) {
+          ls.activelySetCoffee = 'false';
         }
         return displayOnPageNotification();
       }

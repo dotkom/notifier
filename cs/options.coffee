@@ -796,8 +796,10 @@ $ ->
         $('#affiliationKey2').removeAttr 'disabled'
       
       if this.id is 'showOffice' and this.checked is true
+        ls.activelySetOffice = 'true'
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
+        ls.activelySetOffice = 'false'
         Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
         Browser.setTitle ls.extensionName
       
@@ -805,6 +807,9 @@ $ ->
         testDesktopNotification()
       
       if this.id is 'coffeeSubscription' and this.checked is true
+        ls.activelySetCoffee = 'true'
         testCoffeeSubscription()
+      if this.id is 'coffeeSubscription' and this.checked is false
+        ls.activelySetCoffee = 'false'
 
       displayOnPageNotification()
