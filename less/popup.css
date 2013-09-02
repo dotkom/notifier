@@ -105,6 +105,7 @@ body {
   border: 0pt solid #00ff00;
   font-style: italic;
   margin-bottom: 2pt;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas #left {
   border: 0pt solid #ffc0cb;
@@ -367,6 +368,13 @@ body {
   border: 0pt solid #00ff00;
   font-style: italic;
   margin-bottom: 2pt;
+  cursor: pointer;
+}
+#container #cantinas .hours:hover {
+  text-shadow: 0 0 7pt white,
+        0 0 10pt white,
+        0 0 15pt white,
+        0 0 20pt white;
 }
 #container #cantinas li {
   cursor: pointer;

@@ -105,6 +105,7 @@ body {
   border: 0pt solid #00ff00;
   font-style: italic;
   margin-bottom: 5pt;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas #left {
   border: 0pt solid #ffc0cb;

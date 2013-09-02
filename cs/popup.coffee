@@ -82,8 +82,17 @@ updateHours = ->
   if DEBUG then console.log 'updateHours'
   Hours.get ls.leftCantina, (hours) ->
     $('#cantinas #left .hours').html hours
+    clickHours '#cantinas #left .hours', ls.leftCantina
   Hours.get ls.rightCantina, (hours) ->
     $('#cantinas #right .hours').html hours
+    clickHours '#cantinas #right .hours', ls.rightCantina
+
+clickHours = (cssSelector, cantina) ->
+  $(cssSelector).click ->
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickHours', $(this).text()])
+    ls.clickedCantina = cantina
+    Browser.openTab Hours.url
+    window.close()
 
 updateBus = ->
   if DEBUG then console.log 'updateBus'
