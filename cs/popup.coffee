@@ -142,7 +142,9 @@ updateAffiliationNews = (number) ->
   else
     key = ls['affiliationKey'+number]
     name = Affiliation.org[key].name
-    $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
+    $('#news '+selector).html '<div class="post"><div class="item"><div class="title">'+name+'</div>Frakoblet fra nyhetsstrøm</div></div>'
+    $('#news '+selector).click ->
+      Browser.openTab Affiliation.org[key].feed
 
 displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Empty the news column
