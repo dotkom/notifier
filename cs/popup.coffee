@@ -90,7 +90,7 @@ updateHours = ->
 clickHours = (cssSelector, cantina) ->
   $(cssSelector).click ->
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickHours', $(this).text()])
-    ls.clickedCantina = cantina
+    ls.clickedHours = Hours.cantinas[cantina]
     Browser.openTab Hours.url
     window.close()
 

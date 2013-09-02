@@ -151,7 +151,7 @@
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickHours', $(this).text()]);
       }
-      ls.clickedCantina = cantina;
+      ls.clickedHours = Hours.cantinas[cantina];
       Browser.openTab(Hours.url);
       return window.close();
     });
