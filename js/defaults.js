@@ -91,6 +91,10 @@ var Defaults = {
     // Office
     if (ls.showOffice == undefined)
       ls.showOffice = 'true';
+    if (ls.activelySetOffice == undefined) {
+      ls.activelySetOffice = 'true';
+      ls.showOffice = 'true';
+    }
     
     // Cantina
     if (ls.showCantina == undefined)
@@ -113,6 +117,10 @@ var Defaults = {
       ls.coffeeSubscription = 'true';
     if (ls.coffeePots == undefined)
       ls.coffeePots = 0;
+    if (ls.activelySetCoffee == undefined) {
+      ls.activelySetCoffee = 'true';
+      ls.coffeeSubscription = 'true';
+    }
     
     // Infoscreen
     if (ls.useInfoscreen == undefined)
@@ -121,37 +129,30 @@ var Defaults = {
     // General
     if (ls.everOpenedOptions == undefined)
       ls.everOpenedOptions = 'false';
-
-    // There is currently no way of knowing whether HardwareFeatures have been
-    // installed recently or not, - if they exist. Therefore we will assume the
-    // user starts out with the features turned on.
-    // Then, the features will be turned off if:
-    // a) the user has explicitly turned them off, or
-    // b) hardwarefeatures are not available, using
-    //    Defaults.setHardwareFeatures from the background script
-    
-    if (ls.activelySetOffice == undefined) {
-      ls.activelySetOffice = 'true';
-      ls.showOffice = 'true';
-    }
-    else if (ls.activelySetOffice == 'false')
-      ls.showOffice = 'false';
-
-    if (ls.activelySetCoffee == undefined) {
-      ls.activelySetCoffee = 'true';
-      ls.coffeeSubscription = 'true';
-    }
-    else if (ls.activelySetCoffee == 'false')
-      ls.coffeeSubscription = 'false';
   },
 
+  // There is currently no way of knowing whether HardwareFeatures have been
+  // installed recently or not, - if they exist. Therefore we will assume the
+  // user starts out with the features turned on.
+  // Then, the features will be turned off if:
+  // a) the user has explicitly turned them off, or
+  // b) hardwarefeatures are not available, using
+  //    this function from the background script
   setHardwareFeatures: function(isAvailable) {
     
     var ls = localStorage;
 
     if (isAvailable) {
-      ls.showOffice = 'true';
-      ls.coffeeSubscription = 'true';
+      // office
+      if (ls.activelySetOffice == 'false')
+        ls.showOffice = 'false';
+      else
+        ls.showOffice = 'true';
+      // coffee
+      if (ls.activelySetCoffee == 'false')
+        ls.coffeeSubscription = 'false';
+      else
+        ls.coffeeSubscription = 'true';
     }
     else if (!isAvailable) {
       ls.showOffice = 'false';
