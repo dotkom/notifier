@@ -4,6 +4,7 @@ var Hours = {
   // SiTs new format for ajaxing hours is a POST api:
   // curl --data "diner=2532" https://www.sit.no/ajaxdiner/get
 
+  url: 'https://www.sit.no/mat',
   api: 'https://www.sit.no/ajaxdiner/get',
   msgClosed: '- Det er nok stengt',
   msgConnectionError: '- Frakoblet fra sit.no/ajax',
