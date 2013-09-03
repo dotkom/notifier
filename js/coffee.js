@@ -110,7 +110,8 @@ var Coffee = {
     return (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
   },
 
-  showNotification: function(demo, pots, age) { // Parameters 'pots' and 'age' not in use yet.
+  showNotification: function(pots, age) { // Parameters 'pots' and 'age' not in use yet.
+    var demo = (typeof pots == 'undefined' && typeof age == 'undefined');
     // If the computer has slept for a while and there are
     // suddenly four new coffeepots then they will all be
     // lined up for notifications, giving the user four
