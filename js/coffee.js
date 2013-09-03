@@ -62,12 +62,12 @@ var Coffee = {
             }
           }
         } catch (err) {
-          if (DEBUG) console.log('ERROR: Coffee format is wrong:', err);
+          if (self.debug) console.log('ERROR: Coffee format is wrong:', err);
           callback(self.msgFormatError, self.msgComforting);
         }
       },
       error: function(jqXHR, text, err) {
-        if (DEBUG) console.log('ERROR: Failed to get coffee pot status.');
+        if (self.debug) console.log('ERROR: Failed to get coffee pot status.');
         callback(self.msgConnectionError, self.msgComforting);
       },
     });
@@ -110,7 +110,7 @@ var Coffee = {
     return (pots=='0'?'Ingen kanner':pots=='1'?'1 kanne':pots+' kanner') + ' i dag';
   },
 
-  showNotification: function(force, pots, age) { // Parameters 'pots' and 'age' not in use yet.
+  showNotification: function(demo, pots, age) { // Parameters 'pots' and 'age' not in use yet.
     // If the computer has slept for a while and there are
     // suddenly four new coffeepots then they will all be
     // lined up for notifications, giving the user four
@@ -127,8 +127,11 @@ var Coffee = {
     catch (err) {
       if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
     }
-    if (showIt || force) {
-      localStorage.lastSubscriptionTime = JSON.stringify(new Date());
+    if (showIt || demo) {
+
+      // Save timestamp if this was a real coffee notification
+      if (!demo)
+        localStorage.lastSubscriptionTime = JSON.stringify(new Date());
       
       var key = localStorage.affiliationKey1;
       var memes = [];
@@ -150,7 +153,7 @@ var Coffee = {
 
       // Randomize image
       var random = 1 + (Math.floor(Math.random() * memes.length));
-      if (DEBUG) console.log('memes['+(random-1)+'] of '+0+'-'+(memes.length-1)+' is "'+memes[random-1]+'"');
+      if (this.debug) console.log('memes['+(random-1)+'] of '+0+'-'+(memes.length-1)+' is "'+memes[random-1]+'"');
       var image = memes[random - 1]; // the list is zero-indexed
 
       // Create the notification
@@ -161,7 +164,11 @@ var Coffee = {
         link: 'options.html',
         feedKey: key,
       }
-      Browser.createNotification(item);
+      if (!demo)
+        Browser.createNotification(item);
+      else
+        // Need to run it by the background process because the event listeners are there
+        Browser.getBackgroundProcess().Browser.createNotification(item);
     }
     else {
       if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
