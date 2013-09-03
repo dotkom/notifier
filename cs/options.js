@@ -35,19 +35,11 @@
   };
 
   testDesktopNotification = function() {
-    var item, key;
-    key = ls.affiliationKey1;
-    item = {
-      title: Affiliation.org[key].name + ' Notifier',
-      description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"',
-      link: Affiliation.org[key].web,
-      feedKey: key
-    };
-    return Browser.createNotification(item);
+    return News.showNotification();
   };
 
   testCoffeeSubscription = function() {
-    return Coffee.showNotification(true);
+    return Coffee.showNotification();
   };
 
   bindAffiliationSelector = function(number, isPrimaryAffiliation) {
