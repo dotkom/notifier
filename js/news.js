@@ -336,7 +336,7 @@ var News = {
         feedKey: key,
       }
       // Need to run it by the background process because the event listeners are there
-      Browser.getBackgroundProcess().Browser.createNotification item
+      Browser.getBackgroundProcess().Browser.createNotification(item);
     }
     // Normal mode
     else {
