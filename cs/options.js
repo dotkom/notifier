@@ -35,19 +35,11 @@
   };
 
   testDesktopNotification = function() {
-    var item, key;
-    key = ls.affiliationKey1;
-    item = {
-      title: Affiliation.org[key].name + ' Notifier',
-      description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"',
-      link: Affiliation.org[key].web,
-      feedKey: key
-    };
-    return Browser.createNotification(item);
+    return News.showNotification();
   };
 
   testCoffeeSubscription = function() {
-    return Coffee.showNotification(true);
+    return Coffee.showNotification();
   };
 
   bindAffiliationSelector = function(number, isPrimaryAffiliation) {
@@ -819,9 +811,11 @@
           $('#affiliationKey2').removeAttr('disabled');
         }
         if (this.id === 'showOffice' && this.checked === true) {
+          ls.activelySetOffice = 'true';
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
         }
         if (this.id === 'showOffice' && this.checked === false) {
+          ls.activelySetOffice = 'false';
           Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
           Browser.setTitle(ls.extensionName);
         }
@@ -829,7 +823,11 @@
           testDesktopNotification();
         }
         if (this.id === 'coffeeSubscription' && this.checked === true) {
+          ls.activelySetCoffee = 'true';
           testCoffeeSubscription();
+        }
+        if (this.id === 'coffeeSubscription' && this.checked === false) {
+          ls.activelySetCoffee = 'false';
         }
         return displayOnPageNotification();
       }

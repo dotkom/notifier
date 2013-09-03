@@ -22,7 +22,10 @@ if (host.indexOf('online.ntnu.no') != -1) {
 // sit.no
 
 if (host.indexOf('www.sit.no') != -1) {
-  var callback = function(clickedCantina) {
+
+  // Switch Dinner Menus
+
+  var cantinaCallback = function(clickedCantina) {
     // Kick out SiTs own change function, which doesn't play
     // well with our more updated version of jQuery
     $('#displayWeek').unbind('change');
@@ -42,7 +45,32 @@ if (host.indexOf('www.sit.no') != -1) {
     $('#displayWeek').val(clickedCantina).trigger('change');
   };
   if (typeof chrome != "undefined") {
-    chrome.extension.sendMessage({'action':'getClickedCantina'}, callback);
+    chrome.extension.sendMessage({'action':'getClickedCantina'}, cantinaCallback);
+  }
+
+  // Switch Opening Hours
+
+  var hoursCallback = function(clickedCantina) {
+    // Kick out SiTs own change function, which doesn't play
+    // well with our more updated version of jQuery
+    $('#diner-info-select').unbind('change');
+    // Rebind the cantina selector with SiT's own function
+    $('#diner-info-select').change( function() {
+      var selectedDiner = $(this).val();
+      $.ajax({
+        url: 'ajaxdiner/get',
+        type: 'POST',
+        data: { diner: selectedDiner },
+        success: function(menu){
+          $('.diner-info-view').html(menu.html);
+        }
+      });
+    });
+    // Change cantina and trigger the change
+    $('#diner-info-select').val(clickedCantina).trigger('change');
+  }
+  if (typeof chrome != "undefined") {
+    chrome.extension.sendMessage({'action':'getClickedHours'}, hoursCallback);
   }
 }
 

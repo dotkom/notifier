@@ -96,12 +96,12 @@ var Browser = {
           if (state == 'active') {
 
             // Load affiliation icon
-            var icon = Affiliation.org[item.feedKey].icon;
+            var symbol = Affiliation.org[item.feedKey].symbol;
 
             // Set options
             var options = {
                type: 'basic',
-               iconUrl: icon,
+               iconUrl: symbol,
                title: item.title,
                message: item.description,
                priority: 0,
@@ -128,12 +128,15 @@ var Browser = {
                 options.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
               }
             }
-
-            // Save the link to make the notification clickable
-            localStorage.lastNotificationLink = item.link;
             
             // Generate random ID
             var id = String(Math.round(Math.random()*100000));
+
+            // Save the link to make the notification clickable. Associating the id with the
+            // window object instead of putting it in localStorage makes sure all links are
+            // cleared every time the background process restarts, rather than filling up
+            // localStorage with links.
+            window[id] = item.link;
 
             // Show the notification
             chrome.notifications.create(id, options, function(notID) {
@@ -188,7 +191,7 @@ var Browser = {
   },
 
   notificationClicked: function(notID) {
-    var link = localStorage.lastNotificationLink;
+    var link = window[notID];
     if (!DEBUG) {
       _gaq.push(['_trackEvent', 'notification', 'clickNotification', link]);
     }

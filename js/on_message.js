@@ -13,6 +13,16 @@ function onMessage(request, sender, callback) {
       callback(clickedCantina);
     }
   }
+  // which cantina did the user just click in the popup?
+  // the content script wants to switch to that specific cantina
+  if (request.action == 'getClickedHours') {
+    if (DEBUG) console.log('onMessage: getClickedHours');
+    var clickedHours = localStorage.clickedHours;
+    if (typeof clickedHours != 'undefined') {
+      localStorage.removeItem('clickedHours');
+      callback(clickedHours);
+    }
+  }
   else if (DEBUG) console.log('ERROR: unrecognized request');
 }
 

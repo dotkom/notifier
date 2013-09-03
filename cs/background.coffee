@@ -7,8 +7,9 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
-    updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
-    updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
+    if Affiliation.org[ls.affiliationKey1].hardwareFeatures
+      updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
+      updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
     updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
     updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
@@ -112,6 +113,10 @@ loadAffiliationIcon = ->
 $ ->
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
+
+  # Turn off hardwarefeatures if they're not available
+  isAvailable = Affiliation.org[ls.affiliationKey1].hardwareFeatures
+  Defaults.setHardwareFeatures isAvailable
 
   # Open options page after install
   if ls.everOpenedOptions is 'false' and !DEBUG

@@ -21,16 +21,10 @@ pageFlipCursorBlinking = ->
     $(@).animate opacity: 1, "fast", "swing",
 
 testDesktopNotification = ->
-  key = ls.affiliationKey1
-  item =
-    title: Affiliation.org[key].name + ' Notifier'
-    description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"'
-    link: Affiliation.org[key].web
-    feedKey: key
-  Browser.createNotification item
+  News.showNotification()
 
 testCoffeeSubscription = ->
-  Coffee.showNotification true
+  Coffee.showNotification()
 
 bindAffiliationSelector = (number, isPrimaryAffiliation) ->
   id = 'affiliationKey'+number
@@ -796,8 +790,10 @@ $ ->
         $('#affiliationKey2').removeAttr 'disabled'
       
       if this.id is 'showOffice' and this.checked is true
+        ls.activelySetOffice = 'true'
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       if this.id is 'showOffice' and this.checked is false
+        ls.activelySetOffice = 'false'
         Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
         Browser.setTitle ls.extensionName
       
@@ -805,6 +801,9 @@ $ ->
         testDesktopNotification()
       
       if this.id is 'coffeeSubscription' and this.checked is true
+        ls.activelySetCoffee = 'true'
         testCoffeeSubscription()
+      if this.id is 'coffeeSubscription' and this.checked is false
+        ls.activelySetCoffee = 'false'
 
       displayOnPageNotification()

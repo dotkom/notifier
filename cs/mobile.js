@@ -17,17 +17,19 @@
     if (DEBUG) {
       console.log("\n#" + iteration);
     }
-    if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
-      updateOffice();
-    }
-    if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
-      updateServant();
-    }
-    if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
-      updateMeetings();
-    }
-    if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
-      updateCoffee();
+    if (Affiliation.org[ls.affiliationKey1].hardwareFeatures) {
+      if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
+        updateOffice();
+      }
+      if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
+        updateServant();
+      }
+      if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
+        updateMeetings();
+      }
+      if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
+        updateCoffee();
+      }
     }
     if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
       updateCantinas();

@@ -1,6 +1,4 @@
 var Office = {
-  eventApi: Affiliation.org[localStorage.affiliationKey1].eventApi,
-  lightApi: Affiliation.org[localStorage.affiliationKey1].lightApi,
   titleError: 'Oops',
   titleOpen: 'Åpent',
   titleClosed: 'Lukket',
@@ -18,12 +16,6 @@ var Office = {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
-    }
-
-    // check if the affiliation has changed
-    if (this.eventApi != Affiliation.org[localStorage.affiliationKey1].eventApi) {
-      this.eventApi = Affiliation.org[localStorage.affiliationKey1].eventApi;
-      this.lightApi = Affiliation.org[localStorage.affiliationKey1].lightApi;
     }
 
     var self = this;
@@ -45,13 +37,15 @@ var Office = {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
+
+    var eventApi = Affiliation.org[localStorage.affiliationKey1].eventApi;
     
     // Receives info on current event from Onlines servers (without comments)
     // 1              // 0=closed, 1=meeting, 2=waffles, 3=error
     // Møte: dotKom   // event title or 'No title'-meeting or nothing
     var self = this;
     Ajaxer.getPlainText({
-      url: self.eventApi,
+      url: eventApi,
       success: function(data) {
         var status = data.split('\n',2)[0];
         var title = data.split('\n',2)[1];
@@ -81,10 +75,12 @@ var Office = {
       return;
     }
 
+    var lightApi = Affiliation.org[localStorage.affiliationKey1].lightApi;
+
     // Receives current light intensity from the office: OFF 0-800-1023 ON
     var self = this;
     Ajaxer.getPlainText({
-      url: self.lightApi,
+      url: lightApi,
       success: function(data) {
         if (data > self.lightLimit) {
           callback('closed', self.titleClosed, self.msgClosed);

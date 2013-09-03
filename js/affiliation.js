@@ -183,11 +183,11 @@ var Affiliation = {
         closed: './org/delta/icon-closed.png',
         meeting: './org/delta/icon-meeting.png',
       },
-      coffeeApi: 'http://informatikk.org/delta/coffee.txt',
-      lightApi: 'http://informatikk.org/delta/lys.txt',
-      eventApi: 'http://informatikk.org/delta/office_status.txt',
-      servantApi: 'http://informatikk.org/delta/servant_list.txt',
-      meetingsApi: 'http://informatikk.org/delta/meeting_plan.txt',
+      coffeeApi: 'http://pi.deltahouse.no/coffee.txt',
+      lightApi: 'http://pi.deltahouse.no/office.txt',
+      eventApi: 'http://online.ntnu.no/service_static/delta/office_status',
+      servantApi: 'http://online.ntnu.no/service_static/delta/servant_list',
+      meetingsApi: 'http://online.ntnu.no/service_static/delta/meeting_plan',
       hasMemes: true,
       numberOfMemes: 1,
       memePath: './org/delta/meme/',
@@ -1197,6 +1197,9 @@ var Affiliation = {
 
               // Exclude social image icons (only applies for some blogs)
               image = image.not('img[src*="sociable"]');
+
+              // Exclude static content, most likely icons
+              image = image.not('img[src*="static"]');
               
               // Use image at specified index if requested
               if (options.imageIndex)
