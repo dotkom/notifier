@@ -326,47 +326,65 @@ var News = {
   },
 
   showNotification: function(item) {
-    var showIt = function() {
-      if (typeof item != 'undefined') {
-        if (localStorage.showNotifications == 'true') {
+    // Demo mode
+    if (typeof item == 'undefined') {
+      var key = localStorage.affiliationKey1;
+      item = {
+        title: Affiliation.org[key].name + ' Notifier',
+        description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"',
+        link: Affiliation.org[key].web,
+        feedKey: key,
+      }
+      // Need to run it by the background process because the event listeners are there
+      Browser.getBackgroundProcess().Browser.createNotification item
+    }
+    // Normal mode
+    else {
+      var showIt = function() {
+        if (typeof item != 'undefined') {
+          if (localStorage.showNotifications == 'true') {
 
-          // Save timestamp
-          localStorage.lastNotifiedTime = new Date().getTime();
+            // Save timestamp
+            localStorage.lastNotifiedTime = new Date().getTime();
 
-          // If the organization has an image API, use it
-          if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
-            Affiliation.org[item.feedKey].getImage(item.link, function(link, image) {
-              item.image = image[0];
+            // If the organization has an image API, use it
+            if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
+              Affiliation.org[item.feedKey].getImage(item.link, function(link, image) {
+                item.image = image[0];
+                // Show desktop notification
+                Browser.createNotification(item);
+              });
+            }
+            else if (typeof Affiliation.org[item.feedKey].getImages != 'undefined') {
+              var links = [];
+              links.push(item.link);
+              Affiliation.org[item.feedKey].getImages(links, function(links, images) {
+                item.image = images[0];
+                // Show desktop notification
+                Browser.createNotification(item);
+              });
+            }
+            else {
               // Show desktop notification
               Browser.createNotification(item);
-            });
-          }
-          else if (typeof Affiliation.org[item.feedKey].getImages != 'undefined') {
-            var links = [];
-            links.push(item.link);
-            Affiliation.org[item.feedKey].getImages(links, function(links, images) {
-              item.image = images[0];
-              // Show desktop notification
-              Browser.createNotification(item);
-            });
-          }
-          else {
-            // Show desktop notification
-            Browser.createNotification(item);
+            }
           }
         }
+        else {
+          if (this.debug) console.log('ERROR: notification item was undefined');
+        }
       }
-      else {
-        if (this.debug) console.log('ERROR: notification item was undefined');
-      }
-    }
-    // Make sure notifications are sent with at least 10 seconds inbetween
-    if (!DEBUG) {
-      var lastTime = localStorage.lastNotifiedTime;
-      if (isNumber(lastTime)) {
-        var diff = new Date().getTime() - lastTime;
-        if (diff < 10000) { // less than 10 seconds?
-          setTimeout(showIt, 10000);
+      // Make sure notifications are sent with at least 10 seconds inbetween
+      if (!DEBUG) {
+        var lastTime = localStorage.lastNotifiedTime;
+        if (isNumber(lastTime)) {
+          var diff = new Date().getTime() - lastTime;
+          if (diff < 10000) { // less than 10 seconds?
+            setTimeout(showIt, 10000);
+          }
+          else {
+            showIt();
+          }
         }
         else {
           showIt();
@@ -375,9 +393,6 @@ var News = {
       else {
         showIt();
       }
-    }
-    else {
-      showIt();
     }
   },
 
