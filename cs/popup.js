@@ -224,7 +224,7 @@
       name = Affiliation.org[key].name;
       $('#news ' + selector).html('<div class="post"><div class="item"><div class="title">' + name + '</div>Frakoblet fra nyhetsstrøm</div></div>');
       return $('#news ' + selector).click(function() {
-        return Browser.openTab(Affiliation.org[key].feed);
+        return Browser.openTab(Affiliation.org[key].web);
       });
     }
   };
