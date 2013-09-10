@@ -56,7 +56,7 @@ var Affiliation = {
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
       useAltLink: false,
-      hardwareFeatures: true,
+      hardwareFeatures: false,
       statusIcons: {
         open: './org/abakus/icon-open.png',
         closed: './org/abakus/icon-closed.png',
@@ -177,7 +177,7 @@ var Affiliation = {
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
       useAltLink: false,
-      hardwareFeatures: true,
+      hardwareFeatures: false,
       statusIcons: {
         open: './org/delta/icon-open.png',
         closed: './org/delta/icon-closed.png',
