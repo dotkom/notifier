@@ -56,7 +56,7 @@ var Affiliation = {
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
       useAltLink: false,
-      hardwareFeatures: true,
+      hardwareFeatures: false,
       statusIcons: {
         open: './org/abakus/icon-open.png',
         closed: './org/abakus/icon-closed.png',
