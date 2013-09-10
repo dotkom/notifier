@@ -10,97 +10,99 @@
 // might be an old, insecure website. Except, of course, if we are visiting
 // the Online website which is secured by our most paranoid guy, Rockj ;)
 
-var host = window.location.href;
+if (typeof chrome != 'undefined') {
 
-// online.ntnu.no
+  var host = window.location.href;
 
-if (host.indexOf('online.ntnu.no') != -1) {
-  // Hide Notifier install button
-  $('#install_notifier').hide();
-}
+  // online.ntnu.no
 
-// sit.no
+  if (host.indexOf('online.ntnu.no') != -1) {
+    // Hide Notifier install button
+    $('#install_notifier').hide();
+  }
 
-if (host.indexOf('www.sit.no') != -1) {
+  // sit.no
 
-  // Switch Dinner Menus
+  if (host.indexOf('www.sit.no') != -1) {
 
-  var cantinaCallback = function(clickedCantina) {
-    // Kick out SiTs own change function, which doesn't play
-    // well with our more updated version of jQuery
-    $('#displayWeek').unbind('change');
-    // Rebind the cantina selector with SiT's own function
-    $('#displayWeek').change( function() {
-      var selectedDiner = $(this).val();
-      $.ajax({
-        url: 'ajaxdinner/get',
-        type: 'POST',
-        data: { diner: selectedDiner, trigger: 'week' },
-        success: function(menu){
-          $('#dinner-output').html(menu.html);
-        }
+    // Switch Dinner Menus
+
+    var cantinaCallback = function(clickedCantina) {
+      // Kick out SiTs own change function, which doesn't play
+      // well with our more updated version of jQuery
+      $('#displayWeek').unbind('change');
+      // Rebind the cantina selector with SiT's own function
+      $('#displayWeek').change( function() {
+        var selectedDiner = $(this).val();
+        $.ajax({
+          url: 'ajaxdinner/get',
+          type: 'POST',
+          data: { diner: selectedDiner, trigger: 'week' },
+          success: function(menu){
+            $('#dinner-output').html(menu.html);
+          }
+        });
       });
-    });
-    // Change cantina and trigger the change
-    $('#displayWeek').val(clickedCantina).trigger('change');
-  };
-  if (typeof chrome != "undefined") {
+      // Change cantina and trigger the change
+      $('#displayWeek').val(clickedCantina).trigger('change');
+    };
     chrome.extension.sendMessage({'action':'getClickedCantina'}, cantinaCallback);
-  }
 
-  // Switch Opening Hours
+    // Switch Opening Hours
 
-  var hoursCallback = function(clickedCantina) {
-    // Kick out SiTs own change function, which doesn't play
-    // well with our more updated version of jQuery
-    $('#diner-info-select').unbind('change');
-    // Rebind the cantina selector with SiT's own function
-    $('#diner-info-select').change( function() {
-      var selectedDiner = $(this).val();
-      $.ajax({
-        url: 'ajaxdiner/get',
-        type: 'POST',
-        data: { diner: selectedDiner },
-        success: function(menu){
-          $('.diner-info-view').html(menu.html);
-        }
+    var hoursCallback = function(clickedCantina) {
+      // Kick out SiTs own change function, which doesn't play
+      // well with our more updated version of jQuery
+      $('#diner-info-select').unbind('change');
+      // Rebind the cantina selector with SiT's own function
+      $('#diner-info-select').change( function() {
+        var selectedDiner = $(this).val();
+        $.ajax({
+          url: 'ajaxdiner/get',
+          type: 'POST',
+          data: { diner: selectedDiner },
+          success: function(menu){
+            $('.diner-info-view').html(menu.html);
+          }
+        });
       });
-    });
-    // Change cantina and trigger the change
-    $('#diner-info-select').val(clickedCantina).trigger('change');
-  }
-  if (typeof chrome != "undefined") {
+      // Change cantina and trigger the change
+      $('#diner-info-select').val(clickedCantina).trigger('change');
+    }
     chrome.extension.sendMessage({'action':'getClickedHours'}, hoursCallback);
   }
-}
 
-// all affiliations
+  // all affiliations
 
-var resetCounter = function(affiliationNumber) {
-  var port = chrome.runtime.connect({name: "affiliationCounter"});
-  port.postMessage({getAffiliationWeb: affiliationNumber});
-  port.onMessage.addListener(function(msg) {
-    if (typeof msg.affiliationWeb != 'undefined') {
-      // Strip it down the bare essential web address for easy matching
-      // the format, for making communication really easy: 1@https://online.ntnu.no
-      var pieces = msg.affiliationWeb.split('@');
-      var number = pieces[0];
-      var web = pieces[1];
-      var strippedWeb = web.match(/(org\.ntnu\.no\/[\w\-]+)|([^w\/\.\s][\w\-]+\.[\w\.]+)/g);
-      if (strippedWeb != null) {
-        if (host.indexOf(strippedWeb) != -1) {
-          // The website has been recognized as an affiliation
-          port.postMessage({resetAffiliationCounter: String(number)});
-          // This resets badge counter for affiliation, example:
-          // If affiliation1 has 4 unread news items and affiliation2 has 3 unread news items,
-          // then upon a visit to affiliation1's website the counter will be decreased to 3.
-        }
+  var resetCounter = function(affiliationNumber) {
+    if (typeof chrome.runtime != 'undefined') {
+      if (typeof chrome.runtime.connect != 'undefined') {
+        var port = chrome.runtime.connect({name: "affiliationCounter"});
+        port.postMessage({getAffiliationWeb: affiliationNumber});
+        port.onMessage.addListener(function(msg) {
+          if (typeof msg.affiliationWeb != 'undefined') {
+            // Strip it down the bare essential web address for easy matching
+            // the format, for making communication really easy: 1@https://online.ntnu.no
+            var pieces = msg.affiliationWeb.split('@');
+            var number = pieces[0];
+            var web = pieces[1];
+            var strippedWeb = web.match(/(org\.ntnu\.no\/[\w\-]+)|([^w\/\.\s][\w\-]+\.[\w\.]+)/g);
+            if (strippedWeb != null) {
+              if (host.indexOf(strippedWeb) != -1) {
+                // The website has been recognized as an affiliation
+                port.postMessage({resetAffiliationCounter: String(number)});
+                // This resets badge counter for affiliation, example:
+                // If affiliation1 has 4 unread news items and affiliation2 has 3 unread news items,
+                // then upon a visit to affiliation1's website the counter will be decreased to 3.
+              }
+            }
+          }
+        });
       }
     }
-  });
-};
-// Try to reset the news counters
-if (typeof chrome != "undefined") {
+  };
+  // Try to reset the news counters
   resetCounter(1);
   resetCounter(2);
+
 }
