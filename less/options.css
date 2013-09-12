@@ -344,6 +344,8 @@ header #notification .saved {
 }
 .item #busBox .busStop select {
   z-index: 10;
+  /* allows the down-arrow to be painted behind this */
+
   position: relative;
   /* allows the down-arrow to be painted behind this */
 
@@ -351,6 +353,8 @@ header #notification .saved {
 }
 .item #busBox .busStop .lines {
   z-index: 10;
+  /* allows the down-arrow to be painted behind this */
+
   position: relative;
   /* allows the down-arrow to be painted behind this */
 
@@ -421,6 +425,8 @@ header #notification .saved {
 .item #busBox #busLogo {
   border: 0pt solid #ff0000;
   position: relative;
+  /* allows the down-arrow to be painted behind this */
+
   z-index: 10;
   /* allows the down-arrow to be painted behind this */
 
@@ -431,6 +437,8 @@ header #notification .saved {
 }
 .item #busBox #arrowDown {
   position: relative;
+  /* paint behind other stuff */
+
   z-index: 2;
   /* paint behind other stuff */
 
@@ -442,6 +450,13 @@ header #notification .saved {
 }
 .item #infoscreenPreview {
   display: none;
+  overflow: hidden;
+  margin-left: 70pt;
+  height: 6400px;
+  width: 4700px;
+  zoom: 0.25;
+  -webkit-transform: scale(0.25);
+  -webkit-transform-origin: 0 0;
 }
 /* Suggestions for bus stops */
 #busSuggestions {
