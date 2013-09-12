@@ -515,6 +515,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
   speed = 400
   if activate
     $('#useInfoscreen').attr 'checked', false
+    # Load infoscreen preview
+    $('#infoscreenPreview').attr 'src', 'infoscreen.html'
     # Remove subtext
     $('#headerText').fadeOut()
     # Animate away all other options
@@ -586,7 +588,9 @@ revertInfoscreen = ->
           $('#container #left').animate {'width':'54%'}, speed, ->
             # Back to old logo subtext
             $('#headerText').html '<b>Notifier</b> Options'
-            $('#headerText').fadeIn()
+            $('#headerText').fadeIn ->
+              # Finally, unlaod infoscreen preview (resource heavy)
+              $('#infoscreenPreview').attr 'src', 'about:blank'
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->

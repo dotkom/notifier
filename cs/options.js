@@ -566,6 +566,7 @@
     speed = 400;
     if (activate) {
       $('#useInfoscreen').attr('checked', false);
+      $('#infoscreenPreview').attr('src', 'infoscreen.html');
       $('#headerText').fadeOut();
       return $('#container #left').animate({
         'width': '0pt'
@@ -647,7 +648,9 @@
               'width': '54%'
             }, speed, function() {
               $('#headerText').html('<b>Notifier</b> Options');
-              return $('#headerText').fadeIn();
+              return $('#headerText').fadeIn(function() {
+                return $('#infoscreenPreview').attr('src', 'about:blank');
+              });
             });
           });
         });
