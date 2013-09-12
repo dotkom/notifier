@@ -608,7 +608,6 @@
       });
     } else {
       ls['useInfoscreen'] = 'false';
-      $('#infoscreenPreview').attr('src', 'about:blank');
       if (Affiliation.org[ls.affiliationKey1].hardwareFeatures === true) {
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       } else {
@@ -649,7 +648,9 @@
               'width': '54%'
             }, speed, function() {
               $('#headerText').html('<b>Notifier</b> Options');
-              return $('#headerText').fadeIn();
+              return $('#headerText').fadeIn(function() {
+                return $('#infoscreenPreview').attr('src', 'about:blank');
+              });
             });
           });
         });

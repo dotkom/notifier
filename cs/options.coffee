@@ -554,8 +554,6 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     ls['useInfoscreen'] = 'false'
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
-    # Remove infoscreen preview
-    $('#infoscreenPreview').attr 'src', 'about:blank'
     # Refresh office status
     if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
       Browser.getBackgroundProcess().updateOfficeAndMeetings true
@@ -590,7 +588,9 @@ revertInfoscreen = ->
           $('#container #left').animate {'width':'54%'}, speed, ->
             # Back to old logo subtext
             $('#headerText').html '<b>Notifier</b> Options'
-            $('#headerText').fadeIn()
+            $('#headerText').fadeIn ->
+              # Finally, unlaod infoscreen preview (resource heavy)
+              $('#infoscreenPreview').attr 'src', 'about:blank'
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
