@@ -515,6 +515,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
   speed = 400
   if activate
     $('#useInfoscreen').attr 'checked', false
+    # Load infoscreen preview
+    $('#infoscreenPreview').attr 'src', 'infoscreen.html'
     # Remove subtext
     $('#headerText').fadeOut()
     # Animate away all other options
@@ -552,6 +554,8 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     ls['useInfoscreen'] = 'false'
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
+    # Remove infoscreen preview
+    $('#infoscreenPreview').attr 'src', 'about:blank'
     # Refresh office status
     if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
       Browser.getBackgroundProcess().updateOfficeAndMeetings true

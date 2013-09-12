@@ -566,6 +566,7 @@
     speed = 400;
     if (activate) {
       $('#useInfoscreen').attr('checked', false);
+      $('#infoscreenPreview').attr('src', 'infoscreen.html');
       $('#headerText').fadeOut();
       return $('#container #left').animate({
         'width': '0pt'
@@ -607,6 +608,7 @@
       });
     } else {
       ls['useInfoscreen'] = 'false';
+      $('#infoscreenPreview').attr('src', 'about:blank');
       if (Affiliation.org[ls.affiliationKey1].hardwareFeatures === true) {
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       } else {
