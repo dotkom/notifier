@@ -1,6 +1,6 @@
 var Affiliation = {
   
-  debug: 0,
+  debug: 1,
   
   // IMPORTANT: Keep the same order here as in options.html
 
@@ -715,6 +715,21 @@ var Affiliation = {
         Affiliation.getImages(this, links, callback);
       },
     },
+    'vivas': {
+      name: 'Vivas',
+      key: 'vivas',
+      web: 'http://vivas.hist.no/',
+      feed: 'http://vivas.hist.no/?feed=rss2',
+      logo: './org/vivas/logo.png',
+      icon: './org/vivas/icon.png',
+      symbol: './org/vivas/symbol.png',
+      placeholder: './org/vivas/placeholder.png',
+      palette: 'cyan',
+      useAltLink: false,
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback, {newsSelector:'.post'});
+      },
+    },
 
     // Masterforeninger, doktorforeninger, internasjonale foreninger
     'dion': {
@@ -1160,7 +1175,7 @@ var Affiliation = {
             }
 
             // Look up the first post with the link inside it...
-            image = doc.find(newsSelector + ' a[href="' + link + '"]');
+            var image = doc.find(newsSelector + ' a[href="' + link + '"]');
 
             // ...then find parent 'article' or 'div.post' or the like...
             if (image.length != 0) {
@@ -1190,7 +1205,7 @@ var Affiliation = {
             else {
               // Find all image tags within post
               image = image.find('img');
-              
+
               // Exclude gifs since they're most likely smilies and the likes
               image = image.not('img[src*=".gif"]');
               image = image.not('img[src*="data:image/gif"]');
@@ -1200,7 +1215,7 @@ var Affiliation = {
 
               // Exclude static content, most likely icons
               image = image.not('img[src*="static"]');
-              
+
               // Use image at specified index if requested
               if (options.imageIndex)
                 image = image.eq(options.imageIndex);
