@@ -437,6 +437,15 @@ header {
 
   #infoscreenPreview {
     display: none;
+    overflow: hidden;
+    margin-left: 70pt;
+    // The page needs to be a lot larger...
+    height: 6400px;
+    width: 4700px;
+    // ...because in reality it's scaled down
+    zoom: 0.25;
+    -webkit-transform: scale(0.25);
+    -webkit-transform-origin: 0 0;
   }
 }
 

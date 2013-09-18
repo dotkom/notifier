@@ -8,6 +8,7 @@ This is a both a Chrome/Opera extension and a WebApp from the student organizati
 
 # Media coverage
 
+* 2013.09.03 "Hemmelig program ble suksess": http://dusken.no/articles/details/23569/online-notifier/
 * 2013.05.28 "Siste nytt - og om
 litt er kaffen klar": http://www.universitetsavisa.no/campus/article17115.ece
 

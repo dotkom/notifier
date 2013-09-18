@@ -105,7 +105,7 @@ var Defaults = {
       ls.rightCantina = 'realfag';
     
     // Chatter
-    if (ls.openChatter == undefined)
+    // if (ls.openChatter == undefined) // Chatter is disabled
       ls.openChatter = 'false';
     
     // Notifications
@@ -136,8 +136,7 @@ var Defaults = {
   // user starts out with the features turned on.
   // Then, the features will be turned off if:
   // a) the user has explicitly turned them off, or
-  // b) hardwarefeatures are not available, using
-  //    this function from the background script
+  // b) hardwarefeatures are not available (this function called from background process)
   setHardwareFeatures: function(isAvailable) {
     
     var ls = localStorage;
