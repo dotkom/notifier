@@ -36,10 +36,11 @@ var Stops = {
       var now = new Date();
       var listAge = new Date(JSON.parse(listAge));
       var diff = now - listAge;
-      // Using four weeks instead of actual month
-      var fourWeeks = 2 * 7 * 24 * 60 * 60 * 1000;
-      if (this.debug) console.log('load - ListAge:',fourWeeks,'<',diff,':',(fourWeeks<diff));
-      if (fourWeeks < diff) {
+      // How long the stop lists should be valid
+      //              days  hours min    sec    ms
+      var validTime = 1  *  1  *  60  *  60  *  1000;
+      if (this.debug) console.log('load - ListAge:',validTime,'<',diff,':',(validTime<diff));
+      if (validTime < diff) {
         needNewList = true;
       }
     }
