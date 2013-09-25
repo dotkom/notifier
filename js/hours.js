@@ -155,8 +155,9 @@ var Hours = {
     // Adding any extra info to the end of the string,
     // special info might be e.g. eksamensåpent or vacations
     for (var i=1; i<pieces.length; i++) {
-      // Special case titles contains neiter days nor hours
-      if (pieces[i].match(/\w+(dag)/gi) == null && pieces[i].match(/\d?\d[\.:]\d\d/gi) == null) {
+      // Special case titles contains EITHER strong text or NEITHER days nor hours
+      // Note that this is valid: <strong>Torsdag 3. oktober</strong>
+      if (pieces[i].match(/\<\/?strong\>/gi) != null || (pieces[i].match(/\w+(dag)/gi) == null && pieces[i].match(/\d?\d[\.:]\d\d/gi) == null)) {
         specialCase = pieces.slice(i).join('<br />- ');
         break;
       }
