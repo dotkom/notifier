@@ -137,6 +137,16 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
         $(busStop+' .'+spans[i]+' .line').append lines['destination'][i]
         $(busStop+' .'+spans[i]+' .time').append lines['departures'][i]
 
+bindOracle = ->
+  $('#oracle #question').keypress (e) ->
+    if e.which is 13
+      question = $('#oracle #question').val()
+      if question isnt ''
+        Oracle.get question, (answer) ->
+          $('#oracle #answer').text answer
+      else
+        $('#oracle #answer').text Oracle.greet()
+
 updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
@@ -376,6 +386,9 @@ $ ->
     Browser.openTab 'http://www.atb.no'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickAtb'])
     window.close()
+
+  # Bind oracle
+  bindOracle()
 
   # Bind buttons to hovertext
   $('#optionsButton').mouseenter ->
