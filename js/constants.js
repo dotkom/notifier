@@ -30,6 +30,9 @@ var urlExists = function(url) {
 	    return http.status!=404;
 	}
 	catch (e) {
+		// do nothing
+	}
+	finally {
 		return false;
 	}
 }
