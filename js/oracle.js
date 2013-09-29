@@ -57,7 +57,8 @@ var Oracle = {
 
       // Funfacts
       'Bussorakelet ble utviklet på NTNU, spør om noe!',
-      'Tri M. Nguyen har laget APIet som brukes til sanntiden. Tri <3',
+      'Tri M. Nguyen har laget APIet som brukes til sanntiden. Takk, Tri <3',
+      'Tri M. Nguyen har laget APIet som Notifier bruker, det er på <a href="http://api.visuweb.no/bybussen">api.visuweb.no/bybussen</a>',
       'AtB har minibusser også.',
       'UKA har en egen buss.',
       'Flybussen går hvert 10. minutt.',
@@ -80,14 +81,14 @@ var Oracle = {
       'Bartebuss og ByBussen er de beste bussappene.',
       'Bussene sjekker inn med GPS på hvert stopp, cirka.',
       'Bussene som må kjøre langt mellom hvert stopp har upresis sanntid.',
-      'busskartet.no er ganske morsomt.',
-      'Han som laget busskartet.no må ha kost seg gløgg i hjæl med alle de små bussene sine.',
+      '<a href="http://busskartet.no">busskartet.no</a> er ganske morsomt.',
+      'Han som laget <a href="http://busskartet.no">busskartet.no</a> må ha kost seg gløgg i hjæl med alle de små bussene sine.',
       'Sekkemannen sitter alltid på en utgave av Under Dusken for å unngå bakterier fra bussetet.',
 
       // Om orakelet
-      'Bussorakelets wiki er på ntnu.no/wiki/display/FUIROS',
+      'Bussorakelets wiki er på <a href="http://ntnu.no/wiki/display/FUIROS">ntnu.no/wiki/display/FUIROS</a>',
       'Bussorakelet kom til live i 1998.',
-      'I 2002 begynte bussorakelet å besvare spørsmål via SMS.',
+      'I 2002 begynte bussorakelet å besvare spørsmål på SMS.',
       'BussTUC betyr "Buss: The Understanding Computer".',
       'Orakelet består av tre hjerner: Den første kan beregning, den andre kan språk, den tredje forstår de to første.',
       'Orakelet forstår språk ved hjelp av et komplekst sett med regler skrevet i Prolog.',
