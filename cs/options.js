@@ -25,13 +25,15 @@
   };
 
   pageFlipCursorBlinking = function() {
-    return $(".pageflipcursor").animate({
-      opacity: 0
-    }, "fast", "swing", function() {
-      return $(this).animate({
-        opacity: 1
-      }, "fast", "swing");
-    });
+    return setInterval((function() {
+      return $(".pageflipcursor").animate({
+        opacity: 0
+      }, "fast", "swing", function() {
+        return $(this).animate({
+          opacity: 1
+        }, "fast", "swing");
+      });
+    }), 600);
   };
 
   testDesktopNotification = function() {
@@ -738,9 +740,7 @@
       }
     });
     changeCreatorName(ls.extensionCreator);
-    setInterval((function() {
-      return pageFlipCursorBlinking();
-    }), 600);
+    pageFlipCursorBlinking();
     if (ls.everOpenedOptions === 'false') {
       ls.everOpenedOptions = 'true';
       setTimeout((function() {

@@ -17,8 +17,10 @@ displayOnPageNotification = ->
   ), 800
 
 pageFlipCursorBlinking = ->
-  $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
-    $(@).animate opacity: 1, "fast", "swing",
+  setInterval ( ->
+    $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
+      $(@).animate opacity: 1, "fast", "swing",
+  ), 600
 
 testDesktopNotification = ->
   News.showNotification()
@@ -699,9 +701,7 @@ $ ->
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
-  setInterval ( ->
-    pageFlipCursorBlinking()
-  ), 600
+  pageFlipCursorBlinking()
 
   # Fade in the "popup here"-bubble if options page haven't been used before
   # Also blink the first affiliation-selection field with light green colors to attract the bees
