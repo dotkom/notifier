@@ -437,6 +437,9 @@ body {
   font-family: monospace;
   padding: 0 1.5pt;
 }
+#container #bus #oracle #answer a {
+  color: white;
+}
 #container #news {
   /* #full for using a single column */
 
