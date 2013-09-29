@@ -57,7 +57,7 @@ var Oracle = {
 
       // Funfacts
       'Bussorakelet ble utviklet på NTNU, spør om noe!',
-      'Tri M. Nguyen har laget APIet som brukes til sanntiden.',
+      'Tri M. Nguyen har laget APIet som brukes til sanntiden. Tri <3',
       'AtB har minibusser også.',
       'UKA har en egen buss.',
       'Flybussen går hvert 10. minutt.',
@@ -67,6 +67,7 @@ var Oracle = {
       'En av bussjåførene er julenisse hver desember.',
       'Både AtB og SiT liker Notifier.',
       'Notifier fikk støtte for sanntidsbuss i versjon 1.3.0.',
+      'Notifier og bussorakelet ble venner i Notifier versjon 1.3.1',
       'Tenk om Kantinelizzie hadde kjørt buss.',
       'Hvis du har installert Notifier på forskjellige maskiner kan du ha forskjellige busstopp på hver.',
       'Større busser, flere busser, raskere busser, AtB gjør alle tre på 5ern.',
@@ -74,14 +75,29 @@ var Oracle = {
       'Før i tiden møttes alle bussene i Munkegata/Dronningens gate.',
       'AtB laget egen bussapp som het Bussøyet, men den var for sent etter Bartebuss.',
       'Det finnes mange bussapper.',
-      'Bartebuss og ByBussen er de beste bussappene.',
       'AtB sitt API er laget av italienere.',
       'AtB sitt API har italienske metodenavn.',
+      'Bartebuss og ByBussen er de beste bussappene.',
       'Bussene sjekker inn med GPS på hvert stopp, cirka.',
       'Bussene som må kjøre langt mellom hvert stopp har upresis sanntid.',
       'busskartet.no er ganske morsomt.',
       'Han som laget busskartet.no må ha kost seg gløgg i hjæl med alle de små bussene sine.',
+      'Sekkemannen sitter alltid på en utgave av Under Dusken for å unngå bakterier fra bussetet.',
 
+      // Om orakelet
+      'Bussorakelets wiki er på ntnu.no/wiki/display/FUIROS',
+      'Bussorakelet kom til live i 1998.',
+      'I 2002 begynte bussorakelet å besvare spørsmål via SMS.',
+      'BussTUC betyr "Buss: The Understanding Computer".',
+      'Orakelet består av tre hjerner: Den første kan beregning, den andre kan språk, den tredje forstår de to første.',
+      'Orakelet forstår språk ved hjelp av et komplekst sett med regler skrevet i Prolog.',
+      'Bussorakelet er den sentrale delen i FUIROS-prosjektet.',
+      'Orakelet kan 4590 ord, 1204 stoppnavn, 80 busslinjer og 9970 navnevarianter.',
+      'Orakelet forstår språk ved hjelp av 5000 språkregler.',
+      'Orakelet kan 960 substantiv, 1100 verb og 450 adjektiv.',
+      'Orakelets kodebase består av 130.500 linjer Prolog.',
+      'Orakelet forstår språk ved hjelp av "Consensical Grammar" (CONtext SENSItive CompositionAL Grammar).',
+      
       // Team Trafikk
       'AtB er tusen ganger bedre enn Team Trafikk var.',
       'I 2010 byttet Team Trafikk navn til AtB, og byttet eiere.',
@@ -94,6 +110,19 @@ var Oracle = {
       'Da Team Trafikk ble AtB fikk de API-er som man kunne hente data fra.',
       'Da Team Trafikk ble AtB fant Roy Sindre en nøkkel til API-et, han spurte ikke om lov.',
       'Åpne bussdata var veldig lurt av AtB.',
+
+      // Contributors
+      'Christoffer Jun Marcussen har vært med å lage bussorakelet (2011-2012)',
+      'Jon S Bratseth har vært med å lage bussorakelet (1996-1997)',
+      'Magnus Raaum har vært med å lage bussorakelet (2010-2011)',
+      'Martin Thorsen Ranang har vært med å lage bussorakelet (2001-2011)',
+      'Marius Qvam Wollamo har vært med å lage bussorakelet (2012-2013)',
+      'Runar Andersstuen har vært med å lage bussorakelet (2011-2012)',
+      'Rune Martin Andersen har vært med å lage bussorakelet (2011-2012)',
+      'Rune Sætre har vært med å lage bussorakelet (2000-2012)',
+      'Tore Amble har vært med å lage bussorakelet (1996-2012)',
+      'Tore Bruland har vært med å lage bussorakelet (2004-2011)',
+      'Trond Bø Engell har vært med å lage bussorakelet (2011-2012)',
     ];
     var randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
     return randomGreeting;
