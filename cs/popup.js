@@ -228,7 +228,12 @@
 
   changeOracleAnswer = function(answer) {
     clearTimeout(Number(ls.animateOracleAnswerTimeoutId));
-    return animateOracleAnswer(answer);
+    if (answer.match(/<\/?\w+>/g)) {
+      $('#oracle #answer').html(answer);
+      return $('#oracle #answer a').attr('target', '_blank');
+    } else {
+      return animateOracleAnswer(answer);
+    }
   };
 
   animateOracleAnswer = function(line, build) {

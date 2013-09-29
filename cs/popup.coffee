@@ -155,8 +155,13 @@ bindOracle = ->
 changeOracleAnswer = (answer) ->
   # Stop previous changeOracleAnswer instance, if any
   clearTimeout Number ls.animateOracleAnswerTimeoutId
+  # If answer contains HTML, just insert it as HTML
+  if answer.match /<\/?\w+>/g
+    $('#oracle #answer').html answer
+    $('#oracle #answer a').attr 'target', '_blank'
   # Animate oracle answer name change
-  animateOracleAnswer answer
+  else
+    animateOracleAnswer answer
 
 animateOracleAnswer = (line, build) ->
   # Animate it
