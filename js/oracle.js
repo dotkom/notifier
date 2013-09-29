@@ -112,17 +112,17 @@ var Oracle = {
       'Åpne bussdata var veldig lurt av AtB.',
 
       // Contributors
-      'Christoffer Jun Marcussen har vært med å lage bussorakelet (2011-2012)',
-      'Jon S Bratseth har vært med å lage bussorakelet (1996-1997)',
-      'Magnus Raaum har vært med å lage bussorakelet (2010-2011)',
-      'Martin Thorsen Ranang har vært med å lage bussorakelet (2001-2011)',
-      'Marius Qvam Wollamo har vært med å lage bussorakelet (2012-2013)',
-      'Runar Andersstuen har vært med å lage bussorakelet (2011-2012)',
-      'Rune Martin Andersen har vært med å lage bussorakelet (2011-2012)',
-      'Rune Sætre har vært med å lage bussorakelet (2000-2012)',
-      'Tore Amble har vært med å lage bussorakelet (1996-2012)',
-      'Tore Bruland har vært med å lage bussorakelet (2004-2011)',
-      'Trond Bø Engell har vært med å lage bussorakelet (2011-2012)',
+      'Christoffer J. Marcussen er en av hjernene bak bussorakelet (2011-2012).',
+      'Jon S. Bratseth er en av hjernene bak bussorakelet (1996-1997).',
+      'Magnus Raaum er en av hjernene bak bussorakelet (2010-2011).',
+      'Martin T. Ranang er en av hjernene bak bussorakelet (2001-2011).',
+      'Marius Q. Wollamo er en av hjernene bak bussorakelet (2012-2013).',
+      'Runar Andersstuen er en av hjernene bak bussorakelet (2011-2012).',
+      'Rune M. Andersen er en av hjernene bak bussorakelet (2011-2012).',
+      'Rune Sætre er en av hjernene bak bussorakelet (2000-2012).',
+      'Tore Amble er en av hjernene bak bussorakelet (1996-2012).',
+      'Tore Bruland er en av hjernene bak bussorakelet (2004-2011).',
+      'Trond Bø Engell er en av hjernene bak bussorakelet (2011-2012).',
     ];
     var randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
     return randomGreeting;
