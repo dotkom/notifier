@@ -387,31 +387,55 @@ body {
 }
 #container #bus {
   top: 12pt;
-  line-height: 11.5pt;
-  height: 65pt;
   margin-bottom: 15pt;
+  padding-bottom: 7pt;
   box-shadow: 0 0 15pt #ccc;
 }
-#container #bus .name {
+#container #bus #realtime {
+  border: 0pt solid #ff0000;
+  line-height: 11.5pt;
+  height: 65pt;
+}
+#container #bus #realtime .name {
   margin-bottom: 4pt;
 }
-#container #bus .loadingLeft {
+#container #bus #realtime .loadingLeft {
   width: 80px;
   bottom: 3pt;
 }
-#container #bus .loadingRight {
+#container #bus #realtime .loadingRight {
   width: 80px;
   bottom: 3pt;
 }
-#container #bus #middle {
+#container #bus #realtime #middle {
   width: 18%;
 }
-#container #bus #middle #atbLogo {
+#container #bus #realtime #middle #atbLogo {
   position: relative;
   left: -0.5pt;
   margin: 11pt auto;
   height: 46pt;
   cursor: pointer;
+}
+#container #bus #oracle {
+  border: 0pt solid #ff0000;
+  margin-left: 4.5%;
+  width: 90%;
+}
+#container #bus #oracle #question {
+  border: 0pt solid #ffff00;
+  width: 100%;
+  background-color: transparent;
+  border: 1pt solid #333;
+  font-family: monospace;
+  font-size: 9pt;
+  color: NavajoWhite;
+  outline: none;
+}
+#container #bus #oracle #answer {
+  border: 0pt solid #00ff00;
+  font-family: monospace;
+  padding: 0 1.5pt;
 }
 #container #news {
   /* #full for using a single column */
