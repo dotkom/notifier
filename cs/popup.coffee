@@ -138,14 +138,46 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
         $(busStop+' .'+spans[i]+' .time').append lines['departures'][i]
 
 bindOracle = ->
-  $('#oracle #question').keypress (e) ->
+  $('#oracle #question').keyup (e) ->
+    question = $('#oracle #question').val()
+    # react to enter
     if e.which is 13
-      question = $('#oracle #question').val()
       if question isnt ''
         Oracle.get question, (answer) ->
-          $('#oracle #answer').text answer
+          changeOracleAnswer answer
       else
-        $('#oracle #answer').text Oracle.greet()
+        changeOracleAnswer Oracle.greet()
+    # react to blank
+    else
+      if question is ''
+        changeOracleAnswer ''
+
+changeOracleAnswer = (answer) ->
+  # Stop previous changeOracleAnswer instance, if any
+  clearTimeout Number ls.animateOracleAnswerTimeoutId
+  # Animate oracle answer name change
+  animateOracleAnswer answer
+
+animateOracleAnswer = (line, build) ->
+  # Animate it
+  text = $('#oracle #answer').text()
+  if text.length is 0
+    build = true
+  random = Math.floor 10 * Math.random() + 2
+  if !build
+    $('#oracle #answer').text text.slice 0, text.length-1
+    ls.animateOracleAnswerTimeoutId = setTimeout ( ->
+      animateOracleAnswer line
+    ), random
+  else
+    if text.length isnt line.length
+      if text.length is 0
+        $('#oracle #answer').text line.slice 0, 1
+      else
+        $('#oracle #answer').text line.slice 0, text.length+1
+      ls.animateOracleAnswerTimeoutId = setTimeout ( ->
+        animateOracleAnswer line, true
+      ), random
 
 updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
