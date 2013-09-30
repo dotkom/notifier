@@ -184,6 +184,50 @@ animateOracleAnswer = (line, build) ->
         animateOracleAnswer line, true
       ), random
 
+oraclePrediction = ->
+  question = Oracle.predict()
+  if question isnt null
+    # Wait just a little bit
+    setTimeout ( ->
+      # Add question
+      # $('#oracle #question').val question
+      changeOracleQuestion question
+      # Wait just a little bit more
+      setTimeout ( ->
+        # Add answer
+        Oracle.get question, (answer) ->
+          changeOracleAnswer answer
+          $('#oracle #question').focus()
+      ), 1500
+    ), 1000
+
+changeOracleQuestion = (question) ->
+  # Stop previous changeOracleAnswer instance, if any
+  clearTimeout Number ls.animateOracleQuestionTimeoutId
+  # Animate oracle question name change
+  animateOracleQuestion question
+
+animateOracleQuestion = (line, build) ->
+  # Animate it
+  text = $('#oracle #question').val()
+  if text.length is 0
+    build = true
+  random = Math.floor 150 * Math.random() + 10
+  if !build
+    $('#oracle #question').val text.slice 0, text.length-1
+    ls.animateOracleQuestionTimeoutId = setTimeout ( ->
+      animateOracleQuestion line
+    ), random
+  else
+    if text.length isnt line.length
+      if text.length is 0
+        $('#oracle #question').val line.slice 0, 1
+      else
+        $('#oracle #question').val line.slice 0, text.length+1
+      ls.animateOracleQuestionTimeoutId = setTimeout ( ->
+        animateOracleQuestion line, true
+      ), random
+
 updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
@@ -426,6 +470,7 @@ $ ->
 
   # Bind oracle
   bindOracle()
+  oraclePrediction()
 
   # Bind buttons to hovertext
   $('#optionsButton').mouseenter ->
