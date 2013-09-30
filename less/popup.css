@@ -424,18 +424,17 @@ body {
 }
 #container #bus #oracle #question {
   border: 0pt solid #ffff00;
-  width: 100%;
+  width: 88%;
   background-color: transparent;
-  border: 1pt solid #333;
-  font-family: monospace;
-  font-size: 9pt;
   color: NavajoWhite;
+  display: inline;
+  font-family: Helvetica;
+  font-size: 9pt;
   outline: none;
 }
 #container #bus #oracle #answer {
   border: 0pt solid #00ff00;
-  font-family: monospace;
-  padding: 0 1.5pt;
+  padding: 0 1pt;
 }
 #container #bus #oracle #answer a {
   color: white;
