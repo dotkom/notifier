@@ -273,7 +273,7 @@
             changeOracleAnswer(answer);
             return $('#oracle #question').focus();
           });
-        }), 1500);
+        }), 1700);
       }), 1000);
     }
   };

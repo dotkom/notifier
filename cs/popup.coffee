@@ -198,7 +198,7 @@ oraclePrediction = ->
         Oracle.get question, (answer) ->
           changeOracleAnswer answer
           $('#oracle #question').focus()
-      ), 1500
+      ), 1700
     ), 1000
 
 changeOracleQuestion = (question) ->
