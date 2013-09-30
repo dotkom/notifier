@@ -47,13 +47,13 @@ var Oracle = {
       'Orakelet svarer på alle spørsmål om busser.',
       'Spør, og du vil få svar.',
       'Bussorakelet er sultent på spørsmål, eller kantinemat, alt ettersom.',
-      'Spør et busspørsmål her!',
+      'Spør et busspørsmål her.',
       'De som laget Notifier er ganske snille mot AtB.',
       'Ta bussen til Tiller og kjøp no stæsj du trenger.',
       'Ta bussen til Nidar og spis masse sjokolade.',
+      'Ta bussen til campus når det er for kaldt for å sykle.',
       'Tralala, jeg kan synge en sang.',
       'Buss her, buss der, buss overalt.',
-      'Ta bussen til campus.',
 
       // Funfacts
       'Bussorakelet ble utviklet på NTNU, spør om noe!',
