@@ -2,7 +2,7 @@ var Oracle = {
   api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
   msgDisconnected: 'Frakoblet fra m.atb.no',
 
-  debug: 1,
+  debug: 0,
 
   get: function(question, callback) {
     if (callback == undefined) {
