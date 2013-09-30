@@ -2,6 +2,8 @@ var Oracle = {
   api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
   msgDisconnected: 'Frakoblet fra m.atb.no',
 
+  debug: 1,
+
   get: function(question, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
@@ -13,13 +15,18 @@ var Oracle = {
     }
 
     // Encode URL component.... as it says below :D
-    question = encodeURIComponent(question);
+    var encodedQuestion = encodeURIComponent(question);
 
     var self = this;
     Ajaxer.getPlainText({
-      url: self.api + question,
+      url: self.api + encodedQuestion,
       success: function(answer) {
         answer = self.shorten(answer);
+
+        // Store answer for later prediction
+        self.consider(question, answer);
+
+        // Call it back
         callback(answer);
       },
       error: function(jqXHR, text, err) {
@@ -129,7 +136,68 @@ var Oracle = {
     return randomGreeting;
   },
 
+  predict: function() {
+    var oracleBrain = JSON.parse(localStorage.oracleBrain);
+    
+    // Get question from timeslot
+    var timeslot = this.getTimeslot();
+    var question = oracleBrain[timeslot.day][timeslot.hour];
+    if (this.debug) console.log('Oracle predicting question for day '+timeslot.day+' in the '+timeslot.hour+': "'+question+'"');
+    
+    return (question != '' ? question : null);
+  },
+
   // Private functions, do not use externally
+
+  consider: function(question, answer) {
+    if (this.debug) console.log('Oracle considering...\n- Question:', question, '\n- Answer:', answer);
+
+    var pieces = answer.match(/buss|til|fra/gi);
+    if (pieces != null) {
+      if (pieces.length >= 3) {
+        var oracleBrain = JSON.parse(localStorage.oracleBrain);
+        
+        // Get timeslot
+        var timeslot = this.getTimeslot();
+        
+        // Insert question at correct timeslot
+        oracleBrain[timeslot.day][timeslot.hour] = question;
+        if (this.debug) console.log('Oracle considered question to be valuable');
+
+        // Stringify the brain
+        localStorage.oracleBrain = JSON.stringify(oracleBrain);
+      }
+      else {
+        if (this.debug) console.log('Oracle thinks the answer did not contain enough expected keywords');
+      }
+    }
+    else {
+      if (this.debug) console.log('Oracle thinks the answer did not contain expected keywords');
+    }
+  },
+
+  getTimeslot: function() {
+    // Night:       0 -  5:59
+    // Morning:     6 - 11:59
+    // Afternoon:  12 - 17:59
+    // Evening:    18 - 23:59
+    var d = new Date();
+    var hour = d.getHours();
+
+    var timeslot = {};
+    timeslot.day = d.getDay();
+    
+    if (0 <= hour && hour < 6)
+      timeslot.hour = 'night';
+    else if (6 <= hour && hour < 12)
+      timeslot.hour = 'morning';
+    else if (12 <= hour && hour < 18)
+      timeslot.hour = 'afternoon';
+    else //if (18 <= hour && hour <= 23)
+      timeslot.hour = 'evening';
+    
+    return timeslot;
+  },
 
   shorten: function(answer) {
 
@@ -154,4 +222,12 @@ var Oracle = {
     return pieces.join('. ') + '.';
   },
 
+}
+
+// Defaults
+if (localStorage.oracleBrain == undefined) {
+  var oracleBrain = {};
+  for (var i=0; i<=6; i++)
+    oracleBrain[i] = {night:'', morning:'', afternoon:'', evening:''};
+  localStorage.oracleBrain = JSON.stringify(oracleBrain);
 }
