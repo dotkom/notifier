@@ -286,7 +286,7 @@
           changeOracleAnswer(answer);
           return $('#oracle #question').focus();
         });
-      }), 2000);
+      }), 1400);
     } else {
       $('#oracle #question').focus();
       return setTimeout((function() {

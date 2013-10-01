@@ -207,7 +207,7 @@ oraclePrediction = ->
       Oracle.get question, (answer) ->
         changeOracleAnswer answer
         $('#oracle #question').focus()
-    ), 2000
+    ), 1400
   else
     # Tell the user to use the oracle more before using predictions
     $('#oracle #question').focus()
