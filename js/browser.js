@@ -140,8 +140,14 @@ var Browser = {
 
             // Show the notification
             chrome.notifications.create(id, options, function(notID) {
-              if (DEBUG) console.log("Succesfully created notification with ID " + notID);
+              if (DEBUG) console.log('Succesfully created notification with ID', notID);
             });
+            // Chrom(e|ium) on Linux doesn't remove the notification automatically
+            setTimeout(function() {
+              chrome.notifications.clear(id, function(wasCleared) {
+                if (DEBUG) console.log('Cleared notification?', wasCleared);
+              });
+            }, 5000);
           }
           else {
             if (DEBUG) console.log('Notification not sent, state was', state);

@@ -17,8 +17,10 @@ displayOnPageNotification = ->
   ), 800
 
 pageFlipCursorBlinking = ->
-  $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
-    $(@).animate opacity: 1, "fast", "swing",
+  setInterval ( ->
+    $(".pageflipcursor").animate opacity: 0, "fast", "swing", ->
+      $(@).animate opacity: 1, "fast", "swing",
+  ), 600
 
 testDesktopNotification = ->
   News.showNotification()
@@ -699,9 +701,7 @@ $ ->
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
-  setInterval ( ->
-    pageFlipCursorBlinking()
-  ), 600
+  pageFlipCursorBlinking()
 
   # Fade in the "popup here"-bubble if options page haven't been used before
   # Also blink the first affiliation-selection field with light green colors to attract the bees
@@ -761,13 +761,13 @@ $ ->
     $('input#showNotifications').prop "disabled", "disabled"
     $('input#showNotifications').prop "checked", "false"
     text = 'Varsle om nyheter'
-    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 17</b>')
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 18</b>')
     # Turn off coffeeSubscription feature
     $('input#coffeeSubscription').prop "disabled", "disabled"
     $('input#coffeeSubscription').prop "checked", "false"
     text = $('label[for=coffeeSubscription] span').text()
     text = text.trim()
-    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 17</b>')
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 18</b>')
 
   # Adding a hover class to #busBox whenever the mouse is hovering over it
   $('#busBox').hover ->

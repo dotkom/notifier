@@ -137,6 +137,105 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
         $(busStop+' .'+spans[i]+' .line').append lines['destination'][i]
         $(busStop+' .'+spans[i]+' .time').append lines['departures'][i]
 
+bindOracle = ->
+  $('#oracle #question').keyup (e) ->
+    question = $('#oracle #question').val()
+    # react to enter
+    if e.which is 13
+      if question isnt ''
+        Oracle.get question, (answer) ->
+          changeOracleAnswer answer
+      else
+        changeOracleAnswer Oracle.greet()
+    # react to blank
+    else
+      if question is ''
+        changeOracleAnswer ''
+
+changeOracleAnswer = (answer) ->
+  # Stop previous changeOracleAnswer instance, if any
+  clearTimeout Number ls.animateOracleAnswerTimeoutId
+  # If answer contains HTML, just insert it as HTML
+  if answer.match /<\/?\w+>/g
+    $('#oracle #answer').html answer
+    $('#oracle #answer a').attr 'target', '_blank'
+  # Animate oracle answer name change
+  else
+    animateOracleAnswer answer
+
+animateOracleAnswer = (line, build) ->
+  # Animate it
+  text = $('#oracle #answer').text()
+  if text.length is 0
+    build = true
+  millisecs = 6
+  if !build
+    $('#oracle #answer').text text.slice 0, text.length-1
+    ls.animateOracleAnswerTimeoutId = setTimeout ( ->
+      animateOracleAnswer line
+    ), millisecs
+  else
+    if text.length isnt line.length
+      if text.length is 0
+        $('#oracle #answer').text line.slice 0, 1
+      else
+        $('#oracle #answer').text line.slice 0, text.length+1
+      ls.animateOracleAnswerTimeoutId = setTimeout ( ->
+        animateOracleAnswer line, true
+      ), millisecs
+
+bindPrediction = ->
+  $('#oracle').on 'keydown', '#question', (e) ->
+    keyCode = e.keyCode || e.which
+    if keyCode is 9
+      e.preventDefault()
+      oraclePrediction()
+  # Discreetly inform user about oracle prediction. Only users who use
+  # the oracle actively will notice this message, that's the point.
+  setTimeout ( ->
+    $('#oracle #question').attr 'placeholder', Oracle.msgCantPredictShort
+  ), 10000
+
+oraclePrediction = ->
+  question = Oracle.predict()
+  if question isnt null
+    # Add question
+    changeOracleQuestion question
+    # Wait just a little bit
+    setTimeout ( ->
+      # Add answer
+      Oracle.get question, (answer) ->
+        changeOracleAnswer answer
+        $('#oracle #question').focus()
+    ), 2000
+  else
+    # Tell the user to use the oracle more before using predictions
+    $('#oracle #question').focus()
+    setTimeout ( ->
+      changeOracleAnswer Oracle.msgCantPredictLong
+    ), 200
+
+changeOracleQuestion = (question) ->
+  # Stop previous changeOracleAnswer instance, if any
+  clearTimeout Number ls.animateOracleQuestionTimeoutId
+  # Animate oracle question name change
+  animateOracleQuestion question
+
+animateOracleQuestion = (line) ->
+  # Animate it
+  text = $('#oracle #question').val()
+  if text.length is 0
+    build = true
+  random = Math.floor 150 * Math.random() + 10
+  if text.length isnt line.length
+    if text.length is 0
+      $('#oracle #question').val line.slice 0, 1
+    else
+      $('#oracle #question').val line.slice 0, text.length+1
+    ls.animateOracleQuestionTimeoutId = setTimeout ( ->
+      animateOracleQuestion line
+    ), random
+
 updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
@@ -376,6 +475,10 @@ $ ->
     Browser.openTab 'http://www.atb.no'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickAtb'])
     window.close()
+
+  # Bind oracle
+  bindOracle()
+  bindPrediction()
 
   # Bind buttons to hovertext
   $('#optionsButton').mouseenter ->

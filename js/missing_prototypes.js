@@ -3,7 +3,10 @@
 // http://github.com/dotkom/online-notifier
 // dotkom@online.ntnu.no
 
-// For capitalizing the first letter of a string
 String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+String.prototype.startsWith = function (string) {
+  return this.indexOf(string) == 0;
 }
