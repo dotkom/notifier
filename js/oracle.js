@@ -1,5 +1,7 @@
 var Oracle = {
   api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
+  msgCantPredictLong: 'Etter å ha brukt orakelet en stund kan det forutsi spørsmålet ditt når du trykker [TAB].',
+  msgCantPredictShort: 'Ved å bruke orakelet lærer det å forutsi spørsmålet ditt når du trykker [TAB]',
   msgDisconnected: 'Frakoblet fra m.atb.no',
 
   debug: 0,
@@ -152,7 +154,7 @@ var Oracle = {
   consider: function(question, answer) {
     if (this.debug) console.log('Oracle considering...\n- Question:', question, '\n- Answer:', answer);
 
-    var pieces = answer.match(/buss|til|fra/gi);
+    var pieces = answer.match(/buss|til|fra|passerer|kommer|senere/gi);
     if (pieces != null) {
       if (pieces.length >= 3) {
         var oracleBrain = JSON.parse(localStorage.oracleBrain);
