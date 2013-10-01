@@ -168,12 +168,12 @@ animateOracleAnswer = (line, build) ->
   text = $('#oracle #answer').text()
   if text.length is 0
     build = true
-  random = Math.floor 10 * Math.random() + 2
+  millisecs = 6
   if !build
     $('#oracle #answer').text text.slice 0, text.length-1
     ls.animateOracleAnswerTimeoutId = setTimeout ( ->
       animateOracleAnswer line
-    ), random
+    ), millisecs
   else
     if text.length isnt line.length
       if text.length is 0
@@ -182,24 +182,38 @@ animateOracleAnswer = (line, build) ->
         $('#oracle #answer').text line.slice 0, text.length+1
       ls.animateOracleAnswerTimeoutId = setTimeout ( ->
         animateOracleAnswer line, true
-      ), random
+      ), millisecs
+
+bindPrediction = ->
+  $('#oracle').on 'keydown', '#question', (e) ->
+    keyCode = e.keyCode || e.which
+    if keyCode is 9
+      e.preventDefault()
+      oraclePrediction()
+  # Discreetly inform user about oracle prediction. Only users who use
+  # the oracle actively will notice this message, that's the point.
+  setTimeout ( ->
+    $('#oracle #question').attr 'placeholder', Oracle.msgCantPredictShort
+  ), 10000
 
 oraclePrediction = ->
   question = Oracle.predict()
   if question isnt null
+    # Add question
+    changeOracleQuestion question
     # Wait just a little bit
     setTimeout ( ->
-      # Add question
-      # $('#oracle #question').val question
-      changeOracleQuestion question
-      # Wait just a little bit more
-      setTimeout ( ->
-        # Add answer
-        Oracle.get question, (answer) ->
-          changeOracleAnswer answer
-          $('#oracle #question').focus()
-      ), 1700
-    ), 1000
+      # Add answer
+      Oracle.get question, (answer) ->
+        changeOracleAnswer answer
+        $('#oracle #question').focus()
+    ), 2000
+  else
+    # Tell the user to use the oracle more before using predictions
+    $('#oracle #question').focus()
+    setTimeout ( ->
+      changeOracleAnswer Oracle.msgCantPredictLong
+    ), 200
 
 changeOracleQuestion = (question) ->
   # Stop previous changeOracleAnswer instance, if any
@@ -207,26 +221,20 @@ changeOracleQuestion = (question) ->
   # Animate oracle question name change
   animateOracleQuestion question
 
-animateOracleQuestion = (line, build) ->
+animateOracleQuestion = (line) ->
   # Animate it
   text = $('#oracle #question').val()
   if text.length is 0
     build = true
   random = Math.floor 150 * Math.random() + 10
-  if !build
-    $('#oracle #question').val text.slice 0, text.length-1
+  if text.length isnt line.length
+    if text.length is 0
+      $('#oracle #question').val line.slice 0, 1
+    else
+      $('#oracle #question').val line.slice 0, text.length+1
     ls.animateOracleQuestionTimeoutId = setTimeout ( ->
       animateOracleQuestion line
     ), random
-  else
-    if text.length isnt line.length
-      if text.length is 0
-        $('#oracle #question').val line.slice 0, 1
-      else
-        $('#oracle #question').val line.slice 0, text.length+1
-      ls.animateOracleQuestionTimeoutId = setTimeout ( ->
-        animateOracleQuestion line, true
-      ), random
 
 updateAffiliationNews = (number) ->
   if DEBUG then console.log 'updateAffiliationNews'+number
@@ -470,7 +478,7 @@ $ ->
 
   # Bind oracle
   bindOracle()
-  oraclePrediction()
+  bindPrediction()
 
   # Bind buttons to hovertext
   $('#optionsButton').mouseenter ->
