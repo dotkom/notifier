@@ -785,12 +785,12 @@
       $('input#showNotifications').prop("disabled", "disabled");
       $('input#showNotifications').prop("checked", "false");
       text = 'Varsle om nyheter';
-      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent til Opera 17</b>');
+      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent til Opera 18</b>');
       $('input#coffeeSubscription').prop("disabled", "disabled");
       $('input#coffeeSubscription').prop("checked", "false");
       text = $('label[for=coffeeSubscription] span').text();
       text = text.trim();
-      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 17</b>');
+      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 18</b>');
     }
     $('#busBox').hover(function() {
       return $(this).addClass('hover');
