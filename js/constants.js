@@ -3,7 +3,7 @@ var DEBUG = 0;
 // AJAX setup
 var AJAX_SETUP = {
 	timeout: 9000,
-	cache: false, // this little sentence killed a lot of little bugs that was actually one big big
+	cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
 }
 
 // Loops & intervals
@@ -30,6 +30,9 @@ var urlExists = function(url) {
 	    return http.status!=404;
 	}
 	catch (e) {
+		// do nothing
+	}
+	finally {
 		return false;
 	}
 }

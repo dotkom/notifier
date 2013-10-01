@@ -198,44 +198,50 @@
     </div>
 
     <div id="bus">
-      <div id="firstBus">
-        <div class="name">
-          <!-- br's are hackish -->
-          <br /><br /><img class="loadingLeft" src="img/loading.gif" />
+      <div id="realtime">
+        <div id="firstBus">
+          <div class="name">
+            <!-- br's are hackish -->
+            <br /><br /><img class="loadingLeft" src="img/loading.gif" />
+          </div>
+          <div class="first">
+            <span class="line"></span>
+            <span class="time"></span>
+          </div>
+          <div class="second">
+            <span class="line"></span>
+            <span class="time"></span>
+          </div>
+          <div class="third">
+            <span class="line"></span>
+            <span class="time"></span>
+          </div>
         </div>
-        <div class="first">
-          <span class="line"></span>
-          <span class="time"></span>
+        <div id="middle">
+          <img id="atbLogo" src="img/logo-atb.png" />
         </div>
-        <div class="second">
-          <span class="line"></span>
-          <span class="time"></span>
-        </div>
-        <div class="third">
-          <span class="line"></span>
-          <span class="time"></span>
+        <div id="secondBus">
+          <div class="name">
+            <!-- br's are hackish -->
+            <br /><br /><img class="loadingRight" src="img/loading.gif" />
+          </div>
+          <div class="first">
+            <span class="line"></span>
+            <span class="time"></span>
+          </div>
+          <div class="second">
+            <span class="line"></span>
+            <span class="time"></span>
+          </div>
+          <div class="third">
+            <span class="line"></span>
+            <span class="time"></span>
+          </div>
         </div>
       </div>
-      <div id="middle">
-        <img id="atbLogo" src="img/logo-atb.png" />
-      </div>
-      <div id="secondBus">
-        <div class="name">
-          <!-- br's are hackish -->
-          <br /><br /><img class="loadingRight" src="img/loading.gif" />
-        </div>
-        <div class="first">
-          <span class="line"></span>
-          <span class="time"></span>
-        </div>
-        <div class="second">
-          <span class="line"></span>
-          <span class="time"></span>
-        </div>
-        <div class="third">
-          <span class="line"></span>
-          <span class="time"></span>
-        </div>
+      <div id="oracle">
+        Orakelet&nbsp; <input id="question" type="text" placeholder='"Når går bussen fra Gløshaugen til Studentersamfundet?" eller bare "gløs samf"' />
+        <div id="answer"></div>
       </div>
     </div>
     
@@ -328,6 +334,7 @@
   <script src="js/meetings.js"></script>
   <script src="js/news.js"></script>
   <script src="js/office.js"></script>
+  <script src="js/oracle.js"></script>
   <script src="js/servant.js"></script>
 
   <!-- Document ready sript -->

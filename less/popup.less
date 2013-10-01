@@ -3,6 +3,11 @@
 
 /* This file contains popup-additions to common.less */
 
+// Vars
+
+@body-width: 350pt;
+@body-padding: 15pt;
+
 // Mixins
 
 .title {
@@ -18,7 +23,7 @@
 // Rules
 
 body {
-  width: 350pt;
+  width: @body-width;
   height: 400pt;
   font-size: 9pt;
   line-height: 11.5pt;
@@ -77,7 +82,7 @@ body {
 
 #container {
   overflow-y: auto;
-  padding: 15pt;
+  padding: @body-padding;
 
   #header {
     .debugred;
@@ -165,30 +170,60 @@ body {
 
   #bus {
     top: 12pt;
-    line-height: 11.5pt;
-    height: 65pt;
     margin-bottom: 15pt;
+    padding-bottom: 7pt;
     box-shadow: 0 0 15pt #ccc;
 
-    .name {
-      margin-bottom: 4pt;
+    #realtime {
+      .debugred;
+      line-height: 11.5pt;
+      height: 65pt;
+
+      .name {
+        margin-bottom: 4pt;
+      }
+      .loadingLeft {
+        width: 80px;
+        bottom: 3pt;
+      }
+      .loadingRight {
+        width: 80px;
+        bottom: 3pt;
+      }
+      #middle {
+        width: 18%;
+        #atbLogo {
+          position: relative;
+          left: -.5pt;
+          margin: 11pt auto;
+          height: 46pt;
+          cursor: pointer;
+        }
+      }
     }
-    .loadingLeft {
-      width: 80px;
-      bottom: 3pt;
-    }
-    .loadingRight {
-      width: 80px;
-      bottom: 3pt;
-    }
-    #middle {
-      width: 18%;
-      #atbLogo {
-        position: relative;
-        left: -.5pt;
-        margin: 11pt auto;
-        height: 46pt;
-        cursor: pointer;
+
+    #oracle {
+      .debugred;
+      margin-left: 4.5%;
+      width: 90%;
+
+      #question {
+        .debugyellow;
+        width: 88%;
+        background-color: transparent;
+        // border: 1pt solid #333;
+        color: NavajoWhite;
+        display: inline;
+        font-family: Helvetica;
+        font-size: 9pt;
+        outline: none;
+      }
+      #answer {
+        .debuglime;
+        padding: 0 1pt;
+        a {
+          color: white;
+        }
       }
     }
   }
