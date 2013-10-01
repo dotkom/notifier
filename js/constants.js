@@ -3,7 +3,7 @@ var DEBUG = 1;
 // AJAX setup
 var AJAX_SETUP = {
 	timeout: 9000,
-	cache: false, // this little sentence killed a lot of little bugs that was actually one big big
+	cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
 }
 
 // Loops & intervals
