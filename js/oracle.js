@@ -1,12 +1,20 @@
 var Oracle = {
-  api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
-  msgCantPredictLong: 'Etter å ha brukt orakelet en stund kan det forutsi spørsmålet ditt når du trykker [TAB].',
-  msgCantPredictShort: 'Ved å bruke orakelet lærer det å forutsi spørsmålet ditt når du trykker [TAB]',
-  msgDisconnected: 'Frakoblet fra m.atb.no',
-
   debug: 0,
+  api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
+  msgAboutPredict: 'Etter å ha brukt orakelet en stund kan det forutsi spørsmålet ditt når du trykker [tab]',
+  msgDisconnected: 'Frakoblet fra m.atb.no',
+  msgSuggestPredict: 'Trykk [tab] for å spørre om: ',
 
-  get: function(question, callback) {
+  __loadDefaults: function() {
+    if (localStorage.oracleBrain == undefined) {
+      var oracleBrain = {};
+      for (var i=0; i<=6; i++)
+        oracleBrain[i] = {night:'', morning:'', afternoon:'', evening:''};
+      localStorage.oracleBrain = JSON.stringify(oracleBrain);
+    }
+  }(),
+
+  ask: function(question, callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
@@ -202,34 +210,21 @@ var Oracle = {
   },
 
   shorten: function(answer) {
-
     // Example:
     // "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd. Buss 5 går fra
     // Gløshaugen Syd kl. 2054 til Prinsen kinosenter kl. 2058 og buss 19
     // går fra Prinsen kinosenter kl. 2105 til Studentersamfundet kl. 2106.
     // Tidene angir tidligste passeringer av holdeplassene."
-
     var pieces = answer.split('. ');
-
     // Slice away "Holdeplassen nærmest X er X."
     if (pieces[0].startsWith('Holdeplassen nærmest')) {
       pieces = pieces.slice(1);
     }
-
     // Slice away "Tidene angir tidligste passeringer av holdeplassene."
     if (pieces[pieces.length-1].startsWith('Tidene angir tidligste')) {
       pieces = pieces.slice(0, pieces.length-1);
     }
-
     return pieces.join('. ') + '.';
   },
 
-}
-
-// Defaults
-if (localStorage.oracleBrain == undefined) {
-  var oracleBrain = {};
-  for (var i=0; i<=6; i++)
-    oracleBrain[i] = {night:'', morning:'', afternoon:'', evening:''};
-  localStorage.oracleBrain = JSON.stringify(oracleBrain);
 }

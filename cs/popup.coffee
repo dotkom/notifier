@@ -138,19 +138,36 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
         $(busStop+' .'+spans[i]+' .time').append lines['departures'][i]
 
 bindOracle = ->
+  # Suggest prediction
+  if Oracle.predict() isnt null
+    $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleSuggest'])
+  # User input
   $('#oracle #question').keyup (e) ->
     question = $('#oracle #question').val()
-    # react to enter
+    # Clicked enter
     if e.which is 13
       if question isnt ''
-        Oracle.get question, (answer) ->
+        Oracle.ask question, (answer) ->
           changeOracleAnswer answer
+          if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleAnswer'])
+          # Update suggested prediction
+          if Oracle.predict() isnt null
+            $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
       else
         changeOracleAnswer Oracle.greet()
-    # react to blank
-    else
-      if question is ''
-        changeOracleAnswer ''
+        if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleGreet'])
+    # Cleared field
+    else if question is ''
+      changeOracleAnswer ''
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleClear'])
+  # Clicked tab: Predict question
+  $('#oracle').on 'keydown', '#question', (e) ->
+    keyCode = e.keyCode || e.which
+    if keyCode is 9
+      e.preventDefault()
+      oraclePrediction()
+      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oraclePrediction'])
 
 changeOracleAnswer = (answer) ->
   # Stop previous changeOracleAnswer instance, if any
@@ -184,35 +201,21 @@ animateOracleAnswer = (line, build) ->
         animateOracleAnswer line, true
       ), millisecs
 
-bindPrediction = ->
-  $('#oracle').on 'keydown', '#question', (e) ->
-    keyCode = e.keyCode || e.which
-    if keyCode is 9
-      e.preventDefault()
-      oraclePrediction()
-  # Discreetly inform user about oracle prediction. Only users who use
-  # the oracle actively will notice this message, that's the point.
-  setTimeout ( ->
-    $('#oracle #question').attr 'placeholder', Oracle.msgCantPredictShort
-  ), 10000
-
 oraclePrediction = ->
   question = Oracle.predict()
   if question isnt null
     # Add question
     changeOracleQuestion question
-    # Wait just a little bit
-    setTimeout ( ->
-      # Add answer
-      Oracle.get question, (answer) ->
-        changeOracleAnswer answer
-        $('#oracle #question').focus()
-    ), 2000
+    # Add answer
+    Oracle.ask question, (answer) ->
+      changeOracleAnswer answer
+      $('#oracle #question').focus()
   else
     # Tell the user to use the oracle more before using predictions
     $('#oracle #question').focus()
+    # The timeout is...well...the timeout is a hack.
     setTimeout ( ->
-      changeOracleAnswer Oracle.msgCantPredictLong
+      changeOracleAnswer Oracle.msgAboutPredict
     ), 200
 
 changeOracleQuestion = (question) ->
@@ -226,7 +229,7 @@ animateOracleQuestion = (line) ->
   text = $('#oracle #question').val()
   if text.length is 0
     build = true
-  random = Math.floor 150 * Math.random() + 10
+  random = Math.floor 100 * Math.random() + 10
   if text.length isnt line.length
     if text.length is 0
       $('#oracle #question').val line.slice 0, 1
@@ -478,7 +481,6 @@ $ ->
 
   # Bind oracle
   bindOracle()
-  bindPrediction()
 
   # Bind buttons to hovertext
   $('#optionsButton').mouseenter ->
