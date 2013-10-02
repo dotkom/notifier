@@ -1,4 +1,5 @@
 var Office = {
+  debug: 0,
   titleError: 'Oops',
   titleOpen: 'Åpent',
   titleClosed: 'Lukket',
@@ -9,8 +10,6 @@ var Office = {
   msgClosed: 'Finn et komitemedlem for å åpne opp.',
   msgUntitledMeeting: 'Kontoret er opptatt', // titled meetings and waffles get names from calendar entries
   lightLimit: 860,
-
-  debug: 0,
 
   get: function(callback) {
     if (callback == undefined) {
@@ -27,6 +26,7 @@ var Office = {
         // status: "closed"
         // title: "Lukket"
         // message: "Finn et komitemedlem for å åpne opp"
+        if (self.debug) console.log('Office:\n- status is', status, '\n- title is', title, '\n- message is', message);
         callback(status, title, message);
       }
     });
