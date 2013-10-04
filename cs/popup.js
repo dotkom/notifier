@@ -640,6 +640,7 @@
         return $('#background').attr('style', '-webkit-animation:adjustHue 10s alternate infinite;');
       }
     });
+    $('#oracle #question').focus();
     return mainLoop();
   });
 

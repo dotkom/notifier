@@ -520,5 +520,9 @@ $ ->
       $('#background').attr 'style','-webkit-animation:adjustHue 10s alternate infinite;'
   )
 
+  # Set the cursor to focus on the question field
+  # (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
+  $('#oracle #question').focus()
+
   # Enter main loop, keeping everything up-to-date
   mainLoop()
