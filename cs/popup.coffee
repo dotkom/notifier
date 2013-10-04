@@ -482,6 +482,9 @@ $ ->
   # Bind oracle
   bindOracle()
 
+  $('#oracle #name').click ->
+    $('#oracle #question').focus()
+
   # Bind buttons to hovertext
   $('#optionsButton').mouseenter ->
     optionsText true

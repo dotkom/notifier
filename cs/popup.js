@@ -599,6 +599,9 @@
       return window.close();
     });
     bindOracle();
+    $('#oracle #name').click(function() {
+      return $('#oracle #question').focus();
+    });
     $('#optionsButton').mouseenter(function() {
       return optionsText(true);
     });

@@ -422,6 +422,9 @@ body {
   margin-left: 4.5%;
   width: 90%;
 }
+#container #bus #oracle #name {
+  margin-right: 5pt;
+}
 #container #bus #oracle #question {
   border: 0pt solid #ffff00;
   width: 88%;
