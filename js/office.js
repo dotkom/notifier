@@ -1,19 +1,36 @@
 var Office = {
   debug: 0,
-  titleError: 'Oops',
-  titleOpen: 'Åpent',
-  titleClosed: 'Lukket',
-  titleMeeting: 'Møte',
-  titleWaffles: 'Vafler',
+  debugStatus: '', // is used if not ''
+
+  // Light limit, 0-860 is ON, 860-1023 is OFF
+  lightLimit: 860,
+  // Basic
+  titles: {
+    'error': 'Oops',
+    'open': 'Åpent',
+    'closed': 'Lukket',
+    'meeting': 'Møte',
+  },
+  // Foods
+  foods: {
+    'waffle': {title: 'Vafler', icon: './img/icon-waffle.png'},
+    'cake': {title: 'Kake', icon: './img/icon-cake.png'},
+    'bun': {title: 'Boller', icon: './img/icon-bun.png'},
+  },
+  // Messages
   msgError: 'Klarte ikke hente kontorstatus',
   msgOpen: 'Gratis kaffe og te til alle!',
   msgClosed: 'Finn et komitemedlem for å åpne opp.',
-  msgUntitledMeeting: 'Kontoret er opptatt', // titled meetings and waffles get names from calendar entries
-  lightLimit: 860,
+  msgUntitledMeeting: 'Kontoret er opptatt', // titled events get names from calendar entries
 
   get: function(callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+
+    if (this.debug && this.debugStatus != '') {
+      callback(this.debugStatus, 'Debugging', 'Lolololol');
       return;
     }
 
@@ -56,15 +73,32 @@ var Office = {
 
         // set the status from fetched data
         switch(Number(status)) {
-          case 0: callback('open', self.titleOpen, self.msgOpen); break;
-          case 1: callback('meeting', self.titleMeeting, title); break;
-          case 2: callback('waffle', self.titleWaffles, title); break;
-          default: callback('error', self.titleError, self.msgError);
+
+          // Old system (kept here for temporary backwards compatibility until
+          // all the Notifiers out there are updated)
+          
+          case 0: callback('open', self.titles.open, self.msgOpen); break;
+          case 1: callback('meeting', self.titles.meeting, title); break;
+          case 2: callback('waffle', self.foods.waffle.title, title); break;
+          case 3: callback('error', self.titles.error, self.msgError); break;
+
+          // New system
+          
+          case 100: callback('error', self.titles.error, self.msgError); break;
+          
+          case 200: callback('open', self.titles.open, self.msgOpen); break;
+          case 210: callback('meeting', self.titles.meeting, title); break;
+
+          case 300: callback('waffle', self.foods.waffle.title, title); break;
+          case 310: callback('cake', self.foods.cake.title, title); break;
+          case 320: callback('bun', self.foods.bun.title, title); break;
+          
+          default: callback('error', self.titles.error, self.msgError);
         }
       },
       error: function(jqXHR, text, err) {
         if (self.debug) console.log('ERROR: Failed to get event data.');
-        callback('error', self.titleError, self.msgError);
+        callback('error', self.titles.error, self.msgError);
       },
     });
   },
@@ -83,15 +117,15 @@ var Office = {
       url: lightApi,
       success: function(data) {
         if (data > self.lightLimit) {
-          callback('closed', self.titleClosed, self.msgClosed);
+          callback('closed', self.titles.closed, self.msgClosed);
         }
         else {
-          callback('open', self.titleOpen, self.msgOpen);
+          callback('open', self.titles.open, self.msgOpen);
         }
       },
       error: function(jqXHR, err) {
         if (self.debug) console.log('ERROR: Failed to get light data.');
-        callback('error', self.titleError, self.msgError);
+        callback('error', self.titles.error, self.msgError);
       },
     });
   },
