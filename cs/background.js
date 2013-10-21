@@ -52,7 +52,11 @@
       var errorIcon, statusIcon;
       if (force || ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         if (status === 'waffle') {
-          Browser.setIcon('./img/icon-waffle.png');
+          Browser.setIcon(Office.iconWaffle);
+        } else if (status === 'cake') {
+          Browser.setIcon(Office.iconCake);
+        } else if (status === 'bun') {
+          Browser.setIcon(Office.iconBun);
         } else {
           statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status];
           if (statusIcon !== void 0) {

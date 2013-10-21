@@ -34,7 +34,11 @@ updateOfficeAndMeetings = (force) ->
     if force or ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       # Extension icon
       if status is 'waffle'
-        Browser.setIcon './img/icon-waffle.png'
+        Browser.setIcon Office.iconWaffle
+      else if status is 'cake'
+        Browser.setIcon Office.iconCake
+      else if status is 'bun'
+        Browser.setIcon Office.iconBun
       else
         statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status]
         if statusIcon isnt undefined
