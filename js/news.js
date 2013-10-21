@@ -1,4 +1,5 @@
 var News = {
+  debug: 0,
   newsMinLimit: 1,
   newsMaxLimit: 15,
   unreadMaxCount: 3, // 0-indexed like the list it its counting, actually +1
@@ -7,8 +8,6 @@ var News = {
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
   msgNoNewsSource: 'Ingen nyhetskilde funnet for valgt tilhørightet',
-
-  debug: 0,
 
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
@@ -121,7 +120,9 @@ var News = {
     // The popular fields
     post.title = $(item).find("title").filter(':first').text();
     post.link = $(item).find("link").filter(':first').text();
-    post.description = $(item).find("description").filter(':first').text();
+    post.description = $(item).find("description").filter(':first').html();
+    if (typeof post.description == 'undefined')
+      post.description = $(item).find("description").filter(':first').text();
     // Less used fields
     post.creator = $(item).find("dc:creator").filter(':first').text();
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
@@ -229,7 +230,7 @@ var News = {
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities, this works, but ppl should be allowed to use entitites
-    
+
     // Didn't find a creator, set the feedname as creator
     if (post.creator.length == 0) {
       post.creator = post.feedName;
