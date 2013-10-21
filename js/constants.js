@@ -60,9 +60,9 @@ else {
 
 // Browser detection
 var BROWSER = "Unknown";
-if (typeof chrome != "undefined" && typeof opr == "undefined")
+if (navigator.userAgent.indexOf('Chrome') != -1 && navigator.userAgent.indexOf('OPR') == -1)
 	BROWSER = "Chrome";
-else if (typeof chrome != "undefined" && typeof opr != "undefined")
+else if (navigator.userAgent.indexOf('OPR') != -1)
 	BROWSER = "Opera";
 else
 	console.log('WARNING: Potentially unsupported browser');
