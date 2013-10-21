@@ -1,6 +1,5 @@
 var Affiliation = {
-  
-  debug: 0,
+  debug: 1,
   
   // IMPORTANT: Keep the same order here as in options.html
 
@@ -251,8 +250,8 @@ var Affiliation = {
       placeholder: './org/leonardo/placeholder.png',
       palette: 'cyan',
       useAltLink: false,
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, {newsSelector:'div.post_wrapper', linkDelimiter:'?'});
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback, {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1});
       },
     },
     'mannhullet': {
@@ -1078,12 +1077,19 @@ var Affiliation = {
 
   getImages: function(affiliation, links, callback, options) {
 
+    // TODO: Point of improvement: A few sites have differing selectors for
+    // news articles across different news pages. Like e.g. if one of their
+    // news pages have a regular header image and another has a slideshow.
+    // Make sure this function can check for multiple different selectors.
+    // TODO: Refactor, think of an awesome new way to organize this function.
+
     // Possible values in options:
     // options = {
     //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
     //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
     //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
     //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
+    //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/ // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
     // };
 
     // Create empty object to avoid crashes when looking up undefined props of undefined object
