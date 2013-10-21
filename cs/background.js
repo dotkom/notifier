@@ -51,12 +51,8 @@
     return Office.get(function(status, title, message) {
       var errorIcon, statusIcon;
       if (force || ls.currentStatus !== status || ls.currentStatusMessage !== message) {
-        if (status === 'waffle') {
-          Browser.setIcon(Office.iconWaffle);
-        } else if (status === 'cake') {
-          Browser.setIcon(Office.iconCake);
-        } else if (status === 'bun') {
-          Browser.setIcon(Office.iconBun);
+        if (status in Office.foods) {
+          Browser.setIcon(Office.foods[status].icon);
         } else {
           statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status];
           if (statusIcon !== void 0) {
