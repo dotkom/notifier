@@ -1,5 +1,5 @@
 var Affiliation = {
-  debug: 1,
+  debug: 0,
   
   // IMPORTANT: Keep the same order here as in options.html
 
