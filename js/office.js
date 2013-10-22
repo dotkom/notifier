@@ -31,9 +31,9 @@ var Office = {
 
     var self = this;
     this.getEventData( function(status, title, message) {
-
+      
       // If no events are active we'll have to check the lights as well
-      if (status == 'open') {
+      if (status == 'free') {
         self.getLightData(callback);
       }
       else {
@@ -77,15 +77,14 @@ var Office = {
         // set the status from fetched data
         switch(status) {
           
-          case 'error': callback('error', self.titles.error, self.msgError); break;
+          case 'free': callback('free'); break;
           
-          case 'open': callback('open', self.titles.open, self.msgOpen); break;
           case 'meeting': callback('meeting', self.titles.meeting, title); break;
-          
           case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
           case 'cake': callback('cake', self.foods.cake.title, title); break;
           case 'bun': callback('bun', self.foods.bun.title, title); break;
           
+          case 'error':
           default: callback('error', self.titles.error, self.msgError);
         }
       },
@@ -110,9 +109,11 @@ var Office = {
       url: lightApi,
       success: function(data) {
         if (data > self.lightLimit) {
+          if (self.debug) console.log('Office:\n- status is', status, '\n- title is', self.titles.closed, '\n- message is', self.msgClosed);
           callback('closed', self.titles.closed, self.msgClosed);
         }
         else {
+          if (self.debug) console.log('Office:\n- status is', status, '\n- title is', self.titles.open, '\n- message is', self.msgOpen);
           callback('open', self.titles.open, self.msgOpen);
         }
       },
