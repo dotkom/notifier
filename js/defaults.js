@@ -109,7 +109,7 @@ var Defaults = {
       ls.openChatter = 'false';
     
     // Notifications
-    if (ls.showNotifications == undefined)
+    if (ls.showNotifications == undefined && !DEBUG) // During debugging notifications are annoying
       ls.showNotifications = 'true';
     
     // Subscription

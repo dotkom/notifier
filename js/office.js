@@ -63,7 +63,7 @@ var Office = {
         }
 
         var status = data.split('\n',2)[0]; // 'meeting'
-        var title = data.split('\n',2)[1]; // 'Møte: arrKom'
+        var title = data.split('\n',2)[1]; // 'Arbeidskveld med arrKom'
 
         // empty meeting title?
         if (status == 'meeting' && title == '')
@@ -99,7 +99,7 @@ var Office = {
 
     var lightApi = Affiliation.org[localStorage.affiliationKey1].lightApi;
 
-    // Receives current light intensity from the office: OFF 0-800-1023 ON
+    // Receives current light intensity from the office: OFF 0-lightLimit-1023 ON
     var self = this;
     Ajaxer.getPlainText({
       url: lightApi,
