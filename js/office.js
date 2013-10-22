@@ -1,6 +1,6 @@
 var Office = {
   debug: 1,
-  debugStatus: {enabled: 1, data: '320\nBoller på kontoret!'},
+  debugStatus: {enabled: 0, data: 'bun\nBoller på kontoret!'},
 
   // Light limit, 0-860 is ON, 860-1023 is OFF
   lightLimit: 860,
@@ -55,7 +55,7 @@ var Office = {
     var eventApi = Affiliation.org[localStorage.affiliationKey1].eventApi;
     
     // Receives info on current event from Onlines servers (without comments)
-    // 1              // 0=closed, 1=meeting, 2=waffles, 3=error
+    // meeting        // current status
     // Møte: dotKom   // event title or 'No title'-meeting or nothing
     var self = this;
     Ajaxer.getPlainText({
@@ -67,34 +67,24 @@ var Office = {
           data = self.debugStatus.data;
         }
 
-        var status = data.split('\n',2)[0];
-        var title = data.split('\n',2)[1];
+        var status = data.split('\n',2)[0]; // 'meeting'
+        var title = data.split('\n',2)[1]; // 'Møte: arrKom'
 
         // empty meeting title?
-        if (title == '' && status == 1)
+        if (status == 'meeting' && title == '')
           title = self.msgUntitledMeeting;
 
         // set the status from fetched data
-        switch(Number(status)) {
-
-          // Old system (kept here for temporary backwards compatibility until
-          // all the Notifiers out there are updated)
+        switch(status) {
           
-          case 0: callback('open', self.titles.open, self.msgOpen); break;
-          case 1: callback('meeting', self.titles.meeting, title); break;
-          case 2: callback('waffle', self.foods.waffle.title, title); break;
-          case 3: callback('error', self.titles.error, self.msgError); break;
-
-          // New system
+          case 'error': callback('error', self.titles.error, self.msgError); break;
           
-          case 100: callback('error', self.titles.error, self.msgError); break;
+          case 'open': callback('open', self.titles.open, self.msgOpen); break;
+          case 'meeting': callback('meeting', self.titles.meeting, title); break;
           
-          case 200: callback('open', self.titles.open, self.msgOpen); break;
-          case 210: callback('meeting', self.titles.meeting, title); break;
-
-          case 300: callback('waffle', self.foods.waffle.title, title); break;
-          case 310: callback('cake', self.foods.cake.title, title); break;
-          case 320: callback('bun', self.foods.bun.title, title); break;
+          case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
+          case 'cake': callback('cake', self.foods.cake.title, title); break;
+          case 'bun': callback('bun', self.foods.bun.title, title); break;
           
           default: callback('error', self.titles.error, self.msgError);
         }
