@@ -1,6 +1,6 @@
 var Office = {
-  debug: 0,
-  debugStatus: '', // is used if not ''
+  debug: 1,
+  debugStatus: {enabled: 1, data: '320\nBoller på kontoret!'},
 
   // Light limit, 0-860 is ON, 860-1023 is OFF
   lightLimit: 860,
@@ -29,13 +29,10 @@ var Office = {
       return;
     }
 
-    if (this.debug && this.debugStatus != '') {
-      callback(this.debugStatus, 'Debugging', 'Lolololol');
-      return;
-    }
-
     var self = this;
     this.getEventData( function(status, title, message) {
+
+      // If no events are active we'll have to check the lights as well
       if (status == 'open') {
         self.getLightData(callback);
       }
@@ -64,6 +61,12 @@ var Office = {
     Ajaxer.getPlainText({
       url: eventApi,
       success: function(data) {
+
+        // Debug particular status?
+        if (self.debug && self.debugStatus.enabled) {
+          data = self.debugStatus.data;
+        }
+
         var status = data.split('\n',2)[0];
         var title = data.split('\n',2)[1];
 
