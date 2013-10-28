@@ -1,4 +1,5 @@
 Ajaxer = {
+  debug: 0,
   mobileApi: 'index.php',
 
   // Format of params:
@@ -30,6 +31,12 @@ Ajaxer = {
 
   getHtml: function(params) {
     params.dataType = 'html';
+    this.get(params);
+  },
+
+  getCleanHtml: function(params) {
+    params.dataType = 'html';
+    params.dataFilter = Ajaxer.cleanHtml;
     this.get(params);
   },
 
@@ -69,6 +76,7 @@ Ajaxer = {
         type: 'POST',
         data: dataBlob,
         url: self.mobileApi,
+        dataFilter: params.dataFilter,
         dataType: params.dataType,
         success: params.success,
         error: params.error,
@@ -80,10 +88,26 @@ Ajaxer = {
         type: (params.data ? 'POST' : 'GET'),
         data: (params.data ? params.data : ''),
         url: params.url,
+        dataFilter: params.dataFilter,
         dataType: params.dataType,
         success: params.success,
         error: params.error,
       });
     }
+  },
+
+  cleanHtml: function(html, type) {
+    var size = html.length;
+    // Remove head, scripts, iframes
+    html = html.replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '');
+    html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    html = html.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
+    // Remove audio, video, object, canvas
+    html = html.replace(/<audio\b[^<]*(?:(?!<\/audio>)<[^<]*)*<\/audio>/gi, '');
+    html = html.replace(/<video\b[^<]*(?:(?!<\/video>)<[^<]*)*<\/video>/gi, '');
+    html = html.replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '');
+    html = html.replace(/<canvas\b[^<]*(?:(?!<\/canvas>)<[^<]*)*<\/canvas>/gi, '');
+    if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
+    return html;
   },
 }
