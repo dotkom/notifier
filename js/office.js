@@ -1,6 +1,6 @@
 var Office = {
   debug: 1,
-  debugStatus: {enabled: 0, data: 'bun\nBoller på kontoret!'},
+  debugStatus: {enabled: 1, data: 'cake\nKake på kontoret!'},
 
   // Light limit, 0-860 is ON, 860-1023 is OFF
   lightLimit: 860,
@@ -13,9 +13,11 @@ var Office = {
   },
   // Food statuses have titles and icons (messages exist as calendar titles)
   foods: {
-    'waffle': {title: 'Vafler', icon: './img/icon-waffle.png'},
-    'cake': {title: 'Kake', icon: './img/icon-cake.png'},
     'bun': {title: 'Boller', icon: './img/icon-bun.png'},
+    'cake': {title: 'Kake', icon: './img/icon-cake.png'},
+    'coffee': {title: 'Kaffekos', icon: './img/icon-coffee.png'},
+    'pizza': {title: 'Pizza', icon: './img/icon-pizza.png'},
+    'waffle': {title: 'Vafler', icon: './img/icon-waffle.png'},
   },
 
   get: function(callback) {
@@ -69,6 +71,17 @@ var Office = {
         if (status == 'meeting' && title == '')
           title = self.statuses['meeting'].message;
 
+        // Temporary support for the old system, backwards compatibility
+        if (isNumber(status)) {
+          switch(Number(status)) {
+            case 0: callback('free'); break;
+            case 1: callback('meeting', self.statuses['meeting'].title, title); break;
+            case 2: callback('waffle', self.foods.waffle.title, title); break;
+            case 3:
+            default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
+          }
+        }
+
         // set the status from fetched data
         switch(status) {
           
@@ -76,9 +89,11 @@ var Office = {
 
           case 'meeting': callback('meeting', self.statuses['meeting'].title, title); break;
           
-          case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
-          case 'cake': callback('cake', self.foods.cake.title, title); break;
           case 'bun': callback('bun', self.foods.bun.title, title); break;
+          case 'cake': callback('cake', self.foods.cake.title, title); break;
+          case 'coffee': callback('coffee', self.foods.coffee.title, title); break;
+          case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
+          case 'pizza': callback('pizza', self.foods.pizza.title, title); break;
           
           case 'error':
           default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
