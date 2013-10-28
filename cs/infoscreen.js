@@ -391,9 +391,18 @@
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1]);
       }
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1]);
+      }
     } else {
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
+      }
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1]);
+      }
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation2', ls.affiliationKey2]);
       }
     }
     if (ls.showOffice !== 'true') {
