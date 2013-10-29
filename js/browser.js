@@ -1,4 +1,5 @@
 var Browser = {
+  debug: 0,
   msgCallbackMissing: 'ERROR: Callback is missing',
   msgUnsupported: 'ERROR: Unsupported browser',
 
@@ -89,6 +90,7 @@ var Browser = {
   },
 
   createNotification: function(item) {
+    var self = this;
     if (BROWSER == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
       if (chrome.idle) {
@@ -140,27 +142,27 @@ var Browser = {
 
             // Show the notification
             chrome.notifications.create(id, options, function(notID) {
-              if (DEBUG) console.log('Succesfully created notification with ID', notID);
+              if (self.debug) console.log('Succesfully created notification with ID', notID);
             });
             // Chrom(e|ium) on Linux doesn't remove the notification automatically
             setTimeout(function() {
               chrome.notifications.clear(id, function(wasCleared) {
-                if (DEBUG) console.log('Cleared notification?', wasCleared);
+                if (self.debug) console.log('Cleared notification?', wasCleared);
               });
             }, 5000);
           }
           else {
-            if (DEBUG) console.log('Notification not sent, state was', state);
+            if (self.debug) console.log('Notification not sent, state was', state);
           }
         });
       }
       else {
-        if (DEBUG) console.log('ERROR: This version of Chrome does not support chrome.idle');
+        if (self.debug) console.log('ERROR: This version of Chrome does not support chrome.idle');
       }
     }
     else if (BROWSER == 'Opera') {
       // Desktop Notifications not yet available
-      if (DEBUG) console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
+      if (self.debug) console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
     }
     else {
       console.log(this.msgUnsupported);

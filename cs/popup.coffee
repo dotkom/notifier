@@ -405,15 +405,21 @@ $ ->
     ), 250
 
   # If only one affiliation is to be shown remove the second news column
+  # Also, some serious statistics
   if ls.showAffiliation2 isnt 'true'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
+    # Who uses single affiliations?
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1])
-  # If using two affiliation columns, increase the popup window size (better than
-  # decreasing the window size after opening it cuz that looks kinda stupid)
+    # What is the prefered primary affiliation?
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1])
   else
-    $('body').attr 'style', 'width:400pt;'
+    # What kind of double affiliations are used?
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
+    # What is the prefered primary affiliation?
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1])
+    # What is the prefered secondary affiliation?
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadAffiliation2', ls.affiliationKey2])
 
   # Hide stuff the user does not want to see
   $('#todays').hide() if ls.showOffice isnt 'true'

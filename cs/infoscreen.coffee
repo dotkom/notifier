@@ -315,10 +315,17 @@ $ ->
   if ls.showAffiliation2 isnt 'true'
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
-    # Run analytics to figure out which organizations use the infoscreen feature
+    # Who uses single affiliations?
     if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1])
+    # What is the prefered primary affiliation?
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1])
   else
+    # What kind of double affiliations are used?
     if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
+    # What is the prefered primary affiliation?
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1])
+    # What is the prefered secondary affiliation?
+    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation2', ls.affiliationKey2])
 
   # Hide stuff that the user has disabled in options
   $('#office').hide() if ls.showOffice isnt 'true'

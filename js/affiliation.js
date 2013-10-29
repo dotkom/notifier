@@ -73,7 +73,7 @@ var Affiliation = {
           return;
         }
         var self = this;
-        Ajaxer.getHtml({
+        Ajaxer.getCleanHtml({
           url: self.web,
           success: function(html) {
             html = html.trim(); // Why all the newlines in the start of the file? jQuery doesn't liek dat.
@@ -1126,7 +1126,7 @@ var Affiliation = {
     }
 
     var self = this;
-    Ajaxer.getHtml({
+    Ajaxer.getCleanHtml({
       url: url,
       success: function(html) {
         try {

@@ -512,10 +512,18 @@
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1]);
       }
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1]);
+      }
     } else {
-      $('body').attr('style', 'width:400pt;');
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
+      }
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1]);
+      }
+      if (!DEBUG) {
+        _gaq.push(['_trackEvent', 'popup', 'loadAffiliation2', ls.affiliationKey2]);
       }
     }
     if (ls.showOffice !== 'true') {
