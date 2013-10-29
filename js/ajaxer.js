@@ -16,28 +16,28 @@ Ajaxer = {
 
   getPlainText: function(params) {
     params.dataType = 'text';
-    this.get(params);
+    return this.get(params);
   },
 
   getJson: function(params) {
     params.dataType = 'json';
-    this.get(params);
+    return this.get(params);
   },
 
   getXml: function(params) {
     params.dataType = 'xml';
-    this.get(params);
+    return this.get(params);
   },
 
   getHtml: function(params) {
     params.dataType = 'html';
-    this.get(params);
+    return this.get(params);
   },
 
   getCleanHtml: function(params) {
     params.dataType = 'html';
     params.dataFilter = Ajaxer.cleanHtml;
-    this.get(params);
+    return this.get(params);
   },
 
   get: function(params) {
@@ -72,7 +72,7 @@ Ajaxer = {
       if (params.data != undefined) {
         dataBlob.data = params.data;
       }
-      $.ajax({
+      return $.ajax({
         type: 'POST',
         data: dataBlob,
         url: self.mobileApi,
@@ -84,7 +84,7 @@ Ajaxer = {
     }
     else {
       // Notifier
-      $.ajax({
+      return $.ajax({
         type: (params.data ? 'POST' : 'GET'),
         data: (params.data ? params.data : ''),
         url: params.url,
@@ -98,15 +98,20 @@ Ajaxer = {
 
   cleanHtml: function(html, type) {
     var size = html.length;
-    // Remove head, scripts, iframes
+    // Remove head, links, scripts, iframes, frames, framesets
     html = html.replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '');
+    html = html.replace(/<link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link>/gi, '');
     html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
     html = html.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
-    // Remove audio, video, object, canvas
+    html = html.replace(/<frame\b[^<]*(?:(?!<\/frame>)<[^<]*)*<\/frame>/gi, '');
+    html = html.replace(/<frameset\b[^<]*(?:(?!<\/frameset>)<[^<]*)*<\/frameset>/gi, '');
+    // Remove audio, video, object, canvas, applet, embed
     html = html.replace(/<audio\b[^<]*(?:(?!<\/audio>)<[^<]*)*<\/audio>/gi, '');
     html = html.replace(/<video\b[^<]*(?:(?!<\/video>)<[^<]*)*<\/video>/gi, '');
     html = html.replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '');
     html = html.replace(/<canvas\b[^<]*(?:(?!<\/canvas>)<[^<]*)*<\/canvas>/gi, '');
+    html = html.replace(/<applet\b[^<]*(?:(?!<\/applet>)<[^<]*)*<\/applet>/gi, '');
+    html = html.replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
     if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
     return html;
   },
