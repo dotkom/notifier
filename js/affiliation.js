@@ -290,7 +290,7 @@ var Affiliation = {
       },
       coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
       lightApi: 'http://draug.online.ntnu.no/lys.txt',
-      eventApi: 'https://online.ntnu.no/service_static/online/office_status',
+      eventApi: 'https://online.ntnu.no/service_static/online/office',
       servantApi: 'https://online.ntnu.no/service_static/servant_list',
       meetingsApi: 'https://online.ntnu.no/service_static/meeting_plan',
       hasMemes: true,
