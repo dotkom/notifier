@@ -1,5 +1,5 @@
 var Office = {
-  debug: 0,
+  debug: 1,
   debugStatus: {enabled: 0, data: 'cake\nKake på kontoret!'},
 
   // Light limit, 0-860 is ON, 860-1023 is OFF
@@ -68,6 +68,8 @@ var Office = {
         var status = data.split('\n',2)[0]; // 'meeting'
         var title = data.split('\n',2)[1]; // 'Arbeidskveld med arrKom'
 
+        if (self.debug) console.log('status is "'+status+'" and title is "'+title+'"');
+
         // empty meeting title?
         if (status == 'meeting' && title == '')
           title = self.statuses['meeting'].message;
@@ -82,24 +84,27 @@ var Office = {
             default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
           }
         }
+        else {
+          status = status.trim();
+          // Set the status from fetched data
+          switch(status) {
+            
+            case 'free': callback('free'); break;
 
-        // set the status from fetched data
-        switch(status) {
-          
-          case 'free': callback('free'); break;
-
-          case 'meeting': callback('meeting', self.statuses['meeting'].title, title); break;
-          
-          case 'bun': callback('bun', self.foods.bun.title, title); break;
-          case 'cake': callback('cake', self.foods.cake.title, title); break;
-          case 'coffee': callback('coffee', self.foods.coffee.title, title); break;
-          case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
-          case 'pizza': callback('pizza', self.foods.pizza.title, title); break;
-          case 'taco': callback('taco', self.foods.taco.title, title); break;
-          
-          case 'error':
-          default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
+            case 'meeting': callback('meeting', self.statuses['meeting'].title, title); break;
+            
+            case 'bun': callback('bun', self.foods.bun.title, title); break;
+            case 'cake': callback('cake', self.foods.cake.title, title); break;
+            case 'coffee': callback('coffee', self.foods.coffee.title, title); break;
+            case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
+            case 'pizza': callback('pizza', self.foods.pizza.title, title); break;
+            case 'taco': callback('taco', self.foods.taco.title, title); break;
+            
+            case 'error':
+            default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
+          }
         }
+
       },
       error: function(jqXHR, text, err) {
         if (self.debug) console.log('ERROR: Failed to get event data.');
