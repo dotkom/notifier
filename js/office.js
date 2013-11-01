@@ -17,6 +17,7 @@ var Office = {
     'cake': {title: 'Kake', icon: './img/icon-cake.png'},
     'coffee': {title: 'Kaffekos', icon: './img/icon-coffee.png'},
     'pizza': {title: 'Pizza', icon: './img/icon-pizza.png'},
+    'taco': {title: 'Taco', icon: './img/icon-taco.png'},
     'waffle': {title: 'Vafler', icon: './img/icon-waffle.png'},
   },
 
@@ -94,6 +95,7 @@ var Office = {
           case 'coffee': callback('coffee', self.foods.coffee.title, title); break;
           case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
           case 'pizza': callback('pizza', self.foods.pizza.title, title); break;
+          case 'taco': callback('taco', self.foods.taco.title, title); break;
           
           case 'error':
           default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
