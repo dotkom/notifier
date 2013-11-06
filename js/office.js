@@ -1,24 +1,24 @@
 var Office = {
   debug: 1,
-  debugStatus: {enabled: 0, data: 'cake\nKake på kontoret!'},
+  debugStatus: {enabled: 0, data: 'closed\nDebugging office status'},
 
   // Light limit, 0-860 is ON, 860-1023 is OFF
   lightLimit: 860,
   // Basic statuses have titles and messages (icons are fetched from affiliation)
   statuses: {
-    'error': {title: 'Oops', message: 'Klarte ikke hente kontorstatus'},
-    'open': {title: 'Åpent', message: 'Gratis kaffe og te til alle!'},
-    'closed': {title: 'Lukket', message: 'Finn et komitemedlem for å åpne opp.'},
-    'meeting': {title: 'Møte', message: 'Kontoret er opptatt'}, // titled meetings get names from calendar entries
+    'error': {title: 'Oops', color: 'LightGray', message: 'Klarte ikke hente kontorstatus'},
+    'open': {title: 'Åpent', color: 'LimeGreen', message: 'Gratis kaffe og te til alle!'},
+    'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem for å åpne opp.'},
+    'meeting': {title: 'Møte', color: 'red', message: 'Kontoret er opptatt'}, // titled meetings get names from calendar entries
   },
   // Food statuses have titles and icons (messages exist as calendar titles)
   foods: {
-    'bun': {title: 'Boller', icon: './img/icon-bun.png'},
-    'cake': {title: 'Kake', icon: './img/icon-cake.png'},
-    'coffee': {title: 'Kaffekos', icon: './img/icon-coffee.png'},
-    'pizza': {title: 'Pizza', icon: './img/icon-pizza.png'},
-    'taco': {title: 'Taco', icon: './img/icon-taco.png'},
-    'waffle': {title: 'Vafler', icon: './img/icon-waffle.png'},
+    'bun': {title: 'Boller', color: 'NavajoWhite', icon: './img/icon-bun.png'},
+    'cake': {title: 'Kake', color: 'NavajoWhite', icon: './img/icon-cake.png'},
+    'coffee': {title: 'Kaffekos', color: 'NavajoWhite', icon: './img/icon-coffee.png'},
+    'pizza': {title: 'Pizza', color: 'NavajoWhite', icon: './img/icon-pizza.png'},
+    'taco': {title: 'Taco', color: 'NavajoWhite', icon: './img/icon-taco.png'},
+    'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png'},
   },
 
   get: function(callback) {
@@ -30,14 +30,12 @@ var Office = {
     var self = this;
     this.getEventData( function(status, title, message) {
       
-      // If no events are active we'll have to check the lights as well
-      if (status == 'free') {
+      if (status == 'free' || self.debugOpenOrClosed()) {
+        // No events are active, check lights to find open or closed
         self.getLightData(callback);
       }
       else {
-        // status: "closed"
-        // title: "Lukket"
-        // message: "Finn et komitemedlem for å åpne opp"
+        // An event is active, either meeting or a food status
         if (self.debug) console.log('Office:\n- status is', status, '\n- title is', title, '\n- message is', message);
         callback(status, title, message);
       }
@@ -73,6 +71,7 @@ var Office = {
         // empty meeting title?
         if (status == 'meeting' && title == '')
           title = self.statuses['meeting'].message;
+        title = title.trim();
 
         // Temporary support for the old system, backwards compatibility
         if (isNumber(status)) {
@@ -121,12 +120,17 @@ var Office = {
 
     var lightApi = Affiliation.org[localStorage.affiliationKey1].lightApi;
 
+    var debugStatus = null;
+    if (this.debugOpenOrClosed())
+      if (this.debugStatus.data.startsWith('closed'))
+        debugStatus = 'closed';
+
     // Receives current light intensity from the office: OFF 0-lightLimit-1023 ON
     var self = this;
     Ajaxer.getPlainText({
       url: lightApi,
       success: function(data) {
-        if (data > self.lightLimit) {
+        if (data > self.lightLimit || debugStatus == 'closed') {
           if (self.debug) console.log('Office:\n- status is closed\n- title is', self.statuses['closed'].title, '\n- message is', self.statuses['closed'].message);
           callback('closed', self.statuses['closed'].title, self.statuses['closed'].message);
         }
@@ -140,6 +144,15 @@ var Office = {
         callback('error', self.statuses['error'].title, self.statuses['error'].message);
       },
     });
+  },
+
+  debugOpenOrClosed: function() {
+    if (Office.debug && Office.debugStatus.enabled) {
+      if (Office.debugStatus.data.startsWith('open') || Office.debugStatus.data.startsWith('closed')) {
+        return true;
+      }
+    }
+    return false;
   },
 
 }
