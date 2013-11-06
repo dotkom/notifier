@@ -245,6 +245,34 @@ body {
         0 0 45px #011b36;
 }
 /* This file contains infoscreen-additions to common.less */
+@font-face {
+  font-family: 'Fondamento';
+  src: url('/fonts/fondamento/fondamento.ttf');
+}
+.fondamento {
+  font-family: 'Fondamento';
+}
+@font-face {
+  font-family: 'Mysteryquest';
+  src: url('/fonts/mysteryquest/mysteryquest.ttf');
+}
+.mysteryquest {
+  font-family: 'Mysteryquest';
+}
+@font-face {
+  font-family: 'Oleoscript';
+  src: url('/fonts/oleoscript/oleoscript.ttf');
+}
+.oleoscript {
+  font-family: 'Oleoscript';
+}
+@font-face {
+  font-family: 'Sancreek';
+  src: url('/fonts/sancreek/sancreek.ttf');
+}
+.sancreek {
+  font-family: 'Sancreek';
+}
 .title {
   font-size: 24pt;
   margin-top: 25pt;
@@ -302,17 +330,18 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  margin-bottom: -60pt;
   text-align: center;
 }
-#container #office img {
+#container #office #text {
   border: 0pt solid #00ff00;
-  width: 90%;
+  font-size: 250px;
+  height: 150px;
+  padding-top: 150px;
+  text-shadow: 0 0 15pt black;
 }
 #container #office #subtext {
   border: 0pt solid #ffff00;
   position: relative;
-  top: -80pt;
   min-height: 50pt;
   max-height: 50pt;
   font-size: 32pt;

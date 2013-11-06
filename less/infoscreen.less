@@ -3,6 +3,37 @@
 
 /* This file contains infoscreen-additions to common.less */
 
+// Fonts
+
+@font-face {
+  font-family: 'Fondamento';
+  src: url('/fonts/fondamento/fondamento.ttf');
+}
+.fondamento {
+  font-family: 'Fondamento';
+}
+@font-face {
+  font-family: 'Mysteryquest';
+  src: url('/fonts/mysteryquest/mysteryquest.ttf');
+}
+.mysteryquest {
+  font-family: 'Mysteryquest';
+}
+@font-face {
+  font-family: 'Oleoscript';
+  src: url('/fonts/oleoscript/oleoscript.ttf');
+}
+.oleoscript {
+  font-family: 'Oleoscript';
+}
+@font-face {
+  font-family: 'Sancreek';
+  src: url('/fonts/sancreek/sancreek.ttf');
+}
+.sancreek {
+  font-family: 'Sancreek';
+}
+
 // Mixins
 
 .title {
@@ -65,16 +96,23 @@ body {
   #office {
     .debugred;
     .fullbox;
-    margin-bottom: -60pt;
+    // margin-bottom: -60pt;
     text-align: center;
-    img {
+    #text {
       .debuglime;
-      width: 90%;
+      font-size: 250px;
+      height: 150px;
+      padding-top: 150px;
+      text-shadow: 0 0 15pt black;
     }
+    // img {
+    //   .debuglime;
+    //   width: 90%;
+    // }
     #subtext {
       .debugyellow;
       position: relative;
-      top: -80pt;
+      // top: -80pt;
       min-height: 50pt;
       max-height: 50pt;
       font-size: 32pt;
