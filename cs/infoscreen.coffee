@@ -30,7 +30,13 @@ updateOffice = ->
   if DEBUG then console.log 'updateOffice'
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
-      $('#office img').attr 'src', 'img/status-'+status+'.png'
+      if status of Office.foods
+        $('#office #text').html Office.foods[status].title
+        $('#office #text').css 'color', Office.foods[status].color
+      else
+        $('#office #text').html Office.statuses[status].title
+        $('#office #text').css 'color', Office.statuses[status].color
+      # $('#office img').attr 'src', 'img/status-'+status+'.png'
       $('#office #subtext').html message
       ls.currentStatus = status
       ls.currentStatusMessage = message
@@ -268,6 +274,16 @@ findUpdatedPosts = (newsList, viewedList) ->
         updatedList.push newsList[i]
   return updatedList
 
+officeFontRotate = (font) ->
+  fonts = ['fondamento','mysteryquest','oleoscript','sancreek']
+  if font in fonts
+    chosenFont = font
+  else
+    chosenFont = fonts[Math.floor(Math.random() * fonts.length)]
+  $('#office #text').prop 'class', chosenFont
+  if DEBUG
+    $('#office #subtext').html ls.currentStatusMessage + '<br />' + chosenFont
+
 changeCreatorName = (name) ->
   # Stop previous changeCreatorName instance, if any
   clearTimeout ls.changeCreatorNameTimeoutId
@@ -361,8 +377,13 @@ $ ->
       $(@).animate opacity: 1, "fast", "swing",
   ), 600
 
-  # Start the clock in #bus
-  # From: http://www.alessioatzeni.com/blog/css3-digital-clock-with-jquery/
+  # Randomize font in the office status
+  officeFontRotate()
+  setInterval ( ->
+    officeFontRotate()
+  ), 3000
+
+  # Start the clock in #bus, from: alessioatzeni.com/blog/css3-digital-clock-with-jquery/
   setInterval ( ->
     _d = new Date()
     minutes = _d.getMinutes()
