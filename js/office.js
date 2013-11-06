@@ -1,6 +1,6 @@
 var Office = {
   debug: 1,
-  debugStatus: {enabled: 0, data: 'closed\nDebugging office status'},
+  debugStatus: {enabled: 0, string: 'closed\nDebugging office status'},
 
   // Light limit, 0-860 is ON, 860-1023 is OFF
   lightLimit: 860,
@@ -60,7 +60,7 @@ var Office = {
 
         // Debug particular status?
         if (self.debug && self.debugStatus.enabled) {
-          data = self.debugStatus.data;
+          data = self.debugStatus.string;
         }
 
         var status = data.split('\n',2)[0]; // 'meeting'
@@ -122,7 +122,7 @@ var Office = {
 
     var debugStatus = null;
     if (this.debugOpenOrClosed())
-      if (this.debugStatus.data.startsWith('closed'))
+      if (this.debugStatus.string.startsWith('closed'))
         debugStatus = 'closed';
 
     // Receives current light intensity from the office: OFF 0-lightLimit-1023 ON
@@ -148,7 +148,7 @@ var Office = {
 
   debugOpenOrClosed: function() {
     if (Office.debug && Office.debugStatus.enabled) {
-      if (Office.debugStatus.data.startsWith('open') || Office.debugStatus.data.startsWith('closed')) {
+      if (Office.debugStatus.string.startsWith('open') || Office.debugStatus.string.startsWith('closed')) {
         return true;
       }
     }
