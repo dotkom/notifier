@@ -9,10 +9,12 @@
 .debugpink {border: @debug solid pink;}
 .debuglime {border: @debug solid lime;}
 .debugyellow {border: @debug solid yellow;}
+.debugheavy {border: @debug*2 solid cyan;}
 
 // Mixins
 
 .fullbox {
+  .debugheavy;
   clear: both;
   margin: 0;
   padding: 0;
@@ -31,7 +33,7 @@
 }
 
 .emphasized {
-  .debuglime;
+  .debugyellow;
   font-style: italic;
 }
 
@@ -63,7 +65,7 @@ body {
 /* This container keeps the content centered */
 
 #container {
-  .debugpink;
+  .debugheavy;
   position: absolute;
   top: 0;
   right: 0;
@@ -72,13 +74,15 @@ body {
   overflow-x: hidden;
   z-index: 10;
 
+  #office {
+    .fullbox;
+  }
+
   #todays {
-    .debugyellow;
     .fullbox;
 
     #schedule {
       .debugpink;
-      position: relative;
       float: left;
       width: 48%;
       #servant {
@@ -87,7 +91,6 @@ body {
     }
     #coffee {
       .debugpink;
-      position: relative;
       float: right;
       width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
       #pots {
@@ -97,7 +100,6 @@ body {
   }
 
   #cantinas {
-    .debugred;
     .fullbox;
 
     .hours {
@@ -132,7 +134,6 @@ body {
   }
 
   #bus {
-    .debugred;
     .fullbox;
     
     position: relative;
@@ -196,7 +197,6 @@ body {
   }
 
   #news {
-    .debugred;
     .fullbox;
 
     .post {

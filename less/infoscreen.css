@@ -10,7 +10,11 @@
 .debugyellow {
   border: 0pt solid #ffff00;
 }
+.debugheavy {
+  border: 0pt solid #00ffff;
+}
 .fullbox {
+  border: 0pt solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
@@ -27,7 +31,7 @@
   color: white;
 }
 .emphasized {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-style: italic;
 }
 body {
@@ -54,7 +58,7 @@ body {
 }
 /* This container keeps the content centered */
 #container {
-  border: 0pt solid #ffc0cb;
+  border: 0pt solid #00ffff;
   position: absolute;
   top: 0;
   right: 0;
@@ -63,8 +67,15 @@ body {
   overflow-x: hidden;
   z-index: 10;
 }
+#container #office {
+  border: 0pt solid #00ffff;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
 #container #todays {
-  border: 0pt solid #ffff00;
+  border: 0pt solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
@@ -72,37 +83,35 @@ body {
 }
 #container #todays #schedule {
   border: 0pt solid #ffc0cb;
-  position: relative;
   float: left;
   width: 48%;
 }
 #container #todays #schedule #servant {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-style: italic;
   margin-bottom: 8pt;
 }
 #container #todays #coffee {
   border: 0pt solid #ffc0cb;
-  position: relative;
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
 
 }
 #container #todays #coffee #pots {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-style: italic;
   margin-bottom: 8pt;
 }
 #container #cantinas {
-  border: 0pt solid #ff0000;
+  border: 0pt solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #cantinas .hours {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-style: italic;
   margin-bottom: 8pt;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
@@ -136,7 +145,7 @@ body {
 
 }
 #container #bus {
-  border: 0pt solid #ff0000;
+  border: 0pt solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
@@ -209,7 +218,7 @@ body {
   height: 100%;
 }
 #container #news {
-  border: 0pt solid #ff0000;
+  border: 0pt solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
@@ -325,11 +334,6 @@ body {
   padding: 30pt;
 }
 #container #office {
-  border: 0pt solid #ff0000;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
   text-align: center;
 }
 #container #office #text {
@@ -350,17 +354,17 @@ body {
   text-shadow: 0 0 15pt black, 0 0 20pt black;
 }
 #container #todays #schedule #servant {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-style: italic;
   margin-bottom: 8pt;
 }
 #container #todays #coffee #pots {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-style: italic;
   margin-bottom: 8pt;
 }
 #container #cantinas .hours {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-style: italic;
   margin-bottom: 8pt;
 }
