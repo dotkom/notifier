@@ -1,3 +1,6 @@
+.debugContainer {
+  border: 0pt solid #00ffff;
+}
 .debugred {
   border: 0pt solid #ff0000;
 }
@@ -9,9 +12,6 @@
 }
 .debugyellow {
   border: 0pt solid #ffff00;
-}
-.debugheavy {
-  border: 0pt solid #00ffff;
 }
 .fullbox {
   border: 0pt solid #00ffff;
@@ -336,19 +336,23 @@ body {
 #container #office {
   text-align: center;
 }
-#container #office #text {
-  border: 0pt solid #00ff00;
+#container #office #status {
+  border: 0pt solid #ff0000;
+}
+#container #office #status #text {
+  border: 0pt solid #ffff00;
   font-size: 250px;
-  height: 150px;
-  padding-top: 150px;
+  line-height: 250px;
   text-shadow: 0 0 15pt black;
 }
-#container #office #subtext {
+#container #office #status img {
   border: 0pt solid #ffff00;
-  position: relative;
-  min-height: 50pt;
-  max-height: 50pt;
+  width: 90%;
+}
+#container #office #subtext {
+  border: 0pt solid #ff0000;
   font-size: 32pt;
+  line-height: 32pt;
   font-weight: bold;
   text-align: center;
   text-shadow: 0 0 15pt black, 0 0 20pt black;
