@@ -6,8 +6,8 @@ var Defaults = {
 
     // Clear previous thoughts
     if (DEBUG) ls.clear();
-    ls.removeItem('currentStatus');
-    ls.removeItem('currentStatusMessage');
+    ls.removeItem('officeStatus');
+    ls.removeItem('officeStatusMessage');
     
     // Set default choices if undefined, in the same order as on the options page
 

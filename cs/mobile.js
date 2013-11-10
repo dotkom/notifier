@@ -58,12 +58,12 @@
       console.log('updateOffice');
     }
     return Office.get(function(status, title, message) {
-      if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
+      if (ls.officeStatus !== status || ls.officeStatusMessage !== message) {
         $('#office #status').html(title);
         $('#office #status').attr('class', status);
         $('#office #subtext').html(message);
-        ls.currentStatus = status;
-        return ls.currentStatusMessage = message;
+        ls.officeStatus = status;
+        return ls.officeStatusMessage = message;
       }
     });
   };

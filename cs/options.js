@@ -64,8 +64,8 @@
         }
         if (new_has_hardware) {
           changeOfficeStatusIcons();
-          ls.removeItem('currentStatus');
-          ls.removeItem('currentStatusMessage');
+          ls.removeItem('officeStatus');
+          ls.removeItem('officeStatusMessage');
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
         }
         palette = Affiliation.org[affiliationKey].palette;

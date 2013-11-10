@@ -59,8 +59,7 @@
       console.log('updateOffice');
     }
     return Office.get(function(status, title, message) {
-      console.log('CURRENTLY', status, 'AND', message);
-      if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
+      if (ls.officeStatus !== status || ls.officeStatusMessage !== message) {
         if (status in Office.foods) {
           if (Office.foods[status].image !== void 0) {
             $('#office #status img').attr('src', Office.foods[status].image);
@@ -77,9 +76,8 @@
           $('#office #status #text').css('color', Office.statuses[status].color);
         }
         $('#office #subtext').html(message);
-        alert('SETTING TO ' + status + ' AND ' + message);
-        ls.currentStatus = status;
-        return ls.currentStatusMessage = message;
+        ls.officeStatus = status;
+        return ls.officeStatusMessage = message;
       }
     });
   };
@@ -370,7 +368,7 @@
     }
     $('#office #status #text').prop('class', chosenFont);
     if (DEBUG) {
-      return $('#office #subtext').html(ls.currentStatusMessage + '<br />' + chosenFont);
+      return $('#office #subtext').html(ls.officeStatusMessage + '<br />' + chosenFont);
     }
   };
 
@@ -421,8 +419,8 @@
       });
     }
     $.ajaxSetup(AJAX_SETUP);
-    ls.removeItem('currentStatus');
-    ls.removeItem('currentStatusMessage');
+    ls.removeItem('officeStatus');
+    ls.removeItem('officeStatusMessage');
     if (ls.showAffiliation2 !== 'true') {
       $('#news #right').hide();
       $('#news #left').attr('id', 'full');

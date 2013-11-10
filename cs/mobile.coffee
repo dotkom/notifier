@@ -30,12 +30,12 @@ mainLoop = ->
 updateOffice = ->
   if DEBUG then console.log 'updateOffice'
   Office.get (status, title, message) ->
-    if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
+    if ls.officeStatus isnt status or ls.officeStatusMessage isnt message
       $('#office #status').html title
       $('#office #status').attr 'class', status
       $('#office #subtext').html message
-      ls.currentStatus = status
-      ls.currentStatusMessage = message
+      ls.officeStatus = status
+      ls.officeStatusMessage = message
 
 updateServant = ->
   if DEBUG then console.log 'updateServant'

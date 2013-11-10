@@ -50,7 +50,7 @@
     }
     return Office.get(function(status, title, message) {
       var errorIcon, statusIcon;
-      if (force || ls.currentStatus !== status || ls.currentStatusMessage !== message) {
+      if (force || ls.officeStatus !== status || ls.officeStatusMessage !== message) {
         if (status in Office.foods) {
           Browser.setIcon(Office.foods[status].icon);
         } else {
@@ -62,12 +62,12 @@
             Browser.setIcon(errorIcon);
           }
         }
-        ls.currentStatus = status;
+        ls.officeStatus = status;
         return Meetings.get(function(meetings) {
           var today;
           today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
           Browser.setTitle(today);
-          return ls.currentStatusMessage = message;
+          return ls.officeStatusMessage = message;
         });
       }
     });
@@ -82,7 +82,7 @@
       if (!isNaN(pots && !isNaN(age))) {
         storedPots = Number(ls.coffeePots);
         if (storedPots < pots) {
-          if (ls.currentStatus !== 'meeting') {
+          if (ls.officeStatus !== 'meeting') {
             if (age < 10) {
               Coffee.showNotification(pots, age);
             }
