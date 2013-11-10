@@ -9,7 +9,7 @@ var Office = {
     'error': {title: 'Oops', color: 'LightGray', message: 'Klarte ikke hente kontorstatus'},
     'open': {title: 'Åpent', color: 'LimeGreen', message: 'Gratis kaffe og te til alle!'},
     'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem for å åpne opp.'},
-    'meeting': {title: 'Møte', color: 'red', message: 'Kontoret er opptatt'}, // titled meetings get names from calendar entries
+    'meeting': {title: 'Møte', color: 'red', message: 'Kontoret er opptatt'}, // meetings usually get message from calendar entries
   },
   // Food statuses have titles and icons (messages exist as calendar titles)
   foods: {
@@ -28,7 +28,7 @@ var Office = {
     }
 
     var self = this;
-    this.getEventData( function(status, title, message) {
+    this.getEventData( function(status, message) {
       
       if (status == 'free' || self.debugOpenOrClosed()) {
         // No events are active, check lights to find open or closed
@@ -36,8 +36,8 @@ var Office = {
       }
       else {
         // An event is active, either meeting or a food status
-        if (self.debug) console.log('Office:\n- status is', status, '\n- title is', title, '\n- message is', message);
-        callback(status, title, message);
+        if (self.debug) console.log('Office:\n- status is', status, '\n- message is', message);
+        callback(status, message);
       }
     });
   },
@@ -64,25 +64,25 @@ var Office = {
         }
 
         var status = data.split('\n',2)[0]; // 'meeting'
-        var title = data.split('\n',2)[1]; // 'Arbeidskveld med arrKom'
+        var message = data.split('\n',2)[1]; // 'Arbeidskveld med arrKom'
 
-        if (self.debug) console.log('status is "'+status+'" and title is "'+title+'"');
+        if (self.debug) console.log('status is "'+status+'" and message is "'+message+'"');
 
-        // empty meeting title?
-        if (isEmpty(title))
+        // empty meeting message?
+        if (isEmpty(message))
           if (status == 'meeting')
-            title = self.statuses['meeting'].message;
+            message = self.statuses['meeting'].message;
         else
-          title = title.trim();
+          message = message.trim();
 
         // Temporary support for the old system, backwards compatibility
         if (isNumber(status)) {
           switch(Number(status)) {
             case 0: callback('free'); break;
-            case 1: callback('meeting', self.statuses['meeting'].title, title); break;
-            case 2: callback('waffle', self.foods.waffle.title, title); break;
+            case 1: callback('meeting', message); break;
+            case 2: callback('waffle', message); break;
             case 3:
-            default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
+            default: callback('error', self.statuses['error'].message);
           }
         }
         else {
@@ -92,24 +92,24 @@ var Office = {
             
             case 'free': callback('free'); break;
 
-            case 'meeting': callback('meeting', self.statuses['meeting'].title, title); break;
+            case 'meeting': callback('meeting', message); break;
             
-            case 'bun': callback('bun', self.foods.bun.title, title); break;
-            case 'cake': callback('cake', self.foods.cake.title, title); break;
-            case 'coffee': callback('coffee', self.foods.coffee.title, title); break;
-            case 'waffle': callback('waffle', self.foods.waffle.title, title); break;
-            case 'pizza': callback('pizza', self.foods.pizza.title, title); break;
-            case 'taco': callback('taco', self.foods.taco.title, title); break;
+            case 'bun': callback('bun', message); break;
+            case 'cake': callback('cake', message); break;
+            case 'coffee': callback('coffee', message); break;
+            case 'waffle': callback('waffle', message); break;
+            case 'pizza': callback('pizza', message); break;
+            case 'taco': callback('taco', message); break;
             
             case 'error':
-            default: callback('error', self.statuses['error'].title, self.statuses['error'].message);
+            default: callback('error', self.statuses['error'].message);
           }
         }
 
       },
       error: function(jqXHR, text, err) {
         if (self.debug) console.log('ERROR: Failed to get event data.');
-        callback('error', self.statuses['error'].title, self.statuses['error'].message);
+        callback('error', self.statuses['error'].message);
       },
     });
   },
@@ -133,17 +133,17 @@ var Office = {
       url: lightApi,
       success: function(data) {
         if (data > self.lightLimit || debugStatus == 'closed') {
-          if (self.debug) console.log('Office:\n- status is closed\n- title is', self.statuses['closed'].title, '\n- message is', self.statuses['closed'].message);
-          callback('closed', self.statuses['closed'].title, self.statuses['closed'].message);
+          if (self.debug) console.log('Office:\n- status is closed\n- message is', self.statuses['closed'].message);
+          callback('closed', self.statuses['closed'].message);
         }
         else {
-          if (self.debug) console.log('Office:\n- status is open\n- title is', self.statuses['open'].title, '\n- message is', self.statuses['open'].message);
-          callback('open', self.statuses['open'].title, self.statuses['open'].message);
+          if (self.debug) console.log('Office:\n- status is open\n- message is', self.statuses['open'].message);
+          callback('open', self.statuses['open'].message);
         }
       },
       error: function(jqXHR, err) {
         if (self.debug) console.log('ERROR: Failed to get light data.');
-        callback('error', self.statuses['error'].title, self.statuses['error'].message);
+        callback('error', self.statuses['error'].message);
       },
     });
   },
