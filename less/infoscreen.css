@@ -372,6 +372,7 @@ body {
   font-size: 250px;
   line-height: 250px;
   text-shadow: 0 0 15pt black;
+  padding: 20pt 0pt 30pt 0pt;
 }
 #container #office #status img {
   border: 0pt solid #00ff00;
