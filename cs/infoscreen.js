@@ -423,6 +423,7 @@
           $('#pageflip').toggle();
         }
         if (e.which === 32) {
+          e.preventDefault();
           switch (ls.infoscreenOfficeStatus) {
             case 'waffle':
               return updateOffice('error');

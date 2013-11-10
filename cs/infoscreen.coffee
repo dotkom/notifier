@@ -340,6 +340,7 @@ $ ->
         $('#logo').toggle()
         $('#pageflip').toggle()
       if e.which is 32
+        e.preventDefault()
         switch ls.infoscreenOfficeStatus
           when 'waffle' then updateOffice 'error'
           when 'error' then updateOffice 'open'
