@@ -1,6 +1,6 @@
 var Office = {
   debug: 1,
-  debugStatus: {enabled: 0, string: 'closed\nDebugging office status'},
+  debugStatus: {enabled: 0, string: 'coffee\nDebugging office status'},
 
   // Light limit, 0-860 is ON, 860-1023 is OFF
   lightLimit: 860,
