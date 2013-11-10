@@ -26,11 +26,14 @@ mainLoop = ->
     mainLoop()
   ), PAGE_LOOP
 
-updateOffice = (rotate) ->
+updateOffice = (debugStatus) ->
   if DEBUG then console.log 'updateOffice'
-  Office.get (status, title, message) ->
+  Office.get (status, message) ->
+    if DEBUG and debugStatus
+      status = debugStatus
+      message = 'debugging'
     if ls.infoscreenOfficeStatus isnt status or ls.infoscreenOfficeStatusMessage isnt message
-      if status of Office.foods
+      if status in Object.keys Office.foods
         if Office.foods[status].image isnt undefined
           # Food status with image
           $('#office #status img').attr 'src', Office.foods[status].image
@@ -46,6 +49,8 @@ updateOffice = (rotate) ->
         # Regular status
         $('#office #status #text').html Office.statuses[status].title
         $('#office #status #text').css 'color', Office.statuses[status].color
+        $('#office #status img').hide()
+        $('#office #status #text').show()
       $('#office #subtext').html message
       ls.infoscreenOfficeStatus = status
       ls.infoscreenOfficeStatusMessage = message
@@ -334,7 +339,20 @@ $ ->
         $('#fadeOutNews').toggle()
         $('#logo').toggle()
         $('#pageflip').toggle()
-  
+      if e.which is 32
+        switch ls.infoscreenOfficeStatus
+          when 'waffle' then updateOffice 'error'
+          when 'error' then updateOffice 'open'
+          when 'open' then updateOffice 'closed'
+          when 'closed' then updateOffice 'meeting'
+          when 'meeting' then updateOffice 'bun'
+          when 'bun' then updateOffice 'cake'
+          when 'cake' then updateOffice 'coffee'
+          when 'coffee' then updateOffice 'pizza'
+          when 'pizza' then updateOffice 'taco'
+          when 'taco' then updateOffice 'waffle'
+          else updateOffice 'error'
+
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
   

@@ -54,13 +54,17 @@
     }), PAGE_LOOP);
   };
 
-  updateOffice = function(rotate) {
+  updateOffice = function(debugStatus) {
     if (DEBUG) {
       console.log('updateOffice');
     }
-    return Office.get(function(status, title, message) {
+    return Office.get(function(status, message) {
+      if (DEBUG && debugStatus) {
+        status = debugStatus;
+        message = 'debugging';
+      }
       if (ls.infoscreenOfficeStatus !== status || ls.infoscreenOfficeStatusMessage !== message) {
-        if (status in Office.foods) {
+        if (__indexOf.call(Object.keys(Office.foods), status) >= 0) {
           if (Office.foods[status].image !== void 0) {
             $('#office #status img').attr('src', Office.foods[status].image);
             $('#office #status #text').hide();
@@ -74,6 +78,8 @@
         } else {
           $('#office #status #text').html(Office.statuses[status].title);
           $('#office #status #text').css('color', Office.statuses[status].color);
+          $('#office #status img').hide();
+          $('#office #status #text').show();
         }
         $('#office #subtext').html(message);
         ls.infoscreenOfficeStatus = status;
@@ -414,7 +420,33 @@
           $('#overlay').toggle();
           $('#fadeOutNews').toggle();
           $('#logo').toggle();
-          return $('#pageflip').toggle();
+          $('#pageflip').toggle();
+        }
+        if (e.which === 32) {
+          switch (ls.infoscreenOfficeStatus) {
+            case 'waffle':
+              return updateOffice('error');
+            case 'error':
+              return updateOffice('open');
+            case 'open':
+              return updateOffice('closed');
+            case 'closed':
+              return updateOffice('meeting');
+            case 'meeting':
+              return updateOffice('bun');
+            case 'bun':
+              return updateOffice('cake');
+            case 'cake':
+              return updateOffice('coffee');
+            case 'coffee':
+              return updateOffice('pizza');
+            case 'pizza':
+              return updateOffice('taco');
+            case 'taco':
+              return updateOffice('waffle');
+            default:
+              return updateOffice('error');
+          }
         }
       });
     }
