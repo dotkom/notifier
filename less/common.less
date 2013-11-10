@@ -1,18 +1,21 @@
 
+// COMMON FILE FOR popup.html, infoscreen.html, mobile.html
+
 // Variables
 
-@debug: 0pt;
+@debug: 0pt; // 0pt is off, use 1pt for popup/mobile, 3pt for infoscreen
 
 // Debugging, use bright colors that stand out
 
-.debugred {border: @debug solid red;}
-.debugpink {border: @debug solid pink;}
-.debuglime {border: @debug solid lime;}
-.debugyellow {border: @debug solid yellow;}
+.debugContainer {border: @debug solid cyan;} // Outer containers
+.debugBox {border: @debug solid red;} // Inner containers
+.debugText {border: @debug solid yellow;} // Text elements
+.debugElement {border: @debug solid lime;} // Other elements
 
 // Mixins
 
 .fullbox {
+  .debugContainer;
   clear: both;
   margin: 0;
   padding: 0;
@@ -20,7 +23,7 @@
 }
 
 .title {
-  .debugyellow;
+  .debugText;
   color: NavajoWhite;
   display: block;
   font-weight: bold;
@@ -31,7 +34,7 @@
 }
 
 .emphasized {
-  .debuglime;
+  .debugText;
   font-style: italic;
 }
 
@@ -63,7 +66,7 @@ body {
 /* This container keeps the content centered */
 
 #container {
-  .debugpink;
+  .debugContainer;
   position: absolute;
   top: 0;
   right: 0;
@@ -72,13 +75,15 @@ body {
   overflow-x: hidden;
   z-index: 10;
 
+  #office {
+    .fullbox;
+  }
+
   #todays {
-    .debugyellow;
     .fullbox;
 
     #schedule {
-      .debugpink;
-      position: relative;
+      .debugBox;
       float: left;
       width: 48%;
       #servant {
@@ -86,8 +91,7 @@ body {
       }
     }
     #coffee {
-      .debugpink;
-      position: relative;
+      .debugBox;
       float: right;
       width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
       #pots {
@@ -97,7 +101,6 @@ body {
   }
 
   #cantinas {
-    .debugred;
     .fullbox;
 
     .hours {
@@ -105,22 +108,22 @@ body {
       -webkit-transition: text-shadow 0.15s ease-out 0s;
     }
     #left {
-      .debugpink;
+      .debugBox;
       position: relative;
       float: left;
       width: 48%;
     }
     #right {
-      .debugpink;
+      .debugBox;
       position: relative;
       float: right;
       width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
     }
     #dinnerbox {
-      .debugyellow;
+      .debugElement;
     }
     li {
-      .debuglime;
+      .debugText;
       position: relative;
       width: 95%;
       list-style-type: none;
@@ -132,7 +135,6 @@ body {
   }
 
   #bus {
-    .debugred;
     .fullbox;
     
     position: relative;
@@ -149,7 +151,7 @@ body {
       text-overflow: ellipsis;
     }
     #firstBus {
-      .debuglime;
+      .debugBox;
       position: relative;
       float: left;
       text-align: right;
@@ -157,7 +159,7 @@ body {
       width: 40%;
     }
     #secondBus {
-      .debuglime;
+      .debugBox;
       position: relative;
       float: left;
       text-align: left;
@@ -174,7 +176,7 @@ body {
       z-index: 100;
     }
     .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
-      .debugred;
+      .debugText;
       width: 100%;
       white-space: nowrap;
       overflow: hidden;
@@ -187,7 +189,7 @@ body {
       font-style: italic;
     }
     #middle {
-      .debuglime;
+      .debugBox;
       position: relative;
       float: left;
       text-align: center;
@@ -196,16 +198,15 @@ body {
   }
 
   #news {
-    .debugred;
     .fullbox;
 
     .post {
-      .debugyellow;
+      .debugBox;
       position: relative;
       clear: both;
 
       .item {
-        .debugyellow;
+        .debugElement;
         text-overflow: ellipsis;
         overflow: hidden;
         .author {

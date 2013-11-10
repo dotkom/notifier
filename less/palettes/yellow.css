@@ -42,6 +42,6 @@ body {
   -webkit-filter: hue-rotate(-151deg) saturate(2.7) brightness(3.2);
 }
 
-#pageflip {
+#pfFlip {
   -webkit-filter: hue-rotate(-181deg) saturate(2.0) brightness(2.3);
 }

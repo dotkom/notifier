@@ -1,7 +1,39 @@
 
 @import "common.less";
+@import "common.pageflip.less";
 
 /* This file contains infoscreen-additions to common.less */
+
+// Fonts
+
+@font-face {
+  font-family: 'Fondamento';
+  src: url('/fonts/fondamento/fondamento.ttf');
+}
+.fondamento {
+  font-family: 'Fondamento';
+}
+@font-face {
+  font-family: 'Mysteryquest';
+  src: url('/fonts/mysteryquest/mysteryquest.ttf');
+}
+.mysteryquest {
+  font-family: 'Mysteryquest';
+}
+@font-face {
+  font-family: 'Oleoscript';
+  src: url('/fonts/oleoscript/oleoscript.ttf');
+}
+.oleoscript {
+  font-family: 'Oleoscript';
+}
+@font-face {
+  font-family: 'Sancreek';
+  src: url('/fonts/sancreek/sancreek.ttf');
+}
+.sancreek {
+  font-family: 'Sancreek';
+}
 
 // Mixins
 
@@ -40,7 +72,7 @@ body {
 }
 
 #fadeOutNews {
-  .debuglime;
+  .debugElement;
   position: absolute;
   left: 0;
   right: 0;
@@ -63,24 +95,32 @@ body {
   padding: 30pt;
 
   #office {
-    .debugred;
-    .fullbox;
-    margin-bottom: -60pt;
     text-align: center;
-    img {
-      .debuglime;
-      width: 90%;
+
+    #status {
+      .debugBox;
+
+      #text {
+        .debugText;
+        font-size: 250px;
+        line-height: 250px;
+        text-shadow: 0 0 15pt black;
+        padding: 20pt 0pt 10pt 0pt;
+      }
+      img {
+        .debugElement;
+        width: 90%;
+        display: none; // shown when needed
+      }
     }
     #subtext {
-      .debugyellow;
-      position: relative;
-      top: -80pt;
-      min-height: 50pt;
-      max-height: 50pt;
+      .debugText;
       font-size: 32pt;
+      line-height: 32pt;
       font-weight: bold;
       text-align: center;
       text-shadow: 0 0 15pt black, 0 0 20pt black;
+      padding-bottom: 10pt;
     }
   }
 
@@ -125,17 +165,17 @@ body {
     #middle {
       width: 14%;
       #atbLogo {
-        .debuglime;
+        .debugElement;
         height: 85pt;
         margin-top: 2pt;
       }
       #clock {
-        .debugpink;
+        .debugElement;
         color: #fff;
         margin-top: 15pt;
         text-align: center;
         li {
-          .debugyellow;
+          .debugText;
           display: inline-block;
           font-family: helvetica;
           font-size: 30pt;
@@ -245,7 +285,7 @@ body {
 /* the affiliation logo or sponsor logo */
 
 #logo {
-  .debugred;
+  .debugElement;
   position: absolute;
   right: 30pt;
   bottom: 30pt;
@@ -254,58 +294,43 @@ body {
 }
 
 /* the pageflip at the bottom */
-/* used PX instead of PT because images are measured in PX */
-
-#pageflipbg {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: transparent url('/img/pageflip-big-background.png') no-repeat left bottom;
-  width: 356px;
-  height: 181px;
-  z-index: 105;
-}
-
-#pagefliptext {
-  position: fixed;
-  width: 300px;
-  height: 76px;
-  left: 8px;
-  bottom: 5px;
-  font: bold 22px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 106;
-}
 
 #pageflip {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: transparent url('/img/pageflip-big.png') no-repeat left bottom;
   width: 356px;
   height: 181px;
-  z-index: 107;
-}
-
-#pagefliplink {
-  position: fixed;
-  width: 300px;
-  height: 76px;
-  left: 8px;
-  bottom: 5px;
   font: bold 22px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 108;
-  a {
-    font: bold 22px monospace;
-    color: #ccf2cc;
-    text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
+  text-shadow:
+    0 0 5px #68bf70,
+    0 0 10px #60b95e,
+    0 0 15px #368f2c,
+    0 0 20px #25892e,
+    0 0 30px #183e1a;
+
+  #pfBackground {
+    left: 0;
+    bottom: 0;
+    width: 356px;
+    height: 181px;
+    background: transparent url('/img/pageflip-big-background.png') no-repeat left bottom;
+  }
+  #pfText {
+    left: 8px;
+    bottom: 5px;
+    width: 300px;
+    height: 76px;
+  }
+  #pfFlip {
+    left: 0;
+    bottom: 0;
+    width: 356px;
+    height: 181px;
+    background: transparent url('/img/pageflip-big.png') no-repeat left bottom;
+  }
+  #pfLink {
+    left: 8px;
+    bottom: 5px;
+    width: 300px;
+    height: 76px;
   }
 }
 

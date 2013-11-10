@@ -3,10 +3,10 @@
   -webkit-filter: grayscale(1) saturate(2.6) brightness(2.2);
 }
 
-#pageflip {
+#pfFlip {
   -webkit-filter: grayscale(1) saturate(2.6) brightness(1.2);
 }
 
-#pageflipbg {
+#pfBackground {
   -webkit-filter: grayscale(1) saturate(1.4) brightness(0.5);
 }

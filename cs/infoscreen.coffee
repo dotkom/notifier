@@ -26,14 +26,34 @@ mainLoop = ->
     mainLoop()
   ), PAGE_LOOP
 
-updateOffice = ->
+updateOffice = (debugStatus) ->
   if DEBUG then console.log 'updateOffice'
-  Office.get (status, title, message) ->
-    if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
-      $('#office img').attr 'src', 'img/status-'+status+'.png'
+  Office.get (status, message) ->
+    if DEBUG and debugStatus
+      status = debugStatus
+      message = 'debugging'
+    if ls.infoscreenOfficeStatus isnt status or ls.infoscreenOfficeStatusMessage isnt message
+      if status in Object.keys Office.foods
+        if Office.foods[status].image isnt undefined
+          # Food status with image
+          $('#office #status img').attr 'src', Office.foods[status].image
+          $('#office #status #text').hide()
+          $('#office #status img').show()
+        else
+          # Food status with just title
+          $('#office #status #text').text Office.foods[status].title
+          $('#office #status #text').css 'color', Office.foods[status].color
+          $('#office #status img').hide()
+          $('#office #status #text').show()
+      else
+        # Regular status
+        $('#office #status #text').html Office.statuses[status].title
+        $('#office #status #text').css 'color', Office.statuses[status].color
+        $('#office #status img').hide()
+        $('#office #status #text').show()
       $('#office #subtext').html message
-      ls.currentStatus = status
-      ls.currentStatusMessage = message
+      ls.infoscreenOfficeStatus = status
+      ls.infoscreenOfficeStatusMessage = message
 
 updateServant = ->
   if DEBUG then console.log 'updateServant'
@@ -268,6 +288,16 @@ findUpdatedPosts = (newsList, viewedList) ->
         updatedList.push newsList[i]
   return updatedList
 
+officeFontRotate = (font) ->
+  fonts = ['fondamento','mysteryquest','oleoscript','sancreek']
+  if font in fonts
+    chosenFont = font
+  else
+    chosenFont = fonts[Math.floor(Math.random() * fonts.length)]
+  $('#office #status #text').prop 'class', chosenFont
+  if DEBUG
+    $('#office #subtext').html ls.infoscreenOfficeStatusMessage + '<br />' + chosenFont
+
 changeCreatorName = (name) ->
   # Stop previous changeCreatorName instance, if any
   clearTimeout ls.changeCreatorNameTimeoutId
@@ -302,14 +332,34 @@ $ ->
     # show the cursor and remove the overlay (the gradient at the bottom)
     # (allows DOM inspection with the mouse)
     $('html').css 'cursor', 'auto'
-    $('#overlay').hide()
-  
+    $('#container').css 'overflow-y', 'auto'
+    $('body').on 'keypress', (e) ->
+      if e.which is 13
+        $('#overlay').toggle()
+        $('#fadeOutNews').toggle()
+        $('#logo').toggle()
+        $('#pageflip').toggle()
+      if e.which is 32
+        e.preventDefault()
+        switch ls.infoscreenOfficeStatus
+          when 'waffle' then updateOffice 'error'
+          when 'error' then updateOffice 'open'
+          when 'open' then updateOffice 'closed'
+          when 'closed' then updateOffice 'meeting'
+          when 'meeting' then updateOffice 'bun'
+          when 'bun' then updateOffice 'cake'
+          when 'cake' then updateOffice 'coffee'
+          when 'coffee' then updateOffice 'pizza'
+          when 'pizza' then updateOffice 'taco'
+          when 'taco' then updateOffice 'waffle'
+          else updateOffice 'error'
+
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
-  ls.removeItem 'currentStatus'
-  ls.removeItem 'currentStatusMessage'
+  ls.removeItem 'infoscreenOfficeStatus'
+  ls.removeItem 'infoscreenOfficeStatusMessage'
 
   # If only one affiliation is to be shown remove the second news column
   if ls.showAffiliation2 isnt 'true'
@@ -333,7 +383,7 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  if DEBUG then console.log 'Applying affiliation graphics'
+  # Applying affiliation graphics
   key = ls.affiliationKey1
   logo = Affiliation.org[key].logo
   icon = Affiliation.org[key].icon
@@ -351,8 +401,8 @@ $ ->
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'
-    $('#pagefliptext').attr "style", "bottom:9px;"
-    $('#pagefliplink').attr "style", "bottom:9px;"
+    $('#pfText').attr "style", "bottom:9px;"
+    $('#pfLink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
@@ -361,8 +411,13 @@ $ ->
       $(@).animate opacity: 1, "fast", "swing",
   ), 600
 
-  # Start the clock in #bus
-  # From: http://www.alessioatzeni.com/blog/css3-digital-clock-with-jquery/
+  # Randomize font in the office status
+  officeFontRotate()
+  setInterval ( ->
+    officeFontRotate()
+  ), 1800000
+
+  # Start the clock in #bus, from: alessioatzeni.com/blog/css3-digital-clock-with-jquery/
   setInterval ( ->
     _d = new Date()
     minutes = _d.getMinutes()
