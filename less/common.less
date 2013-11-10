@@ -5,16 +5,16 @@
 
 // Debugging, use bright colors that stand out
 
+.debugContainer {border: @debug solid cyan;}
 .debugred {border: @debug solid red;}
 .debugpink {border: @debug solid pink;}
 .debuglime {border: @debug solid lime;}
 .debugyellow {border: @debug solid yellow;}
-.debugheavy {border: @debug*2 solid cyan;}
 
 // Mixins
 
 .fullbox {
-  .debugheavy;
+  .debugContainer;
   clear: both;
   margin: 0;
   padding: 0;
@@ -65,7 +65,7 @@ body {
 /* This container keeps the content centered */
 
 #container {
-  .debugheavy;
+  .debugContainer;
   position: absolute;
   top: 0;
   right: 0;

@@ -1,3 +1,6 @@
+.debugContainer {
+  border: 0pt solid #00ffff;
+}
 .debugred {
   border: 0pt solid #ff0000;
 }
@@ -9,9 +12,6 @@
 }
 .debugyellow {
   border: 0pt solid #ffff00;
-}
-.debugheavy {
-  border: 0pt solid #00ffff;
 }
 .fullbox {
   border: 0pt solid #00ffff;
