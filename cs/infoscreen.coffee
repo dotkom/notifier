@@ -29,7 +29,7 @@ mainLoop = ->
 updateOffice = (rotate) ->
   if DEBUG then console.log 'updateOffice'
   Office.get (status, title, message) ->
-    if ls.officeStatus isnt status or ls.officeStatusMessage isnt message
+    if ls.infoscreenOfficeStatus isnt status or ls.infoscreenOfficeStatusMessage isnt message
       if status of Office.foods
         if Office.foods[status].image isnt undefined
           # Food status with image
@@ -47,8 +47,8 @@ updateOffice = (rotate) ->
         $('#office #status #text').html Office.statuses[status].title
         $('#office #status #text').css 'color', Office.statuses[status].color
       $('#office #subtext').html message
-      ls.officeStatus = status
-      ls.officeStatusMessage = message
+      ls.infoscreenOfficeStatus = status
+      ls.infoscreenOfficeStatusMessage = message
 
 updateServant = ->
   if DEBUG then console.log 'updateServant'
@@ -291,7 +291,7 @@ officeFontRotate = (font) ->
     chosenFont = fonts[Math.floor(Math.random() * fonts.length)]
   $('#office #status #text').prop 'class', chosenFont
   if DEBUG
-    $('#office #subtext').html ls.officeStatusMessage + '<br />' + chosenFont
+    $('#office #subtext').html ls.infoscreenOfficeStatusMessage + '<br />' + chosenFont
 
 changeCreatorName = (name) ->
   # Stop previous changeCreatorName instance, if any
@@ -339,8 +339,8 @@ $ ->
   $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
-  ls.removeItem 'officeStatus'
-  ls.removeItem 'officeStatusMessage'
+  ls.removeItem 'infoscreenOfficeStatus'
+  ls.removeItem 'infoscreenOfficeStatusMessage'
 
   # If only one affiliation is to be shown remove the second news column
   if ls.showAffiliation2 isnt 'true'

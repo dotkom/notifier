@@ -59,7 +59,7 @@
       console.log('updateOffice');
     }
     return Office.get(function(status, title, message) {
-      if (ls.officeStatus !== status || ls.officeStatusMessage !== message) {
+      if (ls.infoscreenOfficeStatus !== status || ls.infoscreenOfficeStatusMessage !== message) {
         if (status in Office.foods) {
           if (Office.foods[status].image !== void 0) {
             $('#office #status img').attr('src', Office.foods[status].image);
@@ -76,8 +76,8 @@
           $('#office #status #text').css('color', Office.statuses[status].color);
         }
         $('#office #subtext').html(message);
-        ls.officeStatus = status;
-        return ls.officeStatusMessage = message;
+        ls.infoscreenOfficeStatus = status;
+        return ls.infoscreenOfficeStatusMessage = message;
       }
     });
   };
@@ -368,7 +368,7 @@
     }
     $('#office #status #text').prop('class', chosenFont);
     if (DEBUG) {
-      return $('#office #subtext').html(ls.officeStatusMessage + '<br />' + chosenFont);
+      return $('#office #subtext').html(ls.infoscreenOfficeStatusMessage + '<br />' + chosenFont);
     }
   };
 
@@ -419,8 +419,8 @@
       });
     }
     $.ajaxSetup(AJAX_SETUP);
-    ls.removeItem('officeStatus');
-    ls.removeItem('officeStatusMessage');
+    ls.removeItem('infoscreenOfficeStatus');
+    ls.removeItem('infoscreenOfficeStatusMessage');
     if (ls.showAffiliation2 !== 'true') {
       $('#news #right').hide();
       $('#news #left').attr('id', 'full');
