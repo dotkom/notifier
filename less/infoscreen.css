@@ -345,6 +345,7 @@ body {
 #container #office #status img {
   border: 0pt solid #00ff00;
   width: 90%;
+  display: none;
 }
 #container #office #subtext {
   border: 0pt solid #ffff00;
@@ -515,7 +516,7 @@ body {
   z-index: 110;
 }
 /* the pageflip at the bottom */
-#pageflip #pfBackground {
+#pfFlip #pfBackground {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -524,7 +525,7 @@ body {
   height: 181px;
   z-index: 105;
 }
-#pageflip #pfText {
+#pfFlip #pfText {
   position: fixed;
   width: 300px;
   height: 76px;
@@ -535,7 +536,7 @@ body {
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 106;
 }
-#pageflip #pfFlip {
+#pfFlip #pfFlip {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -544,7 +545,7 @@ body {
   height: 181px;
   z-index: 107;
 }
-#pageflip #pfLink {
+#pfFlip #pfLink {
   position: fixed;
   width: 300px;
   height: 76px;
@@ -555,12 +556,12 @@ body {
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 108;
 }
-#pageflip #pfLink a {
+#pfFlip #pfLink a {
   font: bold 22px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   text-decoration: none;
 }
-#pageflip #pfLink a:hover {
+#pfFlip #pfLink a:hover {
   text-decoration: underline;
 }

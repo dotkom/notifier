@@ -530,7 +530,7 @@ header #notification .saved {
   opacity: 1;
 }
 /* The pageflip at the bottom */
-#pageflip #pfBackground {
+#pfFlip #pfBackground {
   -webkit-animation: terminal .5s alternate infinite;
   position: fixed;
   left: 0;
@@ -540,7 +540,7 @@ header #notification .saved {
   height: 98px;
   z-index: 105;
 }
-#pageflip #pfText {
+#pfFlip #pfText {
   -webkit-animation: terminal .5s alternate infinite;
   position: fixed;
   width: 170px;
@@ -556,7 +556,7 @@ header #notification .saved {
       0 0 30px #183e1a;
   z-index: 106;
 }
-#pageflip #pfFlip {
+#pfFlip #pfFlip {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -565,7 +565,7 @@ header #notification .saved {
   height: 98px;
   z-index: 107;
 }
-#pageflip #pfLink {
+#pfFlip #pfLink {
   position: fixed;
   width: 170px;
   height: 36px;
@@ -576,14 +576,14 @@ header #notification .saved {
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 108;
 }
-#pageflip #pfLink a {
+#pfFlip #pfLink a {
   -webkit-animation: terminal .5s alternate infinite;
   font: bold 11px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   text-decoration: none;
 }
-#pageflip #pfLink a:hover {
+#pfFlip #pfLink a:hover {
   text-decoration: underline;
 }
 /* Google +1 button */
