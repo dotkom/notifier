@@ -515,8 +515,7 @@ body {
   z-index: 110;
 }
 /* the pageflip at the bottom */
-/* used PX instead of PT because images are measured in PX */
-#pageflipbg {
+#pageflip #pfBackground {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -525,7 +524,7 @@ body {
   height: 181px;
   z-index: 105;
 }
-#pagefliptext {
+#pageflip #pfText {
   position: fixed;
   width: 300px;
   height: 76px;
@@ -536,7 +535,7 @@ body {
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 106;
 }
-#pageflip {
+#pageflip #pfFlip {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -545,7 +544,7 @@ body {
   height: 181px;
   z-index: 107;
 }
-#pagefliplink {
+#pageflip #pfLink {
   position: fixed;
   width: 300px;
   height: 76px;
@@ -556,12 +555,12 @@ body {
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   z-index: 108;
 }
-#pagefliplink a {
+#pageflip #pfLink a {
   font: bold 22px monospace;
   color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
   text-decoration: none;
 }
-#pagefliplink a:hover {
+#pageflip #pfLink a:hover {
   text-decoration: underline;
 }
