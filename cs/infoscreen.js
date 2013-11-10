@@ -464,8 +464,8 @@
       _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette]);
     }
     if (OPERATING_SYSTEM === 'Windows') {
-      $('#pagefliptext').attr("style", "bottom:9px;");
-      $('#pagefliplink').attr("style", "bottom:9px;");
+      $('#pfText').attr("style", "bottom:9px;");
+      $('#pfLink').attr("style", "bottom:9px;");
     }
     changeCreatorName(ls.extensionCreator);
     setInterval((function() {

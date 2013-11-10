@@ -731,10 +731,10 @@
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
     if (OPERATING_SYSTEM === 'Windows') {
-      $('#pagefliptext').attr("style", "bottom:9px;");
-      $('#pagefliplink').attr("style", "bottom:9px;");
+      $('#pfText').attr("style", "bottom:9px;");
+      $('#pfLink').attr("style", "bottom:9px;");
     }
-    $('#pagefliplink').click(function() {
+    $('#pfLink').click(function() {
       if (!DEBUG) {
         return _gaq.push(['_trackEvent', 'options', 'clickPageflip']);
       }

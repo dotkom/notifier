@@ -373,8 +373,8 @@ $ ->
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'
-    $('#pagefliptext').attr "style", "bottom:9px;"
-    $('#pagefliplink').attr "style", "bottom:9px;"
+    $('#pfText').attr "style", "bottom:9px;"
+    $('#pfLink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
   changeCreatorName ls.extensionCreator
   # Blinking cursor at pageflip
