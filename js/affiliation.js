@@ -184,7 +184,7 @@ var Affiliation = {
       },
       coffeeApi: 'http://pi.deltahouse.no/coffee.txt',
       lightApi: 'http://pi.deltahouse.no/office.txt',
-      eventApi: 'http://online.ntnu.no/service_static/delta/office_status',
+      eventApi: 'http://online.ntnu.no/service_static/delta/office',
       servantApi: 'http://online.ntnu.no/service_static/delta/servant_list',
       meetingsApi: 'http://online.ntnu.no/service_static/delta/meeting_plan',
       hasMemes: true,
