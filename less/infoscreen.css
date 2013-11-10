@@ -250,6 +250,37 @@ body {
         0 0 40px #011b36,
         0 0 45px #011b36;
 }
+/* The pageflip at the bottom of some pages */
+#pageflip {
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  bottom: 0;
+  color: #ccf2cc;
+}
+#pageflip #pfBackground {
+  position: fixed;
+  z-index: 201;
+}
+#pageflip #pfText {
+  position: fixed;
+  z-index: 202;
+}
+#pageflip #pfFlip {
+  position: fixed;
+  z-index: 203;
+}
+#pageflip #pfLink {
+  position: fixed;
+  z-index: 204;
+}
+#pageflip #pfLink a {
+  text-decoration: none;
+  color: #ccf2cc;
+}
+#pageflip #pfLink a:hover {
+  text-decoration: underline;
+}
 /* This file contains infoscreen-additions to common.less */
 @font-face {
   font-family: 'Fondamento';
@@ -516,52 +547,39 @@ body {
   z-index: 110;
 }
 /* the pageflip at the bottom */
-#pfFlip #pfBackground {
-  position: fixed;
+#pageflip {
+  width: 356px;
+  height: 181px;
+  font: bold 22px monospace;
+  text-shadow: 0 0 5px #68bf70,
+    0 0 10px #60b95e,
+    0 0 15px #368f2c,
+    0 0 20px #25892e,
+    0 0 30px #183e1a;
+}
+#pageflip #pfBackground {
   left: 0;
   bottom: 0;
+  width: 356px;
+  height: 181px;
   background: transparent url('/img/pageflip-big-background.png') no-repeat left bottom;
-  width: 356px;
-  height: 181px;
-  z-index: 105;
 }
-#pfFlip #pfText {
-  position: fixed;
-  width: 300px;
-  height: 76px;
+#pageflip #pfText {
   left: 8px;
   bottom: 5px;
-  font: bold 22px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 106;
+  width: 300px;
+  height: 76px;
 }
-#pfFlip #pfFlip {
-  position: fixed;
+#pageflip #pfFlip {
   left: 0;
   bottom: 0;
-  background: transparent url('/img/pageflip-big.png') no-repeat left bottom;
   width: 356px;
   height: 181px;
-  z-index: 107;
+  background: transparent url('/img/pageflip-big.png') no-repeat left bottom;
 }
-#pfFlip #pfLink {
-  position: fixed;
-  width: 300px;
-  height: 76px;
+#pageflip #pfLink {
   left: 8px;
   bottom: 5px;
-  font: bold 22px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 108;
-}
-#pfFlip #pfLink a {
-  font: bold 22px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  text-decoration: none;
-}
-#pfFlip #pfLink a:hover {
-  text-decoration: underline;
+  width: 300px;
+  height: 76px;
 }
