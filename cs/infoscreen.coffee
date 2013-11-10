@@ -31,11 +31,11 @@ updateOffice = ->
   Office.get (status, title, message) ->
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       if status of Office.foods
-        $('#office #text').html Office.foods[status].title
-        $('#office #text').css 'color', Office.foods[status].color
+        $('#office #status #text').html Office.foods[status].title
+        $('#office #status #text').css 'color', Office.foods[status].color
       else
-        $('#office #text').html Office.statuses[status].title
-        $('#office #text').css 'color', Office.statuses[status].color
+        $('#office #status #text').html Office.statuses[status].title
+        $('#office #status #text').css 'color', Office.statuses[status].color
       # $('#office img').attr 'src', 'img/status-'+status+'.png'
       $('#office #subtext').html message
       ls.currentStatus = status
@@ -280,7 +280,7 @@ officeFontRotate = (font) ->
     chosenFont = font
   else
     chosenFont = fonts[Math.floor(Math.random() * fonts.length)]
-  $('#office #text').prop 'class', chosenFont
+  $('#office #status #text').prop 'class', chosenFont
   if DEBUG
     $('#office #subtext').html ls.currentStatusMessage + '<br />' + chosenFont
 
@@ -318,7 +318,13 @@ $ ->
     # show the cursor and remove the overlay (the gradient at the bottom)
     # (allows DOM inspection with the mouse)
     $('html').css 'cursor', 'auto'
-    $('#overlay').hide()
+    $('#container').css 'overflow-y', 'auto'
+    $('body').on 'keypress', (e) ->
+      if e.which is 13
+        $('#overlay').toggle()
+        $('#fadeOutNews').toggle()
+        $('#logo').toggle()
+        $('#pageflip').toggle()
   
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP

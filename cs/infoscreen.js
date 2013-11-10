@@ -61,11 +61,11 @@
     return Office.get(function(status, title, message) {
       if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         if (status in Office.foods) {
-          $('#office #text').html(Office.foods[status].title);
-          $('#office #text').css('color', Office.foods[status].color);
+          $('#office #status #text').html(Office.foods[status].title);
+          $('#office #status #text').css('color', Office.foods[status].color);
         } else {
-          $('#office #text').html(Office.statuses[status].title);
-          $('#office #text').css('color', Office.statuses[status].color);
+          $('#office #status #text').html(Office.statuses[status].title);
+          $('#office #status #text').css('color', Office.statuses[status].color);
         }
         $('#office #subtext').html(message);
         ls.currentStatus = status;
@@ -358,7 +358,7 @@
     } else {
       chosenFont = fonts[Math.floor(Math.random() * fonts.length)];
     }
-    $('#office #text').prop('class', chosenFont);
+    $('#office #status #text').prop('class', chosenFont);
     if (DEBUG) {
       return $('#office #subtext').html(ls.currentStatusMessage + '<br />' + chosenFont);
     }
@@ -400,7 +400,15 @@
     var icon, key, logo, placeholder, sponsor;
     if (DEBUG) {
       $('html').css('cursor', 'auto');
-      $('#overlay').hide();
+      $('#container').css('overflow-y', 'auto');
+      $('body').on('keypress', function(e) {
+        if (e.which === 13) {
+          $('#overlay').toggle();
+          $('#fadeOutNews').toggle();
+          $('#logo').toggle();
+          return $('#pageflip').toggle();
+        }
+      });
     }
     $.ajaxSetup(AJAX_SETUP);
     ls.removeItem('currentStatus');
