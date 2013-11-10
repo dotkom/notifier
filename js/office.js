@@ -69,9 +69,11 @@ var Office = {
         if (self.debug) console.log('status is "'+status+'" and title is "'+title+'"');
 
         // empty meeting title?
-        if (status == 'meeting' && title == '')
-          title = self.statuses['meeting'].message;
-        title = title.trim();
+        if (isEmpty(title))
+          if (status == 'meeting')
+            title = self.statuses['meeting'].message;
+        else
+          title = title.trim();
 
         // Temporary support for the old system, backwards compatibility
         if (isNumber(status)) {
