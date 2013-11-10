@@ -61,8 +61,16 @@
     return Office.get(function(status, title, message) {
       if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         if (status in Office.foods) {
-          $('#office #status #text').html(Office.foods[status].title);
-          $('#office #status #text').css('color', Office.foods[status].color);
+          if (Office.foods[status].image !== void 0) {
+            $('#office #status img').attr('src', Office.foods[status].image);
+            $('#office #status #text').hide();
+            $('#office #status img').show();
+          } else {
+            $('#office #status #text').text(Office.foods[status].title);
+            $('#office #status #text').css('color', Office.foods[status].color);
+            $('#office #status img').hide();
+            $('#office #status #text').show();
+          }
         } else {
           $('#office #status #text').html(Office.statuses[status].title);
           $('#office #status #text').css('color', Office.statuses[status].color);
