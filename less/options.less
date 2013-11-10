@@ -531,60 +531,63 @@ header {
 
 /* The pageflip at the bottom */
 
-#pageflipbg {
-  -webkit-animation: terminal .5s alternate infinite;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
-  width: 185px;
-  height: 98px;
-  z-index: 105;
-}
-#pagefliptext {
-  -webkit-animation: terminal .5s alternate infinite;
-  position: fixed;
-  width: 170px;
-  height: 36px;
-  left: 5px;
-  bottom: 5px;
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow:
-    0 0 5px #68bf70,
-    0 0 10px #60b95e,
-    0 0 15px #368f2c,
-    0 0 20px #25892e,
-    0 0 30px #183e1a;
-  z-index: 106;
-}
 #pageflip {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
-  width: 185px;
-  height: 98px;
-  z-index: 107;
-}
-#pagefliplink {
-  position: fixed;
-  width: 170px;
-  height: 36px;
-  left: 5px;
-  bottom: 5px;
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow:  0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 108;
-  a {
+
+  #pfBackground {
     -webkit-animation: terminal .5s alternate infinite;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
+    width: 185px;
+    height: 98px;
+    z-index: 105;
+  }
+  #pfText {
+    -webkit-animation: terminal .5s alternate infinite;
+    position: fixed;
+    width: 170px;
+    height: 36px;
+    left: 5px;
+    bottom: 5px;
     font: bold 11px monospace;
     color: #ccf2cc;
-    text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
+    text-shadow:
+      0 0 5px #68bf70,
+      0 0 10px #60b95e,
+      0 0 15px #368f2c,
+      0 0 20px #25892e,
+      0 0 30px #183e1a;
+    z-index: 106;
+  }
+  #pfFlip {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
+    width: 185px;
+    height: 98px;
+    z-index: 107;
+  }
+  #pfLink {
+    position: fixed;
+    width: 170px;
+    height: 36px;
+    left: 5px;
+    bottom: 5px;
+    font: bold 11px monospace;
+    color: #ccf2cc;
+    text-shadow:  0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+    z-index: 108;
+    a {
+      -webkit-animation: terminal .5s alternate infinite;
+      font: bold 11px monospace;
+      color: #ccf2cc;
+      text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
