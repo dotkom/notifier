@@ -26,25 +26,29 @@ mainLoop = ->
     mainLoop()
   ), PAGE_LOOP
 
-updateOffice = ->
+updateOffice = (rotate) ->
   if DEBUG then console.log 'updateOffice'
   Office.get (status, title, message) ->
+    console.log 'CURRENTLY', status, 'AND', message
     if ls.currentStatus isnt status or ls.currentStatusMessage isnt message
       if status of Office.foods
         if Office.foods[status].image isnt undefined
+          # Food status with image
           $('#office #status img').attr 'src', Office.foods[status].image
           $('#office #status #text').hide()
           $('#office #status img').show()
         else
+          # Food status with just title
           $('#office #status #text').text Office.foods[status].title
           $('#office #status #text').css 'color', Office.foods[status].color
           $('#office #status img').hide()
           $('#office #status #text').show()
       else
+        # Regular status
         $('#office #status #text').html Office.statuses[status].title
         $('#office #status #text').css 'color', Office.statuses[status].color
-      # $('#office img').attr 'src', 'img/status-'+status+'.png'
       $('#office #subtext').html message
+      alert 'SETTING TO ' + status + ' AND ' + message
       ls.currentStatus = status
       ls.currentStatusMessage = message
 

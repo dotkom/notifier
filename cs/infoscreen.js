@@ -54,11 +54,12 @@
     }), PAGE_LOOP);
   };
 
-  updateOffice = function() {
+  updateOffice = function(rotate) {
     if (DEBUG) {
       console.log('updateOffice');
     }
     return Office.get(function(status, title, message) {
+      console.log('CURRENTLY', status, 'AND', message);
       if (ls.currentStatus !== status || ls.currentStatusMessage !== message) {
         if (status in Office.foods) {
           if (Office.foods[status].image !== void 0) {
@@ -76,6 +77,7 @@
           $('#office #status #text').css('color', Office.statuses[status].color);
         }
         $('#office #subtext').html(message);
+        alert('SETTING TO ' + status + ' AND ' + message);
         ls.currentStatus = status;
         return ls.currentStatusMessage = message;
       }
