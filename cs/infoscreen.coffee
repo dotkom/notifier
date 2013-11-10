@@ -362,7 +362,7 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  if DEBUG then console.log 'Applying affiliation graphics'
+  # Applying affiliation graphics
   key = ls.affiliationKey1
   logo = Affiliation.org[key].logo
   icon = Affiliation.org[key].icon

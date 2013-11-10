@@ -61,7 +61,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       if palette isnt undefined
         $('#affiliationPalette').val palette
         ls.affiliationPalette = palette
-        if DEBUG then console.log 'Applying chosen palette', palette
+        # Applying chosen palette
         $('#palette').attr 'href', Palettes.get palette
       
       # Extension icon

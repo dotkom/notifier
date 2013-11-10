@@ -453,9 +453,6 @@
     if (ls.showBus !== 'true') {
       $('#bus').hide();
     }
-    if (DEBUG) {
-      console.log('Applying affiliation graphics');
-    }
     key = ls.affiliationKey1;
     logo = Affiliation.org[key].logo;
     icon = Affiliation.org[key].icon;

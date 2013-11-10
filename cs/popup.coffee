@@ -435,7 +435,7 @@ $ ->
     $('#chatterButton').hide() # Hide chat button
     $('#mobileText').hide() # Hide Notifier Mobile info in Tips box
 
-  if DEBUG then console.log 'Applying affiliation graphics'
+  # Applying affiliation graphics
   key = ls.affiliationKey1
   logo = Affiliation.org[key].logo
   icon = Affiliation.org[key].icon

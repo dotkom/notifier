@@ -72,9 +72,6 @@
         if (palette !== void 0) {
           $('#affiliationPalette').val(palette);
           ls.affiliationPalette = palette;
-          if (DEBUG) {
-            console.log('Applying chosen palette', palette);
-          }
           $('#palette').attr('href', Palettes.get(palette));
         }
         icon = Affiliation.org[affiliationKey].icon;
