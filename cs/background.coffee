@@ -30,12 +30,15 @@ mainLoop = ->
 
 updateOfficeAndMeetings = (force) ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
-  Office.get (status, title, message) ->
+  Office.get (status, message) ->
+    title = ''
     if force or ls.officeStatus isnt status or ls.officeStatusMessage isnt message
       # Extension icon
-      if status of Office.foods
+      if status in Object.keys Office.foods
+        title = Office.foods[status].title
         Browser.setIcon Office.foods[status].icon
       else
+        title = Office.statuses[status].title
         statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status]
         if statusIcon isnt undefined
           Browser.setIcon statusIcon

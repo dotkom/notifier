@@ -57,8 +57,15 @@
     if (DEBUG) {
       console.log('updateOffice');
     }
-    return Office.get(function(status, title, message) {
+    return Office.get(function(status, message) {
+      var title;
       if (ls.officeStatus !== status || ls.officeStatusMessage !== message) {
+        title = '';
+        if (__indexOf.call(Object.keys(Office.foods), status) >= 0) {
+          title = Office.foods[status].title;
+        } else {
+          title = Office.statuses[status].title;
+        }
         $('#office #status').html(title);
         $('#office #status').attr('class', status);
         $('#office #subtext').html(message);

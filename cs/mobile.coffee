@@ -29,8 +29,13 @@ mainLoop = ->
 
 updateOffice = ->
   if DEBUG then console.log 'updateOffice'
-  Office.get (status, title, message) ->
+  Office.get (status, message) ->
     if ls.officeStatus isnt status or ls.officeStatusMessage isnt message
+      title = ''
+      if status in Object.keys Office.foods
+        title = Office.foods[status].title
+      else
+        title = Office.statuses[status].title
       $('#office #status').html title
       $('#office #status').attr 'class', status
       $('#office #subtext').html message
