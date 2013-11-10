@@ -13,12 +13,12 @@ var Office = {
   },
   // Food statuses have titles and icons (messages exist as calendar titles)
   foods: {
-    'bun': {title: 'Boller', color: 'NavajoWhite', icon: './img/icon-bun.png'},
-    'cake': {title: 'Kake', color: 'NavajoWhite', icon: './img/icon-cake.png'},
+    'bun': {title: 'Boller', color: 'NavajoWhite', icon: './img/icon-bun.png', image: './img/image-bun.png'},
+    'cake': {title: 'Kake', color: 'NavajoWhite', icon: './img/icon-cake.png', image: './img/image-cake.png'},
     'coffee': {title: 'Kaffekos', color: 'NavajoWhite', icon: './img/icon-coffee.png'},
-    'pizza': {title: 'Pizza', color: 'NavajoWhite', icon: './img/icon-pizza.png'},
-    'taco': {title: 'Taco', color: 'NavajoWhite', icon: './img/icon-taco.png'},
-    'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png'},
+    'pizza': {title: 'Pizza', color: 'NavajoWhite', icon: './img/icon-pizza.png', image: './img/image-pizza.png'},
+    'taco': {title: 'Taco', color: 'NavajoWhite', icon: './img/icon-taco.png', image: './img/image-taco.png'},
+    'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png', image: './img/image-waffle.png'},
   },
 
   get: function(callback) {
