@@ -1,17 +1,14 @@
 .debugContainer {
   border: 0pt solid #00ffff;
 }
-.debugred {
+.debugBox {
   border: 0pt solid #ff0000;
 }
-.debugpink {
-  border: 0pt solid #ffc0cb;
-}
-.debuglime {
-  border: 0pt solid #00ff00;
-}
-.debugyellow {
+.debugText {
   border: 0pt solid #ffff00;
+}
+.debugElement {
+  border: 0pt solid #00ff00;
 }
 .fullbox {
   border: 0pt solid #00ffff;
@@ -82,7 +79,7 @@ body {
   width: 100%;
 }
 #container #todays #schedule {
-  border: 0pt solid #ffc0cb;
+  border: 0pt solid #ff0000;
   float: left;
   width: 48%;
 }
@@ -92,7 +89,7 @@ body {
   margin-bottom: 5pt;
 }
 #container #todays #coffee {
-  border: 0pt solid #ffc0cb;
+  border: 0pt solid #ff0000;
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
@@ -117,13 +114,13 @@ body {
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas #left {
-  border: 0pt solid #ffc0cb;
+  border: 0pt solid #ff0000;
   position: relative;
   float: left;
   width: 48%;
 }
 #container #cantinas #right {
-  border: 0pt solid #ffc0cb;
+  border: 0pt solid #ff0000;
   position: relative;
   float: right;
   width: 50%;
@@ -131,10 +128,10 @@ body {
 
 }
 #container #cantinas #dinnerbox {
-  border: 0pt solid #ffff00;
+  border: 0pt solid #00ff00;
 }
 #container #cantinas li {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   position: relative;
   width: 95%;
   list-style-type: none;
@@ -164,7 +161,7 @@ body {
   text-overflow: ellipsis;
 }
 #container #bus #firstBus {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ff0000;
   position: relative;
   float: left;
   text-align: right;
@@ -172,7 +169,7 @@ body {
   width: 40%;
 }
 #container #bus #secondBus {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ff0000;
   position: relative;
   float: left;
   text-align: left;
@@ -198,7 +195,7 @@ body {
 #container #bus .eighth,
 #container #bus .nineth,
 #container #bus .tenth {
-  border: 0pt solid #ff0000;
+  border: 0pt solid #ffff00;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -211,7 +208,7 @@ body {
   font-style: italic;
 }
 #container #bus #middle {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ff0000;
   position: relative;
   float: left;
   text-align: center;
@@ -225,12 +222,12 @@ body {
   width: 100%;
 }
 #container #news .post {
-  border: 0pt solid #ffff00;
+  border: 0pt solid #ff0000;
   position: relative;
   clear: both;
 }
 #container #news .post .item {
-  border: 0pt solid #ffff00;
+  border: 0pt solid #00ff00;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -318,7 +315,7 @@ body {
       z-index: 100;
 
       .busStop {
-        .debugred;
+        .debugElement;
         float: left;
         white-space: nowrap;
         z-index: 101;
@@ -350,13 +347,13 @@ body {
           z-index: 102;
 
           table {
-            .debugred;
+            .debugElement;
             width: 100%;
             table-layout: fixed;
             text-align: center;
             z-index: 103;
             td {
-              .debugyellow;
+              .debugText;
               padding: 1pt 0;
               z-index: 103;
             }
@@ -392,7 +389,7 @@ body {
         }
       }
       #busLogo {
-        .debugred;
+        .debugElement;
         position: relative; /* allows the down-arrow to be painted behind this * /
         z-index: 10; /* allows the down-arrow to be painted behind this * /
         float: left;
@@ -417,7 +414,7 @@ body {
   text-align: center;
 }
 #container #office #status {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   font-size: 90pt;
   font-weight: bold;
   text-transform: uppercase;
@@ -498,7 +495,7 @@ body {
   -webkit-box-shadow: 0px 0px 10px #bbb;
 }
 #container #news .post .item .textwrapper {
-  border: 0pt solid #00ff00;
+  border: 0pt solid #ffff00;
   position: relative;
   float: left;
   text-align: left;
@@ -520,7 +517,7 @@ body {
 /* Suggestions for bus stops */
 /*
 #busSuggestions {
-  .debuglime;
+  .debugBox;
   position: absolute;
   vertical-align: middle;
   overflow: auto;
