@@ -480,7 +480,7 @@
     officeFontRotate();
     setInterval((function() {
       return officeFontRotate();
-    }), 3000);
+    }), 1800000);
     setInterval((function() {
       var hours, minutes, _d;
       _d = new Date();

@@ -387,7 +387,7 @@ $ ->
   officeFontRotate()
   setInterval ( ->
     officeFontRotate()
-  ), 3000
+  ), 1800000
 
   # Start the clock in #bus, from: alessioatzeni.com/blog/css3-digital-clock-with-jquery/
   setInterval ( ->
