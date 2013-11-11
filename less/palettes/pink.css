@@ -3,10 +3,10 @@
   -webkit-filter: hue-rotate(92deg) saturate(1.4) brightness(1.7);
 }
 
-#pageflip {
+#pfFlip {
   -webkit-filter: hue-rotate(82deg) saturate(1.4) brightness(1.6);
 }
 
-#pageflipbg {
+#pfBackground {
   -webkit-filter: grayscale(1) saturate(1.4) brightness(0.5);
 }

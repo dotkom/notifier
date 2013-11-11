@@ -124,7 +124,7 @@ var News = {
     if (typeof post.description == 'undefined')
       post.description = $(item).find("description").filter(':first').text();
     // Less used fields
-    post.creator = $(item).find("dc:creator").filter(':first').text();
+    post.creator = $(item).find("dc\\:creator").filter(':first').text();
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
     // Locally stored
     post.image = affiliationObject.placeholder;
@@ -174,13 +174,6 @@ var News = {
       // Do nothing, we were just checking, move along quitely
     }
 
-    // In case browser does not grok tags with colons, stupid browser
-    if (post.creator == '') {
-      var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
-      $(item).find(tag).each(function(){
-        post.creator = $(this).text().trim();
-      });
-    }
     // Check for author in rarely used <author> field
     if (post.creator == '') {
       // - Universitetsavisa and Adressa uses this

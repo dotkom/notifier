@@ -96,8 +96,10 @@ Ajaxer = {
     }
   },
 
+  // IMPORTANT: This function replaces all <img> tags with <pic>
   cleanHtml: function(html, type) {
     var size = html.length;
+    
     // Remove head, links, metas, scripts, iframes, frames, framesets
     html = html.replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '');
     html = html.replace(/<link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link>/gi, '');
@@ -106,6 +108,7 @@ Ajaxer = {
     html = html.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
     html = html.replace(/<frame\b[^<]*(?:(?!<\/frame>)<[^<]*)*<\/frame>/gi, '');
     html = html.replace(/<frameset\b[^<]*(?:(?!<\/frameset>)<[^<]*)*<\/frameset>/gi, '');
+    
     // Remove audio, video, object, canvas, applet, embed
     html = html.replace(/<audio\b[^<]*(?:(?!<\/audio>)<[^<]*)*<\/audio>/gi, '');
     html = html.replace(/<video\b[^<]*(?:(?!<\/video>)<[^<]*)*<\/video>/gi, '');
@@ -113,6 +116,20 @@ Ajaxer = {
     html = html.replace(/<canvas\b[^<]*(?:(?!<\/canvas>)<[^<]*)*<\/canvas>/gi, '');
     html = html.replace(/<applet\b[^<]*(?:(?!<\/applet>)<[^<]*)*<\/applet>/gi, '');
     html = html.replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
+    
+    // Remove inline scripts
+    html = html.replace(/on\w+\s*?=\s*?("[^"]*"|'[^']*')/gi, '');
+    // If any inline scripts didn't use enclosing quotes, turn them into harmless titles
+    html = html.replace(/on\w+\s*?=/gi, 'title='); // Note: a bit greedy, but won't cause anything but lulz
+    
+    // Rename <img> tags to <pic> tags to prevent jQuery from trying to fetch all images.
+    // jQuerys behavior is not too problematic, but has some security concerns, also it
+    // will most definitely slow down any slow computer running Notifier, like most
+    // Infoscreen computers out there.
+    // When parsing for images, we will just look for the <pic> tags.
+    html = html.replace(/<[\s]*?img/gi, '<pic');
+    html = html.replace(/<[\s]*?\/[\s]*?img/gi, '</pic');
+
     if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
     return html;
   },

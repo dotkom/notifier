@@ -93,7 +93,7 @@ var Affiliation = {
                   post.creator = self.name;
                   post.date = ''
                   // Locally stored
-                  post.image = $(this).find("img").filter(':first').attr('src');
+                  post.image = $(this).find("pic").filter(':first').attr('src');
                   // Tag the posts with the key and name of the feed they came from
                   post.feedKey = self.key;
                   post.feedName = self.name;
@@ -184,7 +184,7 @@ var Affiliation = {
       },
       coffeeApi: 'http://pi.deltahouse.no/coffee.txt',
       lightApi: 'http://pi.deltahouse.no/office.txt',
-      eventApi: 'http://online.ntnu.no/service_static/delta/office_status',
+      eventApi: 'http://online.ntnu.no/service_static/delta/office',
       servantApi: 'http://online.ntnu.no/service_static/delta/servant_list',
       meetingsApi: 'http://online.ntnu.no/service_static/delta/meeting_plan',
       hasMemes: true,
@@ -207,21 +207,6 @@ var Affiliation = {
       useAltLink: false,
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
-      },
-    },
-    'solan': {
-      name: 'Solan',
-      key: 'solan',
-      web: 'http://entreprenorskolen.no/',
-      feed: 'http://entreprenorskolen.no/feed/',
-      logo: './org/solan/logo.png',
-      icon: './org/solan/icon.png',
-      symbol: './org/solan/symbol.png',
-      placeholder: './org/solan/placeholder.png',
-      palette: 'blue',
-      useAltLink: false,
-      getImage: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
       },
     },
     'hybrida': {
@@ -290,7 +275,7 @@ var Affiliation = {
       },
       coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
       lightApi: 'http://draug.online.ntnu.no/lys.txt',
-      eventApi: 'https://online.ntnu.no/service_static/office_status',
+      eventApi: 'https://online.ntnu.no/service_static/online/office',
       servantApi: 'https://online.ntnu.no/service_static/servant_list',
       meetingsApi: 'https://online.ntnu.no/service_static/meeting_plan',
       hasMemes: true,
@@ -334,6 +319,21 @@ var Affiliation = {
       useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
+      },
+    },
+    'solan': {
+      name: 'Solan',
+      key: 'solan',
+      web: 'http://entreprenorskolen.no/',
+      feed: 'http://entreprenorskolen.no/feed/',
+      logo: './org/solan/logo.png',
+      icon: './org/solan/icon.png',
+      symbol: './org/solan/symbol.png',
+      placeholder: './org/solan/placeholder.png',
+      palette: 'blue',
+      useAltLink: false,
+      getImage: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
       },
     },
     'spanskroeret': {
@@ -1210,17 +1210,17 @@ var Affiliation = {
             }
             else {
               // Find all image tags within post
-              image = image.find('img');
+              image = image.find('pic');
 
               // Exclude gifs since they're most likely smilies and the likes
-              image = image.not('img[src*=".gif"]');
-              image = image.not('img[src*="data:image/gif"]');
+              image = image.not('pic[src*=".gif"]');
+              image = image.not('pic[src*="data:image/gif"]');
 
               // Exclude social image icons (only applies for some blogs)
-              image = image.not('img[src*="sociable"]');
+              image = image.not('pic[src*="sociable"]');
 
               // Exclude static content, most likely icons
-              image = image.not('img[src*="static"]');
+              image = image.not('pic[src*="static"]');
 
               // Use image at specified index if requested
               if (options.imageIndex)

@@ -30,24 +30,27 @@ mainLoop = ->
 
 updateOfficeAndMeetings = (force) ->
   if DEBUG then console.log 'updateOfficeAndMeetings'
-  Office.get (status, title, message) ->
-    if force or ls.currentStatus isnt status or ls.currentStatusMessage isnt message
+  Office.get (status, message) ->
+    title = ''
+    if force or ls.officeStatus isnt status or ls.officeStatusMessage isnt message
       # Extension icon
-      if status is 'waffle'
-        Browser.setIcon './img/icon-waffle.png'
+      if status in Object.keys Office.foods
+        title = Office.foods[status].title
+        Browser.setIcon Office.foods[status].icon
       else
+        title = Office.statuses[status].title
         statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status]
         if statusIcon isnt undefined
           Browser.setIcon statusIcon
         else
           errorIcon = Affiliation.org[ls.affiliationKey1].icon
           Browser.setIcon errorIcon
-      ls.currentStatus = status
+      ls.officeStatus = status
       # Extension title (hovering mouse over icon shows the title text)
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
         Browser.setTitle today
-        ls.currentStatusMessage = message
+        ls.officeStatusMessage = message
 
 updateCoffeeSubscription = ->
   if DEBUG then console.log 'updateCoffeeSubscription'
@@ -58,7 +61,7 @@ updateCoffeeSubscription = ->
       # New pot number?
       if storedPots < pots
         # Not a meeting?
-        if ls.currentStatus isnt 'meeting'
+        if ls.officeStatus isnt 'meeting'
           # Made less than 10 minutes ago?
           if age < 10
             # Notify everyone with a coffee subscription :D

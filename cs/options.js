@@ -64,17 +64,14 @@
         }
         if (new_has_hardware) {
           changeOfficeStatusIcons();
-          ls.removeItem('currentStatus');
-          ls.removeItem('currentStatusMessage');
+          ls.removeItem('officeStatus');
+          ls.removeItem('officeStatusMessage');
           Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
         }
         palette = Affiliation.org[affiliationKey].palette;
         if (palette !== void 0) {
           $('#affiliationPalette').val(palette);
           ls.affiliationPalette = palette;
-          if (DEBUG) {
-            console.log('Applying chosen palette', palette);
-          }
           $('#palette').attr('href', Palettes.get(palette));
         }
         icon = Affiliation.org[affiliationKey].icon;
@@ -731,10 +728,10 @@
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
     if (OPERATING_SYSTEM === 'Windows') {
-      $('#pagefliptext').attr("style", "bottom:9px;");
-      $('#pagefliplink').attr("style", "bottom:9px;");
+      $('#pfText').attr("style", "bottom:9px;");
+      $('#pfLink').attr("style", "bottom:9px;");
     }
-    $('#pagefliplink').click(function() {
+    $('#pfLink').click(function() {
       if (!DEBUG) {
         return _gaq.push(['_trackEvent', 'options', 'clickPageflip']);
       }

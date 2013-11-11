@@ -1,3 +1,34 @@
+/* The pageflip at the bottom of some pages */
+#pageflip {
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  bottom: 0;
+  color: #ccf2cc;
+}
+#pageflip #pfBackground {
+  position: fixed;
+  z-index: 201;
+}
+#pageflip #pfText {
+  position: fixed;
+  z-index: 202;
+}
+#pageflip #pfFlip {
+  position: fixed;
+  z-index: 203;
+}
+#pageflip #pfLink {
+  position: fixed;
+  z-index: 204;
+}
+#pageflip #pfLink a {
+  text-decoration: none;
+  color: #ccf2cc;
+}
+#pageflip #pfLink a:hover {
+  text-decoration: underline;
+}
 .debugred {
   border: 0pt solid #ff0000;
 }
@@ -530,81 +561,41 @@ header #notification .saved {
   opacity: 1;
 }
 /* The pageflip at the bottom */
-/*@-webkit-keyframes terminal {
-  0% {
-    -webkit-filter: contrast(100%) brightness(1) hue-rotate(0deg);
-    text-shadow:
-      0 0 5px #68bf70,
-      0 0 10px #60b95e,
-      0 0 15px #368f2c,
-      0 0 20px #25892e,
-      0 0 30px #183e1a;
-  }
-  100% {
-    -webkit-filter: contrast(102%) brightness(.98) hue-rotate(2deg);
-    text-shadow:
-      0 0 3px #68bf70,
-      0 0 8px #60b95e,
-      0 0 12px #368f2c,
-      0 0 15px #25892e,
-      0 0 25px #183e1a;
-  }
-}*/
-#pageflipbg {
-  -webkit-animation: terminal .5s alternate infinite;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
+#pageflip {
   width: 185px;
   height: 98px;
-  z-index: 105;
-}
-#pagefliptext {
-  -webkit-animation: terminal .5s alternate infinite;
-  position: fixed;
-  width: 170px;
-  height: 36px;
-  left: 5px;
-  bottom: 5px;
   font: bold 11px monospace;
-  color: #ccf2cc;
   text-shadow: 0 0 5px #68bf70,
     0 0 10px #60b95e,
     0 0 15px #368f2c,
     0 0 20px #25892e,
     0 0 30px #183e1a;
-  z-index: 106;
 }
-#pageflip {
-  position: fixed;
+#pageflip #pfBackground {
   left: 0;
   bottom: 0;
-  background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
   width: 185px;
   height: 98px;
-  z-index: 107;
+  background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
 }
-#pagefliplink {
-  position: fixed;
-  width: 170px;
-  height: 36px;
+#pageflip #pfText {
   left: 5px;
   bottom: 5px;
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  z-index: 108;
+  width: 170px;
+  height: 36px;
 }
-#pagefliplink a {
-  -webkit-animation: terminal .5s alternate infinite;
-  font: bold 11px monospace;
-  color: #ccf2cc;
-  text-shadow: 0 0 5px #68bf70, 0 0 10px #60b95e, 0 0 15px #368f2c, 0 0 20px #25892e, 0 0 30px #183e1a;
-  text-decoration: none;
+#pageflip #pfFlip {
+  left: 0;
+  bottom: 0;
+  width: 185px;
+  height: 98px;
+  background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
 }
-#pagefliplink a:hover {
-  text-decoration: underline;
+#pageflip #pfLink {
+  left: 5px;
+  bottom: 5px;
+  width: 170px;
+  height: 36px;
 }
 /* Google +1 button */
 #plusonebutton {

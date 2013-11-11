@@ -7,11 +7,11 @@
   -webkit-filter: grayscale(1) saturate(2.6) brightness(.9);
 }
 
-#pageflip {
+#pfFlip {
   -webkit-filter: grayscale(1) brightness(.9);
 }
 
-#pageflipbg {
+#pfBackground {
   -webkit-filter: grayscale(1) brightness(0.5);
 }
 
