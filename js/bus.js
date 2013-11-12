@@ -1,4 +1,5 @@
 var Bus = {
+  debug: 0,
   api: 'http://api.visuweb.no/bybussen/4.0/Departure/Route/',
   apiKey: '/5ce70df7d7ffa2a6728aef4eaf9200db', // phasing out oldkey: f6975f3c1a3d838dc69724b9445b3466
   msgDisconnected: 'Frakoblet fra api.visuweb.no',
@@ -103,11 +104,18 @@ var Bus = {
   calculateTime: function(time, isRealtime) {
     // We only need the time, the date is always today
     // Format is "10.11.2012 12:07"
-    var timePieces = time.split(" ")[1].split(":");
+
+    var datePieces = time.split(' ')[0].split('.');
+    var timePieces = time.split(' ')[1].split(':');
+    var yy = datePieces[2];
+    var mm = datePieces[1] - 1; // Zero-indexed for some fucking reason
+    var dd = datePieces[0];
+    var hour = timePieces[0];
+    var min = timePieces[1];
 
     // Set the two dates
     var now = new Date();
-    var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), timePieces[0], timePieces[1]);
+    var then = new Date(yy, mm, dd, hour, min);
 
     // Calculate difference between the two dates, and convert to minutes
     var one_minute = 1000 * 60;
@@ -122,12 +130,15 @@ var Bus = {
     else if (60 <= diff)
       calculatedTime = timePieces[0] + ':' + timePieces[1];
 
+    if (this.debug) console.log('Calculated time:', calculatedTime)
     return calculatedTime;
   },
 
   prettifyDestination: function(destination) {
     if (destination.match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/) !== null)
       destination = "Sentrum";
+    if (destination.match(/Dragvoll\/Lohove/) !== null)
+      destination = "Lohove";
     return destination;
   },
 
