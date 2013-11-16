@@ -237,6 +237,9 @@ var News = {
     if (post.date == '')
       post.date = null;
 
+    // Remove meta information from description, within curly brackets {}
+    post.description = post.description.replace(/\{.*\}/gi,'');
+
     // Trimming
     post.title = post.title.trim();
     post.description = post.description.trim();
