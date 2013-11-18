@@ -407,7 +407,7 @@
       var altLink, link, useAltLink;
       link = $(this).attr('data');
       altLink = $(this).attr('name');
-      useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink;
+      useAltLink = Affiliation.org[feedKey].useAltLink;
       if (altLink !== void 0 && useAltLink === true) {
         link = $(this).attr('name');
       }

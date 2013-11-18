@@ -326,7 +326,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     # - if preferred by the organization, we should use that instead.
     link = $(this).attr 'data'
     altLink = $(this).attr 'name'
-    useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink
+    useAltLink = Affiliation.org[feedKey].useAltLink
     if altLink isnt undefined and useAltLink is true
       link = $(this).attr 'name'
     Browser.openTab link
