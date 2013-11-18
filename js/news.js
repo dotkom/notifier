@@ -50,12 +50,29 @@ var News = {
       });
     }
     // Get news the irregular way, through a getNews function defined in the affiliation object
-    else if (typeof affiliationObject.getNews != 'undefined') {
-      affiliationObject.getNews(limit, function(posts) {
-        for (i in posts) {
-          posts[i] = self.postProcess(posts[i]);
-        }
-        callback(posts);
+    else if (affiliationObject.getNews) {
+      
+      // Empty preprocessed array for posts
+      var posts = [];
+      for (var i = 0; i < limit; i++) {
+        var post = {};
+        post = this.preProcess(post, affiliationObject);
+        posts.push(post);
+      }
+      
+      // Get news posts
+      affiliationObject.getNews(posts, function(newPosts) {
+        
+        // Strip away any empty posts
+        for (var i = newPosts.length - 1; i >= 0; i--)
+          if (typeof newPosts[i].title == 'undefined')
+            newPosts.splice(i, 1);
+        
+        // Postprocessing of newPosts
+        for (i in newPosts)
+          newPosts[i] = self.postProcess(newPosts[i], affiliationObject);
+
+        callback(newPosts);
       });
     }
     else {
@@ -83,7 +100,7 @@ var News = {
   // - content - is the full entry as HTML
   // - link[rel="self"] - is this entry in XML format, useless
   // - link[rel="alternate"] - is the entry as text/html, good!
-  // - author -> name
+  // - author -> name - name is a subtag of the author tag
   parseFeed: function(xml, affiliationObject, limit, callback) {
     var posts = [];
     var self = this;
@@ -245,7 +262,7 @@ var News = {
     // Creator field
 
     // Didn't find a creator, set the feedname as creator
-    if (post.creator.length == 0)
+    if (post.creator == undefined || post.creator.length == 0)
       post.creator = post.feedName;
     // Capitalize creator name either way
     post.creator = post.creator.capitalize();
@@ -411,17 +428,17 @@ var News = {
     return postField;
   },
 
-  treatTextField: function(postField, onEmptyText) {
-    // Remove meta information from description, within curly brackets {}
-    postField = postField.replace(/\{.*\}/gi,'');
+  treatTextField: function(field, onEmptyText) {
+    // Remove meta information from title or description, within curly brackets {}
+    field = field.replace(/\{.*\}/gi,'');
     // Shorten 'bedriftspresentasjon' to 'bedpres'
-    postField = postField.replace(/edrift(s)?presentasjon/gi, 'edpres');
+    field = field.replace(/edrift(s)?presentasjon/gi, 'edpres');
     // Trimming
-    postField = postField.trim();
+    field = field.trim();
     // Empty field?
-    if (postField == '')
-      postField = ifEmptyText;
-    return postField;
+    if (field == '')
+      field = ifEmptyText;
+    return field;
   },
 
   checkDescriptionForImageLink: function(oldImage, description) {
