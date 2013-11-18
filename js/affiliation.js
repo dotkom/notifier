@@ -67,7 +67,7 @@ var Affiliation = {
       servantApi: 'http://informatikk.org/abakus/servant_list.txt',
       meetingsApi: 'http://informatikk.org/abakus/meeting_plan.txt',
       // getImages unnecessary, images are extracted from the source code
-      getNews: function(limit, callback) {
+      getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
           console.log('ERROR: callback is required');
           return;
@@ -77,26 +77,18 @@ var Affiliation = {
           url: self.web,
           success: function(html) {
             html = html.trim(); // Why all the newlines in the start of the file? jQuery doesn't liek dat.
-            var posts = [];
             var count = 0;
             // Add each item from news tags
             if ($(html).find('.article').length != 0) {
               $(html).find('.article').each( function() {
-                if (count++ < limit) {
-                  var post = {};
+                if (count < posts.length) {
+                  var post = posts[count];
                   
                   // The popular fields
                   post.title = $(this).find("h2").filter(':first').text();
                   post.link = $(this).find("a").filter(':first').attr('href');
                   post.description = $(this).find(".introtext p").filter(':first').text();
-                  // Less used fields
-                  post.creator = self.name;
-                  post.date = ''
-                  // Locally stored
                   post.image = $(this).find("pic").filter(':first').attr('src');
-                  // Tag the posts with the key and name of the feed they came from
-                  post.feedKey = self.key;
-                  post.feedName = self.name;
 
                   // Link fixing
                   post.link = 'http://abakus.no' + post.link;
@@ -105,7 +97,7 @@ var Affiliation = {
                   else
                     post.image = self.placeholder;
 
-                  posts.push(post);
+                  posts[count++] = post;
                 }
               });
             }
