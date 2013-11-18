@@ -8,6 +8,8 @@ var News = {
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
   msgNoNewsSource: 'Ingen nyhetskilde funnet for valgt tilhørightet',
+  msgNoTitle: 'Uten tittel',
+  msgNoDescription: 'Uten tekst',
 
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
@@ -91,7 +93,6 @@ var News = {
       $(xml).find('item').each( function() {
         if (count++ < limit) {
           var item = self.parseRssItem(this, affiliationObject);
-          item = self.postProcess(item);
           posts.push(item);
         }
       });
@@ -101,7 +102,6 @@ var News = {
       $(xml).find('entry').each( function() {
         if (count++ < limit) {
           var entry = self.parseAtomEntry(this, affiliationObject);
-          entry = self.postProcess(entry);
           posts.push(entry);
         }
       });
@@ -114,48 +114,59 @@ var News = {
 
   parseRssItem: function(item, affiliationObject) {
     var post = {};
+    post = this.preProcess(post, affiliationObject);
 
     // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
 
-    // The popular fields
+    // Title field
+
     post.title = $(item).find("title").filter(':first').text();
+    post.title = this.stripCdata(item, 'title', post.title);
+
+    // Link field
+
     post.link = $(item).find("link").filter(':first').text();
-    post.description = $(item).find("description").filter(':first').html();
-    if (typeof post.description == 'undefined')
-      post.description = $(item).find("description").filter(':first').text();
-    // Less used fields
-    post.creator = $(item).find("dc\\:creator").filter(':first').text();
-    post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
-    // Locally stored
-    post.image = affiliationObject.placeholder;
-    // Tag the posts with the key and name of the feed they came from
-    post.feedKey = affiliationObject.key;
-    post.feedName = affiliationObject.name;
-
-    // If feed uses CDATA-tags in title and description we need to be more clever
-    // to get the information we want outta there (e.g. Adressa)
-    var handleCDATA = function(item, field, postField) {
-      if (postField.trim() == '' || postField.match('CDATA') != null) {
-        var string = $(item).find(field).filter(':first')['0']['innerHTML'];
-        if (typeof string != 'undefined') {
-          string = string.replace(/(\<|&lt;)?!(\-\-)?\[CDATA\[/g, '');
-          string = string.replace(/\]\](\-\-)?(\>|&gt;)?/g, '');
-          return string;
-        }
-      }
-      return postField;
-    };
-    post.title = handleCDATA(item, 'title', post.title);
-    post.description = handleCDATA(item, 'description', post.description);
-
-    // If link field is broken by jQuery (dammit moon moon)
-    // then check GUID field for a link instead (e.g. Adressa)
     if (post.link.trim() == '') {
+      // If link field is broken by jQuery (dammit moon moon)
+      // then check GUID field for a link instead (e.g. Adressa)
       var guid = $(item).find('guid').filter(':first').text();
       if (guid.indexOf('http') != -1) {
         post.link = guid;
       }
     }
+
+    // Description field
+
+    post.description = $(item).find("description").filter(':first').html();
+    if (typeof post.description == 'undefined')
+      post.description = $(item).find("description").filter(':first').text();
+    post.description = this.stripCdata(item, 'description', post.description);
+
+    // Creator field
+
+    post.creator = $(item).find("dc\\:creator").filter(':first').text();
+    if (post.creator == '') {
+      // In case browser does not grok tags with colons, stupid browser
+      post.creator = $(item).find("creator").filter(':first').text();
+    }
+    if (post.creator == '') {
+      // Check for author in rarely used <author> field
+      // - Universitetsavisa and Adressa uses this
+      var author = $(item).find("author").filter(':first').text();
+      if (author != '') {
+        author = author.trim();
+        var pieces = author.match(/[a-zA-Z0-9æøåÆØÅ\.\- ]+/g);
+        if (pieces != null) {
+          post.creator = pieces[pieces.length-1];
+        }
+      }
+    }
+    
+    // Date field
+
+    post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
+    
+    // Image field
 
     // Check for image in rarely used tags <enclosure> and <bilde>
     try {
@@ -174,44 +185,21 @@ var News = {
       // Do nothing, we were just checking, move along quitely
     }
 
-    // In case browser does not grok tags with colons, stupid browser
-    if (post.creator == '') {
-      var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
-      $(item).find(tag).each( function() {
-        post.creator = $(this).text().trim();
-      });
-    }
-    // Check for author in rarely used <author> field
-    if (post.creator == '') {
-      // - Universitetsavisa and Adressa uses this
-      var author = $(item).find("author").filter(':first').text();
-      if (author != '') {
-        author = author.trim();
-        var pieces = author.match(/[a-zA-Z0-9æøåÆØÅ\.\- ]+/g);
-        if (pieces != null) {
-          post.creator = pieces[pieces.length-1];
-        }
-      }
-    }
+    // All done! Next please.
 
+    post = this.postProcess(post, affiliationObject);
     return post;
   },
 
   parseAtomEntry: function(entry, affiliationObject) {
     var post = {};
+    post = this.preProcess(post, affiliationObject);
 
-    // The popular fields
     post.title = $(entry).find("title").filter(':first').text();
     post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
     post.description = $(entry).find("content").filter(':first').text();
     post.creator = $(entry).find("author name").filter(':first').text();
     post.date = $(entry).find("published").filter(':first').text().substr(5, 11);
-
-    // Locally stored
-    post.image = affiliationObject.placeholder;
-    // Tag the posts with the key and name of the feed they came from
-    post.feedKey = affiliationObject.key;
-    post.feedName = affiliationObject.name;
 
     // Parse date field
     post.date = new Date(post.date);
@@ -220,46 +208,62 @@ var News = {
     else
       post.date = null;
 
+    post = this.postProcess(post, affiliationObject);
     return post;
   },
 
-  postProcess: function(post) {
-    post.image = this.checkDescriptionForImageLink(post.image, post.description);
+  // Applies for both RSS and ATOM feeds
+  preProcess: function(post, affiliationObject) {
+    // Tag the posts with the key, name and placeholder image of the feed they came from
+    post.feedKey = affiliationObject.key;
+    post.feedName = affiliationObject.name;
+    post.image = affiliationObject.placeholder;
+    return post;
+  },
+
+  // Applies for both RSS and ATOM feeds
+  postProcess: function(post, affiliationObject) {
+
+    // Title field
+
+    post.title = this.treatTextField(post.title, this.msgNoTitle);
+
+    // Link field
+
+    // Sometimes we would like to link directly to a link in the news description,
+    // this can help users avoid one step while navigating to links via Notifier
     post.altLink = this.checkDescriptionForAltLink(post.description);
+
+    // Description field
+
+    post.description = this.treatTextField(post.description, this.msgNoDescription);
 
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities, this works, but ppl should be allowed to use entitites
 
+    // Creator field
+
     // Didn't find a creator, set the feedname as creator
-    if (post.creator.length == 0) {
+    if (post.creator.length == 0)
       post.creator = post.feedName;
-    }
     // Capitalize creator name either way
     post.creator = post.creator.capitalize();
     // Abbreviate long creator names
-    post.creator = this.abbreviateName(post.creator);
+    if (post.creator != affiliationObject.name)
+      post.creator = this.abbreviateName(post.creator);
+
+    // Date field
 
     // In case pubDate didn't exist, set to null
     if (post.date == '')
       post.date = null;
 
-    // Remove meta information from description, within curly brackets {}
-    post.description = post.description.replace(/\{.*\}/gi,'');
+    // Image field
 
-    // Trimming
-    post.title = post.title.trim();
-    post.description = post.description.trim();
-
-    // Shorten 'bedriftspresentasjon' to 'bedpres'
-    post.title = post.title.replace(/edrift(s)?presentasjon/gi, 'edpres');
-    post.description = post.description.replace(/edrift(s)?presentasjon/gi, 'edpres');
-
-    // Empty title field?
-    if (post.title.trim() == '')
-      post.title = 'Uten tittel';
-    if (post.description.trim() == '')
-      post.description = 'Uten tekst';
+    // If we haven't found a good image, scour the description for an alternative
+    if (post.image == affiliationObject.placeholder)
+      post.image = this.checkDescriptionForImageLink(post.image, post.description);
 
     return post;
   },
@@ -379,25 +383,45 @@ var News = {
         }
       }
       // Make sure notifications are sent with at least 10 seconds inbetween
+      var showTime = 0;
       if (!DEBUG) {
         var lastTime = localStorage.lastNotifiedTime;
         if (isNumber(lastTime)) {
           var diff = new Date().getTime() - lastTime;
           if (diff < 10000) { // less than 10 seconds?
-            setTimeout(showIt, 10000);
+            showTime = 10000;
           }
-          else {
-            showIt();
-          }
-        }
-        else {
-          showIt();
         }
       }
-      else {
-        showIt();
+      setTimeout(showIt, showTime);
+    }
+  },
+
+  stripCdata: function(item, tagName, postField) {
+    // If feed uses CDATA-tags in title and description we need to be more clever
+    // to get the information we want outta there (e.g. Adressa)
+    if (postField.trim() == '' || postField.match('CDATA') != null) {
+      var string = $(item).find(tagName).filter(':first')['0']['innerHTML'];
+      if (typeof string != 'undefined') {
+        string = string.replace(/(\<|&lt;)?!(\-\-)?\[CDATA\[/g, '');
+        string = string.replace(/\]\](\-\-)?(\>|&gt;)?/g, '');
+        return string;
       }
     }
+    return postField;
+  },
+
+  treatTextField: function(postField, onEmptyText) {
+    // Remove meta information from description, within curly brackets {}
+    postField = postField.replace(/\{.*\}/gi,'');
+    // Shorten 'bedriftspresentasjon' to 'bedpres'
+    postField = postField.replace(/edrift(s)?presentasjon/gi, 'edpres');
+    // Trimming
+    postField = postField.trim();
+    // Empty field?
+    if (postField == '')
+      postField = ifEmptyText;
+    return postField;
   },
 
   checkDescriptionForImageLink: function(oldImage, description) {
