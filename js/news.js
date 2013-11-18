@@ -42,7 +42,7 @@ var News = {
           }
           else {
             if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
-            callback(self.msgConnectionError, affiliationObject.name);
+            callback(self.msgConnectionError + affiliationObject.name);
           }
         },
       });
@@ -174,6 +174,13 @@ var News = {
       // Do nothing, we were just checking, move along quitely
     }
 
+    // In case browser does not grok tags with colons, stupid browser
+    if (post.creator == '') {
+      var tag = ("dc\\:creator").replace( /.*(\:)(.*)/, "$2" );
+      $(item).find(tag).each( function() {
+        post.creator = $(this).text().trim();
+      });
+    }
     // Check for author in rarely used <author> field
     if (post.creator == '') {
       // - Universitetsavisa and Adressa uses this
