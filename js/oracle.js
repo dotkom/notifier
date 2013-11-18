@@ -5,7 +5,7 @@ var Oracle = {
   msgDisconnected: 'Frakoblet fra m.atb.no',
   msgSuggestPredict: 'Trykk [tab] for å spørre om: ',
 
-  __loadDefaults: function() {
+  _autoLoad_: function() {
     if (localStorage.oracleBrain == undefined) {
       var oracleBrain = {};
       for (var i=0; i<=6; i++)
