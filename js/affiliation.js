@@ -9,9 +9,10 @@ var Affiliation = {
   // key: 'orgx',
   // web: 'https://orgx.com',
   // feed: 'https://orgx.com/feed',
+  // api: 'https://orgx.com/api',               // Optional: If not using feed, use api and getNews
   // logo: './org/orgx/logo.png',               // 512x128 transparent logo, for dark background
   // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
-  // symbol: './org/orgx/symbol.png',           // 256x256 symbol, big version of the icon
+  // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with 20% empty padding
   // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
   // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
@@ -67,7 +68,7 @@ var Affiliation = {
       servantApi: 'http://informatikk.org/abakus/servant_list.txt',
       meetingsApi: 'http://informatikk.org/abakus/meeting_plan.txt',
       // getImages unnecessary, images are extracted from the source code
-      getNews: function(limit, callback) {
+      getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
           console.log('ERROR: callback is required');
           return;
@@ -77,26 +78,18 @@ var Affiliation = {
           url: self.web,
           success: function(html) {
             html = html.trim(); // Why all the newlines in the start of the file? jQuery doesn't liek dat.
-            var posts = [];
             var count = 0;
             // Add each item from news tags
             if ($(html).find('.article').length != 0) {
               $(html).find('.article').each( function() {
-                if (count++ < limit) {
-                  var post = {};
+                if (count < posts.length) {
+                  var post = posts[count];
                   
                   // The popular fields
                   post.title = $(this).find("h2").filter(':first').text();
                   post.link = $(this).find("a").filter(':first').attr('href');
                   post.description = $(this).find(".introtext p").filter(':first').text();
-                  // Less used fields
-                  post.creator = self.name;
-                  post.date = ''
-                  // Locally stored
                   post.image = $(this).find("pic").filter(':first').attr('src');
-                  // Tag the posts with the key and name of the feed they came from
-                  post.feedKey = self.key;
-                  post.feedName = self.name;
 
                   // Link fixing
                   post.link = 'http://abakus.no' + post.link;
@@ -105,7 +98,7 @@ var Affiliation = {
                   else
                     post.image = self.placeholder;
 
-                  posts.push(post);
+                  posts[count++] = post;
                 }
               });
             }
@@ -257,8 +250,8 @@ var Affiliation = {
     'online': {
       name: 'Online',
       key: 'online',
-      web: 'https://online.ntnu.no/',
-      feed: 'https://online.ntnu.no/feeds/news/',
+      web: 'https://online.ntnu.no',
+      api: 'https://online.ntnu.no/api/v0/article/all/?format=json',
       logo: './org/online/logo.png',
       icon: './org/online/icon.png',
       symbol: './org/online/symbol.png',
@@ -281,27 +274,43 @@ var Affiliation = {
       hasMemes: true,
       numberOfMemes: 4,
       memePath: './org/online/meme/',
-      getImage: function(link, callback) {
-        var placeholder = [this.placeholder]; // the placeholder image, as array
-        var id = link.split('/')[4]; // id is stored in the link
-        var api = 'https://online.ntnu.no/api/f5be90e5ec1d2d454ae9/news_image_by_id/';
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(posts, callback) {
+        if (typeof callback == 'undefined') {
+          console.log('ERROR: callback is required');
+          return;
+        }
+        var self = this;
         Ajaxer.getJson({
-          url: api + id,
+          url: self.api,
           success: function(json) {
-            if (json['online_news_image']) {
-              image = json['online_news_image']['0']['image'];
-              // Always return images as an array, even with just one image
-              image = [image];
-              callback(link, image);
+            var count = 0;
+            var articles = json.articles;
+
+            if (articles) {
+              // Add each article from the API...
+              for (i in articles) {
+                var article = articles[i];
+                // ...as long as there is more room for posts
+                if (count < posts.length) {
+                  var post = posts[count];
+                  post.title = article.heading;
+                  post.link = self.web + article.absolute_url;
+                  post.description = article.content;
+                  post.creator = article.author.first_name + ' ' + article.author.last_name;
+                  post.date = article.created_date;
+                  post.image = self.web + article.image_article_front_featured;
+                  posts[count++] = post;
+                }
+              }
             }
             else {
-              if (Affiliation.debug) console.log('ERROR: no image exists for id: ' + id);
-              callback(link, placeholder);
+              if (self.debug) console.log('ERROR: No articles found at', self.web);
             }
+            callback(posts);
           },
-          error: function() {
-            if (Affiliation.debug) console.log('ERROR: couldn\'t connect API to get image links, returning default image');
-            callback(link, placeholder);
+          error: function(e) {
+            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
           },
         });
       },

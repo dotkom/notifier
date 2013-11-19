@@ -48,6 +48,8 @@ var Meetings = {
 
   prettifyTodaysMeetings: function(meetings) {
     meetings = meetings.trim();
+    // Change 00:00 to 24
+    meetings = meetings.replace(/00:00/g, '24');
     // Remove unnecessarily specific time info 10:00 -> 10
     meetings = meetings.replace(/:00/g, '');
     // Trim unnecessary zero in time 08 -> 8
@@ -55,8 +57,8 @@ var Meetings = {
     // Add spaces for times "10-16:30" -> "10 - 16:30" and days "Fredag-Søndag" -> "Fredag - Søndag"
     meetings = meetings.replace(/(dag|\d) ?- ?(\d+:?\d*|[a-zæøå]+dag)/gi, '$1 - $2:');
     // Change times like 23:30 and 23:59 to just 24
-    meetings = meetings.replace(/22:(59|30)/g, '23');
-    meetings = meetings.replace(/23:(59|30)/g, '24');
+    meetings = meetings.replace(/22:(30|59)/g, '23');
+    meetings = meetings.replace(/23:(30|59)/g, '24');
     return meetings;
   },
 

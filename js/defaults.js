@@ -1,6 +1,6 @@
 var Defaults = {
 
-  load: function() {
+  _autoLoad_: function() {
   
     var ls = localStorage;
 
@@ -129,7 +129,7 @@ var Defaults = {
     // General
     if (ls.everOpenedOptions == undefined)
       ls.everOpenedOptions = 'false';
-  },
+  }(),
 
   // There is currently no way of knowing whether HardwareFeatures have been
   // installed recently or not, - if they exist. Therefore we will assume the
@@ -159,6 +159,3 @@ var Defaults = {
     }
   },
 }
-
-// Defaults self-loading
-Defaults.load();
