@@ -49,3 +49,7 @@ if (localStorage.affiliationKey1 == 'entreprenoerskolen')
   localStorage.affiliationKey1 = 'solan';
 if (localStorage.affiliationKey2 == 'entreprenoerskolen')
   localStorage.affiliationKey2 = 'solan';
+if (localStorage.affiliationKey1 == 'kwakiutl')
+  localStorage.affiliationKey1 = 'utopia';
+if (localStorage.affiliationKey2 == 'kwakiutl')
+  localStorage.affiliationKey2 = 'utopia';
