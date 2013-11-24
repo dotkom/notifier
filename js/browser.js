@@ -89,6 +89,23 @@ var Browser = {
     }
   },
 
+  getAppVersion: function() {
+    try {
+      if (BROWSER == 'Chrome') {
+        return chrome.runtime.getManifest().version + ' @ ' + BROWSER;
+      }
+      else if (BROWSER == 'Opera') {
+        return 'Unknown @ ' + BROWSER // TODO: Implement when available
+      }
+      else {
+        console.log(this.msgUnsupported);
+      }
+    } catch (err) {
+      // Do nothing, we're just checking
+    }
+    return 'Unknown @ ' + BROWSER
+  },
+
   // Things in item:
   // - feedKey: 'orgx'
   // - title: 'Hello World'
