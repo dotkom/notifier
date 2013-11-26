@@ -115,6 +115,7 @@ var Browser = {
   // - image: 'http://orgx.no/media/helloworld.png'
   // - symbol: 'img/whatever.png'
   // - longStory: true
+  // - stay: true
   createNotification: function(item) {
     // Check required params
     if (!item.feedKey) console.log('ERROR: item.feedKey is required');
@@ -177,8 +178,12 @@ var Browser = {
             chrome.notifications.create(id, options, function(notID) {
               if (self.debug) console.log('Succesfully created notification with ID', notID);
             });
-            // Chrom(e|ium) on Linux doesn't remove the notification automatically
-            var timeout = (item.longStory ? 10000 : 5000);
+            // Choose how long the notification stays around for
+            // if stay? 10 minutes
+            // if longStory? 10 seconds
+            // else 5 seconds
+            // Note: Chrom(e|ium) on Linux doesn't remove the notification automatically
+            var timeout = (item.stay ? 600000 : (item.longStory ? 10000 : 5000));
             setTimeout(function() {
               chrome.notifications.clear(id, function(wasCleared) {
                 if (self.debug) console.log('Cleared notification?', wasCleared);
