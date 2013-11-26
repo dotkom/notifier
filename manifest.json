@@ -18,9 +18,9 @@
     "default_popup": "popup.html"
   },
 
-  "omnibox": {
-    "keyword": "@"
-  },
+  // "omnibox": {
+  //   "keyword": "@"
+  // },
 
   "commands": {
     "_execute_browser_action": {
