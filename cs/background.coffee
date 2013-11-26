@@ -118,23 +118,24 @@ loadAffiliationIcon = ->
 bindOmniboxToOracle = ->
   # This event is fired each time the user updates the text in the omnibox,
   # as long as the extension's keyword mode is still active.
-  chrome.omnibox.onInputChanged.addListener (text, suggest) ->
-    console.log 'inputChanged: ' + text
-    suggest [
-      {content: text + " one", description: text + " the first one"},
-      {content: text + " number two", description: text + " the second entry"}
-    ]
+  # chrome.omnibox.onInputChanged.addListener (text, suggest) ->
+  #   console.log 'inputChanged: ' + text
+  #   suggest [
+  #     {content: text + " one", description: text + " the first one"},
+  #     {content: text + " number two", description: text + " the second entry"}
+  #   ]
   # This event is fired with the user accepts the input in the omnibox.
   chrome.omnibox.onInputEntered.addListener (text) ->
-    console.log 'inputEntered: ' + text
+    # console.log 'inputEntered: ' + text
     Oracle.ask text, (answer) ->
-      console.log 'oracle answer: ' + answer
+      # console.log 'oracle answer: ' + answer
       Browser.createNotification
         'feedKey': ls.affiliationKey1
         'title': 'Orakelet'
         'description': answer
         'link': 'http://atb.no'
         'longStory': true
+        'stay': true
       # alert answer
 
 # Document ready, go!

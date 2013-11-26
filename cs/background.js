@@ -153,28 +153,15 @@
   };
 
   bindOmniboxToOracle = function() {
-    chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
-      console.log('inputChanged: ' + text);
-      return suggest([
-        {
-          content: text + " one",
-          description: text + " the first one"
-        }, {
-          content: text + " number two",
-          description: text + " the second entry"
-        }
-      ]);
-    });
     return chrome.omnibox.onInputEntered.addListener(function(text) {
-      console.log('inputEntered: ' + text);
       return Oracle.ask(text, function(answer) {
-        console.log('oracle answer: ' + answer);
         return Browser.createNotification({
           'feedKey': ls.affiliationKey1,
           'title': 'Orakelet',
           'description': answer,
           'link': 'http://atb.no',
-          'longStory': true
+          'longStory': true,
+          'stay': true
         });
       });
     });
