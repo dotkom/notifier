@@ -151,15 +151,15 @@ var Browser = {
               }
             }
 
-            // Shorten messages to fit nicely
-            var maxLength = (item.longStory ? 600 : 63);
+            // Shorten messages to fit nicely (300 because around 250 is max limit anyway)
+            var maxLength = (item.longStory ? 300 : 63);
             if (maxLength < item.description.length) {
               options.message = item.description.substring(0, maxLength) + '...';
             }
             // If basic type is used, we should also provide expandedMessage
             if (options.type == 'basic') {
               options.expandedMessage = item.description;
-              var expandedMaxLength = (item.longStory ? 600 : 180);
+              var expandedMaxLength = (item.longStory ? 300 : 180);
               if (expandedMaxLength < item.description.length) {
                 options.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
               }
