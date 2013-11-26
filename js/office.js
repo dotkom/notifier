@@ -69,11 +69,14 @@ var Office = {
         if (self.debug) console.log('status is "'+status+'" and message is "'+message+'"');
 
         // empty meeting message?
-        if (isEmpty(message))
-          if (status == 'meeting')
+        if (isEmpty(message)) {
+          if (status == 'meeting') {
             message = self.statuses['meeting'].message;
-        else
+          }
+        }
+        else {
           message = message.trim();
+        }
 
         // Temporary support for the old system, backwards compatibility
         if (isNumber(status)) {
