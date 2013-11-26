@@ -162,7 +162,8 @@ $ ->
 
   loadAffiliationIcon()
 
-  bindOmniboxToOracle()
+  # TODO: FEATURE IS NOT COMLPETE
+  # bindOmniboxToOracle()
   
   Browser.registerNotificationListeners()
 

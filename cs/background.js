@@ -191,7 +191,6 @@
       }
     }
     loadAffiliationIcon();
-    bindOmniboxToOracle();
     Browser.registerNotificationListeners();
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
     window.updateCoffeeSubscription = updateCoffeeSubscription;
