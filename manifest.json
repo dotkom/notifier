@@ -1,5 +1,6 @@
 {
   "name": "Online Notifier",
+  "short_name": "Notifier",
   "version": "3.5.5",
   "manifest_version": 2,
   "offline_enabled": false,
@@ -16,6 +17,10 @@
     "default_title": "Notifier",
     "default_popup": "popup.html"
   },
+
+  // "omnibox": {
+  //   "keyword": "@"
+  // },
 
   "commands": {
     "_execute_browser_action": {

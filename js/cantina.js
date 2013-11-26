@@ -426,7 +426,7 @@ var Cantina = {
       text = text.split(' ').splice(0,limit).join(' ');
       // Surprisingly accurate check to see if we're ending the sentence with a verb
       // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget"
-      if (text.match(/(te|de|kt|laget|frisk)$/))
+      if (text.match(/(te|de|kt|laget|frisk|eller)$/))
         // In that case, return the expected noun as well (heighten limit by 1)
         return originalText.split(' ').splice(0,limit+1).join(' ');
     }
