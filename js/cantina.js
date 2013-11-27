@@ -353,7 +353,7 @@ var Cantina = {
 
   getFoodFlags: function(text) {
     var matches = text.match(/\b[VGL]+(?![æøåÆØÅ])\b/g);
-    return (matches !== null ? '(' + matches.join('') + ')' : null);
+    return (matches !== null ? '(' + matches.sort().join('') + ')' : null);
     // TODO: Both getFoodFlags and removeFoodFlags suffer from a lacking implementation
     // of the regex flag 'word boundary'. Add the flag /i to both and make sure they
     // can handle æøåÆØÅ on both sides of food flags, especially in words like
