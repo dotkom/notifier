@@ -90,8 +90,14 @@
         ls.extensionName = name + ' Notifier';
         if (oldAffiliation === 'online') {
           ls.extensionCreator = 'Online';
+          $('#plusonebutton').fadeOut('slow', function() {
+            return changeCreatorName(ls.extensionCreator);
+          });
         } else if (affiliationKey === 'online') {
           ls.extensionCreator = 'dotKom';
+          $('#plusonebutton').fadeIn('slow', function() {
+            return changeCreatorName(ls.extensionCreator);
+          });
         }
       }
       ls.removeItem('affiliationFeedItems' + number);
@@ -145,11 +151,7 @@
         }, 300);
         return $('header').animate({
           'top': '60%'
-        }, 300, function() {
-          return $('#plusonebutton').fadeOut('slow', function() {
-            return changeCreatorName(ls.extensionCreator);
-          });
-        });
+        }, 300);
       });
     }
   };
@@ -179,11 +181,7 @@
         'top': '50%'
       }, 300, function() {
         $('label[for="showOffice"]').slideDown('slow');
-        return $('label[for="coffeeSubscription"]').slideDown('slow', function() {
-          return $('#plusonebutton').fadeIn('slow', function() {
-            return changeCreatorName(ls.extensionCreator);
-          });
-        });
+        return $('label[for="coffeeSubscription"]').slideDown('slow');
       });
     }
   };
@@ -736,7 +734,9 @@
         return _gaq.push(['_trackEvent', 'options', 'clickPageflip']);
       }
     });
-    changeCreatorName(ls.extensionCreator);
+    setTimeout((function() {
+      return changeCreatorName(ls.extensionCreator);
+    }), 2500);
     pageFlipCursorBlinking();
     if (ls.everOpenedOptions === 'false') {
       ls.everOpenedOptions = 'true';

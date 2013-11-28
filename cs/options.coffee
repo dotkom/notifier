@@ -86,8 +86,12 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # Extension creator name
       if oldAffiliation is 'online'
         ls.extensionCreator = 'Online'
+        $('#plusonebutton').fadeOut 'slow', ->
+          changeCreatorName ls.extensionCreator
       else if affiliationKey is 'online'
         ls.extensionCreator = 'dotKom'
+        $('#plusonebutton').fadeIn 'slow', ->
+          changeCreatorName ls.extensionCreator
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
@@ -135,11 +139,7 @@ disableHardwareFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideUp 'slow', ->
       # Move all content back down
       $('#container').animate {'top':'60%'}, 300
-      $('header').animate {'top':'60%'}, 300, ->
-        # Fade out the Google +1 Button
-        $('#plusonebutton').fadeOut 'slow', ->
-          # Change pageflip name
-          changeCreatorName ls.extensionCreator
+      $('header').animate {'top':'60%'}, 300
 
 enableHardwareFeatures = (quick) ->
   ls.showOffice = 'true'
@@ -161,11 +161,7 @@ enableHardwareFeatures = (quick) ->
       # Show office status option
       $('label[for="showOffice"]').slideDown 'slow'
       # Show coffee subscription option
-      $('label[for="coffeeSubscription"]').slideDown 'slow', ->
-        # Fade in the Google +1 Button
-        $('#plusonebutton').fadeIn 'slow', ->
-          # Change pageflip name
-          changeCreatorName ls.extensionCreator
+      $('label[for="coffeeSubscription"]').slideDown 'slow'
 
 changeOfficeStatusIcons = () ->
   if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
@@ -699,7 +695,9 @@ $ ->
   $('#pfLink').click ->
     if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPageflip'])
   # Adding creator name to pageflip
-  changeCreatorName ls.extensionCreator
+  setTimeout ( ->
+    changeCreatorName ls.extensionCreator
+  ), 2500
   # Blinking cursor at pageflip
   pageFlipCursorBlinking()
 
