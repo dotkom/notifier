@@ -437,7 +437,7 @@ var News = {
     field = field.trim();
     // Empty field?
     if (field == '')
-      field = ifEmptyText;
+      field = onEmptyText;
     return field;
   },
 
