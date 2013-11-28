@@ -65,9 +65,9 @@ var Affiliation = {
       },
       coffeeApi: 'http://kaffe.abakus.no/coffee.txt',
       lightApi: 'http://informatikk.org/abakus/lys.txt',
-      eventApi: 'http://informatikk.org/abakus/office_status.txt',
-      servantApi: 'http://informatikk.org/abakus/servant_list.txt',
-      meetingsApi: 'http://informatikk.org/abakus/meeting_plan.txt',
+      eventApi: 'https://online.ntnu.no/notifier/abakus/office',
+      servantApi: 'http://informatikk.org/abakus/servant_list.txt', // TODO
+      meetingsApi: 'https://online.ntnu.no/notifier/abakus/meetings',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
@@ -178,9 +178,9 @@ var Affiliation = {
       },
       coffeeApi: 'http://pi.deltahouse.no/coffee.txt',
       lightApi: 'http://pi.deltahouse.no/office.txt',
-      eventApi: 'http://absint.online.ntnu.no/notifier/delta/office',
-      servantApi: 'http://absint.online.ntnu.no/notifier/delta/servant_list',
-      meetingsApi: 'http://absint.online.ntnu.no/notifier/delta/meeting_plan',
+      eventApi: 'https://online.ntnu.no/notifier/delta/office',
+      servantApi: 'https://online.ntnu.no/notifier/delta/servant',
+      meetingsApi: 'https://online.ntnu.no/notifier/delta/meetings',
       hasMemes: true,
       numberOfMemes: 1,
       memePath: './org/delta/meme/',
@@ -269,9 +269,9 @@ var Affiliation = {
       },
       coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
       lightApi: 'http://draug.online.ntnu.no/lys.txt',
-      eventApi: 'http://absint.online.ntnu.no/notifier/online/office',
-      servantApi: 'http://absint.online.ntnu.no/notifier/online/servant_list',
-      meetingsApi: 'http://absint.online.ntnu.no/notifier/online/meeting_plan',
+      eventApi: 'https://online.ntnu.no/notifier/online/office',
+      servantApi: 'https://online.ntnu.no/notifier/online/servant',
+      meetingsApi: 'https://online.ntnu.no/notifier/online/meetings',
       hasMemes: true,
       numberOfMemes: 4,
       memePath: './org/online/meme/',
