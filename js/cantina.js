@@ -353,7 +353,7 @@ var Cantina = {
 
   getFoodFlags: function(text) {
     var matches = text.match(/\b[VGL]+(?![æøåÆØÅ])\b/g);
-    return (matches !== null ? '(' + matches.join('') + ')' : null);
+    return (matches !== null ? '(' + matches.sort().join('') + ')' : null);
     // TODO: Both getFoodFlags and removeFoodFlags suffer from a lacking implementation
     // of the regex flag 'word boundary'. Add the flag /i to both and make sure they
     // can handle æøåÆØÅ on both sides of food flags, especially in words like
@@ -395,7 +395,7 @@ var Cantina = {
   expandAbbreviations: function(text) {
     if (this.debugText) console.log('Abbrev.\t:: ' + text);
     // Replace wordings like 'm', 'm/' with the actual word, make sure there is one space on either side of the word
-    return text.replace(/((\b|[æøåÆØÅ]*)\S|\S(\b|[æøåÆØÅ]*)) ?\/?m(\/| |\b|[æøåÆØÅ]) ?/gi, '$1 med ');
+    return text.replace(/([a-zæøåÆØÅ]*)[ ,\.]\/?m(\/| |\b|[æøåÆØÅ]) ?/gi, '$1 med ');
   },
 
   removeFoodHomeMade: function(text) {
@@ -426,7 +426,7 @@ var Cantina = {
       text = text.split(' ').splice(0,limit).join(' ');
       // Surprisingly accurate check to see if we're ending the sentence with a verb
       // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget"
-      if (text.match(/(te|de|kt|laget|frisk)$/))
+      if (text.match(/(te|de|kt|laget|frisk|eller)$/))
         // In that case, return the expected noun as well (heighten limit by 1)
         return originalText.split(' ').splice(0,limit+1).join(' ');
     }

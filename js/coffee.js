@@ -2,7 +2,7 @@ var Coffee = {
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
   msgFormatError: 'Feil i kaffeformat',
-  msgConnectionError: 'Frakoblet fra kaffeknappen',
+  msgConnectionError: 'Frakoblet fra kaffekanna',
   msgComforting: 'Så så, det er sikkert kaffe :)',
   msgNotification: 'Kaffen er satt på, straks klar :)',
   

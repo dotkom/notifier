@@ -69,11 +69,14 @@ var Office = {
         if (self.debug) console.log('status is "'+status+'" and message is "'+message+'"');
 
         // empty meeting message?
-        if (isEmpty(message))
-          if (status == 'meeting')
+        if (isEmpty(message)) {
+          if (status == 'meeting') {
             message = self.statuses['meeting'].message;
-        else
+          }
+        }
+        else {
           message = message.trim();
+        }
 
         // Temporary support for the old system, backwards compatibility
         if (isNumber(status)) {
@@ -132,13 +135,22 @@ var Office = {
     Ajaxer.getPlainText({
       url: lightApi,
       success: function(data) {
-        if (data > self.lightLimit || debugStatus == 'closed') {
-          if (self.debug) console.log('Office:\n- status is closed\n- message is', self.statuses['closed'].message);
-          callback('closed', self.statuses['closed'].message);
+        var lights = false;
+
+        if (isNumber(data)) {
+          lights = data < self.lightLimit;
         }
         else {
+          lights = data.match(/(on|true|på)/gi) !== null;
+        }
+
+        if (lights || debugStatus == 'open') {
           if (self.debug) console.log('Office:\n- status is open\n- message is', self.statuses['open'].message);
           callback('open', self.statuses['open'].message);
+        }
+        else {
+          if (self.debug) console.log('Office:\n- status is closed\n- message is', self.statuses['closed'].message);
+          callback('closed', self.statuses['closed'].message);
         }
       },
       error: function(jqXHR, err) {

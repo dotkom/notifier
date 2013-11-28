@@ -89,7 +89,40 @@ var Browser = {
     }
   },
 
+  getAppVersion: function() {
+    try {
+      if (BROWSER == 'Chrome') {
+        return chrome.runtime.getManifest().version + ' @ ' + BROWSER;
+      }
+      else if (BROWSER == 'Opera') {
+        return 'Unknown @ ' + BROWSER // TODO: Implement when available
+      }
+      else {
+        console.log(this.msgUnsupported);
+      }
+    } catch (err) {
+      // Do nothing, we're just checking
+    }
+    return 'Unknown @ ' + BROWSER
+  },
+
+  // Things in item:
+  // - feedKey: 'orgx'
+  // - title: 'Hello World'
+  // - description: 'Good day to you World, how are you today?'
+  // - link: 'http://orgx.no/news/helloworld'
+  // Optional things in item:
+  // - image: 'http://orgx.no/media/helloworld.png'
+  // - symbol: 'img/whatever.png'
+  // - longStory: true
+  // - stay: true
   createNotification: function(item) {
+    // Check required params
+    if (!item.feedKey) console.log('ERROR: item.feedKey is required');
+    if (!item.title) console.log('ERROR: item.title is required');
+    if (!item.description) console.log('ERROR: item.description is required');
+    if (!item.link) console.log('ERROR: item.link is required');
+
     var self = this;
     if (BROWSER == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
@@ -97,35 +130,36 @@ var Browser = {
         chrome.idle.queryState(30, function (state) {
           if (state == 'active') {
 
-            // Load affiliation icon
-            var symbol = Affiliation.org[item.feedKey].symbol;
+            // Load affiliation icon if symbol is not provided
+            if (!item.symbol)
+              item.symbol = Affiliation.org[item.feedKey].symbol;
 
             // Set options
             var options = {
                type: 'basic',
-               iconUrl: symbol,
+               iconUrl: item.symbol,
                title: item.title,
                message: item.description,
                priority: 0,
             };
 
             // We'll show an "image"-type notification if image exists and is not a placeholder
-            if (typeof item.image != 'undefined') {
+            if (item.image) {
               if (item.image != Affiliation.org[item.feedKey].placeholder) {
                 options.type = 'image';
                 options.imageUrl = item.image;
               }
             }
 
-            // Shorten messages to fit nicely
-            var maxLength = 63;
+            // Shorten messages to fit nicely (300 because around 250 is max limit anyway)
+            var maxLength = (item.longStory ? 300 : 63);
             if (maxLength < item.description.length) {
               options.message = item.description.substring(0, maxLength) + '...';
             }
             // If basic type is used, we should also provide expandedMessage
             if (options.type == 'basic') {
               options.expandedMessage = item.description;
-              var expandedMaxLength = 180;
+              var expandedMaxLength = (item.longStory ? 300 : 180);
               if (expandedMaxLength < item.description.length) {
                 options.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
               }
@@ -144,12 +178,17 @@ var Browser = {
             chrome.notifications.create(id, options, function(notID) {
               if (self.debug) console.log('Succesfully created notification with ID', notID);
             });
-            // Chrom(e|ium) on Linux doesn't remove the notification automatically
+            // Choose how long the notification stays around for
+            // if stay? 10 minutes
+            // if longStory? 10 seconds
+            // else 5 seconds
+            // Note: Chrom(e|ium) on Linux doesn't remove the notification automatically
+            var timeout = (item.stay ? 600000 : (item.longStory ? 10000 : 5000));
             setTimeout(function() {
               chrome.notifications.clear(id, function(wasCleared) {
                 if (self.debug) console.log('Cleared notification?', wasCleared);
               });
-            }, 5000);
+            }, timeout);
           }
           else {
             if (self.debug) console.log('Notification not sent, state was', state);
