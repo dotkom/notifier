@@ -133,7 +133,7 @@ var News = {
     var post = {};
     post = this.preProcess(post, affiliationObject);
 
-    // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have."
+    // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have." - MrClean
 
     // Title field
 
@@ -186,7 +186,20 @@ var News = {
     // Image field
 
     // Check for image in rarely used tags <enclosure> and <bilde>
+    post.image = '';
     try {
+      // Some feeds use encoded content, which often contains an image src
+      var encodedContent = $(item).find("content\\:encoded").filter(':first').text();
+      if (encodedContent == '') {
+        // In case browser does not grok tags with colons, stupid browser
+        encodedContent = $(item).find("encoded").filter(':first').text();
+      }
+      if (encodedContent != '') {
+        var hits = encodedContent.match(/src="(.*?)"/i);
+        if (hits[1] != null) {
+          post.image = hits[1];
+        }
+      }
       // Universitetsavisa/Adressa does this little trick to get images in their feed
       var enclosure = $(item).find('enclosure').filter(':first');
       if (enclosure.length != 0) {
