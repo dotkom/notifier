@@ -334,8 +334,8 @@ var Affiliation = {
     'solan': {
       name: 'Solan',
       key: 'solan',
-      web: 'http://entreprenorskolen.no/',
-      feed: 'http://entreprenorskolen.no/feed/',
+      web: 'http://solanlinjeforening.no',
+      feed: 'http://www.oneclick.solanlinjeforening.no/feed/',
       logo: './org/solan/logo.png',
       icon: './org/solan/icon.png',
       symbol: './org/solan/symbol.png',
