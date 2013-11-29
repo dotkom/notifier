@@ -68,6 +68,9 @@ var Affiliation = {
       eventApi: 'https://online.ntnu.no/notifier/abakus/office',
       servantApi: 'http://informatikk.org/abakus/servant_list.txt', // TODO
       meetingsApi: 'https://online.ntnu.no/notifier/abakus/meetings',
+      hasMemes: true,
+      numberOfMemes: 3,
+      memePath: './org/abakus/meme/',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
