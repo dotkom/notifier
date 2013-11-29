@@ -1,4 +1,4 @@
-var DEBUG = 0;
+var DEBUG = 1;
 
 // AJAX setup
 var AJAX_SETUP = {
@@ -30,10 +30,10 @@ var urlExists = function(url) {
 	    return http.status!=404;
 	}
 	catch (e) {
-		// do nothing
+		return false;
 	}
 	finally {
-		return false;
+		// do nothing
 	}
 }
 var MEME_AMOUNT = 0;
