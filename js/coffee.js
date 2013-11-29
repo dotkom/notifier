@@ -1,13 +1,13 @@
 var Coffee = {
+  debug: 0,
+  debugString: "200\n1. March 14:28:371",
+
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
   msgFormatError: 'Feil i kaffeformat',
   msgConnectionError: 'Frakoblet fra kaffekanna',
   msgComforting: 'Så så, det er sikkert kaffe :)',
   msgNotification: 'Kaffen er satt på, straks klar :)',
-  
-  debug: 0,
-  debugString: "200\n1. March 14:28:371",
 
   get: function(pretty, callback) {
     if (callback == undefined) {
