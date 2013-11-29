@@ -30,10 +30,10 @@ var urlExists = function(url) {
 	    return http.status!=404;
 	}
 	catch (e) {
-		// do nothing
+		return false;
 	}
 	finally {
-		return false;
+		// do nothing
 	}
 }
 var MEME_AMOUNT = 0;
