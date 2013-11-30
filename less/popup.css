@@ -253,6 +253,27 @@ body {
 .emphasized {
   margin-bottom: 2pt;
 }
+@-webkit-keyframes glow {
+  0% {
+    box-shadow: 0 0 200px white,
+      0 0 150px white,
+      0 0 150px white,
+      0 0 125px white,
+      0 0 125px white,
+      0 0 100px white,
+      0 0 100px white,
+      0 0 75px white,
+      0 0 75px white,
+      0 0 50px white,
+      0 0 50px white,
+      0 0 25px white,
+      0 0 15px white,
+      0 0 10px white;
+  }
+  100% {
+    box-shadow: 0 0 0px white;
+  }
+}
 body {
   width: 400pt;
   height: 400pt;
