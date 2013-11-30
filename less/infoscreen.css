@@ -332,7 +332,9 @@ body {
   right: 0;
   bottom: 0;
   z-index: 1000;
-  background: transparent;
+  background-color: black;
+  text-align: center;
+  opacity: 0;
 }
 #fadeOutNews {
   border: 0pt solid #00ff00;
