@@ -377,9 +377,17 @@ optionsText = (show) ->
 tipsText = (show) ->
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++'
 
-chatterText = (show) ->
+# chatterText = (show) ->
+#   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+#     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
+
+cookieText = (show) ->
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Eat Their Cookies' # lol i know ^^
+
+cookieTextFinished = (show) ->
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; OM NOM NOM NOM' # lol i know ^^
 
 fadeButtonText = (show, msg) ->
   fadeInSpeed = 150
@@ -390,6 +398,15 @@ fadeButtonText = (show, msg) ->
   else
     $('#buttontext').fadeOut fadeOutSpeed
     $('#buttontext').html ''
+
+clearCookies = (cookieUrl) ->
+  chrome.cookies.getAll {url: cookieUrl}, (cookies) ->
+    for i of cookies
+      url = cookies[i].domain
+      name = cookies[i].name
+      if DEBUG then console.log 'Found cookie in the kitchen:', url, name
+      chrome.cookies.remove {url:'http://'+url, name:name}, (response) ->
+        if DEBUG then console.log 'Ate cookie:', response
 
 # Document ready, go!
 $ ->
@@ -448,6 +465,10 @@ $ ->
   # itself is loaded a lot earlier for perceived speed
   if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette])
 
+  # Show cookie button if previously activated via Konami code
+  if ls.showCookieButton is 'true'
+    $('#cookieButton').show()
+
   # Click events
   $('#logo').click ->
     name = Affiliation.org[ls.affiliationKey1].name
@@ -479,6 +500,14 @@ $ ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
     window.close()
+
+  $('#cookieButton').click ->
+    clearCookies 'http://www.aftenposten.no'
+    cookieTextFinished true
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickCookie'])
+    setTimeout ( ->
+      window.close()
+    ), 300
   
   $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'
@@ -497,21 +526,30 @@ $ ->
   $('#optionsButton').mouseleave ->
     optionsText false
 
-  $('#chatterButton').mouseenter ->
-    chatterText true
-  $('#chatterButton').mouseleave ->
-    chatterText false
+  # $('#chatterButton').mouseenter ->
+  #   chatterText true
+  # $('#chatterButton').mouseleave ->
+  #   chatterText false
 
   $('#tipsButton').mouseenter ->
     tipsText true
   $('#tipsButton').mouseleave ->
     tipsText false
 
+  $('#cookieButton').mouseenter ->
+    cookieText true
+  $('#cookieButton').mouseleave ->
+    cookieText false
+
   # React to Konami code
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
       if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
+      ls.showCookieButton = 'true'
+      setTimeout ( ->
+        $('#cookieButton').fadeIn 'swing'
+      ), 2500
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
           0% { -webkit-filter: hue-rotate(0deg); }
