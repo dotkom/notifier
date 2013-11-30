@@ -547,10 +547,17 @@ $ ->
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
       if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
-      # Show cookie button
-      ls.showCookieButton = 'true'
-      $('#cookieButton').show()
-      window.scrollTo(0, 0);
+      # Show/hide cookie button
+      document.getElementById('header').scrollIntoView()
+      if ls.showCookieButton is 'true'
+        ls.showCookieButton = 'false'
+        $('#cookieButton').hide()
+      else
+        ls.showCookieButton = 'true'
+        $('#cookieButton').show()
+        # Animate button glow to show that it has arrived
+        styleInfo = $('#cookieButton').attr 'style'
+        $('#cookieButton').attr 'style', styleInfo + '; -webkit-animation: glow 2s alternate 5;'
       # # Animate background
       # $('head').append '<style type="text/css">
       #   @-webkit-keyframes adjustHue {

@@ -671,12 +671,20 @@
     $(document).konami({
       code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
       callback: function() {
+        var styleInfo;
         if (!DEBUG) {
           _gaq.push(['_trackEvent', 'popup', 'toggleKonami']);
         }
-        ls.showCookieButton = 'true';
-        $('#cookieButton').show();
-        return window.scrollTo(0, 0);
+        document.getElementById('header').scrollIntoView();
+        if (ls.showCookieButton === 'true') {
+          ls.showCookieButton = 'false';
+          return $('#cookieButton').hide();
+        } else {
+          ls.showCookieButton = 'true';
+          $('#cookieButton').show();
+          styleInfo = $('#cookieButton').attr('style');
+          return $('#cookieButton').attr('style', styleInfo + '; -webkit-animation: glow 2s alternate 5;');
+        }
       }
     });
     $('#oracle #question').focus();
