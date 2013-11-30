@@ -676,22 +676,7 @@
         }
         ls.showCookieButton = 'true';
         $('#cookieButton').show();
-        window.scrollTo(0, 0);
-        $('head').append('<style type="text/css">\
-        @-webkit-keyframes adjustHue {\
-          0% { -webkit-filter: hue-rotate(0deg); }\
-          10% { -webkit-filter: hue-rotate(36deg); }\
-          20% { -webkit-filter: hue-rotate(72deg); }\
-          30% { -webkit-filter: hue-rotate(108deg); }\
-          40% { -webkit-filter: hue-rotate(144deg); }\
-          50% { -webkit-filter: hue-rotate(180deg); }\
-          60% { -webkit-filter: hue-rotate(216deg); }\
-          70% { -webkit-filter: hue-rotate(252deg); }\
-          80% { -webkit-filter: hue-rotate(288deg); }\
-          90% { -webkit-filter: hue-rotate(324deg); }\
-          100% { -webkit-filter: hue-rotate(360deg); }\
-        }</style>');
-        return $('#background').attr('style', '-webkit-animation:adjustHue 10s alternate infinite;');
+        return window.scrollTo(0, 0);
       }
     });
     $('#oracle #question').focus();
