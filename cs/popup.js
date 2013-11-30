@@ -478,7 +478,7 @@
 
   cookieText = function(show) {
     return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Eat Their Cookies');
+    &nbsp; Eat Aftenpostens Cookies');
   };
 
   cookieTextFinished = function(show) {
@@ -675,9 +675,8 @@
           _gaq.push(['_trackEvent', 'popup', 'toggleKonami']);
         }
         ls.showCookieButton = 'true';
-        setTimeout((function() {
-          return $('#cookieButton').fadeIn('swing');
-        }), 2500);
+        $('#cookieButton').show();
+        window.scrollTo(0, 0);
         $('head').append('<style type="text/css">\
         @-webkit-keyframes adjustHue {\
           0% { -webkit-filter: hue-rotate(0deg); }\

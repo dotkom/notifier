@@ -383,7 +383,8 @@ tipsText = (show) ->
 
 cookieText = (show) ->
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Eat Their Cookies' # lol i know ^^
+    &nbsp; Eat Aftenpostens Cookies' # lol i know ^^
+    # &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Eat Their Cookies' # lol i know ^^
 
 cookieTextFinished = (show) ->
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -546,10 +547,11 @@ $ ->
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
       if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
+      # Show cookie button
       ls.showCookieButton = 'true'
-      setTimeout ( ->
-        $('#cookieButton').fadeIn 'swing'
-      ), 2500
+      $('#cookieButton').show()
+      window.scrollTo(0, 0);
+      # Animate background
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
           0% { -webkit-filter: hue-rotate(0deg); }
