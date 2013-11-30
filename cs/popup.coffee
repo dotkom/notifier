@@ -375,20 +375,20 @@ optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
 
 tipsText = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++'
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++'
 
 # chatterText = (show) ->
 #   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 #     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
 
 cookieText = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    &nbsp; Eat Aftenpostens Cookies' # lol i know ^^
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp;
+    Eat Aftenpostens Cookies' # lol i know ^^
     # &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Eat Their Cookies' # lol i know ^^
 
 cookieTextFinished = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; OM NOM NOM NOM' # lol i know ^^
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp;
+    OM NOM NOM COOKIES!!' # lol i know ^^
 
 fadeButtonText = (show, msg) ->
   fadeInSpeed = 150
@@ -508,7 +508,7 @@ $ ->
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickCookie'])
     setTimeout ( ->
       window.close()
-    ), 300
+    ), 400
   
   $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'

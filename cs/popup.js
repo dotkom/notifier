@@ -473,17 +473,17 @@
   };
 
   tipsText = function(show) {
-    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++');
+    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++');
   };
 
   cookieText = function(show) {
-    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\
-    &nbsp; Eat Aftenpostens Cookies');
+    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp;\
+    Eat Aftenpostens Cookies');
   };
 
   cookieTextFinished = function(show) {
-    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; OM NOM NOM NOM');
+    return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp;\
+    OM NOM NOM COOKIES!!');
   };
 
   fadeButtonText = function(show, msg) {
@@ -637,7 +637,7 @@
       }
       return setTimeout((function() {
         return window.close();
-      }), 300);
+      }), 400);
     });
     $('#bus #atbLogo').click(function() {
       Browser.openTab('http://www.atb.no');
