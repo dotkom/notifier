@@ -336,6 +336,9 @@ body {
           0pt 0pt 15pt #bbb,
           0pt 0pt 20pt #bbb;
 }
+#container #header #cookieButton {
+  display: none;
+}
 #container #header #buttontext {
   border: 0pt solid #ffff00;
   display: none;
