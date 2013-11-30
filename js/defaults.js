@@ -107,6 +107,10 @@ var Defaults = {
     // Chatter
     // if (ls.openChatter == undefined) // Chatter is disabled
       ls.openChatter = 'false';
+
+    // Cookie
+    if (ls.showCookieButton == undefined)
+      ls.showCookieButton = 'false';
     
     // Notifications
     if (ls.showNotifications == undefined)
