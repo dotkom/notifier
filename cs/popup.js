@@ -478,7 +478,7 @@
 
   cookieText = function(show) {
     return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp;\
-    Eat Aftenpostens Cookies');
+    Spis Aftenpostens Cookies');
   };
 
   cookieTextFinished = function(show) {
@@ -683,7 +683,7 @@
           ls.showCookieButton = 'true';
           $('#cookieButton').show();
           styleInfo = $('#cookieButton').attr('style');
-          return $('#cookieButton').attr('style', styleInfo + '; -webkit-animation: glow 2s alternate 5;');
+          return $('#cookieButton').attr('style', styleInfo + '; -webkit-animation: glow 2s alternate 3;');
         }
       }
     });

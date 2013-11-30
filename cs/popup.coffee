@@ -383,8 +383,7 @@ tipsText = (show) ->
 
 cookieText = (show) ->
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp;
-    Eat Aftenpostens Cookies' # lol i know ^^
-    # &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Eat Their Cookies' # lol i know ^^
+    Spis Aftenpostens Cookies' # lol i know ^^
 
 cookieTextFinished = (show) ->
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp;
@@ -557,7 +556,7 @@ $ ->
         $('#cookieButton').show()
         # Animate button glow to show that it has arrived
         styleInfo = $('#cookieButton').attr 'style'
-        $('#cookieButton').attr 'style', styleInfo + '; -webkit-animation: glow 2s alternate 5;'
+        $('#cookieButton').attr 'style', styleInfo + '; -webkit-animation: glow 2s alternate 3;'
       # # Animate background
       # $('head').append '<style type="text/css">
       #   @-webkit-keyframes adjustHue {
