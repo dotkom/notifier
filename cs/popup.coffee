@@ -377,17 +377,9 @@ optionsText = (show) ->
 tipsText = (show) ->
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++'
 
-# chatterText = (show) ->
-#   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-#     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
-
-cookieText = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp;
-    Spis Aftenpostens Cookies' # lol i know ^^
-
-cookieTextFinished = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp;
-    OM NOM NOM COOKIES!!' # lol i know ^^
+chatterText = (show) ->
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
 
 fadeButtonText = (show, msg) ->
   fadeInSpeed = 150
@@ -398,15 +390,6 @@ fadeButtonText = (show, msg) ->
   else
     $('#buttontext').fadeOut fadeOutSpeed
     $('#buttontext').html ''
-
-clearCookies = (cookieUrl) ->
-  chrome.cookies.getAll {url: cookieUrl}, (cookies) ->
-    for i of cookies
-      url = cookies[i].domain
-      name = cookies[i].name
-      if DEBUG then console.log 'Found cookie in the kitchen:', url, name
-      chrome.cookies.remove {url:'http://'+url, name:name}, (response) ->
-        if DEBUG then console.log 'Ate cookie:', response
 
 # Document ready, go!
 $ ->
@@ -465,10 +448,6 @@ $ ->
   # itself is loaded a lot earlier for perceived speed
   if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette])
 
-  # Show cookie button if previously activated via Konami code
-  if ls.showCookieButton is 'true'
-    $('#cookieButton').show()
-
   # Click events
   $('#logo').click ->
     name = Affiliation.org[ls.affiliationKey1].name
@@ -500,14 +479,6 @@ $ ->
     Browser.openTab 'http://webchat.freenode.net/?channels=online'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
     window.close()
-
-  $('#cookieButton').click ->
-    clearCookies 'http://www.aftenposten.no'
-    cookieTextFinished true
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickCookie'])
-    setTimeout ( ->
-      window.close()
-    ), 400
   
   $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'
@@ -526,53 +497,37 @@ $ ->
   $('#optionsButton').mouseleave ->
     optionsText false
 
-  # $('#chatterButton').mouseenter ->
-  #   chatterText true
-  # $('#chatterButton').mouseleave ->
-  #   chatterText false
-
   $('#tipsButton').mouseenter ->
     tipsText true
   $('#tipsButton').mouseleave ->
     tipsText false
 
-  $('#cookieButton').mouseenter ->
-    cookieText true
-  $('#cookieButton').mouseleave ->
-    cookieText false
+  $('#chatterButton').mouseenter ->
+    chatterText true
+  $('#chatterButton').mouseleave ->
+    chatterText false
 
   # React to Konami code
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
       if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
-      # Show/hide cookie button
-      document.getElementById('header').scrollIntoView()
-      if ls.showCookieButton is 'true'
-        ls.showCookieButton = 'false'
-        $('#cookieButton').hide()
-      else
-        ls.showCookieButton = 'true'
-        $('#cookieButton').show()
-        # Animate button glow to show that it has arrived
-        styleInfo = $('#cookieButton').attr 'style'
-        $('#cookieButton').attr 'style', styleInfo + '; -webkit-animation: glow 2s alternate 3;'
-      # # Animate background
-      # $('head').append '<style type="text/css">
-      #   @-webkit-keyframes adjustHue {
-      #     0% { -webkit-filter: hue-rotate(0deg); }
-      #     10% { -webkit-filter: hue-rotate(36deg); }
-      #     20% { -webkit-filter: hue-rotate(72deg); }
-      #     30% { -webkit-filter: hue-rotate(108deg); }
-      #     40% { -webkit-filter: hue-rotate(144deg); }
-      #     50% { -webkit-filter: hue-rotate(180deg); }
-      #     60% { -webkit-filter: hue-rotate(216deg); }
-      #     70% { -webkit-filter: hue-rotate(252deg); }
-      #     80% { -webkit-filter: hue-rotate(288deg); }
-      #     90% { -webkit-filter: hue-rotate(324deg); }
-      #     100% { -webkit-filter: hue-rotate(360deg); }
-      #   }</style>'
-      # $('#background').attr 'style','-webkit-animation:adjustHue 10s alternate infinite;'
+      # Animate background
+      $('head').append '<style type="text/css">
+        @-webkit-keyframes adjustHue {
+          0% { -webkit-filter: hue-rotate(0deg); }
+          10% { -webkit-filter: hue-rotate(36deg); }
+          20% { -webkit-filter: hue-rotate(72deg); }
+          30% { -webkit-filter: hue-rotate(108deg); }
+          40% { -webkit-filter: hue-rotate(144deg); }
+          50% { -webkit-filter: hue-rotate(180deg); }
+          60% { -webkit-filter: hue-rotate(216deg); }
+          70% { -webkit-filter: hue-rotate(252deg); }
+          80% { -webkit-filter: hue-rotate(288deg); }
+          90% { -webkit-filter: hue-rotate(324deg); }
+          100% { -webkit-filter: hue-rotate(360deg); }
+        }</style>'
+      $('#background').attr 'style','-webkit-animation:adjustHue 10s alternate infinite;'
   )
 
   # Set the cursor to focus on the question field

@@ -38,7 +38,6 @@
   },
 	
   "permissions": [
-    "cookies",
     "idle",
     "notifications",
     "<all_urls>"
