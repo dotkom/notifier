@@ -75,6 +75,11 @@ var Affiliation = {
           path: './org/abakus/meme/',
         },
       },
+      irc: {
+        server: 'irc.efnet.org',
+        channel: '#abakus',
+        noNick: 'Abakuser',
+      },
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
@@ -132,6 +137,11 @@ var Affiliation = {
       symbol: './org/aarhonen/symbol.png',
       placeholder: './org/aarhonen/placeholder.png',
       palette: 'purple',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#aarhonen',
+        noNick: 'Kyll.ing.',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.content'});
       },
@@ -147,6 +157,11 @@ var Affiliation = {
       symbol: './org/alf/symbol.png',
       placeholder: './org/alf/placeholder.png',
       palette: 'green',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#broderskabet',
+        noNick: 'Arkitektspire',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
@@ -162,6 +177,11 @@ var Affiliation = {
       symbol: './org/berg/symbol.png',
       placeholder: './org/berg/placeholder.png',
       palette: 'grey',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#bsf',
+        noNick: 'Bergmann',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
@@ -195,6 +215,11 @@ var Affiliation = {
           path: './org/delta/meme/',
         },
       },
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#delta',
+        noNick: 'Deltaer',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -210,6 +235,11 @@ var Affiliation = {
       symbol: './org/emil/symbol.png',
       placeholder: './org/emil/placeholder.png',
       palette: 'green',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#emil',
+        noNick: 'Emiler',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
       },
@@ -225,6 +255,11 @@ var Affiliation = {
       symbol: './org/hybrida/symbol.png',
       placeholder: './org/hybrida/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#hybrida',
+        noNick: 'Hybrid',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.element', domainUrl:'hybrida.no'});
       },
@@ -240,6 +275,11 @@ var Affiliation = {
       symbol: './org/leonardo/symbol.png',
       placeholder: './org/leonardo/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#leonardo_ntnu',
+        noNick: 'Designspire',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1});
       },
@@ -255,6 +295,11 @@ var Affiliation = {
       symbol: './org/mannhullet/symbol.png',
       placeholder: './org/mannhullet/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.efnet.org',
+        channel: '#mannhullet',
+        noNick: 'Mannhullitt',
+      },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
       },
@@ -289,6 +334,11 @@ var Affiliation = {
           amount: 4,
           path: './org/online/meme/',
         },
+      },
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#online',
+        noNick: 'Kompilert',
       },
       // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
@@ -342,6 +392,11 @@ var Affiliation = {
       symbol: './org/nabla/symbol.png',
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#nabla',
+        noNick: 'Komponent',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
       },
@@ -372,6 +427,11 @@ var Affiliation = {
       symbol: './org/spanskroeret/symbol.png',
       placeholder: './org/spanskroeret/placeholder.png',
       palette: 'green',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#spanskroret',
+        noNick: 'Elev',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -387,6 +447,11 @@ var Affiliation = {
       symbol: './org/volvox/symbol.png',
       placeholder: './org/volvox/placeholder.png',
       palette: 'green',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#volvox',
+        noNick: 'Celle',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -997,7 +1062,7 @@ var Affiliation = {
     },
 
     // Institusjoner
-    
+
     'ntnu': {
       name: 'NTNU',
       key: 'ntnu',
