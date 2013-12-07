@@ -48,7 +48,7 @@ var Office = {
       return;
     }
 
-    var eventApi = Affiliation.org[localStorage.affiliationKey1].eventApi;
+    var eventApi = Affiliation.org[localStorage.affiliationKey1].hw.apis.event;
     
     // Receives info on current event from Onlines servers (without comments)
     // meeting        // current status
@@ -123,7 +123,7 @@ var Office = {
       return;
     }
 
-    var lightApi = Affiliation.org[localStorage.affiliationKey1].lightApi;
+    var lightApi = Affiliation.org[localStorage.affiliationKey1].hw.apis.light;
 
     var debugStatus = null;
     if (this.debugOpenOrClosed())

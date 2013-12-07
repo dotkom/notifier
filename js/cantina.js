@@ -252,10 +252,10 @@ var Cantina = {
           text = self.removeFoodHomeMade(text);
           text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
           text = text.trim();
-          // If current item is NOT about the buffet, continue with:
-          if (text.toLowerCase().indexOf('buffet') === -1) {
+          // If current item is NOT about the buffet or a special, continue with:
+          if (text.match(/buffet|dag/gi) === null) {
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-            text = self.removeLastWords([' i',' &',' og',' med', ' m'], text);
+            text = self.removeLastWords([' i',' &',' og',' med', ' m', ' frisk', ' eller', ' inkl', ' inkludert'], text);
             text = self.removePunctuationAtEndOfLine(text);
             text = self.shortenVeggieWarning(text);
             text = text.trim();
@@ -426,7 +426,7 @@ var Cantina = {
       text = text.split(' ').splice(0,limit).join(' ');
       // Surprisingly accurate check to see if we're ending the sentence with a verb
       // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget"
-      if (text.match(/(te|de|kt|laget|frisk|eller)$/))
+      if (text.match(/(te|de|kt|laget)$/))
         // In that case, return the expected noun as well (heighten limit by 1)
         return originalText.split(' ').splice(0,limit+1).join(' ');
     }

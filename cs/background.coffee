@@ -7,7 +7,7 @@ mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
-    if Affiliation.org[ls.affiliationKey1].hardwareFeatures
+    if Affiliation.org[ls.affiliationKey1].hw
       updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
       updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
     updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
@@ -39,7 +39,7 @@ updateOfficeAndMeetings = (force) ->
         Browser.setIcon Office.foods[status].icon
       else
         title = Office.statuses[status].title
-        statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status]
+        statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status]
         if statusIcon isnt undefined
           Browser.setIcon statusIcon
         else
@@ -144,7 +144,7 @@ $ ->
   $.ajaxSetup AJAX_SETUP
 
   # Turn off hardwarefeatures if they're not available
-  isAvailable = Affiliation.org[ls.affiliationKey1].hardwareFeatures
+  isAvailable = if Affiliation.org[ls.affiliationKey1].hw then true else false
   Defaults.setHardwareFeatures isAvailable
 
   # Open options page after install

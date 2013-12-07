@@ -55,8 +55,8 @@
       oldAffiliation = ls[id];
       ls[id] = affiliationKey;
       if (isPrimaryAffiliation) {
-        old_has_hardware = Affiliation.org[oldAffiliation].hardwareFeatures;
-        new_has_hardware = Affiliation.org[affiliationKey].hardwareFeatures;
+        old_has_hardware = Affiliation.org[oldAffiliation].hw ? true : false;
+        new_has_hardware = Affiliation.org[affiliationKey].hw ? true : false;
         if (old_has_hardware && !new_has_hardware) {
           disableHardwareFeatures();
         } else if (!old_has_hardware && new_has_hardware) {
@@ -187,11 +187,13 @@
   };
 
   changeOfficeStatusIcons = function() {
-    if (Affiliation.org[ls.affiliationKey1].hardwareFeatures === true) {
-      $('img.icon.open').attr('src', Affiliation.org[ls.affiliationKey1].statusIcons.open);
-      $('img.icon.closed').attr('src', Affiliation.org[ls.affiliationKey1].statusIcons.closed);
-      $('img.icon.meeting').attr('src', Affiliation.org[ls.affiliationKey1].statusIcons.meeting);
-      return $('#officeStatusOverlay').attr('src', Affiliation.org[ls.affiliationKey1].statusIcons.open);
+    var statusIcons;
+    if (Affiliation.org[ls.affiliationKey1].hw) {
+      statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
+      $('img.icon.open').attr('src', statusIcons.open);
+      $('img.icon.closed').attr('src', statusIcons.closed);
+      $('img.icon.meeting').attr('src', statusIcons.meeting);
+      return $('#officeStatusOverlay').attr('src', statusIcons.open);
     }
   };
 
@@ -605,7 +607,7 @@
       });
     } else {
       ls['useInfoscreen'] = 'false';
-      if (Affiliation.org[ls.affiliationKey1].hardwareFeatures === true) {
+      if (Affiliation.org[ls.affiliationKey1].hw) {
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       } else {
         Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
@@ -619,7 +621,7 @@
     var speed;
     speed = 300;
     return $('#headerText').fadeOut(speed, function() {
-      if (Affiliation.org[ls.affiliationKey1].hardwareFeatures === true) {
+      if (Affiliation.org[ls.affiliationKey1].hw) {
         $('#container').animate({
           'top': '50%'
         }, speed);
@@ -703,7 +705,7 @@
       });
     }
     $.ajaxSetup(AJAX_SETUP);
-    if (Affiliation.org[ls.affiliationKey1].hardwareFeatures !== true) {
+    if (!Affiliation.org[ls.affiliationKey1].hw) {
       disableHardwareFeatures(true);
     }
     icon = Affiliation.org[ls.affiliationKey1].icon;

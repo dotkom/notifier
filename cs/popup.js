@@ -15,7 +15,7 @@
     if (DEBUG) {
       console.log("\n#" + iteration);
     }
-    if (Affiliation.org[ls.affiliationKey1].hardwareFeatures) {
+    if (Affiliation.org[ls.affiliationKey1].hw) {
       if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
         updateServant();
       }

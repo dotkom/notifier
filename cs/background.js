@@ -15,7 +15,7 @@
       console.log("\n#" + iteration);
     }
     if (ls.useInfoscreen !== 'true') {
-      if (Affiliation.org[ls.affiliationKey1].hardwareFeatures) {
+      if (Affiliation.org[ls.affiliationKey1].hw) {
         if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
           updateOfficeAndMeetings();
         }
@@ -58,7 +58,7 @@
           Browser.setIcon(Office.foods[status].icon);
         } else {
           title = Office.statuses[status].title;
-          statusIcon = Affiliation.org[ls.affiliationKey1].statusIcons[status];
+          statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
           if (statusIcon !== void 0) {
             Browser.setIcon(statusIcon);
           } else {
@@ -170,7 +170,7 @@
   $(function() {
     var isAvailable;
     $.ajaxSetup(AJAX_SETUP);
-    isAvailable = Affiliation.org[ls.affiliationKey1].hardwareFeatures;
+    isAvailable = Affiliation.org[ls.affiliationKey1].hw ? true : false;
     Defaults.setHardwareFeatures(isAvailable);
     if (ls.everOpenedOptions === 'false' && !DEBUG) {
       Browser.openTab('options.html');

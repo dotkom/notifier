@@ -8,7 +8,7 @@ newsLimit = 4 # The best amount of news for the popup, IMO
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
-  if Affiliation.org[ls.affiliationKey1].hardwareFeatures
+  if Affiliation.org[ls.affiliationKey1].hw
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
     updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'

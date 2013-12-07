@@ -42,8 +42,8 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
 
     if isPrimaryAffiliation
       # Check if switching from or to an affiliation with fancy features
-      old_has_hardware = Affiliation.org[oldAffiliation].hardwareFeatures
-      new_has_hardware = Affiliation.org[affiliationKey].hardwareFeatures
+      old_has_hardware = if Affiliation.org[oldAffiliation].hw then true else false
+      new_has_hardware = if Affiliation.org[affiliationKey].hw then true else false
       if old_has_hardware && !new_has_hardware
         disableHardwareFeatures()
       else if !old_has_hardware && new_has_hardware
@@ -164,11 +164,12 @@ enableHardwareFeatures = (quick) ->
       $('label[for="coffeeSubscription"]').slideDown 'slow'
 
 changeOfficeStatusIcons = () ->
-  if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
-    $('img.icon.open').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.open
-    $('img.icon.closed').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.closed
-    $('img.icon.meeting').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.meeting
-    $('#officeStatusOverlay').attr 'src', Affiliation.org[ls.affiliationKey1].statusIcons.open
+  if Affiliation.org[ls.affiliationKey1].hw
+    statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons
+    $('img.icon.open').attr 'src', statusIcons.open
+    $('img.icon.closed').attr 'src', statusIcons.closed
+    $('img.icon.meeting').attr 'src', statusIcons.meeting
+    $('#officeStatusOverlay').attr 'src', statusIcons.open
 
 bindCantinaSelector = (selector) ->
   # Default values
@@ -553,7 +554,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # # Close any open Infoscreen tabs
     # closeInfoscreenTabs()
     # Refresh office status
-    if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
+    if Affiliation.org[ls.affiliationKey1].hw
       Browser.getBackgroundProcess().updateOfficeAndMeetings true
     else
       Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
@@ -566,7 +567,7 @@ revertInfoscreen = ->
   # Remove subtext
   $('#headerText').fadeOut speed, ->
     # Move all content back down
-    if Affiliation.org[ls.affiliationKey1].hardwareFeatures is true
+    if Affiliation.org[ls.affiliationKey1].hw
       $('#container').animate {'top':'50%'}, speed
       $('header').animate {'top':'50%'}, speed
     else
@@ -650,7 +651,7 @@ $ ->
   $.ajaxSetup AJAX_SETUP
 
   # Remove hardware features if the affiliation does not have it
-  if Affiliation.org[ls.affiliationKey1].hardwareFeatures isnt true
+  if not Affiliation.org[ls.affiliationKey1].hw
     disableHardwareFeatures true # true means be quick about it!
 
   # Apply affiliation specific features
