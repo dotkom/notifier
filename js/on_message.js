@@ -58,6 +58,33 @@ function onConnect(port) {
       }
     });
   }
+  else if (port.name == "chatter") {
+    port.onMessage.addListener(function(question) {
+      if (DEBUG) console.log('onConnect: chatter');
+      // has irc?
+      if (question.affiliationHasIrc) {
+        var host = question.affiliationHasIrc;
+        var irc = Affiliation.org[localStorage.affiliationKey1].irc;
+        var ircString = irc.server + '/' + irc.channel;
+        var hasIrc = host.indexOf(ircString) !== -1;
+        console.log('affiliationHasIrc, posting', hasIrc)
+        port.postMessage({hasIrc: hasIrc});
+      }
+      // affiliation name?
+      else if (question.getAffiliation) {
+        var affiliation = Affiliation.org[localStorage.affiliationKey1].name;
+        console.log('getAffiliation, posting', affiliation)
+        port.postMessage({getAffiliation: affiliation});
+      }
+      // get placeholder?
+      else if (question.getPlaceholder) {
+        var placeholder = Affiliation.org[localStorage.affiliationKey1].placeholder;
+        var url = Browser.getUrl(placeholder);
+        console.log('getPlaceholder, posting', url)
+        port.postMessage({getPlaceholder: url});
+      }
+    });
+  }
   else if (DEBUG) console.log('WARNING: something tried to connect on port', port.name);
 }
 
