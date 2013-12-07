@@ -587,7 +587,7 @@
                 }, speed, function() {
                   var name;
                   name = Affiliation.org[ls.affiliationKey1].name;
-                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter\n- Infoskjermen åpnes nå!')) {
+                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter')) {
                     ls['useInfoscreen'] = 'true';
                     $('#useInfoscreen').prop('checked', true);
                     Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
