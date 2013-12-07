@@ -8,40 +8,38 @@ var Affiliation = {
   // name: 'Organization X',
   // key: 'orgx',
   // web: 'https://orgx.com',
-  // feed: 'https://orgx.com/feed',
-  // api: 'https://orgx.com/api',               // Optional: If not using feed, use api and getNews
+  // feed: 'https://orgx.com/feed',             // OPTIONAL: Use either 'feed' or 'getNews', not both
   // logo: './org/orgx/logo.png',               // 512x128 transparent logo, for dark background
   // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
   // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with 20% empty padding
   // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
   // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
-  // palettePath: './org/orgx/palette.css',     // Optional: Path to the special palette
+  // palettePath: './org/orgx/palette.css',     // OPTIONAL: Path to the special palette
   // useAltLink: false,                         // Search news posts for alternative links?
-  // hardwareFeatures: true,                    // Whether or not the affiliation has hardware
-  // statusIcons: {                             // Array with statusicons (if hardwarefeatures)
-  //   open: './org/orgx/icon-open.png',        // The office open icon
-  //   closed: './org/orgx/icon-closed.png',    // The office closed icon
-  //   meeting: './org/orgx/icon-meeting.png',  // The office meeting icon
+  // hw: {                                      // OPTIONAL: Has hardwarefeatures?
+  //   apis: {
+  //     coffee: 'http://orgx.no/coffee',       // API for fetching coffee data
+  //     light: 'http://orgx.no/lys',           // API for fetching light data
+  //     event: 'http://orgx.no/status',        // API for fetching current meeting status
+  //     servant: 'http://orgx.no/servant',     // API for fetching todays servant list
+  //     meetings: 'http://orgx.no/meetings',   // API for fetching todays meetings
+  //   },
+  //   statusIcons: {
+  //     open: './org/abakus/icon.png',
+  //     closed: './org/abakus/icon.png',
+  //     meeting: './org/abakus/icon.png',
+  //   },
+  //   memes: {                                 // OPTIONAL within OPTIONAL feature 'hw'
+  //     amount: 3,                             // How many pictures in /meme/ with the format 1...N.jpg
+  //     path: './org/abakus/meme/',
+  //   },
   // },
-  // coffeeApi: 'http://orgx.no/coffee',        // API for fetching coffee data
-  // lightApi: 'http://orgx.no/lys',            // API for fetching light data
-  // eventApi: 'http://orgx.no/status',         // API for fetching current meeting status
-  // servantApi: 'http://orgx.no/servant',      // API for fetching todays servant list
-  // meetingsApi: 'http://orgx.no/meetings',    // API for fetching todays meetings
-  // hasMemes: true,                            // Whether or not the affiliation has a /meme/ folder
-  // numberOfMemes: 4,                          // How many pictures in /meme/ with the format 1...N.jpg
-  // memePath: './org/delta/meme/',             // Where the memes are located
   // getImages: function(links, callback) {},   // getImages will be used if it exists
   // getNews: function(limit, callback) {},     // getNews may override standard RSS/Atom fetching
 
-  // Standard dimensions:
-
-  // logo         512 x 128, at least 256 x 64
-  // icon         256 x 256, at least  64 x 64
-  // placeholder  512 x 384, at least 128 x 96
-  // All dimensions should be in the power of two in case we decide to
-  // introduce some fancy WebGL graphics later on.
+  // Other notes:
+  // - Image dimensions should be in the power of two in case we decide to use WebGL one day.
 
   org: {
     // Linjeforeninger Gløshaugen
@@ -56,21 +54,25 @@ var Affiliation = {
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
       useAltLink: false,
-      hardwareFeatures: true,
-      statusIcons: {
-        // TODO: update when Abakus gets office status feature
-        open: './org/abakus/icon.png', //'./org/abakus/icon-open.png',
-        closed: './org/abakus/icon.png', //'./org/abakus/icon-closed.png',
-        meeting: './org/abakus/icon.png', //'./org/abakus/icon-meeting.png',
+      hw: {
+        apis: {
+          coffee: 'http://kaffe.abakus.no/coffee.txt',
+          light: 'http://informatikk.org/abakus/lys.txt',
+          event: 'https://online.ntnu.no/notifier/abakus/office',
+          servant: 'http://informatikk.org/abakus/servant_list.txt', // TODO
+          meetings: 'https://online.ntnu.no/notifier/abakus/meetings',
+        },
+        statusIcons: {
+          // TODO: update when Abakus gets office status feature
+          open: './org/abakus/icon.png', //'./org/abakus/icon-open.png',
+          closed: './org/abakus/icon.png', //'./org/abakus/icon-closed.png',
+          meeting: './org/abakus/icon.png', //'./org/abakus/icon-meeting.png',
+        },
+        memes: {
+          amount: 3,
+          path: './org/abakus/meme/',
+        },
       },
-      coffeeApi: 'http://kaffe.abakus.no/coffee.txt',
-      lightApi: 'http://informatikk.org/abakus/lys.txt',
-      eventApi: 'https://online.ntnu.no/notifier/abakus/office',
-      servantApi: 'http://informatikk.org/abakus/servant_list.txt', // TODO
-      meetingsApi: 'https://online.ntnu.no/notifier/abakus/meetings',
-      hasMemes: true,
-      numberOfMemes: 3,
-      memePath: './org/abakus/meme/',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
@@ -173,20 +175,24 @@ var Affiliation = {
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
       useAltLink: false,
-      hardwareFeatures: true,
-      statusIcons: {
-        open: './org/delta/icon-open.png',
-        closed: './org/delta/icon-closed.png',
-        meeting: './org/delta/icon-meeting.png',
+      hw: {
+        apis: {
+          coffee: 'http://pi.deltahouse.no/coffee.txt',
+          light: 'http://pi.deltahouse.no/office.txt',
+          event: 'https://online.ntnu.no/notifier/delta/office',
+          servant: 'https://online.ntnu.no/notifier/delta/servant',
+          meetings: 'https://online.ntnu.no/notifier/delta/meetings',
+        },
+        statusIcons: {
+          open: './org/delta/icon-open.png',
+          closed: './org/delta/icon-closed.png',
+          meeting: './org/delta/icon-meeting.png',
+        },
+        memes: {
+          amount: 1,
+          path: './org/delta/meme/',
+        },
       },
-      coffeeApi: 'http://pi.deltahouse.no/coffee.txt',
-      lightApi: 'http://pi.deltahouse.no/office.txt',
-      eventApi: 'https://online.ntnu.no/notifier/delta/office',
-      servantApi: 'https://online.ntnu.no/notifier/delta/servant',
-      meetingsApi: 'https://online.ntnu.no/notifier/delta/meetings',
-      hasMemes: true,
-      numberOfMemes: 1,
-      memePath: './org/delta/meme/',
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -255,7 +261,6 @@ var Affiliation = {
       name: 'Online',
       key: 'online',
       web: 'https://online.ntnu.no',
-      api: 'https://online.ntnu.no/api/v0/article/all/?format=json',
       logo: './org/online/logo.png',
       icon: './org/online/icon.png',
       symbol: './org/online/symbol.png',
@@ -264,21 +269,25 @@ var Affiliation = {
       palette: 'online',
       palettePath: './org/online/palette.css',
       useAltLink: true,
-      hardwareFeatures: true,
-      statusIcons: {
-        open: './org/online/icon-open.png',
-        closed: './org/online/icon-closed.png',
-        meeting: './org/online/icon-meeting.png',
+      hw: {
+        apis: {
+          coffee: 'http://draug.online.ntnu.no/coffee.txt',
+          light: 'http://draug.online.ntnu.no/lys.txt',
+          event: 'https://online.ntnu.no/notifier/online/office',
+          servant: 'https://online.ntnu.no/notifier/online/servant',
+          meetings: 'https://online.ntnu.no/notifier/online/meetings',
+        },
+        statusIcons: {
+          open: './org/online/icon-open.png',
+          closed: './org/online/icon-closed.png',
+          meeting: './org/online/icon-meeting.png',
+        },
+        memes: {
+          amount: 4,
+          path: './org/online/meme/',
+        },
       },
-      coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
-      lightApi: 'http://draug.online.ntnu.no/lys.txt',
-      eventApi: 'https://online.ntnu.no/notifier/online/office',
-      servantApi: 'https://online.ntnu.no/notifier/online/servant',
-      meetingsApi: 'https://online.ntnu.no/notifier/online/meetings',
-      hasMemes: true,
-      numberOfMemes: 4,
-      memePath: './org/online/meme/',
-      // getImages unnecessary, images are extracted from the source code
+      // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
           console.log('ERROR: callback is required');
@@ -286,7 +295,7 @@ var Affiliation = {
         }
         var self = this;
         Ajaxer.getJson({
-          url: self.api,
+          url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
           success: function(json) {
             var count = 0;
             var articles = json.articles;
