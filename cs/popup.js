@@ -477,8 +477,11 @@
   };
 
   chatterText = function(show) {
+    var irc, text;
+    irc = Affiliation.org[ls.affiliationKey1].irc;
+    text = '/join ' + irc.channel + '@' + irc.server;
     return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen');
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i chatten');
   };
 
   fadeButtonText = function(show, msg) {
@@ -537,7 +540,6 @@
     }
     hotFixBusLines();
     if (ls.affiliationKey1 !== 'online') {
-      $('#chatterButton').hide();
       $('#mobileText').hide();
     }
     key = ls.affiliationKey1;
@@ -547,6 +549,11 @@
     $('#logo').prop('src', logo);
     $('link[rel="shortcut icon"]').attr('href', icon);
     $('#news .post img').attr('src', placeholder);
+    $('#chatterIcon').attr('src', icon);
+    if (!Affiliation.org[ls.affiliationKey1].irc) {
+      $('#chatterButton').hide();
+      $('#chatterIcon').hide();
+    }
     if (!DEBUG) {
       _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette]);
     }
@@ -590,7 +597,12 @@
       return window.close();
     });
     $('#chatterButton').click(function() {
-      Browser.openTab('http://webchat.freenode.net/?channels=online');
+      var channel, irc, noNick, server;
+      irc = Affiliation.org[ls.affiliationKey1].irc;
+      server = irc.server;
+      channel = irc.channel;
+      noNick = irc.noNick;
+      Browser.openTab('https://kiwiirc.com/client/' + server + '/' + channel);
       if (!DEBUG) {
         _gaq.push(['_trackEvent', 'popup', 'clickChatter']);
       }
