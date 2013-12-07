@@ -105,4 +105,52 @@ if (typeof chrome != 'undefined') {
   resetCounter(1);
   resetCounter(2);
 
+  // kiwiirc.com
+
+  if (host.indexOf('kiwiirc.com') != -1) {
+
+    if (typeof chrome.runtime != 'undefined') {
+      if (typeof chrome.runtime.connect != 'undefined') {
+
+        var loadAffiliation = function() {
+          // Icon and title
+          $('link[rel="shortcut icon"]').attr('href','https://online.ntnu.no/static/img/favicon.png');
+          $('title').text('Chatter');
+          // Logo and welcome message
+          var p = localStorage.placeholder;
+          var a = localStorage.affiliation;
+          $('div.status').html('<img src="'+p+'" width="200px" align="center"><br />Velkommen til '+a+' Chatter<br />Hva er nicket ditt? :)');
+        };
+
+        var port = chrome.runtime.connect({name: 'chatter'});
+
+        port.postMessage({affiliationHasIrc: host});
+        port.onMessage.addListener(function(answer) {
+          
+          // Check if affiliation has IRC and we are currently in their channel or welcome page
+          if (answer.hasIrc) {
+            loadAffiliation(); // attempt to load affiliation already in case we have what we need in storage
+            port.postMessage({getAffiliation: true});
+          }
+
+          else if (answer.getAffiliation) {
+            localStorage.affiliation = answer.getAffiliation;
+            port.postMessage({getPlaceholder: true});
+          }
+
+          else if (answer.getPlaceholder) {
+            localStorage.placeholder = answer.getPlaceholder;
+            // All ready, GO! Multiple times since other scripts are trying to override us
+            // Why not just wait until all other scripts are done? Cuz we're impatient? Yes, you.
+            setTimeout(loadAffiliation, 200);
+            setTimeout(loadAffiliation, 2000);
+          }
+
+        });
+
+      }
+    }
+
+  }
+
 }
