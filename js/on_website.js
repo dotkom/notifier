@@ -130,7 +130,7 @@ if (typeof chrome != 'undefined') {
           // Favicon
           $('link[rel="shortcut icon"]').attr('href', i);
           // Logo and welcome message
-          $('div.status').html('<img src="'+p+'" width="200px" style="z-index:1000;" align="center"><br />'+n+'<br />Velkommen til chatten, hva er nicket ditt?');
+          $('div.status').html('<img src="'+p+'" width="200px" style="z-index:1000;" align="center"><br /><h1>'+n+'</h1><p>Velkommen til chatten, hva er nicket ditt?</p>');
           // // Icon in channel view
           $('#kiwi .toolbar .app_tools img').attr('src', l).attr('style', 'width:100px;').parent().attr('href', w);
         };
