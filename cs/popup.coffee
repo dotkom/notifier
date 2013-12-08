@@ -379,9 +379,9 @@ tipsText = (show) ->
 
 chatterText = (show) ->
   irc = Affiliation.org[ls.affiliationKey1].irc
-  text = '/join ' + irc.channel + '@' + irc.server
+  text = 'Join ' + irc.channel + ' :)'
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i chatten' # lol i know ^^
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ' + text # lol i know ^^
 
 fadeButtonText = (show, msg) ->
   fadeInSpeed = 150
@@ -482,15 +482,16 @@ $ ->
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link])
     window.close()
 
-  $('#chatterButton').click ->
+  clickChatter = ->
     irc = Affiliation.org[ls.affiliationKey1].irc
     server = irc.server
     channel = irc.channel
     noNick = irc.noNick
     Browser.openTab 'https://kiwiirc.com/client/' + server + '/' + channel
-    # Browser.openTab 'http://webchat.freenode.net/?channels=online'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
     window.close()
+  $('#chatterButton').click clickChatter
+  $('#chatterIcon').click clickChatter
   
   $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'
@@ -517,6 +518,10 @@ $ ->
   $('#chatterButton').mouseenter ->
     chatterText true
   $('#chatterButton').mouseleave ->
+    chatterText false
+  $('#chatterIcon').mouseenter ->
+    chatterText true
+  $('#chatterIcon').mouseleave ->
     chatterText false
 
   # React to Konami code

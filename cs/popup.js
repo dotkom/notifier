@@ -479,9 +479,9 @@
   chatterText = function(show) {
     var irc, text;
     irc = Affiliation.org[ls.affiliationKey1].irc;
-    text = '/join ' + irc.channel + '@' + irc.server;
+    text = 'Join ' + irc.channel + ' :)';
     return fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i chatten');
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ' + text);
   };
 
   fadeButtonText = function(show, msg) {
@@ -498,7 +498,7 @@
   };
 
   $(function() {
-    var icon, key, logo, placeholder;
+    var clickChatter, icon, key, logo, placeholder;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -596,7 +596,7 @@
       }
       return window.close();
     });
-    $('#chatterButton').click(function() {
+    clickChatter = function() {
       var channel, irc, noNick, server;
       irc = Affiliation.org[ls.affiliationKey1].irc;
       server = irc.server;
@@ -607,7 +607,9 @@
         _gaq.push(['_trackEvent', 'popup', 'clickChatter']);
       }
       return window.close();
-    });
+    };
+    $('#chatterButton').click(clickChatter);
+    $('#chatterIcon').click(clickChatter);
     $('#bus #atbLogo').click(function() {
       Browser.openTab('http://www.atb.no');
       if (!DEBUG) {
@@ -635,6 +637,12 @@
       return chatterText(true);
     });
     $('#chatterButton').mouseleave(function() {
+      return chatterText(false);
+    });
+    $('#chatterIcon').mouseenter(function() {
+      return chatterText(true);
+    });
+    $('#chatterIcon').mouseleave(function() {
       return chatterText(false);
     });
     $(document).konami({
