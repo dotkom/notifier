@@ -1,20 +1,20 @@
 var Meetings = {
-  msgNone: 'Ingen flere møter i dag',
-  msgError: 'Frakoblet fra møteplan',
-  
   debug: 0,
   debugApi: 0,
   debugThisApi: 'https://online.ntnu.no/service_static/dev_meeting_plan',
   debugString: 0,
   debugThisString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 dotKom',
-
+  
+  msgNone: 'Kontoret er ledig resten av dagen',
+  msgError: 'Frakoblet fra møteplan',
+  
   get: function(callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
     
-    var api = Affiliation.org[localStorage.affiliationKey1].meetingsApi;
+    var api = Affiliation.org[localStorage.affiliationKey1].hw.apis.meetings;
     
     // Receives the meeting plan for today
     var self = this;

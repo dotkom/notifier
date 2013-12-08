@@ -1,9 +1,9 @@
 var Servant = {
-  msgNone: 'Ingen kontorvakt nå',
-  msgError: 'Frakoblet fra vaktplan',
+  debug: 0,
+  debugString: '11:00-12:00 Steinar Hagen\n12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
   
-  debugServant: 0,
-  debugServantString: '11:00-12:00 Steinar Hagen\n12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
+  msgNone: 'Ingen har ansvar nå',
+  msgError: 'Frakoblet fra vaktplan',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -11,7 +11,7 @@ var Servant = {
       return;
     }
 
-    var api = Affiliation.org[localStorage.affiliationKey1].servantApi;
+    var api = Affiliation.org[localStorage.affiliationKey1].hw.apis.servant;
 
     // Receives the meeting plan for today
     var self = this;
@@ -20,8 +20,8 @@ var Servant = {
       success: function(servant) {
 
         // If servant debugging is enabled
-        if (self.debugServant) {
-          servant = self.debugServantString;
+        if (self.debug) {
+          servant = self.debugString;
         }
 
         servantList = servant.split("\n");

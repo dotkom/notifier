@@ -8,7 +8,7 @@ newsLimit = 4 # The best amount of news for the popup, IMO
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
-  if Affiliation.org[ls.affiliationKey1].hardwareFeatures
+  if Affiliation.org[ls.affiliationKey1].hw
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
     updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
@@ -375,11 +375,13 @@ optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
 
 tipsText = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++'
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++'
 
 chatterText = (show) ->
+  irc = Affiliation.org[ls.affiliationKey1].irc
+  text = '/join ' + irc.channel + '@' + irc.server
   fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i samtalen' # lol i know ^^
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bli med i chatten' # lol i know ^^
 
 fadeButtonText = (show, msg) ->
   fadeInSpeed = 150
@@ -421,7 +423,7 @@ $ ->
     # What is the prefered secondary affiliation?
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadAffiliation2', ls.affiliationKey2])
 
-  # Hide stuff the user does not want to see
+  # Hide stuff the user can't or doesn't want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
@@ -432,7 +434,6 @@ $ ->
   hotFixBusLines()
 
   if ls.affiliationKey1 isnt 'online'
-    $('#chatterButton').hide() # Hide chat button
     $('#mobileText').hide() # Hide Notifier Mobile info in Tips box
 
   # Applying affiliation graphics
@@ -443,6 +444,12 @@ $ ->
   $('#logo').prop 'src', logo
   $('link[rel="shortcut icon"]').attr 'href', icon
   $('#news .post img').attr 'src', placeholder
+  $('#chatterIcon').attr 'src', icon
+
+  # Hide Chatter button if not applicable
+  if not Affiliation.org[ls.affiliationKey1].irc
+    $('#chatterButton').hide()
+    $('#chatterIcon').hide()
   
   # Track popularity of the chosen palette, the palette
   # itself is loaded a lot earlier for perceived speed
@@ -476,7 +483,12 @@ $ ->
     window.close()
 
   $('#chatterButton').click ->
-    Browser.openTab 'http://webchat.freenode.net/?channels=online'
+    irc = Affiliation.org[ls.affiliationKey1].irc
+    server = irc.server
+    channel = irc.channel
+    noNick = irc.noNick
+    Browser.openTab 'https://kiwiirc.com/client/' + server + '/' + channel
+    # Browser.openTab 'http://webchat.freenode.net/?channels=online'
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
     window.close()
   

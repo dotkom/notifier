@@ -85,7 +85,7 @@ var Oracle = {
       'En av bussjåførene er julenisse hver desember.',
       'Både AtB og SiT liker Notifier.',
       'Notifier fikk støtte for sanntidsbuss i versjon 1.3.0.',
-      'Notifier og bussorakelet ble venner i Notifier versjon 1.3.1',
+      'Notifier og bussorakelet ble venner i Notifier versjon 3.2.0',
       'Tenk om Kantinelizzie hadde kjørt buss.',
       'Hvis du har installert Notifier på forskjellige maskiner kan du ha forskjellige busstopp på hver.',
       'Større busser, flere busser, raskere busser, AtB gjør alle tre på 5ern.',

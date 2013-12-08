@@ -8,7 +8,7 @@ newsLimit = 8 # The most news you can cram into Infoscreen, if other features ar
 mainLoop = ->
   if DEBUG then console.log "\n#" + iteration
 
-  if Affiliation.org[ls.affiliationKey1].hardwareFeatures
+  if Affiliation.org[ls.affiliationKey1].hw
     updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
     updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
