@@ -338,6 +338,7 @@ body {
 }
 #container #header #buttons #chatterIcon {
   position: absolute;
+  cursor: pointer;
   left: 122px;
   top: 26px;
   z-index: 50;
