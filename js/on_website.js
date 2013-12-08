@@ -105,4 +105,69 @@ if (typeof chrome != 'undefined') {
   resetCounter(1);
   resetCounter(2);
 
+  // kiwiirc.com
+
+  if (host.indexOf('kiwiirc.com') != -1) {
+
+    if (typeof chrome.runtime != 'undefined') {
+      if (typeof chrome.runtime.connect != 'undefined') {
+
+        // Change the title from Kiwi IRC to Chatter
+        $(document).ready(function(){
+          $('title').bind('DOMSubtreeModified', function(event) {
+            if ($('title').text() == 'Kiwi IRC')
+              $('title').text('Chatter');
+          });
+        });
+
+        // Load in all affiliation related stuff
+        var loadAffiliation = function() {
+          var n = localStorage.name;
+          var w = localStorage.web;
+          var i = localStorage.icon;
+          var l = localStorage.logo;
+          var p = localStorage.placeholder;
+          // Favicon
+          $('link[rel="shortcut icon"]').attr('href', i);
+          // Logo and welcome message
+          $('div.status').html('<img src="'+p+'" width="200px" style="z-index:1000;" align="center"><br /><h1>'+n+'</h1><p>Velkommen til chatten, hva er nicket ditt?</p>');
+          // // Icon in channel view
+          $('#kiwi .toolbar .app_tools img').attr('src', l).attr('style', 'width:100px;').parent().attr('href', w);
+        };
+
+        // Start talking
+        var port = chrome.runtime.connect({name: 'chatter'});
+        port.postMessage({hasIrc: host});
+
+        port.onMessage.addListener(function(answer) {
+          
+          // Check if affiliation has IRC and we are currently in their channel or welcome page
+          if (answer.hasIrc) {
+            // Create nodes we'll use later
+            $('div.server_details').prepend('<div id="notifierWelcome"></div>');
+            // Affiliation has IRC, start loading stuff that might be stored from before
+            loadAffiliation();
+            // Request a blob of all the info we need
+            port.postMessage({getBlob: true});
+          }
+
+          else if (answer.blob) {
+            var blob = JSON.parse(answer.blob)
+            ls = localStorage
+            ls.name = blob.name
+            ls.icon = blob.icon
+            ls.logo = blob.logo
+            ls.placeholder = blob.placeholder
+            ls.web = blob.web
+            setTimeout(loadAffiliation, 200);
+            setTimeout(loadAffiliation, 2000);
+          }
+
+        });
+
+      }
+    }
+
+  }
+
 }

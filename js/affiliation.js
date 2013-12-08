@@ -1,50 +1,55 @@
 var Affiliation = {
   debug: 0,
   
-  // IMPORTANT: Keep the same order here as in options.html
+  // IMPORTANT: Keep the same order of affiliations here as in options.html
 
   // Explanation of organization attributes:
 
   // name: 'Organization X',
   // key: 'orgx',
   // web: 'https://orgx.com',
-  // feed: 'https://orgx.com/feed',
-  // api: 'https://orgx.com/api',               // Optional: If not using feed, use api and getNews
+  // feed: 'https://orgx.com/feed',             // OPTIONAL: Use either 'feed' or 'getNews', not both
   // logo: './org/orgx/logo.png',               // 512x128 transparent logo, for dark background
   // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
   // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with 20% empty padding
   // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
   // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
-  // palettePath: './org/orgx/palette.css',     // Optional: Path to the special palette
-  // useAltLink: false,                         // Search news posts for alternative links?
-  // hardwareFeatures: true,                    // Whether or not the affiliation has hardware
-  // statusIcons: {                             // Array with statusicons (if hardwarefeatures)
-  //   open: './org/orgx/icon-open.png',        // The office open icon
-  //   closed: './org/orgx/icon-closed.png',    // The office closed icon
-  //   meeting: './org/orgx/icon-meeting.png',  // The office meeting icon
+  // palettePath: './org/orgx/palette.css',     // OPTIONAL: Path to the special palette
+  // useAltLink: true,                          // OPTIONAL: Search each news post for alternative link to use?
+  // hw: {                                      // OPTIONAL: Has hardwarefeatures?
+  //   apis: {
+  //     coffee: 'http://orgx.no/coffee',       // Coffee data
+  //     light: 'http://orgx.no/lys',           // Light data
+  //     event: 'http://orgx.no/status',        // Current meeting status
+  //     servant: 'http://orgx.no/servant',     // Todays servant list
+  //     meetings: 'http://orgx.no/meetings',   // Todays meetings
+  //   },
+  //   statusIcons: {
+  //     open: './org/abakus/icon.png',
+  //     closed: './org/abakus/icon.png',
+  //     meeting: './org/abakus/icon.png',
+  //   },
+  //   memes: {                                 // OPTIONAL within OPTIONAL feature 'hw'
+  //     amount: 3,                             // How many pictures in /meme/ with the format 1...N.jpg
+  //     path: './org/abakus/meme/',
+  //   },
   // },
-  // coffeeApi: 'http://orgx.no/coffee',        // API for fetching coffee data
-  // lightApi: 'http://orgx.no/lys',            // API for fetching light data
-  // eventApi: 'http://orgx.no/status',         // API for fetching current meeting status
-  // servantApi: 'http://orgx.no/servant',      // API for fetching todays servant list
-  // meetingsApi: 'http://orgx.no/meetings',    // API for fetching todays meetings
-  // hasMemes: true,                            // Whether or not the affiliation has a /meme/ folder
-  // numberOfMemes: 4,                          // How many pictures in /meme/ with the format 1...N.jpg
-  // memePath: './org/delta/meme/',             // Where the memes are located
-  // getImages: function(links, callback) {},   // getImages will be used if it exists
-  // getNews: function(limit, callback) {},     // getNews may override standard RSS/Atom fetching
+  // irc: {                                     // OPTIONAL: add IRC button to the popup
+  //   server: 'irc.freenode.net',
+  //   channel: '#orgx',
+  // }
+  // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
+  // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
+  // getNews: function(limit, callback) {},     // OPTIONAL: getNews may override standard RSS/Atom fetching, use either 'feed' or 'getNews', not both
 
-  // Standard dimensions:
-
-  // logo         512 x 128, at least 256 x 64
-  // icon         256 x 256, at least  64 x 64
-  // placeholder  512 x 384, at least 128 x 96
-  // All dimensions should be in the power of two in case we decide to
-  // introduce some fancy WebGL graphics later on.
+  // Other notes:
+  // - Image dimensions should be in the power of two in case we decide to use WebGL one day.
 
   org: {
+
     // Linjeforeninger Gløshaugen
+    
     'abakus': {
       name: 'Abakus',
       key: 'abakus',
@@ -55,22 +60,29 @@ var Affiliation = {
       symbol: './org/abakus/symbol.png',
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
-      useAltLink: false,
-      hardwareFeatures: true,
-      statusIcons: {
-        // TODO: update when Abakus gets office status feature
-        open: './org/abakus/icon.png', //'./org/abakus/icon-open.png',
-        closed: './org/abakus/icon.png', //'./org/abakus/icon-closed.png',
-        meeting: './org/abakus/icon.png', //'./org/abakus/icon-meeting.png',
+      hw: {
+        apis: {
+          coffee: 'http://kaffe.abakus.no/coffee.txt',
+          light: 'http://informatikk.org/abakus/lys.txt',
+          event: 'https://online.ntnu.no/notifier/abakus/office',
+          servant: 'http://informatikk.org/abakus/servant_list.txt', // TODO
+          meetings: 'https://online.ntnu.no/notifier/abakus/meetings',
+        },
+        statusIcons: {
+          // TODO: update when Abakus gets office status feature
+          open: './org/abakus/icon.png', //'./org/abakus/icon-open.png',
+          closed: './org/abakus/icon.png', //'./org/abakus/icon-closed.png',
+          meeting: './org/abakus/icon.png', //'./org/abakus/icon-meeting.png',
+        },
+        memes: {
+          amount: 3,
+          path: './org/abakus/meme/',
+        },
       },
-      coffeeApi: 'http://kaffe.abakus.no/coffee.txt',
-      lightApi: 'http://informatikk.org/abakus/lys.txt',
-      eventApi: 'https://online.ntnu.no/notifier/abakus/office',
-      servantApi: 'http://informatikk.org/abakus/servant_list.txt', // TODO
-      meetingsApi: 'https://online.ntnu.no/notifier/abakus/meetings',
-      hasMemes: true,
-      numberOfMemes: 3,
-      memePath: './org/abakus/meme/',
+      irc: {
+        server: 'irc.efnet.org',
+        channel: '#abakus',
+      },
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
@@ -117,6 +129,7 @@ var Affiliation = {
         });
       },
     },
+
     'aarhonen': {
       name: 'H.M. Aarhønen',
       key: 'aarhonen',
@@ -127,11 +140,15 @@ var Affiliation = {
       symbol: './org/aarhonen/symbol.png',
       placeholder: './org/aarhonen/placeholder.png',
       palette: 'purple',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#aarhonen',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.content'});
       },
     },
+
     'alf': {
       name: 'Alf',
       key: 'alf',
@@ -142,11 +159,15 @@ var Affiliation = {
       symbol: './org/alf/symbol.png',
       placeholder: './org/alf/placeholder.png',
       palette: 'green',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#broderskabet',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
     },
+
     'berg': {
       name: 'Bergstuderendes Forening',
       key: 'berg',
@@ -157,11 +178,15 @@ var Affiliation = {
       symbol: './org/berg/symbol.png',
       placeholder: './org/berg/placeholder.png',
       palette: 'grey',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#bsf',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
     },
+
     'delta': {
       name: 'Delta',
       key: 'delta',
@@ -172,25 +197,33 @@ var Affiliation = {
       symbol: './org/delta/symbol.png',
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
-      useAltLink: false,
-      hardwareFeatures: true,
-      statusIcons: {
-        open: './org/delta/icon-open.png',
-        closed: './org/delta/icon-closed.png',
-        meeting: './org/delta/icon-meeting.png',
+      hw: {
+        apis: {
+          coffee: 'http://pi.deltahouse.no/coffee.txt',
+          light: 'http://pi.deltahouse.no/office.txt',
+          event: 'https://online.ntnu.no/notifier/delta/office',
+          servant: 'https://online.ntnu.no/notifier/delta/servant',
+          meetings: 'https://online.ntnu.no/notifier/delta/meetings',
+        },
+        statusIcons: {
+          open: './org/delta/icon-open.png',
+          closed: './org/delta/icon-closed.png',
+          meeting: './org/delta/icon-meeting.png',
+        },
+        memes: {
+          amount: 1,
+          path: './org/delta/meme/',
+        },
       },
-      coffeeApi: 'http://pi.deltahouse.no/coffee.txt',
-      lightApi: 'http://pi.deltahouse.no/office.txt',
-      eventApi: 'https://online.ntnu.no/notifier/delta/office',
-      servantApi: 'https://online.ntnu.no/notifier/delta/servant',
-      meetingsApi: 'https://online.ntnu.no/notifier/delta/meetings',
-      hasMemes: true,
-      numberOfMemes: 1,
-      memePath: './org/delta/meme/',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#delta',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'emil': {
       name: 'EMIL',
       key: 'emil',
@@ -201,11 +234,15 @@ var Affiliation = {
       symbol: './org/emil/symbol.png',
       placeholder: './org/emil/placeholder.png',
       palette: 'green',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#emil',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
       },
     },
+
     'hybrida': {
       name: 'Hybrida',
       key: 'hybrida',
@@ -216,11 +253,15 @@ var Affiliation = {
       symbol: './org/hybrida/symbol.png',
       placeholder: './org/hybrida/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#hybrida',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.element', domainUrl:'hybrida.no'});
       },
     },
+
     'leonardo': {
       name: 'Leonardo',
       key: 'leonardo',
@@ -231,11 +272,15 @@ var Affiliation = {
       symbol: './org/leonardo/symbol.png',
       placeholder: './org/leonardo/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#leonardo_ntnu',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1});
       },
     },
+
     'mannhullet': {
       name: 'Mannhullet',
       key: 'mannhullet',
@@ -246,16 +291,19 @@ var Affiliation = {
       symbol: './org/mannhullet/symbol.png',
       placeholder: './org/mannhullet/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.efnet.org',
+        channel: '#mannhullet',
+      },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
       },
     },
+
     'online': {
       name: 'Online',
       key: 'online',
       web: 'https://online.ntnu.no',
-      api: 'https://online.ntnu.no/api/v0/article/all/?format=json',
       logo: './org/online/logo.png',
       icon: './org/online/icon.png',
       symbol: './org/online/symbol.png',
@@ -264,21 +312,29 @@ var Affiliation = {
       palette: 'online',
       palettePath: './org/online/palette.css',
       useAltLink: true,
-      hardwareFeatures: true,
-      statusIcons: {
-        open: './org/online/icon-open.png',
-        closed: './org/online/icon-closed.png',
-        meeting: './org/online/icon-meeting.png',
+      hw: {
+        apis: {
+          coffee: 'http://draug.online.ntnu.no/coffee.txt',
+          light: 'http://draug.online.ntnu.no/lys.txt',
+          event: 'https://online.ntnu.no/notifier/online/office',
+          servant: 'https://online.ntnu.no/notifier/online/servant',
+          meetings: 'https://online.ntnu.no/notifier/online/meetings',
+        },
+        statusIcons: {
+          open: './org/online/icon-open.png',
+          closed: './org/online/icon-closed.png',
+          meeting: './org/online/icon-meeting.png',
+        },
+        memes: {
+          amount: 4,
+          path: './org/online/meme/',
+        },
       },
-      coffeeApi: 'http://draug.online.ntnu.no/coffee.txt',
-      lightApi: 'http://draug.online.ntnu.no/lys.txt',
-      eventApi: 'https://online.ntnu.no/notifier/online/office',
-      servantApi: 'https://online.ntnu.no/notifier/online/servant',
-      meetingsApi: 'https://online.ntnu.no/notifier/online/meetings',
-      hasMemes: true,
-      numberOfMemes: 4,
-      memePath: './org/online/meme/',
-      // getImages unnecessary, images are extracted from the source code
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#online',
+      },
+      // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
           console.log('ERROR: callback is required');
@@ -286,7 +342,7 @@ var Affiliation = {
         }
         var self = this;
         Ajaxer.getJson({
-          url: self.api,
+          url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
           success: function(json) {
             var count = 0;
             var articles = json.articles;
@@ -319,6 +375,7 @@ var Affiliation = {
         });
       },
     },
+
     'nabla': {
       name: 'Nabla',
       key: 'nabla',
@@ -329,11 +386,15 @@ var Affiliation = {
       symbol: './org/nabla/symbol.png',
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#nabla',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
       },
     },
+
     'solan': {
       name: 'Solan',
       key: 'solan',
@@ -344,11 +405,11 @@ var Affiliation = {
       symbol: './org/solan/symbol.png',
       placeholder: './org/solan/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'spanskroeret': {
       name: 'Spanskrøret',
       key: 'spanskroeret',
@@ -359,11 +420,15 @@ var Affiliation = {
       symbol: './org/spanskroeret/symbol.png',
       placeholder: './org/spanskroeret/placeholder.png',
       palette: 'green',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#spanskroret',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'volvox': {
       name: 'Volvox & Alkymisten',
       key: 'volvox',
@@ -374,13 +439,17 @@ var Affiliation = {
       symbol: './org/volvox/symbol.png',
       placeholder: './org/volvox/placeholder.png',
       palette: 'green',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#volvox',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
 
     // Linjeforeninger Dragvoll
+
     'de folkevalgte': {
       name: 'De Folkevalgte',
       key: 'de folkevalgte',
@@ -391,11 +460,15 @@ var Affiliation = {
       symbol: './org/de folkevalgte/symbol.png',
       placeholder: './org/de folkevalgte/placeholder.png',
       palette: 'yellow',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#defolkevalgte',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'dhs': {
       name: 'Det Historiske Selskab',
       key: 'dhs',
@@ -406,11 +479,15 @@ var Affiliation = {
       symbol: './org/dhs/symbol.png',
       placeholder: './org/dhs/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#historier',
+      },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'dionysos': {
       name: 'Dionysos',
       key: 'dionysos',
@@ -421,11 +498,15 @@ var Affiliation = {
       symbol: './org/dionysos/symbol.png',
       placeholder: './org/dionysos/placeholder.png',
       palette: 'purple',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#dionysos',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'erudio': {
       name: 'Erudio',
       key: 'erudio',
@@ -436,11 +517,15 @@ var Affiliation = {
       symbol: './org/erudio/symbol.png',
       placeholder: './org/erudio/placeholder.png',
       palette: 'red',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#erudio',
+      },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'eureka': {
       name: 'Eureka',
       key: 'eureka',
@@ -451,11 +536,15 @@ var Affiliation = {
       symbol: './org/eureka/symbol.png',
       placeholder: './org/eureka/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#eurekalf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'geolf': {
       name: 'Geolf',
       key: 'geolf',
@@ -466,11 +555,15 @@ var Affiliation = {
       symbol: './org/geolf/symbol.png',
       placeholder: './org/geolf/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#geolf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'gengangere': {
       name: 'Gengangere',
       key: 'gengangere',
@@ -481,11 +574,15 @@ var Affiliation = {
       symbol: './org/gengangere/symbol.png',
       placeholder: './org/gengangere/placeholder.png',
       palette: 'grey',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#gengangere',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'jump cut': {
       name: 'Jump Cut',
       key: 'jump cut',
@@ -496,11 +593,15 @@ var Affiliation = {
       symbol: './org/jump cut/symbol.png',
       placeholder: './org/jump cut/placeholder.png',
       palette: 'grey',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#jumpcut',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'utopia': {
       name: 'Utopia',
       key: 'utopia',
@@ -512,11 +613,15 @@ var Affiliation = {
       placeholder: './org/utopia/placeholder.png',
       palette: 'utopia',
       palettePath: './org/utopia/palette.css',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#utopialf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'ludimus': {
       name: 'Ludimus',
       key: 'ludimus',
@@ -527,11 +632,15 @@ var Affiliation = {
       symbol: './org/ludimus/symbol.png',
       placeholder: './org/ludimus/placeholder.png',
       palette: 'red',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#ludimus',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'paideia': {
       name: 'Paideia',
       key: 'paideia',
@@ -542,11 +651,15 @@ var Affiliation = {
       symbol: './org/paideia/symbol.png',
       placeholder: './org/paideia/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#paideia',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'panoptikon': {
       name: 'Panoptikon',
       key: 'panoptikon',
@@ -557,11 +670,15 @@ var Affiliation = {
       symbol: './org/panoptikon/symbol.png',
       placeholder: './org/panoptikon/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#panoptikon',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'pareto': {
       name: 'Pareto',
       key: 'pareto',
@@ -572,9 +689,13 @@ var Affiliation = {
       symbol: './org/pareto/symbol.png',
       placeholder: './org/pareto/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#pareto',
+      },
       // Images will be found automatically in the HTML of each news post
     },
+
     'primetime': {
       name: 'Primetime',
       key: 'primetime',
@@ -585,11 +706,15 @@ var Affiliation = {
       symbol: './org/primetime/symbol.png',
       placeholder: './org/primetime/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#primetime',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
     },
+
     'psi': {
       name: 'Psi',
       key: 'psi',
@@ -600,11 +725,15 @@ var Affiliation = {
       symbol: './org/psi/symbol.png',
       placeholder: './org/psi/placeholder.png',
       palette: 'red',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#psi',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
     },
+
     'sturm und drang': {
       name: 'Sturm Und Drang',
       key: 'sturm und drang',
@@ -615,13 +744,17 @@ var Affiliation = {
       symbol: './org/sturm und drang/symbol.png',
       placeholder: './org/sturm und drang/placeholder.png',
       palette: 'red',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#sturm',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
 
     // Linjeforeninger HiST/DMMH/TJSF/BI
+
     'fraktur': {
       name: 'Fraktur',
       key: 'fraktur',
@@ -632,11 +765,15 @@ var Affiliation = {
       symbol: './org/fraktur/symbol.png',
       placeholder: './org/fraktur/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#fraktur',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'kom': {
       name: 'KOM',
       key: 'kom',
@@ -647,11 +784,15 @@ var Affiliation = {
       symbol: './org/kom/symbol.png',
       placeholder: './org/kom/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#kom',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'logistikkstudentene': {
       name: 'Logistikkstudentene',
       key: 'logistikkstudentene',
@@ -662,11 +803,15 @@ var Affiliation = {
       symbol: './org/logistikkstudentene/symbol.png',
       placeholder: './org/logistikkstudentene/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#logistikk',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'nutrix': {
       name: 'Nutrix',
       key: 'nutrix',
@@ -677,11 +822,15 @@ var Affiliation = {
       symbol: './org/nutrix/symbol.png',
       placeholder: './org/nutrix/placeholder.png',
       palette: 'green',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#nutrix',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'tihlde': {
       name: 'TIHLDE',
       key: 'tihlde',
@@ -692,11 +841,15 @@ var Affiliation = {
       symbol: './org/tihlde/symbol.png',
       placeholder: './org/tihlde/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#tihlde',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'tim og shaenko': {
       name: 'Tim & Shænko',
       key: 'tim og shaenko',
@@ -707,11 +860,15 @@ var Affiliation = {
       symbol: './org/tim og shaenko/symbol.png',
       placeholder: './org/tim og shaenko/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#tim',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'tjsf': {
       name: 'TJSF',
       key: 'tjsf',
@@ -722,11 +879,15 @@ var Affiliation = {
       symbol: './org/tjsf/symbol.png',
       placeholder: './org/tjsf/placeholder.png',
       palette: 'grey',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#tjsf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'vivas': {
       name: 'Vivas',
       key: 'vivas',
@@ -737,13 +898,17 @@ var Affiliation = {
       symbol: './org/vivas/symbol.png',
       placeholder: './org/vivas/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#vivas',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, {newsSelector:'.post'});
       },
     },
 
     // Masterforeninger, doktorforeninger, internasjonale foreninger
+
     'dion': {
       name: 'DION',
       key: 'dion',
@@ -754,11 +919,15 @@ var Affiliation = {
       symbol: './org/dion/symbol.png',
       placeholder: './org/dion/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#dion',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'esn': {
       name: 'ESN',
       key: 'esn',
@@ -769,11 +938,15 @@ var Affiliation = {
       symbol: './org/esn/symbol.png',
       placeholder: './org/esn/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#esn',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     // 'iaeste': {
     //   name: 'IAESTE',
     //   key: 'iaeste',
@@ -784,11 +957,15 @@ var Affiliation = {
     //   symbol: './org/iaeste/symbol.png',
     //   placeholder: './org/iaeste/placeholder.png',
     //   palette: 'blue',
-    //   useAltLink: false,
+      // irc: {
+      //   server: 'irc.freenode.net',
+      //   channel: '#iaeste',
+      // },
     //   getImages: function(links, callback) {
     //     Affiliation.getImages(this, links, callback);
     //   },
     // },
+
     'isu': {
       name: 'International Student Union',
       key: 'isu',
@@ -799,11 +976,15 @@ var Affiliation = {
       symbol: './org/isu/symbol.png',
       placeholder: './org/isu/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#isu',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'projeksjon': {
       name: 'Projeksjon',
       key: 'projeksjon',
@@ -814,11 +995,15 @@ var Affiliation = {
       symbol: './org/projeksjon/symbol.png',
       placeholder: './org/projeksjon/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#projeksjon',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
     },
+
     // 'signifikant': {
     //   name: 'Signifikant',
     //   key: 'signifikant',
@@ -829,11 +1014,15 @@ var Affiliation = {
     //   symbol: './org/signifikant/symbol.png',
     //   placeholder: './org/signifikant/placeholder.png',
     //   palette: 'cyan',
-    //   useAltLink: false,
+      // irc: {
+      //   server: 'irc.freenode.net',
+      //   channel: '#signifikant',
+      // },
     //   getImages: function(links, callback) {
     //     Affiliation.getImages(this, links, callback);
     //   },
     // },
+
     'soma': {
       name: 'Soma',
       key: 'soma',
@@ -844,9 +1033,13 @@ var Affiliation = {
       symbol: './org/soma/symbol.png',
       placeholder: './org/soma/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#soma',
+      },
       // getImages unnecessary, images are extracted from HTML in entries
     },
+
     'symbiosis': {
       name: 'Symbiosis',
       key: 'symbiosis',
@@ -857,13 +1050,17 @@ var Affiliation = {
       symbol: './org/symbiosis/symbol.png',
       placeholder: './org/symbiosis/placeholder.png',
       palette: 'green',
-      useAltLink: false,
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#symbiosis',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
 
     // Studentmedier
+
     'dusken': {
       name: 'Dusken.no',
       key: 'dusken',
@@ -874,14 +1071,12 @@ var Affiliation = {
       symbol: './org/dusken/symbol.png',
       placeholder: './org/dusken/placeholder.png',
       palette: 'grey',
-      useAltLink: false,
+      // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
       getImage: function(link, callback) {
-        // Affiliation.getImages(this, links, callback, {newsSelector:'section.articlepreview', domainUrl:'dusken.no'});
-        // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
-        // Affiliation.getImages(this, link, callback, {newsSelector:'section.article', domainUrl:'dusken.no'});
         Affiliation.getImages(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
       },
     },
+
     'universitetsavisa': {
       name: 'Universitetsavisa',
       key: 'universitetsavisa',
@@ -892,9 +1087,9 @@ var Affiliation = {
       symbol: './org/universitetsavisa/symbol.png',
       placeholder: './org/universitetsavisa/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
       // getImages unnecessary, Universitetsavisa uses <enclosure>-tag for images
     },
+
     'gemini': {
       name: 'Gemini',
       key: 'gemini',
@@ -905,9 +1100,9 @@ var Affiliation = {
       symbol: './org/gemini/symbol.png',
       placeholder: './org/gemini/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
       // getImages unnecessary, Gemini uses <bilde>-tag for images
     },
+
     'adressa': {
       name: 'Adresseavisen',
       key: 'adressa',
@@ -918,11 +1113,11 @@ var Affiliation = {
       symbol: './org/adressa/symbol.png',
       placeholder: './org/adressa/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
       // getImages unnecessary, Adresseavisen uses <enclosure>-tag, attribute "url", for images
     },
 
     // Store studentorganisasjoner
+
     'samfundet': {
       name: 'Studentersamfundet',
       key: 'samfundet',
@@ -933,13 +1128,13 @@ var Affiliation = {
       symbol: './org/samfundet/symbol.png',
       placeholder: './org/samfundet/placeholder.png',
       palette: 'red',
-      useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div#banner'});
       },
     },
 
     // Studentdemokrati
+
     'velferdstinget': {
       name: 'Velferdstinget',
       key: 'velferdstinget',
@@ -950,11 +1145,11 @@ var Affiliation = {
       symbol: './org/velferdstinget/symbol.png',
       placeholder: './org/velferdstinget/placeholder.png',
       palette: 'cyan',
-      useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'#innhold'});
       },
     },
+
     'studenttinget ntnu': {
       name: 'Studenttinget NTNU',
       key: 'studenttinget ntnu',
@@ -965,11 +1160,11 @@ var Affiliation = {
       symbol: './org/studenttinget ntnu/symbol.png',
       placeholder: './org/studenttinget ntnu/placeholder.png',
       palette: 'purple',
-      useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
+
     'studentparlamentet hist': {
       name: 'Studentparlamentet HiST',
       key: 'studentparlamentet hist',
@@ -980,13 +1175,13 @@ var Affiliation = {
       symbol: './org/studentparlamentet hist/symbol.png',
       placeholder: './org/studentparlamentet hist/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
     },
-    
+
     // Institusjoner
+
     'ntnu': {
       name: 'NTNU',
       key: 'ntnu',
@@ -997,7 +1192,6 @@ var Affiliation = {
       symbol: './org/ntnu/symbol.png',
       placeholder: './org/ntnu/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
       getImage: function(link, callback) {
         if (link.indexOf('adressa.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.media'});
@@ -1041,6 +1235,7 @@ var Affiliation = {
         }
       },
     },
+
     'rektoratet ntnu': {
       name: 'Rektoratet NTNU',
       key: 'rektoratet ntnu',
@@ -1051,11 +1246,11 @@ var Affiliation = {
       symbol: './org/rektoratet ntnu/symbol.png',
       placeholder: './org/rektoratet ntnu/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.entry'});
       },
     },
+
     'hist': {
       name: 'HiST',
       key: 'hist',
@@ -1066,11 +1261,11 @@ var Affiliation = {
       symbol: './org/hist/symbol.png',
       placeholder: './org/hist/placeholder.png',
       palette: 'blue',
-      useAltLink: false,
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, {newsSelector:'div.unit', domainUrl:'hist.no'});
       },
     },
+
     'dmmh': {
       name: 'DMMH',
       key: 'dmmh',
@@ -1081,11 +1276,11 @@ var Affiliation = {
       symbol: './org/dmmh/symbol.png',
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
-      useAltLink: false,
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.news_article', domainUrl:'dmmh.no'});
       },
     },
+
   },
 
   getImages: function(affiliation, links, callback, options) {

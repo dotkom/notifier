@@ -1,7 +1,7 @@
 {
   "name": "Online Notifier",
   "short_name": "Notifier",
-  "version": "3.7.1",
+  "version": "3.7.2",
   "manifest_version": 2,
   "offline_enabled": false,
 	
@@ -17,10 +17,6 @@
     "default_title": "Notifier",
     "default_popup": "popup.html"
   },
-
-  // "omnibox": {
-  //   "keyword": "@"
-  // },
 
   "commands": {
     "_execute_browser_action": {
@@ -48,6 +44,10 @@
       "matches": ["*://*/*"],
       "js": ["libs/jquery-2.0.0.min.js", "js/on_website.js"]
     }
+  ],
+
+  "web_accessible_resources": [
+    "org/*/*.png"
   ],
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com; object-src 'self'"

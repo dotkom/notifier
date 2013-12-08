@@ -15,7 +15,7 @@ var Coffee = {
       return;
     }
 
-    var api = Affiliation.org[localStorage.affiliationKey1].coffeeApi;
+    var api = Affiliation.org[localStorage.affiliationKey1].hw.apis.coffee;
 
     // Receives the status for the coffee pot
     var self = this;
@@ -144,9 +144,9 @@ var Coffee = {
       }
 
       // Add affiliation memes
-      if (Affiliation.org[key].hasMemes) {
-        amount = Affiliation.org[key].numberOfMemes;
-        var path = Affiliation.org[key].memePath;
+      if (Affiliation.org[key].hw.memes) {
+        amount = Affiliation.org[key].hw.memes.numberOfMemes;
+        var path = Affiliation.org[key].hw.memes.memePath;
         for (var i = 1; i <= amount; i++) {
           memes.push(path+i+'.jpg');
         }

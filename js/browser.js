@@ -78,6 +78,16 @@ var Browser = {
     }
   },
 
+  getUrl: function(url) {
+    // Allows you to get an accessible URL for a resource in the extension, e.g. an image
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+      return chrome.extension.getURL(url);
+    }
+    else {
+      console.log(this.msgUnsupported);
+    }
+  },
+
   getBackgroundProcess: function() {
     if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.extension != undefined) {
