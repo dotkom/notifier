@@ -375,7 +375,7 @@ optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
 
 tipsText = (show) ->
-  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++'
+  fadeButtonText show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++'
 
 chatterText = (show) ->
   irc = Affiliation.org[ls.affiliationKey1].irc
