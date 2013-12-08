@@ -460,6 +460,10 @@ var Affiliation = {
       symbol: './org/de folkevalgte/symbol.png',
       placeholder: './org/de folkevalgte/placeholder.png',
       palette: 'yellow',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#defolkevalgte',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -475,6 +479,10 @@ var Affiliation = {
       symbol: './org/dhs/symbol.png',
       placeholder: './org/dhs/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#historier',
+      },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -490,6 +498,10 @@ var Affiliation = {
       symbol: './org/dionysos/symbol.png',
       placeholder: './org/dionysos/placeholder.png',
       palette: 'purple',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#dionysos',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -505,6 +517,10 @@ var Affiliation = {
       symbol: './org/erudio/symbol.png',
       placeholder: './org/erudio/placeholder.png',
       palette: 'red',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#erudio',
+      },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -520,6 +536,10 @@ var Affiliation = {
       symbol: './org/eureka/symbol.png',
       placeholder: './org/eureka/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#eurekalf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -535,6 +555,10 @@ var Affiliation = {
       symbol: './org/geolf/symbol.png',
       placeholder: './org/geolf/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#geolf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -550,6 +574,10 @@ var Affiliation = {
       symbol: './org/gengangere/symbol.png',
       placeholder: './org/gengangere/placeholder.png',
       palette: 'grey',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#gengangere',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -565,6 +593,10 @@ var Affiliation = {
       symbol: './org/jump cut/symbol.png',
       placeholder: './org/jump cut/placeholder.png',
       palette: 'grey',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#jumpcut',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -581,6 +613,10 @@ var Affiliation = {
       placeholder: './org/utopia/placeholder.png',
       palette: 'utopia',
       palettePath: './org/utopia/palette.css',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#utopialf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -596,6 +632,10 @@ var Affiliation = {
       symbol: './org/ludimus/symbol.png',
       placeholder: './org/ludimus/placeholder.png',
       palette: 'red',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#ludimus',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -611,6 +651,10 @@ var Affiliation = {
       symbol: './org/paideia/symbol.png',
       placeholder: './org/paideia/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#paideia',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -626,6 +670,10 @@ var Affiliation = {
       symbol: './org/panoptikon/symbol.png',
       placeholder: './org/panoptikon/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#panoptikon',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -641,6 +689,10 @@ var Affiliation = {
       symbol: './org/pareto/symbol.png',
       placeholder: './org/pareto/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#pareto',
+      },
       // Images will be found automatically in the HTML of each news post
     },
 
@@ -654,6 +706,10 @@ var Affiliation = {
       symbol: './org/primetime/symbol.png',
       placeholder: './org/primetime/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#primetime',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
@@ -669,6 +725,10 @@ var Affiliation = {
       symbol: './org/psi/symbol.png',
       placeholder: './org/psi/placeholder.png',
       palette: 'red',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#psi',
+      },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
@@ -684,6 +744,10 @@ var Affiliation = {
       symbol: './org/sturm und drang/symbol.png',
       placeholder: './org/sturm und drang/placeholder.png',
       palette: 'red',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#sturm',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -701,6 +765,10 @@ var Affiliation = {
       symbol: './org/fraktur/symbol.png',
       placeholder: './org/fraktur/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#fraktur',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -716,6 +784,10 @@ var Affiliation = {
       symbol: './org/kom/symbol.png',
       placeholder: './org/kom/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#kom',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -731,6 +803,10 @@ var Affiliation = {
       symbol: './org/logistikkstudentene/symbol.png',
       placeholder: './org/logistikkstudentene/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#logistikk',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -746,6 +822,10 @@ var Affiliation = {
       symbol: './org/nutrix/symbol.png',
       placeholder: './org/nutrix/placeholder.png',
       palette: 'green',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#nutrix',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -761,6 +841,10 @@ var Affiliation = {
       symbol: './org/tihlde/symbol.png',
       placeholder: './org/tihlde/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#tihlde',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -776,6 +860,10 @@ var Affiliation = {
       symbol: './org/tim og shaenko/symbol.png',
       placeholder: './org/tim og shaenko/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#tim',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -791,6 +879,10 @@ var Affiliation = {
       symbol: './org/tjsf/symbol.png',
       placeholder: './org/tjsf/placeholder.png',
       palette: 'grey',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#tjsf',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -806,6 +898,10 @@ var Affiliation = {
       symbol: './org/vivas/symbol.png',
       placeholder: './org/vivas/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#vivas',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback, {newsSelector:'.post'});
       },
@@ -823,6 +919,10 @@ var Affiliation = {
       symbol: './org/dion/symbol.png',
       placeholder: './org/dion/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#dion',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -838,6 +938,10 @@ var Affiliation = {
       symbol: './org/esn/symbol.png',
       placeholder: './org/esn/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#esn',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -853,6 +957,10 @@ var Affiliation = {
     //   symbol: './org/iaeste/symbol.png',
     //   placeholder: './org/iaeste/placeholder.png',
     //   palette: 'blue',
+      // irc: {
+      //   server: 'irc.freenode.net',
+      //   channel: '#iaeste',
+      // },
     //   getImages: function(links, callback) {
     //     Affiliation.getImages(this, links, callback);
     //   },
@@ -868,6 +976,10 @@ var Affiliation = {
       symbol: './org/isu/symbol.png',
       placeholder: './org/isu/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#isu',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
@@ -883,6 +995,10 @@ var Affiliation = {
       symbol: './org/projeksjon/symbol.png',
       placeholder: './org/projeksjon/placeholder.png',
       palette: 'blue',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#projeksjon',
+      },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback);
       },
@@ -898,6 +1014,10 @@ var Affiliation = {
     //   symbol: './org/signifikant/symbol.png',
     //   placeholder: './org/signifikant/placeholder.png',
     //   palette: 'cyan',
+      // irc: {
+      //   server: 'irc.freenode.net',
+      //   channel: '#signifikant',
+      // },
     //   getImages: function(links, callback) {
     //     Affiliation.getImages(this, links, callback);
     //   },
@@ -913,6 +1033,10 @@ var Affiliation = {
       symbol: './org/soma/symbol.png',
       placeholder: './org/soma/placeholder.png',
       palette: 'cyan',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#soma',
+      },
       // getImages unnecessary, images are extracted from HTML in entries
     },
 
@@ -926,6 +1050,10 @@ var Affiliation = {
       symbol: './org/symbiosis/symbol.png',
       placeholder: './org/symbiosis/placeholder.png',
       palette: 'green',
+      irc: {
+        server: 'irc.freenode.net',
+        channel: '#symbiosis',
+      },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
