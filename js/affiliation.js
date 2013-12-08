@@ -35,6 +35,10 @@ var Affiliation = {
   //     path: './org/abakus/meme/',
   //   },
   // },
+  // irc: {                                     // OPTIONAL: add IRC button to the popup
+  //   server: 'irc.freenode.net',
+  //   channel: '#orgx',
+  // }
   // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
   // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
   // getNews: function(limit, callback) {},     // OPTIONAL: getNews may override standard RSS/Atom fetching, use either 'feed' or 'getNews', not both
@@ -78,7 +82,6 @@ var Affiliation = {
       irc: {
         server: 'irc.efnet.org',
         channel: '#abakus',
-        noNick: 'Abakuser',
       },
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
@@ -140,7 +143,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#aarhonen',
-        noNick: 'Kyll.ing.',
       },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.content'});
@@ -160,7 +162,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#broderskabet',
-        noNick: 'Arkitektspire',
       },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback);
@@ -180,7 +181,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#bsf',
-        noNick: 'Bergmann',
       },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback);
@@ -218,7 +218,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#delta',
-        noNick: 'Deltaer',
       },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -238,7 +237,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#emil',
-        noNick: 'Emiler',
       },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
@@ -258,7 +256,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#hybrida',
-        noNick: 'Hybrid',
       },
       getImages: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.element', domainUrl:'hybrida.no'});
@@ -278,7 +275,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#leonardo_ntnu',
-        noNick: 'Designspire',
       },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1});
@@ -298,7 +294,6 @@ var Affiliation = {
       irc: {
         server: 'irc.efnet.org',
         channel: '#mannhullet',
-        noNick: 'Mannhullitt',
       },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
@@ -338,7 +333,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#online',
-        noNick: 'Kompilert',
       },
       // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
@@ -395,7 +389,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#nabla',
-        noNick: 'Komponent',
       },
       getImage: function(link, callback) {
         Affiliation.getImages(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
@@ -430,7 +423,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#spanskroret',
-        noNick: 'Elev',
       },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -450,7 +442,6 @@ var Affiliation = {
       irc: {
         server: 'irc.freenode.net',
         channel: '#volvox',
-        noNick: 'Celle',
       },
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
