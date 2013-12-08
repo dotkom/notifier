@@ -64,8 +64,7 @@ function onConnect(port) {
       if (question.hasIrc) {
         var host = question.hasIrc;
         var irc = Affiliation.org[localStorage.affiliationKey1].irc;
-        var ircString = irc.server + '/' + irc.channel;
-        var hasIrc = host.indexOf(ircString) !== -1;
+        var hasIrc = host.indexOf(irc.server) !== -1 && host.indexOf(irc.channel) !== -1;
         if (DEBUG) console.log('onConnect: chatter: hasIrc:', hasIrc);
         port.postMessage({hasIrc: hasIrc});
       }
