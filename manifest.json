@@ -18,6 +18,10 @@
     "default_popup": "popup.html"
   },
 
+  // "omnibox": {
+  //   "keyword": "@"
+  // },
+
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
