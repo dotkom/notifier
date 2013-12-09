@@ -10,7 +10,7 @@ resizeBackgroundImage = ->
   else
     $('#background').attr "style", "background:url('img/background-medium.png') center center no-repeat;"
 
-displayOnPageNotification = ->
+showSavedNotification = ->
   $("#notification").fadeIn 200
   setTimeout ( ->
     $("#notification").fadeOut 200
@@ -101,7 +101,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       Browser.getBackgroundProcess().updateAffiliationNews number
     
     # Display Saved<3
-    displayOnPageNotification()
+    showSavedNotification()
     # Analytics
     if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickAffiliation'+number, affiliationKey])
 
@@ -118,7 +118,7 @@ bindPaletteSelector = ->
     if DEBUG then console.log 'Applying chosen palette', palette
     $('#palette').attr 'href', Palettes.get palette
     # Display Saved<3
-    displayOnPageNotification()
+    showSavedNotification()
     # Analytics
     if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPalette', palette])
 
@@ -430,7 +430,7 @@ saveBus = (busField) ->
   if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"'
   if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"'
   if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
-  displayOnPageNotification()
+  showSavedNotification()
   # Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 
 loadBus = (busField) ->
@@ -702,16 +702,17 @@ $ ->
   # Blinking cursor at pageflip
   pageFlipCursorBlinking()
 
-  # Fade in the "popup here"-bubble if options page haven't been used before
-  # Also blink the first affiliation-selection field with light green colors to attract the bees
+  # Fade in the "popup here"-bubble
+  setTimeout ( ->
+    $('#popupHere').fadeIn 'swing'
+    setTimeout ( ->
+      $('#popupHere').fadeOut 'fast'
+    ), 4000
+  ), 7000
+  
+  # Blink the first affiliation-field with light green colors to attract the bees
   if ls.everOpenedOptions is 'false'
     ls.everOpenedOptions = 'true'
-    setTimeout ( ->
-      $('#popupHere').fadeIn 'slow'
-      setTimeout ( ->
-        $('#popupHere').fadeOut 6000
-      ), 30000
-    ), 2500
     blinkAffiliation = (iteration) ->
       if 0 < iteration
         setTimeout ( ->
@@ -723,7 +724,7 @@ $ ->
         ), 140
     setTimeout ( ->
       blinkAffiliation 6
-    ), 5000
+    ), 3000
 
   # Fade in the +1 button when (probably) ready, PS: Online specific
   if ls.affiliationKey1 is 'online'
@@ -809,4 +810,4 @@ $ ->
       if this.id is 'coffeeSubscription' and this.checked is false
         ls.activelySetCoffee = 'false'
 
-      displayOnPageNotification()
+      showSavedNotification()
