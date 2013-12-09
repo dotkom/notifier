@@ -8,7 +8,7 @@ var Affiliation = {
   // name: 'Organization X',
   // key: 'orgx',
   // web: 'https://orgx.com',
-  // feed: 'https://orgx.com/feed',             // OPTIONAL: Use either 'feed' or 'getNews', not both
+  // feed: 'https://orgx.com/feed',             // ALTERNATIVE: Use either 'feed' or 'getNews', not both
   // logo: './org/orgx/logo.png',               // 512x128 transparent logo, for dark background
   // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
   // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with 20% empty padding
