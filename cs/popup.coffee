@@ -488,7 +488,7 @@ $ ->
     channel = irc.channel
     noNick = irc.noNick
     Browser.openTab 'https://kiwiirc.com/client/' + server + '/' + channel
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
+    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter', ls.affiliationKey1])
     window.close()
   $('#chatterButton').click clickChatter
   $('#chatterIcon').click clickChatter

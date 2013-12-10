@@ -604,7 +604,7 @@
       noNick = irc.noNick;
       Browser.openTab('https://kiwiirc.com/client/' + server + '/' + channel);
       if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickChatter']);
+        _gaq.push(['_trackEvent', 'popup', 'clickChatter', ls.affiliationKey1]);
       }
       return window.close();
     };
