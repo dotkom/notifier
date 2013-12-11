@@ -213,7 +213,7 @@
         _gaq.push(['_trackEvent', 'popup', 'oracleSuggest']);
       }
     }
-    $('#oracle #question').keyup(function(e) {
+    $('#oracle').on('keyup', '#question', function(e) {
       var question;
       question = $('#oracle #question').val();
       if (e.which === 13) {
@@ -233,7 +233,7 @@
             return _gaq.push(['_trackEvent', 'popup', 'oracleGreet']);
           }
         }
-      } else if (question === '') {
+      } else if (question === '' && e.which !== 9) {
         changeOracleAnswer('');
         if (!DEBUG) {
           return _gaq.push(['_trackEvent', 'popup', 'oracleClear']);
@@ -241,9 +241,7 @@
       }
     });
     return $('#oracle').on('keydown', '#question', function(e) {
-      var keyCode;
-      keyCode = e.keyCode || e.which;
-      if (keyCode === 9) {
+      if (e.which === 9) {
         e.preventDefault();
         oraclePrediction();
         if (!DEBUG) {
@@ -254,37 +252,70 @@
   };
 
   changeOracleAnswer = function(answer) {
+    var func;
+    if (DEBUG) {
+      console.log('changeOracleAnswer to "' + answer + '"');
+    }
     clearTimeout(Number(ls.animateOracleAnswerTimeoutId));
     if (answer.match(/<\/?\w+>/g)) {
-      $('#oracle #answer').html(answer);
-      return $('#oracle #answer a').attr('target', '_blank');
+      if ($('#oracle #answer .piece').size() === 0) {
+        $('#oracle #answer').append('<div class="piece">' + answer + '</div>');
+        return $('#oracle #answer .piece a').attr('target', '_blank');
+      } else {
+        return $('#oracle #answer .piece').fadeOut(400, function() {
+          $('#oracle #answer .piece').remove();
+          $('#oracle #answer').append('<div class="piece">' + answer + '</div>');
+          return $('#oracle #answer .piece a').attr('target', '_blank');
+        });
+      }
     } else {
-      return animateOracleAnswer(answer);
+      func = function(answer) {
+        var i, pieces, _results;
+        pieces = answer.split('@');
+        for (i in pieces) {
+          $('#oracle #answer').append('<div class="piece"></div>');
+        }
+        _results = [];
+        for (i in pieces) {
+          _results.push(animateOracleAnswer(pieces[i], i, function(index) {}));
+        }
+        return _results;
+      };
+      if ($('#oracle #answer .piece').size() === 0) {
+        return func(answer);
+      } else {
+        return $('#oracle #answer .piece').fadeOut(400, function() {
+          $('#oracle #answer .piece').remove();
+          return func(answer);
+        });
+      }
     }
   };
 
-  animateOracleAnswer = function(line, build) {
+  animateOracleAnswer = function(line, index, callback, build) {
     var millisecs, text;
-    text = $('#oracle #answer').text();
+    text = $('#oracle #answer .piece').eq(index).text();
     if (text.length === 0) {
       build = true;
     }
     millisecs = 6;
     if (!build) {
-      $('#oracle #answer').text(text.slice(0, text.length - 1));
+      $('#oracle #answer .piece').eq(index).text(text.slice(0, text.length - 1));
       return ls.animateOracleAnswerTimeoutId = setTimeout((function() {
-        return animateOracleAnswer(line);
+        return animateOracleAnswer(line, index, callback);
       }), millisecs);
     } else {
       if (text.length !== line.length) {
         if (text.length === 0) {
-          $('#oracle #answer').text(line.slice(0, 1));
+          $('#oracle #answer .piece').eq(index).text(line.slice(0, 1));
         } else {
-          $('#oracle #answer').text(line.slice(0, text.length + 1));
+          $('#oracle #answer .piece').eq(index).text(line.slice(0, text.length + 1));
         }
         return ls.animateOracleAnswerTimeoutId = setTimeout((function() {
-          return animateOracleAnswer(line, true);
+          return animateOracleAnswer(line, index, callback, true);
         }), millisecs);
+      } else {
+        return callback(index);
       }
     }
   };
@@ -498,7 +529,7 @@
   };
 
   $(function() {
-    var clickChatter, icon, key, logo, placeholder;
+    var clickChatter, icon, key, logo, placeholder, _func, _timer;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -669,6 +700,17 @@
       }
     });
     $('#oracle #question').focus();
+    _timer = null;
+    _func = function() {
+      clearTimeout(_timer);
+      if (!document.body.classList.contains('disable-hover')) {
+        document.body.classList.add('disable-hover');
+      }
+      return _timer = setTimeout((function() {
+        return document.body.classList.remove('disable-hover');
+      }), 500);
+    };
+    window.addEventListener('scroll', _func, false);
     return mainLoop();
   });
 

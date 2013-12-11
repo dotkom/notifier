@@ -143,7 +143,7 @@ bindOracle = ->
     $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
     if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleSuggest'])
   # User input
-  $('#oracle #question').keyup (e) ->
+  $('#oracle').on 'keyup', '#question', (e) ->
     question = $('#oracle #question').val()
     # Clicked enter
     if e.which is 13
@@ -158,48 +158,76 @@ bindOracle = ->
         changeOracleAnswer Oracle.greet()
         if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleGreet'])
     # Cleared field
-    else if question is ''
+    else if question is '' and e.which isnt 9 # Tab is reserved
       changeOracleAnswer ''
       if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleClear'])
-  # Clicked tab: Predict question
+  # Keydown works better with tab
   $('#oracle').on 'keydown', '#question', (e) ->
-    keyCode = e.keyCode || e.which
-    if keyCode is 9
+    # Clicked tab: Predict question
+    if e.which is 9
       e.preventDefault()
       oraclePrediction()
       if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oraclePrediction'])
 
 changeOracleAnswer = (answer) ->
+  if DEBUG then console.log 'changeOracleAnswer to "' + answer + '"'
   # Stop previous changeOracleAnswer instance, if any
   clearTimeout Number ls.animateOracleAnswerTimeoutId
   # If answer contains HTML, just insert it as HTML
   if answer.match /<\/?\w+>/g
-    $('#oracle #answer').html answer
-    $('#oracle #answer a').attr 'target', '_blank'
+    if $('#oracle #answer .piece').size() is 0
+      $('#oracle #answer').append '<div class="piece">' + answer + '</div>'
+      $('#oracle #answer .piece a').attr 'target', '_blank'
+    else
+      # Remove all preexisting pieces
+      $('#oracle #answer .piece').fadeOut 400, ->
+        $('#oracle #answer .piece').remove()
+        $('#oracle #answer').append '<div class="piece">' + answer + '</div>'
+        $('#oracle #answer .piece a').attr 'target', '_blank'
   # Animate oracle answer name change
   else
-    animateOracleAnswer answer
+    func = (answer) ->
+      pieces = answer.split '@'
+      # Insert piece placeholders
+      for i of pieces
+        $('#oracle #answer').append '<div class="piece"></div>'
+      for i of pieces
+        animateOracleAnswer pieces[i], i, (index) ->
+          # html = $('#oracle #answer .piece').eq(index).html()
+          # html = html.replace /((Buss \d+)|(Holdeplass):)/gi, '<u>$1</u>'
+          # $('#oracle #answer .piece').eq(index).html html
+    # Check for preexisting pieces
+    if $('#oracle #answer .piece').size() is 0
+      func answer
+    else
+      # Remove all preexisting pieces
+      $('#oracle #answer .piece').fadeOut 400, ->
+        $('#oracle #answer .piece').remove()
+        func answer
 
-animateOracleAnswer = (line, build) ->
+animateOracleAnswer = (line, index, callback, build) ->
   # Animate it
-  text = $('#oracle #answer').text()
+  text = $('#oracle #answer .piece').eq(index).text()
   if text.length is 0
     build = true
   millisecs = 6
   if !build
-    $('#oracle #answer').text text.slice 0, text.length-1
+    $('#oracle #answer .piece').eq(index).text text.slice 0, text.length-1
     ls.animateOracleAnswerTimeoutId = setTimeout ( ->
-      animateOracleAnswer line
+      animateOracleAnswer line, index, callback
     ), millisecs
   else
     if text.length isnt line.length
       if text.length is 0
-        $('#oracle #answer').text line.slice 0, 1
+        $('#oracle #answer .piece').eq(index).text line.slice 0, 1
       else
-        $('#oracle #answer').text line.slice 0, text.length+1
+        $('#oracle #answer .piece').eq(index).text line.slice 0, text.length+1
       ls.animateOracleAnswerTimeoutId = setTimeout ( ->
-        animateOracleAnswer line, true
+        animateOracleAnswer line, index, callback, true
       ), millisecs
+    else
+      # Animation for this element is complete
+      callback index
 
 oraclePrediction = ->
   question = Oracle.predict()
@@ -550,6 +578,17 @@ $ ->
   # Set the cursor to focus on the question field
   # (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
   $('#oracle #question').focus()
+
+  # 60 fps scrolling, thecssninja.com/javascript/pointer-events-60fps
+  _timer = null
+  _func = ->
+    clearTimeout _timer
+    if not document.body.classList.contains 'disable-hover'
+      document.body.classList.add 'disable-hover'
+    _timer = setTimeout ( ->
+      document.body.classList.remove 'disable-hover'
+    ), 500
+  window.addEventListener 'scroll', _func, false
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()
