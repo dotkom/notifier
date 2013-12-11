@@ -15,6 +15,12 @@ function isEmpty(v) {
   return false;
 }
 
+function stacktrace() {
+  var e = new Error('dummy');
+  var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '').replace(/^\s+at\s+/gm, '').replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@').split('\n');
+  console.log(stack);
+}
+
 function hotFixBusLines() {
   // Active and inactive bus lines will sometimes be null (will show as NaN in options page)
   // This isn't fixable yet because of some missing API features. For now we have to counter
