@@ -1,6 +1,6 @@
 # Online Notifier
 
-This is a both a Chrome/Opera extension and a WebApp from the student organization Online at NTNU, see http://online.ntnu.no
+This is a Chrome/Opera extension and a WebApp from the student organization Online at NTNU, see http://online.ntnu.no
 
 * Install for Chrome: https://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf
 * Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
