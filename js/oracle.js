@@ -238,6 +238,10 @@ var Oracle = {
     return pieces.join('. ') + '.';
   },
 
+  // TODO: English version:
+  // https://github.com/norrs/busbuddy/blob/dev/public-api/src/test/java/no/norrs/busbuddy/pub/api/model/MetaAnswerFactoryTest.java
+  // https://github.com/norrs/busbuddy/blob/dev/public-api/src/main/java/no/norrs/busbuddy/pub/api/model/answer/RegexBuilder.java
+
   prettify: function(answer) {
     // Not meant to be prettified
     if (answer.match(/Buss \d+ (passerer|går fra) .*? kl\. /) == null)
