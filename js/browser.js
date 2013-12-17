@@ -128,6 +128,7 @@ var Browser = {
   // - stay: true
   createNotification: function(item) {
     // Check required params
+    if (!item) console.log('ERROR: options takes one object, {feedKey, title, description, link, image*, symbol*, longStory*, stay*} (* == optional)');
     if (!item.feedKey) console.log('ERROR: item.feedKey is required');
     if (!item.title) console.log('ERROR: item.title is required');
     if (!item.description) console.log('ERROR: item.description is required');
