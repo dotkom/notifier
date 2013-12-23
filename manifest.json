@@ -23,6 +23,13 @@
   // },
 
   "commands": {
+    "open_instabart": {
+      "suggested_key": {
+        "default": "Alt+S",
+        "mac": "MacCtrl+S"
+      },
+      "description": "Open Instabart"
+    },
     "_execute_browser_action": {
       "suggested_key": {
         "default": "Alt+A",
