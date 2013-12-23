@@ -116,6 +116,22 @@ var Browser = {
     return 'Unknown @ ' + BROWSER
   },
 
+  bindCommandHotkeys: function() {
+    if (BROWSER == 'Chrome') {
+      chrome.commands.onCommand.addListener(function(command) {
+        if (command == 'open_instabart') {
+          Browser.openTab('http://instabart.no');
+        }
+        else {
+          console.log('ERROR: Unrecognized browser command');
+        }
+      });
+    }
+    else {
+      console.log(this.msgUnsupported);
+    }
+  },
+
   // Things in item:
   // - feedKey: 'orgx'
   // - title: 'Hello World'
