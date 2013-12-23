@@ -23,16 +23,23 @@
   // },
 
   "commands": {
+    "open_affiliation": {
+      "suggested_key": {
+        "default": "Alt+L"
+      },
+      "description": "Gogo Linjeforening"
+    },
     "open_instabart": {
       "suggested_key": {
         "default": "Alt+I"
       },
-      "description": "Open Instabart"
+      "description": "Gogo Instabart"
     },
     "_execute_browser_action": {
       "suggested_key": {
         "default": "Alt+A"
-      }
+      },
+      "description": "Gogo Notifier"
     }
   },
 
