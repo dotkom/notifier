@@ -191,6 +191,7 @@
       }
     }
     loadAffiliationIcon();
+    Browser.bindCommandHotkeys();
     Browser.registerNotificationListeners();
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
     window.updateCoffeeSubscription = updateCoffeeSubscription;

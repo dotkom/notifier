@@ -165,6 +165,7 @@ $ ->
   # TODO: FEATURE IS NOT COMLPETE
   # bindOmniboxToOracle()
   
+  Browser.bindCommandHotkeys()
   Browser.registerNotificationListeners()
 
   # Attaching the update-functions to the window (global) object so other pages
