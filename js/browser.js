@@ -122,6 +122,11 @@ var Browser = {
         if (command == 'open_instabart') {
           Browser.openTab('http://instabart.no');
         }
+        else if (command == 'open_affiliation') {
+          var key = localStorage.affiliationKey1;
+          var web = Affiliation.org[key].web;
+          Browser.openTab(web);
+        }
         else {
           console.log('ERROR: Unrecognized browser command');
         }
