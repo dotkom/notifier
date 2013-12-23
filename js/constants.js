@@ -60,19 +60,17 @@ else {
 
 // Browser detection
 var BROWSER = "Unknown";
-if (navigator.userAgent.indexOf('Chrome') != -1 && navigator.userAgent.indexOf('OPR') == -1)
+if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') == -1)
 	BROWSER = "Chrome";
-else if (navigator.userAgent.indexOf('OPR') != -1)
+else if (navigator.userAgent.indexOf('OPR') !== -1)
 	BROWSER = "Opera";
 else
 	console.log('WARNING: Potentially unsupported browser');
 
 // Production detection
 if (BROWSER == 'Chrome')
-	if (typeof chrome.i18n != 'undefined')
-		if (chrome.i18n.getMessage('@@extension_id') === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
-			DEBUG = 0;
+	if (chrome.runtime.id === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
+		DEBUG = 0;
 else if (BROWSER == 'Opera')
-	if (typeof chrome.i18n != 'undefined')
-		if (chrome.i18n.getMessage('@@extension_id') === 'npnpbddfcaibgnegafofkmffmbmflelj')
-			DEBUG = 0;
+	if (chrome.runtime.id === 'npnpbddfcaibgnegafofkmffmbmflelj')
+		DEBUG = 0;
