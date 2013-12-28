@@ -6,6 +6,15 @@ var AJAX_SETUP = {
 	cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
 }
 
+// Logging setup
+console.lolg = function() {
+	// Console logging that only happens in debug mode
+	// The name "lolg" is a tribute to Lorents Odin Lervik Gravås
+	if (DEBUG) {
+		console.log.apply(console, arguments);
+	}
+};
+
 // Loops & intervals
 var BACKGROUND_LOOP = 30000; // 30s
 var BACKGROUND_LOOP_OFFLINE = 3000; // 3s, respond quickly when we get back online
