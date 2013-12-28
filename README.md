@@ -38,18 +38,20 @@ Additional features currently only available for Online:
 
 - Michael Johansen is the lead coder
 - Espen Jacobsson wrote Onlines API-service
-- Roy Sindre Norangshol wrote the light service
+- Roy Sindre Norangshol wrote the initial light service
 - Dag Olav Prestegarden wrote the initial calendar service
-- René Räisänen designed the graphics
-- Tri Minh Nguyen created the overlay API for AtB's realtime bus API
-- Jonas Svarvaa wrote all the subsequent revisions of calendar services
+- René Räisänen designed the background image
+- Tri Minh Nguyen created the API for AtB's realtime bus API
+- Jonas Svarvaa wrote several revisions of calendar services
 - Roy Sindre Norangshol helped with several maintenance issues
 - Magnus Dysthe has been working on hardware for the infoscreen
 - Tor Håkon Bonsaksen helped with several hardware issues
 - Kristoffer Dalby hacked up scripts that fixed ubuntu screen-to-black issues
 - Jim Frode Hoff made the coffee button, attached to an Arduino
 - Nils Herde fixed hardware issues, kept the infoscreen running and installed the coffee button
-- The following made coffee memes:
+- Vegard Stenhjem Hagen installed all the hardware for Delta
+
+- Also, the following made coffee memes:
 	- Thomas Gautvedt
 	- Aleksander Skraastad
 	- John Hanssen Kolstad
