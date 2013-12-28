@@ -1,24 +1,24 @@
 .debugContainer {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
 }
 .debugBox {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
 }
 .debugText {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
 }
 .debugElement {
-  border: 0pt solid #00ff00;
+  border: 0px solid #00ff00;
 }
 .fullbox {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 .title {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   color: NavajoWhite;
   display: block;
   font-weight: bold;
@@ -28,7 +28,7 @@
   color: white;
 }
 .emphasized {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
 }
 body {
@@ -55,7 +55,7 @@ body {
 }
 /* This container keeps the content centered */
 #container {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   position: absolute;
   top: 0;
   right: 0;
@@ -65,62 +65,62 @@ body {
   z-index: 10;
 }
 #container #office {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays #schedule {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   float: left;
   width: 48%;
 }
 #container #todays #schedule #servant {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 5pt;
+  margin-bottom: 7px;
 }
 #container #todays #coffee {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
 
 }
 #container #todays #coffee #pots {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 5pt;
+  margin-bottom: 7px;
 }
 #container #cantinas {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #cantinas .hours {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 5pt;
+  margin-bottom: 7px;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas #left {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   width: 48%;
 }
 #container #cantinas #right {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: right;
   width: 50%;
@@ -128,10 +128,10 @@ body {
 
 }
 #container #cantinas #dinnerbox {
-  border: 0pt solid #00ff00;
+  border: 0px solid #00ff00;
 }
 #container #cantinas li {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   position: relative;
   width: 95%;
   list-style-type: none;
@@ -142,7 +142,7 @@ body {
 
 }
 #container #bus {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
@@ -153,7 +153,7 @@ body {
   margin-left: -5%;
 }
 #container #bus .name {
-  margin-bottom: 4pt;
+  margin-bottom: 5px;
   text-decoration: underline;
   font-weight: bold;
   white-space: nowrap;
@@ -161,19 +161,19 @@ body {
   text-overflow: ellipsis;
 }
 #container #bus #firstBus {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   text-align: right;
-  padding-top: 10pt;
+  padding-top: 13px;
   width: 40%;
 }
 #container #bus #secondBus {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   text-align: left;
-  padding-top: 10pt;
+  padding-top: 13px;
   width: 40%;
 }
 #container #bus .loadingLeft {
@@ -195,7 +195,7 @@ body {
 #container #bus .eighth,
 #container #bus .nineth,
 #container #bus .tenth {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -208,26 +208,26 @@ body {
   font-style: italic;
 }
 #container #bus #middle {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   text-align: center;
   height: 100%;
 }
 #container #news {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #news .post {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   clear: both;
 }
 #container #news .post .item {
-  border: 0pt solid #00ff00;
+  border: 0px solid #00ff00;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -246,12 +246,12 @@ body {
 }
 /* This file contains mobile-additions to common.less */
 .title {
-  font-size: 24pt;
-  margin-top: 20pt;
-  margin-bottom: 5pt;
+  font-size: 32px;
+  margin-top: 27px;
+  margin-bottom: 7px;
 }
 .emphasized {
-  margin-bottom: 5pt;
+  margin-bottom: 7px;
 }
 * {
   -webkit-touch-callout: none;
@@ -286,24 +286,24 @@ body {
   background-image: radial-gradient(circle farthest-corner at center, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
   */
 
-  width: 735pt;
-  font-size: 24pt;
+  width: 980px;
+  font-size: 32px;
 }
 /* This container keeps the content centered */
 #container {
   overflow-y: auto;
-  padding: 30pt;
+  padding: 40px;
   /*
   #options {
     .fullbox;
 
     #busBox {
       overflow: hidden;
-      border-top: 1pt solid white;
-      border-bottom: 1pt solid #7a7a7a;
-      border-radius: 10pt;
+      border-top: 1px solid white;
+      border-bottom: 1px solid #7a7a7a;
+      border-radius: 13px;
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
-      padding: 6pt 8pt;
+      padding: 8px 11px;
       white-space: nowrap;
       word-wrap: break-word;
       z-index: 100;
@@ -314,29 +314,29 @@ body {
         white-space: nowrap;
         z-index: 101;
         input {
-          width: 245pt;
-          font-size: 24pt;
+          width: 327px;
+          font-size: 32px;
           z-index: 102;
         }
         select {
           z-index: 10; /* allows the down-arrow to be painted behind this * /
           position: relative; /* allows the down-arrow to be painted behind this * /
-          width: 245pt;
-          font-size: 24pt;
+          width: 327px;
+          font-size: 32px;
           z-index: 102;
         }
         .lines {
           z-index: 10; /* allows the down-arrow to be painted behind this * /
           position: relative; /* allows the down-arrow to be painted behind this * /
-          width: 245pt;
-          margin-top: 1pt;
-          border-top: 1pt solid white;
-          box-shadow: 0 1pt 2pt #888;
-          border-radius: 3pt;
+          width: 327px;
+          margin-top: 1px;
+          border-top: 1px solid white;
+          box-shadow: 0 1px 2px #888;
+          border-radius: 4px;
           background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e8e8e8), color-stop(1, #c0c0c0));
-          padding: 2pt 5pt 1pt 5pt;
+          padding: 2px 7px 1px 7px;
           text-align: left;
-          font-size: 24pt;
+          font-size: 32px;
           text-shadow: 0 0 0 white; /* resets inhertied value from parent element * /
           z-index: 102;
 
@@ -348,7 +348,7 @@ body {
             z-index: 103;
             td {
               .debugText;
-              padding: 1pt 0;
+              padding: 1px 0;
               z-index: 103;
             }
           }
@@ -369,7 +369,7 @@ body {
           .error {
             color: black;
             text-align: center;
-            font-size: 24pt;
+            font-size: 32px;
           }
           .loadingLeft {
             position: relative;
@@ -388,8 +388,8 @@ body {
         z-index: 10; /* allows the down-arrow to be painted behind this * /
         float: left;
         white-space: nowrap;
-        width: 95pt;
-        margin: 0 8pt;
+        width: 127px;
+        margin: 0 11px;
       }
     }
   }
@@ -397,22 +397,22 @@ body {
 
 }
 #container #office {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
-  /* set "padding-top: 40pt" if page uses translucent status bar (wifi, battery) */
+  /* set "padding-top: 53px" if page uses translucent status bar (wifi, battery) */
 
-  padding-top: 0pt;
+  padding-top: 0;
   text-align: center;
 }
 #container #office #status {
-  border: 0pt solid #ffff00;
-  font-size: 90pt;
+  border: 0px solid #ffff00;
+  font-size: 120px;
   font-weight: bold;
   text-transform: uppercase;
-  text-shadow: 0 0 15pt black, 0 0 20pt black;
+  text-shadow: 0 0 20px black, 0 0 27px black;
 }
 #container #office .open {
   color: #00ff00;
@@ -430,45 +430,45 @@ body {
   color: #888;
 }
 #container #office #subtext {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   position: relative;
-  top: -10pt;
+  top: -13px;
   font-weight: bold;
   text-align: center;
-  text-shadow: 0 0 15pt black, 0 0 20pt black;
+  text-shadow: 0 0 20px black, 0 0 27px black;
 }
 #container #bus {
-  top: 30pt;
-  margin-bottom: 30pt;
-  box-shadow: 0 0 15pt #88b;
-  height: 140pt;
+  top: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 0 20px #88b;
+  height: 187px;
 }
 #container #bus .name {
-  margin-bottom: 3pt;
+  margin-bottom: 4px;
 }
 #container #bus #firstBus {
-  padding-top: 12pt;
+  padding-top: 16px;
   width: 42%;
 }
 #container #bus #secondBus {
-  padding-top: 12pt;
+  padding-top: 16px;
   width: 41%;
 }
 #container #bus .loadingLeft {
   width: 160px;
-  top: 18pt;
+  top: 24px;
 }
 #container #bus .loadingRight {
   width: 160px;
-  top: 18pt;
+  top: 24px;
 }
 #container #bus #middle {
   width: 14%;
   height: 100%;
 }
 #container #bus #middle img {
-  margin: 35pt 0;
-  height: 75pt;
+  margin: 47px 0;
+  height: 100px;
 }
 #container #news {
   /*padding-top: @box-padding * 2;*/
@@ -479,25 +479,25 @@ body {
 
 }
 #container #news .post .item {
-  min-height: 40pt;
+  min-height: 53px;
 }
 #container #news .post .item img {
   width: auto;
-  max-width: 170pt;
-  max-height: 140pt;
+  max-width: 227px;
+  max-height: 187px;
   padding: 5px;
-  -webkit-box-shadow: 0px 0px 10px #bbb;
+  -webkit-box-shadow: 0 0 10px #bbb;
 }
 #container #news .post .item .textwrapper {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   position: relative;
   float: left;
   text-align: left;
-  margin-left: 14pt;
+  margin-left: 19px;
   width: 70%;
 }
 #container #logo {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
@@ -505,8 +505,8 @@ body {
   text-align: center;
 }
 #container #logo img {
-  width: 300pt;
-  padding: 30pt 0;
+  width: 400px;
+  padding: 40px 0;
 }
 /* Suggestions for bus stops */
 /*
@@ -516,7 +516,7 @@ body {
   vertical-align: middle;
   overflow: auto;
   width: 100%;
-  height: 265pt;
+  height: 353px;
   vertical-align: middle;
   display: none;
   top: 0;
@@ -524,18 +524,18 @@ body {
   z-index: 200;
   
   .suggestion {
-    font-size: 40pt;
+    font-size: 53px;
     line-height: 1.5;
-    padding-left: 30pt;
-    letter-spacing: .7pt;
-    box-shadow: inset 0 0 20pt black, inset 0 0 40pt black, inset 0 0 60pt black, inset 0 0 80pt black, inset 0 0 100pt black;
+    padding-left: 40px;
+    letter-spacing: .9px;
+    box-shadow: inset 0 0 27px black, inset 0 0 53px black, inset 0 0 80px black, inset 0 0 107px black, inset 0 0 133px black;
     .matched_character {
       font-weight: bold;
     }
   }
   .correct {
     color: white;
-    font-size: 24pt;
+    font-size: 32px;
     font-weight: bold;
     line-height: 1.5;
     text-shadow:
