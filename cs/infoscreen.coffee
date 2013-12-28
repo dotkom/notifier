@@ -366,16 +366,16 @@ $ ->
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
     # Who uses single affiliations?
-    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1])
+    Analytics.trackEvent 'loadSingleAffiliation', ls.affiliationKey1
     # What is the prefered primary affiliation?
-    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1])
+    Analytics.trackEvent 'loadAffiliation1', ls.affiliationKey1
   else
     # What kind of double affiliations are used?
-    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
+    Analytics.trackEvent 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2
     # What is the prefered primary affiliation?
-    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1])
+    Analytics.trackEvent 'loadAffiliation1', ls.affiliationKey1
     # What is the prefered secondary affiliation?
-    if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation2', ls.affiliationKey2])
+    Analytics.trackEvent 'loadAffiliation2', ls.affiliationKey2
 
   # Hide stuff that the user has disabled in options
   $('#office').hide() if ls.showOffice isnt 'true'
@@ -397,7 +397,7 @@ $ ->
   $('#news .post img').attr 'src', placeholder
 
   # Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
-  if !DEBUG then _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette])
+  Analytics.trackEvent 'loadPalette', ls.affiliationPalette
   
   # Minor esthetical adjustments for OS version
   if OPERATING_SYSTEM == 'Windows'

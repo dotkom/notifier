@@ -174,21 +174,15 @@
     Defaults.setHardwareFeatures(isAvailable);
     if (ls.everOpenedOptions === 'false' && !DEBUG) {
       Browser.openTab('options.html');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)']);
-      }
+      Analytics.trackEvent('loadOptions (fresh install)');
     }
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'background', 'loadInfoscreen']);
-      }
+      Analytics.trackEvent('loadInfoscreen');
     }
     if (ls.openChatter === 'true') {
       Browser.openBackgroundTab('http://webchat.freenode.net/?channels=online');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'background', 'loadChatter']);
-      }
+      Analytics.trackEvent('loadChatter');
     }
     loadAffiliationIcon();
     Browser.bindCommandHotkeys();
@@ -198,16 +192,14 @@
     window.updateAffiliationNews = updateAffiliationNews;
     window.loadAffiliationIcon = loadAffiliationIcon;
     setInterval((function() {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'background', 'appVersion', Browser.getAppVersion()]);
-        if (ls.showAffiliation2 !== 'true') {
-          _gaq.push(['_trackEvent', 'background', 'singleAffiliation', ls.affiliationKey1]);
-          return _gaq.push(['_trackEvent', 'background', 'affiliation1', ls.affiliationKey1]);
-        } else {
-          _gaq.push(['_trackEvent', 'background', 'doubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
-          _gaq.push(['_trackEvent', 'background', 'affiliation1', ls.affiliationKey1]);
-          return _gaq.push(['_trackEvent', 'background', 'affiliation2', ls.affiliationKey2]);
-        }
+      Analytics.trackEvent('appVersion', Browser.getAppVersion());
+      if (ls.showAffiliation2 !== 'true') {
+        Analytics.trackEvent('singleAffiliation', ls.affiliationKey1);
+        return Analytics.trackEvent('affiliation1', ls.affiliationKey1);
+      } else {
+        Analytics.trackEvent('doubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2);
+        Analytics.trackEvent('affiliation1', ls.affiliationKey1);
+        return Analytics.trackEvent('affiliation2', ls.affiliationKey2);
       }
     }), 1000 * 60 * 60 * 24);
     return mainLoop();

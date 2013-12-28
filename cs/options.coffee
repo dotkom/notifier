@@ -103,7 +103,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     # Display Saved<3
     showSavedNotification()
     # Analytics
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickAffiliation'+number, affiliationKey])
+    Analytics.trackEvent 'clickAffiliation'+number, affiliationKey
 
 bindPaletteSelector = ->
   # Default values
@@ -120,7 +120,7 @@ bindPaletteSelector = ->
     # Display Saved<3
     showSavedNotification()
     # Analytics
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPalette', palette])
+    Analytics.trackEvent 'clickPalette', palette
 
 disableHardwareFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -178,7 +178,7 @@ bindCantinaSelector = (selector) ->
   $('#' + selector).change ->
     cantina = $(this).prop 'value'
     ls[selector] = cantina
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickCantina', cantina])
+    Analytics.trackEvent 'clickCantina', cantina
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
@@ -694,7 +694,7 @@ $ ->
     $('#pfLink').attr "style", "bottom:9px;"
   # Google Analytics
   $('#pfLink').click ->
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPageflip'])
+    Analytics.trackEvent 'clickPageflip'
   # Adding creator name to pageflip
   setTimeout ( ->
     changeCreatorName ls.extensionCreator
@@ -778,7 +778,7 @@ $ ->
   # Catch new clicks
   $('input:checkbox').click ->
     _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1)
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'click'+_capitalized, this.checked])
+    Analytics.trackEvent 'click'+_capitalized, this.checked
     
     # Special case for 'useInfoscreen'
     if this.id is 'useInfoscreen'
