@@ -568,7 +568,7 @@
       $('#infoscreenPreview').attr('src', 'infoscreen.html');
       $('#headerText').fadeOut();
       return $('#container #left').animate({
-        'width': '0pt'
+        'width': '0'
       }, speed, function() {
         $('#container #left').hide();
         return $('#infoscreenSlider').slideUp(speed, function() {
@@ -577,7 +577,7 @@
               $('#headerText').html('<b>Info</b>screen');
               return $('#headerText').fadeIn(function() {
                 $('#container #right').animate({
-                  'margin-left': '160pt'
+                  'margin-left': '213px'
                 }, speed);
                 $('header').animate({
                   'top': '50%'
@@ -751,7 +751,7 @@
       blinkAffiliation = function(iteration) {
         if (0 < iteration) {
           return setTimeout((function() {
-            $('#affiliationKey1').attr('style', 'background-color:#87d677; color:black; border:1pt solid black;');
+            $('#affiliationKey1').attr('style', 'background-color:#87d677; color:black; border:1px solid black;');
             return setTimeout((function() {
               $('#affiliationKey1').attr('style', '');
               return blinkAffiliation(iteration - 1);

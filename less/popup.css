@@ -1,24 +1,24 @@
 .debugContainer {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
 }
 .debugBox {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
 }
 .debugText {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
 }
 .debugElement {
-  border: 0pt solid #00ff00;
+  border: 0px solid #00ff00;
 }
 .fullbox {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 .title {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   color: NavajoWhite;
   display: block;
   font-weight: bold;
@@ -28,7 +28,7 @@
   color: white;
 }
 .emphasized {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
 }
 body {
@@ -55,7 +55,7 @@ body {
 }
 /* This container keeps the content centered */
 #container {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   position: absolute;
   top: 0;
   right: 0;
@@ -65,62 +65,62 @@ body {
   z-index: 10;
 }
 #container #office {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays #schedule {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   float: left;
   width: 48%;
 }
 #container #todays #schedule #servant {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 2pt;
+  margin-bottom: 4px;
 }
 #container #todays #coffee {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
 
 }
 #container #todays #coffee #pots {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 2pt;
+  margin-bottom: 4px;
 }
 #container #cantinas {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #cantinas .hours {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 2pt;
+  margin-bottom: 4px;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas #left {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   width: 48%;
 }
 #container #cantinas #right {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: right;
   width: 50%;
@@ -128,10 +128,10 @@ body {
 
 }
 #container #cantinas #dinnerbox {
-  border: 0pt solid #00ff00;
+  border: 0px solid #00ff00;
 }
 #container #cantinas li {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   position: relative;
   width: 95%;
   list-style-type: none;
@@ -142,7 +142,7 @@ body {
 
 }
 #container #bus {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
@@ -153,7 +153,7 @@ body {
   margin-left: -5%;
 }
 #container #bus .name {
-  margin-bottom: 4pt;
+  margin-bottom: 5px;
   text-decoration: underline;
   font-weight: bold;
   white-space: nowrap;
@@ -161,19 +161,19 @@ body {
   text-overflow: ellipsis;
 }
 #container #bus #firstBus {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   text-align: right;
-  padding-top: 10pt;
+  padding-top: 13px;
   width: 40%;
 }
 #container #bus #secondBus {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   text-align: left;
-  padding-top: 10pt;
+  padding-top: 13px;
   width: 40%;
 }
 #container #bus .loadingLeft {
@@ -195,7 +195,7 @@ body {
 #container #bus .eighth,
 #container #bus .nineth,
 #container #bus .tenth {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -208,26 +208,26 @@ body {
   font-style: italic;
 }
 #container #bus #middle {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   float: left;
   text-align: center;
   height: 100%;
 }
 #container #news {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #news .post {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   position: relative;
   clear: both;
 }
 #container #news .post .item {
-  border: 0pt solid #00ff00;
+  border: 0px solid #00ff00;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -246,12 +246,12 @@ body {
 }
 /* This file contains popup-additions to common.less */
 .title {
-  font-size: 9pt;
-  margin-top: 10pt;
-  margin-bottom: 2pt;
+  font-size: 12px;
+  margin-top: 13px;
+  margin-bottom: 4px;
 }
 .emphasized {
-  margin-bottom: 2pt;
+  margin-bottom: 4px;
 }
 /* 60fps scrolling, thecssninja.com/javascript/pointer-events-60fps */
 .disable-hover,
@@ -259,43 +259,43 @@ body {
   pointer-events: none !important;
 }
 body {
-  width: 400pt;
-  height: 400pt;
-  font-size: 9pt;
-  line-height: 11.5pt;
+  width: 532px;
+  height: 532px;
+  font-size: 12px;
+  line-height: 14px;
 }
 #tips {
   position: fixed;
   background-color: Snow;
-  top: 20pt;
-  right: 20pt;
-  left: 20pt;
-  height: 320pt;
-  border-radius: 3pt;
-  padding: 20pt;
+  top: 27px;
+  right: 27px;
+  left: 27px;
+  height: 427px;
+  border-radius: 4px;
+  padding: 27px;
   z-index: 100;
   opacity: .95;
   display: none;
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: 0pt 0pt 10pt black,
-    0pt 0pt 30pt black,
-    0pt 0pt 70pt black;
+  box-shadow: 0 0 13px black,
+    0 0 40px black,
+    0 0 93px black;
 }
 #tips .text {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   color: black;
-  font-size: 9pt;
+  font-size: 12px;
 }
 #tips .text .clicktoclose {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   color: #aaa;
   text-align: right;
   font-style: italic;
-  margin-top: -15pt;
+  margin-top: -20px;
 }
 #tips .text .big {
-  font-size: 14pt;
+  font-size: 17px;
 }
 #tips .text .url {
   display: inline;
@@ -313,20 +313,20 @@ body {
 /* This container keeps the content centered */
 #container {
   overflow-y: auto;
-  padding: 15pt;
+  padding: 20px;
 }
 #container #header {
-  border: 0pt solid #00ffff;
+  border: 0px solid #00ffff;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 35pt;
-  padding-bottom: 4pt;
+  min-height: 47px;
+  padding-bottom: 5px;
 }
 #container #header #buttons {
-  border: 0pt solid #ff0000;
-  width: 160pt;
+  border: 0px solid #ff0000;
+  width: 213px;
   float: left;
 }
 #container #header #buttons .popupbutton {
@@ -336,10 +336,10 @@ body {
   -webkit-transition: all 0.15s ease-out;
 }
 #container #header #buttons .popupbutton:hover {
-  box-shadow: inset 0pt 0pt 5pt #777,
-          0pt 0pt 10pt #bbb,
-          0pt 0pt 15pt #bbb,
-          0pt 0pt 20pt #bbb;
+  box-shadow: inset 0 0 7px #777,
+          0 0 13px #bbb,
+          0 0 20px #bbb,
+          0 0 27px #bbb;
 }
 #container #header #buttons #chatterIcon {
   pointer-events: none;
@@ -352,37 +352,37 @@ body {
   height: 16px;
 }
 #container #header #buttontext {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   display: none;
   position: relative;
   float: left;
-  width: 160pt;
+  width: 213px;
   font-weight: bold;
-  text-shadow: 0 0 10pt white,
-        0 0 15pt white,
-        0 0 20pt white;
+  text-shadow: 0 0 13px white,
+        0 0 20px white,
+        0 0 27px white;
 }
 #container #header #logo {
-  border: 0pt solid #00ff00;
+  border: 0px solid #00ff00;
   float: right;
   cursor: pointer;
-  max-width: 140pt;
-  max-height: 50pt;
+  max-width: 187px;
+  max-height: 67px;
 }
 #container #todays #schedule #servant {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 2pt;
+  margin-bottom: 4px;
 }
 #container #todays #coffee #pots {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 2pt;
+  margin-bottom: 4px;
 }
 #container #cantinas .hours {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   font-style: italic;
-  margin-bottom: 2pt;
+  margin-bottom: 4px;
   cursor: pointer;
 }
 #container #cantinas .hours:hover {
@@ -397,58 +397,58 @@ body {
         0 0 15px white;
 }
 #container #bus {
-  top: 12pt;
-  margin-bottom: 15pt;
-  padding-bottom: 7pt;
-  box-shadow: 0 0 15pt #ccc;
+  top: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 9px;
+  box-shadow: 0 0 20px #ccc;
 }
 #container #bus #realtime {
-  border: 0pt solid #ff0000;
-  line-height: 11.5pt;
-  height: 65pt;
+  border: 0px solid #ff0000;
+  line-height: 13px;
+  height: 87px;
 }
 #container #bus #realtime .name {
-  margin-bottom: 4pt;
+  margin-bottom: 5px;
 }
 #container #bus #realtime .loadingLeft {
   width: 80px;
-  bottom: 3pt;
+  bottom: 4px;
 }
 #container #bus #realtime .loadingRight {
   width: 80px;
-  bottom: 3pt;
+  bottom: 4px;
 }
 #container #bus #realtime #middle {
   width: 18%;
 }
 #container #bus #realtime #middle #atbLogo {
   position: relative;
-  left: -0.5pt;
-  margin: 11pt auto;
-  height: 46pt;
+  left: -0.7px;
+  margin: 15px auto;
+  height: 61px;
   cursor: pointer;
 }
 #container #bus #oracle {
-  border: 0pt solid #ff0000;
+  border: 0px solid #ff0000;
   margin-left: 4.5%;
   width: 90%;
 }
 #container #bus #oracle #name {
-  margin-right: 5pt;
+  margin-right: 7px;
 }
 #container #bus #oracle #question {
-  border: 0pt solid #ffff00;
+  border: 0px solid #ffff00;
   width: 88%;
   background-color: transparent;
   color: NavajoWhite;
   display: inline;
   font-family: Helvetica;
-  font-size: 9pt;
+  font-size: 12px;
   outline: none;
 }
 #container #bus #oracle #answer {
-  border: 0pt solid #ffff00;
-  padding: 0 1pt;
+  border: 0px solid #ffff00;
+  padding: 0 1px;
 }
 #container #bus #oracle #answer a {
   color: white;
@@ -466,9 +466,9 @@ body {
 }
 #container #news #full img {
   float: left;
-  width: 70pt;
-  max-height: 70pt;
-  margin: 0 5pt 3pt 0;
+  width: 93px;
+  max-height: 93px;
+  margin: 0 7px 4px 0;
 }
 #container #news #left {
   position: relative;
@@ -477,7 +477,7 @@ body {
 }
 #container #news #left img {
   float: right;
-  margin: 0 0pt 3pt 3pt;
+  margin: 0 0 4px 4px;
 }
 #container #news #right {
   position: relative;
@@ -489,37 +489,37 @@ body {
 }
 #container #news #right img {
   float: right;
-  margin: 0 0 3pt 3pt;
+  margin: 0 0 4px 4px;
 }
 #container #news .post {
-  margin-top: 10pt;
+  margin-top: 13px;
 }
 #container #news .post .item {
-  margin-top: -4pt;
-  min-height: 30pt;
+  margin-top: -5px;
+  min-height: 40px;
   cursor: pointer;
-  margin-left: -5pt;
-  margin-right: -5pt;
-  padding: 5pt;
+  margin-left: -7px;
+  margin-right: -7px;
+  padding: 7px;
   -webkit-transition: box-shadow 0.3s ease-out 0s;
 }
 #container #news .post .item:hover {
-  box-shadow: inset 0pt 0pt 2pt #bbb,
-            0pt 0pt 10pt white;
+  box-shadow: inset 0 0 2px #bbb,
+            0 0 13px white;
 }
 #container #news .post .item .title {
-  margin-top: 0pt;
+  margin-top: 0;
   /* overrides default value */
 
 }
 #container #news .post .item img {
   width: auto;
   height: auto;
-  max-width: 60pt;
-  max-height: 60pt;
-  padding: 3pt;
-  box-shadow: 0 0 10pt #bbb;
+  max-width: 80px;
+  max-height: 80px;
+  padding: 4px;
+  box-shadow: 0 0 13px #bbb;
 }
 #container #news .unread {
-  font-size: 8pt;
+  font-size: 11px;
 }
