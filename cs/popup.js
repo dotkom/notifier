@@ -123,9 +123,7 @@
 
   clickDinnerLink = function(cssSelector, cantina) {
     return $(cssSelector).click(function() {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()]);
-      }
+      Analytics.trackEvent('clickDinner', $(this).text());
       ls.clickedCantina = cantina;
       Browser.openTab(Cantina.url);
       return window.close();
@@ -148,9 +146,7 @@
 
   clickHours = function(cssSelector, cantina) {
     return $(cssSelector).click(function() {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickHours', $(this).text()]);
-      }
+      Analytics.trackEvent('clickHours', $(this).text());
       ls.clickedHours = Hours.cantinas[cantina];
       Browser.openTab(Hours.url);
       return window.close();
@@ -209,9 +205,7 @@
   bindOracle = function() {
     if (Oracle.predict() !== null) {
       $('#oracle #question').attr('placeholder', Oracle.msgSuggestPredict + Oracle.predict());
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'oracleSuggest']);
-      }
+      Analytics.trackEvent('oracleSuggest');
     }
     $('#oracle').on('keyup', '#question', function(e) {
       var question;
@@ -220,33 +214,25 @@
         if (question !== '') {
           return Oracle.ask(question, function(answer) {
             changeOracleAnswer(answer);
-            if (!DEBUG) {
-              _gaq.push(['_trackEvent', 'popup', 'oracleAnswer']);
-            }
+            Analytics.trackEvent('oracleAnswer');
             if (Oracle.predict() !== null) {
               return $('#oracle #question').attr('placeholder', Oracle.msgSuggestPredict + Oracle.predict());
             }
           });
         } else {
           changeOracleAnswer(Oracle.greet());
-          if (!DEBUG) {
-            return _gaq.push(['_trackEvent', 'popup', 'oracleGreet']);
-          }
+          return Analytics.trackEvent('oracleGreet');
         }
       } else if (question === '' && e.which !== 9) {
         changeOracleAnswer('');
-        if (!DEBUG) {
-          return _gaq.push(['_trackEvent', 'popup', 'oracleClear']);
-        }
+        return Analytics.trackEvent('oracleClear');
       }
     });
     return $('#oracle').on('keydown', '#question', function(e) {
       if (e.which === 9) {
         e.preventDefault();
         oraclePrediction();
-        if (!DEBUG) {
-          return _gaq.push(['_trackEvent', 'popup', 'oraclePrediction']);
-        }
+        return Analytics.trackEvent('oraclePrediction');
       }
     });
   };
@@ -443,9 +429,7 @@
         link = $(this).attr('name');
       }
       Browser.openTab(link);
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickNews', link]);
-      }
+      Analytics.trackEvent('clickNews', link);
       return window.close();
     });
     if (Affiliation.org[feedKey].useAltLink) {
@@ -533,9 +517,7 @@
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'toggleInfoscreen']);
-      }
+      Analytics.trackEvent('toggleInfoscreen');
       setTimeout((function() {
         return window.close();
       }), 250);
@@ -543,22 +525,12 @@
     if (ls.showAffiliation2 !== 'true') {
       $('#news #right').hide();
       $('#news #left').attr('id', 'full');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1]);
-      }
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1]);
-      }
+      Analytics.trackEvent('loadSingleAffiliation', ls.affiliationKey1);
+      Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
     } else {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
-      }
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1]);
-      }
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'loadAffiliation2', ls.affiliationKey2]);
-      }
+      Analytics.trackEvent('loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2);
+      Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
+      Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
     }
     if (ls.showOffice !== 'true') {
       $('#todays').hide();
@@ -585,24 +557,18 @@
       $('#chatterButton').hide();
       $('#chatterIcon').hide();
     }
-    if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette]);
-    }
+    Analytics.trackEvent('loadPalette', ls.affiliationPalette);
     $('#logo').click(function() {
       var name, web;
       name = Affiliation.org[ls.affiliationKey1].name;
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickLogo', name]);
-      }
+      Analytics.trackEvent('clickLogo', name);
       web = Affiliation.org[ls.affiliationKey1].web;
       Browser.openTab(web);
       return window.close();
     });
     $('#optionsButton').click(function() {
       Browser.openTab('options.html');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickOptions']);
-      }
+      Analytics.trackEvent('clickOptions');
       return window.close();
     });
     $('#tipsButton').click(function() {
@@ -610,9 +576,7 @@
         return $('#tips').fadeOut('fast');
       } else {
         $('#tips').fadeIn('fast');
-        if (!DEBUG) {
-          return _gaq.push(['_trackEvent', 'popup', 'clickTips']);
-        }
+        return Analytics.trackEvent('clickTips');
       }
     });
     $('#tips:not(a)').click(function() {
@@ -622,9 +586,7 @@
       var link;
       link = $(this).attr('href');
       Browser.openTab(link);
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link]);
-      }
+      Analytics.trackEvent('clickTipsLink', link);
       return window.close();
     });
     clickChatter = function() {
@@ -634,18 +596,14 @@
       channel = irc.channel;
       noNick = irc.noNick;
       Browser.openTab('https://kiwiirc.com/client/' + server + '/' + channel);
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickChatter', ls.affiliationKey1]);
-      }
+      Analytics.trackEvent('clickChatter', ls.affiliationKey1);
       return window.close();
     };
     $('#chatterButton').click(clickChatter);
     $('#chatterIcon').click(clickChatter);
     $('#bus #atbLogo').click(function() {
       Browser.openTab('http://www.atb.no');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'popup', 'clickAtb']);
-      }
+      Analytics.trackEvent('clickAtb');
       return window.close();
     });
     bindOracle();
@@ -679,9 +637,7 @@
     $(document).konami({
       code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
       callback: function() {
-        if (!DEBUG) {
-          _gaq.push(['_trackEvent', 'popup', 'toggleKonami']);
-        }
+        Analytics.trackEvent('toggleKonami');
         $('head').append('<style type="text/css">\
         @-webkit-keyframes adjustHue {\
           0% { -webkit-filter: hue-rotate(0deg); }\

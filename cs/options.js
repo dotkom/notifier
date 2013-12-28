@@ -105,9 +105,7 @@
         Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
       showSavedNotification();
-      if (!DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'clickAffiliation' + number, affiliationKey]);
-      }
+      return Analytics.trackEvent('clickAffiliation' + number, affiliationKey);
     });
   };
 
@@ -122,9 +120,7 @@
       }
       $('#palette').attr('href', Palettes.get(palette));
       showSavedNotification();
-      if (!DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'clickPalette', palette]);
-      }
+      return Analytics.trackEvent('clickPalette', palette);
     });
   };
 
@@ -203,9 +199,7 @@
       var cantina;
       cantina = $(this).prop('value');
       ls[selector] = cantina;
-      if (!DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'clickCantina', cantina]);
-      }
+      return Analytics.trackEvent('clickCantina', cantina);
     });
   };
 
@@ -732,9 +726,7 @@
       $('#pfLink').attr("style", "bottom:9px;");
     }
     $('#pfLink').click(function() {
-      if (!DEBUG) {
-        return _gaq.push(['_trackEvent', 'options', 'clickPageflip']);
-      }
+      return Analytics.trackEvent('clickPageflip');
     });
     setTimeout((function() {
       return changeCreatorName(ls.extensionCreator);
@@ -799,9 +791,7 @@
     return $('input:checkbox').click(function() {
       var _capitalized;
       _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'options', 'click' + _capitalized, this.checked]);
-      }
+      Analytics.trackEvent('click' + _capitalized, this.checked);
       if (this.id === 'useInfoscreen') {
         return toggleInfoscreen(this.checked);
       } else {

@@ -457,22 +457,12 @@
     if (ls.showAffiliation2 !== 'true') {
       $('#news #right').hide();
       $('#news #left').attr('id', 'full');
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadSingleAffiliation', ls.affiliationKey1]);
-      }
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1]);
-      }
+      Analytics.trackEvent('loadSingleAffiliation', ls.affiliationKey1);
+      Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
     } else {
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2]);
-      }
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation1', ls.affiliationKey1]);
-      }
-      if (!DEBUG) {
-        _gaq.push(['_trackEvent', 'infoscreen', 'loadAffiliation2', ls.affiliationKey2]);
-      }
+      Analytics.trackEvent('loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2);
+      Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
+      Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
     }
     if (ls.showOffice !== 'true') {
       $('#office').hide();
@@ -498,9 +488,7 @@
     }
     $('link[rel="shortcut icon"]').attr('href', icon);
     $('#news .post img').attr('src', placeholder);
-    if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'infoscreen', 'loadPalette', ls.affiliationPalette]);
-    }
+    Analytics.trackEvent('loadPalette', ls.affiliationPalette);
     if (OPERATING_SYSTEM === 'Windows') {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");

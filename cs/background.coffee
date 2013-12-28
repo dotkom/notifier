@@ -150,15 +150,15 @@ $ ->
   # Open options page after install
   if ls.everOpenedOptions is 'false' and !DEBUG
     Browser.openTab 'options.html'
-    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)'])
+    Analytics.trackEvent 'loadOptions (fresh install)'
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadInfoscreen'])
+    Analytics.trackEvent 'loadInfoscreen'
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
     Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
-    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadChatter'])
+    Analytics.trackEvent 'loadChatter'
 
   loadAffiliationIcon()
 
@@ -179,18 +179,17 @@ $ ->
 
   # Send some basic statistics once a day
   setInterval ( ->
-    if !DEBUG
-      # App version is interesting
-      _gaq.push(['_trackEvent', 'background', 'appVersion', Browser.getAppVersion()])
-      # Affiliation is also interesting, in contrast to the popup some of these are inactive users
-      # To find inactive user count, subtract these stats from popup stats
-      if ls.showAffiliation2 isnt 'true'
-        _gaq.push(['_trackEvent', 'background', 'singleAffiliation', ls.affiliationKey1])
-        _gaq.push(['_trackEvent', 'background', 'affiliation1', ls.affiliationKey1])
-      else
-        _gaq.push(['_trackEvent', 'background', 'doubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
-        _gaq.push(['_trackEvent', 'background', 'affiliation1', ls.affiliationKey1])
-        _gaq.push(['_trackEvent', 'background', 'affiliation2', ls.affiliationKey2])
+    # App version is interesting
+    Analytics.trackEvent 'appVersion', Browser.getAppVersion()
+    # Affiliation is also interesting, in contrast to the popup some of these are inactive users
+    # To find inactive user count, subtract these stats from popup stats
+    if ls.showAffiliation2 isnt 'true'
+      Analytics.trackEvent 'singleAffiliation', ls.affiliationKey1
+      Analytics.trackEvent 'affiliation1', ls.affiliationKey1
+    else
+      Analytics.trackEvent 'doubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2
+      Analytics.trackEvent 'affiliation1', ls.affiliationKey1
+      Analytics.trackEvent 'affiliation2', ls.affiliationKey2
   ), 1000 * 60 * 60 * 24
 
   # Enter main loop, keeping everything up-to-date

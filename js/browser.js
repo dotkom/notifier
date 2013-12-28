@@ -258,29 +258,23 @@ var Browser = {
     }
   },
   
-  notificationClosed: function(notID, bByUser) {
-    if (!DEBUG) {
-      if (bByUser) {
-        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'byUser']);
-      }
-      else {
-        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'automatic']);
-      }
+  notificationClosed: function(notID, byUser) {
+    if (byUser) {
+      Analytics.trackEvent('closeNotification', 'byUser');
+    }
+    else {
+      Analytics.trackEvent('closeNotification', 'automatic');
     }
   },
 
   notificationClicked: function(notID) {
     var link = window[notID];
-    if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'notification', 'clickNotification', link]);
-    }
+    Analytics.trackEvent('clickNotification', link);
     Browser.openTab(link);
   },
 
   notificationBtnClick: function(notID, iBtn) {
-    if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'notification', 'clickNotificationButton', iBtn]);
-    }
+    Analytics.trackEvent('clickNotificationButton', iBtn);
   },
 
 }
