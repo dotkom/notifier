@@ -6,7 +6,7 @@ function onMessage(request, sender, callback) {
   // which cantina did the user just click in the popup?
   // the content script wants to switch to that specific cantina
   if (request.action == 'getClickedCantina') {
-    if (DEBUG) console.log('onMessage: getClickedCantina');
+    console.lolg('onMessage: getClickedCantina');
     var clickedCantina = localStorage.clickedCantina;
     if (typeof clickedCantina != 'undefined') {
       localStorage.removeItem('clickedCantina');
@@ -16,14 +16,14 @@ function onMessage(request, sender, callback) {
   // which cantina did the user just click in the popup?
   // the content script wants to switch to that specific cantina
   if (request.action == 'getClickedHours') {
-    if (DEBUG) console.log('onMessage: getClickedHours');
+    console.lolg('onMessage: getClickedHours');
     var clickedHours = localStorage.clickedHours;
     if (typeof clickedHours != 'undefined') {
       localStorage.removeItem('clickedHours');
       callback(clickedHours);
     }
   }
-  else if (DEBUG) console.log('ERROR: unrecognized request');
+  else console.lolg('ERROR: unrecognized request');
 }
 
 // onConnect for conversations
@@ -32,7 +32,7 @@ function onConnect(port) {
   // when a user visits the site of one of his/her affiliations
   if (port.name == "affiliationCounter") {
     port.onMessage.addListener(function(message) {
-      if (DEBUG) console.log('onConnect: affiliationCounter');
+      console.lolg('onConnect: affiliationCounter');
       // first contact
       if (message.getAffiliationWeb == '1' || message.getAffiliationWeb == '2') {
         var number = message.getAffiliationWeb;
@@ -43,7 +43,7 @@ function onConnect(port) {
       // second contact
       else if (typeof message.resetAffiliationCounter != 'undefined') {
         var number = message.resetAffiliationCounter;
-        if (DEBUG) console.log('onMessage: resetAffiliationCounter for #' + number);
+        console.lolg('onMessage: resetAffiliationCounter for #' + number);
         Browser.getBadgeText( function(badgeText) {
           var badgeText = Number(badgeText);
           if (!isNaN(badgeText)) {
@@ -65,7 +65,7 @@ function onConnect(port) {
         var host = question.hasIrc;
         var irc = Affiliation.org[localStorage.affiliationKey1].irc;
         var hasIrc = host.indexOf(irc.server) !== -1 && host.indexOf(irc.channel) !== -1;
-        if (DEBUG) console.log('onConnect: chatter: hasIrc:', hasIrc);
+        console.lolg('onConnect: chatter: hasIrc:', hasIrc);
         port.postMessage({hasIrc: hasIrc});
       }
       // deliver blob
@@ -80,14 +80,14 @@ function onConnect(port) {
         blob.logo = Browser.getUrl(affiliation.logo);
         blob.placeholder = Browser.getUrl(affiliation.placeholder);
         // String the blob up
-        if (DEBUG) console.log('onConnect: chatter: blob:', blob);
+        console.lolg('onConnect: chatter: blob:', blob);
         blob = JSON.stringify(blob);
         // Pass it to asker
         port.postMessage({blob: blob});
       }
     });
   }
-  else if (DEBUG) console.log('WARNING: something tried to connect on port', port.name);
+  else console.lolg('WARNING: something tried to connect on port', port.name);
 }
 
 // wire up the message- and connect-listener functions
@@ -96,5 +96,5 @@ if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
     chrome.extension.onMessage.addListener(onMessage);
     chrome.runtime.onConnect.addListener(onConnect);
   }
-  else if (DEBUG) console.log('ERROR: old version of (chrom(e|ium)|opera), messaging API not supported');
+  else console.lolg('ERROR: old version of (chrom(e|ium)|opera), messaging API not supported');
 }
