@@ -519,7 +519,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # Remove subtext
     $('#headerText').fadeOut()
     # Animate away all other options
-    $('#container #left').animate {'width':'0pt'}, speed, ->
+    $('#container #left').animate {'width':'0'}, speed, ->
       $('#container #left').hide()
       $('#infoscreenSlider').slideUp speed, ->
         # Animate the useInfoscreen image
@@ -530,7 +530,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
             $('#headerText').html '<b>Info</b>screen'
             $('#headerText').fadeIn ->
               # Move infoscreen preview to the circa middle of the screen
-              $('#container #right').animate {'margin-left':'160pt'}, speed
+              $('#container #right').animate {'margin-left':'213px'}, speed
               # Move all content a bit up
               $('header').animate {'top':'50%'}, speed
               $('#container').animate {'top':'50%'}, speed, ->
@@ -716,7 +716,7 @@ $ ->
     blinkAffiliation = (iteration) ->
       if 0 < iteration
         setTimeout ( ->
-          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1pt solid black;'
+          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1px solid black;'
           setTimeout ( ->
             $('#affiliationKey1').attr 'style', ''
             blinkAffiliation iteration-1
