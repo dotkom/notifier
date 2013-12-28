@@ -1,14 +1,14 @@
-if (!DEBUG) {
-  // Tracking Basics (Asynchronous Syntax)
-  // https://developers.google.com/analytics/devguides/collection/gajs/
-  // Event Tracking - Web Tracking (ga.js):
-  // https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
+// Tracking Basics (Asynchronous Syntax)
+// https://developers.google.com/analytics/devguides/collection/gajs/
+// Event Tracking - Web Tracking (ga.js):
+// https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
 
-  // Event tracking:
-  // Params: _trackEvent, "event", "category", "action", "label", value (num), noninteraction (bool)
-  // Snippet: _gaq.push(['_trackEvent', 'subscription', 'click', image]);
-
-  // Create google analytics array
+if (DEBUG) {
+  // Empty array which allows us to check values during debugging
+  var _gaq = [];
+}
+else {
+  // Create google analytics queue
   var _gaq = _gaq || [];
 
   // Set account vars and set to track page views
@@ -28,9 +28,41 @@ if (!DEBUG) {
   // Preventing incorrect bounce statistics
   // A bounce is registered if no event is fired and no other page is visited,
   // however no page in Notifier leads to other pages and not all pages fire
-  // events unless necessary. Therefore we fire a 'read'-event after 4 seconds.
-  var timeout = 4000;
+  // events unless necessary. Therefore we fire a 'read'-event after 3 seconds.
+  var timeout = 3000;
   setTimeout(function() {
     _gaq.push(['_trackEvent', 'analytics', 'antibounce', timeout])
   }, timeout);
 }
+
+Analytics = {
+
+  trackEvent: function(action, label, value) {
+    var category = window.location.pathname; // chrome-extension://dohbapaojpimhoikcihglgkicjolfajj/options.html
+    category = category.split('/').pop(); // options.html
+    category = category.replace('.html',''); // options
+
+    // Event tracking:
+    // Params: "_trackEvent", "category", "action", "label", value (num), noninteraction (bool)
+    // Snippet: _gaq.push(['_trackEvent', 'subscription', 'click', image, bytes]);
+    if (label) {
+      if (value) {
+        _gaq.push(['_trackEvent', category, action, label, value]);
+      }
+      else {
+        _gaq.push(['_trackEvent', category, action, label]);
+      }
+    }
+    else {
+      _gaq.push(['_trackEvent', category, action]);
+    }
+
+    // If just debugging, empty the array once in a while
+    if (DEBUG) {
+      if (_gaq.length > 1000) {
+        _gaq = [];
+      }
+    }
+  },
+
+};
