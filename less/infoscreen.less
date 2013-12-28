@@ -38,13 +38,13 @@
 // Mixins
 
 .title {
-  font-size: 24pt;
-  margin-top: 25pt;
-  margin-bottom: 8pt;
+  font-size: 32px;
+  margin-top: 33px;
+  margin-bottom: 11px;
 }
 
 .emphasized {
-  margin-bottom: 8pt;
+  margin-bottom: 11px;
 }
 
 // Rules
@@ -54,8 +54,8 @@ html {
 }
 
 body {
-  font-size: 20pt;
-  line-height: 22pt;
+  font-size: 26px;
+  line-height: 29px;
 }
 
 #overlay {
@@ -94,7 +94,7 @@ body {
 
 #container {
   overflow-y: hidden;
-  padding: 30pt;
+  padding: 40px;
 
   #office {
     text-align: center;
@@ -106,8 +106,8 @@ body {
         .debugText;
         font-size: 250px;
         line-height: 250px;
-        text-shadow: 0 0 15pt black;
-        padding: 20pt 0pt 10pt 0pt;
+        text-shadow: 0 0 20px black;
+        padding: 27px 0 13px 0;
       }
       img {
         .debugElement;
@@ -117,12 +117,12 @@ body {
     }
     #subtext {
       .debugText;
-      font-size: 32pt;
-      line-height: 32pt;
+      font-size: 42px;
+      line-height: 42px;
       font-weight: bold;
       text-align: center;
-      text-shadow: 0 0 15pt black, 0 0 20pt black;
-      padding-bottom: 10pt;
+      text-shadow: 0 0 20px black, 0 0 25px black;
+      padding-bottom: 13px;
     }
   }
 
@@ -146,54 +146,54 @@ body {
   }
 
   #bus {
-    top: 35pt;
-    font-size: 18pt;
-    line-height: 25pt;
-    height: 144pt;
-    margin-bottom: 45pt;
-    box-shadow: 0 0 25pt #ccc;
+    top: 47px;
+    font-size: 24px;
+    line-height: 33px;
+    height: 192px;
+    margin-bottom: 60px;
+    box-shadow: 0 0 33px #ccc;
 
     .name {
-      margin-bottom: 3pt;
+      margin-bottom: 4px;
     }
     .loadingLeft {
-      width: 160px;
-      bottom: 16pt;
+      width: 213px;
+      bottom: 22px;
     }
     .loadingRight {
-      width: 160px;
-      bottom: 16pt;
+      width: 213px;
+      bottom: 22px;
     }
     #middle {
       width: 14%;
       #atbLogo {
         .debugElement;
-        height: 85pt;
-        margin-top: 2pt;
+        height: 113px;
+        margin-top: 2px;
       }
       #clock {
         .debugElement;
         color: #fff;
-        margin-top: 15pt;
+        margin-top: 20px;
         text-align: center;
         li {
           .debugText;
           display: inline-block;
           font-family: helvetica;
-          font-size: 30pt;
+          font-size: 40px;
           list-style: none;
         }
         #hours {
           position: relative;
-          left: 4pt;
+          left: 5px;
         }
         #minutes {
           position: relative;
-          left: -4pt;
+          left: -5px;
         }
         #point {
           position: relative;
-          left: -.5pt;
+          left: -.7px;
           -moz-animation: mymove 1s ease infinite;
           -webkit-animation: mymove 1s ease infinite;
           @-webkit-keyframes mymove {
@@ -221,9 +221,9 @@ body {
       float: left;
       img {
         float: left;
-        width: 150pt;
-        max-height: 150pt;
-        margin: 0 7pt 5pt 0;
+        width: 200px;
+        max-height: 200px;
+        margin: 0 9px 6px 0;
       }
     }
     /* #left and #right for using double columns */
@@ -233,7 +233,7 @@ body {
       float: left;
       img {
         float: right;
-        margin: 0 0pt 3pt 3pt;
+        margin: 0 0 4px 4px;
       }
     }
     #right {
@@ -245,40 +245,40 @@ body {
       }
       img {
         float: right;
-        margin: 0 0 3pt 3pt;
+        margin: 0 0 4px 4px;
       }
     }
     .post {
-      margin-top: 25pt;
+      margin-top: 33px;
       .item {
-        margin-top: -4pt;
-        min-height: 40pt;
+        margin-top: -6px;
+        min-height: 53px;
         cursor: pointer;
-        margin-left: -5pt;
-        margin-right: -5pt;
-        padding: 5pt;
+        margin-left: -6px;
+        margin-right: -6px;
+        padding: 7px;
         -webkit-transition: box-shadow 0.3s ease-out 0s;
 
         &:hover {
           box-shadow:
-            inset 0pt 0pt 2pt #bbb,
-            0pt 0pt 10pt white;
+            inset 0 0 3px #bbb,
+            0 0 13px white;
         }
         .title {
-          margin-top: 0pt; /* overrides default value */
+          margin-top: 0; /* overrides default value */
         }
         img {
           width: auto;
           height: auto;
-          max-width: 120pt;
-          max-height: 120pt;
-          padding: 6pt;
-          box-shadow: 0 0 20pt #bbb;
+          max-width: 160px;
+          max-height: 160px;
+          padding: 8px;
+          box-shadow: 0 0 27px #bbb;
         }
       }
     }
     .unread {
-      font-size: 24pt;
+      font-size: 32px;
     }
   }
 
@@ -289,9 +289,9 @@ body {
 #logo {
   .debugElement;
   position: absolute;
-  right: 30pt;
-  bottom: 30pt;
-  width: 300pt;
+  right: 40px;
+  bottom: 40px;
+  width: 400px;
   z-index: 110;
 }
 
