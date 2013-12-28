@@ -127,7 +127,7 @@ Office (requires hardware)
 - Reads roof light intensity from an Arduino Uno, the service displays a file like this: http://draug.online.ntnu.no/lys.txt
 - Uses a stable border value, fairly unaffected by sunlight
 - Reads the light value frequently in order to react quickly to changes
-- Reads events which are parsed from the affiliation systems which in turn is parsed from a GoogleCal, the running service displays a file like this: https://online.ntnu.no/service_static/office_status
+- Reads events which are parsed from the affiliation systems which in turn is parsed from a GoogleCal, the running service displays a file like this: https://online.ntnu.no/notifier/delta/office
 - Retrieves very lightweight requests with event information from GCal
 - Updates often in order to react to changes quickly
 - Icon changes based on light values and calendar events
@@ -138,19 +138,19 @@ Office (requires hardware)
 Meetings (requires hardware)
 
 - Showing the rest of the days meetings so users may easily spot when to grab a coffee
-- Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/service_static/meeting_plan
+- Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/notifier/meetings
 
 Servant (requires hardware)
 
-- Shows who is responsible for the Online office at any given time
-- Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/service_static/servant_list
+- Shows who is responsible for the affiliation office at any given time
+- Fetched via Online, which has prefetched from a GoogleCal, service running at e.g. https://online.ntnu.no/notifier/delta/office
 
 Coffee (requires hardware)
 
-- An arduino is connected to a big button at the Online office, to be pushed whenever someone is cooking a new pot of coffee
+- An arduino is connected to a button at your affiliations office, to be pushed whenever someone is cooking a new pot of coffee
 - Whenever a new coffee pot is made users get a HTML desktop notification with a random coffee meme
 - Overview showing how old the last pot of coffee is and how many pots of coffee has been made today
-- Fetched via a service running at Onlines Raspberry Pi, found at http://draug.online.ntnu.no/coffee.txt
+- Fetched via a running service, e.g. like this: http://draug.online.ntnu.no/coffee.txt
 
 Options page
 
@@ -160,9 +160,11 @@ Options page
 
 Injected script
 
+- Automatically switches to the correct clicked cantina from the popup
 - Detects when user is visiting the affiliation website, nullifying the counter badge
+- Injects affiliation logo when opening a specific IRC channel at kiwiirc.com
 
-Google Analytics
+Analytics
 
 - All statistics are anonymously collected and helps develop the project further
 - Runs page tracking on all pages which gives general traffic, OS, browsers, countries etc.
