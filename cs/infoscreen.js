@@ -12,9 +12,7 @@
   newsLimit = 8;
 
   mainLoop = function() {
-    if (DEBUG) {
-      console.log("\n#" + iteration);
-    }
+    console.lolg("\n#" + iteration);
     if (Affiliation.org[ls.affiliationKey1].hw) {
       if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
         updateOffice();
@@ -55,9 +53,7 @@
   };
 
   updateOffice = function(debugStatus) {
-    if (DEBUG) {
-      console.log('updateOffice');
-    }
+    console.lolg('updateOffice');
     return Office.get(function(status, message) {
       if (DEBUG && debugStatus) {
         status = debugStatus;
@@ -89,18 +85,14 @@
   };
 
   updateServant = function() {
-    if (DEBUG) {
-      console.log('updateServant');
-    }
+    console.lolg('updateServant');
     return Servant.get(function(servant) {
       return $('#todays #schedule #servant').html('- ' + servant);
     });
   };
 
   updateMeetings = function() {
-    if (DEBUG) {
-      console.log('updateMeetings');
-    }
+    console.lolg('updateMeetings');
     return Meetings.get(function(meetings) {
       meetings = meetings.replace(/\n/g, '<br />');
       return $('#todays #schedule #meetings').html(meetings);
@@ -108,9 +100,7 @@
   };
 
   updateCoffee = function() {
-    if (DEBUG) {
-      console.log('updateCoffee');
-    }
+    console.lolg('updateCoffee');
     return Coffee.get(true, function(pots, age) {
       $('#todays #coffee #pots').html('- ' + pots);
       return $('#todays #coffee #age').html(age);
@@ -118,9 +108,7 @@
   };
 
   updateCantinas = function() {
-    if (DEBUG) {
-      console.log('updateCantinas');
-    }
+    console.lolg('updateCantinas');
     Cantina.get(ls.leftCantina, function(menu) {
       var cantinaName;
       cantinaName = Cantina.names[ls.leftCantina];
@@ -157,9 +145,7 @@
   };
 
   updateHours = function() {
-    if (DEBUG) {
-      console.log('updateHours');
-    }
+    console.lolg('updateHours');
     Hours.get(ls.leftCantina, function(hours) {
       return $('#cantinas #left .hours').html(hours);
     });
@@ -169,9 +155,7 @@
   };
 
   updateBus = function() {
-    if (DEBUG) {
-      console.log('updateBus');
-    }
+    console.lolg('updateBus');
     if (!navigator.onLine) {
       $('#bus #firstBus .name').html(ls.firstBusName);
       $('#bus #secondBus .name').html(ls.secondBusName);
@@ -219,9 +203,7 @@
 
   updateAffiliationNews = function(number) {
     var affiliation, affiliationKey, selector;
-    if (DEBUG) {
-      console.log('updateAffiliationNews' + number);
-    }
+    console.lolg('updateAffiliationNews' + number);
     selector = number === '1' ? '#left' : '#right';
     if (ls.showAffiliation2 !== 'true') {
       selector = '#full';
@@ -229,17 +211,13 @@
     affiliationKey = ls['affiliationKey' + number];
     affiliation = Affiliation.org[affiliationKey];
     if (affiliation === void 0) {
-      if (DEBUG) {
-        return console.log('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
-      }
+      return console.lolg('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
     } else {
       newsLimit = 10;
       return News.get(affiliation, newsLimit, function(items) {
         var key, name, newsList;
         if (typeof items === 'string' || items.length === 0) {
-          if (DEBUG) {
-            console.log('ERROR:', items);
-          }
+          console.lolg('ERROR:', items);
           key = ls['affiliationKey' + number];
           name = Affiliation.org[key].name;
           return $('#news ' + selector).html('<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra ' + name + '</div></div>');

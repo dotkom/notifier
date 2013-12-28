@@ -10,7 +10,7 @@ Ajaxer = {
   //     // Do something wth data
   //   },
   //   error: function(jqXHR, text, err) {
-  //     // if DEBUG then console.log "something, something, error"
+  //     // console.lolg "something, something, error"
   //   },
   // }
 

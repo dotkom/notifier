@@ -11,9 +11,7 @@
 
   mainLoop = function() {
     var loopTimeout;
-    if (DEBUG) {
-      console.log("\n#" + iteration);
-    }
+    console.lolg("\n#" + iteration);
     if (ls.useInfoscreen !== 'true') {
       if (Affiliation.org[ls.affiliationKey1].hw) {
         if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
@@ -46,9 +44,7 @@
   };
 
   updateOfficeAndMeetings = function(force) {
-    if (DEBUG) {
-      console.log('updateOfficeAndMeetings');
-    }
+    console.lolg('updateOfficeAndMeetings');
     return Office.get(function(status, message) {
       var errorIcon, statusIcon, title;
       title = '';
@@ -78,9 +74,7 @@
   };
 
   updateCoffeeSubscription = function() {
-    if (DEBUG) {
-      console.log('updateCoffeeSubscription');
-    }
+    console.lolg('updateCoffeeSubscription');
     return Coffee.get(false, function(pots, age) {
       var storedPots;
       if (!isNaN(pots && !isNaN(age))) {
@@ -99,22 +93,16 @@
 
   updateAffiliationNews = function(number) {
     var affiliation, affiliationKey, newsLimit;
-    if (DEBUG) {
-      console.log('updateAffiliationNews' + number);
-    }
+    console.lolg('updateAffiliationNews' + number);
     affiliationKey = ls['affiliationKey' + number];
     affiliation = Affiliation.org[affiliationKey];
     if (affiliation === void 0) {
-      if (DEBUG) {
-        return console.log('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
-      }
+      return console.lolg('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
     } else {
       newsLimit = 10;
       return News.get(affiliation, newsLimit, function(items) {
         if (typeof items === 'string') {
-          if (DEBUG) {
-            return console.log('ERROR:', items);
-          }
+          return console.lolg('ERROR:', items);
         } else if (items.length === 0) {
           return updateUnreadCount(0, 0);
         } else {
