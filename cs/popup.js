@@ -12,9 +12,7 @@
   newsLimit = 4;
 
   mainLoop = function() {
-    if (DEBUG) {
-      console.log("\n#" + iteration);
-    }
+    console.lolg("\n#" + iteration);
     if (Affiliation.org[ls.affiliationKey1].hw) {
       if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
         updateServant();
@@ -52,18 +50,14 @@
   };
 
   updateServant = function() {
-    if (DEBUG) {
-      console.log('updateServant');
-    }
+    console.lolg('updateServant');
     return Servant.get(function(servant) {
       return $('#todays #schedule #servant').html('- ' + servant);
     });
   };
 
   updateMeetings = function() {
-    if (DEBUG) {
-      console.log('updateMeetings');
-    }
+    console.lolg('updateMeetings');
     return Meetings.get(function(meetings) {
       meetings = meetings.replace(/\n/g, '<br />');
       return $('#todays #schedule #meetings').html(meetings);
@@ -71,9 +65,7 @@
   };
 
   updateCoffee = function() {
-    if (DEBUG) {
-      console.log('updateCoffee');
-    }
+    console.lolg('updateCoffee');
     return Coffee.get(true, function(pots, age) {
       $('#todays #coffee #pots').html('- ' + pots);
       return $('#todays #coffee #age').html(age);
@@ -81,9 +73,7 @@
   };
 
   updateCantinas = function() {
-    if (DEBUG) {
-      console.log('updateCantinas');
-    }
+    console.lolg('updateCantinas');
     Cantina.get(ls.leftCantina, function(menu) {
       var cantinaName;
       cantinaName = Cantina.names[ls.leftCantina];
@@ -131,9 +121,7 @@
   };
 
   updateHours = function() {
-    if (DEBUG) {
-      console.log('updateHours');
-    }
+    console.lolg('updateHours');
     Hours.get(ls.leftCantina, function(hours) {
       $('#cantinas #left .hours').html(hours);
       return clickHours('#cantinas #left .hours', ls.leftCantina);
@@ -154,9 +142,7 @@
   };
 
   updateBus = function() {
-    if (DEBUG) {
-      console.log('updateBus');
-    }
+    console.lolg('updateBus');
     if (!navigator.onLine) {
       $('#bus #firstBus .name').html(ls.firstBusName);
       $('#bus #secondBus .name').html(ls.secondBusName);
@@ -239,9 +225,7 @@
 
   changeOracleAnswer = function(answer) {
     var func;
-    if (DEBUG) {
-      console.log('changeOracleAnswer to "' + answer + '"');
-    }
+    console.lolg('changeOracleAnswer to "' + answer + '"');
     clearTimeout(Number(ls.animateOracleAnswerTimeoutId));
     if (answer.match(/<\/?\w+>/g)) {
       if ($('#oracle #answer .piece').size() === 0) {
@@ -349,9 +333,7 @@
 
   updateAffiliationNews = function(number) {
     var feedItems, key, name, selector;
-    if (DEBUG) {
-      console.log('updateAffiliationNews' + number);
-    }
+    console.lolg('updateAffiliationNews' + number);
     feedItems = ls['affiliationFeedItems' + number];
     selector = number === '1' ? '#left' : '#right';
     if (ls.showAffiliation2 !== 'true') {

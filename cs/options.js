@@ -115,9 +115,7 @@
       var palette;
       palette = $(this).val();
       ls.affiliationPalette = palette;
-      if (DEBUG) {
-        console.log('Applying chosen palette', palette);
-      }
+      console.lolg('Applying chosen palette', palette);
       $('#palette').attr('href', Palettes.get(palette));
       showSavedNotification();
       return Analytics.trackEvent('clickPalette', palette);
@@ -211,9 +209,7 @@
     direction = $(cssSelector + ' select');
     loadBus(busField);
     $(stop).focus(function() {
-      if (DEBUG) {
-        console.log('focus - clear field and show saved value as placeholder');
-      }
+      console.lolg('focus - clear field and show saved value as placeholder');
       ls.busStopClickedAway = ls[busField + 'Name'];
       $(stop).val('');
       return $(stop).attr('placeholder', ls.busStopClickedAway);
@@ -223,17 +219,13 @@
       partialStop = $(stop).val();
       suggestions = Stops.partialNameToPotentialNames(partialStop);
       if (partialStop === '' || suggestions.length === 0) {
-        if (DEBUG) {
-          console.log('focusout - empty field or invalid input, return to last saved value');
-        }
+        console.lolg('focusout - empty field or invalid input, return to last saved value');
         if (ls.busStopClickedAway !== null) {
           $(stop).val(ls.busStopClickedAway);
         }
         return $('#busSuggestions').html('');
       } else if (suggestions.length === 1) {
-        if (DEBUG) {
-          console.log('focusout - 1 suggestion, save it');
-        }
+        console.lolg('focusout - 1 suggestion, save it');
         correctStop = suggestions[0];
         $(stop).val(correctStop);
         $('#busSuggestions').html('');
@@ -241,30 +233,22 @@
         getFavoriteLines(busField);
         return saveBus(busField);
       } else if (suggestions.length > 1) {
-        if (DEBUG) {
-          console.log('focusout - several suggestions, remove them');
-        }
+        console.lolg('focusout - several suggestions, remove them');
         return setTimeout((function() {
           return $('#busSuggestions .suggestion').fadeOut(function() {
             return $('#busSuggestions').html('');
           });
         }), 5000);
       } else {
-        if (DEBUG) {
-          return console.log('focusout - nothing to do');
-        }
+        return console.lolg('focusout - nothing to do');
       }
     });
     $(stop).keyup(function(event) {
       var correctStop, i, nameStart, possibleStop, realStopName, suggestion, suggestions, _ref, _ref1, _text;
       if ((_ref = event.keyCode, __indexOf.call([37, 38, 39, 40], _ref) >= 0) || (_ref1 = event.keyCode, __indexOf.call([17, 18], _ref1) >= 0) || event.keyCode === 91) {
-        if (DEBUG) {
-          return console.log('keyup - arrow key or function key, do nothing');
-        }
+        return console.lolg('keyup - arrow key or function key, do nothing');
       } else if (event.keyCode === 13) {
-        if (DEBUG) {
-          console.log('keyup - enter, checking input');
-        }
+        console.lolg('keyup - enter, checking input');
         possibleStop = $(stop).val();
         suggestions = Stops.nameToIds(possibleStop);
         if (suggestions.length !== 0) {
@@ -285,9 +269,7 @@
           return saveBus(busField);
         }
       } else {
-        if (DEBUG) {
-          console.log('keyup - getting suggestions');
-        }
+        console.lolg('keyup - getting suggestions');
         ls.busInFocus = $(stop).parent().attr('id');
         nameStart = $(stop).val();
         if (nameStart.length > 0) {
@@ -453,15 +435,9 @@
     ls[busField + 'Direction'] = direction;
     ls[busField + 'ActiveLines'] = JSON.stringify(activeLines);
     ls[busField + 'InactiveLines'] = JSON.stringify(inactiveLines);
-    if (DEBUG) {
-      console.log('saved activeLines for ' + busField, '"', activeLines, '"');
-    }
-    if (DEBUG) {
-      console.log('saved inactiveLines ' + busField, '"', inactiveLines, '"');
-    }
-    if (DEBUG) {
-      console.log('saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466');
-    }
+    console.lolg('saved activeLines for ' + busField, '"', activeLines, '"');
+    console.lolg('saved inactiveLines ' + busField, '"', inactiveLines, '"');
+    console.lolg('saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466');
     return showSavedNotification();
   };
 

@@ -6,7 +6,7 @@ iteration = 0
 newsLimit = 4 # The best amount of news for the popup, IMO
 
 mainLoop = ->
-  if DEBUG then console.log "\n#" + iteration
+  console.lolg "\n#" + iteration
 
   if Affiliation.org[ls.affiliationKey1].hw
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
@@ -26,24 +26,24 @@ mainLoop = ->
   ), PAGE_LOOP
 
 updateServant = ->
-  if DEBUG then console.log 'updateServant'
+  console.lolg 'updateServant'
   Servant.get (servant) ->
     $('#todays #schedule #servant').html '- '+servant
 
 updateMeetings = ->
-  if DEBUG then console.log 'updateMeetings'
+  console.lolg 'updateMeetings'
   Meetings.get (meetings) ->
     meetings = meetings.replace /\n/g, '<br />'
     $('#todays #schedule #meetings').html meetings
 
 updateCoffee = ->
-  if DEBUG then console.log 'updateCoffee'
+  console.lolg 'updateCoffee'
   Coffee.get true, (pots, age) ->
     $('#todays #coffee #pots').html '- '+pots
     $('#todays #coffee #age').html age
 
 updateCantinas = ->
-  if DEBUG then console.log 'updateCantinas'
+  console.lolg 'updateCantinas'
   Cantina.get ls.leftCantina, (menu) ->
     cantinaName = Cantina.names[ls.leftCantina]
     $('#cantinas #left .title').html cantinaName
@@ -79,7 +79,7 @@ clickDinnerLink = (cssSelector, cantina) ->
     window.close()
 
 updateHours = ->
-  if DEBUG then console.log 'updateHours'
+  console.lolg 'updateHours'
   Hours.get ls.leftCantina, (hours) ->
     $('#cantinas #left .hours').html hours
     clickHours '#cantinas #left .hours', ls.leftCantina
@@ -95,7 +95,7 @@ clickHours = (cssSelector, cantina) ->
     window.close()
 
 updateBus = ->
-  if DEBUG then console.log 'updateBus'
+  console.lolg 'updateBus'
   if !navigator.onLine
     $('#bus #firstBus .name').html ls.firstBusName
     $('#bus #secondBus .name').html ls.secondBusName
@@ -170,7 +170,7 @@ bindOracle = ->
       Analytics.trackEvent 'oraclePrediction'
 
 changeOracleAnswer = (answer) ->
-  if DEBUG then console.log 'changeOracleAnswer to "' + answer + '"'
+  console.lolg 'changeOracleAnswer to "' + answer + '"'
   # Stop previous changeOracleAnswer instance, if any
   clearTimeout Number ls.animateOracleAnswerTimeoutId
   # If answer contains HTML, just insert it as HTML
@@ -268,7 +268,7 @@ animateOracleQuestion = (line) ->
     ), random
 
 updateAffiliationNews = (number) ->
-  if DEBUG then console.log 'updateAffiliationNews'+number
+  console.lolg 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
   feedItems = ls['affiliationFeedItems'+number]
   # Detect selector

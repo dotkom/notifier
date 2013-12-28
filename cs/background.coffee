@@ -4,7 +4,7 @@ ls = localStorage
 iteration = 0
 
 mainLoop = ->
-  if DEBUG then console.log "\n#" + iteration
+  console.lolg "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
     if Affiliation.org[ls.affiliationKey1].hw
@@ -29,7 +29,7 @@ mainLoop = ->
   ), loopTimeout
 
 updateOfficeAndMeetings = (force) ->
-  if DEBUG then console.log 'updateOfficeAndMeetings'
+  console.lolg 'updateOfficeAndMeetings'
   Office.get (status, message) ->
     title = ''
     if force or ls.officeStatus isnt status or ls.officeStatusMessage isnt message
@@ -53,7 +53,7 @@ updateOfficeAndMeetings = (force) ->
         ls.officeStatusMessage = message
 
 updateCoffeeSubscription = ->
-  if DEBUG then console.log 'updateCoffeeSubscription'
+  console.lolg 'updateCoffeeSubscription'
   Coffee.get false, (pots, age) ->
     # Error messages will be NaN here
     if not isNaN pots and not isNaN age
@@ -70,19 +70,19 @@ updateCoffeeSubscription = ->
       ls.coffeePots = pots
 
 updateAffiliationNews = (number) ->
-  if DEBUG then console.log 'updateAffiliationNews'+number
+  console.lolg 'updateAffiliationNews'+number
   # Get affiliation object
   affiliationKey = ls['affiliationKey'+number]
   affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
+    console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
     News.get affiliation, newsLimit, (items) ->
       # Error message, log it maybe
       if typeof items is 'string'
-        if DEBUG then console.log 'ERROR:', items
+        console.lolg 'ERROR:', items
       # Empty news items, don't count
       else if items.length is 0
         updateUnreadCount 0, 0

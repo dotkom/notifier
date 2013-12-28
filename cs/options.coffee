@@ -115,7 +115,7 @@ bindPaletteSelector = ->
     # Save it
     ls.affiliationPalette = palette
     # Applying palette to options page
-    if DEBUG then console.log 'Applying chosen palette', palette
+    console.lolg 'Applying chosen palette', palette
     $('#palette').attr 'href', Palettes.get palette
     # Display Saved<3
     showSavedNotification()
@@ -182,7 +182,7 @@ bindCantinaSelector = (selector) ->
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
-  # if DEBUG then console.log 'Binding bus fields for ' + cssSelector
+  # console.lolg 'Binding bus fields for ' + cssSelector
   fadeTime = 50
 
   stop = $(cssSelector + ' input')
@@ -194,7 +194,7 @@ bindBusFields = (busField) ->
   $(stop).focus ->
     
     # Clear stop field on click
-    if DEBUG then console.log 'focus - clear field and show saved value as placeholder'
+    console.lolg 'focus - clear field and show saved value as placeholder'
     ls.busStopClickedAway = ls[busField+'Name']
     $(stop).val ''
     $(stop).attr 'placeholder', ls.busStopClickedAway
@@ -207,13 +207,13 @@ bindBusFields = (busField) ->
 
     # No input, revert to the busstop that was clicked away
     if partialStop is '' or suggestions.length is 0
-      if DEBUG then console.log 'focusout - empty field or invalid input, return to last saved value'
+      console.lolg 'focusout - empty field or invalid input, return to last saved value'
       if ls.busStopClickedAway isnt null
         $(stop).val ls.busStopClickedAway
       $('#busSuggestions').html ''
     # 1 suggestion, go for it!
     else if suggestions.length is 1
-      if DEBUG then console.log 'focusout - 1 suggestion, save it'
+      console.lolg 'focusout - 1 suggestion, save it'
       correctStop = suggestions[0]
       $(stop).val correctStop
       $('#busSuggestions').html ''
@@ -222,23 +222,23 @@ bindBusFields = (busField) ->
       saveBus busField
     # Several suggestions, allow the user to see them and click them for a short while
     else if suggestions.length > 1
-      if DEBUG then console.log 'focusout - several suggestions, remove them'
+      console.lolg 'focusout - several suggestions, remove them'
       setTimeout ( ->
         $('#busSuggestions .suggestion').fadeOut ->
           $('#busSuggestions').html ''
       ), 5000
     else
-      if DEBUG then console.log 'focusout - nothing to do'
+      console.lolg 'focusout - nothing to do'
 
   $(stop).keyup (event) ->
 
     # Do nothing if arrow key or function key is pressed
     if event.keyCode in [37..40] or event.keyCode in [17..18] or event.keyCode is 91
-      if DEBUG then console.log 'keyup - arrow key or function key, do nothing'
+      console.lolg 'keyup - arrow key or function key, do nothing'
 
     # If Enter is clicked, check it and save it
     else if event.keyCode is 13
-      if DEBUG then console.log 'keyup - enter, checking input'
+      console.lolg 'keyup - enter, checking input'
       possibleStop = $(stop).val()
       suggestions = Stops.nameToIds possibleStop
       if suggestions.length isnt 0
@@ -263,7 +263,7 @@ bindBusFields = (busField) ->
 
     # If anything else is clicked, get suggestions
     else
-      if DEBUG then console.log 'keyup - getting suggestions'
+      console.lolg 'keyup - getting suggestions'
       # Save the id of the bus field in focus
       ls.busInFocus = $(stop).parent().attr 'id'
       # Find the partial name
@@ -427,9 +427,9 @@ saveBus = (busField) ->
   ls[busField + 'Direction'] = direction
   ls[busField + 'ActiveLines'] = JSON.stringify activeLines
   ls[busField + 'InactiveLines'] = JSON.stringify inactiveLines
-  if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"'
-  if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"'
-  if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
+  console.lolg 'saved activeLines for '+busField, '"', activeLines, '"'
+  console.lolg 'saved inactiveLines '+busField, '"', inactiveLines, '"'
+  console.lolg 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
   showSavedNotification()
   # Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 
@@ -444,7 +444,7 @@ loadBus = (busField) ->
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
-    # if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
+    # console.lolg 'loaded "' + stopName + '" to "' + busField + '"'
   
   # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
