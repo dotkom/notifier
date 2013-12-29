@@ -404,7 +404,7 @@ body {
 }
 #container #bus #realtime {
   border: 0px solid #ff0000;
-  line-height: 13px;
+  line-height: 15px;
   height: 87px;
 }
 #container #bus #realtime .name {
@@ -432,6 +432,8 @@ body {
   border: 0px solid #ff0000;
   margin-left: 4.5%;
   width: 90%;
+  position: relative;
+  top: -1px;
 }
 #container #bus #oracle #name {
   margin-right: 7px;
