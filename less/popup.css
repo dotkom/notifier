@@ -245,6 +245,7 @@ body {
         0 0 15px white;
 }
 /* This file contains popup-additions to common.less */
+/* Nothing here yet */
 .title {
   font-size: 12px;
   margin-top: 13px;
@@ -260,7 +261,7 @@ body {
 }
 body {
   width: 532px;
-  height: 532px;
+  height: 600px;
   font-size: 12px;
   line-height: 14px;
 }
