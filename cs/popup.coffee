@@ -434,6 +434,13 @@ $ ->
       window.close()
     ), 250
 
+  # If this is a tiny computer screen, reduce popup height
+  if window.screen.availHeight < 700
+    shorter = window.screen.availHeight - 100
+    # shorter is available screenspace minus the height
+    # of the browser taskbar, rounded up well to be sure
+    $('body').css 'height', shorter + 'px'
+
   # If only one affiliation is to be shown remove the second news column
   # Also, some serious statistics
   if ls.showAffiliation2 isnt 'true'

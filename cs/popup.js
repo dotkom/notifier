@@ -495,7 +495,7 @@
   };
 
   $(function() {
-    var clickChatter, icon, key, logo, placeholder, _func, _timer;
+    var clickChatter, icon, key, logo, placeholder, shorter, _func, _timer;
     $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
@@ -503,6 +503,10 @@
       setTimeout((function() {
         return window.close();
       }), 250);
+    }
+    if (window.screen.availHeight < 700) {
+      shorter = window.screen.availHeight - 100;
+      $('body').css('height', shorter + 'px');
     }
     if (ls.showAffiliation2 !== 'true') {
       $('#news #right').hide();
