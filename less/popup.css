@@ -268,10 +268,11 @@ body {
 #tips {
   position: fixed;
   background-color: Snow;
-  top: 27px;
-  right: 27px;
-  left: 27px;
-  height: 427px;
+  top: 15px;
+  right: 15px;
+  bottom: 15px;
+  left: 15px;
+  border: 1px solid Grey;
   border-radius: 4px;
   padding: 27px;
   z-index: 100;
@@ -279,9 +280,7 @@ body {
   display: none;
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: 0 0 13px black,
-    0 0 40px black,
-    0 0 93px black;
+  box-shadow: 0 0 20px black;
 }
 #tips .text {
   border: 0px solid #ffff00;
