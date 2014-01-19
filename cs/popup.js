@@ -173,7 +173,11 @@
       $(busStop + ' .' + spans[i] + ' .time').html('');
     }
     if (typeof lines === 'string') {
-      return $(busStop + ' .first .line').html('<div class="error">' + lines + '</div>');
+      if (navigator.onLine) {
+        return $(busStop + ' .first .line').html('<div class="error">' + lines + '<br />Prøv Orakelet i stedet</div>');
+      } else {
+        return $(busStop + ' .first .line').html('<div class="error">' + lines + '</div>');
+      }
     } else {
       if (lines['departures'].length === 0) {
         return $(busStop + ' .first .line').html('<div class="error">....zzzZZZzzz....<br />(etter midnatt vises ikke)</div>');

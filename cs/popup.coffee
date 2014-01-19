@@ -123,9 +123,13 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
     $(busStop+' .'+spans[i]+' .line').html ''
     $(busStop+' .'+spans[i]+' .time').html ''
   
+  # if lines is an error message
   if typeof lines is 'string'
-    # Lines is an error message
-    $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
+    # if online, recommend oracle
+    if navigator.onLine
+      $(busStop+' .first .line').html '<div class="error">'+lines+'<br />Prøv Orakelet i stedet</div>'
+    else
+      $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
