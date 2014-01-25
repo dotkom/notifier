@@ -18,9 +18,9 @@
     "default_popup": "popup.html"
   },
 
-  // "omnibox": {
-  //   "keyword": "@"
-  // },
+  "omnibox": {
+    "keyword": "@"
+  },
 
   "commands": {
     "open_affiliation": {

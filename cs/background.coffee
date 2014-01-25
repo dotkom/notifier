@@ -115,6 +115,8 @@ loadAffiliationIcon = ->
   name = Affiliation.org[key].name
   Browser.setTitle name + ' Notifier'
 
+############### TODO: MOVE THIS TO BROWSER.JS
+############### TODO: MOVE THIS TO BROWSER.JS
 bindOmniboxToOracle = ->
   # This event is fired each time the user updates the text in the omnibox,
   # as long as the extension's keyword mode is still active.
@@ -128,15 +130,16 @@ bindOmniboxToOracle = ->
   chrome.omnibox.onInputEntered.addListener (text) ->
     # console.log 'inputEntered: ' + text
     Oracle.ask text, (answer) ->
-      # console.log 'oracle answer: ' + answer
-      Browser.createNotification
-        'feedKey': ls.affiliationKey1
-        'title': 'Orakelet'
-        'description': answer
-        'link': 'http://atb.no'
-        'longStory': true
-        'stay': true
-      # alert answer
+      answer = answer.replace /@/g, '\n'
+      console.lolg 'oracle answer: ' + answer
+      # Browser.createNotification
+      #   'feedKey': ls.affiliationKey1
+      #   'title': 'Orakelet'
+      #   'description': answer
+      #   'link': 'http://atb.no'
+      #   'longStory': true
+      #   'stay': true
+      alert answer
 
 # Document ready, go!
 $ ->
@@ -163,7 +166,7 @@ $ ->
   loadAffiliationIcon()
 
   # TODO: FEATURE IS NOT COMLPETE
-  # bindOmniboxToOracle()
+  bindOmniboxToOracle()
   
   Browser.bindCommandHotkeys()
   Browser.registerNotificationListeners()

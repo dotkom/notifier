@@ -143,14 +143,9 @@
   bindOmniboxToOracle = function() {
     return chrome.omnibox.onInputEntered.addListener(function(text) {
       return Oracle.ask(text, function(answer) {
-        return Browser.createNotification({
-          'feedKey': ls.affiliationKey1,
-          'title': 'Orakelet',
-          'description': answer,
-          'link': 'http://atb.no',
-          'longStory': true,
-          'stay': true
-        });
+        answer = answer.replace(/@/g, '\n');
+        console.lolg('oracle answer: ' + answer);
+        return alert(answer);
       });
     });
   };
@@ -173,6 +168,7 @@
       Analytics.trackEvent('loadChatter');
     }
     loadAffiliationIcon();
+    bindOmniboxToOracle();
     Browser.bindCommandHotkeys();
     Browser.registerNotificationListeners();
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
