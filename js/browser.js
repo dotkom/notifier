@@ -116,6 +116,27 @@ var Browser = {
     return 'Unknown @ ' + BROWSER
   },
 
+  bindCommandHotkeys: function() {
+    if (BROWSER == 'Chrome') {
+      chrome.commands.onCommand.addListener(function(command) {
+        if (command == 'open_instabart') {
+          Browser.openTab('http://instabart.no');
+        }
+        else if (command == 'open_affiliation') {
+          var key = localStorage.affiliationKey1;
+          var web = Affiliation.org[key].web;
+          Browser.openTab(web);
+        }
+        else {
+          console.log('ERROR: Unrecognized browser command');
+        }
+      });
+    }
+    else {
+      console.log(this.msgUnsupported);
+    }
+  },
+
   // Things in item:
   // - feedKey: 'orgx'
   // - title: 'Hello World'
@@ -128,6 +149,7 @@ var Browser = {
   // - stay: true
   createNotification: function(item) {
     // Check required params
+    if (!item) console.log('ERROR: options takes one object, {feedKey, title, description, link, image*, symbol*, longStory*, stay*} (* == optional)');
     if (!item.feedKey) console.log('ERROR: item.feedKey is required');
     if (!item.title) console.log('ERROR: item.title is required');
     if (!item.description) console.log('ERROR: item.description is required');
@@ -236,29 +258,23 @@ var Browser = {
     }
   },
   
-  notificationClosed: function(notID, bByUser) {
-    if (!DEBUG) {
-      if (bByUser) {
-        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'byUser']);
-      }
-      else {
-        _gaq.push(['_trackEvent', 'notification', 'closeNotification', 'automatic']);
-      }
+  notificationClosed: function(notID, byUser) {
+    if (byUser) {
+      Analytics.trackEvent('closeNotification', 'byUser');
+    }
+    else {
+      Analytics.trackEvent('closeNotification', 'automatic');
     }
   },
 
   notificationClicked: function(notID) {
     var link = window[notID];
-    if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'notification', 'clickNotification', link]);
-    }
+    Analytics.trackEvent('clickNotification', link);
     Browser.openTab(link);
   },
 
   notificationBtnClick: function(notID, iBtn) {
-    if (!DEBUG) {
-      _gaq.push(['_trackEvent', 'notification', 'clickNotificationButton', iBtn]);
-    }
+    Analytics.trackEvent('clickNotificationButton', iBtn);
   },
 
 }

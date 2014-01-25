@@ -10,7 +10,7 @@ resizeBackgroundImage = ->
   else
     $('#background').attr "style", "background:url('img/background-medium.png') center center no-repeat;"
 
-displayOnPageNotification = ->
+showSavedNotification = ->
   $("#notification").fadeIn 200
   setTimeout ( ->
     $("#notification").fadeOut 200
@@ -101,9 +101,9 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       Browser.getBackgroundProcess().updateAffiliationNews number
     
     # Display Saved<3
-    displayOnPageNotification()
+    showSavedNotification()
     # Analytics
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickAffiliation'+number, affiliationKey])
+    Analytics.trackEvent 'clickAffiliation'+number, affiliationKey
 
 bindPaletteSelector = ->
   # Default values
@@ -115,12 +115,12 @@ bindPaletteSelector = ->
     # Save it
     ls.affiliationPalette = palette
     # Applying palette to options page
-    if DEBUG then console.log 'Applying chosen palette', palette
+    console.lolg 'Applying chosen palette', palette
     $('#palette').attr 'href', Palettes.get palette
     # Display Saved<3
-    displayOnPageNotification()
+    showSavedNotification()
     # Analytics
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPalette', palette])
+    Analytics.trackEvent 'clickPalette', palette
 
 disableHardwareFeatures = (quick) ->
   ls.showOffice = 'false'
@@ -178,11 +178,11 @@ bindCantinaSelector = (selector) ->
   $('#' + selector).change ->
     cantina = $(this).prop 'value'
     ls[selector] = cantina
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickCantina', cantina])
+    Analytics.trackEvent 'clickCantina', cantina
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
-  # if DEBUG then console.log 'Binding bus fields for ' + cssSelector
+  # console.lolg 'Binding bus fields for ' + cssSelector
   fadeTime = 50
 
   stop = $(cssSelector + ' input')
@@ -194,7 +194,7 @@ bindBusFields = (busField) ->
   $(stop).focus ->
     
     # Clear stop field on click
-    if DEBUG then console.log 'focus - clear field and show saved value as placeholder'
+    console.lolg 'focus - clear field and show saved value as placeholder'
     ls.busStopClickedAway = ls[busField+'Name']
     $(stop).val ''
     $(stop).attr 'placeholder', ls.busStopClickedAway
@@ -207,13 +207,13 @@ bindBusFields = (busField) ->
 
     # No input, revert to the busstop that was clicked away
     if partialStop is '' or suggestions.length is 0
-      if DEBUG then console.log 'focusout - empty field or invalid input, return to last saved value'
+      console.lolg 'focusout - empty field or invalid input, return to last saved value'
       if ls.busStopClickedAway isnt null
         $(stop).val ls.busStopClickedAway
       $('#busSuggestions').html ''
     # 1 suggestion, go for it!
     else if suggestions.length is 1
-      if DEBUG then console.log 'focusout - 1 suggestion, save it'
+      console.lolg 'focusout - 1 suggestion, save it'
       correctStop = suggestions[0]
       $(stop).val correctStop
       $('#busSuggestions').html ''
@@ -222,23 +222,23 @@ bindBusFields = (busField) ->
       saveBus busField
     # Several suggestions, allow the user to see them and click them for a short while
     else if suggestions.length > 1
-      if DEBUG then console.log 'focusout - several suggestions, remove them'
+      console.lolg 'focusout - several suggestions, remove them'
       setTimeout ( ->
         $('#busSuggestions .suggestion').fadeOut ->
           $('#busSuggestions').html ''
       ), 5000
     else
-      if DEBUG then console.log 'focusout - nothing to do'
+      console.lolg 'focusout - nothing to do'
 
   $(stop).keyup (event) ->
 
     # Do nothing if arrow key or function key is pressed
     if event.keyCode in [37..40] or event.keyCode in [17..18] or event.keyCode is 91
-      if DEBUG then console.log 'keyup - arrow key or function key, do nothing'
+      console.lolg 'keyup - arrow key or function key, do nothing'
 
     # If Enter is clicked, check it and save it
     else if event.keyCode is 13
-      if DEBUG then console.log 'keyup - enter, checking input'
+      console.lolg 'keyup - enter, checking input'
       possibleStop = $(stop).val()
       suggestions = Stops.nameToIds possibleStop
       if suggestions.length isnt 0
@@ -263,7 +263,7 @@ bindBusFields = (busField) ->
 
     # If anything else is clicked, get suggestions
     else
-      if DEBUG then console.log 'keyup - getting suggestions'
+      console.lolg 'keyup - getting suggestions'
       # Save the id of the bus field in focus
       ls.busInFocus = $(stop).parent().attr 'id'
       # Find the partial name
@@ -427,10 +427,10 @@ saveBus = (busField) ->
   ls[busField + 'Direction'] = direction
   ls[busField + 'ActiveLines'] = JSON.stringify activeLines
   ls[busField + 'InactiveLines'] = JSON.stringify inactiveLines
-  if DEBUG then console.log 'saved activeLines for '+busField, '"', activeLines, '"'
-  if DEBUG then console.log 'saved inactiveLines '+busField, '"', inactiveLines, '"'
-  if DEBUG then console.log 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
-  displayOnPageNotification()
+  console.lolg 'saved activeLines for '+busField, '"', activeLines, '"'
+  console.lolg 'saved inactiveLines '+busField, '"', inactiveLines, '"'
+  console.lolg 'saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466'
+  showSavedNotification()
   # Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 
 loadBus = (busField) ->
@@ -444,7 +444,7 @@ loadBus = (busField) ->
   if stopName isnt undefined and direction isnt undefined
     $(cssSelector + ' input').val stopName
     $(cssSelector + ' select').val direction
-    # if DEBUG then console.log 'loaded "' + stopName + '" to "' + busField + '"'
+    # console.lolg 'loaded "' + stopName + '" to "' + busField + '"'
   
   # Add active and inactive lines to busfields
   if activeLines isnt undefined and inactiveLines isnt undefined
@@ -519,7 +519,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
     # Remove subtext
     $('#headerText').fadeOut()
     # Animate away all other options
-    $('#container #left').animate {'width':'0pt'}, speed, ->
+    $('#container #left').animate {'width':'0'}, speed, ->
       $('#container #left').hide()
       $('#infoscreenSlider').slideUp speed, ->
         # Animate the useInfoscreen image
@@ -530,7 +530,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
             $('#headerText').html '<b>Info</b>screen'
             $('#headerText').fadeIn ->
               # Move infoscreen preview to the circa middle of the screen
-              $('#container #right').animate {'margin-left':'160pt'}, speed
+              $('#container #right').animate {'margin-left':'213px'}, speed
               # Move all content a bit up
               $('header').animate {'top':'50%'}, speed
               $('#container').animate {'top':'50%'}, speed, ->
@@ -694,7 +694,7 @@ $ ->
     $('#pfLink').attr "style", "bottom:9px;"
   # Google Analytics
   $('#pfLink').click ->
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'clickPageflip'])
+    Analytics.trackEvent 'clickPageflip'
   # Adding creator name to pageflip
   setTimeout ( ->
     changeCreatorName ls.extensionCreator
@@ -702,20 +702,21 @@ $ ->
   # Blinking cursor at pageflip
   pageFlipCursorBlinking()
 
-  # Fade in the "popup here"-bubble if options page haven't been used before
-  # Also blink the first affiliation-selection field with light green colors to attract the bees
+  # Fade in the "popup here"-bubble
+  setTimeout ( ->
+    $('#popupHere').fadeIn 'swing'
+    setTimeout ( ->
+      $('#popupHere').fadeOut 'fast'
+    ), 4000
+  ), 7000
+  
+  # Blink the first affiliation-field with light green colors to attract the bees
   if ls.everOpenedOptions is 'false'
     ls.everOpenedOptions = 'true'
-    setTimeout ( ->
-      $('#popupHere').fadeIn 'slow'
-      setTimeout ( ->
-        $('#popupHere').fadeOut 6000
-      ), 30000
-    ), 2500
     blinkAffiliation = (iteration) ->
       if 0 < iteration
         setTimeout ( ->
-          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1pt solid black;'
+          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1px solid black;'
           setTimeout ( ->
             $('#affiliationKey1').attr 'style', ''
             blinkAffiliation iteration-1
@@ -723,7 +724,7 @@ $ ->
         ), 140
     setTimeout ( ->
       blinkAffiliation 6
-    ), 5000
+    ), 3000
 
   # Fade in the +1 button when (probably) ready, PS: Online specific
   if ls.affiliationKey1 is 'online'
@@ -777,7 +778,7 @@ $ ->
   # Catch new clicks
   $('input:checkbox').click ->
     _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1)
-    if !DEBUG then _gaq.push(['_trackEvent', 'options', 'click'+_capitalized, this.checked])
+    Analytics.trackEvent 'click'+_capitalized, this.checked
     
     # Special case for 'useInfoscreen'
     if this.id is 'useInfoscreen'
@@ -809,4 +810,4 @@ $ ->
       if this.id is 'coffeeSubscription' and this.checked is false
         ls.activelySetCoffee = 'false'
 
-      displayOnPageNotification()
+      showSavedNotification()

@@ -6,7 +6,7 @@ iteration = 0
 newsLimit = 4 # The best amount of news for the popup, IMO
 
 mainLoop = ->
-  if DEBUG then console.log "\n#" + iteration
+  console.lolg "\n#" + iteration
 
   if Affiliation.org[ls.affiliationKey1].hw
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
@@ -26,24 +26,24 @@ mainLoop = ->
   ), PAGE_LOOP
 
 updateServant = ->
-  if DEBUG then console.log 'updateServant'
+  console.lolg 'updateServant'
   Servant.get (servant) ->
     $('#todays #schedule #servant').html '- '+servant
 
 updateMeetings = ->
-  if DEBUG then console.log 'updateMeetings'
+  console.lolg 'updateMeetings'
   Meetings.get (meetings) ->
     meetings = meetings.replace /\n/g, '<br />'
     $('#todays #schedule #meetings').html meetings
 
 updateCoffee = ->
-  if DEBUG then console.log 'updateCoffee'
+  console.lolg 'updateCoffee'
   Coffee.get true, (pots, age) ->
     $('#todays #coffee #pots').html '- '+pots
     $('#todays #coffee #age').html age
 
 updateCantinas = ->
-  if DEBUG then console.log 'updateCantinas'
+  console.lolg 'updateCantinas'
   Cantina.get ls.leftCantina, (menu) ->
     cantinaName = Cantina.names[ls.leftCantina]
     $('#cantinas #left .title').html cantinaName
@@ -73,13 +73,13 @@ listDinners = (menu) ->
 
 clickDinnerLink = (cssSelector, cantina) ->
   $(cssSelector).click ->
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickDinner', $(this).text()])
+    Analytics.trackEvent 'clickDinner', $(this).text()
     ls.clickedCantina = cantina
     Browser.openTab Cantina.url
     window.close()
 
 updateHours = ->
-  if DEBUG then console.log 'updateHours'
+  console.lolg 'updateHours'
   Hours.get ls.leftCantina, (hours) ->
     $('#cantinas #left .hours').html hours
     clickHours '#cantinas #left .hours', ls.leftCantina
@@ -89,13 +89,13 @@ updateHours = ->
 
 clickHours = (cssSelector, cantina) ->
   $(cssSelector).click ->
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickHours', $(this).text()])
+    Analytics.trackEvent 'clickHours', $(this).text()
     ls.clickedHours = Hours.cantinas[cantina]
     Browser.openTab Hours.url
     window.close()
 
 updateBus = ->
-  if DEBUG then console.log 'updateBus'
+  console.lolg 'updateBus'
   if !navigator.onLine
     $('#bus #firstBus .name').html ls.firstBusName
     $('#bus #secondBus .name').html ls.secondBusName
@@ -123,9 +123,13 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
     $(busStop+' .'+spans[i]+' .line').html ''
     $(busStop+' .'+spans[i]+' .time').html ''
   
+  # if lines is an error message
   if typeof lines is 'string'
-    # Lines is an error message
-    $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
+    # if online, recommend oracle
+    if navigator.onLine
+      $(busStop+' .first .line').html '<div class="error">'+lines+'<br />Prøv Orakelet i stedet</div>'
+    else
+      $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
@@ -141,65 +145,93 @@ bindOracle = ->
   # Suggest prediction
   if Oracle.predict() isnt null
     $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleSuggest'])
+    Analytics.trackEvent 'oracleSuggest'
   # User input
-  $('#oracle #question').keyup (e) ->
+  $('#oracle').on 'keyup', '#question', (e) ->
     question = $('#oracle #question').val()
     # Clicked enter
     if e.which is 13
       if question isnt ''
         Oracle.ask question, (answer) ->
           changeOracleAnswer answer
-          if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleAnswer'])
+          Analytics.trackEvent 'oracleAnswer'
           # Update suggested prediction
           if Oracle.predict() isnt null
             $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
       else
         changeOracleAnswer Oracle.greet()
-        if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleGreet'])
+        Analytics.trackEvent 'oracleGreet'
     # Cleared field
-    else if question is ''
+    else if question is '' and e.which isnt 9 # Tab is reserved
       changeOracleAnswer ''
-      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oracleClear'])
-  # Clicked tab: Predict question
+      Analytics.trackEvent 'oracleClear'
+  # Keydown works better with tab
   $('#oracle').on 'keydown', '#question', (e) ->
-    keyCode = e.keyCode || e.which
-    if keyCode is 9
+    # Clicked tab: Predict question
+    if e.which is 9
       e.preventDefault()
       oraclePrediction()
-      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'oraclePrediction'])
+      Analytics.trackEvent 'oraclePrediction'
 
 changeOracleAnswer = (answer) ->
+  console.lolg 'changeOracleAnswer to "' + answer + '"'
   # Stop previous changeOracleAnswer instance, if any
   clearTimeout Number ls.animateOracleAnswerTimeoutId
   # If answer contains HTML, just insert it as HTML
   if answer.match /<\/?\w+>/g
-    $('#oracle #answer').html answer
-    $('#oracle #answer a').attr 'target', '_blank'
+    if $('#oracle #answer .piece').size() is 0
+      $('#oracle #answer').append '<div class="piece">' + answer + '</div>'
+      $('#oracle #answer .piece a').attr 'target', '_blank'
+    else
+      # Remove all preexisting pieces
+      $('#oracle #answer .piece').fadeOut 400, ->
+        $('#oracle #answer .piece').remove()
+        $('#oracle #answer').append '<div class="piece">' + answer + '</div>'
+        $('#oracle #answer .piece a').attr 'target', '_blank'
   # Animate oracle answer name change
   else
-    animateOracleAnswer answer
+    func = (answer) ->
+      pieces = answer.split '@'
+      # Insert piece placeholders
+      for i of pieces
+        $('#oracle #answer').append '<div class="piece"></div>'
+      for i of pieces
+        animateOracleAnswer pieces[i], i, (index) ->
+          # html = $('#oracle #answer .piece').eq(index).html()
+          # html = html.replace /((Buss \d+)|(Holdeplass):)/gi, '<u>$1</u>'
+          # $('#oracle #answer .piece').eq(index).html html
+    # Check for preexisting pieces
+    if $('#oracle #answer .piece').size() is 0
+      func answer
+    else
+      # Remove all preexisting pieces
+      $('#oracle #answer .piece').fadeOut 400, ->
+        $('#oracle #answer .piece').remove()
+        func answer
 
-animateOracleAnswer = (line, build) ->
+animateOracleAnswer = (line, index, callback, build) ->
   # Animate it
-  text = $('#oracle #answer').text()
+  text = $('#oracle #answer .piece').eq(index).text()
   if text.length is 0
     build = true
   millisecs = 6
   if !build
-    $('#oracle #answer').text text.slice 0, text.length-1
+    $('#oracle #answer .piece').eq(index).text text.slice 0, text.length-1
     ls.animateOracleAnswerTimeoutId = setTimeout ( ->
-      animateOracleAnswer line
+      animateOracleAnswer line, index, callback
     ), millisecs
   else
     if text.length isnt line.length
       if text.length is 0
-        $('#oracle #answer').text line.slice 0, 1
+        $('#oracle #answer .piece').eq(index).text line.slice 0, 1
       else
-        $('#oracle #answer').text line.slice 0, text.length+1
+        $('#oracle #answer .piece').eq(index).text line.slice 0, text.length+1
       ls.animateOracleAnswerTimeoutId = setTimeout ( ->
-        animateOracleAnswer line, true
+        animateOracleAnswer line, index, callback, true
       ), millisecs
+    else
+      # Animation for this element is complete
+      callback index
 
 oraclePrediction = ->
   question = Oracle.predict()
@@ -240,7 +272,7 @@ animateOracleQuestion = (line) ->
     ), random
 
 updateAffiliationNews = (number) ->
-  if DEBUG then console.log 'updateAffiliationNews'+number
+  console.lolg 'updateAffiliationNews'+number
   # Displaying the news feed (prefetched by the background page)
   feedItems = ls['affiliationFeedItems'+number]
   # Detect selector
@@ -330,7 +362,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     if altLink isnt undefined and useAltLink is true
       link = $(this).attr 'name'
     Browser.openTab link
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickNews', link])
+    Analytics.trackEvent 'clickNews', link
     window.close()
 
   # If organization prefers alternative links, use them
@@ -401,10 +433,17 @@ $ ->
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleInfoscreen'])
+    Analytics.trackEvent 'toggleInfoscreen'
     setTimeout ( ->
       window.close()
     ), 250
+
+  # If this is a tiny computer screen, reduce popup height
+  if window.screen.availHeight < 700
+    shorter = window.screen.availHeight - 100
+    # shorter is available screenspace minus the height
+    # of the browser taskbar, rounded up well to be sure
+    $('body').css 'height', shorter + 'px'
 
   # If only one affiliation is to be shown remove the second news column
   # Also, some serious statistics
@@ -412,16 +451,16 @@ $ ->
     $('#news #right').hide()
     $('#news #left').attr 'id', 'full'
     # Who uses single affiliations?
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadSingleAffiliation', ls.affiliationKey1])
+    Analytics.trackEvent 'loadSingleAffiliation', ls.affiliationKey1
     # What is the prefered primary affiliation?
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1])
+    Analytics.trackEvent 'loadAffiliation1', ls.affiliationKey1
   else
     # What kind of double affiliations are used?
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
+    Analytics.trackEvent 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2
     # What is the prefered primary affiliation?
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadAffiliation1', ls.affiliationKey1])
+    Analytics.trackEvent 'loadAffiliation1', ls.affiliationKey1
     # What is the prefered secondary affiliation?
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadAffiliation2', ls.affiliationKey2])
+    Analytics.trackEvent 'loadAffiliation2', ls.affiliationKey2
 
   # Hide stuff the user can't or doesn't want to see
   $('#todays').hide() if ls.showOffice isnt 'true'
@@ -453,19 +492,19 @@ $ ->
   
   # Track popularity of the chosen palette, the palette
   # itself is loaded a lot earlier for perceived speed
-  if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'loadPalette', ls.affiliationPalette])
+  Analytics.trackEvent 'loadPalette', ls.affiliationPalette
 
   # Click events
   $('#logo').click ->
     name = Affiliation.org[ls.affiliationKey1].name
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickLogo', name])
+    Analytics.trackEvent 'clickLogo', name
     web = Affiliation.org[ls.affiliationKey1].web
     Browser.openTab web
     window.close()
 
   $('#optionsButton').click ->
     Browser.openTab 'options.html'
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickOptions'])
+    Analytics.trackEvent 'clickOptions'
     window.close()
 
   $('#tipsButton').click ->
@@ -473,13 +512,13 @@ $ ->
       $('#tips').fadeOut 'fast'
     else
       $('#tips').fadeIn 'fast'
-      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTips'])
+      Analytics.trackEvent 'clickTips'
   $('#tips:not(a)').click ->
     $('#tips').fadeOut 'fast'
   $('#tips a').click ->
     link = $(this).attr 'href'
     Browser.openTab link
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickTipsLink', link])
+    Analytics.trackEvent 'clickTipsLink', link
     window.close()
 
   clickChatter = ->
@@ -488,14 +527,14 @@ $ ->
     channel = irc.channel
     noNick = irc.noNick
     Browser.openTab 'https://kiwiirc.com/client/' + server + '/' + channel
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickChatter'])
+    Analytics.trackEvent 'clickChatter', ls.affiliationKey1
     window.close()
   $('#chatterButton').click clickChatter
   $('#chatterIcon').click clickChatter
   
   $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'
-    if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'clickAtb'])
+    Analytics.trackEvent 'clickAtb'
     window.close()
 
   # Bind oracle
@@ -528,7 +567,7 @@ $ ->
   $(document).konami (
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: ->
-      if !DEBUG then _gaq.push(['_trackEvent', 'popup', 'toggleKonami'])
+      Analytics.trackEvent 'toggleKonami'
       # Animate background
       $('head').append '<style type="text/css">
         @-webkit-keyframes adjustHue {
@@ -550,6 +589,17 @@ $ ->
   # Set the cursor to focus on the question field
   # (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
   $('#oracle #question').focus()
+
+  # 60 fps scrolling, thecssninja.com/javascript/pointer-events-60fps
+  _timer = null
+  _func = ->
+    clearTimeout _timer
+    if not document.body.classList.contains 'disable-hover'
+      document.body.classList.add 'disable-hover'
+    _timer = setTimeout ( ->
+      document.body.classList.remove 'disable-hover'
+    ), 500
+  window.addEventListener 'scroll', _func, false
 
   # Enter main loop, keeping everything up-to-date
   mainLoop()

@@ -26,12 +26,12 @@ var Palettes = {
         return path;
       }
       else {
-        if (DEBUG) console.log('ERROR: a special palette has not yet been created for the affiliation', palette);
+        console.lolg('ERROR: a special palette has not yet been created for the affiliation', palette);
         return this.palettes['blue'];
       }
     }
 
-    if (DEBUG) console.log('ERROR: unsupported palette', palette);
+    console.lolg('ERROR: unsupported palette', palette);
     return this.palettes['blue'];
   },
 
@@ -49,7 +49,7 @@ var Palettes = {
       paletteLink.href = palette;
     }
     else {
-      if (DEBUG) console.log('ERROR: palette link element with ID "#' + elementId + '" not found');
+      console.lolg('ERROR: palette link element with ID "#' + elementId + '" not found');
     }
   },
 

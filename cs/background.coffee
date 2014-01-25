@@ -4,7 +4,7 @@ ls = localStorage
 iteration = 0
 
 mainLoop = ->
-  if DEBUG then console.log "\n#" + iteration
+  console.lolg "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
     if Affiliation.org[ls.affiliationKey1].hw
@@ -29,7 +29,7 @@ mainLoop = ->
   ), loopTimeout
 
 updateOfficeAndMeetings = (force) ->
-  if DEBUG then console.log 'updateOfficeAndMeetings'
+  console.lolg 'updateOfficeAndMeetings'
   Office.get (status, message) ->
     title = ''
     if force or ls.officeStatus isnt status or ls.officeStatusMessage isnt message
@@ -53,7 +53,7 @@ updateOfficeAndMeetings = (force) ->
         ls.officeStatusMessage = message
 
 updateCoffeeSubscription = ->
-  if DEBUG then console.log 'updateCoffeeSubscription'
+  console.lolg 'updateCoffeeSubscription'
   Coffee.get false, (pots, age) ->
     # Error messages will be NaN here
     if not isNaN pots and not isNaN age
@@ -70,19 +70,19 @@ updateCoffeeSubscription = ->
       ls.coffeePots = pots
 
 updateAffiliationNews = (number) ->
-  if DEBUG then console.log 'updateAffiliationNews'+number
+  console.lolg 'updateAffiliationNews'+number
   # Get affiliation object
   affiliationKey = ls['affiliationKey'+number]
   affiliation = Affiliation.org[affiliationKey]
   if affiliation is undefined
-    if DEBUG then console.log 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
+    console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
   else
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
     News.get affiliation, newsLimit, (items) ->
       # Error message, log it maybe
       if typeof items is 'string'
-        if DEBUG then console.log 'ERROR:', items
+        console.lolg 'ERROR:', items
       # Empty news items, don't count
       else if items.length is 0
         updateUnreadCount 0, 0
@@ -150,21 +150,22 @@ $ ->
   # Open options page after install
   if ls.everOpenedOptions is 'false' and !DEBUG
     Browser.openTab 'options.html'
-    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadOptions (fresh install)'])
+    Analytics.trackEvent 'loadOptions (fresh install)'
   # Open Infoscreen if the option is set
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
-    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadInfoscreen'])
+    Analytics.trackEvent 'loadInfoscreen'
   # Open Chatter if the option is set
   if ls.openChatter is 'true'
     Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
-    if !DEBUG then _gaq.push(['_trackEvent', 'background', 'loadChatter'])
+    Analytics.trackEvent 'loadChatter'
 
   loadAffiliationIcon()
 
   # TODO: FEATURE IS NOT COMLPETE
   # bindOmniboxToOracle()
   
+  Browser.bindCommandHotkeys()
   Browser.registerNotificationListeners()
 
   # Attaching the update-functions to the window (global) object so other pages
@@ -178,18 +179,17 @@ $ ->
 
   # Send some basic statistics once a day
   setInterval ( ->
-    if !DEBUG
-      # App version is interesting
-      _gaq.push(['_trackEvent', 'background', 'appVersion', Browser.getAppVersion()])
-      # Affiliation is also interesting, in contrast to the popup some of these are inactive users
-      # To find inactive user count, subtract these stats from popup stats
-      if ls.showAffiliation2 isnt 'true'
-        _gaq.push(['_trackEvent', 'background', 'singleAffiliation', ls.affiliationKey1])
-        _gaq.push(['_trackEvent', 'background', 'affiliation1', ls.affiliationKey1])
-      else
-        _gaq.push(['_trackEvent', 'background', 'doubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2])
-        _gaq.push(['_trackEvent', 'background', 'affiliation1', ls.affiliationKey1])
-        _gaq.push(['_trackEvent', 'background', 'affiliation2', ls.affiliationKey2])
+    # App version is interesting
+    Analytics.trackEvent 'appVersion', Browser.getAppVersion()
+    # Affiliation is also interesting, in contrast to the popup some of these are inactive users
+    # To find inactive user count, subtract these stats from popup stats
+    if ls.showAffiliation2 isnt 'true'
+      Analytics.trackEvent 'singleAffiliation', ls.affiliationKey1
+      Analytics.trackEvent 'affiliation1', ls.affiliationKey1
+    else
+      Analytics.trackEvent 'doubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2
+      Analytics.trackEvent 'affiliation1', ls.affiliationKey1
+      Analytics.trackEvent 'affiliation2', ls.affiliationKey2
   ), 1000 * 60 * 60 * 24
 
   # Enter main loop, keeping everything up-to-date

@@ -1,7 +1,7 @@
 {
   "name": "Online Notifier",
   "short_name": "Notifier",
-  "version": "3.7.3",
+  "version": "3.7.4",
   "manifest_version": 2,
   "offline_enabled": false,
 	
@@ -23,11 +23,23 @@
   // },
 
   "commands": {
+    "open_affiliation": {
+      "suggested_key": {
+        "default": "Alt+L"
+      },
+      "description": "Gogo Linjeforening"
+    },
+    "open_instabart": {
+      "suggested_key": {
+        "default": "Alt+I"
+      },
+      "description": "Gogo Instabart"
+    },
     "_execute_browser_action": {
       "suggested_key": {
-        "default": "Alt+A",
-        "mac": "Alt+A"
-      }
+        "default": "Alt+A"
+      },
+      "description": "Gogo Notifier"
     }
   },
 

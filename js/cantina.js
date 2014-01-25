@@ -86,7 +86,7 @@ var Cantina = {
         self.parseXml(xml, callback);
       },
       error: function(jqXHR, text, err) {
-        if (DEBUG) console.log('ERROR: '+self.msgConnectionError);
+        console.lolg('ERROR: '+self.msgConnectionError);
         callback(self.msgConnectionError);
       },
     })
@@ -134,7 +134,7 @@ var Cantina = {
       self.parseTodaysMenu(todaysMenu, mondaysCantinaMenu, callback);
     }
     catch (err) {
-      if (DEBUG) console.log('ERROR: problems during parsing of dinner xml');
+      console.lolg('ERROR: problems during parsing of dinner xml');
       callback(self.msgMalformedMenu + ': ' + err);
     }
   },
@@ -177,7 +177,7 @@ var Cantina = {
           }
         }
         else {
-          if (DEBUG) console.log('ERROR: problems during initial parsing of todays dinner');
+          console.lolg('ERROR: problems during initial parsing of todays dinner');
           callback(self.msgMalformedMenu);
           return;
         }
@@ -289,7 +289,7 @@ var Cantina = {
       callback(dinnerObjects);
     }
     catch (err) {
-      if (DEBUG) console.log('ERROR: problems during deep parsing of todays dinners');
+      console.lolg('ERROR: problems during deep parsing of todays dinners');
       callback(self.msgMalformedMenu);
     }
   },
@@ -425,8 +425,8 @@ var Cantina = {
     if (text.split(' ').length > limit) {
       text = text.split(' ').splice(0,limit).join(' ');
       // Surprisingly accurate check to see if we're ending the sentence with a verb
-      // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget"
-      if (text.match(/(te|de|kt|laget)$/))
+      // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget", "Taco med godt"
+      if (text.match(/(te|de|dt|kt|laget)$/))
         // In that case, return the expected noun as well (heighten limit by 1)
         return originalText.split(' ').splice(0,limit+1).join(' ');
     }

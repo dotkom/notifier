@@ -32,6 +32,7 @@ var Oracle = {
       url: self.api + encodedQuestion,
       success: function(answer) {
         answer = self.shorten(answer);
+        answer = self.prettify(answer);
 
         // Store answer for later prediction
         self.consider(question, answer);
@@ -66,16 +67,26 @@ var Oracle = {
       'Bussorakelet er sultent på spørsmål, eller kantinemat, alt ettersom.',
       'Spør et busspørsmål her.',
       'De som laget Notifier er ganske snille mot AtB.',
+      'Buss her, buss der, buss overalt.',
       'Ta bussen til Tiller og kjøp no stæsj du trenger.',
       'Ta bussen til Nidar og spis masse sjokolade.',
       'Ta bussen til campus når det er for kaldt for å sykle.',
-      'Tralala, jeg kan synge en sang.',
-      'Buss her, buss der, buss overalt.',
+      'Åååååå Macarena!',
+      'Never gonna give you up!',
+      'I\'m a barbie girl!',
+      'Bird is the word!',
+      'STOP! Hammertime.',
+      'Aaaaaaaaa Sevenyaaaaaaaa!',
+      'I\'m blue, da bee dee da be daa',
+      'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.',
 
       // Funfacts
       'Bussorakelet ble utviklet på NTNU, spør om noe!',
+      'Michael Johansen laget Notifier. Det tok mye tid, men var visst veldig gøy.',
       'Tri M. Nguyen har laget APIet som brukes til sanntiden. Takk, Tri <3',
       'Tri M. Nguyen har laget APIet som Notifier bruker, det er på <a href="http://api.visuweb.no/bybussen">api.visuweb.no/bybussen</a>',
+      'Morten Noddeland har laget <a href="http://instabart.no">instabart.no</a>, den siden bør alle Trondheimsstudenter vite om.',
+      'Om du liker Notifier kommer du sikkert også til å like <a href="http://instabart.no">instabart.no</a>.',
       'AtB har minibusser også.',
       'UKA har en egen buss.',
       'Flybussen går hvert 10. minutt.',
@@ -162,8 +173,9 @@ var Oracle = {
   consider: function(question, answer) {
     if (this.debug) console.log('Oracle considering...\n- Question:', question, '\n- Answer:', answer);
 
-    var pieces = answer.match(/buss|til|fra|passerer|kommer|senere/gi);
+    var pieces = answer.match(/buss|bus|til|to|fra|from|passerer|passes|kommer|arrives|senere|later|går|leaves/gi);
     if (pieces != null) {
+      // Relevant enough? Simple keyword recognition
       if (pieces.length >= 3) {
         var oracleBrain = JSON.parse(localStorage.oracleBrain);
         
@@ -216,15 +228,131 @@ var Oracle = {
     // går fra Prinsen kinosenter kl. 2105 til Studentersamfundet kl. 2106.
     // Tidene angir tidligste passeringer av holdeplassene."
     var pieces = answer.split('. ');
-    // Slice away "Holdeplassen nærmest X er X."
-    if (pieces[0].startsWith('Holdeplassen nærmest')) {
-      pieces = pieces.slice(1);
-    }
+    // // Slice away "Holdeplassen nærmest X er X."
+    // if (pieces[0].startsWith('Holdeplassen nærmest') || pieces[0].startsWith('The station nearest')) {
+    //   pieces = pieces.slice(1);
+    // }
     // Slice away "Tidene angir tidligste passeringer av holdeplassene."
-    if (pieces[pieces.length-1].startsWith('Tidene angir tidligste')) {
+    var last = pieces[pieces.length-1];
+    if (last.startsWith('Tidene angir tidligste') || last.startsWith('The hours indicate the earliest')) {
       pieces = pieces.slice(0, pieces.length-1);
     }
     return pieces.join('. ') + '.';
+  },
+
+  convert12to24: function(answer) {
+    // Don't convert
+    if (answer.match(/ (am|pm)/gi) === null)
+      return answer;
+
+    // Extract time strings
+    var gotcha = true;
+    var timePieces = [];
+    do {
+      var timePiece = answer.match(/\d+:\d+ [ap]m/i);
+      if (timePiece !== null) {
+        var t = timePiece[0];
+        timePieces.push(t);
+        answer = answer.replace(t, '§');
+      }
+    } while (timePiece !== null);
+
+    // Change each time string individually
+    for (i in timePieces) {
+      var t = timePieces[i];
+      var hours = Number(t.match(/^(\d+):/)[1]);
+      var ampm = t.match(/\s(.*)$/)[1].toLowerCase();
+      if (ampm == "pm" && hours<12)
+        hours = hours+12;
+      if (ampm == "am" && hours==12)
+        hours = hours-12;
+      timePieces[i] = t.replace(/(\d+):(\d+) (am|pm)/i, hours + ':$2');
+    }
+
+    // Load answer with new time strings
+    for (i in timePieces) {
+      answer = answer.replace(/§/, timePieces[i]);
+    }
+    return answer;
+  },
+
+  prettify: function(answer) {
+
+    // If not meant to be prettified
+    if (answer.match(/(Buss \d+ (passerer|går fra) .*? kl\. )|(Bus \d+ (|passes by|goes from) .*? at )/) == null)
+      return answer;
+
+    // Replace am/pm time with 24-hour format
+    answer = Oracle.convert12to24(answer);
+
+    // Advanced first, capture groups are shown below:
+
+    // Answer:
+    // Buss 5 går fra Gløshaugen Syd, 1009 til Prinsen kinosenter, 1013
+    // og buss 66 går fra Prinsen kinosenter, 1018 til Studentersamfundet, 1019.
+
+    // 1. 36
+    // 2. Høiset
+    // 3. 1002
+    // 4. Lerkendal gård
+    // 5. 1009
+    // 6. 8
+    // 7. Lerkendal gård
+    // 8. 1027
+    // 9. Steinan
+    // 10. 1040
+
+    // Target:
+    // Ta buss 36 fra Høiset 0616 til 1009 Lerkendal Gård
+    // -> Så buss 8 fra Lerkendal Gård 1027 til 1040 Steinan
+    answer = answer.replace(/Buss (\d+) går fra (.*?) kl\. (\d{4}) til (.*?) kl\. (\d{4}) og buss (\d+) går fra (.*?) kl\. (\d{4}) til (.*?) kl\. (\d{4})\./gi,
+      '@Ta først buss $1 fra $2 $3 til $4 $5...@...deretter buss $6 fra $7 $8 til $9 $10');
+    answer = answer.replace(/Bus (\d+) goes from (.*?) at (\d+:\d+) to (.*?) at (\d+:\d+) and bus (\d+) goes from (.*?) at (\d+:\d+) to (.*?) at (\d+:\d+\.)/gi,
+      '@Take the first bus $1 from $2 $3 to $4 $5...@...then bus $6 from $7 $8 to $9 $10');
+
+    // Answer 1:
+    // Buss 66 passerer NTNU Dragvoll kl. 1816 og kl. 1831 og kommer til
+    // Dronningens gate D1, 31 minutter senere. Buss 5 passerer NTNU Dragvoll
+    // kl. 1820, kl. 1830 og kl. 1840 og kommer til Kongens gate K1, 15
+    // minutter senere. Buss 36 passerer NTNU Dragvoll kl. 1826 og kommer
+    // til Munkegata M4, 16 minutter senere.
+    
+    // Answer 2:
+    // 12. Des. 2013 er en torsdag. Holdeplassen nærmest Gløshaugen er
+    // Gløshaugen Syd. Buss 22 går fra Gløshaugen Syd kl. 0616 til Prinsen
+    // kinosenter kl. 0621 og buss 8 går fra Prinsen kinosenter kl. 0627
+    // til Studentersamfundet kl. 0628.
+
+    // Target:
+    // Holdeplass: NTNU Dragvoll
+    // Buss 66: 1816, 1831 til Dronningens gate D1 (31 minutter)
+    // Buss 5: 1820, 1830, 1840 til Kongens gate K1 (15 minutter)
+    // Buss 36: 1826, kommer til Munkegata M4 (16 minutter)
+
+    // Put an @ where you want a linebreak
+
+    // Replace "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd." with just "Holdeplass: Gløshaugen Syd"
+    answer = answer.replace(/Holdeplassen nærmest .*? er (.*?)\. /gi, '@Holdeplass: $1 ');
+    answer = answer.replace(/The station nearest to .*? is (.*?)\. /gi, '@Station: $1 ');
+    // Replace "Buss 66 passerer NTNU Dragvoll kl." with just "Buss 66:"
+    answer = answer.replace(/(Buss \d+) passerer .*? kl\. /gi, '@$1 går ');
+    answer = answer.replace(/(Bus \d+) passes by .*? at /gi, '@$1 leaves ');
+    // Replace "og kl." with just a comma
+    answer = answer.replace(/,?( og)? kl\. /gi, ', ');
+    answer = answer.replace(/,?( and)? at (\d+)/gi, ', $2');
+    // Replace "og kommer til Munkegata M4, 16 minutter senere" with just ""
+    answer = answer.replace(/og kommer til (.*?), (\d+)(-\d+)? minutter senere./gi, 'til $1'); // på $2 min');
+    answer = answer.replace(/and arrives at (.*?), (\d+)(-\d+)? minutes later./gi, 'to $1');
+
+    // Replace 2321 with 23:21, but not when it says "11 Des. 2013 er en onsdag"
+    answer = answer.replace(/(\d\d)(\d\d)(?! er en)/gi, '$1:$2');
+    // English version already contains colons
+
+    // Don't start with a line break
+    if (answer.charAt(0) == '@')
+      answer = answer.substring(1);
+
+    return answer;
   },
 
 }

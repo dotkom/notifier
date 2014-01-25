@@ -7,9 +7,9 @@ to make this pretty.
 
 body {
   text-shadow:
-  	0 0 1pt #444,
-  	0 0 1pt #444,
-  	0 0 1pt #444;
+  	0 0 1px #444,
+  	0 0 1px #444,
+  	0 0 1px #444;
 }
 
 /* Overrides in Options */
@@ -29,11 +29,11 @@ body {
 .title {
   color: white;
   text-shadow:
-  	0 0 1pt #444,
-  	0 0 1pt #444,
-    0 0 2pt #444,
-    0 0 2pt #444,
-  	0 0 2pt #444;
+  	0 0 1px #444,
+  	0 0 1px #444,
+    0 0 2px #444,
+    0 0 2px #444,
+  	0 0 2px #444;
 }
 
 /* allround stuff */

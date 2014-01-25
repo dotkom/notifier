@@ -6,13 +6,13 @@
 // Mixins
 
 .title {
-  font-size: 24pt;
-  margin-top: 20pt;
-  margin-bottom: 5pt;
+  font-size: 32px;
+  margin-top: 27px;
+  margin-bottom: 7px;
 }
 
 .emphasized {
-  margin-bottom: 5pt;
+  margin-bottom: 7px;
 }
 
 // Webkit (Safari in iOS), disable touch callout and some other default touch behavior
@@ -52,27 +52,27 @@ body {
   background-image: radial-gradient(circle farthest-corner at center, #00274F 0%, #00254C 20%, #002040 40%, #001832 60%, #001427 80%, #000000 100%);
   */
 
-  width: 735pt;
-  font-size: 24pt;
+  width: 980px;
+  font-size: 32px;
 }
 
 /* This container keeps the content centered */
 
 #container {
   overflow-y: auto;
-  padding: 30pt;
+  padding: 40px;
 
   #office {
     .fullbox;
-    /* set "padding-top: 40pt" if page uses translucent status bar (wifi, battery) */
-    padding-top: 0pt;
+    /* set "padding-top: 53px" if page uses translucent status bar (wifi, battery) */
+    padding-top: 0;
     text-align: center;
     #status {
       .debugText;
-      font-size: 90pt;
+      font-size: 120px;
       font-weight: bold;
       text-transform: uppercase;
-      text-shadow: 0 0 15pt black, 0 0 20pt black;
+      text-shadow: 0 0 20px black, 0 0 27px black;
     }
     .open {
       color: #00ff00;
@@ -92,44 +92,44 @@ body {
     #subtext {
       .debugText;
       position: relative;
-      top: -10pt;
+      top: -13px;
       font-weight: bold;
       text-align: center;
-      text-shadow: 0 0 15pt black, 0 0 20pt black;
+      text-shadow: 0 0 20px black, 0 0 27px black;
     }
   }
 
   #bus {
-    top: 30pt;
-    margin-bottom: 30pt;
-    box-shadow: 0 0 15pt #88b;
-    height: 140pt;
+    top: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 0 20px #88b;
+    height: 187px;
 
     .name {
-      margin-bottom: 3pt;
+      margin-bottom: 4px;
     }
     #firstBus {
-      padding-top: 12pt;
+      padding-top: 16px;
       width: 42%;
     }
     #secondBus {
-      padding-top: 12pt;
+      padding-top: 16px;
       width: 41%;
     }
     .loadingLeft {
       width: 160px;
-      top: 18pt;
+      top: 24px;
     }
     .loadingRight {
       width: 160px;
-      top: 18pt;
+      top: 24px;
     }
     #middle {
       width: 14%;
       height: 100%;
       img {
-        margin: 35pt 0;
-        height: 75pt;
+        margin: 47px 0;
+        height: 100px;
       }
     }
   }
@@ -141,22 +141,22 @@ body {
       /*padding-bottom: @box-padding;*/
       
       .item {
-        min-height: 40pt;
+        min-height: 53px;
 
         img {
           width: auto;
           width: auto;
-          max-width: 170pt;
-          max-height: 140pt;
+          max-width: 227px;
+          max-height: 187px;
           padding: 5px;
-          -webkit-box-shadow: 0px 0px 10px #bbb;
+          -webkit-box-shadow: 0 0 10px #bbb;
         }
         .textwrapper {
           .debugText;
           position: relative;
           float: left;
           text-align: left;
-          margin-left: 14pt;
+          margin-left: 19px;
           width: 70%;
         }
       }
@@ -167,8 +167,8 @@ body {
     .fullbox;
     text-align: center;
     img {
-      width: 300pt;
-      padding: 30pt 0;
+      width: 400px;
+      padding: 40px 0;
     }
   }
   
@@ -178,11 +178,11 @@ body {
 
     #busBox {
       overflow: hidden;
-      border-top: 1pt solid white;
-      border-bottom: 1pt solid #7a7a7a;
-      border-radius: 10pt;
+      border-top: 1px solid white;
+      border-bottom: 1px solid #7a7a7a;
+      border-radius: 13px;
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E6E5E5), color-stop(1, #CECECF));
-      padding: 6pt 8pt;
+      padding: 8px 11px;
       white-space: nowrap;
       word-wrap: break-word;
       z-index: 100;
@@ -193,29 +193,29 @@ body {
         white-space: nowrap;
         z-index: 101;
         input {
-          width: 245pt;
-          font-size: 24pt;
+          width: 327px;
+          font-size: 32px;
           z-index: 102;
         }
         select {
           z-index: 10; /* allows the down-arrow to be painted behind this * /
           position: relative; /* allows the down-arrow to be painted behind this * /
-          width: 245pt;
-          font-size: 24pt;
+          width: 327px;
+          font-size: 32px;
           z-index: 102;
         }
         .lines {
           z-index: 10; /* allows the down-arrow to be painted behind this * /
           position: relative; /* allows the down-arrow to be painted behind this * /
-          width: 245pt;
-          margin-top: 1pt;
-          border-top: 1pt solid white;
-          box-shadow: 0 1pt 2pt #888;
-          border-radius: 3pt;
+          width: 327px;
+          margin-top: 1px;
+          border-top: 1px solid white;
+          box-shadow: 0 1px 2px #888;
+          border-radius: 4px;
           background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e8e8e8), color-stop(1, #c0c0c0));
-          padding: 2pt 5pt 1pt 5pt;
+          padding: 2px 7px 1px 7px;
           text-align: left;
-          font-size: 24pt;
+          font-size: 32px;
           text-shadow: 0 0 0 white; /* resets inhertied value from parent element * /
           z-index: 102;
 
@@ -227,7 +227,7 @@ body {
             z-index: 103;
             td {
               .debugText;
-              padding: 1pt 0;
+              padding: 1px 0;
               z-index: 103;
             }
           }
@@ -248,7 +248,7 @@ body {
           .error {
             color: black;
             text-align: center;
-            font-size: 24pt;
+            font-size: 32px;
           }
           .loadingLeft {
             position: relative;
@@ -267,8 +267,8 @@ body {
         z-index: 10; /* allows the down-arrow to be painted behind this * /
         float: left;
         white-space: nowrap;
-        width: 95pt;
-        margin: 0 8pt;
+        width: 127px;
+        margin: 0 11px;
       }
     }
   }
@@ -283,7 +283,7 @@ body {
   vertical-align: middle;
   overflow: auto;
   width: 100%;
-  height: 265pt;
+  height: 353px;
   vertical-align: middle;
   display: none;
   top: 0;
@@ -291,18 +291,18 @@ body {
   z-index: 200;
   
   .suggestion {
-    font-size: 40pt;
+    font-size: 53px;
     line-height: 1.5;
-    padding-left: 30pt;
-    letter-spacing: .7pt;
-    box-shadow: inset 0 0 20pt black, inset 0 0 40pt black, inset 0 0 60pt black, inset 0 0 80pt black, inset 0 0 100pt black;
+    padding-left: 40px;
+    letter-spacing: .9px;
+    box-shadow: inset 0 0 27px black, inset 0 0 53px black, inset 0 0 80px black, inset 0 0 107px black, inset 0 0 133px black;
     .matched_character {
       font-weight: bold;
     }
   }
   .correct {
     color: white;
-    font-size: 24pt;
+    font-size: 32px;
     font-weight: bold;
     line-height: 1.5;
     text-shadow:
