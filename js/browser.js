@@ -277,4 +277,38 @@ var Browser = {
     Analytics.trackEvent('clickNotificationButton', iBtn);
   },
 
+  bindOmniboxToOracle: function() {
+    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+      // This event is fired each time the user updates the text in the omnibox,
+      // as long as the extension's keyword mode is still active.
+      // chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
+      //   if (Browser.debug) console.log('inputChanged: ' + text);
+      //   suggest([
+      //     {content: text + " one", description: text + " the first one"},
+      //     {content: text + " number two", description: text + " the second entry"}
+      //   ]);
+      // });
+      // This event is fired with the user accepts the input in the omnibox.
+      chrome.omnibox.onInputEntered.addListener(function(text) {
+        // console.log('inputEntered: ' + text);
+        Oracle.ask(text, function(answer) {
+          answer = answer.replace(/@/g, '\n');
+          if (Browser.debug) console.log('oracle answer: ' + answer);
+          Analytics.trackEvent('oracleOmniboxAnswer');
+          // Browser.createNotification
+          //   'feedKey': ls.affiliationKey1
+          //   'title': 'Orakelet'
+          //   'description': answer
+          //   'link': 'http://atb.no'
+          //   'longStory': true
+          //   'stay': true
+          alert(answer);
+        });
+      });
+    }
+    else {
+      console.log(this.msgUnsupported);
+    }
+  },
+
 }
