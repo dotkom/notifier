@@ -3,7 +3,7 @@ var Oracle = {
   api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
   msgAboutPredict: 'Etter å ha brukt orakelet en stund kan det forutsi spørsmålet ditt når du trykker [tab]',
   msgDisconnected: 'Frakoblet fra m.atb.no',
-  msgSuggestPredict: '[tab] ⇥ ',
+  msgPredictPostfix: ' [tab]',
 
   _autoLoad_: function() {
     if (localStorage.oracleBrain == undefined) {
@@ -31,11 +31,12 @@ var Oracle = {
     Ajaxer.getPlainText({
       url: self.api + encodedQuestion,
       success: function(answer) {
+        // Store answer for later prediction (should be done before shorten+prettify)
+        self.consider(question, answer);
+
+        // Shorten, prettify
         answer = self.shorten(answer);
         answer = self.prettify(answer);
-
-        // Store answer for later prediction
-        self.consider(question, answer);
 
         // Call it back
         callback(answer);
@@ -185,6 +186,14 @@ var Oracle = {
         // Insert question at correct timeslot
         oracleBrain[timeslot.day][timeslot.hour] = question;
         if (this.debug) console.log('Oracle considered question to be valuable');
+
+        // Check if the same timeslot is free on other days, and insert answer there too
+        for (i in oracleBrain) {
+          if (oracleBrain[i][timeslot.hour] == '') {
+            oracleBrain[i][timeslot.hour] = question;
+            if (this.debug) console.log('Oracle used question for day', i, 'as well (monday=0)');
+          }
+        }
 
         // Stringify the brain
         localStorage.oracleBrain = JSON.stringify(oracleBrain);
