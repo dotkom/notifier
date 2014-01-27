@@ -3,7 +3,7 @@ var Oracle = {
   api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
   msgAboutPredict: 'Etter å ha brukt orakelet en stund kan det forutsi spørsmålet ditt når du trykker [tab]',
   msgDisconnected: 'Frakoblet fra m.atb.no',
-  msgSuggestPredict: 'Trykk [tab] for å spørre om: ',
+  msgSuggestPredict: '[tab] ⇥ ',
 
   _autoLoad_: function() {
     if (localStorage.oracleBrain == undefined) {
