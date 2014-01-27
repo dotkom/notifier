@@ -144,7 +144,7 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 bindOracle = ->
   # Suggest prediction
   if Oracle.predict() isnt null
-    $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
+    $('#oracle #question').attr 'placeholder', Oracle.predict() + Oracle.msgPredictPostfix
     Analytics.trackEvent 'oracleSuggest'
   # User input
   $('#oracle').on 'keyup', '#question', (e) ->
@@ -157,7 +157,7 @@ bindOracle = ->
           Analytics.trackEvent 'oracleAnswer'
           # Update suggested prediction
           if Oracle.predict() isnt null
-            $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
+            $('#oracle #question').attr 'placeholder', Oracle.predict() + Oracle.msgPredictPostfix
       else
         changeOracleAnswer Oracle.greet()
         Analytics.trackEvent 'oracleGreet'
