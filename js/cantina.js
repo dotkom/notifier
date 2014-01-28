@@ -255,7 +255,7 @@ var Cantina = {
           // If current item is NOT about the buffet or a special, continue with:
           if (text.match(/buffet|dag/gi) === null) {
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-            text = self.removeLastWords([' i',' &',' og',' med', ' m', ' frisk', ' eller', ' inkl', ' inkludert'], text);
+            text = self.removeLastWords([' i',' &',' og',' med',' m',' frisk',' eller',' inkl',' inkludert'], text);
             text = self.removePunctuationAtEndOfLine(text);
             text = self.shortenVeggieWarning(text);
             text = text.trim();
@@ -339,11 +339,15 @@ var Cantina = {
 
   removeLastWords: function(keys, text) {
     var self = this;
-    for (key in keys) {
-      if (self.debugText) console.log(keys[key] + (keys[key].length<4?'\t\t':'\t') + ':: ' + text);
-      if (self.endsWith(keys[key], text)) {
-        var pieces = text.split(' ');
-        text = pieces.splice(0,pieces.length-1).join(' ');
+    // We'll do this twice in case some keywords are laid out after eachother.
+    // Example: "Raspeballer med frisk salat", where "med" and "frisk" are keywords.
+    for (var i=0; i<2; i++) {
+      for (key in keys) {
+        if (self.debugText) console.log(keys[key] + (keys[key].length<4?'\t\t':'\t') + ':: ' + text);
+        if (self.endsWith(keys[key], text)) {
+          var pieces = text.split(' ');
+          text = pieces.splice(0,pieces.length-1).join(' ');
+        }
       }
     }
     return text;
