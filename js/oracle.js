@@ -246,7 +246,12 @@ var Oracle = {
     if (last.startsWith('Tidene angir tidligste') || last.startsWith('The hours indicate the earliest')) {
       pieces = pieces.slice(0, pieces.length-1);
     }
-    return pieces.join('. ') + '.';
+    // Remove "Jeg antar du mener avganger fra ikveld. 27. Jan. 2014 er en mandag."
+    var newAnswer = pieces.join('. ') + '.';
+    newAnswer = newAnswer.replace(/^Jeg antar.*[man|tirs|ons|tors|fre|lør]dag\. /i, '');
+    newAnswer = newAnswer.replace(/^I assume.*[mon|tues|wednes|thurs|fri|satur]day\. /i, '');
+    // Done!
+    return newAnswer;
   },
 
   convert12to24: function(answer) {
