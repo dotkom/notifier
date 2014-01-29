@@ -237,6 +237,8 @@ var Cantina = {
         var text = dinner.text;
 
         // Extract any food flags first
+        text = self.addMissingFoodFlags(text);
+        text = self.removeTextualFoodFlags(text);
         dinner.flags = self.getFoodFlags(text);
         // If it's a message (dinner without a price) we'll just trim it
         if (dinner.price == null) {
@@ -255,7 +257,7 @@ var Cantina = {
           // If current item is NOT about the buffet or a special, continue with:
           if (text.match(/buffet|dag/gi) === null) {
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-            text = self.removeLastWords([' i',' &',' og',' med',' m',' frisk',' eller',' inkl',' inkludert'], text);
+            text = self.removeLastWords([' i',' &',' og',' med',' m',' frisk',' friske',' eller',' inkl',' inkludert'], text);
             text = self.removePunctuationAtEndOfLine(text);
             text = self.shortenVeggieWarning(text);
             text = text.trim();
@@ -355,9 +357,33 @@ var Cantina = {
 
   // Welcome to the department of regular expressions, how may we (help|do) you\?
 
+  addMissingFoodFlags: function(text) {
+    // Sometimes, SiT will write "vegetar" in the text, but forget to add the food flag (V)
+    if (text.match(/vegetar/gi) !== null)
+      text += '(V)';
+    if (text.match(/((uten |ikke )gluten)|gluten ?fri/gi) !== null)
+      text += '(G)';
+    if (text.match(/((uten |ikke )laktose)|laktose ?fri/gi) !== null)
+      text += '(L)';
+    return text;
+  },
+
+  removeTextualFoodFlags: function(text) {
+    // After the flag has been added properly with addMissingFoodFlags, common cases
+    // of "vegetar" in the text may be removed (shown with flag instead like "(V)")
+    text = text.replace(/vegetar( - )?/gi, '');
+    // TODO: Watch out for Laktosefri or Glutenfri variants.
+    return text;
+  },
+
   getFoodFlags: function(text) {
     var matches = text.match(/\b[VGL]+(?![æøåÆØÅ])\b/g);
-    return (matches !== null ? '(' + matches.sort().join('') + ')' : null);
+    if (matches === null)
+      return null;
+    matches = matches.filter(function(elem, pos) {
+      return matches.indexOf(elem) == pos;
+    });
+    return '(' + matches.sort().join('') + ')';
     // TODO: Both getFoodFlags and removeFoodFlags suffer from a lacking implementation
     // of the regex flag 'word boundary'. Add the flag /i to both and make sure they
     // can handle æøåÆØÅ on both sides of food flags, especially in words like
@@ -430,7 +456,7 @@ var Cantina = {
       text = text.split(' ').splice(0,limit).join(' ');
       // Surprisingly accurate check to see if we're ending the sentence with a verb
       // E.g. "Gryte med wokede", "Lasagna med friterte", "Risrett med kokt", "Pølse med hjemmelaget", "Taco med godt"
-      if (text.match(/(te|de|dt|kt|laget)$/))
+      if (text.match(/(te|de|dt|kt|dampet|laget)$/))
         // In that case, return the expected noun as well (heighten limit by 1)
         return originalText.split(' ').splice(0,limit+1).join(' ');
     }
