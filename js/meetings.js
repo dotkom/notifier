@@ -50,8 +50,8 @@ var Meetings = {
     meetings = meetings.trim();
     // Change 00:00 to 24
     meetings = meetings.replace(/00:00/g, '24');
-    // Remove unnecessarily specific time info 10:00 -> 10
-    meetings = meetings.replace(/:00/g, '');
+    // Remove unnecessarily specific time info 10:00 -> 10, including the academic fifteen minutes
+    meetings = meetings.replace(/:(00|15)/g, '');
     // Trim unnecessary zero in time 08 -> 8
     meetings = meetings.replace(/0(\d)/g, '$1');
     // Add spaces for times "10-16:30" -> "10 - 16:30" and days "Fredag-Søndag" -> "Fredag - Søndag"

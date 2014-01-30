@@ -180,7 +180,7 @@
       }
     } else {
       if (lines['departures'].length === 0) {
-        return $(busStop + ' .first .line').html('<div class="error">....zzzZZZzzz....<br />(etter midnatt vises ikke)</div>');
+        return $(busStop + ' .first .line').html('<div class="error">....zzzZZZzzz....</div>');
       } else {
         _results = [];
         for (i in spans) {
@@ -194,7 +194,7 @@
 
   bindOracle = function() {
     if (Oracle.predict() !== null) {
-      $('#oracle #question').attr('placeholder', Oracle.msgSuggestPredict + Oracle.predict());
+      $('#oracle #question').attr('placeholder', Oracle.predict() + Oracle.msgPredictPostfix);
       Analytics.trackEvent('oracleSuggest');
     }
     $('#oracle').on('keyup', '#question', function(e) {
@@ -206,7 +206,7 @@
             changeOracleAnswer(answer);
             Analytics.trackEvent('oracleAnswer');
             if (Oracle.predict() !== null) {
-              return $('#oracle #question').attr('placeholder', Oracle.msgSuggestPredict + Oracle.predict());
+              return $('#oracle #question').attr('placeholder', Oracle.predict() + Oracle.msgPredictPostfix);
             }
           });
         } else {

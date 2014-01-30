@@ -133,7 +133,7 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....<br />(etter midnatt vises ikke)</div>'
+      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....</div>'
     else
       # Display line for line with according times
       for i of spans
@@ -144,7 +144,7 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 bindOracle = ->
   # Suggest prediction
   if Oracle.predict() isnt null
-    $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
+    $('#oracle #question').attr 'placeholder', Oracle.predict() + Oracle.msgPredictPostfix
     Analytics.trackEvent 'oracleSuggest'
   # User input
   $('#oracle').on 'keyup', '#question', (e) ->
@@ -157,7 +157,7 @@ bindOracle = ->
           Analytics.trackEvent 'oracleAnswer'
           # Update suggested prediction
           if Oracle.predict() isnt null
-            $('#oracle #question').attr 'placeholder', Oracle.msgSuggestPredict + Oracle.predict()
+            $('#oracle #question').attr 'placeholder', Oracle.predict() + Oracle.msgPredictPostfix
       else
         changeOracleAnswer Oracle.greet()
         Analytics.trackEvent 'oracleGreet'
