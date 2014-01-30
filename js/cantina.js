@@ -257,7 +257,7 @@ var Cantina = {
           // If current item is NOT about the buffet or a special, continue with:
           if (text.match(/buffet|dag/gi) === null) {
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-            text = self.removeLastWords([' i',' &',' og',' med',' m',' frisk',' friske',' eller',' inkl',' inkludert'], text);
+            text = self.removeLastWords(['i','&','og','med','m','frisk','friske','eller','inkl','inkludert'], text);
             text = self.removePunctuationAtEndOfLine(text);
             text = self.shortenVeggieWarning(text);
             text = text.trim();
@@ -346,7 +346,8 @@ var Cantina = {
     for (var i=0; i<2; i++) {
       for (key in keys) {
         if (self.debugText) console.log(keys[key] + (keys[key].length<4?'\t\t':'\t') + ':: ' + text);
-        if (self.endsWith(keys[key], text)) {
+        var spacedKey = ' '+keys[key];
+        if (self.endsWith(spacedKey, text)) {
           var pieces = text.split(' ');
           text = pieces.splice(0,pieces.length-1).join(' ');
         }
