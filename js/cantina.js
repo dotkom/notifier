@@ -250,6 +250,7 @@ var Cantina = {
           text = self.addMissingSpaces(text);
           text = self.shortenFoodServedWith(text);
           text = self.shortenFoodWithATasteOf(text);
+          text = self.shortenTodaysSoup(text);
           text = self.expandAbbreviations(text);
           text = self.removeFoodHomeMade(text);
           text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
@@ -360,8 +361,9 @@ var Cantina = {
 
   addMissingFoodFlags: function(text) {
     // Sometimes, SiT will write "vegetar" in the text, but forget to add the food flag (V)
-    if (text.match(/vegetar/gi) !== null)
-      text += '(V)';
+    if (text.match(/(ingen|ikke) vegetar/gi) === null)
+      if (text.match(/vegetar/gi) !== null)
+        text += '(V)';
     if (text.match(/((uten |ikke )gluten)|gluten ?fri/gi) !== null)
       text += '(G)';
     if (text.match(/((uten |ikke )laktose)|laktose ?fri/gi) !== null)
@@ -421,6 +423,12 @@ var Cantina = {
     if (this.debugText) console.log('TasteOf\t:: ' + text);
     // Replace wordings like 'med en liten smak av' to just 'med'
     return text.replace(/[,|\.]?\s?(med)?\s?(en|et)?\s?(liten?)?\s?(smak|hint|dæsj|tøtsj)\s?(av)?\s/gi, ' med ');
+  },
+
+  shortenTodaysSoup: function(text) {
+    if (this.debugText) console.log('Soup\t:: ' + text);
+    // Shortening "Dagens suppe - Løksuppe med løk (G)" to "Løksuppe med løk (G)"
+    return text.replace(/dagens suppe (- )?/gi, '');
   },
 
   expandAbbreviations: function(text) {
