@@ -260,7 +260,6 @@ var Cantina = {
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
             text = self.removeLastWords(['i','&','og','med','m','frisk','friske','eller','inkl','inkludert'], text);
             text = self.removePunctuationAtEndOfLine(text);
-            text = self.shortenVeggieWarning(text);
             text = text.trim();
           }
         }
@@ -448,14 +447,6 @@ var Cantina = {
     if (this.debugText) console.log(',;.-\t:: ' + text);
     // Removing use of punctuation at EOL in lists, like: "39,- Pasta bolognaise."
     return text.replace(/[,;.-]$/gm, '');
-  },
-
-  shortenVeggieWarning: function(text) {
-    if (this.debugText) console.log('Vegwarn\t:: ' + text);
-    // Shortening "Ingen vegetar i dag" to "Ingen vegetar"
-    if (text.match(/^(ingen|ikke) vegetar/i) != null)
-      text = text.split(' ').splice(0,2).join(' ');
-    return text;
   },
 
   limitNumberOfWords: function(limit, originalText) {
