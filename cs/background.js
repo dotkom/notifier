@@ -92,15 +92,13 @@
   };
 
   updateAffiliationNews = function(number) {
-    var affiliation, affiliationKey, newsLimit;
+    var affiliationKey, affiliationObject, newsLimit;
     console.lolg('updateAffiliationNews' + number);
     affiliationKey = ls['affiliationKey' + number];
-    affiliation = Affiliation.org[affiliationKey];
-    if (affiliation === void 0) {
-      return console.lolg('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
-    } else {
+    affiliationObject = Affiliation.org[affiliationKey];
+    if (affiliationObject) {
       newsLimit = 10;
-      return News.get(affiliation, newsLimit, function(items) {
+      return News.get(affiliationObject, newsLimit, function(items) {
         if (typeof items === 'string') {
           return console.lolg('ERROR:', items);
         } else if (items.length === 0) {
@@ -110,6 +108,8 @@
           return updateUnreadCount();
         }
       });
+    } else {
+      return console.lolg('ERROR: chosen affiliation', ls['affiliationKey' + number], 'is not known');
     }
   };
 
