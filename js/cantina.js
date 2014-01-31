@@ -253,10 +253,10 @@ var Cantina = {
           text = self.shortenTodaysSoup(text);
           text = self.expandAbbreviations(text);
           text = self.removeFoodHomeMade(text);
-          text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
           text = text.trim();
           // If current item is NOT about the buffet or a special, continue with:
           if (text.match(/buffet|dag/gi) === null) {
+            text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
             text = self.removeLastWords(['i','&','og','med','m','frisk','friske','eller','inkl','inkludert'], text);
             text = self.removePunctuationAtEndOfLine(text);
