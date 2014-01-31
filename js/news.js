@@ -225,18 +225,35 @@ var News = {
     var post = {};
     post = this.preProcess(post, affiliationObject);
 
+    // Title field
     post.title = $(entry).find("title").filter(':first').text();
-    post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
-    post.description = $(entry).find("content").filter(':first').text();
-    post.creator = $(entry).find("author name").filter(':first').text();
-    post.date = $(entry).find("published").filter(':first').text().substr(5, 11);
 
-    // Parse date field
-    post.date = new Date(post.date);
-    if (post.date != "Invalid Date")
-      post.date = post.date.toDateString();
-    else
+    // Link field
+    post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
+    if (isEmpty(post.link))
+      post.link = $(entry).find("link[rel='alternate']").filter(':first').attr('href');
+
+    // Description field
+    post.description = $(entry).find("content").filter(':first').text();
+    if (isEmpty(post.description))
+      post.description = $(entry).find("summary").filter(':first').text();
+    
+    // Creator field
+    post.creator = $(entry).find("author name").filter(':first').text();
+
+    // Date field
+    post.date = $(entry).find("published").filter(':first').text();
+    var dateTest = new Date(post.date.substr(5,11));
+    if (dateTest != 'Invalid Date') {
+      post.date = dateTest.toDateString();
+    }
+    else {
+      dateTest = new Date(post.date);
+      post.date = dateTest.toDateString();
+    }
+    if (post.date == 'Invalid Date') {
       post.date = null;
+    }
 
     post = this.postProcess(post, affiliationObject);
     return post;
@@ -385,7 +402,7 @@ var News = {
             // Save timestamp
             localStorage.lastNotifiedTime = new Date().getTime();
 
-            // If the organization has an image API, use it
+            // If the organization has an image API or whatever (scraping), use it
             if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
               Affiliation.org[item.feedKey].getImage(item.link, function(link, image) {
                 item.image = image[0];
