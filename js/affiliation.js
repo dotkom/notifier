@@ -1436,6 +1436,9 @@ var Affiliation = {
               // Exclude static content, most likely icons
               image = image.not('pic[src*="static"]');
 
+              // Exclude comments, most likely text in image as "Add comment here"
+              image = image.not('pic[src*="comments"]');
+
               // Use image at specified index if requested
               if (options.imageIndex)
                 image = image.eq(options.imageIndex);
