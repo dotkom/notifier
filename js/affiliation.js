@@ -450,24 +450,25 @@ var Affiliation = {
 
     // Linjeforeninger Dragvoll
 
-    'de folkevalgte': {
-      name: 'De Folkevalgte',
-      key: 'de folkevalgte',
-      web: 'http://www.defolkevalgte.net/',
-      feed: 'http://www.defolkevalgte.net/feed/rss/',
-      logo: './org/de folkevalgte/logo.png',
-      icon: './org/de folkevalgte/icon.png',
-      symbol: './org/de folkevalgte/symbol.png',
-      placeholder: './org/de folkevalgte/placeholder.png',
-      palette: 'yellow',
-      irc: {
-        server: 'irc.freenode.net',
-        channel: '#defolkevalgte',
-      },
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
-      },
-    },
+    // De Folkevalgtes website is no longer in operation, uncommented for the unforseeable future
+    // 'de folkevalgte': {
+    //   name: 'De Folkevalgte',
+    //   key: 'de folkevalgte',
+    //   web: 'http://www.defolkevalgte.net/',
+    //   feed: 'http://www.defolkevalgte.net/feed/rss/',
+    //   logo: './org/de folkevalgte/logo.png',
+    //   icon: './org/de folkevalgte/icon.png',
+    //   symbol: './org/de folkevalgte/symbol.png',
+    //   placeholder: './org/de folkevalgte/placeholder.png',
+    //   palette: 'yellow',
+    //   irc: {
+    //     server: 'irc.freenode.net',
+    //     channel: '#defolkevalgte',
+    //   },
+    //   getImages: function(links, callback) {
+    //     Affiliation.getImages(this, links, callback);
+    //   },
+    // },
 
     'dhs': {
       name: 'Det Historiske Selskab',
