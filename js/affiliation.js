@@ -1270,20 +1270,26 @@ var Affiliation = {
       name: 'DMMH',
       key: 'dmmh',
       web: 'http://www.dmmh.no/',
-      feed: 'http://www.dmmh.no/rss.php?type=site&id=10&location=393',
+      feed: 'http://dmmh.no/hva-skjer?rss=true',
       logo: './org/dmmh/logo.png',
       icon: './org/dmmh/icon.png',
       symbol: './org/dmmh/symbol.png',
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.news_article', domainUrl:'dmmh.no'});
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.articlewrp', domainUrl:'dmmh.no'});
       },
     },
 
   },
 
   getImages: function(affiliation, links, callback, options) {
+
+    // Return with stacktrace if links is undefined
+    if (links == undefined) {
+      if (this.debug) console.log('ERROR: no image links, var links is undefined');
+      return;
+    }
 
     // TODO: Point of improvement: A few sites have differing selectors for
     // news articles across different news pages. Like e.g. if one of their
@@ -1322,7 +1328,7 @@ var Affiliation = {
     
     // In case we don't find any images, prepare an array with placeholders
     var placeholder = affiliation.placeholder;
-    var placeholders = []
+    var placeholders = [];
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
