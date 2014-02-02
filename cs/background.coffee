@@ -79,6 +79,13 @@ updateCantinas = ->
   Cantina.get ls.rightCantina, (menu) ->
     ls.rightCantinaMenu = JSON.stringify menu
 
+updateHours = ->
+  console.lolg 'updateHours'
+  Hours.get ls.leftCantina, (hours) ->
+    ls.leftCantinaHours = hours
+  Hours.get ls.rightCantina, (hours) ->
+    ls.rightCantinaHours = hours
+
 updateAffiliationNews = (number) ->
   console.lolg 'updateAffiliationNews'+number
   # Get affiliation object
