@@ -689,6 +689,7 @@
     });
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     changeOfficeStatusIcons();
+    $('#popupHere img.icon').attr('src', symbol);
     restoreChecksToBoxes();
     if (ls.useInfoscreen === 'true') {
       setTimeout((function() {
