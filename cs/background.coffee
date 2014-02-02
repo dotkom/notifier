@@ -120,6 +120,10 @@ $ ->
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
 
+  # Check if both current affiliations still exist, reset if not
+  keys = Object.keys Affiliation.org
+  Defaults.resetAffiliationsIfNotExist ls.affiliationKey1, ls.affiliationKey2, keys
+
   # Turn off hardwarefeatures if they're not available
   isAvailable = if Affiliation.org[ls.affiliationKey1].hw then true else false
   Defaults.setHardwareFeatures isAvailable

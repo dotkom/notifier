@@ -131,6 +131,21 @@ var Defaults = {
       ls.everOpenedOptions = 'false';
   }(),
 
+  // Whenever we need to remove an existing affiliation,
+  // this little heartsaver comes to our rescue. Just go
+  // ahead and uncomment that affiliation in Affiliation.js !
+  resetAffiliationsIfNotExist: function(key1, key2, affiliationKeys) {
+
+    var ls = localStorage;
+    
+    if (!(key1 in affiliationKeys)) {
+      ls.affiliationKey1 = 'online';
+    }
+    if (!(key2 in affiliationKeys)) {
+      ls.affiliationKey2 = 'dusken';
+    }
+  },
+
   // There is currently no way of knowing whether HardwareFeatures have been
   // installed recently or not, - if they exist. Therefore we will assume the
   // user starts out with the features turned on.

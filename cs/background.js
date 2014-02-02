@@ -141,8 +141,10 @@
   };
 
   $(function() {
-    var isAvailable;
+    var isAvailable, keys;
     $.ajaxSetup(AJAX_SETUP);
+    keys = Object.keys(Affiliation.org);
+    Defaults.resetAffiliationsIfNotExist(ls.affiliationKey1, ls.affiliationKey2, keys);
     isAvailable = Affiliation.org[ls.affiliationKey1].hw ? true : false;
     Defaults.setHardwareFeatures(isAvailable);
     if (ls.everOpenedOptions === 'false' && !DEBUG) {
