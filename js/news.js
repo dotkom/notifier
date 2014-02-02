@@ -159,8 +159,6 @@ var News = {
     if (typeof post.description == 'undefined')
       post.description = $(item).find("description").filter(':first').text();
     post.description = this.stripCdata(item, 'description', post.description);
-    // Decode HTML entities
-    post.description = $('<div/>').html(post.description).text(); // contains the characters as decoded
 
     // Creator field
 
@@ -470,6 +468,12 @@ var News = {
   },
 
   treatTextField: function(field, onEmptyText) {
+    // Decode HTML entities
+    field = $('<div/>').html(field).text();
+    // Remove multiple whitespace
+    field = field.replace(/\s\s+/g,'');
+    // "..stedHvor.." -> "..sted. Hvor.."
+    field = field.replace(/([a-z])([A-Z])/g, '$1. '+'$2'.capitalize());
     // Remove meta information from title or description, within curly brackets {}
     field = field.replace(/\{.*\}/gi,'');
     // Shorten 'bedriftspresentasjon' to 'bedpres'
