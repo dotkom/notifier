@@ -154,10 +154,13 @@ var News = {
 
     // Description field
 
+    // First, try to get HTML, if not working try getting text
     post.description = $(item).find("description").filter(':first').html();
     if (typeof post.description == 'undefined')
       post.description = $(item).find("description").filter(':first').text();
     post.description = this.stripCdata(item, 'description', post.description);
+    // Decode HTML entities
+    post.description = $('<div/>').html(post.description).text(); // contains the characters as decoded
 
     // Creator field
 
@@ -271,6 +274,13 @@ var News = {
   // Applies for both RSS and ATOM feeds
   postProcess: function(post, affiliationObject) {
 
+    // Image field
+
+    // If we haven't found a good image, scour the description for an alternative
+    // NOTE: This must be done before HTML is removed during postprocessing of the description! (look below)
+    if (isEmpty(post.image) || post.image == affiliationObject.placeholder)
+      post.image = this.checkDescriptionForImageLink(post.image, post.description, affiliationObject.web);
+
     // Title field
 
     post.title = this.treatTextField(post.title, this.msgNoTitle);
@@ -284,8 +294,8 @@ var News = {
     // Description field
 
     post.description = this.treatTextField(post.description, this.msgNoDescription);
-
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
+    // NOTE: This must be done after the description is checked for an image link (look above)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities, this works, but ppl should be allowed to use entitites
 
@@ -305,12 +315,6 @@ var News = {
     // In case pubDate didn't exist, set to null
     if (post.date == '')
       post.date = null;
-
-    // Image field
-
-    // If we haven't found a good image, scour the description for an alternative
-    if (post.image == affiliationObject.placeholder)
-      post.image = this.checkDescriptionForImageLink(post.image, post.description);
 
     return post;
   },
@@ -402,11 +406,19 @@ var News = {
             // Save timestamp
             localStorage.lastNotifiedTime = new Date().getTime();
 
+            // TODO: For the two methods of getting images below; whenever a broken
+            // image link is used, the notification will never show. A solution to
+            // this (should we ever bother) is to test-load the image first and not
+            // use if it the link is clearly broken.
+
+            // If we already have the image, just go ahead
+            if (item.image != Affiliation.org[item.feedKey].placeholder) {
+              Browser.createNotification(item);
+            }
             // If the organization has an image API or whatever (scraping), use it
-            if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
+            else if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
               Affiliation.org[item.feedKey].getImage(item.link, function(link, image) {
                 item.image = image[0];
-                // Show desktop notification
                 Browser.createNotification(item);
               });
             }
@@ -415,12 +427,11 @@ var News = {
               links.push(item.link);
               Affiliation.org[item.feedKey].getImages(links, function(links, images) {
                 item.image = images[0];
-                // Show desktop notification
                 Browser.createNotification(item);
               });
             }
+            // Otherwise, just show it without an image
             else {
-              // Show desktop notification
               Browser.createNotification(item);
             }
           }
@@ -471,11 +482,19 @@ var News = {
     return field;
   },
 
-  checkDescriptionForImageLink: function(oldImage, description) {
-    var regex = new RegExp('src="(http[^"]*(png|jpe?g|bmp))"');
-    var pieces = description.match(regex);
-    if (pieces != null)
-      return pieces[1];
+  checkDescriptionForImageLink: function(oldImage, description, website) {
+    var pieces = description.match(/src="(.*(\.(jpg|bmp|png)))("|\?)/i);
+    if (pieces != null) {
+      var image = pieces[1];
+      if (image.startsWith('http')) {
+        // Direct link
+        return image;
+      }
+      else {
+        // Relative link
+        return website + image;
+      }
+    }
     else
       return oldImage;
   },
