@@ -18,6 +18,7 @@ function isEmpty(v) {
 function stacktrace() {
   var e = new Error('dummy');
   var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '').replace(/^\s+at\s+/gm, '').replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@').split('\n');
+  stack = stack.slice(1);
   console.log(stack);
 }
 
@@ -49,13 +50,3 @@ function hotFixBusLines() {
   }
   console.lolg('hotfixed!')
 }
-
-// HOTFIX affiliation stuff, remove after november 2013
-if (localStorage.affiliationKey1 == 'entreprenoerskolen')
-  localStorage.affiliationKey1 = 'solan';
-if (localStorage.affiliationKey2 == 'entreprenoerskolen')
-  localStorage.affiliationKey2 = 'solan';
-if (localStorage.affiliationKey1 == 'kwakiutl')
-  localStorage.affiliationKey1 = 'utopia';
-if (localStorage.affiliationKey2 == 'kwakiutl')
-  localStorage.affiliationKey2 = 'utopia';

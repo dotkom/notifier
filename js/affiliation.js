@@ -450,24 +450,25 @@ var Affiliation = {
 
     // Linjeforeninger Dragvoll
 
-    'de folkevalgte': {
-      name: 'De Folkevalgte',
-      key: 'de folkevalgte',
-      web: 'http://www.defolkevalgte.net/',
-      feed: 'http://www.defolkevalgte.net/feed/rss/',
-      logo: './org/de folkevalgte/logo.png',
-      icon: './org/de folkevalgte/icon.png',
-      symbol: './org/de folkevalgte/symbol.png',
-      placeholder: './org/de folkevalgte/placeholder.png',
-      palette: 'yellow',
-      irc: {
-        server: 'irc.freenode.net',
-        channel: '#defolkevalgte',
-      },
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
-      },
-    },
+    // De Folkevalgtes website is no longer in operation, uncommented for the unforseeable future
+    // 'de folkevalgte': {
+    //   name: 'De Folkevalgte',
+    //   key: 'de folkevalgte',
+    //   web: 'http://www.defolkevalgte.net/',
+    //   feed: 'http://www.defolkevalgte.net/feed/rss/',
+    //   logo: './org/de folkevalgte/logo.png',
+    //   icon: './org/de folkevalgte/icon.png',
+    //   symbol: './org/de folkevalgte/symbol.png',
+    //   placeholder: './org/de folkevalgte/placeholder.png',
+    //   palette: 'yellow',
+    //   irc: {
+    //     server: 'irc.freenode.net',
+    //     channel: '#defolkevalgte',
+    //   },
+    //   getImages: function(links, callback) {
+    //     Affiliation.getImages(this, links, callback);
+    //   },
+    // },
 
     'dhs': {
       name: 'Det Historiske Selskab',
@@ -1205,6 +1206,9 @@ var Affiliation = {
         else if (link.indexOf('dn.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div#content'});
         }
+        else if (link.indexOf('dusken.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
+        }
         else if (link.indexOf('forskningsradet.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
         }
@@ -1212,7 +1216,7 @@ var Affiliation = {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.paragraph', domainUrl:'www.npolar.no'});
         }
         else if (link.indexOf('nrk.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/});
+          Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/.*)"/});
         }
         else if (link.indexOf('regjeringen.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.imagecontainer', domainUrl:'regjeringen.no'});
@@ -1270,20 +1274,26 @@ var Affiliation = {
       name: 'DMMH',
       key: 'dmmh',
       web: 'http://www.dmmh.no/',
-      feed: 'http://www.dmmh.no/rss.php?type=site&id=10&location=393',
+      feed: 'http://dmmh.no/hva-skjer?rss=true',
       logo: './org/dmmh/logo.png',
       icon: './org/dmmh/icon.png',
       symbol: './org/dmmh/symbol.png',
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.news_article', domainUrl:'dmmh.no'});
+        Affiliation.getImages(this, link, callback, {newsSelector:'div.articlewrp', domainUrl:'dmmh.no'});
       },
     },
 
   },
 
   getImages: function(affiliation, links, callback, options) {
+
+    // Return with stacktrace if links is undefined
+    if (links == undefined) {
+      if (this.debug) console.log('ERROR: no image links, var links is undefined');
+      return;
+    }
 
     // TODO: Point of improvement: A few sites have differing selectors for
     // news articles across different news pages. Like e.g. if one of their
@@ -1322,7 +1332,7 @@ var Affiliation = {
     
     // In case we don't find any images, prepare an array with placeholders
     var placeholder = affiliation.placeholder;
-    var placeholders = []
+    var placeholders = [];
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
@@ -1429,6 +1439,9 @@ var Affiliation = {
 
               // Exclude static content, most likely icons
               image = image.not('pic[src*="static"]');
+
+              // Exclude comments, most likely text in image as "Add comment here"
+              image = image.not('pic[src*="comments"]');
 
               // Use image at specified index if requested
               if (options.imageIndex)

@@ -149,7 +149,7 @@ var Browser = {
   // - stay: true
   createNotification: function(item) {
     // Check required params
-    if (!item) console.log('ERROR: options takes one object, {feedKey, title, description, link, image*, symbol*, longStory*, stay*} (* == optional)');
+    if (!item) console.log('ERROR: function takes one object, {feedKey, title, description, link, *image, *symbol, *longStory, *stay} (* == optional)');
     if (!item.feedKey) console.log('ERROR: item.feedKey is required');
     if (!item.title) console.log('ERROR: item.title is required');
     if (!item.description) console.log('ERROR: item.description is required');
@@ -166,8 +166,8 @@ var Browser = {
             if (!item.symbol)
               item.symbol = Affiliation.org[item.feedKey].symbol;
 
-            // Set options
-            var options = {
+            // Set notification
+            var notification = {
                type: 'basic',
                iconUrl: item.symbol,
                title: item.title,
@@ -178,22 +178,23 @@ var Browser = {
             // We'll show an "image"-type notification if image exists and is not a placeholder
             if (item.image) {
               if (item.image != Affiliation.org[item.feedKey].placeholder) {
-                options.type = 'image';
-                options.imageUrl = item.image;
+                notification.type = 'image';
+                notification.imageUrl = item.image;
               }
             }
 
             // Shorten messages to fit nicely (300 because around 250 is max limit anyway)
             var maxLength = (item.longStory ? 300 : 63);
             if (maxLength < item.description.length) {
-              options.message = item.description.substring(0, maxLength) + '...';
+              notification.message = item.description.substring(0, maxLength) + '...';
             }
+
             // If basic type is used, we should also provide expandedMessage
-            if (options.type == 'basic') {
-              options.expandedMessage = item.description;
+            if (notification.type == 'basic') {
+              notification.expandedMessage = item.description;
               var expandedMaxLength = (item.longStory ? 300 : 180);
               if (expandedMaxLength < item.description.length) {
-                options.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
+                notification.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
               }
             }
             
@@ -207,7 +208,7 @@ var Browser = {
             window[id] = item.link;
 
             // Show the notification
-            chrome.notifications.create(id, options, function(notID) {
+            chrome.notifications.create(id, notification, function(notID) {
               if (self.debug) console.log('Succesfully created notification with ID', notID);
             });
             // Choose how long the notification stays around for

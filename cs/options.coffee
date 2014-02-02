@@ -670,6 +670,8 @@ $ ->
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
   # icons
   changeOfficeStatusIcons()
+  # popup-here bubble
+  $('#popupHere img.icon').attr 'src', symbol
 
   restoreChecksToBoxes()
 
