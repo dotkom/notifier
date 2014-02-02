@@ -137,12 +137,19 @@ var Defaults = {
   resetAffiliationsIfNotExist: function(key1, key2, affiliationKeys) {
 
     var ls = localStorage;
-    
-    if (!(key1 in affiliationKeys)) {
-      ls.affiliationKey1 = 'online';
+
+    var gotoOptions = function(key) {
+      if (confirm('Online Notifier beklager:\n\n"'+key+'" er borte fra Notifier :(\n\nTrolig fordi foreningens nettside ikke finnes lenger.\n\nDu kan trykke OK for å åpne Notifiers innstillinger.')) {
+        Browser.openTab('options.html');
+      }
     }
-    if (!(key2 in affiliationKeys)) {
+    if (affiliationKeys.indexOf(key1) === -1) {
+      ls.affiliationKey1 = 'online';
+      gotoOptions(key1);
+    }
+    if (affiliationKeys.indexOf(key2) === -1) {
       ls.affiliationKey2 = 'dusken';
+      gotoOptions(key2);
     }
   },
 
