@@ -11,15 +11,19 @@ mainLoop = ->
   console.lolg "\n#" + iteration
   first = iteration == 0
 
+  # Only if online, else keep good old
+  if navigator.onLine
+    updateHours(first) if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateCantinas(first) if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
+  # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw
     updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
     updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
-  updateCantinas(first) if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-  updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+  # Always update, tell when offline
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
-  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++

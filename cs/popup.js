@@ -15,6 +15,20 @@
     var first;
     console.lolg("\n#" + iteration);
     first = iteration === 0;
+    if (navigator.onLine) {
+      if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+        updateHours();
+      }
+      if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+        updateCantinas(first);
+      }
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
+        updateAffiliationNews('1');
+      }
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
+        updateAffiliationNews('2');
+      }
+    }
     if (Affiliation.org[ls.affiliationKey1].hw) {
       if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
         updateServant();
@@ -26,20 +40,8 @@
         updateCoffee();
       }
     }
-    if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-      updateCantinas(first);
-    }
-    if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
-      updateHours();
-    }
     if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
       updateBus();
-    }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true' && navigator.onLine) {
-      updateAffiliationNews('1');
-    }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true' && navigator.onLine) {
-      updateAffiliationNews('2');
     }
     if (10000 < iteration) {
       iteration = 0;
