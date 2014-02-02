@@ -197,7 +197,7 @@ var News = {
       }
       if (encodedContent != '') {
         var hits = encodedContent.match(/src="(.*?)"/i);
-        if (hits[1] != null) {
+        if (hits != null) {
           post.image = hits[1];
         }
       }
