@@ -1205,6 +1205,9 @@ var Affiliation = {
         else if (link.indexOf('dn.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div#content'});
         }
+        else if (link.indexOf('dusken.no') !== -1) {
+          Affiliation.getImages(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
+        }
         else if (link.indexOf('forskningsradet.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
         }
@@ -1212,7 +1215,7 @@ var Affiliation = {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.paragraph', domainUrl:'www.npolar.no'});
         }
         else if (link.indexOf('nrk.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/});
+          Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/.*)"/});
         }
         else if (link.indexOf('regjeringen.no') !== -1) {
           Affiliation.getImages(this, link, callback, {newsSelector:'div.imagecontainer', domainUrl:'regjeringen.no'});
