@@ -183,14 +183,12 @@ var Browser = {
               }
             }
 
-            // Convert HTML entities in description
-
-
             // Shorten messages to fit nicely (300 because around 250 is max limit anyway)
             var maxLength = (item.longStory ? 300 : 63);
             if (maxLength < item.description.length) {
               notification.message = item.description.substring(0, maxLength) + '...';
             }
+
             // If basic type is used, we should also provide expandedMessage
             if (notification.type == 'basic') {
               notification.expandedMessage = item.description;
