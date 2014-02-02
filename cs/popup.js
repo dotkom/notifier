@@ -73,17 +73,16 @@
   };
 
   updateCantinas = function() {
+    var cantinaName;
     console.lolg('updateCantinas');
+    cantinaName = Cantina.names[ls.leftCantina];
+    cantinaName = Cantina.names[ls.rightCantina];
     Cantina.get(ls.leftCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.leftCantina];
       $('#cantinas #left .title').html(cantinaName);
       $('#cantinas #left #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #left #dinnerbox li', ls.leftCantina);
     });
     return Cantina.get(ls.rightCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.rightCantina];
       $('#cantinas #right .title').html(cantinaName);
       $('#cantinas #right #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #right #dinnerbox li', ls.rightCantina);

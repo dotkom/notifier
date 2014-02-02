@@ -74,12 +74,12 @@ updateCoffee = ->
 
 updateCantinas = ->
   console.lolg 'updateCantinas'
+  cantinaName = Cantina.names[ls.leftCantina]
+  cantinaName = Cantina.names[ls.rightCantina]
   Cantina.get ls.leftCantina, (menu) ->
-    cantinaName = Cantina.names[ls.leftCantina]
     $('#cantinas #left .title').html cantinaName
     $('#cantinas #left #dinnerbox').html listDinners(menu)
   Cantina.get ls.rightCantina, (menu) ->
-    cantinaName = Cantina.names[ls.rightCantina]
     $('#cantinas #right .title').html cantinaName
     $('#cantinas #right #dinnerbox').html listDinners(menu)
 
