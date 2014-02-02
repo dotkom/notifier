@@ -9,13 +9,14 @@ window.IS_MOBILE = 1 # An easy hack saving a lot of work, ajaxer.js checks this 
 
 mainLoop = ->
   console.lolg "\n#" + iteration
+  first = iteration == 0
 
   if Affiliation.org[ls.affiliationKey1].hw
     updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
     updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
-  updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+  updateCantinas(first) if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
   updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
   updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
@@ -59,16 +60,23 @@ updateCoffee = ->
     $('#todays #coffee #pots').html '- '+pots
     $('#todays #coffee #age').html age
 
-updateCantinas = ->
+updateCantinas = (first) ->
   console.lolg 'updateCantinas'
-  cantinaName = Cantina.names[ls.leftCantina]
-  cantinaName = Cantina.names[ls.rightCantina]
-  Cantina.get ls.leftCantina, (menu) ->
-    $('#cantinas #left .title').html cantinaName
-    $('#cantinas #left #dinnerbox').html listDinners(menu)
-  Cantina.get ls.rightCantina, (menu) ->
-    $('#cantinas #right .title').html cantinaName
-    $('#cantinas #right #dinnerbox').html listDinners(menu)
+  update = (shortname, menu, selector) ->
+    name = Cantina.names[shortname]
+    $('#cantinas #'+selector+' .title').html name
+    $('#cantinas #'+selector+' #dinnerbox').html listDinners menu
+    clickDinnerLink '#cantinas #'+selector+' #dinnerbox li', shortname
+  if first
+    menu1 = JSON.parse ls.leftCantinaMenu
+    menu2 = JSON.parse ls.rightCantinaMenu
+    update ls.leftCantina, menu1, 'left'
+    update ls.rightCantina, menu2, 'right'
+  else
+    Cantina.get ls.leftCantina, (menu) ->
+      update ls.leftCantina, menu, 'left'
+    Cantina.get ls.rightCantina, (menu) ->
+      update ls.rightCantina, menu, 'right'
 
 listDinners = (menu) ->
   dinnerlist = ''
