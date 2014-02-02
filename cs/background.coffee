@@ -73,13 +73,11 @@ updateAffiliationNews = (number) ->
   console.lolg 'updateAffiliationNews'+number
   # Get affiliation object
   affiliationKey = ls['affiliationKey'+number]
-  affiliation = Affiliation.org[affiliationKey]
-  if affiliation is undefined
-    console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
-  else
+  affiliationObject = Affiliation.org[affiliationKey]
+  if affiliationObject
     # Get more news than needed to check for old news that have been updated
     newsLimit = 10
-    News.get affiliation, newsLimit, (items) ->
+    News.get affiliationObject, newsLimit, (items) ->
       # Error message, log it maybe
       if typeof items is 'string'
         console.lolg 'ERROR:', items
@@ -90,6 +88,8 @@ updateAffiliationNews = (number) ->
       else
         saveAndCountNews items, number
         updateUnreadCount()
+  else
+    console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
 
 saveAndCountNews = (items, number) ->
   feedItems = 'affiliationFeedItems'+number
@@ -119,6 +119,10 @@ loadAffiliationIcon = ->
 $ ->
   # Setting the timeout for all AJAX and JSON requests
   $.ajaxSetup AJAX_SETUP
+
+  # Check if both current affiliations still exist, reset if not
+  keys = Object.keys Affiliation.org
+  Defaults.resetAffiliationsIfNotExist ls.affiliationKey1, ls.affiliationKey2, keys
 
   # Turn off hardwarefeatures if they're not available
   isAvailable = if Affiliation.org[ls.affiliationKey1].hw then true else false

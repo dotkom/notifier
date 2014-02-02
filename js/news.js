@@ -154,6 +154,7 @@ var News = {
 
     // Description field
 
+    // First, try to get HTML, if not working try getting text
     post.description = $(item).find("description").filter(':first').html();
     if (typeof post.description == 'undefined')
       post.description = $(item).find("description").filter(':first').text();
@@ -196,7 +197,7 @@ var News = {
       }
       if (encodedContent != '') {
         var hits = encodedContent.match(/src="(.*?)"/i);
-        if (hits[1] != null) {
+        if (hits != null) {
           post.image = hits[1];
         }
       }
@@ -225,18 +226,35 @@ var News = {
     var post = {};
     post = this.preProcess(post, affiliationObject);
 
+    // Title field
     post.title = $(entry).find("title").filter(':first').text();
-    post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
-    post.description = $(entry).find("content").filter(':first').text();
-    post.creator = $(entry).find("author name").filter(':first').text();
-    post.date = $(entry).find("published").filter(':first').text().substr(5, 11);
 
-    // Parse date field
-    post.date = new Date(post.date);
-    if (post.date != "Invalid Date")
-      post.date = post.date.toDateString();
-    else
+    // Link field
+    post.link = $(entry).find("link[rel='alternate'][type='text/html']").filter(':first').attr('href');
+    if (isEmpty(post.link))
+      post.link = $(entry).find("link[rel='alternate']").filter(':first').attr('href');
+
+    // Description field
+    post.description = $(entry).find("content").filter(':first').text();
+    if (isEmpty(post.description))
+      post.description = $(entry).find("summary").filter(':first').text();
+    
+    // Creator field
+    post.creator = $(entry).find("author name").filter(':first').text();
+
+    // Date field
+    post.date = $(entry).find("published").filter(':first').text();
+    var dateTest = new Date(post.date.substr(5,11));
+    if (dateTest != 'Invalid Date') {
+      post.date = dateTest.toDateString();
+    }
+    else {
+      dateTest = new Date(post.date);
+      post.date = dateTest.toDateString();
+    }
+    if (post.date == 'Invalid Date') {
       post.date = null;
+    }
 
     post = this.postProcess(post, affiliationObject);
     return post;
@@ -254,6 +272,13 @@ var News = {
   // Applies for both RSS and ATOM feeds
   postProcess: function(post, affiliationObject) {
 
+    // Image field
+
+    // If we haven't found a good image, scour the description for an alternative
+    // NOTE: This must be done before HTML is removed during postprocessing of the description! (look below)
+    if (isEmpty(post.image) || post.image == affiliationObject.placeholder)
+      post.image = this.checkDescriptionForImageLink(post.image, post.description, affiliationObject.web);
+
     // Title field
 
     post.title = this.treatTextField(post.title, this.msgNoTitle);
@@ -267,8 +292,8 @@ var News = {
     // Description field
 
     post.description = this.treatTextField(post.description, this.msgNoDescription);
-
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
+    // NOTE: This must be done after the description is checked for an image link (look above)
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities, this works, but ppl should be allowed to use entitites
 
@@ -288,12 +313,6 @@ var News = {
     // In case pubDate didn't exist, set to null
     if (post.date == '')
       post.date = null;
-
-    // Image field
-
-    // If we haven't found a good image, scour the description for an alternative
-    if (post.image == affiliationObject.placeholder)
-      post.image = this.checkDescriptionForImageLink(post.image, post.description);
 
     return post;
   },
@@ -385,11 +404,19 @@ var News = {
             // Save timestamp
             localStorage.lastNotifiedTime = new Date().getTime();
 
-            // If the organization has an image API, use it
-            if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
+            // TODO: For the two methods of getting images below; whenever a broken
+            // image link is used, the notification will never show. A solution to
+            // this (should we ever bother) is to test-load the image first and not
+            // use if it the link is clearly broken.
+
+            // If we already have the image, just go ahead
+            if (item.image != Affiliation.org[item.feedKey].placeholder) {
+              Browser.createNotification(item);
+            }
+            // If the organization has an image API or whatever (scraping), use it
+            else if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
               Affiliation.org[item.feedKey].getImage(item.link, function(link, image) {
                 item.image = image[0];
-                // Show desktop notification
                 Browser.createNotification(item);
               });
             }
@@ -398,12 +425,11 @@ var News = {
               links.push(item.link);
               Affiliation.org[item.feedKey].getImages(links, function(links, images) {
                 item.image = images[0];
-                // Show desktop notification
                 Browser.createNotification(item);
               });
             }
+            // Otherwise, just show it without an image
             else {
-              // Show desktop notification
               Browser.createNotification(item);
             }
           }
@@ -442,6 +468,12 @@ var News = {
   },
 
   treatTextField: function(field, onEmptyText) {
+    // Decode HTML entities
+    field = $('<div/>').html(field).text();
+    // Remove multiple whitespace
+    field = field.replace(/\s\s+/g,'');
+    // "..stedHvor.." -> "..sted. Hvor.."
+    field = field.replace(/([a-z])([A-Z])/g, '$1. '+'$2'.capitalize());
     // Remove meta information from title or description, within curly brackets {}
     field = field.replace(/\{.*\}/gi,'');
     // Shorten 'bedriftspresentasjon' to 'bedpres'
@@ -454,11 +486,19 @@ var News = {
     return field;
   },
 
-  checkDescriptionForImageLink: function(oldImage, description) {
-    var regex = new RegExp('src="(http[^"]*(png|jpe?g|bmp))"');
-    var pieces = description.match(regex);
-    if (pieces != null)
-      return pieces[1];
+  checkDescriptionForImageLink: function(oldImage, description, website) {
+    var pieces = description.match(/src="(.*(\.(jpg|bmp|png)))("|\?)/i);
+    if (pieces != null) {
+      var image = pieces[1];
+      if (image.startsWith('http')) {
+        // Direct link
+        return image;
+      }
+      else {
+        // Relative link
+        return website + image;
+      }
+    }
     else
       return oldImage;
   },
