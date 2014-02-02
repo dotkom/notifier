@@ -10,11 +10,6 @@ window.IS_MOBILE = 1 # An easy hack saving a lot of work, ajaxer.js checks this 
 mainLoop = ->
   console.lolg "\n#" + iteration
 
-  # Only if online, else keep good old
-  if navigator.onLine
-    updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw
     updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
@@ -23,6 +18,9 @@ mainLoop = ->
     updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
   # Always update, tell when offline
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+  updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+  updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -70,16 +68,10 @@ updateCantinas = (first) ->
     $('#cantinas #'+selector+' .title').html name
     $('#cantinas #'+selector+' #dinnerbox').html listDinners menu
     clickDinnerLink '#cantinas #'+selector+' #dinnerbox li', shortname
-  if first
-    menu1 = JSON.parse ls.leftCantinaMenu
-    menu2 = JSON.parse ls.rightCantinaMenu
-    update ls.leftCantina, menu1, 'left'
-    update ls.rightCantina, menu2, 'right'
-  else
-    Cantina.get ls.leftCantina, (menu) ->
-      update ls.leftCantina, menu, 'left'
-    Cantina.get ls.rightCantina, (menu) ->
-      update ls.rightCantina, menu, 'right'
+  Cantina.get ls.leftCantina, (menu) ->
+    update ls.leftCantina, menu, 'left'
+  Cantina.get ls.rightCantina, (menu) ->
+    update ls.rightCantina, menu, 'right'
 
 listDinners = (menu) ->
   dinnerlist = ''

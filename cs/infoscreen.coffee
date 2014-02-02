@@ -82,16 +82,10 @@ updateCantinas = (first) ->
     name = Cantina.names[shortname]
     $('#cantinas #'+selector+' .title').html name
     $('#cantinas #'+selector+' #dinnerbox').html listDinners menu
-  if first
-    menu1 = JSON.parse ls.leftCantinaMenu
-    menu2 = JSON.parse ls.rightCantinaMenu
-    update ls.leftCantina, menu1, 'left'
-    update ls.rightCantina, menu2, 'right'
-  else
-    Cantina.get ls.leftCantina, (menu) ->
-      update ls.leftCantina, menu, 'left'
-    Cantina.get ls.rightCantina, (menu) ->
-      update ls.rightCantina, menu, 'right'
+  Cantina.get ls.leftCantina, (menu) ->
+    update ls.leftCantina, menu, 'left'
+  Cantina.get ls.rightCantina, (menu) ->
+    update ls.rightCantina, menu, 'right'
 
 listDinners = (menu) ->
   dinnerlist = ''

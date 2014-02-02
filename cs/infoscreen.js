@@ -110,7 +110,7 @@
   };
 
   updateCantinas = function(first) {
-    var menu1, menu2, update;
+    var update;
     console.lolg('updateCantinas');
     update = function(shortname, menu, selector) {
       var name;
@@ -118,19 +118,12 @@
       $('#cantinas #' + selector + ' .title').html(name);
       return $('#cantinas #' + selector + ' #dinnerbox').html(listDinners(menu));
     };
-    if (first) {
-      menu1 = JSON.parse(ls.leftCantinaMenu);
-      menu2 = JSON.parse(ls.rightCantinaMenu);
-      update(ls.leftCantina, menu1, 'left');
-      return update(ls.rightCantina, menu2, 'right');
-    } else {
-      Cantina.get(ls.leftCantina, function(menu) {
-        return update(ls.leftCantina, menu, 'left');
-      });
-      return Cantina.get(ls.rightCantina, function(menu) {
-        return update(ls.rightCantina, menu, 'right');
-      });
-    }
+    Cantina.get(ls.leftCantina, function(menu) {
+      return update(ls.leftCantina, menu, 'left');
+    });
+    return Cantina.get(ls.rightCantina, function(menu) {
+      return update(ls.rightCantina, menu, 'right');
+    });
   };
 
   listDinners = function(menu) {

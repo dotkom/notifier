@@ -15,17 +15,6 @@
 
   mainLoop = function() {
     console.lolg("\n#" + iteration);
-    if (navigator.onLine) {
-      if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateHours();
-      }
-      if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateCantinas();
-      }
-      if (iteration % UPDATE_NEWS_INTERVAL === 0) {
-        updateNews();
-      }
-    }
     if (Affiliation.org[ls.affiliationKey1].hw) {
       if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
         updateOffice();
@@ -42,6 +31,15 @@
     }
     if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
       updateBus();
+    }
+    if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+      updateHours();
+    }
+    if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+      updateCantinas();
+    }
+    if (iteration % UPDATE_NEWS_INTERVAL === 0) {
+      updateNews();
     }
     if (10000 < iteration) {
       iteration = 0;
@@ -97,7 +95,7 @@
   };
 
   updateCantinas = function(first) {
-    var menu1, menu2, update;
+    var update;
     console.lolg('updateCantinas');
     update = function(shortname, menu, selector) {
       var name;
@@ -106,19 +104,12 @@
       $('#cantinas #' + selector + ' #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #' + selector + ' #dinnerbox li', shortname);
     };
-    if (first) {
-      menu1 = JSON.parse(ls.leftCantinaMenu);
-      menu2 = JSON.parse(ls.rightCantinaMenu);
-      update(ls.leftCantina, menu1, 'left');
-      return update(ls.rightCantina, menu2, 'right');
-    } else {
-      Cantina.get(ls.leftCantina, function(menu) {
-        return update(ls.leftCantina, menu, 'left');
-      });
-      return Cantina.get(ls.rightCantina, function(menu) {
-        return update(ls.rightCantina, menu, 'right');
-      });
-    }
+    Cantina.get(ls.leftCantina, function(menu) {
+      return update(ls.leftCantina, menu, 'left');
+    });
+    return Cantina.get(ls.rightCantina, function(menu) {
+      return update(ls.rightCantina, menu, 'right');
+    });
   };
 
   listDinners = function(menu) {
