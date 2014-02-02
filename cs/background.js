@@ -13,6 +13,20 @@
     var loopTimeout;
     console.lolg("\n#" + iteration);
     if (ls.useInfoscreen !== 'true') {
+      if (navigator.onLine) {
+        if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+          updateHours();
+        }
+        if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+          updateCantinas();
+        }
+        if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
+          updateAffiliationNews('1');
+        }
+        if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
+          updateAffiliationNews('2');
+        }
+      }
       if (Affiliation.org[ls.affiliationKey1].hw) {
         if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
           updateOfficeAndMeetings();
@@ -20,15 +34,6 @@
         if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
           updateCoffeeSubscription();
         }
-      }
-      if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateCantinas();
-      }
-      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true' && navigator.onLine) {
-        updateAffiliationNews('1');
-      }
-      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true' && navigator.onLine) {
-        updateAffiliationNews('2');
       }
     }
     if (10000 < iteration) {
