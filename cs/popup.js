@@ -12,15 +12,13 @@
   newsLimit = 4;
 
   mainLoop = function() {
-    var first;
     console.lolg("\n#" + iteration);
-    first = iteration === 0;
     if (navigator.onLine) {
       if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
         updateHours();
       }
       if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateCantinas(first);
+        updateCantinas();
       }
       if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
         updateAffiliationNews('1');
@@ -131,16 +129,15 @@
     });
   };
 
-  updateHours = function() {
+  updateHours = function(first) {
+    var update;
     console.lolg('updateHours');
-    Hours.get(ls.leftCantina, function(hours) {
-      $('#cantinas #left .hours').html(hours);
-      return clickHours('#cantinas #left .hours', ls.leftCantina);
-    });
-    return Hours.get(ls.rightCantina, function(hours) {
-      $('#cantinas #right .hours').html(hours);
-      return clickHours('#cantinas #right .hours', ls.rightCantina);
-    });
+    update = function(shortname, hours, selector) {
+      $('#cantinas #' + selector + ' .hours').html(hours);
+      return clickHours('#cantinas #' + selector + ' .hours', shortname);
+    };
+    update(ls.leftCantina, ls.leftCantinaHours, 'left');
+    return update(ls.rightCantina, ls.rightCantinaHours, 'right');
   };
 
   clickHours = function(cssSelector, cantina) {

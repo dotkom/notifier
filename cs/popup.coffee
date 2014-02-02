@@ -7,12 +7,11 @@ newsLimit = 4 # The best amount of news for the popup, IMO
 
 mainLoop = ->
   console.lolg "\n#" + iteration
-  first = iteration == 0
 
   # Only if online, else keep good old
   if navigator.onLine
     updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateCantinas(first) if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
     updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
     updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
   # Only if hardware
@@ -88,14 +87,13 @@ clickDinnerLink = (cssSelector, cantina) ->
     Browser.openTab Cantina.url
     window.close()
 
-updateHours = ->
+updateHours = (first) ->
   console.lolg 'updateHours'
-  Hours.get ls.leftCantina, (hours) ->
-    $('#cantinas #left .hours').html hours
-    clickHours '#cantinas #left .hours', ls.leftCantina
-  Hours.get ls.rightCantina, (hours) ->
-    $('#cantinas #right .hours').html hours
-    clickHours '#cantinas #right .hours', ls.rightCantina
+  update = (shortname, hours, selector) ->
+    $('#cantinas #'+selector+' .hours').html hours
+    clickHours '#cantinas #'+selector+' .hours', shortname
+  update ls.leftCantina, ls.leftCantinaHours, 'left'
+  update ls.rightCantina, ls.rightCantinaHours, 'right'
 
 clickHours = (cssSelector, cantina) ->
   $(cssSelector).click ->
