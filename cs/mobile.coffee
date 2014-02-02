@@ -9,12 +9,11 @@ window.IS_MOBILE = 1 # An easy hack saving a lot of work, ajaxer.js checks this 
 
 mainLoop = ->
   console.lolg "\n#" + iteration
-  first = iteration == 0
 
   # Only if online, else keep good old
   if navigator.onLine
-    updateHours(first) if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateCantinas(first) if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
     updateNews() if iteration % UPDATE_NEWS_INTERVAL is 0
   # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw

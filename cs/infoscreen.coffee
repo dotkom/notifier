@@ -7,12 +7,11 @@ newsLimit = 8 # The most news you can cram into Infoscreen, if other features ar
 
 mainLoop = ->
   console.lolg "\n#" + iteration
-  first = iteration == 0
 
   # Only if online, else keep good old
   if navigator.onLine
     updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateCantinas(first) if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
     updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
     updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
   # Only if hardware

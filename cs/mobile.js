@@ -14,15 +14,13 @@
   window.IS_MOBILE = 1;
 
   mainLoop = function() {
-    var first;
     console.lolg("\n#" + iteration);
-    first = iteration === 0;
     if (navigator.onLine) {
       if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateHours(first);
+        updateHours();
       }
       if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateCantinas(first);
+        updateCantinas();
       }
       if (iteration % UPDATE_NEWS_INTERVAL === 0) {
         updateNews();
