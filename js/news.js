@@ -410,7 +410,7 @@ var News = {
             // use if it the link is clearly broken.
 
             // If we already have the image, just go ahead
-            if (item.image != Affiliation.org[item.feedKey].placeholder) {
+            if (!isEmpty(item.image) && item.image != Affiliation.org[item.feedKey].placeholder) {
               Browser.createNotification(item);
             }
             // If the organization has an image API or whatever (scraping), use it
