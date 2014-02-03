@@ -7,11 +7,14 @@ mainLoop = ->
   console.lolg "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
+    if navigator.onLine
+      updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+      updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+      updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
+      updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
     if Affiliation.org[ls.affiliationKey1].hw
       updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
       updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
-    updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
-    updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -68,6 +71,20 @@ updateCoffeeSubscription = ->
             Coffee.showNotification pots, age
       # And remember to update localStorage
       ls.coffeePots = pots
+
+updateCantinas = ->
+  console.lolg 'updateCantinas'
+  Cantina.get ls.leftCantina, (menu) ->
+    ls.leftCantinaMenu = JSON.stringify menu
+  Cantina.get ls.rightCantina, (menu) ->
+    ls.rightCantinaMenu = JSON.stringify menu
+
+updateHours = ->
+  console.lolg 'updateHours'
+  Hours.get ls.leftCantina, (hours) ->
+    ls.leftCantinaHours = hours
+  Hours.get ls.rightCantina, (hours) ->
+    ls.rightCantinaHours = hours
 
 updateAffiliationNews = (number) ->
   console.lolg 'updateAffiliationNews'+number

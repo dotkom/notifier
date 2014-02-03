@@ -29,14 +29,14 @@
         updateCoffee();
       }
     }
-    if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-      updateCantinas();
+    if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
+      updateBus();
     }
     if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
       updateHours();
     }
-    if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
-      updateBus();
+    if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+      updateCantinas();
     }
     if (iteration % UPDATE_NEWS_INTERVAL === 0) {
       updateNews();
@@ -94,19 +94,21 @@
     });
   };
 
-  updateCantinas = function() {
+  updateCantinas = function(first) {
+    var update;
     console.lolg('updateCantinas');
+    update = function(shortname, menu, selector) {
+      var name;
+      name = Cantina.names[shortname];
+      $('#cantinas #' + selector + ' .title').html(name);
+      $('#cantinas #' + selector + ' #dinnerbox').html(listDinners(menu));
+      return clickDinnerLink('#cantinas #' + selector + ' #dinnerbox li', shortname);
+    };
     Cantina.get(ls.leftCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.leftCantina];
-      $('#cantinas #left .title').html(cantinaName);
-      return $('#cantinas #left #dinnerbox').html(listDinners(menu));
+      return update(ls.leftCantina, menu, 'left');
     });
     return Cantina.get(ls.rightCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.rightCantina];
-      $('#cantinas #right .title').html(cantinaName);
-      return $('#cantinas #right #dinnerbox').html(listDinners(menu));
+      return update(ls.rightCantina, menu, 'right');
     });
   };
 

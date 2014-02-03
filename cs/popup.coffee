@@ -8,15 +8,19 @@ newsLimit = 4 # The best amount of news for the popup, IMO
 mainLoop = ->
   console.lolg "\n#" + iteration
 
+  # Only if online, else keep good old
+  if navigator.onLine
+    updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
+    updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+  # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw
     updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
     updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
     updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
-  updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-  updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+  # Always update, tell when offline
   updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
-  updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true' and navigator.onLine # Only if online, otherwise keep old news
-  updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true' and navigator.onLine # Only if online, otherwise keep old news
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -42,18 +46,18 @@ updateCoffee = ->
     $('#todays #coffee #pots').html '- '+pots
     $('#todays #coffee #age').html age
 
-updateCantinas = ->
+updateCantinas = (first) ->
+  # This function just fetches from localstorage (updates in background)
   console.lolg 'updateCantinas'
-  Cantina.get ls.leftCantina, (menu) ->
-    cantinaName = Cantina.names[ls.leftCantina]
-    $('#cantinas #left .title').html cantinaName
-    $('#cantinas #left #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #left #dinnerbox li', ls.leftCantina
-  Cantina.get ls.rightCantina, (menu) ->
-    cantinaName = Cantina.names[ls.rightCantina]
-    $('#cantinas #right .title').html cantinaName
-    $('#cantinas #right #dinnerbox').html listDinners(menu)
-    clickDinnerLink '#cantinas #right #dinnerbox li', ls.rightCantina
+  update = (shortname, menu, selector) ->
+    name = Cantina.names[shortname]
+    $('#cantinas #'+selector+' .title').html name
+    $('#cantinas #'+selector+' #dinnerbox').html listDinners menu
+    clickDinnerLink '#cantinas #'+selector+' #dinnerbox li', shortname
+  menu1 = JSON.parse ls.leftCantinaMenu
+  menu2 = JSON.parse ls.rightCantinaMenu
+  update ls.leftCantina, menu1, 'left'
+  update ls.rightCantina, menu2, 'right'
 
 listDinners = (menu) ->
   dinnerlist = ''
@@ -78,14 +82,14 @@ clickDinnerLink = (cssSelector, cantina) ->
     Browser.openTab Cantina.url
     window.close()
 
-updateHours = ->
+updateHours = (first) ->
+  # This function just fetches from localstorage (updates in background)
   console.lolg 'updateHours'
-  Hours.get ls.leftCantina, (hours) ->
-    $('#cantinas #left .hours').html hours
-    clickHours '#cantinas #left .hours', ls.leftCantina
-  Hours.get ls.rightCantina, (hours) ->
-    $('#cantinas #right .hours').html hours
-    clickHours '#cantinas #right .hours', ls.rightCantina
+  update = (shortname, hours, selector) ->
+    $('#cantinas #'+selector+' .hours').html hours
+    clickHours '#cantinas #'+selector+' .hours', shortname
+  update ls.leftCantina, ls.leftCantinaHours, 'left'
+  update ls.rightCantina, ls.rightCantinaHours, 'right'
 
 clickHours = (cssSelector, cantina) ->
   $(cssSelector).click ->

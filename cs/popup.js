@@ -13,6 +13,20 @@
 
   mainLoop = function() {
     console.lolg("\n#" + iteration);
+    if (navigator.onLine) {
+      if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+        updateHours();
+      }
+      if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+        updateCantinas();
+      }
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
+        updateAffiliationNews('1');
+      }
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
+        updateAffiliationNews('2');
+      }
+    }
     if (Affiliation.org[ls.affiliationKey1].hw) {
       if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
         updateServant();
@@ -24,20 +38,8 @@
         updateCoffee();
       }
     }
-    if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-      updateCantinas();
-    }
-    if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
-      updateHours();
-    }
     if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
       updateBus();
-    }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true' && navigator.onLine) {
-      updateAffiliationNews('1');
-    }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true' && navigator.onLine) {
-      updateAffiliationNews('2');
     }
     if (10000 < iteration) {
       iteration = 0;
@@ -72,22 +74,20 @@
     });
   };
 
-  updateCantinas = function() {
+  updateCantinas = function(first) {
+    var menu1, menu2, update;
     console.lolg('updateCantinas');
-    Cantina.get(ls.leftCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.leftCantina];
-      $('#cantinas #left .title').html(cantinaName);
-      $('#cantinas #left #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #left #dinnerbox li', ls.leftCantina);
-    });
-    return Cantina.get(ls.rightCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.rightCantina];
-      $('#cantinas #right .title').html(cantinaName);
-      $('#cantinas #right #dinnerbox').html(listDinners(menu));
-      return clickDinnerLink('#cantinas #right #dinnerbox li', ls.rightCantina);
-    });
+    update = function(shortname, menu, selector) {
+      var name;
+      name = Cantina.names[shortname];
+      $('#cantinas #' + selector + ' .title').html(name);
+      $('#cantinas #' + selector + ' #dinnerbox').html(listDinners(menu));
+      return clickDinnerLink('#cantinas #' + selector + ' #dinnerbox li', shortname);
+    };
+    menu1 = JSON.parse(ls.leftCantinaMenu);
+    menu2 = JSON.parse(ls.rightCantinaMenu);
+    update(ls.leftCantina, menu1, 'left');
+    return update(ls.rightCantina, menu2, 'right');
   };
 
   listDinners = function(menu) {
@@ -120,16 +120,15 @@
     });
   };
 
-  updateHours = function() {
+  updateHours = function(first) {
+    var update;
     console.lolg('updateHours');
-    Hours.get(ls.leftCantina, function(hours) {
-      $('#cantinas #left .hours').html(hours);
-      return clickHours('#cantinas #left .hours', ls.leftCantina);
-    });
-    return Hours.get(ls.rightCantina, function(hours) {
-      $('#cantinas #right .hours').html(hours);
-      return clickHours('#cantinas #right .hours', ls.rightCantina);
-    });
+    update = function(shortname, hours, selector) {
+      $('#cantinas #' + selector + ' .hours').html(hours);
+      return clickHours('#cantinas #' + selector + ' .hours', shortname);
+    };
+    update(ls.leftCantina, ls.leftCantinaHours, 'left');
+    return update(ls.rightCantina, ls.rightCantinaHours, 'right');
   };
 
   clickHours = function(cssSelector, cantina) {
