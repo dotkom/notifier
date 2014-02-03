@@ -47,22 +47,17 @@ updateCoffee = ->
     $('#todays #coffee #age').html age
 
 updateCantinas = (first) ->
+  # This function just fetches from localstorage (updates in background)
   console.lolg 'updateCantinas'
   update = (shortname, menu, selector) ->
     name = Cantina.names[shortname]
     $('#cantinas #'+selector+' .title').html name
     $('#cantinas #'+selector+' #dinnerbox').html listDinners menu
     clickDinnerLink '#cantinas #'+selector+' #dinnerbox li', shortname
-  if first
-    menu1 = JSON.parse ls.leftCantinaMenu
-    menu2 = JSON.parse ls.rightCantinaMenu
-    update ls.leftCantina, menu1, 'left'
-    update ls.rightCantina, menu2, 'right'
-  else
-    Cantina.get ls.leftCantina, (menu) ->
-      update ls.leftCantina, menu, 'left'
-    Cantina.get ls.rightCantina, (menu) ->
-      update ls.rightCantina, menu, 'right'
+  menu1 = JSON.parse ls.leftCantinaMenu
+  menu2 = JSON.parse ls.rightCantinaMenu
+  update ls.leftCantina, menu1, 'left'
+  update ls.rightCantina, menu2, 'right'
 
 listDinners = (menu) ->
   dinnerlist = ''
@@ -88,6 +83,7 @@ clickDinnerLink = (cssSelector, cantina) ->
     window.close()
 
 updateHours = (first) ->
+  # This function just fetches from localstorage (updates in background)
   console.lolg 'updateHours'
   update = (shortname, hours, selector) ->
     $('#cantinas #'+selector+' .hours').html hours

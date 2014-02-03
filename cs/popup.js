@@ -84,19 +84,10 @@
       $('#cantinas #' + selector + ' #dinnerbox').html(listDinners(menu));
       return clickDinnerLink('#cantinas #' + selector + ' #dinnerbox li', shortname);
     };
-    if (first) {
-      menu1 = JSON.parse(ls.leftCantinaMenu);
-      menu2 = JSON.parse(ls.rightCantinaMenu);
-      update(ls.leftCantina, menu1, 'left');
-      return update(ls.rightCantina, menu2, 'right');
-    } else {
-      Cantina.get(ls.leftCantina, function(menu) {
-        return update(ls.leftCantina, menu, 'left');
-      });
-      return Cantina.get(ls.rightCantina, function(menu) {
-        return update(ls.rightCantina, menu, 'right');
-      });
-    }
+    menu1 = JSON.parse(ls.leftCantinaMenu);
+    menu2 = JSON.parse(ls.rightCantinaMenu);
+    update(ls.leftCantina, menu1, 'left');
+    return update(ls.rightCantina, menu2, 'right');
   };
 
   listDinners = function(menu) {
