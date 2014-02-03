@@ -258,7 +258,7 @@ var Cantina = {
           if (text.match(/buffet|dag/gi) === null) {
             text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-            text = self.removeLastWords(['i','&','og','med','m','frisk','friske','eller','inkl','inkludert'], text);
+            text = self.removeLastWords(['i','&','og','med','m','frisk','friske','strimla','strimlet','eller','inkl','inkludert'], text);
             text = self.removePunctuationAtEndOfLine(text);
             text = text.trim();
           }

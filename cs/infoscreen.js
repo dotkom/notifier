@@ -13,6 +13,20 @@
 
   mainLoop = function() {
     console.lolg("\n#" + iteration);
+    if (navigator.onLine) {
+      if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+        updateHours();
+      }
+      if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+        updateCantinas();
+      }
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
+        updateAffiliationNews('1');
+      }
+      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
+        updateAffiliationNews('2');
+      }
+    }
     if (Affiliation.org[ls.affiliationKey1].hw) {
       if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
         updateOffice();
@@ -27,20 +41,8 @@
         updateCoffee();
       }
     }
-    if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-      updateCantinas();
-    }
-    if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
-      updateHours();
-    }
     if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
       updateBus();
-    }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true' && navigator.onLine) {
-      updateAffiliationNews('1');
-    }
-    if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true' && navigator.onLine) {
-      updateAffiliationNews('2');
     }
     if (10000 < iteration) {
       iteration = 0;
@@ -107,19 +109,20 @@
     });
   };
 
-  updateCantinas = function() {
+  updateCantinas = function(first) {
+    var update;
     console.lolg('updateCantinas');
+    update = function(shortname, menu, selector) {
+      var name;
+      name = Cantina.names[shortname];
+      $('#cantinas #' + selector + ' .title').html(name);
+      return $('#cantinas #' + selector + ' #dinnerbox').html(listDinners(menu));
+    };
     Cantina.get(ls.leftCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.leftCantina];
-      $('#cantinas #left .title').html(cantinaName);
-      return $('#cantinas #left #dinnerbox').html(listDinners(menu));
+      return update(ls.leftCantina, menu, 'left');
     });
     return Cantina.get(ls.rightCantina, function(menu) {
-      var cantinaName;
-      cantinaName = Cantina.names[ls.rightCantina];
-      $('#cantinas #right .title').html(cantinaName);
-      return $('#cantinas #right #dinnerbox').html(listDinners(menu));
+      return update(ls.rightCantina, menu, 'right');
     });
   };
 
