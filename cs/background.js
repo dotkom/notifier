@@ -193,6 +193,8 @@
     Browser.bindOmniboxToOracle();
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
     window.updateCoffeeSubscription = updateCoffeeSubscription;
+    window.updateHours = updateHours;
+    window.updateCantinas = updateCantinas;
     window.updateAffiliationNews = updateAffiliationNews;
     window.loadAffiliationIcon = loadAffiliationIcon;
     setInterval((function() {
