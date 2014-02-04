@@ -179,6 +179,8 @@ bindCantinaSelector = (selector) ->
     cantina = $(this).prop 'value'
     ls[selector] = cantina
     Analytics.trackEvent 'clickCantina', cantina
+    Browser.getBackgroundProcess().updateHours()
+    Browser.getBackgroundProcess().updateCantinas()
 
 bindBusFields = (busField) ->
   cssSelector = '#' + busField
