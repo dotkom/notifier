@@ -347,7 +347,7 @@
 
   officeFontRotate = function(font) {
     var chosenFont, fonts;
-    fonts = ['fondamento', 'mysteryquest', 'oleoscript', 'sancreek'];
+    fonts = ['cardo', 'fondamento', 'oleoscript', 'sourcesans'];
     if (__indexOf.call(fonts, font) >= 0) {
       chosenFont = font;
     } else {

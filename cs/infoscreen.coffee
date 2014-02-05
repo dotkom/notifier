@@ -293,7 +293,7 @@ findUpdatedPosts = (newsList, viewedList) ->
   return updatedList
 
 officeFontRotate = (font) ->
-  fonts = ['fondamento','mysteryquest','oleoscript','sancreek']
+  fonts = ['cardo','fondamento','oleoscript','sourcesans']
   if font in fonts
     chosenFont = font
   else
