@@ -427,7 +427,7 @@ var Cantina = {
   shortenTodaysSoup: function(text) {
     if (this.debugText) console.log('Soup\t:: ' + text);
     // Shortening "Dagens suppe - Løksuppe med løk (G)" to "Løksuppe med løk (G)"
-    return text.replace(/dagens suppe (- )?/gi, '');
+    return text.replace(/dagens suppe(\: | - )/gi, '');
   },
 
   expandAbbreviations: function(text) {
