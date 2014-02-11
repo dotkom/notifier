@@ -48,22 +48,7 @@ var Servant = {
           end.setMinutes(endTime[1]);
           
           if (start <= now && now <= end) {
-
-            // If the servantname is quite long...
-            if (servantName.length >= 25) {
-              if (servantName.split(" ").length >= 3) {
-                names = servantName.split(" ");
-                // ...we'll shorten all middle names to one letter
-                for (var i = names.length - 2; i >= 1; i--) {
-                  names[i] = names[i].charAt(0).toUpperCase()+'.';
-                }
-                servantName = '';
-                for (i in names) {
-                  servantName += names[i] + " ";
-                }
-              }
-            }
-
+            servantName = self.shortenServantName(servantName);
             callback('Vakt: '+servantName);
           }
           else {
@@ -71,15 +56,49 @@ var Servant = {
             callback(self.msgNone);
           }
         }
+        // If it's an actual servant with a date slot instead:
+        // 10.2-14.2 Michael Johansen
+        else if (currentServant.match(/\d+\.\d+\-\d+\.\d+/)) {
+          // Match out the name from the line
+          var pieces = currentServant.match(/(\d+\.\d+\-\d+\.\d+) (.*)/);
+          var timeSlot = pieces[1];
+          var servantName = pieces[2];
+
+          // Assume we are within the correct dates
+          servantName = self.shortenServantName(servantName);
+          callback('Vakter: '+servantName);
+        }
         else {
           // No more servants today
           callback(self.msgNone);
         }
       },
       error: function(jqXHR, text, err) {
-        console.lolg('ERROR: Failed to get current servant.');
+        console.log('ERROR: Failed to get current servant.');
         callback(self.msgError);
       },
     });
+  },
+
+  shortenServantName: function(name) {
+    // If there are multiple names, don't shorten
+    if (name.match(/ ?(,|&|og|and) /gi) !== null) {
+      return name;
+    }
+    // If the name is quite long...
+    if (name.length >= 25) {
+      if (name.split(" ").length >= 3) {
+        names = name.split(" ");
+        // ...we'll shorten all middle names to one letter
+        for (var i = names.length - 2; i >= 1; i--) {
+          names[i] = names[i].charAt(0).toUpperCase()+'.';
+        }
+        name = '';
+        for (i in names) {
+          name += names[i] + " ";
+        }
+      }
+    }
+    return name;
   },
 }
