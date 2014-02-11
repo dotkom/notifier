@@ -405,6 +405,24 @@ var Affiliation = {
       symbol: './org/solan/symbol.png',
       placeholder: './org/solan/placeholder.png',
       palette: 'blue',
+      hw: {
+        apis: {
+          coffee: 'http://pi.deltahouse.no/coffee.txt',
+          light: 'http://pi.deltahouse.no/office.txt',
+          event: 'https://online.ntnu.no/notifier/solan/office',
+          servant: 'https://online.ntnu.no/notifier/solan/servant',
+          meetings: 'https://online.ntnu.no/notifier/solan/meetings',
+        },
+        statusIcons: {
+          open: './org/solan/icon-open.png',
+          closed: './org/solan/icon-closed.png',
+          meeting: './org/solan/icon-meeting.png',
+        },
+        memes: {
+          amount: 1,
+          path: './org/solan/meme/',
+        },
+      },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
