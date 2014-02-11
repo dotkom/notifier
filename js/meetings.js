@@ -50,15 +50,23 @@ var Meetings = {
     meetings = meetings.trim();
     // Change 00:00 to 24
     meetings = meetings.replace(/00:00/g, '24');
+    if (this.debug) console.log('24\t::', meetings);
     // Remove unnecessarily specific time info 10:00 -> 10, including the academic fifteen minutes
     meetings = meetings.replace(/:(00|15)/g, '');
+    if (this.debug) console.log(':00\t::', meetings);
     // Trim unnecessary zero in time 08 -> 8
     meetings = meetings.replace(/0(\d)/g, '$1');
-    // Add spaces for times "10-16:30" -> "10 - 16:30" and days "Fredag-Søndag" -> "Fredag - Søndag"
-    meetings = meetings.replace(/(dag|\d) ?- ?(\d+:?\d*|[a-zæøå]+dag)/gi, '$1 - $2:');
+    if (this.debug) console.log('08\t::', meetings);
+    // Add spaces for...
+    // ...times "10-16:30" -> "10 - 16:30"
+    // ...days "Fredag-Søndag" -> "Fredag - Søndag"
+    // ...dates "14.2-16.2" -> "14.2 - 16.2"
+    meetings = meetings.replace(/(dag|\d) ?- ?(\d+[\.:]?\d*|[a-zæøå]+dag)/gi, '$1 - $2:');
+    if (this.debug) console.log('_ \t::', meetings);
     // Change times like 23:30 and 23:59 to just 24
     meetings = meetings.replace(/22:(30|59)/g, '23');
     meetings = meetings.replace(/23:(30|59)/g, '24');
+    if (this.debug) console.log(':30\t::', meetings);
     return meetings;
   },
 
