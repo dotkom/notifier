@@ -407,11 +407,11 @@ var Affiliation = {
       palette: 'blue',
       hw: {
         apis: {
-          coffee: 'http://pi.deltahouse.no/coffee.txt',
-          light: 'http://pi.deltahouse.no/office.txt',
+          coffee: 'https://online.ntnu.no/notifier/solan/coffee',
           event: 'https://online.ntnu.no/notifier/solan/office',
-          servant: 'https://online.ntnu.no/notifier/solan/servant',
+          light: 'https://online.ntnu.no/notifier/solan/light',
           meetings: 'https://online.ntnu.no/notifier/solan/meetings',
+          servant: 'https://online.ntnu.no/notifier/solan/servant',
         },
         statusIcons: {
           open: './org/solan/icon-open.png',
