@@ -185,6 +185,7 @@ header #notification .saved {
   filter: drop-shadow(0 0 4px #000000);
 }
 .item #officeStatusOverlay {
+  pointer-events: none;
   position: relative;
   width: 20px;
   height: 20px;

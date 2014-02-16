@@ -104,6 +104,8 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     showSavedNotification()
     # Analytics
     Analytics.trackEvent 'clickAffiliation'+number, affiliationKey
+    # Display popup here with new icon
+    popupHere 3000
 
 bindPaletteSelector = ->
   # Default values
@@ -642,6 +644,16 @@ animateCreatorName = (line, build) ->
         animateCreatorName line, true
       ), random
 
+popupHere = (time) ->
+  if time is undefined then time = 7000
+  # Fade in the "popup here"-bubble
+  setTimeout ( ->
+    $('#popupHere').fadeIn 'swing'
+    setTimeout ( ->
+      $('#popupHere').fadeOut 'fast'
+    ), 7000
+  ), time
+
 # Document ready, go!
 $ ->
   if DEBUG
@@ -706,13 +718,7 @@ $ ->
   # Blinking cursor at pageflip
   pageFlipCursorBlinking()
 
-  # Fade in the "popup here"-bubble
-  setTimeout ( ->
-    $('#popupHere').fadeIn 'swing'
-    setTimeout ( ->
-      $('#popupHere').fadeOut 'fast'
-    ), 4000
-  ), 7000
+  popupHere()
   
   # Blink the first affiliation-field with light green colors to attract the bees
   if ls.everOpenedOptions is 'false'

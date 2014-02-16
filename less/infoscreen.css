@@ -284,11 +284,11 @@ body {
   font-family: 'Fondamento';
 }
 @font-face {
-  font-family: 'Mysteryquest';
-  src: url('/fonts/mysteryquest/mysteryquest.ttf');
+  font-family: 'Cardo';
+  src: url('/fonts/cardo/cardo.ttf');
 }
-.mysteryquest {
-  font-family: 'Mysteryquest';
+.cardo {
+  font-family: 'Cardo';
 }
 @font-face {
   font-family: 'Oleoscript';
@@ -298,11 +298,11 @@ body {
   font-family: 'Oleoscript';
 }
 @font-face {
-  font-family: 'Sancreek';
-  src: url('/fonts/sancreek/sancreek.ttf');
+  font-family: 'Sourcesans';
+  src: url('/fonts/sourcesans/sourcesans.ttf');
 }
-.sancreek {
-  font-family: 'Sancreek';
+.sourcesans {
+  font-family: 'Sourcesans';
 }
 .title {
   font-size: 32px;
