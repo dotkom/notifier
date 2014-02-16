@@ -258,7 +258,14 @@ var Cantina = {
           if (text.match(/buffet|dag|takeaway/gi) === null) {
             text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
             text = self.limitNumberOfWords(self.dinnerWordLimit, text);
-            text = self.removeLastWords(['i','&','og','med','m','frisk','friske','strimla','strimlet','eller','inkl','inkludert'], text);
+            text = self.removeLastWords([
+              'i','&','og','med','m','eller',
+              'frisk','friske',
+              'gresk',
+              'inkl','inkludert',
+              'krydret',
+              'strimla','strimlet',
+            ], text);
             text = self.removePunctuationAtEndOfLine(text);
             text = text.trim();
           }
