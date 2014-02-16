@@ -6,7 +6,7 @@ This is a Chrome/Opera extension and a WebApp from the student organization Onli
 * Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
 * Add WebApp for Mobile: Navigate to http://informatikk.org/mobile and tap "Add to Home Screen" in the context menu of the browser
 
-# OmegaV NotiPier
+# OmegaV NotiPi
 
 Omega Verksted (OmegaV) has created the hardware bundle which complements Online Notifier by making hardware features in Notifier accessible to any student union who purchases and installs the bundle. OmegaV currently sells this bundle at a reasonable price. The earnings goes to further development and to support OmegaV's operations.
 
@@ -33,7 +33,7 @@ For all the included affiliations
 - All pages in the extension are live, they keep themselves updated
 - Can be used as an infoscreen (full HD vertical screen) for continous use
 
-Additional features for affiliations who have OmegaV NotiPier
+Additional features for affiliations who have OmegaV NotiPi
 
 - Displays office status: Open, closed, meeting, free waffles
 - Displays todays meetings and current servant at the office
@@ -61,7 +61,7 @@ Key people are annotated with their email address
 - Jim Frode Hoff <jimfrodehoff@gmail.com> made the coffee button, attached to an Arduino
 - Nils Herde fixed hardware issues, kept the infoscreen running and installed the coffee button
 - Vegard Stenhjem Hagen installed all the hardware for Delta
-- Eirik Larsen <eirik.larsen93@gmail.com> made the OmegaV NotiPier, which made Notifier's hardware features accessible to all the student unions in Trondheim
+- Eirik Larsen <eirik.larsen93@gmail.com> made the OmegaV NotiPi, which made Notifier's hardware features accessible to all the student unions in Trondheim
 
 - Also, the following made coffee memes:
 	- Thomas Gautvedt
@@ -133,7 +133,7 @@ News
 - Separates between new, updated and read items
 - Serves HTML5 desktop notifications on news / updates
 
-Office (requires OmegaV NotiPier)
+Office (requires OmegaV NotiPi)
 
 - Office status is fetched from multiple sources, including Google Calendar and two Arduinos running on a Raspberry Pi
 - Reads roof light intensity from an Arduino Uno, the service displays a file like this: http://draug.online.ntnu.no/lys.txt
@@ -147,17 +147,17 @@ Office (requires OmegaV NotiPier)
 - Separate icon showing when you are offline or when an error has occured
 - All states: Default, open, closed, meeting, waffles, error (error usually means disconnected)
 
-Meetings (requires OmegaV NotiPier)
+Meetings (requires OmegaV NotiPi)
 
 - Showing the rest of the days meetings so users may easily spot when to grab a coffee
 - Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/notifier/meetings
 
-Servant (requires OmegaV NotiPier)
+Servant (requires OmegaV NotiPi)
 
 - Shows who is responsible for the affiliation office at any given time
 - Fetched via Online, which has prefetched from a GoogleCal, service running at e.g. https://online.ntnu.no/notifier/delta/office
 
-Coffee (requires OmegaV NotiPier)
+Coffee (requires OmegaV NotiPi)
 
 - An arduino is connected to a button at your affiliations office, to be pushed whenever someone is cooking a new pot of coffee
 - Whenever a new coffee pot is made users get a HTML desktop notification with a random coffee meme
