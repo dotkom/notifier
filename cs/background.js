@@ -41,8 +41,10 @@
     } else {
       iteration++;
     }
-    if (DEBUG || !navigator.onLine) {
+    if (!navigator.onLine) {
       loopTimeout = BACKGROUND_LOOP_OFFLINE;
+    } else if (DEBUG) {
+      loopTimeout = BACKGROUND_LOOP_DEBUG;
     } else {
       loopTimeout = BACKGROUND_LOOP;
     }
