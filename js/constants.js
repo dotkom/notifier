@@ -1,4 +1,4 @@
-var DEBUG = 1;
+var DEBUG = 0;
 
 // AJAX setup
 var AJAX_SETUP = {
@@ -16,8 +16,9 @@ console.lolg = function() {
 };
 
 // Loops & intervals
-var BACKGROUND_LOOP = 30000; // 30s
+var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_OFFLINE = 3000; // 3s, respond quickly when we get back online
+var BACKGROUND_LOOP_DEBUG = 5000; // 5s, respond fairly quickly for us developers
 var PAGE_LOOP = 10000; // 10s
 
 // Update stuff at every X intervals
