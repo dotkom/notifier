@@ -1,14 +1,3 @@
-
-// objektland er mellom to {}
-
-// i objektland er = egentlig :
-// i objektland er ; egentlig ,
-
-// i objektland er
-// 		function hest() {};
-// egentlig
-// 		hest: function() {},
-
 var Events = {
 	debug: 0,
 	msgError: "Shit went to hell, sawwy",
@@ -72,13 +61,3 @@ var Events = {
 Events.get(function(resultData) {
 	//console.log('result from callback: ' + resultData);
 });
-
-
-// 'string'
-// "string"
-// 1 er int
-// 1.1 er float
-// true er bool
-// {} er objekt
-// [] er array
-// char finnes ikke (sier vi, lol)
