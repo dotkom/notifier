@@ -144,9 +144,9 @@ var Coffee = {
       }
 
       // Add affiliation memes
-      if (Affiliation.org[key].hw.memes) {
-        amount = Affiliation.org[key].hw.memes.numberOfMemes;
-        var path = Affiliation.org[key].hw.memes.memePath;
+      if (Affiliation.org[key].hw.memePath) {
+        var amount = Affiliation.getMemeCount(key);
+        var path = Affiliation.org[key].hw.memePath;
         for (var i = 1; i <= amount; i++) {
           memes.push(path+i+'.jpg');
         }
