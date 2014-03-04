@@ -26,14 +26,11 @@ var Affiliation = {
   //     meetings: 'http://orgx.no/meetings',   // Todays meetings
   //   },
   //   statusIcons: {
-  //     open: './org/abakus/icon.png',
-  //     closed: './org/abakus/icon.png',
-  //     meeting: './org/abakus/icon.png',
+  //     open: './org/orgx/icon.png',
+  //     closed: './org/orgx/icon.png',
+  //     meeting: './org/orgx/icon.png',
   //   },
-  //   memes: {                                 // OPTIONAL within OPTIONAL feature 'hw'
-  //     amount: 3,                             // How many pictures in /meme/ with the format 1...N.jpg
-  //     path: './org/abakus/meme/',
-  //   },
+  //   memePath: './org/orgx/meme/',            // OPTIONAL within OPTIONAL feature 'hw', pictures in /orgx/meme/ with the format 1...N.jpg
   // },
   // irc: {                                     // OPTIONAL: add IRC button to the popup
   //   server: 'irc.freenode.net',
@@ -74,10 +71,7 @@ var Affiliation = {
           closed: './org/abakus/icon.png', //'./org/abakus/icon-closed.png',
           meeting: './org/abakus/icon.png', //'./org/abakus/icon-meeting.png',
         },
-        memes: {
-          amount: 3,
-          path: './org/abakus/meme/',
-        },
+        memePath: './org/abakus/meme/',
       },
       irc: {
         server: 'irc.efnet.org',
@@ -210,10 +204,7 @@ var Affiliation = {
           closed: './org/delta/icon-closed.png',
           meeting: './org/delta/icon-meeting.png',
         },
-        memes: {
-          amount: 1,
-          path: './org/delta/meme/',
-        },
+        memePath: './org/delta/meme/',
       },
       irc: {
         server: 'irc.freenode.net',
@@ -325,10 +316,7 @@ var Affiliation = {
           closed: './org/online/icon-closed.png',
           meeting: './org/online/icon-meeting.png',
         },
-        memes: {
-          amount: 4,
-          path: './org/online/meme/',
-        },
+        memePath: './org/online/meme/',
       },
       irc: {
         server: 'irc.freenode.net',
@@ -386,6 +374,21 @@ var Affiliation = {
       symbol: './org/nabla/symbol.png',
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
+      hw: {
+        apis: {
+          coffee: 'https://online.ntnu.no/notifier/nabla/coffee',
+          event: 'https://online.ntnu.no/notifier/nabla/office',
+          light: 'https://online.ntnu.no/notifier/nabla/light',
+          meetings: 'https://online.ntnu.no/notifier/nabla/meetings',
+          servant: 'https://online.ntnu.no/notifier/nabla/servant',
+        },
+        statusIcons: {
+          open: './org/nabla/icon-open.png',
+          closed: './org/nabla/icon-closed.png',
+          meeting: './org/nabla/icon-meeting.png',
+        },
+        memePath: './org/nabla/meme/',
+      },
       irc: {
         server: 'irc.freenode.net',
         channel: '#nabla',
@@ -418,10 +421,7 @@ var Affiliation = {
           closed: './org/solan/icon-closed.png',
           meeting: './org/solan/icon-meeting.png',
         },
-        memes: {
-          amount: 1,
-          path: './org/solan/meme/',
-        },
+        memePath: './org/solan/meme/',
       },
       getImage: function(links, callback) {
         Affiliation.getImages(this, links, callback);
@@ -1303,6 +1303,21 @@ var Affiliation = {
       },
     },
 
+  },
+
+  getMemeCount: function(affiliation) {
+    if (Affiliation.org[affiliation].hw.memePath) {
+      var counter = 1;
+      var path = Affiliation.org[affiliation].hw.memePath;
+      while (urlExists(path+counter+'.jpg')) {
+        counter++;
+      }
+      return counter - 1; // because we initialize to 1, not 0
+    }
+    else {
+      console.log('ERROR: affiliation', affiliation, 'does not have a memepath');
+      return 0;
+    }
   },
 
   getImages: function(affiliation, links, callback, options) {
