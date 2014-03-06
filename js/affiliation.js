@@ -469,7 +469,7 @@ var Affiliation = {
     // Linjeforeninger Dragvoll
 
     // De Folkevalgtes website is no longer in operation, uncommented for the unforseeable future
-    // 'de folkevalgte': {
+    // 'de_folkevalgte': {
     //   name: 'De Folkevalgte',
     //   key: 'de folkevalgte',
     //   web: 'http://www.defolkevalgte.net/',
@@ -602,7 +602,7 @@ var Affiliation = {
       },
     },
 
-    'jump cut': {
+    'jump_cut': {
       name: 'Jump Cut',
       key: 'jump cut',
       web: 'http://jumpcutdragvoll.wordpress.com/',
@@ -753,7 +753,7 @@ var Affiliation = {
       },
     },
 
-    'sturm und drang': {
+    'sturm_und_drang': {
       name: 'Sturm Und Drang',
       key: 'sturm und drang',
       web: 'http://www.sturm.ntnu.no/',
@@ -869,7 +869,7 @@ var Affiliation = {
       },
     },
 
-    'tim og shaenko': {
+    'tim_og_shaenko': {
       name: 'Tim & Shænko',
       key: 'tim og shaenko',
       web: 'http://bygging.no/',
@@ -1169,7 +1169,7 @@ var Affiliation = {
       },
     },
 
-    'studenttinget ntnu': {
+    'studenttinget_ntnu': {
       name: 'Studenttinget NTNU',
       key: 'studenttinget ntnu',
       web: 'http://www.studenttinget.no/',
@@ -1184,7 +1184,7 @@ var Affiliation = {
       },
     },
 
-    'studentparlamentet hist': {
+    'studentparlamentet_hist': {
       name: 'Studentparlamentet HiST',
       key: 'studentparlamentet hist',
       web: 'http://studentparlamentet.com/',
@@ -1258,7 +1258,7 @@ var Affiliation = {
       },
     },
 
-    'rektoratet ntnu': {
+    'rektoratet_ntnu': {
       name: 'Rektoratet NTNU',
       key: 'rektoratet ntnu',
       web: 'http://www.ntnu.no/blogger/rektoratet/',
