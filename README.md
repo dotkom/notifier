@@ -69,6 +69,7 @@ Key people are annotated with their email address
 	- John Hanssen Kolstad
 	- Magnus Dysthe
 	- Michael Johansen
+	- Linn Vikre
 
 # Issues submitted to Chromium/Opera
 
