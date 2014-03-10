@@ -215,7 +215,8 @@ var Browser = {
             // if stay? 10 minutes
             // if longStory? 10 seconds
             // else 5 seconds
-            // Note: Chrom(e|ium) on Linux doesn't remove the notification automatically
+            // Note: Chrom(e|ium) on Linux doesn't remove the notification,
+            // automatically, so it needs to be manually cleared.
             var timeout = (item.stay ? 600000 : (item.longStory ? 10000 : 5000));
             setTimeout(function() {
               chrome.notifications.clear(id, function(wasCleared) {
