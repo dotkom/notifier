@@ -261,6 +261,7 @@ var Cantina = {
             text = self.removeLastWords([
               'i','&','og','med','m','eller',
               'frisk','friske',
+              'fylt','fyllt',
               'gresk',
               'inkl','inkludert',
               'krydret',
