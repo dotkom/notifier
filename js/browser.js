@@ -101,19 +101,17 @@ var Browser = {
 
   getAppVersion: function() {
     try {
-      if (BROWSER == 'Chrome') {
-        return chrome.runtime.getManifest().version + ' @ ' + BROWSER;
-      }
-      else if (BROWSER == 'Opera') {
-        return 'Unknown @ ' + BROWSER // TODO: Implement when available
+      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+        return chrome.app.getDetails().version;
       }
       else {
         console.log(this.msgUnsupported);
       }
     } catch (err) {
       // Do nothing, we're just checking
+      // At this point the user probably doesn't have 
     }
-    return 'Unknown @ ' + BROWSER
+    return 'Unknown @ ' + BROWSER;
   },
 
   bindCommandHotkeys: function() {
