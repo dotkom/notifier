@@ -403,8 +403,8 @@ $ ->
   # Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent 'loadPalette', ls.affiliationPalette
   
-  # Minor esthetical adjustments for OS version
-  if OPERATING_SYSTEM == 'Windows'
+  # Minor esthetical adjustments for Windows
+  if navigator.appVersion.indexOf "Win" isnt -1
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip

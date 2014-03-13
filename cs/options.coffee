@@ -704,8 +704,8 @@ $ ->
   # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
   # $('label[for=openChatter] span').html html
   
-  # Minor esthetical adjustments for OS
-  if OPERATING_SYSTEM is 'Windows'
+  # Minor esthetical adjustments for Windows
+  if navigator.appVersion.indexOf "Win" isnt -1
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Google Analytics

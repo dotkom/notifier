@@ -53,21 +53,6 @@ while (urlExists('meme/'+__counter__+'.jpg')) {
 	__counter__++;
 }
 
-// OS detection
-var OPERATING_SYSTEM = "Unknown";
-if (navigator.appVersion.indexOf("Win")!==-1) OPERATING_SYSTEM="Windows";
-else if (navigator.appVersion.indexOf("Linux")!==-1) OPERATING_SYSTEM="Linux";
-else if (navigator.appVersion.indexOf("X11")!==-1) OPERATING_SYSTEM="UNIX";
-else if (navigator.appVersion.indexOf("Mac")!==-1) {
-	OPERATING_SYSTEM = "Old Mac";
-	if (navigator.appVersion.indexOf("10_7")!==-1||navigator.appVersion.indexOf("10_8")!==-1) {
-		OPERATING_SYSTEM = "Mac";
-	}
-}
-else {
-	console.log('WARNING: Potentially unsupported operating system');
-}
-
 // Browser detection
 var BROWSER = "Unknown";
 if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1)
@@ -78,6 +63,7 @@ else
 	console.log('WARNING: Potentially unsupported browser');
 
 // Production detection
+// typeof chrome.app.getDetails().update_url == "string"
 if (BROWSER == 'Chrome')
 	if (chrome.runtime.id === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
 		DEBUG = 0;

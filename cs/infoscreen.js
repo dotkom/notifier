@@ -470,7 +470,7 @@
     $('link[rel="shortcut icon"]').attr('href', icon);
     $('#news .post img').attr('src', placeholder);
     Analytics.trackEvent('loadPalette', ls.affiliationPalette);
-    if (OPERATING_SYSTEM === 'Windows') {
+    if (navigator.appVersion.indexOf("Win" !== -1)) {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }

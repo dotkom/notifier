@@ -713,7 +713,7 @@
     }
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
-    if (OPERATING_SYSTEM === 'Windows') {
+    if (navigator.appVersion.indexOf("Win" !== -1)) {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }
