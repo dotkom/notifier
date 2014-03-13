@@ -286,6 +286,7 @@ body {
   border: 0px solid #ffff00;
   color: black;
   font-size: 12px;
+  line-height: 16px;
 }
 #tips .text .clicktoclose {
   border: 0px solid #ffff00;
@@ -296,6 +297,7 @@ body {
 }
 #tips .text .big {
   font-size: 17px;
+  padding-top: 5px;
 }
 #tips .text .url {
   display: inline;
