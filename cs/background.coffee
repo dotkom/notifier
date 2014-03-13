@@ -180,7 +180,7 @@ $ ->
   # Send some basic statistics once a day
   setInterval ( ->
     # App version is interesting
-    Analytics.trackEvent 'appVersion', Browser.getAppVersion()
+    Analytics.trackEvent 'appVersion', Browser.getAppVersion() + ' @ ' + BROWSER
     # Affiliation is also interesting, in contrast to the popup some of these are inactive users
     # To find inactive user count, subtract these stats from popup stats
     if ls.showAffiliation2 isnt 'true'
