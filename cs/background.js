@@ -190,7 +190,7 @@
       Analytics.trackEvent('loadChatter');
     }
     loadAffiliationIcon();
-    Browser.bindCommandHotkeys();
+    Browser.bindCommandHotkeys(Affiliation.org[ls.affiliationKey1].web);
     Browser.registerNotificationListeners();
     Browser.bindOmniboxToOracle();
     window.updateOfficeAndMeetings = updateOfficeAndMeetings;
