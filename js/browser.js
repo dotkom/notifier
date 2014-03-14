@@ -125,8 +125,19 @@ var Browser = {
   inProduction: function() {
     // Is the app in production? If so, there will be an update URL
     try {
-      if (this.name == 'Chrome' || this.name == 'Opera') {
-        return (typeof chrome.app.getDetails().update_url == "string");
+      if (this.name === 'Chrome' || this.name === 'Opera') {
+        if (chrome.app.getDetails().id === 'hfgffimlnajpbenfpaofmmffcdmgkllf') {
+          return true;
+        }
+        else if (chrome.app.getDetails().id === 'npnpbddfcaibgnegafofkmffmbmflelj') {
+          return true;
+        }
+        else if (typeof chrome.app.getDetails().update_url === 'string') {
+          return true;
+        }
+        else {
+          return false;
+        }
       }
     } catch (err) {
       // Do nothing
