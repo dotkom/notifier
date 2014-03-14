@@ -15,7 +15,7 @@ var Browser = {
   },
 
   setIcon: function(path) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setIcon({path: path});
       }
@@ -26,7 +26,7 @@ var Browser = {
   },
 
   setTitle: function(title) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setTitle({title: title});
       }
@@ -41,7 +41,7 @@ var Browser = {
       console.log(this.msgCallbackMissing);
     }
     else {
-      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+      if (this.name == 'Chrome' || this.name == 'Opera') {
         chrome.browserAction.getBadgeText({}, function(badgeText) {
           callback(badgeText);
         });
@@ -56,7 +56,7 @@ var Browser = {
     if (typeof text == 'undefined' || text == null || isNaN(Number(text)) || Number(text) <= 0) {
       text = '';
     }
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.browserAction != undefined) {
         text = String(text);
         chrome.browserAction.setBadgeText({text: text});
@@ -68,7 +68,7 @@ var Browser = {
   },
 
   openTab: function(url) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: true});
       }
@@ -79,7 +79,7 @@ var Browser = {
   },
 
   openBackgroundTab: function(url) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: false});
       }
@@ -91,7 +91,7 @@ var Browser = {
 
   getUrl: function(url) {
     // Allows you to get an accessible URL for a resource in the extension, e.g. an image
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       return chrome.extension.getURL(url);
     }
     else {
@@ -100,7 +100,7 @@ var Browser = {
   },
 
   getBackgroundProcess: function() {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.extension != undefined) {
         return chrome.extension.getBackgroundPage();
       }
@@ -112,7 +112,7 @@ var Browser = {
 
   getAppVersion: function() {
     try {
-      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+      if (this.name == 'Chrome' || this.name == 'Opera') {
         return chrome.app.getDetails().version;
       }
     } catch (err) {
@@ -125,7 +125,7 @@ var Browser = {
   inProduction: function() {
     // Is the app in production? If so, there will be an update URL
     try {
-      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+      if (this.name == 'Chrome' || this.name == 'Opera') {
         return (typeof chrome.app.getDetails().update_url == "string");
       }
     } catch (err) {
@@ -136,7 +136,7 @@ var Browser = {
   },
 
   bindCommandHotkeys: function(affiliationWeb) {
-    if (BROWSER == 'Chrome') {
+    if (this.name == 'Chrome') {
       chrome.commands.onCommand.addListener(function(command) {
         if (command == 'open_instabart') {
           Browser.openTab('http://instabart.no');
@@ -173,7 +173,7 @@ var Browser = {
     if (!item.link) console.log('ERROR: item.link is required');
 
     var self = this;
-    if (BROWSER == 'Chrome') {
+    if (this.name == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
       if (chrome.idle) {
         chrome.idle.queryState(30, function (state) {
@@ -250,7 +250,7 @@ var Browser = {
         if (self.debug) console.log('ERROR: This version of Chrome does not support chrome.idle');
       }
     }
-    else if (BROWSER == 'Opera') {
+    else if (this.name == 'Opera') {
       // Desktop Notifications not yet available
       if (self.debug) console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
     }
@@ -262,14 +262,14 @@ var Browser = {
   // Event handlers for the various notification events
 
   registerNotificationListeners: function() {
-    if (BROWSER == 'Chrome') {
+    if (this.name == 'Chrome') {
       window.addEventListener("load", function() {
         chrome.notifications.onClosed.addListener(Browser.notificationClosed);
         chrome.notifications.onClicked.addListener(Browser.notificationClicked);
         chrome.notifications.onButtonClicked.addListener(Browser.notificationBtnClick);
       });
     }
-    else if (BROWSER == 'Opera') {
+    else if (this.name == 'Opera') {
       console.log(this.msgUnsupported);
     }
     else {
@@ -297,7 +297,7 @@ var Browser = {
   },
 
   bindOmniboxToOracle: function() {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       // This event is fired each time the user updates the text in the omnibox,
       // as long as the extension's keyword mode is still active.
       // chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
