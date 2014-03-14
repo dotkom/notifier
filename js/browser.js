@@ -3,6 +3,17 @@ var Browser = {
   msgCallbackMissing: 'ERROR: Callback is missing',
   msgUnsupported: 'ERROR: Unsupported browser',
 
+  name: 'Unknown', // Changed automatically at the end of this file
+
+  detect: function() {
+    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1)
+      return 'Chrome';
+    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1)
+      return 'Opera';
+    console.log(this.msgUnsupported);
+    return 'Unknown';
+  },
+
   setIcon: function(path) {
     if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
       if (chrome.browserAction != undefined) {
@@ -320,3 +331,6 @@ var Browser = {
   },
 
 }
+
+// Detect and set name
+Browser.name = Browser.detect();

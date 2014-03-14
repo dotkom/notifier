@@ -4,6 +4,9 @@ var DEBUG = 1;
 if (Browser.inProduction())
 	DEBUG = 0;
 
+// Browser detection
+var BROWSER = Browser.detect();
+
 // AJAX setup
 var AJAX_SETUP = {
 	timeout: 9000,
@@ -56,12 +59,3 @@ while (urlExists('meme/'+__counter__+'.jpg')) {
 	MEME_AMOUNT++;
 	__counter__++;
 }
-
-// Browser detection
-var BROWSER = "Unknown";
-if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1)
-	BROWSER = "Chrome";
-else if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1)
-	BROWSER = "Opera";
-else
-	console.log('WARNING: Potentially unsupported browser');
