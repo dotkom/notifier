@@ -200,7 +200,7 @@
     window.updateAffiliationNews = updateAffiliationNews;
     window.loadAffiliationIcon = loadAffiliationIcon;
     setInterval((function() {
-      Analytics.trackEvent('appVersion', Browser.getAppVersion() + ' @ ' + BROWSER);
+      Analytics.trackEvent('appVersion', Browser.getAppVersion() + ' @ ' + Browser.name);
       if (ls.showAffiliation2 !== 'true') {
         Analytics.trackEvent('singleAffiliation', ls.affiliationKey1);
         return Analytics.trackEvent('affiliation1', ls.affiliationKey1);

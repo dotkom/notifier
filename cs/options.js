@@ -560,7 +560,7 @@
                 }, speed, function() {
                   var name;
                   name = Affiliation.org[ls.affiliationKey1].name;
-                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter')) {
+                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + Browser.name + ' starter')) {
                     ls['useInfoscreen'] = 'true';
                     $('#useInfoscreen').prop('checked', true);
                     Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
@@ -759,7 +759,7 @@
     bindBusFields('secondBus');
     slideFavoriteBusLines();
     Stops.load();
-    if (BROWSER === 'Opera') {
+    if (Browser.name === 'Opera') {
       $('input#showNotifications').prop("disabled", "disabled");
       $('input#showNotifications').prop("checked", "false");
       text = 'Varsle om nyheter';

@@ -4,9 +4,6 @@ var DEBUG = 1;
 if (Browser.inProduction())
 	DEBUG = 0;
 
-// Browser detection
-var BROWSER = Browser.detect();
-
 // AJAX setup
 var AJAX_SETUP = {
 	timeout: 9000,

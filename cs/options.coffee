@@ -539,7 +539,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
               $('header').animate {'top':'50%'}, speed
               $('#container').animate {'top':'50%'}, speed, ->
                 name = Affiliation.org[ls.affiliationKey1].name
-                if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter'
+                if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+Browser.name+' starter'
                   # Enable, and check the checkbox
                   ls['useInfoscreen'] = 'true'
                   $('#useInfoscreen').prop 'checked', true
@@ -701,7 +701,7 @@ $ ->
 
   # Uncommented as long as we are not using the Chatter option (noone admits to using it)
   # # Minor esthetical adjustmenst for Browser
-  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, Browser.name
   # $('label[for=openChatter] span').html html
   
   # Minor esthetical adjustments for Windows
@@ -764,7 +764,7 @@ $ ->
   Stops.load()
 
   # If Opera, disable and redesign features related to desktop notifications
-  if BROWSER is 'Opera'
+  if Browser.name is 'Opera'
     # The actual features doesn't need to be turned off, they aren't working
     # anyway, so just uncheck the option to make the user understand it too
     # Turn off showNotifications feature
