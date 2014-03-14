@@ -104,26 +104,34 @@ var Browser = {
       if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
         return chrome.app.getDetails().version;
       }
-      else {
-        console.log(this.msgUnsupported);
-      }
     } catch (err) {
-      // Do nothing, we're just checking
-      // At this point the user probably doesn't have 
+      // Do nothing
     }
-    return 'Unknown @ ' + BROWSER;
+    console.log(this.msgUnsupported);
+    return 'Unknown';
   },
 
-  bindCommandHotkeys: function() {
+  inProduction: function() {
+    // Is the app in production? If so, there will be an update URL
+    try {
+      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+        return (typeof chrome.app.getDetails().update_url == "string");
+      }
+    } catch (err) {
+      // Do nothing
+    }
+    console.log(this.msgUnsupported);
+    return false; // assume dev mode
+  },
+
+  bindCommandHotkeys: function(affiliationWeb) {
     if (BROWSER == 'Chrome') {
       chrome.commands.onCommand.addListener(function(command) {
         if (command == 'open_instabart') {
           Browser.openTab('http://instabart.no');
         }
         else if (command == 'open_affiliation') {
-          var key = localStorage.affiliationKey1;
-          var web = Affiliation.org[key].web;
-          Browser.openTab(web);
+          Browser.openTab(affiliationWeb);
         }
         else {
           console.log('ERROR: Unrecognized browser command');

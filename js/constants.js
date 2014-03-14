@@ -1,5 +1,9 @@
 var DEBUG = 1;
 
+// Production detection
+if (Browser.inProduction())
+	DEBUG = 0;
+
 // AJAX setup
 var AJAX_SETUP = {
 	timeout: 9000,
@@ -61,12 +65,3 @@ else if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.ind
 	BROWSER = "Opera";
 else
 	console.log('WARNING: Potentially unsupported browser');
-
-// Production detection
-// typeof chrome.app.getDetails().update_url == "string"
-if (BROWSER == 'Chrome')
-	if (chrome.runtime.id === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
-		DEBUG = 0;
-else if (BROWSER == 'Opera')
-	if (chrome.runtime.id === 'npnpbddfcaibgnegafofkmffmbmflelj')
-		DEBUG = 0;
