@@ -689,7 +689,6 @@
         return Browser.openTab($(this).attr('data'));
       });
     }
-    $.ajaxSetup(AJAX_SETUP);
     if (!Affiliation.org[ls.affiliationKey1].hw) {
       disableHardwareFeatures(true);
     }

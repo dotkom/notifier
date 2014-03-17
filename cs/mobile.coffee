@@ -289,9 +289,6 @@ busLoading = (cssIdentificator) ->
 
 # Document ready, go!
 $ ->
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
-
   # Show loading gifs
   busLoading 'firstBus'
   busLoading 'secondBus'

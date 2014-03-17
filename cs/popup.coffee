@@ -431,9 +431,6 @@ fadeButtonText = (show, msg) ->
 
 # Document ready, go!
 $ ->
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
-
   # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'

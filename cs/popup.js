@@ -499,7 +499,6 @@
 
   $(function() {
     var clickChatter, icon, key, logo, placeholder, shorter, _func, _timer;
-    $.ajaxSetup(AJAX_SETUP);
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       Analytics.trackEvent('toggleInfoscreen');

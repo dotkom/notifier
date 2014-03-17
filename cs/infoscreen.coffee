@@ -357,9 +357,6 @@ $ ->
           when 'pizza' then updateOffice 'taco'
           when 'taco' then updateOffice 'waffle'
           else updateOffice 'error'
-
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
   ls.removeItem 'infoscreenOfficeStatus'

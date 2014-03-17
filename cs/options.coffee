@@ -661,9 +661,6 @@ $ ->
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
 
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
-
   # Remove hardware features if the affiliation does not have it
   if not Affiliation.org[ls.affiliationKey1].hw
     disableHardwareFeatures true # true means be quick about it!

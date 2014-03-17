@@ -136,9 +136,6 @@ loadAffiliationIcon = ->
 
 # Document ready, go!
 $ ->
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
-
   # Check if both current affiliations still exist, reset if not
   keys = Object.keys Affiliation.org
   Defaults.resetAffiliationsIfNotExist ls.affiliationKey1, ls.affiliationKey2, keys

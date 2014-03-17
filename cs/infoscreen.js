@@ -432,7 +432,6 @@
         }
       });
     }
-    $.ajaxSetup(AJAX_SETUP);
     ls.removeItem('infoscreenOfficeStatus');
     ls.removeItem('infoscreenOfficeStatusMessage');
     if (ls.showAffiliation2 !== 'true') {
