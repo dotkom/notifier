@@ -271,6 +271,7 @@ var Cantina = {
             text = text.trim();
           }
         }
+        text = text.capitalize();
         if (self.debug) console.log('\nFrom\t"'+dinner.text+'"\nTo\t\t"'+text+'"\n');
         // Add flags
         if (dinner.flags !== null)
