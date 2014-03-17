@@ -59,11 +59,19 @@
     {
       "matches": ["*://*/*"],
       "js": ["libs/jquery-2.0.0.min.js", "js/on_website.js"]
+    },
+    {
+      "matches": ["*://innsida.ntnu.no/*"],
+      "css": ["global.css"],
+      "js": ["libs/jquery-2.0.0.min.js", "js/on_website.js"]
     }
   ],
 
   "web_accessible_resources": [
-    "org/*/*.png"
+    "org/*/*.png",
+    "fonts/pictograms.woff",
+    "fonts/pictograms.ttf",
+    "img/bart.png"
   ],
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com https://apis.google.com; object-src 'self'"
