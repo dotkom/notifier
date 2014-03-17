@@ -166,7 +166,7 @@ if (typeof chrome != 'undefined') {
           // Check if affiliation has IRC and we are currently in their channel or welcome page
           if (answer.hasIrc) {
             // Create nodes we'll use later
-            $('div.server_details').append('<div id="notifierWelcome"></div>');
+            $('div.server_details').prepend('<div id="notifierWelcome"></div>');
             // Affiliation has IRC, start loading stuff that might be stored from before
             loadAffiliation();
             // Request a blob of all the info we need
