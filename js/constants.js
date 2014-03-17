@@ -4,12 +4,6 @@ var DEBUG = 1;
 if (Browser.inProduction())
 	DEBUG = 0;
 
-// AJAX setup
-var AJAX_SETUP = {
-	timeout: 9000,
-	cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
-}
-
 // Logging setup
 console.lolg = function() {
 	// Console logging that only happens in debug mode
