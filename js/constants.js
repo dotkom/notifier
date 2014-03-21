@@ -40,9 +40,6 @@ var urlExists = function(url) {
 	catch (e) {
 		return false;
 	}
-	finally {
-		// do nothing
-	}
 }
 var MEME_AMOUNT = 0;
 var __counter__ = 1;
