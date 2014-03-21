@@ -4,20 +4,22 @@
   <title>Background</title>
   <meta charset="utf-8">
 
-  <!-- JS Libs -->
+  <!-- JS No Dependencies -->
   <script src="libs/jquery-2.0.0.min.js"></script>
-
-  <!-- JS Behind the scenes -->
-  <script src="js/ajaxer.js"></script>
-  <script src="js/browser.js"></script>
   <script src="js/missing_functions.js"></script>
   <script src="js/missing_prototypes.js"></script>
-  <script src="js/constants.js"></script>
-  <script src="js/defaults.js"></script>
-  <script src="js/analytics.js"></script>
+
+  <!-- JS Behind the Scenes -->
+  <script src="js/browser.js"></script> <!-- browser needs jquery -->
+  <script src="js/constants.js"></script> <!-- constants needs browser -->
+  <script src="js/analytics.js"></script> <!-- analytics needs constants -->
+  <script src="js/defaults.js"></script> <!-- defaults needs browser -->
+
+  <!-- JS Affiliation and Such -->
+  <script src="js/ajaxer.js"></script> <!-- ajaxer needs jquery -->
+  <script src="js/affiliation.js"></script> <!-- affiliation needs ajaxer -->
 
   <!-- JS Services -->
-  <script src="js/affiliation.js"></script>
   <script src="js/cantina.js"></script>
   <script src="js/coffee.js"></script>
   <script src="js/hours.js"></script>
