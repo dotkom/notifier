@@ -238,6 +238,7 @@ var Browser = {
             // Show the notification
             chrome.notifications.create(id, notification, function(notID) {
               if (self.debug) console.log('Succesfully created notification with ID', notID);
+              Analytics.trackEvent('createNotification', item.feedKey, item.link);
             });
             // Choose how long the notification stays around for
             // if stay? 10 minutes
