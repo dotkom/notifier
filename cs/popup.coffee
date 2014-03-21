@@ -378,29 +378,6 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     Analytics.trackEvent 'clickNews', link
     window.close()
 
-  # # If organization prefers alternative links, use them
-  # if Affiliation.org[feedKey].useAltLink
-  #   altLink = $('.item[data="'+link+'"]').attr 'name'
-  #   if altLink isnt 'null'
-  #     $('.item[data="'+link+'"]').attr 'data', altLink
-  
-  # # If the organization has it's own getImage function, use it
-  # if Affiliation.org[feedKey].getImage isnt undefined
-  #   for index, link of viewedList
-  #     # It's important to get the link from the callback within the function below,
-  #     # not the above code, - because of race conditions mixing up the news posts, async ftw.
-  #     Affiliation.org[feedKey].getImage link, (link, image) ->
-  #       # Also, check whether there's already a qualified image before replacing it.
-  #       if ($('.item[data="'+link+'"] img').attr('src').indexOf('http') == -1)
-  #         $('.item[data="'+link+'"] img').attr 'src', image
-
-  # # If the organization has it's own getImages (plural) function, use it
-  # if Affiliation.org[feedKey].getImages isnt undefined
-  #   Affiliation.org[feedKey].getImages viewedList, (links, images) ->
-  #     for index of links
-  #       if ($('.item[data="'+links[index]+'"] img').attr('src').indexOf('http') == -1)
-  #         $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
-
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
   updatedList = []
