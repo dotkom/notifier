@@ -591,16 +591,5 @@ $ ->
   # (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
   $('#oracle #question').focus()
 
-  # 60 fps scrolling, thecssninja.com/javascript/pointer-events-60fps
-  _timer = null
-  _func = ->
-    clearTimeout _timer
-    if not document.body.classList.contains 'disable-hover'
-      document.body.classList.add 'disable-hover'
-    _timer = setTimeout ( ->
-      document.body.classList.remove 'disable-hover'
-    ), 500
-  window.addEventListener 'scroll', _func, false
-
   # Enter main loop, keeping everything up-to-date
   mainLoop()

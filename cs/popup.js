@@ -498,7 +498,7 @@
   };
 
   $(function() {
-    var clickChatter, icon, key, logo, placeholder, shorter, _func, _timer;
+    var clickChatter, icon, key, logo, placeholder, shorter;
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       Analytics.trackEvent('toggleInfoscreen');
@@ -644,17 +644,6 @@
       }
     });
     $('#oracle #question').focus();
-    _timer = null;
-    _func = function() {
-      clearTimeout(_timer);
-      if (!document.body.classList.contains('disable-hover')) {
-        document.body.classList.add('disable-hover');
-      }
-      return _timer = setTimeout((function() {
-        return document.body.classList.remove('disable-hover');
-      }), 500);
-    };
-    window.addEventListener('scroll', _func, false);
     return mainLoop();
   });
 
