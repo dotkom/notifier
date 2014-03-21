@@ -109,6 +109,7 @@ updateAffiliationNews = (number) ->
       else
         saveAndCountNews items, number
         updateUnreadCount()
+        storeImageLinks number
   else
     console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
 
@@ -126,6 +127,27 @@ saveAndCountNews = (items, number) ->
 updateUnreadCount = (count1, count2) ->
   unreadCount = (Number ls.affiliationUnreadCount1) + (Number ls.affiliationUnreadCount2)
   Browser.setBadgeText String unreadCount
+
+storeImageLinks = (number) ->
+  key = ls['affiliationKey'+number]
+  newsList = JSON.parse ls['affiliationNewsList'+number]
+  # If the organization has it's own getImage function, use it
+  if Affiliation.org[key].getImage isnt undefined
+    for index, link of newsList
+      # It's important to get the link from the callback within the function below,
+      # not the above code, - because of race conditions mixing up the news posts, async ftw.
+      Affiliation.org[key].getImage link, (link, image) ->
+        # Also, check whether there's already a qualified image before replacing it.
+        storedImages = JSON.parse ls.storedImages
+        storedImages[link] = image
+        ls.storedImages = JSON.stringify storedImages
+  # If the organization has it's own getImages (plural) function, use it
+  if Affiliation.org[key].getImages isnt undefined
+    Affiliation.org[key].getImages newsList, (links, images) ->
+      storedImages = JSON.parse ls.storedImages
+      for index of links
+        storedImages[links[index]] = images[index]
+      ls.storedImages = JSON.stringify storedImages
 
 loadAffiliationIcon = ->
   key = ls.affiliationKey1
