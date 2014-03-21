@@ -308,6 +308,9 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Build list of last viewed for the next time the user views the news
   viewedList = []
 
+  # Prepare the list of images with salt, pepper and some vinegar
+  storedImages = JSON.parse ls.storedImages
+
   # Add feed items to popup
   $.each items, (index, item) ->
     
@@ -335,6 +338,12 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
         descLimit = 100
       if item.description.length > descLimit
         item.description = item.description.substr(0, descLimit) + '...'
+      # Use image we've found to accompany the news item
+      storedImage = storedImages[item.link]
+      if storedImage isnt undefined
+        # Also, check whether there's already a qualified image before replacing it
+        if item.image.indexOf 'http' isnt -1
+          item.image = storedImage
 
       htmlItem = '
         <div class="post">
@@ -369,28 +378,28 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     Analytics.trackEvent 'clickNews', link
     window.close()
 
-  # If organization prefers alternative links, use them
-  if Affiliation.org[feedKey].useAltLink
-    altLink = $('.item[data="'+link+'"]').attr 'name'
-    if altLink isnt 'null'
-      $('.item[data="'+link+'"]').attr 'data', altLink
+  # # If organization prefers alternative links, use them
+  # if Affiliation.org[feedKey].useAltLink
+  #   altLink = $('.item[data="'+link+'"]').attr 'name'
+  #   if altLink isnt 'null'
+  #     $('.item[data="'+link+'"]').attr 'data', altLink
+  
+  # # If the organization has it's own getImage function, use it
+  # if Affiliation.org[feedKey].getImage isnt undefined
+  #   for index, link of viewedList
+  #     # It's important to get the link from the callback within the function below,
+  #     # not the above code, - because of race conditions mixing up the news posts, async ftw.
+  #     Affiliation.org[feedKey].getImage link, (link, image) ->
+  #       # Also, check whether there's already a qualified image before replacing it.
+  #       if ($('.item[data="'+link+'"] img').attr('src').indexOf('http') == -1)
+  #         $('.item[data="'+link+'"] img').attr 'src', image
 
-  # If the organization has it's own getImage function, use it
-  if Affiliation.org[feedKey].getImage isnt undefined
-    for index, link of viewedList
-      # It's important to get the link from the callback within the function below,
-      # not the above code, - because of race conditions mixing up the news posts, async ftw.
-      Affiliation.org[feedKey].getImage link, (link, image) ->
-        # Also, check whether there's already a qualified image before replacing it.
-        if ($('.item[data="'+link+'"] img').attr('src').indexOf('http') == -1)
-          $('.item[data="'+link+'"] img').attr 'src', image
-
-  # If the organization has it's own getImages (plural) function, use it
-  if Affiliation.org[feedKey].getImages isnt undefined
-    Affiliation.org[feedKey].getImages viewedList, (links, images) ->
-      for index of links
-        if ($('.item[data="'+links[index]+'"] img').attr('src').indexOf('http') == -1)
-          $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
+  # # If the organization has it's own getImages (plural) function, use it
+  # if Affiliation.org[feedKey].getImages isnt undefined
+  #   Affiliation.org[feedKey].getImages viewedList, (links, images) ->
+  #     for index of links
+  #       if ($('.item[data="'+links[index]+'"] img').attr('src').indexOf('http') == -1)
+  #         $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
