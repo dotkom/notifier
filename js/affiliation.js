@@ -30,7 +30,12 @@ var Affiliation = {
   //     closed: './org/orgx/icon.png',
   //     meeting: './org/orgx/icon.png',
   //   },
-  //   memePath: './org/orgx/meme/',            // OPTIONAL within OPTIONAL feature 'hw', pictures in /orgx/meme/ with the format 1...N.jpg
+  //   statusMessages: {                        // OPTIONAL: separate statusmessages for this affiliation's office
+  //     open: 'Velkommen inn!',
+  //     closed: 'Få tilgang av kontorsjef',
+  //     meeting: 'Kontoret er helt opptatt!',
+  //   },
+  //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.jpg
   // },
   // irc: {                                     // OPTIONAL: add IRC button to the popup
   //   server: 'irc.freenode.net',
@@ -354,6 +359,9 @@ var Affiliation = {
           open: './org/nabla/icon-open.png',
           closed: './org/nabla/icon-closed.png',
           meeting: './org/nabla/icon-meeting.png',
+        },
+        statusMessages: {
+          open: 'Velkommen inn!',
         },
         memePath: './org/nabla/meme/',
       },
