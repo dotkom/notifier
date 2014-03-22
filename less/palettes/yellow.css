@@ -1,47 +1,38 @@
 
-/*
-Being the only palette with an inherently bright color, this palette
-has more overriding values than the other palettes, it was difficult
-to make this pretty.
-*/
-
-body {
-  text-shadow:
-  	0 0 1px #444,
-  	0 0 1px #444,
-  	0 0 1px #444;
-}
-
-/* Overrides in Options */
-#popupHere {
-  text-shadow: 0 0 0 white;
-}
-.item input {
-  box-shadow: 0 0 0 white;
-}
-
-/* Overrides in Popup */
-#tips {
-  text-shadow: 0 0 0 white;
-}
-
-/* Override title text-shadow, popup */
-.title {
-  color: white;
-  text-shadow:
-  	0 0 1px #444,
-  	0 0 1px #444,
-    0 0 2px #444,
-    0 0 2px #444,
-  	0 0 2px #444;
-}
-
-/* allround stuff */
-
 #background, #fadeOutNews {
-  -webkit-filter: hue-rotate(-151deg) saturate(2.7) brightness(3.2);
+  -webkit-filter: grayscale(1) brightness(.9);
 }
 
 #pfFlip {
-  -webkit-filter: hue-rotate(-181deg) saturate(2.0) brightness(2.3);
+  -webkit-filter: grayscale(1) brightness(.7);
+}
+
+#pfBackground {
+  -webkit-filter: grayscale(1) brightness(.4);
+}
+
+#container #bus {
+  box-shadow: 0 0 20px rgb(255, 255, 116);
+  background-color: rgb(255, 255, 116);
+  color: #333;
+}
+
+#atbLogo {
+  box-shadow: 0px 0px 5px 1px #555;
+}
+
+#oracle #name {
+  font-weight: bold;
+}
+
+#container #bus #oracle #question {
+  color: black;
+}
+
+*::-webkit-input-placeholder {
+  color: #333;
+}
+
+.title {
+  color: rgb(255, 255, 189);
 }
