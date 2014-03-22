@@ -342,7 +342,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       storedImage = storedImages[item.link]
       if storedImage isnt undefined
         # Also, check whether there's already a qualified image before replacing it
-        if item.image.indexOf 'http' isnt -1
+        if -1 is item.image.indexOf 'http'
           item.image = storedImage
 
       htmlItem = '

@@ -393,7 +393,7 @@
         }
         storedImage = storedImages[item.link];
         if (storedImage !== void 0) {
-          if (item.image.indexOf('http' !== -1)) {
+          if (-1 === item.image.indexOf('http')) {
             item.image = storedImage;
           }
         }
