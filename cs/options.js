@@ -712,7 +712,8 @@
     }
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
-    if (navigator.appVersion.indexOf("Win" !== -1)) {
+    if (-1 !== navigator.appVersion.indexOf("Win")) {
+      alert('wat');
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }
@@ -762,12 +763,12 @@
       $('input#showNotifications').prop("disabled", "disabled");
       $('input#showNotifications').prop("checked", "false");
       text = 'Varsle om nyheter';
-      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent til Opera 18</b>');
+      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent på ny Opera</b>');
       $('input#coffeeSubscription').prop("disabled", "disabled");
       $('input#coffeeSubscription').prop("checked", "false");
       text = $('label[for=coffeeSubscription] span').text();
       text = text.trim();
-      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 18</b>');
+      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent på ny Opera</b>');
     }
     $('#busBox').hover(function() {
       return $(this).addClass('hover');

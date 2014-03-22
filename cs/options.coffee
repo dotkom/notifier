@@ -702,7 +702,8 @@ $ ->
   # $('label[for=openChatter] span').html html
   
   # Minor esthetical adjustments for Windows
-  if navigator.appVersion.indexOf "Win" isnt -1
+  if -1 isnt navigator.appVersion.indexOf "Win"
+    alert 'wat'
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Google Analytics
@@ -768,13 +769,13 @@ $ ->
     $('input#showNotifications').prop "disabled", "disabled"
     $('input#showNotifications').prop "checked", "false"
     text = 'Varsle om nyheter'
-    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 18</b>')
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent på ny Opera</b>')
     # Turn off coffeeSubscription feature
     $('input#coffeeSubscription').prop "disabled", "disabled"
     $('input#coffeeSubscription').prop "checked", "false"
     text = $('label[for=coffeeSubscription] span').text()
     text = text.trim()
-    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 18</b>')
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent på ny Opera</b>')
 
   # Adding a hover class to #busBox whenever the mouse is hovering over it
   $('#busBox').hover ->
