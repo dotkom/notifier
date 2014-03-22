@@ -183,6 +183,12 @@ var Browser = {
     if (!item.description) console.log('ERROR: item.description is required');
     if (!item.link) console.log('ERROR: item.link is required');
 
+    // Do not show any notifications within the first half minute after install
+    if ((new Date().getTime() - Number(localStorage.installTime)) < 30000) {
+      if (this.debug) console.log('No notifications within the first half minute ('+item.feedKey+')');
+      return;
+    }
+
     var self = this;
     if (this.name == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
