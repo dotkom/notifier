@@ -57,6 +57,7 @@
   updateOffice = function(debugStatus) {
     console.lolg('updateOffice');
     return Office.get(function(status, message) {
+      var msgs;
       if (DEBUG && debugStatus) {
         status = debugStatus;
         message = 'debugging';
@@ -79,9 +80,15 @@
           $('#office #status img').hide();
           $('#office #status #text').show();
         }
-        $('#office #subtext').html(message);
         ls.infoscreenOfficeStatus = status;
-        return ls.infoscreenOfficeStatusMessage = message;
+        ls.infoscreenOfficeStatusMessage = message;
+        msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
+        if (msgs) {
+          if (msgs[status]) {
+            message = msgs[status];
+          }
+        }
+        return $('#office #subtext').html(message);
       }
     });
   };

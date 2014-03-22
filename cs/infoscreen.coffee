@@ -55,9 +55,15 @@ updateOffice = (debugStatus) ->
         $('#office #status #text').css 'color', Office.statuses[status].color
         $('#office #status img').hide()
         $('#office #status #text').show()
-      $('#office #subtext').html message
+      # Save them
       ls.infoscreenOfficeStatus = status
       ls.infoscreenOfficeStatusMessage = message
+      # Check for Affiliation specific status message
+      msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages
+      if msgs
+        if msgs[status]
+          message = msgs[status]
+      $('#office #subtext').html message
 
 updateServant = ->
   console.lolg 'updateServant'
