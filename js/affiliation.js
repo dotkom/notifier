@@ -562,8 +562,7 @@ var Affiliation = {
       icon: './org/utopia/icon.png',
       symbol: './org/utopia/symbol.png',
       placeholder: './org/utopia/placeholder.png',
-      palette: 'utopia',
-      palettePath: './org/utopia/palette.css',
+      palette: 'blue',
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
