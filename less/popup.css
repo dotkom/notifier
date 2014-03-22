@@ -399,10 +399,10 @@ body {
         0 0 15px white;
 }
 #container #bus {
+  box-shadow: 0 0 15px #aaa;
   top: 16px;
   margin-bottom: 20px;
   padding-bottom: 9px;
-  box-shadow: 0 0 15px #aaa;
 }
 #container #bus #realtime {
   border: 0px solid #ff0000;
