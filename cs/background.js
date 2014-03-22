@@ -56,7 +56,7 @@
   updateOfficeAndMeetings = function(force) {
     console.lolg('updateOfficeAndMeetings');
     return Office.get(function(status, message) {
-      var errorIcon, statusIcon, title;
+      var errorIcon, msgs, statusIcon, title;
       title = '';
       if (force || ls.officeStatus !== status || ls.officeStatusMessage !== message) {
         if (__indexOf.call(Object.keys(Office.foods), status) >= 0) {
@@ -73,11 +73,17 @@
           }
         }
         ls.officeStatus = status;
+        ls.officeStatusMessage = message;
+        msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
+        if (msgs) {
+          if (msgs[status]) {
+            message = msgs[status];
+          }
+        }
         return Meetings.get(function(meetings) {
           var today;
           today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
-          Browser.setTitle(today);
-          return ls.officeStatusMessage = message;
+          return Browser.setTitle(today);
         });
       }
     });

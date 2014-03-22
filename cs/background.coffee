@@ -40,24 +40,33 @@ updateOfficeAndMeetings = (force) ->
   Office.get (status, message) ->
     title = ''
     if force or ls.officeStatus isnt status or ls.officeStatusMessage isnt message
-      # Extension icon
+      # Food status
       if status in Object.keys Office.foods
         title = Office.foods[status].title
         Browser.setIcon Office.foods[status].icon
+      # Regular status
       else
+        # Set title
         title = Office.statuses[status].title
+        # Set icon
         statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status]
         if statusIcon isnt undefined
           Browser.setIcon statusIcon
         else
           errorIcon = Affiliation.org[ls.affiliationKey1].icon
           Browser.setIcon errorIcon
+      # Save them
       ls.officeStatus = status
+      ls.officeStatusMessage = message
+      # Check for Affiliation specific status message
+      msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages
+      if msgs
+        if msgs[status]
+          message = msgs[status]
       # Extension title (hovering mouse over icon shows the title text)
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
         Browser.setTitle today
-        ls.officeStatusMessage = message
 
 updateCoffeeSubscription = ->
   console.lolg 'updateCoffeeSubscription'
