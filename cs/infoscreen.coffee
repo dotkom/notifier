@@ -407,7 +407,7 @@ $ ->
   Analytics.trackEvent 'loadPalette', ls.affiliationPalette
   
   # Minor esthetical adjustments for Windows
-  if navigator.appVersion.indexOf "Win" isnt -1
+  if -1 isnt navigator.appVersion.indexOf "Win"
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
