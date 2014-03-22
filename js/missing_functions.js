@@ -88,8 +88,12 @@ if (localStorage.affiliationKey1 == 'rektoratet ntnu')
 if (localStorage.affiliationKey2 == 'rektoratet ntnu')
   localStorage.affiliationKey2 = 'rektoratet_ntnu';
 
-// HOTFIXING UTOPIA PALETTE (BEING REMOVED)
+// HOTFIXING UTOPIA, REMOVE AFTER MAY 2014
 
 if (localStorage.affiliationPalette == 'utopia')
   localStorage.affiliationPalette = 'blue';
+if (localStorage.affiliationKey1 == 'utopia')
+  localStorage.affiliationKey1 = 'communitas';
+if (localStorage.affiliationKey2 == 'utopia')
+  localStorage.affiliationKey2 = 'communitas';
 

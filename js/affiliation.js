@@ -432,6 +432,21 @@ var Affiliation = {
 
     // Linjeforeninger Dragvoll
 
+    'communitas': {
+      name: 'Communitas',
+      key: 'communitas',
+      web: 'http://sosantntnu.wordpress.com/',
+      feed: 'http://sosantntnu.wordpress.com/feed/',
+      logo: './org/communitas/logo.png',
+      icon: './org/communitas/icon.png',
+      symbol: './org/communitas/symbol.png',
+      placeholder: './org/communitas/placeholder.png',
+      palette: 'blue',
+      getImages: function(links, callback) {
+        Affiliation.getImages(this, links, callback);
+      },
+    },
+
     // De Folkevalgtes website is no longer in operation, uncommented for the unforseeable future
     // 'de_folkevalgte': {
     //   name: 'De Folkevalgte',
@@ -548,21 +563,6 @@ var Affiliation = {
       symbol: './org/jump cut/symbol.png',
       placeholder: './org/jump cut/placeholder.png',
       palette: 'grey',
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
-      },
-    },
-
-    'utopia': {
-      name: 'Utopia',
-      key: 'utopia',
-      web: 'http://sosantntnu.wordpress.com/',
-      feed: 'http://sosantntnu.wordpress.com/feed/',
-      logo: './org/utopia/logo.png',
-      icon: './org/utopia/icon.png',
-      symbol: './org/utopia/symbol.png',
-      placeholder: './org/utopia/placeholder.png',
-      palette: 'blue',
       getImages: function(links, callback) {
         Affiliation.getImages(this, links, callback);
       },
