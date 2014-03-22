@@ -6,3 +6,7 @@
 #pfFlip {
   -webkit-filter: hue-rotate(56deg) saturate(1) brightness(0.9);
 }
+
+#container #bus {
+  box-shadow: 0 0 15px #77627A;
+}
