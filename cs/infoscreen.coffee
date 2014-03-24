@@ -119,6 +119,14 @@ updateHours = ->
 updateBus = ->
   console.lolg 'updateBus'
   if !navigator.onLine
+    # Reset
+    stops = ['firstBus', 'secondBus']
+    spans = ['first', 'second', 'third', 'fourth']
+    for i of stops
+      for j of spans
+        $('#bus #'+stops[i]+' .'+spans[j]+' .line').html ''
+        $('#bus #'+stops[i]+' .'+spans[j]+' .time').html ''
+    # Error message
     $('#bus #firstBus .name').html ls.firstBusName
     $('#bus #secondBus .name').html ls.secondBusName
     $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
