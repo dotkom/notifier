@@ -356,15 +356,16 @@
   };
 
   displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
-    var altLink, feedKey, index, link, newsList, updatedList, viewedList;
+    var feedKey, newsList, storedImages, updatedList, viewedList;
     $('#news ' + column).html('');
     feedKey = items[0].feedKey;
     newsList = JSON.parse(ls[newsListName]);
     viewedList = JSON.parse(ls[viewedListName]);
     updatedList = findUpdatedPosts(newsList, viewedList);
     viewedList = [];
+    storedImages = JSON.parse(ls.storedImages);
     $.each(items, function(index, item) {
-      var altLink, date, descLimit, htmlItem, readUnread, unreadCount, _ref;
+      var altLink, date, descLimit, htmlItem, readUnread, storedImage, unreadCount, _ref;
       if (index < newsLimit) {
         viewedList.push(item.link);
         unreadCount = Number(ls[unreadCountName]);
@@ -390,6 +391,12 @@
         if (item.description.length > descLimit) {
           item.description = item.description.substr(0, descLimit) + '...';
         }
+        storedImage = storedImages[item.link];
+        if (storedImage !== void 0) {
+          if (-1 === item.image.indexOf('http')) {
+            item.image = storedImage;
+          }
+        }
         htmlItem = '\
         <div class="post">\
           <div class="item" data="' + item.link + '"' + altLink + '>\
@@ -405,7 +412,7 @@
     ls[viewedListName] = JSON.stringify(viewedList);
     Browser.setBadgeText('');
     ls[unreadCountName] = 0;
-    $('#news ' + column + ' .item').click(function() {
+    return $('#news ' + column + ' .item').click(function() {
       var altLink, link, useAltLink;
       link = $(this).attr('data');
       altLink = $(this).attr('name');
@@ -417,36 +424,6 @@
       Analytics.trackEvent('clickNews', link);
       return window.close();
     });
-    if (Affiliation.org[feedKey].useAltLink) {
-      altLink = $('.item[data="' + link + '"]').attr('name');
-      if (altLink !== 'null') {
-        $('.item[data="' + link + '"]').attr('data', altLink);
-      }
-    }
-    if (Affiliation.org[feedKey].getImage !== void 0) {
-      for (index in viewedList) {
-        link = viewedList[index];
-        Affiliation.org[feedKey].getImage(link, function(link, image) {
-          if ($('.item[data="' + link + '"] img').attr('src').indexOf('http') === -1) {
-            return $('.item[data="' + link + '"] img').attr('src', image);
-          }
-        });
-      }
-    }
-    if (Affiliation.org[feedKey].getImages !== void 0) {
-      return Affiliation.org[feedKey].getImages(viewedList, function(links, images) {
-        var _results;
-        _results = [];
-        for (index in links) {
-          if ($('.item[data="' + links[index] + '"] img').attr('src').indexOf('http') === -1) {
-            _results.push($('.item[data="' + links[index] + '"] img').attr('src', images[index]));
-          } else {
-            _results.push(void 0);
-          }
-        }
-        return _results;
-      });
-    }
   };
 
   findUpdatedPosts = function(newsList, viewedList) {
@@ -498,8 +475,7 @@
   };
 
   $(function() {
-    var clickChatter, icon, key, logo, placeholder, shorter, _func, _timer;
-    $.ajaxSetup(AJAX_SETUP);
+    var clickChatter, icon, key, logo, placeholder, shorter;
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       Analytics.trackEvent('toggleInfoscreen');
@@ -645,17 +621,6 @@
       }
     });
     $('#oracle #question').focus();
-    _timer = null;
-    _func = function() {
-      clearTimeout(_timer);
-      if (!document.body.classList.contains('disable-hover')) {
-        document.body.classList.add('disable-hover');
-      }
-      return _timer = setTimeout((function() {
-        return document.body.classList.remove('disable-hover');
-      }), 500);
-    };
-    window.addEventListener('scroll', _func, false);
     return mainLoop();
   });
 

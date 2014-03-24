@@ -57,6 +57,7 @@
   updateOffice = function(debugStatus) {
     console.lolg('updateOffice');
     return Office.get(function(status, message) {
+      var msgs;
       if (DEBUG && debugStatus) {
         status = debugStatus;
         message = 'debugging';
@@ -79,9 +80,15 @@
           $('#office #status img').hide();
           $('#office #status #text').show();
         }
-        $('#office #subtext').html(message);
         ls.infoscreenOfficeStatus = status;
-        return ls.infoscreenOfficeStatusMessage = message;
+        ls.infoscreenOfficeStatusMessage = message;
+        msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
+        if (msgs) {
+          if (msgs[status]) {
+            message = msgs[status];
+          }
+        }
+        return $('#office #subtext').html(message);
       }
     });
   };
@@ -432,7 +439,6 @@
         }
       });
     }
-    $.ajaxSetup(AJAX_SETUP);
     ls.removeItem('infoscreenOfficeStatus');
     ls.removeItem('infoscreenOfficeStatusMessage');
     if (ls.showAffiliation2 !== 'true') {
@@ -470,7 +476,7 @@
     $('link[rel="shortcut icon"]').attr('href', icon);
     $('#news .post img').attr('src', placeholder);
     Analytics.trackEvent('loadPalette', ls.affiliationPalette);
-    if (OPERATING_SYSTEM === 'Windows') {
+    if (-1 !== navigator.appVersion.indexOf("Win")) {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }

@@ -9,41 +9,42 @@
   <link rel="stylesheet" type="text/css" href="less/popup.css" />
   <link rel="stylesheet" type="text/css" href="less/palettes/blue.css" id="palette" />
 
-  <!-- JS Behind the scenes -->
-  <script src="js/missing_functions.js"></script>
-  <script src="js/missing_prototypes.js"></script>
-  <script src="js/constants.js"></script>
-  <script src="js/analytics.js"></script>
-
-  <!-- JS Affiliation and Palette, palette loads itself -->
-  <script src="js/affiliation.js"></script>
-  <script src="js/palettes.js"></script>
-
 </head>
 
 <body>
   <div id="tips">
     <div class="text">
       <div class="clicktoclose">click me to close me</div>
-      <p>Notifier er laget av Drifts- og Utviklingskomiteen (dotKom) i linjeforeningen Online på NTNU. Prosjektet er Open Source. Du kan bruke koden til hva du vil:
-      <a href="https://github.com/dotkom/online-notifier">
-      github.com/dotkom/online-notifier</a></p>
 
-      <p><b>Kontakt oss i dotKom</b>, <a href="mailto:dotkom@online.ntnu.no">dotkom@online.ntnu.no</a>, vi liker å prate.<br />
-      Prosjektleder er Michael Johansen, <a href="mailto:michael@informatikk.org">michael@informatikk.org</a>.</p>
+      <div class="big">Notifier</div>
+      <p>
+        Notifier er laget av Drifts- og Utviklingskomiteen (dotKom) i linjeforeningen Online på NTNU. Prosjektet er åpent med MIT lisens så du kan bruke koden til hva du vil.
+      </p>
+      <p>
+        Notifier for Chrome: <a href="http://bit.ly/NotifierForChrome">bit.ly/NotifierForChrome</a><br />
+        Notifier for Opera: <a href="http://bit.ly/NotifierForOpera">bit.ly/NotifierForOpera</a><br />
+        <br />
+        Facebook: <a href="https://www.facebook.com/OnlineNotifier">facebook.com/OnlineNotifier</a><br />
+        Åpen kildekode: <a href="https://github.com/dotkom/online-notifier">
+        github.com/dotkom/online-notifier</a><br />
+        <br />
+        Kontakt oss: <a href="mailto:dotkom@online.ntnu.no">dotkom@online.ntnu.no</a><br />
+        Prosjektleder: <a href="mailto:michael@informatikk.org">michael@informatikk.org</a>
+      </p>
+      
       <div id="tipsText">
-        <div class="big">Tips</div>
+        <div class="big">Protips</div>
         <ul>
-          <li>Chrome: Hotkey til Notifier er <b>Alt+A</b></li>
-          <li>Chrome: Hotkey til Instabart er <b>Alt+I</b></li>
-          <li>Chrome: Hotkey til linjeforeningen er <b>Alt+L</b></li>
-          <li>Chrome: Rediger hotkeys nederst til høyre her: <a href="chrome://extensions">chrome://extensions</a></li>
-          <li>Notifier finnes til både <a href="http://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf">Chrome</a> og <a href="http://addons.opera.com/en/extensions/details/online-notifier">Opera</a></li>
+          <li><b>Alt+A</b> er hotkey til Notifier</li>
+          <li><b>Alt+I</b> er hotkey til Instabart</li>
+          <li><b>Alt+L</b> er hotkey til linjeforeningen</li>
+          <li>Endre hotkeys nederst til høyre på denne siden: <a href="chrome://extensions">Chrome</a>/<a href="opera://extensions">Opera</a></li>
           <li>Alle sider i Notifier er live, du trenger aldri trykke refresh</li>
-          <li>Om du har flere tilleggsprogrammer kan du skjule de ikonene du ikke trenger å se ved å ta tak i høyre kant av adressefeltet i Chrome og dra over dem</li>
-          <li>Om PC-klokken din ikke går korrekt vil Notifier få problemer</li>
+          <li>Om PC-klokken din går feil får Notifier problemer</li>
+          <li>Chrome: Har du mange extensions? Skjul ikonene du ikke vil se ved å ta tak i høyre kant av adressefeltet og dra over dem</li>
         </ul>
       </div>
+      
       <!-- <div id="mobileText">
         <div class="big">Notifier Mobile</div>
         <ul>
@@ -324,19 +325,28 @@
     
   </div>
 
-  <!-- JS Libs -->
+  <!-- JS No Dependencies -->
   <script src="libs/jquery-2.0.0.min.js"></script>
   <script src="libs/jquery-konami.js"></script>
+  <script src="js/missing_functions.js"></script>
+  <script src="js/missing_prototypes.js"></script>
+  
+  <!-- JS Behind the Scenes -->
+  <script src="js/browser.js"></script> <!-- browser needs jquery -->
+  <script src="js/constants.js"></script> <!-- constants needs browser -->
+  <script src="js/analytics.js"></script> <!-- analytics needs constants -->
+
+  <!-- JS Affiliation and Such -->
+  <script src="js/ajaxer.js"></script> <!-- ajaxer needs jquery -->
+  <script src="js/affiliation.js"></script> <!-- affiliation needs ajaxer -->
+  <script src="js/palettes.js"></script> <!-- palettes needs affiliation -->
   
   <!-- JS Services -->
-  <script src="js/ajaxer.js"></script>
-  <script src="js/browser.js"></script>
   <script src="js/bus.js"></script>
   <script src="js/cantina.js"></script>
   <script src="js/coffee.js"></script>
   <script src="js/hours.js"></script>
   <script src="js/meetings.js"></script>
-  <script src="js/news.js"></script>
   <script src="js/office.js"></script>
   <script src="js/oracle.js"></script>
   <script src="js/servant.js"></script>

@@ -3,8 +3,19 @@ var Browser = {
   msgCallbackMissing: 'ERROR: Callback is missing',
   msgUnsupported: 'ERROR: Unsupported browser',
 
+  name: 'Unknown', // Changed automatically at the end of this file
+
+  detect: function() {
+    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1)
+      return 'Chrome';
+    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1)
+      return 'Opera';
+    console.log(this.msgUnsupported);
+    return 'Unknown';
+  },
+
   setIcon: function(path) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setIcon({path: path});
       }
@@ -15,7 +26,7 @@ var Browser = {
   },
 
   setTitle: function(title) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.browserAction != undefined) {
         chrome.browserAction.setTitle({title: title});
       }
@@ -30,7 +41,7 @@ var Browser = {
       console.log(this.msgCallbackMissing);
     }
     else {
-      if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+      if (this.name == 'Chrome' || this.name == 'Opera') {
         chrome.browserAction.getBadgeText({}, function(badgeText) {
           callback(badgeText);
         });
@@ -45,7 +56,7 @@ var Browser = {
     if (typeof text == 'undefined' || text == null || isNaN(Number(text)) || Number(text) <= 0) {
       text = '';
     }
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.browserAction != undefined) {
         text = String(text);
         chrome.browserAction.setBadgeText({text: text});
@@ -57,7 +68,7 @@ var Browser = {
   },
 
   openTab: function(url) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: true});
       }
@@ -68,7 +79,7 @@ var Browser = {
   },
 
   openBackgroundTab: function(url) {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.tabs != undefined) {
         chrome.tabs.create({url: url, selected: false});
       }
@@ -80,7 +91,7 @@ var Browser = {
 
   getUrl: function(url) {
     // Allows you to get an accessible URL for a resource in the extension, e.g. an image
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       return chrome.extension.getURL(url);
     }
     else {
@@ -89,7 +100,7 @@ var Browser = {
   },
 
   getBackgroundProcess: function() {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.extension != undefined) {
         return chrome.extension.getBackgroundPage();
       }
@@ -101,31 +112,48 @@ var Browser = {
 
   getAppVersion: function() {
     try {
-      if (BROWSER == 'Chrome') {
-        return chrome.runtime.getManifest().version + ' @ ' + BROWSER;
-      }
-      else if (BROWSER == 'Opera') {
-        return 'Unknown @ ' + BROWSER // TODO: Implement when available
-      }
-      else {
-        console.log(this.msgUnsupported);
+      if (this.name == 'Chrome' || this.name == 'Opera') {
+        return chrome.app.getDetails().version;
       }
     } catch (err) {
-      // Do nothing, we're just checking
+      // Do nothing
     }
-    return 'Unknown @ ' + BROWSER
+    console.log(this.msgUnsupported);
+    return 'Unknown';
   },
 
-  bindCommandHotkeys: function() {
-    if (BROWSER == 'Chrome') {
+  inProduction: function() {
+    // Is the app in production? If so, there will be an update URL
+    try {
+      if (this.name === 'Chrome' || this.name === 'Opera') {
+        if (chrome.app.getDetails().id === 'hfgffimlnajpbenfpaofmmffcdmgkllf') {
+          return true;
+        }
+        else if (chrome.app.getDetails().id === 'npnpbddfcaibgnegafofkmffmbmflelj') {
+          return true;
+        }
+        else if (typeof chrome.app.getDetails().update_url === 'string') {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+    } catch (err) {
+      // Do nothing
+    }
+    console.log(this.msgUnsupported);
+    return false; // assume dev mode
+  },
+
+  bindCommandHotkeys: function(affiliationWeb) {
+    if (this.name == 'Chrome') {
       chrome.commands.onCommand.addListener(function(command) {
         if (command == 'open_instabart') {
           Browser.openTab('http://instabart.no');
         }
         else if (command == 'open_affiliation') {
-          var key = localStorage.affiliationKey1;
-          var web = Affiliation.org[key].web;
-          Browser.openTab(web);
+          Browser.openTab(affiliationWeb);
         }
         else {
           console.log('ERROR: Unrecognized browser command');
@@ -155,8 +183,14 @@ var Browser = {
     if (!item.description) console.log('ERROR: item.description is required');
     if (!item.link) console.log('ERROR: item.link is required');
 
+    // Do not show any notifications within the first half minute after install
+    if ((new Date().getTime() - Number(localStorage.installTime)) < 30000) {
+      if (this.debug) console.log('No notifications within the first half minute ('+item.feedKey+')');
+      return;
+    }
+
     var self = this;
-    if (BROWSER == 'Chrome') {
+    if (this.name == 'Chrome') {
       // Check if browser is active, not "idle" or "locked"
       if (chrome.idle) {
         chrome.idle.queryState(30, function (state) {
@@ -210,12 +244,14 @@ var Browser = {
             // Show the notification
             chrome.notifications.create(id, notification, function(notID) {
               if (self.debug) console.log('Succesfully created notification with ID', notID);
+              Analytics.trackEvent('createNotification', item.feedKey, item.link);
             });
             // Choose how long the notification stays around for
             // if stay? 10 minutes
             // if longStory? 10 seconds
             // else 5 seconds
-            // Note: Chrom(e|ium) on Linux doesn't remove the notification automatically
+            // Note: Chrom(e|ium) on Linux doesn't remove the notification,
+            // automatically, so it needs to be manually cleared.
             var timeout = (item.stay ? 600000 : (item.longStory ? 10000 : 5000));
             setTimeout(function() {
               chrome.notifications.clear(id, function(wasCleared) {
@@ -232,7 +268,7 @@ var Browser = {
         if (self.debug) console.log('ERROR: This version of Chrome does not support chrome.idle');
       }
     }
-    else if (BROWSER == 'Opera') {
+    else if (this.name == 'Opera') {
       // Desktop Notifications not yet available
       if (self.debug) console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
     }
@@ -244,14 +280,14 @@ var Browser = {
   // Event handlers for the various notification events
 
   registerNotificationListeners: function() {
-    if (BROWSER == 'Chrome') {
+    if (this.name == 'Chrome') {
       window.addEventListener("load", function() {
         chrome.notifications.onClosed.addListener(Browser.notificationClosed);
         chrome.notifications.onClicked.addListener(Browser.notificationClicked);
         chrome.notifications.onButtonClicked.addListener(Browser.notificationBtnClick);
       });
     }
-    else if (BROWSER == 'Opera') {
+    else if (this.name == 'Opera') {
       console.log(this.msgUnsupported);
     }
     else {
@@ -279,7 +315,7 @@ var Browser = {
   },
 
   bindOmniboxToOracle: function() {
-    if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+    if (this.name == 'Chrome' || this.name == 'Opera') {
       // This event is fired each time the user updates the text in the omnibox,
       // as long as the extension's keyword mode is still active.
       // chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
@@ -313,3 +349,6 @@ var Browser = {
   },
 
 }
+
+// Detect and set name
+Browser.name = Browser.detect();

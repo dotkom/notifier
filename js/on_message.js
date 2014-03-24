@@ -91,7 +91,7 @@ function onConnect(port) {
 }
 
 // wire up the message- and connect-listener functions
-if (BROWSER == 'Chrome' || BROWSER == 'Opera') {
+if (Browser.name == 'Chrome' || Browser.name == 'Opera') {
   if (typeof chrome.extension.onMessage != 'undefined') {
     chrome.extension.onMessage.addListener(onMessage);
     chrome.runtime.onConnect.addListener(onConnect);

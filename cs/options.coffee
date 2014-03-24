@@ -539,7 +539,7 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
               $('header').animate {'top':'50%'}, speed
               $('#container').animate {'top':'50%'}, speed, ->
                 name = Affiliation.org[ls.affiliationKey1].name
-                if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+BROWSER+' starter'
+                if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+Browser.name+' starter'
                   # Enable, and check the checkbox
                   ls['useInfoscreen'] = 'true'
                   $('#useInfoscreen').prop 'checked', true
@@ -661,9 +661,6 @@ $ ->
     $('button.debug').click ->
       Browser.openTab $(this).attr 'data'
 
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
-
   # Remove hardware features if the affiliation does not have it
   if not Affiliation.org[ls.affiliationKey1].hw
     disableHardwareFeatures true # true means be quick about it!
@@ -701,11 +698,12 @@ $ ->
 
   # Uncommented as long as we are not using the Chatter option (noone admits to using it)
   # # Minor esthetical adjustmenst for Browser
-  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, BROWSER
+  # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, Browser.name
   # $('label[for=openChatter] span').html html
   
-  # Minor esthetical adjustments for OS
-  if OPERATING_SYSTEM is 'Windows'
+  # Minor esthetical adjustments for Windows
+  if -1 isnt navigator.appVersion.indexOf "Win"
+    alert 'wat'
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Google Analytics
@@ -764,20 +762,20 @@ $ ->
   Stops.load()
 
   # If Opera, disable and redesign features related to desktop notifications
-  if BROWSER is 'Opera'
+  if Browser.name is 'Opera'
     # The actual features doesn't need to be turned off, they aren't working
     # anyway, so just uncheck the option to make the user understand it too
     # Turn off showNotifications feature
     $('input#showNotifications').prop "disabled", "disabled"
     $('input#showNotifications').prop "checked", "false"
     text = 'Varsle om nyheter'
-    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent til Opera 18</b>')
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent på ny Opera</b>')
     # Turn off coffeeSubscription feature
     $('input#coffeeSubscription').prop "disabled", "disabled"
     $('input#coffeeSubscription').prop "checked", "false"
     text = $('label[for=coffeeSubscription] span').text()
     text = text.trim()
-    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent til Opera 18</b>')
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent på ny Opera</b>')
 
   # Adding a hover class to #busBox whenever the mouse is hovering over it
   $('#busBox').hover ->

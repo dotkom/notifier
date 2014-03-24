@@ -103,7 +103,8 @@ var Coffee = {
     else if (60 <= diff)
       return 'Kaffen ble laget kl '+coffeeTime[0]+':'+coffeeTime[1];
     else
-      return 'WAT? Lager noen kaffe i fremtiden nå?!';
+      // time is negative, computer is likely in a timezone between GMT -12 and +1
+      return 'God reise! Håper de har kaffe! :)';
   },
 
   prettyPotsString: function(pots) {

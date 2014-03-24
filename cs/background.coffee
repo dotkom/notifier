@@ -7,11 +7,13 @@ mainLoop = ->
   console.lolg "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
+    # Only if online, else keep good old
     if navigator.onLine
       updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
       updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
       updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
       updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+    # Only if hardware
     if Affiliation.org[ls.affiliationKey1].hw
       updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
       updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
@@ -38,24 +40,33 @@ updateOfficeAndMeetings = (force) ->
   Office.get (status, message) ->
     title = ''
     if force or ls.officeStatus isnt status or ls.officeStatusMessage isnt message
-      # Extension icon
+      # Food status
       if status in Object.keys Office.foods
         title = Office.foods[status].title
         Browser.setIcon Office.foods[status].icon
+      # Regular status
       else
+        # Set title
         title = Office.statuses[status].title
+        # Set icon
         statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status]
         if statusIcon isnt undefined
           Browser.setIcon statusIcon
         else
           errorIcon = Affiliation.org[ls.affiliationKey1].icon
           Browser.setIcon errorIcon
+      # Save them
       ls.officeStatus = status
+      ls.officeStatusMessage = message
+      # Check for Affiliation specific status message
+      msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages
+      if msgs
+        if msgs[status]
+          message = msgs[status]
       # Extension title (hovering mouse over icon shows the title text)
       Meetings.get (meetings) ->
         today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings
         Browser.setTitle today
-        ls.officeStatusMessage = message
 
 updateCoffeeSubscription = ->
   console.lolg 'updateCoffeeSubscription'
@@ -107,6 +118,7 @@ updateAffiliationNews = (number) ->
       else
         saveAndCountNews items, number
         updateUnreadCount()
+        storeImageLinks number
   else
     console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
 
@@ -125,6 +137,27 @@ updateUnreadCount = (count1, count2) ->
   unreadCount = (Number ls.affiliationUnreadCount1) + (Number ls.affiliationUnreadCount2)
   Browser.setBadgeText String unreadCount
 
+storeImageLinks = (number) ->
+  key = ls['affiliationKey'+number]
+  newsList = JSON.parse ls['affiliationNewsList'+number]
+  # If the organization has it's own getImage function, use it
+  if Affiliation.org[key].getImage isnt undefined
+    for index, link of newsList
+      # It's important to get the link from the callback within the function below,
+      # not the above code, - because of race conditions mixing up the news posts, async ftw.
+      Affiliation.org[key].getImage link, (link, image) ->
+        # Also, check whether there's already a qualified image before replacing it.
+        storedImages = JSON.parse ls.storedImages
+        storedImages[link] = image
+        ls.storedImages = JSON.stringify storedImages
+  # If the organization has it's own getImages (plural) function, use it
+  if Affiliation.org[key].getImages isnt undefined
+    Affiliation.org[key].getImages newsList, (links, images) ->
+      storedImages = JSON.parse ls.storedImages
+      for index of links
+        storedImages[links[index]] = images[index]
+      ls.storedImages = JSON.stringify storedImages
+
 loadAffiliationIcon = ->
   key = ls.affiliationKey1
   # Set badge icon
@@ -136,9 +169,6 @@ loadAffiliationIcon = ->
 
 # Document ready, go!
 $ ->
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
-
   # Check if both current affiliations still exist, reset if not
   keys = Object.keys Affiliation.org
   Defaults.resetAffiliationsIfNotExist ls.affiliationKey1, ls.affiliationKey2, keys
@@ -162,7 +192,7 @@ $ ->
 
   loadAffiliationIcon()
 
-  Browser.bindCommandHotkeys()
+  Browser.bindCommandHotkeys Affiliation.org[ls.affiliationKey1].web
   Browser.registerNotificationListeners()
   Browser.bindOmniboxToOracle()
 
@@ -180,7 +210,7 @@ $ ->
   # Send some basic statistics once a day
   setInterval ( ->
     # App version is interesting
-    Analytics.trackEvent 'appVersion', Browser.getAppVersion()
+    Analytics.trackEvent 'appVersion', Browser.getAppVersion() + ' @ ' + Browser.name
     # Affiliation is also interesting, in contrast to the popup some of these are inactive users
     # To find inactive user count, subtract these stats from popup stats
     if ls.showAffiliation2 isnt 'true'

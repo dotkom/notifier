@@ -560,7 +560,7 @@
                 }, speed, function() {
                   var name;
                   name = Affiliation.org[ls.affiliationKey1].name;
-                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + BROWSER + ' starter')) {
+                  if (force || confirm('Sikker på at du vil skru på ' + name + ' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang ' + Browser.name + ' starter')) {
                     ls['useInfoscreen'] = 'true';
                     $('#useInfoscreen').prop('checked', true);
                     Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
@@ -689,7 +689,6 @@
         return Browser.openTab($(this).attr('data'));
       });
     }
-    $.ajaxSetup(AJAX_SETUP);
     if (!Affiliation.org[ls.affiliationKey1].hw) {
       disableHardwareFeatures(true);
     }
@@ -713,7 +712,8 @@
     }
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
-    if (OPERATING_SYSTEM === 'Windows') {
+    if (-1 !== navigator.appVersion.indexOf("Win")) {
+      alert('wat');
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }
@@ -759,16 +759,16 @@
     bindBusFields('secondBus');
     slideFavoriteBusLines();
     Stops.load();
-    if (BROWSER === 'Opera') {
+    if (Browser.name === 'Opera') {
       $('input#showNotifications').prop("disabled", "disabled");
       $('input#showNotifications').prop("checked", "false");
       text = 'Varsle om nyheter';
-      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent til Opera 18</b>');
+      $('label[for=showNotifications] span').html('<del>' + text + '</del> <b>Vent på ny Opera</b>');
       $('input#coffeeSubscription').prop("disabled", "disabled");
       $('input#coffeeSubscription').prop("checked", "false");
       text = $('label[for=coffeeSubscription] span').text();
       text = text.trim();
-      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent til Opera 18</b>');
+      $('label[for=coffeeSubscription] span').html('<del>' + text + '</del> <b>Vent på ny Opera</b>');
     }
     $('#busBox').hover(function() {
       return $(this).addClass('hover');

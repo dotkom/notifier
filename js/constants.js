@@ -1,10 +1,8 @@
 var DEBUG = 1;
 
-// AJAX setup
-var AJAX_SETUP = {
-	timeout: 9000,
-	cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
-}
+// Production detection
+if (Browser.inProduction())
+	DEBUG = 0;
 
 // Logging setup
 console.lolg = function() {
@@ -42,9 +40,6 @@ var urlExists = function(url) {
 	catch (e) {
 		return false;
 	}
-	finally {
-		// do nothing
-	}
 }
 var MEME_AMOUNT = 0;
 var __counter__ = 1;
@@ -52,35 +47,3 @@ while (urlExists('meme/'+__counter__+'.jpg')) {
 	MEME_AMOUNT++;
 	__counter__++;
 }
-
-// OS detection
-var OPERATING_SYSTEM = "Unknown";
-if (navigator.appVersion.indexOf("Win")!==-1) OPERATING_SYSTEM="Windows";
-else if (navigator.appVersion.indexOf("Linux")!==-1) OPERATING_SYSTEM="Linux";
-else if (navigator.appVersion.indexOf("X11")!==-1) OPERATING_SYSTEM="UNIX";
-else if (navigator.appVersion.indexOf("Mac")!==-1) {
-	OPERATING_SYSTEM = "Old Mac";
-	if (navigator.appVersion.indexOf("10_7")!==-1||navigator.appVersion.indexOf("10_8")!==-1) {
-		OPERATING_SYSTEM = "Mac";
-	}
-}
-else {
-	console.log('WARNING: Potentially unsupported operating system');
-}
-
-// Browser detection
-var BROWSER = "Unknown";
-if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') == -1)
-	BROWSER = "Chrome";
-else if (navigator.userAgent.indexOf('OPR') !== -1)
-	BROWSER = "Opera";
-else
-	console.log('WARNING: Potentially unsupported browser');
-
-// Production detection
-if (BROWSER == 'Chrome')
-	if (chrome.runtime.id === 'hfgffimlnajpbenfpaofmmffcdmgkllf')
-		DEBUG = 0;
-else if (BROWSER == 'Opera')
-	if (chrome.runtime.id === 'npnpbddfcaibgnegafofkmffmbmflelj')
-		DEBUG = 0;

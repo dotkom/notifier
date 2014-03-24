@@ -347,7 +347,6 @@
   };
 
   $(function() {
-    $.ajaxSetup(AJAX_SETUP);
     busLoading('firstBus');
     busLoading('secondBus');
     if (ls.background_image !== void 0) {

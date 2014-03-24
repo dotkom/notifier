@@ -15,6 +15,8 @@ var Defaults = {
       ls.extensionName = 'Online Notifier';
     if (ls.extensionCreator == undefined)
       ls.extensionCreator = 'dotKom'; // Max 8 letters because of styling
+    if (ls.installTime == undefined)
+      ls.installTime = new Date().getTime();
 
     // Primary affiliation
     if (ls.showAffiliation1 == undefined)
@@ -30,6 +32,8 @@ var Defaults = {
     
     if (ls.affiliationPalette == undefined)
       ls.affiliationPalette = 'online';
+    if (ls.storedImages == undefined)
+      ls.storedImages = JSON.stringify({});
 
     // Secondary affiliation
     if (ls.showAffiliation2 == undefined)

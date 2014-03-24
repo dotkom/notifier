@@ -9,17 +9,6 @@
   <link rel="stylesheet" type="text/css" href="less/options.css" />
   <link rel="stylesheet" type="text/css" href="less/palettes/blue.css" id="palette" />
 
-  <!-- JS Behind the scenes -->
-  <script src="js/missing_functions.js"></script>
-  <script src="js/missing_prototypes.js"></script>
-  <script src="js/constants.js"></script>
-  <script src="js/analytics.js"></script>
-  <script src="js/google_plus_one.js"></script>
-
-  <!-- JS Affiliation and Palette, palette loads itself -->
-  <script src="js/affiliation.js"></script>
-  <script src="js/palettes.js"></script>
-
 </head>
 
 <body>
@@ -65,6 +54,7 @@
                 <option value="volvox">Volvox</option>
               </optgroup>
               <optgroup label="Linjeforeninger Dragvoll">
+                <option value="communitas">Communitas</option>
                 <!-- <option value="de_folkevalgte">De Folkevalgte</option> -->
                 <option value="dhs">Det Historiske Selskab</option>
                 <option value="dionysos">Dionysos</option>
@@ -80,7 +70,6 @@
                 <option value="primetime">Primetime</option>
                 <option value="psi">Psi</option>
                 <option value="sturm_und_drang">Sturm und Drang</option>
-                <option value="utopia">Utopia</option>
               </optgroup>
               <optgroup label="Master-/doktor-/internasjonale foreninger">
                 <option value="dion">DION</option>
@@ -136,7 +125,6 @@
               </optgroup>
               <optgroup label="Spesielle paletter">
                 <option value="online">Onlines farger</option>
-                <option value="utopia">Utopias farger</option>
               </optgroup>
             </select>
           </div>
@@ -161,6 +149,7 @@
                 <option value="volvox">Volvox</option>
               </optgroup>
               <optgroup label="Linjeforeninger Dragvoll">
+                <option value="communitas">Communitas</option>
                 <!-- <option value="de_folkevalgte">De Folkevalgte</option> -->
                 <option value="dhs">Det Historiske Selskab</option>
                 <option value="dionysos">Dionysos</option>
@@ -176,7 +165,6 @@
                 <option value="primetime">Primetime</option>
                 <option value="psi">Psi</option>
                 <option value="sturm_und_drang">Sturm und Drang</option>
-                <option value="utopia">Utopia</option>
               </optgroup>
               <optgroup label="Master-/doktor-/internasjonale foreninger">
                 <option value="dion">DION</option>
@@ -452,12 +440,23 @@
     <div class="subtext"><b>Alt+A</b> opens the popup</div>
   </div>
 
-  <!-- JS Libs -->
+  <!-- JS No Dependencies -->
   <script src="libs/jquery-2.0.0.min.js"></script>
+  <script src="js/missing_functions.js"></script>
+  <script src="js/missing_prototypes.js"></script>
+  <script src="js/google_plus_one.js"></script>
+
+  <!-- JS Behind the scenes -->
+  <script src="js/browser.js"></script> <!-- browser needs jquery -->
+  <script src="js/constants.js"></script> <!-- constants needs browser -->
+  <script src="js/analytics.js"></script> <!-- analytics needs constants -->
+
+  <!-- JS Affiliation and Such -->
+  <script src="js/ajaxer.js"></script> <!-- ajaxer needs jquery -->
+  <script src="js/affiliation.js"></script> <!-- affiliation needs ajaxer -->
+  <script src="js/palettes.js"></script> <!-- palettes needs affiliation -->
   
   <!-- JS Services -->
-  <script src="js/ajaxer.js"></script>
-  <script src="js/browser.js"></script>
   <script src="js/bus.js"></script>
   <script src="js/coffee.js"></script>
   <script src="js/meetings.js"></script>

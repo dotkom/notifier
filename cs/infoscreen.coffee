@@ -55,9 +55,15 @@ updateOffice = (debugStatus) ->
         $('#office #status #text').css 'color', Office.statuses[status].color
         $('#office #status img').hide()
         $('#office #status #text').show()
-      $('#office #subtext').html message
+      # Save them
       ls.infoscreenOfficeStatus = status
       ls.infoscreenOfficeStatusMessage = message
+      # Check for Affiliation specific status message
+      msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages
+      if msgs
+        if msgs[status]
+          message = msgs[status]
+      $('#office #subtext').html message
 
 updateServant = ->
   console.lolg 'updateServant'
@@ -357,9 +363,6 @@ $ ->
           when 'pizza' then updateOffice 'taco'
           when 'taco' then updateOffice 'waffle'
           else updateOffice 'error'
-
-  # Setting the timeout for all AJAX and JSON requests
-  $.ajaxSetup AJAX_SETUP
   
   # Clear all previous thoughts
   ls.removeItem 'infoscreenOfficeStatus'
@@ -403,8 +406,8 @@ $ ->
   # Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent 'loadPalette', ls.affiliationPalette
   
-  # Minor esthetical adjustments for OS version
-  if OPERATING_SYSTEM == 'Windows'
+  # Minor esthetical adjustments for Windows
+  if -1 isnt navigator.appVersion.indexOf "Win"
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
