@@ -254,6 +254,7 @@ var Cantina = {
           text = self.expandAbbreviations(text);
           text = self.removeFoodHomeMade(text);
           text = text.trim();
+          text = text.capitalize();
           // If current item is NOT about the buffet, a special or the takeaway, continue with:
           if (text.match(/buffet|dag|takeaway/gi) === null) {
             text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
