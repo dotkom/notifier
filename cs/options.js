@@ -362,17 +362,9 @@
     busStopId = Stops.nameAndDirectionToId(stopName, direction);
     return Bus.getLines(busStopId, function(json) {
       var arrayOfLines, counter, errorMessage, item, line, _i, _j, _len, _len1, _ref;
-      errorMessage = null;
-      if (typeof json === 'undefined') {
-        errorMessage = 'Oops, frakoblet';
-      }
+      console.log(json);
       if (typeof json === 'string') {
         errorMessage = json;
-      }
-      if (typeof json[0] !== 'undefined') {
-        errorMessage = 'Feil: ' + json[0];
-      }
-      if (errorMessage !== null) {
         $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
         clearTimeout($('#busBox').data('timeoutId'));
         setTimeout((function() {
@@ -712,8 +704,7 @@
     }
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
-    if (-1 !== navigator.appVersion.indexOf("Win")) {
-      alert('wat');
+    if (Browser.onWindows()) {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }

@@ -701,8 +701,7 @@ $ ->
   # $('label[for=openChatter] span').html html
   
   # Minor esthetical adjustments for Windows
-  if -1 isnt navigator.appVersion.indexOf "Win"
-    alert 'wat'
+  if Browser.onWindows()
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Google Analytics

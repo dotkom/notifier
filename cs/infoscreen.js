@@ -485,7 +485,7 @@
     $('link[rel="shortcut icon"]').attr('href', icon);
     $('#news .post img').attr('src', placeholder);
     Analytics.trackEvent('loadPalette', ls.affiliationPalette);
-    if (-1 !== navigator.appVersion.indexOf("Win")) {
+    if (Browser.onWindows()) {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }
