@@ -359,14 +359,13 @@ getFavoriteLines = (busField) ->
   busStopId = Stops.nameAndDirectionToId stopName, direction
   
   Bus.getLines busStopId, (json) ->
-    # Did the json even reach us? Is the result an error message?
-    # HOTFIX console.log json ############################################################
-    errorMessage = null
-    if typeof json is 'undefined' then errorMessage = 'Oops, frakoblet'
-    if typeof json is 'string' then errorMessage = json
-    if typeof json[0] isnt 'undefined' then errorMessage = 'Feil: ' + json[0]
     
-    if errorMessage isnt null
+    # HOTFIX
+    console.log json ############################################################
+    
+    # Error message?
+    if typeof json is 'string'
+      errorMessage = json
       # Show error message
       $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
       # Show retry-button
