@@ -425,6 +425,8 @@ body {
   border: 0px solid #00ff00;
   height: 113px;
   margin-top: 2px;
+  border-radius: 6px;
+  border-top-left-radius: 30px;
 }
 #container #bus #middle #clock {
   border: 0px solid #00ff00;
