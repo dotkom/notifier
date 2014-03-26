@@ -1,25 +1,4 @@
 
-// Small function library for Online Notifier
-
-function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-function isEmpty(v) {
-  if (typeof v == 'undefined' || v == null) return true;
-  if (typeof v == 'string' && v.trim() == '') return true;
-  if (typeof v == 'number' && (isNaN(v) || v == 0)) return true;
-  if (typeof v == 'boolean' && v == false) return true;
-  return false;
-}
-
-function stacktrace() {
-  var e = new Error('dummy');
-  var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '').replace(/^\s+at\s+/gm, '').replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@').split('\n');
-  stack = stack.slice(1);
-  console.log(stack);
-}
-
 // HOTFIXING AFFILIATION KEYS
 // changing spaces to underscores for easier URLs in Notiwire
 // REMOVE AFTER APRIL 2014
@@ -67,4 +46,3 @@ if (localStorage.affiliationKey1 == 'utopia')
   localStorage.affiliationKey1 = 'communitas';
 if (localStorage.affiliationKey2 == 'utopia')
   localStorage.affiliationKey2 = 'communitas';
-
