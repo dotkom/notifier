@@ -358,7 +358,7 @@ getFavoriteLines = (busField) ->
   # Get and inject possible lines for correct stop
   busStopId = Stops.nameAndDirectionToId stopName, direction
   
-  Bus.getLines busStopId, (json) ->
+  Favorite.getLinesForStop busStopId, (json) ->
     
     # HOTFIX
     console.log json ############################################################

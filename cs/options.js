@@ -360,7 +360,7 @@
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Stops.nameAndDirectionToId(stopName, direction);
-    return Bus.getLines(busStopId, function(json) {
+    return Favorite.getLinesForStop(busStopId, function(json) {
       var arrayOfLines, counter, errorMessage, item, line, _i, _j, _len, _len1, _ref;
       console.log(json);
       if (typeof json === 'string') {
