@@ -593,14 +593,6 @@ header #notification .saved {
   width: 170px;
   height: 36px;
 }
-/* Google +1 button */
-#plusonebutton {
-  position: fixed;
-  right: 3px;
-  bottom: 5px;
-  width: 170px;
-  z-index: 1;
-}
 /* "Popup is here"-bubble */
 #popupHere {
   border: 0 solid #ff0000;

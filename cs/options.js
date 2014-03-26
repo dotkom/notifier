@@ -90,14 +90,10 @@
         ls.extensionName = name + ' Notifier';
         if (oldAffiliation === 'online') {
           ls.extensionCreator = 'Online';
-          $('#plusonebutton').fadeOut('slow', function() {
-            return changeCreatorName(ls.extensionCreator);
-          });
+          changeCreatorName(ls.extensionCreator);
         } else if (affiliationKey === 'online') {
           ls.extensionCreator = 'dotKom';
-          $('#plusonebutton').fadeIn('slow', function() {
-            return changeCreatorName(ls.extensionCreator);
-          });
+          changeCreatorName(ls.extensionCreator);
         }
       }
       ls.removeItem('affiliationFeedItems' + number);
@@ -134,10 +130,7 @@
         duration: 0
       });
       $('#container').css('top', '60%');
-      $('header').css('top', '60%');
-      return $('#plusonebutton').fadeOut({
-        duration: 0
-      });
+      return $('header').css('top', '60%');
     } else {
       $('label[for="showOffice"]').slideUp('slow');
       return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
@@ -163,10 +156,7 @@
         duration: 0
       });
       $('#container').css('top', '50%');
-      $('header').css('top', '50%');
-      return $('#plusonebutton').fadeIn({
-        duration: 0
-      });
+      return $('header').css('top', '50%');
     } else {
       Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       $('#container').animate({
@@ -713,11 +703,6 @@
       setTimeout((function() {
         return blinkAffiliation(6);
       }), 3000);
-    }
-    if (ls.affiliationKey1 === 'online') {
-      setTimeout((function() {
-        return $('#plusonebutton').fadeIn(150);
-      }), 1100);
     }
     bindAffiliationSelector('1', true);
     bindAffiliationSelector('2', false);

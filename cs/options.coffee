@@ -86,12 +86,10 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # Extension creator name
       if oldAffiliation is 'online'
         ls.extensionCreator = 'Online'
-        $('#plusonebutton').fadeOut 'slow', ->
-          changeCreatorName ls.extensionCreator
+        changeCreatorName ls.extensionCreator
       else if affiliationKey is 'online'
         ls.extensionCreator = 'dotKom'
-        $('#plusonebutton').fadeIn 'slow', ->
-          changeCreatorName ls.extensionCreator
+        changeCreatorName ls.extensionCreator
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
@@ -132,7 +130,6 @@ disableHardwareFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideUp {duration:0}
     $('#container').css 'top', '60%'
     $('header').css 'top', '60%'
-    $('#plusonebutton').fadeOut {duration:0}
     # No need to change creator name in pageflip when quick-disabling
   else
     # Hide office status option
@@ -152,7 +149,6 @@ enableHardwareFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideDown {duration:0}
     $('#container').css 'top', '50%'
     $('header').css 'top', '50%'
-    $('#plusonebutton').fadeIn {duration:0}
     # No need to change creator name in pageflip when quick-enabling
   else
     # Update office status
@@ -713,12 +709,6 @@ $ ->
     setTimeout ( ->
       blinkAffiliation 6
     ), 3000
-
-  # Fade in the +1 button when (probably) ready, PS: Online specific
-  if ls.affiliationKey1 is 'online'
-    setTimeout ( ->
-      $('#plusonebutton').fadeIn 150
-    ), 1100
 
   # Allow user to change affiliation and palette
   bindAffiliationSelector '1', true
