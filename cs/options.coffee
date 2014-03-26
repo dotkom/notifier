@@ -351,21 +351,9 @@ getFavoriteLines = (busField) ->
   # Load lines for that bus stop
   lines = Favorite.getLinesForStop busStopId
   
-  # Error message?
+  # Error message? (string)
   if typeof lines is 'string'
-    errorMessage = lines
-    # Show error message
-    $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
-    # Show retry-button
-    clearTimeout $('#busBox').data 'timeoutId'
-    setTimeout ( ->
-      $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
-      $(cssSelector + ' .lines .retry').click ->
-        getFavoriteLines busField
-      setTimeout ( ->
-        slideFavoriteBusLines()
-      ), 1500
-    ), 2200
+    $(cssSelector + ' .lines').html '<span class="error">'+lines+'</span>'
   else
     # Add lines to bus stop
     $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'

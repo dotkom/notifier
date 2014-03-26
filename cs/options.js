@@ -338,7 +338,7 @@
   };
 
   getFavoriteLines = function(busField) {
-    var busStopId, counter, cssSelector, direction, errorMessage, line, lines, stopName, _i, _len;
+    var busStopId, counter, cssSelector, direction, line, lines, stopName, _i, _len;
     cssSelector = '#' + busField;
     $('#busBox .lines').slideDown();
     $('#busBox #arrowDown').fadeOut();
@@ -347,18 +347,7 @@
     busStopId = Stops.nameAndDirectionToId(stopName, direction);
     lines = Favorite.getLinesForStop(busStopId);
     if (typeof lines === 'string') {
-      errorMessage = lines;
-      $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
-      clearTimeout($('#busBox').data('timeoutId'));
-      setTimeout((function() {
-        $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
-        $(cssSelector + ' .lines .retry').click(function() {
-          return getFavoriteLines(busField);
-        });
-        return setTimeout((function() {
-          return slideFavoriteBusLines();
-        }), 1500);
-      }), 2200);
+      $(cssSelector + ' .lines').html('<span class="error">' + lines + '</span>');
     } else {
       $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
       counter = 0;
