@@ -25,21 +25,15 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "default": "Alt+A"
+        "default": "Ctrl+Shift+A"
       },
       "description": "Open Notifier"
     },
     "open_instabart": {
       "suggested_key": {
-        "default": "Alt+I"
+        "default": "Ctrl+Shift+I"
       },
       "description": "Open Instabart"
-    },
-    "open_affiliation": {
-      "suggested_key": {
-        "default": "Alt+L"
-      },
-      "description": "Open Linjeforening"
     }
   },
 
