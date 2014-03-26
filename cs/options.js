@@ -348,75 +348,48 @@
   };
 
   getFavoriteLines = function(busField) {
-    var busStopId, cssSelector, direction, stopName;
+    var busStopId, counter, cssSelector, direction, errorMessage, line, lines, stopName, _i, _len;
     cssSelector = '#' + busField;
-    if (-1 !== busField.indexOf('first')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingLeft" src="img/loading-atb.gif" /></div>');
-    } else if (-1 !== busField.indexOf('second')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingRight" src="img/loading-atb.gif" /></div>');
-    }
     $('#busBox .lines').slideDown();
     $('#busBox #arrowDown').fadeOut();
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Stops.nameAndDirectionToId(stopName, direction);
-    return Bus.getLines(busStopId, function(json) {
-      var arrayOfLines, counter, errorMessage, item, line, _i, _j, _len, _len1, _ref;
-      errorMessage = null;
-      if (typeof json === 'undefined') {
-        errorMessage = 'Oops, frakoblet';
-      }
-      if (typeof json === 'string') {
-        errorMessage = json;
-      }
-      if (typeof json[0] !== 'undefined') {
-        errorMessage = 'Feil: ' + json[0];
-      }
-      if (errorMessage !== null) {
-        $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
-        clearTimeout($('#busBox').data('timeoutId'));
-        setTimeout((function() {
-          $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
-          $(cssSelector + ' .lines .retry').click(function() {
-            return getFavoriteLines(busField);
-          });
-          return setTimeout((function() {
-            return slideFavoriteBusLines();
-          }), 1500);
-        }), 2200);
-      } else {
-        arrayOfLines = [];
-        _ref = json.next;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          item = _ref[_i];
-          if (-1 === arrayOfLines.indexOf(Number(item.line))) {
-            arrayOfLines.push(Number(item.line));
-          }
-        }
-        arrayOfLines = arrayOfLines.sort(function(a, b) {
-          return a - b;
+    lines = Favorite.getLinesForStop(busStopId);
+    if (typeof lines === 'string') {
+      errorMessage = lines;
+      $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
+      clearTimeout($('#busBox').data('timeoutId'));
+      setTimeout((function() {
+        $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
+        $(cssSelector + ' .lines .retry').click(function() {
+          return getFavoriteLines(busField);
         });
-        $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
-        counter = 0;
-        for (_j = 0, _len1 = arrayOfLines.length; _j < _len1; _j++) {
-          line = arrayOfLines[_j];
-          if (counter % 4 === 0) {
-            $(cssSelector + ' .lines table').append('</tr><tr>');
-          }
-          $(cssSelector + ' .lines table tr:last').append('<td class="line active">' + line + '</td>');
-          counter = counter + 1;
+        return setTimeout((function() {
+          return slideFavoriteBusLines();
+        }), 1500);
+      }), 2200);
+    } else {
+      $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
+      counter = 0;
+      for (_i = 0, _len = lines.length; _i < _len; _i++) {
+        line = lines[_i];
+        if (counter % 4 === 0) {
+          $(cssSelector + ' .lines table').append('</tr><tr>');
         }
-        $(cssSelector + ' .lines').append('</tr></table>');
-        saveBus(busField);
-        bindFavoriteBusLines(busField);
+        $(cssSelector + ' .lines table tr:last').append('<td class="line active">' + line + '</td>');
+        counter = counter + 1;
       }
-      return setTimeout((function() {
-        if (!$('#busBox').hasClass('hover')) {
-          $('#busBox .lines').slideUp();
-          return $('#busBox #arrowDown').fadeIn();
-        }
-      }), 2500);
-    });
+      $(cssSelector + ' .lines').append('</tr></table>');
+      saveBus(busField);
+      bindFavoriteBusLines(busField);
+    }
+    return setTimeout((function() {
+      if (!$('#busBox').hasClass('hover')) {
+        $('#busBox .lines').slideUp();
+        return $('#busBox #arrowDown').fadeIn();
+      }
+    }), 2500);
   };
 
   saveBus = function(busField) {
@@ -712,8 +685,7 @@
     }
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
-    if (-1 !== navigator.appVersion.indexOf("Win")) {
-      alert('wat');
+    if (Browser.onWindows()) {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }

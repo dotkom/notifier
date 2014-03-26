@@ -462,11 +462,6 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  #####################
-  # HOTFIX
-  #####################
-  hotFixBusLines()
-
   if ls.affiliationKey1 isnt 'online'
     $('#mobileText').hide() # Hide Notifier Mobile info in Tips box
 
