@@ -154,7 +154,6 @@ body {
 }
 #container #bus .name {
   margin-bottom: 5px;
-  text-decoration: underline;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -408,6 +407,18 @@ body {
   border: 0px solid #ff0000;
   line-height: 15px;
   height: 87px;
+}
+#container #bus #realtime #firstBus {
+  cursor: pointer;
+}
+#container #bus #realtime #firstBus:hover {
+  text-decoration: underline;
+}
+#container #bus #realtime #secondBus {
+  cursor: pointer;
+}
+#container #bus #realtime #secondBus:hover {
+  text-decoration: underline;
 }
 #container #bus #realtime .name {
   margin-bottom: 5px;
