@@ -342,11 +342,6 @@ getDirections = (busField, correctStop) ->
 
 getFavoriteLines = (busField) ->
   cssSelector = '#' + busField
-  # Loading gif
-  if -1 isnt busField.indexOf 'first'
-    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loadingLeft" src="img/loading-atb.gif" /></div>'
-  else if -1 isnt busField.indexOf 'second'
-    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loadingRight" src="img/loading-atb.gif" /></div>'
 
   # Show it
   $('#busBox .lines').slideDown()

@@ -350,11 +350,6 @@
   getFavoriteLines = function(busField) {
     var busStopId, counter, cssSelector, direction, errorMessage, line, lines, stopName, _i, _len;
     cssSelector = '#' + busField;
-    if (-1 !== busField.indexOf('first')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingLeft" src="img/loading-atb.gif" /></div>');
-    } else if (-1 !== busField.indexOf('second')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingRight" src="img/loading-atb.gif" /></div>');
-    }
     $('#busBox .lines').slideDown();
     $('#busBox #arrowDown').fadeOut();
     stopName = $(cssSelector + ' input').val();
