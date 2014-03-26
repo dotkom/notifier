@@ -14,7 +14,7 @@ var Defaults = {
     if (ls.extensionName == undefined)
       ls.extensionName = 'Online Notifier';
     if (ls.extensionCreator == undefined)
-      ls.extensionCreator = 'dotKom'; // Max 8 letters because of styling
+      ls.extensionCreator = 'appKom'; // Max 8 letters because of styling
     if (ls.installTime == undefined)
       ls.installTime = new Date().getTime();
 
