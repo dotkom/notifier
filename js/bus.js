@@ -25,28 +25,28 @@ var Bus = {
     });
   },
 
-  getLines: function(stopId, callback) {
-    if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
+  // getLines: function(stopId, callback) {
+  //   if (callback == undefined) {
+  //     console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+  //     return;
+  //   }
 
-    // This function suffers from missing API features, there is currently no single
-    // good call that will give all the lines passing a single stop.
-    // - Realtime API will only give what's in the immediate future
-    // - Route API will give more, but will still suffer closer to midnight
-    // - Route API has a field for lines that might be implemented in the API one day, check there!
-    var self = this;
-    Ajaxer.getJson({
-      url: self.api + stopId + self.apiKey,
-      success: function(json) {
-        callback(json);
-      },
-      error: function(jqXHR, text, err) {
-        callback(self.msgDisconnected);
-      },
-    });
-  },
+  //   // This function suffers from missing API features, there is currently no single
+  //   // good call that will give all the lines passing a single stop.
+  //   // - Realtime API will only give what's in the immediate future
+  //   // - Route API will give more, but will still suffer closer to midnight
+  //   // - Route API has a field for lines that might be implemented in the API one day, check there!
+  //   var self = this;
+  //   Ajaxer.getJson({
+  //     url: self.api + stopId + self.apiKey,
+  //     success: function(json) {
+  //       callback(json);
+  //     },
+  //     error: function(jqXHR, text, err) {
+  //       callback(self.msgDisconnected);
+  //     },
+  //   });
+  // },
 
   // Private functions, do not use externally
 
