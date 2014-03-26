@@ -511,7 +511,7 @@ $ ->
     Analytics.trackEvent 'clickTipsLink', link
     window.close()
 
-  clickChatter = ->
+  $('#chatterButton').click ->
     irc = Affiliation.org[ls.affiliationKey1].irc
     server = irc.server
     channel = irc.channel
@@ -519,9 +519,14 @@ $ ->
     Browser.openTab 'https://kiwiirc.com/client/' + server + '/' + channel
     Analytics.trackEvent 'clickChatter', ls.affiliationKey1
     window.close()
-  $('#chatterButton').click clickChatter
-  $('#chatterIcon').click clickChatter
-  
+
+  clickBus = ->
+    Browser.openTab 'https://www.atb.no/rutetider/'
+    Analytics.trackEvent 'clickRealtimeBus'
+    window.close()
+  $('#bus #firstBus').click clickBus
+  $('#bus #secondBus').click clickBus
+
   $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'
     Analytics.trackEvent 'clickAtb'

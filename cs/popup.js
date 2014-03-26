@@ -484,7 +484,7 @@
   };
 
   $(function() {
-    var clickChatter, icon, key, logo, placeholder, shorter;
+    var clickBus, icon, key, logo, placeholder, shorter;
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       Analytics.trackEvent('toggleInfoscreen');
@@ -562,7 +562,7 @@
       Analytics.trackEvent('clickTipsLink', link);
       return window.close();
     });
-    clickChatter = function() {
+    $('#chatterButton').click(function() {
       var channel, irc, noNick, server;
       irc = Affiliation.org[ls.affiliationKey1].irc;
       server = irc.server;
@@ -571,9 +571,14 @@
       Browser.openTab('https://kiwiirc.com/client/' + server + '/' + channel);
       Analytics.trackEvent('clickChatter', ls.affiliationKey1);
       return window.close();
+    });
+    clickBus = function() {
+      Browser.openTab('https://www.atb.no/rutetider/');
+      Analytics.trackEvent('clickRealtimeBus');
+      return window.close();
     };
-    $('#chatterButton').click(clickChatter);
-    $('#chatterIcon').click(clickChatter);
+    $('#bus #firstBus').click(clickBus);
+    $('#bus #secondBus').click(clickBus);
     $('#bus #atbLogo').click(function() {
       Browser.openTab('http://www.atb.no');
       Analytics.trackEvent('clickAtb');
