@@ -1,7 +1,7 @@
 var Favorite = {
   debug: 0,
   api: 'https://www.atb.no/holdeplassoversikt/category1254.html',
-  msgFailed: 'Oops, klarte ikke hente busstoppet sine linjer',
+  msgFailed: 'Oops! :(',
 
   getLinesForStop: function(stopId) {
     var stopsAndLines = localStorage.stopsAndLines;
