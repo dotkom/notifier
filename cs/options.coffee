@@ -357,59 +357,46 @@ getFavoriteLines = (busField) ->
   direction = $(cssSelector + ' select').val()
   # Get and inject possible lines for correct stop
   busStopId = Stops.nameAndDirectionToId stopName, direction
+  # Load lines for that bus stop
+  lines = Favorite.getLinesForStop busStopId
   
-  Favorite.getLinesForStop busStopId, (json) ->
-    
-    # HOTFIX
-    console.log json ############################################################
-    
-    # Error message?
-    if typeof json is 'string'
-      errorMessage = json
-      # Show error message
-      $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
-      # Show retry-button
-      clearTimeout $('#busBox').data 'timeoutId'
-      setTimeout ( ->
-        $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
-        $(cssSelector + ' .lines .retry').click ->
-          getFavoriteLines busField
-        setTimeout ( ->
-          slideFavoriteBusLines()
-        ), 1500
-      ), 2200
-    else
-      # Sort lines and remove duplicates
-      arrayOfLines = []
-      # for item in json.lines # this is probably more correct to use for the future
-      for item in json.next
-        if -1 is arrayOfLines.indexOf Number item.line
-          # Casting strings to numbers to make them easily sortable
-          arrayOfLines.push Number item.line
-      arrayOfLines = arrayOfLines.sort (a,b) -> return a-b
-      
-      # Add lines to bus stop
-      $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
-      counter = 0
-      for line in arrayOfLines
-        if counter % 4 == 0
-          $(cssSelector + ' .lines table').append '</tr><tr>'
-        $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+line+'</td>'
-        counter = counter + 1
-      $(cssSelector + ' .lines').append '</tr></table>'
-
-      # Save the newly added lines
-      saveBus busField
-
-      # Make the bus lines clickable
-      bindFavoriteBusLines busField
-
-    # Hide the favorite lines after a short timeout
+  # Error message?
+  if typeof lines is 'string'
+    errorMessage = lines
+    # Show error message
+    $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
+    # Show retry-button
+    clearTimeout $('#busBox').data 'timeoutId'
     setTimeout ( ->
-      if not $('#busBox').hasClass 'hover'
-        $('#busBox .lines').slideUp()
-        $('#busBox #arrowDown').fadeIn()
-    ), 2500
+      $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
+      $(cssSelector + ' .lines .retry').click ->
+        getFavoriteLines busField
+      setTimeout ( ->
+        slideFavoriteBusLines()
+      ), 1500
+    ), 2200
+  else
+    # Add lines to bus stop
+    $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
+    counter = 0
+    for line in lines
+      if counter % 4 == 0
+        $(cssSelector + ' .lines table').append '</tr><tr>'
+      $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+line+'</td>'
+      counter = counter + 1
+    $(cssSelector + ' .lines').append '</tr></table>'
+
+    # Save the newly added lines
+    saveBus busField
+    # Make the bus lines clickable
+    bindFavoriteBusLines busField
+
+  # Hide the favorite lines after a short timeout
+  setTimeout ( ->
+    if not $('#busBox').hasClass 'hover'
+      $('#busBox .lines').slideUp()
+      $('#busBox #arrowDown').fadeIn()
+  ), 2500
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
