@@ -4,7 +4,7 @@ Ajaxer = {
 
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
   ajaxSetup: {
-    timeout: 9000,
+    timeout: 15000,
     cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
   },
 
