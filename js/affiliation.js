@@ -671,6 +671,21 @@ var Affiliation = {
       },
     },
 
+    'teaterlosjen': {
+      name: 'Teaterlosjen',
+      key: 'teaterlosjen',
+      web: 'http://teaterlosjen.wordpress.com/',
+      feed: 'http://teaterlosjen.wordpress.com/feed/',
+      logo: './org/teaterlosjen/logo.png',
+      icon: './org/teaterlosjen/icon.png',
+      symbol: './org/teaterlosjen/symbol.png',
+      placeholder: './org/teaterlosjen/placeholder.png',
+      palette: 'red',
+      getImage: function(link, callback) {
+        Affiliation.getImages(this, link, callback);
+      },
+    },
+
     // Linjeforeninger HiST/DMMH/TJSF/BI
 
     'fraktur': {
