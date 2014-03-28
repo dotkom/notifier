@@ -215,12 +215,6 @@ var News = {
     catch (err) {
       // Do nothing, we were just checking, move along quitely
     }
-    // Do a post check to see that the image we found was not useless
-    if (post.image != '') {
-      if (!Images.control(post.image)) {
-        post.image = '';
-      }
-    }
 
     // All done! Next please.
 
@@ -284,6 +278,10 @@ var News = {
     // NOTE: This must be done before HTML is removed during postprocessing of the description! (look below)
     if (isEmpty(post.image) || post.image == affiliationObject.placeholder)
       post.image = this.checkDescriptionForImageLink(post.image, post.description, affiliationObject.web);
+    // Do a check to see that the image we found was not useless
+    if (post.image != '')
+      if (!Images.control(post.image))
+        post.image = '';
 
     // Title field
 
