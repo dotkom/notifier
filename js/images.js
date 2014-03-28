@@ -1,4 +1,3 @@
-
 var Images = {
   debug: 1,
 
@@ -206,6 +205,24 @@ var Images = {
       callback(links, placeholders);
       },
     });
+  },
+
+  control: function(imageUrl) {
+    if (isEmpty(imageUrl)) {
+      if (this.debug) console.log('ERROR: Images.control received empty imageUrl');
+      return false;
+    }
+    // Exclude gifs since they're most likely smilies and the likes
+    if (imageUrl.indexOf('.gif') != -1) return false;
+    if (imageUrl.indexOf('data:image/gif') != -1) return false;
+    // Exclude social image icons (only applies for some blogs)
+    if (imageUrl.indexOf('sociable') != -1) return false;
+    // Exclude static content, most likely icons
+    if (imageUrl.indexOf('static') != -1) return false;
+    // Exclude comments, most likely text in image as "Add comment here"
+    if (imageUrl.indexOf('comments') != -1) return false;
+    // Control out
+    return true;
   },
   
 }
