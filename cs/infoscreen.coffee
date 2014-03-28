@@ -2,6 +2,7 @@
 $ = jQuery
 ls = localStorage
 iteration = 0
+intervalId = null
 
 newsLimit = 8 # The most news you can cram into Infoscreen, if other features are disabled
 
@@ -25,10 +26,6 @@ mainLoop = ->
 
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
-  
-  setTimeout ( ->
-    mainLoop()
-  ), PAGE_LOOP
 
 updateOffice = (debugStatus) ->
   console.lolg 'updateOffice'
@@ -456,4 +453,17 @@ $ ->
   ), 1800000
 
   # Enter main loop, keeping everything up-to-date
-  mainLoop()
+  stayUpdated = ->
+    console.lolg ONLINE_MESSAGE
+    intervalId = setInterval ( ->
+      mainLoop()
+    ), PAGE_LOOP
+  # When offline mainloop is stopped to decrease power consumption
+  window.addEventListener 'online', stayUpdated
+  window.addEventListener 'offline', ->
+    console.lolg OFFLINE_MESSAGE
+    clearInterval intervalId
+  # Go
+  if navigator.onLine
+    mainLoop()
+    stayUpdated()

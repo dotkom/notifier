@@ -24,10 +24,6 @@ mainLoop = ->
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
-  
-  setTimeout ( ->
-    mainLoop()
-  ), PAGE_LOOP
 
 updateOffice = ->
   console.lolg 'updateOffice'
@@ -312,4 +308,16 @@ $ ->
     ls.background_image = BACKGROUND_IMAGE
 
   # Enter main loop, keeping everything up-to-date
+  stayUpdated = ->
+    console.lolg ONLINE_MESSAGE
+    intervalId = setInterval ( ->
+      mainLoop()
+    ), PAGE_LOOP
+  # When offline mainloop is stopped to decrease power consumption
+  window.addEventListener 'online', stayUpdated
+  window.addEventListener 'offline', ->
+    console.lolg OFFLINE_MESSAGE
+    clearInterval intervalId
+  # Go
   mainLoop()
+  stayUpdated()

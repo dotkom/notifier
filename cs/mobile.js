@@ -42,13 +42,10 @@
       updateNews();
     }
     if (10000 < iteration) {
-      iteration = 0;
+      return iteration = 0;
     } else {
-      iteration++;
+      return iteration++;
     }
-    return setTimeout((function() {
-      return mainLoop();
-    }), PAGE_LOOP);
   };
 
   updateOffice = function() {
@@ -356,6 +353,7 @@
   };
 
   $(function() {
+    var stayUpdated;
     busLoading('firstBus');
     busLoading('secondBus');
     if (ls.background_image !== void 0) {
@@ -365,7 +363,20 @@
       $('body').attr('style', 'background-attachment:fixed;background-image:' + BACKGROUND_IMAGE);
       ls.background_image = BACKGROUND_IMAGE;
     }
-    return mainLoop();
+    stayUpdated = function() {
+      var intervalId;
+      console.lolg(ONLINE_MESSAGE);
+      return intervalId = setInterval((function() {
+        return mainLoop();
+      }), PAGE_LOOP);
+    };
+    window.addEventListener('online', stayUpdated);
+    window.addEventListener('offline', function() {
+      console.lolg(OFFLINE_MESSAGE);
+      return clearInterval(intervalId);
+    });
+    mainLoop();
+    return stayUpdated();
   });
 
 }).call(this);

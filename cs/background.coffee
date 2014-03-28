@@ -2,6 +2,7 @@
 $ = jQuery
 ls = localStorage
 iteration = 0
+intervalId = null
 
 mainLoop = ->
   console.lolg "\n#" + iteration
@@ -20,20 +21,6 @@ mainLoop = ->
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
-  
-  # Schedule for repetition once a minute (checking connectivity,
-  # feed and office status). Runs every 3rd second if it's offline,
-  # trying to react quickly upon reconnection...
-  if !navigator.onLine
-    loopTimeout = BACKGROUND_LOOP_OFFLINE
-  else if DEBUG
-    loopTimeout = BACKGROUND_LOOP_DEBUG
-  else
-    loopTimeout = BACKGROUND_LOOP
-
-  setTimeout ( ->
-    mainLoop()
-  ), loopTimeout
 
 updateOfficeAndMeetings = (force) ->
   console.lolg 'updateOfficeAndMeetings'
@@ -223,4 +210,18 @@ $ ->
   ), 1000 * 60 * 60 * 24
 
   # Enter main loop, keeping everything up-to-date
-  mainLoop()
+  stayUpdated = ->
+    console.lolg ONLINE_MESSAGE
+    loopTimeout = if DEBUG then BACKGROUND_LOOP_DEBUG else BACKGROUND_LOOP
+    intervalId = setInterval ( ->
+      mainLoop()
+    ), loopTimeout
+  # When offline mainloop is stopped to decrease power consumption
+  window.addEventListener 'online', stayUpdated
+  window.addEventListener 'offline', ->
+    console.lolg OFFLINE_MESSAGE
+    clearInterval intervalId
+  # Go
+  if navigator.onLine
+    mainLoop()
+    stayUpdated()
