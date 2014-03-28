@@ -1,5 +1,5 @@
 var Images = {
-  debug: 1,
+  debug: 0,
 
   get: function(affiliation, links, callback, options) {
 
