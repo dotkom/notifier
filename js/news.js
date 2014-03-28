@@ -215,6 +215,12 @@ var News = {
     catch (err) {
       // Do nothing, we were just checking, move along quitely
     }
+    // Do a post check to see that the image we found was not useless
+    if (post.image != '') {
+      if (!Images.control(post.image)) {
+        post.image = '';
+      }
+    }
 
     // All done! Next please.
 
