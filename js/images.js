@@ -208,6 +208,8 @@ var Images = {
   },
 
   control: function(imageUrl) {
+    // This function is primarily used by news.js for controlling the goodness
+    // of image URLs found in items that contain HTML descriptions (in RSS feeds)
     if (isEmpty(imageUrl)) {
       if (this.debug) console.log('ERROR: Images.control received empty imageUrl');
       return false;
