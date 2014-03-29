@@ -16,35 +16,53 @@
   mainLoop = function(force) {
     console.lolg("\n#" + iteration);
     if (navigator.onLine) {
-      if (force || iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateHours();
+      if (ls.showCantina === 'true') {
+        if (force || iteration % UPDATE_HOURS_INTERVAL === 0) {
+          updateHours();
+        }
       }
-      if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-        updateCantinas();
+      if (ls.showCantina === 'true') {
+        if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0) {
+          updateCantinas();
+        }
       }
-      if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
-        updateAffiliationNews('1');
+      if (ls.showAffiliation1 === 'true') {
+        if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
+          updateAffiliationNews('1');
+        }
       }
-      if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
-        updateAffiliationNews('2');
+      if (ls.showAffiliation2 === 'true') {
+        if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
+          updateAffiliationNews('2');
+        }
       }
     }
     if (Affiliation.org[ls.affiliationKey1].hw) {
-      if (force || iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateOffice();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
+          updateOffice();
+        }
       }
-      if (force || iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateServant();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_SERVANT_INTERVAL === 0) {
+          updateServant();
+        }
       }
-      if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateMeetings();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0) {
+          updateMeetings();
+        }
       }
-      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateCoffee();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_COFFEE_INTERVAL === 0) {
+          updateCoffee();
+        }
       }
     }
-    if (force || iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
-      updateBus();
+    if (ls.showBus === 'true') {
+      if (force || iteration % UPDATE_BUS_INTERVAL === 0) {
+        updateBus();
+      }
     }
     if (10000 < iteration) {
       return iteration = 0;

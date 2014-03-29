@@ -11,18 +11,36 @@ mainLoop = (force) ->
 
   # Only if online, else keep good old
   if navigator.onLine
-    updateHours() if force or iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateCantinas() if force or iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateAffiliationNews '1' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
-    updateAffiliationNews '2' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+    if ls.showCantina is 'true'
+      if force or iteration % UPDATE_HOURS_INTERVAL is 0
+        updateHours()
+    if ls.showCantina is 'true'
+      if force or iteration % UPDATE_CANTINAS_INTERVAL is 0
+        updateCantinas()
+    if ls.showAffiliation1 is 'true'
+      if force or iteration % UPDATE_NEWS_INTERVAL is 0
+        updateAffiliationNews '1'
+    if ls.showAffiliation2 is 'true'
+      if force or iteration % UPDATE_NEWS_INTERVAL is 0
+        updateAffiliationNews '2'
   # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw
-    updateOffice() if force or iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
-    updateServant() if force or iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
-    updateMeetings() if force or iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
-    updateCoffee() if force or iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
+    if ls.showOffice is 'true'
+      if force or iteration % UPDATE_OFFICE_INTERVAL is 0
+        updateOffice()
+    if ls.showOffice is 'true'
+      if force or iteration % UPDATE_SERVANT_INTERVAL is 0
+        updateServant()
+    if ls.showOffice is 'true'
+      if force or iteration % UPDATE_MEETINGS_INTERVAL is 0
+        updateMeetings()
+    if ls.showOffice is 'true'
+      if force or iteration % UPDATE_COFFEE_INTERVAL is 0
+        updateCoffee()
   # Always update, tell when offline
-  updateBus() if force or iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  if ls.showBus is 'true'
+    if force or iteration % UPDATE_BUS_INTERVAL is 0
+      updateBus()
 
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++

@@ -10,14 +10,26 @@ mainLoop = (force) ->
   if ls.useInfoscreen isnt 'true'
     # Only if online, else keep good old
     if navigator.onLine
-      updateHours() if force or iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-      updateCantinas() if force or iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-      updateAffiliationNews '1' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
-      updateAffiliationNews '2' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+      if ls.showCantina is 'true'
+        if force or iteration % UPDATE_HOURS_INTERVAL is 0
+          updateHours()
+      if ls.showCantina is 'true'
+        if force or iteration % UPDATE_CANTINAS_INTERVAL is 0
+          updateCantinas()
+      if ls.showAffiliation1 is 'true'
+        if force or iteration % UPDATE_NEWS_INTERVAL is 0
+          updateAffiliationNews '1'
+      if ls.showAffiliation2 is 'true'
+        if force or iteration % UPDATE_NEWS_INTERVAL is 0
+          updateAffiliationNews '2'
     # Only if hardware
     if Affiliation.org[ls.affiliationKey1].hw
-      updateOfficeAndMeetings() if force or iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
-      updateCoffeeSubscription() if force or iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
+      if ls.showOffice is 'true'
+        if force or iteration % UPDATE_OFFICE_INTERVAL is 0
+          updateOfficeAndMeetings()
+      if ls.coffeeSubscription is 'true'
+        if force or iteration % UPDATE_COFFEE_INTERVAL is 0
+          updateCoffeeSubscription()
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++

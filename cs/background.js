@@ -15,25 +15,37 @@
     console.lolg("\n#" + iteration);
     if (ls.useInfoscreen !== 'true') {
       if (navigator.onLine) {
-        if (force || iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
-          updateHours();
+        if (ls.showCantina === 'true') {
+          if (force || iteration % UPDATE_HOURS_INTERVAL === 0) {
+            updateHours();
+          }
         }
-        if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
-          updateCantinas();
+        if (ls.showCantina === 'true') {
+          if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0) {
+            updateCantinas();
+          }
         }
-        if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
-          updateAffiliationNews('1');
+        if (ls.showAffiliation1 === 'true') {
+          if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
+            updateAffiliationNews('1');
+          }
         }
-        if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
-          updateAffiliationNews('2');
+        if (ls.showAffiliation2 === 'true') {
+          if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
+            updateAffiliationNews('2');
+          }
         }
       }
       if (Affiliation.org[ls.affiliationKey1].hw) {
-        if (force || iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
-          updateOfficeAndMeetings();
+        if (ls.showOffice === 'true') {
+          if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
+            updateOfficeAndMeetings();
+          }
         }
-        if (force || iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
-          updateCoffeeSubscription();
+        if (ls.coffeeSubscription === 'true') {
+          if (force || iteration % UPDATE_COFFEE_INTERVAL === 0) {
+            updateCoffeeSubscription();
+          }
         }
       }
     }
