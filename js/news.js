@@ -186,7 +186,7 @@ var News = {
     
     // Image field
 
-    // Check for image in rarely used tags <enclosure> and <bilde>
+    // Check for image in <content:encoded> and in rarely used tags <enclosure> and <bilde>
     post.image = '';
     try {
       // Some feeds use encoded content, which often contains an image src
@@ -196,10 +196,7 @@ var News = {
         encodedContent = $(item).find("encoded").filter(':first').text();
       }
       if (encodedContent != '') {
-        var hits = encodedContent.match(/src="(.*?)"/i);
-        if (hits != null) {
-          post.image = hits[1];
-        }
+        post.image = this.checkDescriptionForImageLink(post.image, encodedContent, affiliationObject.web);
       }
       // Universitetsavisa/Adressa does this little trick to get images in their feed
       var enclosure = $(item).find('enclosure').filter(':first');
@@ -274,7 +271,7 @@ var News = {
 
     // Image field
 
-    // If we haven't found a good image, scour the description for an alternative
+    // If we haven't found a good image, scour the description for an alternative, arrrr
     // NOTE: This must be done before HTML is removed during postprocessing of the description! (look below)
     if (isEmpty(post.image) || post.image == affiliationObject.placeholder)
       post.image = this.checkDescriptionForImageLink(post.image, post.description, affiliationObject.web);
