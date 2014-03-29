@@ -17,6 +17,7 @@ console.lolg = function() {
 var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_DEBUG = 5000; // 5s, respond fairly quickly for us developers
 var PAGE_LOOP = 10000; // 10s
+var PAGE_LOOP_DEBUG = 5000; // 5s
 var ONLINE_MESSAGE = '\nNow online, run mainloop\n';
 var OFFLINE_MESSAGE = '\nNow offline, stop execution\n';
 

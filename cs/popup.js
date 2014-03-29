@@ -13,34 +13,34 @@
 
   newsLimit = 4;
 
-  mainLoop = function() {
+  mainLoop = function(force) {
     console.lolg("\n#" + iteration);
     if (navigator.onLine) {
-      if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+      if (force || iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
         updateHours();
       }
-      if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+      if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
         updateCantinas();
       }
-      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
+      if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
         updateAffiliationNews('1');
       }
-      if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
+      if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
         updateAffiliationNews('2');
       }
     }
     if (Affiliation.org[ls.affiliationKey1].hw) {
-      if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
+      if (force || iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
         updateServant();
       }
-      if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
+      if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
         updateMeetings();
       }
-      if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
+      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
         updateCoffee();
       }
     }
-    if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
+    if (force || iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
       updateBus();
     }
     if (10000 < iteration) {
@@ -633,20 +633,26 @@
       }
     });
     $('#oracle #question').focus();
-    stayUpdated = function() {
+    stayUpdated = function(now) {
+      var loopTimeout, timeout;
       console.lolg(ONLINE_MESSAGE);
-      return intervalId = setInterval((function() {
+      loopTimeout = DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP;
+      intervalId = setInterval((function() {
         return mainLoop();
       }), PAGE_LOOP);
+      timeout = now ? 0 : 2000;
+      return setTimeout((function() {
+        return mainLoop(true);
+      }), timeout);
     };
     window.addEventListener('online', stayUpdated);
     window.addEventListener('offline', function() {
       console.lolg(OFFLINE_MESSAGE);
-      return clearInterval(intervalId);
+      clearInterval(intervalId);
+      return updateBus();
     });
     if (navigator.onLine) {
-      stayUpdated();
-      return mainLoop();
+      return stayUpdated(true);
     }
   });
 

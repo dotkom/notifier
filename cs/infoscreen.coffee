@@ -6,23 +6,23 @@ intervalId = null
 
 newsLimit = 8 # The most news you can cram into Infoscreen, if other features are disabled
 
-mainLoop = ->
+mainLoop = (force) ->
   console.lolg "\n#" + iteration
 
   # Only if online, else keep good old
   if navigator.onLine
-    updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
-    updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+    updateHours() if force or iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateCantinas() if force or iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+    updateAffiliationNews '1' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
+    updateAffiliationNews '2' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
   # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw
-    updateOffice() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
-    updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
-    updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
-    updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
+    updateOffice() if force or iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
+    updateServant() if force or iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
+    updateMeetings() if force or iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
+    updateCoffee() if force or iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
   # Always update, tell when offline
-  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  updateBus() if force or iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
 
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -453,17 +453,24 @@ $ ->
   ), 1800000
 
   # Enter main loop, keeping everything up-to-date
-  stayUpdated = ->
+  stayUpdated = (now) ->
     console.lolg ONLINE_MESSAGE
+    loopTimeout = if DEBUG then PAGE_LOOP_DEBUG else PAGE_LOOP
+    # Schedule for repetition
     intervalId = setInterval ( ->
       mainLoop()
     ), PAGE_LOOP
+    # Run once right now (just wait 2 secs to avoid network-change errors)
+    timeout = if now then 0 else 2000
+    setTimeout ( ->
+      mainLoop true
+    ), timeout
   # When offline mainloop is stopped to decrease power consumption
   window.addEventListener 'online', stayUpdated
   window.addEventListener 'offline', ->
     console.lolg OFFLINE_MESSAGE
     clearInterval intervalId
+    updateBus()
   # Go
   if navigator.onLine
-    stayUpdated()
-    mainLoop()
+    stayUpdated true

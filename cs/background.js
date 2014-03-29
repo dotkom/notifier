@@ -11,28 +11,28 @@
 
   intervalId = null;
 
-  mainLoop = function() {
+  mainLoop = function(force) {
     console.lolg("\n#" + iteration);
     if (ls.useInfoscreen !== 'true') {
       if (navigator.onLine) {
-        if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+        if (force || iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
           updateHours();
         }
-        if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+        if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
           updateCantinas();
         }
-        if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
+        if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation1 === 'true') {
           updateAffiliationNews('1');
         }
-        if (iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
+        if (force || iteration % UPDATE_NEWS_INTERVAL === 0 && ls.showAffiliation2 === 'true') {
           updateAffiliationNews('2');
         }
       }
       if (Affiliation.org[ls.affiliationKey1].hw) {
-        if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
           updateOfficeAndMeetings();
         }
-        if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
+        if (force || iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.coffeeSubscription === 'true') {
           updateCoffeeSubscription();
         }
       }
@@ -234,13 +234,17 @@
         return Analytics.trackEvent('affiliation2', ls.affiliationKey2);
       }
     }), 1000 * 60 * 60 * 24);
-    stayUpdated = function() {
-      var loopTimeout;
+    stayUpdated = function(now) {
+      var loopTimeout, timeout;
       console.lolg(ONLINE_MESSAGE);
       loopTimeout = DEBUG ? BACKGROUND_LOOP_DEBUG : BACKGROUND_LOOP;
-      return intervalId = setInterval((function() {
+      intervalId = setInterval((function() {
         return mainLoop();
       }), loopTimeout);
+      timeout = now ? 0 : 2000;
+      return setTimeout((function() {
+        return mainLoop(true);
+      }), timeout);
     };
     window.addEventListener('online', stayUpdated);
     window.addEventListener('offline', function() {
@@ -248,8 +252,7 @@
       return clearInterval(intervalId);
     });
     if (navigator.onLine) {
-      stayUpdated();
-      return mainLoop();
+      return stayUpdated(true);
     }
   });
 

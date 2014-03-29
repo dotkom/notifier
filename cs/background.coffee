@@ -4,20 +4,20 @@ ls = localStorage
 iteration = 0
 intervalId = null
 
-mainLoop = ->
+mainLoop = (force) ->
   console.lolg "\n#" + iteration
 
   if ls.useInfoscreen isnt 'true'
     # Only if online, else keep good old
     if navigator.onLine
-      updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-      updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-      updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
-      updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+      updateHours() if force or iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
+      updateCantinas() if force or iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
+      updateAffiliationNews '1' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
+      updateAffiliationNews '2' if force or iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
     # Only if hardware
     if Affiliation.org[ls.affiliationKey1].hw
-      updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
-      updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
+      updateOfficeAndMeetings() if force or iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
+      updateCoffeeSubscription() if force or iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
@@ -210,12 +210,18 @@ $ ->
   ), 1000 * 60 * 60 * 24
 
   # Enter main loop, keeping everything up-to-date
-  stayUpdated = ->
+  stayUpdated = (now) ->
     console.lolg ONLINE_MESSAGE
     loopTimeout = if DEBUG then BACKGROUND_LOOP_DEBUG else BACKGROUND_LOOP
+    # Schedule for repetition
     intervalId = setInterval ( ->
       mainLoop()
     ), loopTimeout
+    # Run once right now (just wait 2 secs to avoid network-change errors)
+    timeout = if now then 0 else 2000
+    setTimeout ( ->
+      mainLoop true
+    ), timeout
   # When offline mainloop is stopped to decrease power consumption
   window.addEventListener 'online', stayUpdated
   window.addEventListener 'offline', ->
@@ -223,5 +229,4 @@ $ ->
     clearInterval intervalId
   # Go
   if navigator.onLine
-    stayUpdated()
-    mainLoop()
+    stayUpdated true
