@@ -595,5 +595,5 @@ $ ->
     clearInterval intervalId
   # Go
   if navigator.onLine
-    mainLoop()
     stayUpdated()
+    mainLoop()

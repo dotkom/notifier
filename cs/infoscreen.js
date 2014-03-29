@@ -545,8 +545,8 @@
       return clearInterval(intervalId);
     });
     if (navigator.onLine) {
-      mainLoop();
-      return stayUpdated();
+      stayUpdated();
+      return mainLoop();
     }
   });
 
