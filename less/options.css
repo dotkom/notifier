@@ -417,16 +417,17 @@ header #notification .saved {
 .item #busBox .busStop .lines .active {
   cursor: pointer;
   color: black;
+  font-weight: bold;
 }
 .item #busBox .busStop .lines .active:hover {
-  font-weight: bold;
+  text-decoration: underline;
 }
 .item #busBox .busStop .lines .inactive {
   cursor: pointer;
   color: gray;
 }
 .item #busBox .busStop .lines .inactive:hover {
-  font-weight: bold;
+  text-decoration: underline;
 }
 .item #busBox .busStop .lines .error {
   color: black;
