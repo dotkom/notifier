@@ -31,7 +31,7 @@ var Favorite = {
     var now = new Date().getTime();
     var week = 7 * 24 * 60 * 60 * 1000;
     if (isNaN(then) || (now - then) > week) {
-      if (this.debug) console.log('Favorite: Old list of stops and their lines, fetching new')
+      if (this.debug) console.log('Favorite: Old list of stops and their lines, fetching new');
       Favorite.fetch();
       return;
     }
