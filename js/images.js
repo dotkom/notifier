@@ -74,14 +74,14 @@ var Images = {
         var newsSelector = null;
         if (options.newsSelector) {
         newsSelector = options.newsSelector;
-        if (self.debug) console.log('Using selector', '"'+newsSelector+'" for news at '+url+'\n');
+        if (self.debug) console.log('Images: Using selector "'+newsSelector+'" for news at "'+url+'"');
         }
         else {
         for (var i=0; i<containers.length; i++) {
           var current = containers[i];
           if (doc.find(current).length != 0) {
           newsSelector = current;
-          if (self.debug) console.log('Using selector', '"'+current+'" for news at '+url+'\n');
+          if (self.debug) console.log('Images: Using selector "'+current+'" for news at "'+url+'"');
           break;
           }
         }
@@ -98,17 +98,17 @@ var Images = {
         
         var link = links[i];
 
-        if (self.debug) console.log('Checking for '+(isSingleLink? 'image at' : 'posts with link'), link);
+        if (self.debug) console.log('Images: Checking for '+(isSingleLink? 'single image at' : 'news post with link'), link);
 
         // If posts are using relative links, split by domainUrl, like 'hist.no'
         if (options.domainUrl) {
-          if (self.debug) console.log('Splitting link by domain url', options.domainUrl);
+          if (self.debug) console.log('Images: Splitting link by domain url "'+options.domainUrl+'"');
           link = links[i].split(options.domainUrl)[1];
         }
 
         // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
         if (options.linkDelimiter) {
-          if (self.debug) console.log('Splitting link by delimiter', options.linkDelimiter);
+          if (self.debug) console.log('Images: Splitting link by delimiter "'+options.linkDelimiter+'"');
           link = links[i].split(options.linkDelimiter)[0];
         }
 
@@ -117,12 +117,12 @@ var Images = {
 
         // ...then find parent 'article' or 'div.post' or the like...
         if (image.length != 0) {
-          if (self.debug) console.log('Found something with the link, finding the parent (the news box');
+          if (self.debug) console.log('Images: Found something with the link, locating parent tag (the news box)');
           image = image.parents(newsSelector);
         }
         // ...unless we didn't find anything with the link, in which case we just look for the news selector
         else if (isSingleLink) {
-          if (self.debug) console.log('Found nothing with a[href=url], trying news selector instead');
+          if (self.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
           // On a specific news page (not a frontpage) we can allow ourselves to search
           // more broadly if we didn't find anything while searching for the link. We'll
           // search for the newsSelector instead and assume that the first news container
@@ -171,37 +171,37 @@ var Images = {
 
         // If image is undefined
         if (typeof image == 'undefined') {
-          if (self.debug) console.log('No image exists for link', link);
+          if (self.debug) console.log('Images: No image exists for link "'+link+'"');
           image = placeholder;
         }
         // If image needs to be prefixed with the domain name
         else if (options.domainUrl) {
           image = 'http://' + options.domainUrl + image;
-          if (self.debug) console.log('Found a good image at', image);
+          if (self.debug) console.log('Images: Found a good image at "'+image+'"');
         }
         // If image is something useless like "//assets.pinterest.com/whatever.png"
         // NOTE: Must be done after adding "http" and domainUrl
         else if (image.match('^https?://') == null) {
-          if (self.debug) console.log('No good image exists for link', link);
+          if (self.debug) console.log('Images: No good image exists for link "'+link+'"');
           image = placeholder;
         }
         // If all is good
         else {
-          if (self.debug) console.log('Found a good image at', image);
+          if (self.debug) console.log('Images: Found a good image at "'+image+'"');
         }
-        if (self.debug) console.log('\n');
+        if (self.debug) console.log('');
 
         images.push(image);
         }
         callback(links, images);
       }
       catch (e) {
-        if (self.debug) console.log('ERROR: could not parse '+affiliation.name+' website');
+        if (self.debug) console.log('ERROR: could not parse "'+affiliation.name+'" website');
         callback(links, placeholders);
       }
       },
       error: function(e) {
-      if (self.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
+      if (self.debug) console.log('ERROR: could not fetch "'+affiliation.name+'" website');
       callback(links, placeholders);
       },
     });
