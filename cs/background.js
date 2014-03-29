@@ -181,7 +181,7 @@
         Affiliation.org[key].getImage(link, function(link, image) {
           var storedImages;
           storedImages = JSON.parse(ls.storedImages);
-          storedImages[link] = image;
+          storedImages[link] = image[0];
           return ls.storedImages = JSON.stringify(storedImages);
         });
       }

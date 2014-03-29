@@ -147,7 +147,7 @@ fetchAndStoreImageLinks = (number) ->
       Affiliation.org[key].getImage link, (link, image) ->
         # Also, check whether there's already a qualified image before replacing it.
         storedImages = JSON.parse ls.storedImages
-        storedImages[link] = image
+        storedImages[link] = image[0]
         ls.storedImages = JSON.stringify storedImages
   # If the organization has it's own getImages (plural) function, use it
   if Affiliation.org[key].getImages isnt undefined
