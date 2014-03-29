@@ -276,9 +276,14 @@ var News = {
     if (isEmpty(post.image) || post.image == affiliationObject.placeholder)
       post.image = this.checkDescriptionForImageLink(post.image, post.description, affiliationObject.web);
     // Do a check to see that the image we found was not useless
-    if (post.image != '')
-      if (!Images.control(post.image))
+    if (post.image != '') {
+      if (!Images.control(post.image)) {
         post.image = '';
+      }
+    }
+    else {
+      post.image = Affiliation.org[affiliationObject.key].placeholder;
+    }
 
     // Title field
 
@@ -500,8 +505,9 @@ var News = {
         return website + image;
       }
     }
-    else
+    else {
       return oldImage;
+    }
   },
 
   checkDescriptionForAltLink: function(description) {
