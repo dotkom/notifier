@@ -229,8 +229,8 @@ var Affiliation = {
       symbol: './org/hybrida/symbol.png',
       placeholder: './org/hybrida/placeholder.png',
       palette: 'blue',
-      getImages: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.element', domainUrl:'hybrida.no'});
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'div.headerImage', domainUrl:'hybrida.no'});
       },
     },
 
@@ -425,7 +425,7 @@ var Affiliation = {
       symbol: './org/volvox/symbol.png',
       placeholder: './org/volvox/placeholder.png',
       palette: 'green',
-      getImages: function(links, callback) {
+      getImage: function(links, callback) {
         Images.get(this, links, callback);
       },
     },
@@ -450,7 +450,7 @@ var Affiliation = {
     // De Folkevalgtes website is no longer in operation, uncommented for the unforseeable future
     // 'de_folkevalgte': {
     //   name: 'De Folkevalgte',
-    //   key: 'de folkevalgte',
+    //   key: 'de_folkevalgte',
     //   web: 'http://www.defolkevalgte.net/',
     //   feed: 'http://www.defolkevalgte.net/feed/rss/',
     //   logo: './org/de folkevalgte/logo.png',
@@ -555,7 +555,7 @@ var Affiliation = {
 
     'jump_cut': {
       name: 'Jump Cut',
-      key: 'jump cut',
+      key: 'jump_cut',
       web: 'http://jumpcutdragvoll.wordpress.com/',
       feed: 'http://jumpcutdragvoll.wordpress.com/feed/',
       logo: './org/jump cut/logo.png',
@@ -601,8 +601,8 @@ var Affiliation = {
     'panoptikon': {
       name: 'Panoptikon',
       key: 'panoptikon',
-      web: 'http://panoptikon.blogg.no/',
-      feed: 'http://feeds.blogg.no/259521/post.rss',
+      web: 'http://panoptikonlinjeforening.wordpress.com/',
+      feed: 'http://panoptikonlinjeforening.wordpress.com/feed/',
       logo: './org/panoptikon/logo.png',
       icon: './org/panoptikon/icon.png',
       symbol: './org/panoptikon/symbol.png',
@@ -658,7 +658,7 @@ var Affiliation = {
 
     'sturm_und_drang': {
       name: 'Sturm Und Drang',
-      key: 'sturm und drang',
+      key: 'sturm_und_drang',
       web: 'http://www.sturm.ntnu.no/',
       feed: 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
       logo: './org/sturm und drang/logo.png',
@@ -769,7 +769,7 @@ var Affiliation = {
 
     'tim_og_shaenko': {
       name: 'Tim & Shænko',
-      key: 'tim og shaenko',
+      key: 'tim_og_shaenko',
       web: 'http://bygging.no/',
       feed: 'http://bygging.no/feed/',
       logo: './org/tim og shaenko/logo.png',
@@ -829,20 +829,20 @@ var Affiliation = {
       },
     },
 
-    'esn': {
-      name: 'ESN',
-      key: 'esn',
-      web: 'http://www.trondheim.esn.no/',
-      feed: 'http://www.trondheim.esn.no/feed',
-      logo: './org/esn/logo.png',
-      icon: './org/esn/icon.png',
-      symbol: './org/esn/symbol.png',
-      placeholder: './org/esn/placeholder.png',
-      palette: 'cyan',
-      getImages: function(links, callback) {
-        Images.get(this, links, callback);
-      },
-    },
+    // 'esn': {
+    //   name: 'ESN',
+    //   key: 'esn',
+    //   web: 'http://www.trondheim.esn.no/',
+    //   feed: 'http://www.trondheim.esn.no/feed',
+    //   logo: './org/esn/logo.png',
+    //   icon: './org/esn/icon.png',
+    //   symbol: './org/esn/symbol.png',
+    //   placeholder: './org/esn/placeholder.png',
+    //   palette: 'cyan',
+    //   getImages: function(links, callback) {
+    //     Images.get(this, links, callback);
+    //   },
+    // },
 
     'iaeste': {
       name: 'IAESTE',
@@ -1025,7 +1025,7 @@ var Affiliation = {
 
     'studenttinget_ntnu': {
       name: 'Studenttinget NTNU',
-      key: 'studenttinget ntnu',
+      key: 'studenttinget_ntnu',
       web: 'http://www.studenttinget.no/',
       feed: 'http://www.studenttinget.no/feed/',
       logo: './org/studenttinget ntnu/logo.png',
@@ -1040,7 +1040,7 @@ var Affiliation = {
 
     'studentparlamentet_hist': {
       name: 'Studentparlamentet HiST',
-      key: 'studentparlamentet hist',
+      key: 'studentparlamentet_hist',
       web: 'http://studentparlamentet.com/',
       feed: 'http://studentparlamentet.com/?feed=rss2',
       logo: './org/studentparlamentet hist/logo.png',
@@ -1114,7 +1114,7 @@ var Affiliation = {
 
     'rektoratet_ntnu': {
       name: 'Rektoratet NTNU',
-      key: 'rektoratet ntnu',
+      key: 'rektoratet_ntnu',
       web: 'http://www.ntnu.no/blogger/rektoratet/',
       feed: 'http://www.ntnu.no/blogger/rektoratet/feed/',
       logo: './org/rektoratet ntnu/logo.png',
@@ -1153,7 +1153,7 @@ var Affiliation = {
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.articlewrp', domainUrl:'dmmh.no'});
+        Images.get(this, link, callback, {newsSelector:'div#content', domainUrl:'dmmh.no'});
       },
     },
 
