@@ -117,7 +117,7 @@ updateAffiliationNews = (number) ->
       else
         saveAndCountNews items, number
         updateUnreadCount()
-        storeImageLinks number
+        fetchAndStoreImageLinks number
   else
     console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
 
@@ -136,7 +136,7 @@ updateUnreadCount = (count1, count2) ->
   unreadCount = (Number ls.affiliationUnreadCount1) + (Number ls.affiliationUnreadCount2)
   Browser.setBadgeText String unreadCount
 
-storeImageLinks = (number) ->
+fetchAndStoreImageLinks = (number) ->
   key = ls['affiliationKey'+number]
   newsList = JSON.parse ls['affiliationNewsList'+number]
   # If the organization has it's own getImage function, use it
