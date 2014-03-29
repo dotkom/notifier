@@ -73,18 +73,18 @@ var Images = {
 
         var newsSelector = null;
         if (options.newsSelector) {
-        newsSelector = options.newsSelector;
-        if (self.debug) console.log('Images: Using selector "'+newsSelector+'" for news at "'+url+'"');
+          newsSelector = options.newsSelector;
+          if (self.debug) console.log('Images: Using selector "'+newsSelector+'" for news at "'+url+'"');
         }
         else {
-        for (var i=0; i<containers.length; i++) {
-          var current = containers[i];
-          if (doc.find(current).length != 0) {
-          newsSelector = current;
-          if (self.debug) console.log('Images: Using selector "'+current+'" for news at "'+url+'"');
-          break;
+          for (var i=0; i<containers.length; i++) {
+            var current = containers[i];
+            if (doc.find(current).length != 0) {
+            newsSelector = current;
+            if (self.debug) console.log('Images: Using selector "'+current+'" for news at "'+url+'"');
+            break;
+            }
           }
-        }
         }
 
         // A place to store all the image links
@@ -92,106 +92,107 @@ var Images = {
 
         for (i in links) {
 
-        //
-        // Find the news container which contains the news image, using our selector
-        //
-        
-        var link = links[i];
+          //
+          // Find the news container which contains the news image, using our selector
+          //
+          
+          var link = links[i];
 
-        if (self.debug) console.log('Images: Checking for '+(isSingleLink? 'single image at' : 'news post with link'), link);
+          if (self.debug) console.log('Images: Checking for '+(isSingleLink? 'single image at' : 'news post with link'), link);
 
-        // If posts are using relative links, split by domainUrl, like 'hist.no'
-        if (options.domainUrl) {
-          if (self.debug) console.log('Images: Splitting link by domain url "'+options.domainUrl+'"');
-          link = links[i].split(options.domainUrl)[1];
-        }
+          // If posts are using relative links, split by domainUrl, like 'hist.no'
+          if (options.domainUrl) {
+            if (self.debug) console.log('Images: Splitting link by domain url "'+options.domainUrl+'"');
+            link = links[i].split(options.domainUrl)[1];
+          }
 
-        // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
-        if (options.linkDelimiter) {
-          if (self.debug) console.log('Images: Splitting link by delimiter "'+options.linkDelimiter+'"');
-          link = links[i].split(options.linkDelimiter)[0];
-        }
+          // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
+          if (options.linkDelimiter) {
+            if (self.debug) console.log('Images: Splitting link by delimiter "'+options.linkDelimiter+'"');
+            link = links[i].split(options.linkDelimiter)[0];
+          }
 
-        // Look up the first post with the link inside it...
-        var image = doc.find(newsSelector + ' a[href="' + link + '"]');
+          // Look up the first post with the link inside it...
+          var image = doc.find(newsSelector + ' a[href="' + link + '"]');
 
-        // ...then find parent 'article' or 'div.post' or the like...
-        if (image.length != 0) {
-          if (self.debug) console.log('Images: Found something with the link, locating parent tag (the news box)');
-          image = image.parents(newsSelector);
-        }
-        // ...unless we didn't find anything with the link, in which case we just look for the news selector
-        else if (isSingleLink) {
-          if (self.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
-          // On a specific news page (not a frontpage) we can allow ourselves to search
-          // more broadly if we didn't find anything while searching for the link. We'll
-          // search for the newsSelector instead and assume that the first news container
-          // we find contains the image we're looking for (which is highly likely based
-          // on experience).
-          image = doc.find(newsSelector);
-        }
+          // ...then find parent 'article' or 'div.post' or the like...
+          if (image.length != 0) {
+            if (self.debug) console.log('Images: Found something with the link, locating parent tag (the news box)');
+            image = image.parents(newsSelector);
+          }
+          // ...unless we didn't find anything with the link, in which case we just look for the news selector
+          else if (isSingleLink) {
+            if (self.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
+            // On a specific news page (not a frontpage) we can allow ourselves to search
+            // more broadly if we didn't find anything while searching for the link. We'll
+            // search for the newsSelector instead and assume that the first news container
+            // we find contains the image we're looking for (which is highly likely based
+            // on experience).
+            image = doc.find(newsSelector);
+          }
 
-        //
-        // Presumably we've found the news container here, now we need to find the image within it
-        //
+          //
+          // Presumably we've found the news container here, now we need to find the image within it
+          //
 
-        if (options.noscriptMatching) {
-          // If a <noscript> tag is used, we'll just find the image URL by matching
-          // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
-          image = image.html().match(options.noscriptMatching)[1];
-        }
-        else {
-          // Find all image tags within post
-          image = image.find('pic');
+          if (options.noscriptMatching) {
+            // If a <noscript> tag is used, we'll just find the image URL by matching
+            // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
+            image = image.html().match(options.noscriptMatching)[1];
+          }
+          else {
+            // Find all image tags within post
+            image = image.find('pic');
 
-          // Exclude gifs since they're most likely smilies and the likes
-          image = image.not('pic[src*=".gif"]');
-          image = image.not('pic[src*="data:image/gif"]');
+            // Exclude gifs since they're most likely smilies and the likes
+            image = image.not('pic[src*=".gif"]');
+            image = image.not('pic[src*="data:image/gif"]');
 
-          // Exclude social image icons (only applies for some blogs)
-          image = image.not('pic[src*="sociable"]');
+            // Exclude social image icons (only applies for some blogs)
+            image = image.not('pic[src*="sociable"]');
 
-          // Exclude static content, most likely icons
-          image = image.not('pic[src*="static"]');
+            // Exclude static content, most likely icons
+            image = image.not('pic[src*="static"]');
 
-          // Exclude comments, most likely text in image as "Add comment here"
-          image = image.not('pic[src*="comments"]');
+            // Exclude comments, most likely text in image as "Add comment here"
+            image = image.not('pic[src*="comments"]');
 
-          // Use image at specified index if requested
-          if (options.imageIndex)
-          image = image.eq(options.imageIndex);
+            // Use image at specified index if requested
+            if (options.imageIndex)
+            image = image.eq(options.imageIndex);
 
-          // Get the src for the first image left in the array
-          image = image.attr('src');
-        }
+            // Get the src for the first image left in the array
+            image = image.attr('src');
+          }
 
-        //
-        // Here we determine whether we have found an image or not, and callback the image or a placeholder
-        //
+          //
+          // Here we determine whether we have found an image or not, and callback the image or a placeholder
+          //
 
-        // If image is undefined
-        if (typeof image == 'undefined') {
-          if (self.debug) console.log('Images: No image exists for link "'+link+'"');
-          image = placeholder;
-        }
-        // If image needs to be prefixed with the domain name
-        else if (options.domainUrl) {
-          image = 'http://' + options.domainUrl + image;
-          if (self.debug) console.log('Images: Found a good image at "'+image+'"');
-        }
-        // If image is something useless like "//assets.pinterest.com/whatever.png"
-        // NOTE: Must be done after adding "http" and domainUrl
-        else if (image.match('^https?://') == null) {
-          if (self.debug) console.log('Images: No good image exists for link "'+link+'"');
-          image = placeholder;
-        }
-        // If all is good
-        else {
-          if (self.debug) console.log('Images: Found a good image at "'+image+'"');
-        }
-        if (self.debug) console.log('');
+          // If image is undefined
+          if (typeof image == 'undefined') {
+            if (self.debug) console.log('Images: No image exists for link "'+link+'"');
+            image = placeholder;
+          }
+          // If image needs to be prefixed with the domain name
+          else if (options.domainUrl) {
+            if (image.indexOf('//') == -1)
+              image = 'http://' + options.domainUrl + image;
+            if (self.debug) console.log('Images: Found a good image at "'+image+'"');
+          }
+          // If image does not start with http://, https:// or at least //
+          // NOTE: Must be done after adding "http" and domainUrl
+          else if (image.match('^(http)?s?:?//') == null) {
+            if (self.debug) console.log('Images: No good image exists for link "'+link+'", all we have is "'+image+'"');
+            image = placeholder;
+          }
+          // If all is good
+          else {
+            if (self.debug) console.log('Images: Found a good image at "'+image+'"');
+          }
+          if (self.debug) console.log('');
 
-        images.push(image);
+          images.push(image);
         }
         callback(links, images);
       }
@@ -208,21 +209,33 @@ var Images = {
   },
 
   control: function(imageUrl) {
+    if (this.debug) console.log('Images: Controlling image url "'+imageUrl+'"');
+    
     // This function is primarily used by news.js for controlling the goodness
     // of image URLs found in items that contain HTML descriptions (in RSS feeds)
     if (isEmpty(imageUrl)) {
-      if (this.debug) console.log('ERROR: Images.control received empty imageUrl');
+      if (this.debug) console.log('ERROR: Images.control() received empty imageUrl');
       return false;
     }
-    // Exclude gifs since they're most likely smilies and the likes
-    if (imageUrl.indexOf('.gif') != -1) return false;
-    if (imageUrl.indexOf('data:image/gif') != -1) return false;
-    // Exclude social image icons (only applies for some blogs)
-    if (imageUrl.indexOf('sociable') != -1) return false;
-    // Exclude static content, most likely icons
-    if (imageUrl.indexOf('static') != -1) return false;
-    // Exclude comments, most likely text in image as "Add comment here"
-    if (imageUrl.indexOf('comments') != -1) return false;
+
+    var keys = [
+      '.gif',             // Exclude gifs since they're most likely smilies and the likes
+      'data:image/gif',   // Another way to show gifs
+      '/sociable/',       // Exclude social image icons (only applies for some blogs)
+      '/static/',         // Exclude static content, most likely icons
+      '/comments/',       // Exclude comments, most likely text in image as "Add comment here"
+    ];
+
+    // Look for keys and return false if any are found
+    for (i in keys) {
+      var str = keys[i];
+      if (imageUrl.indexOf(str) !== -1) {
+        if (this.debug) console.log('Images: Image url was bad, contained "'+str+'"\n');
+        return false;
+      }
+    }
+
+    if (this.debug) console.log('Images: Image url deemed OK\n');
     // Control out
     return true;
   },
