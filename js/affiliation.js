@@ -1159,6 +1159,9 @@ var Affiliation = {
 
   },
 
+  // Affiliations above
+  // Functions below
+
   getMemeCount: function(affiliation) {
     if (Affiliation.org[affiliation].hw.memePath) {
       var counter = 1;
