@@ -1,5 +1,5 @@
 Ajaxer = {
-  debug: 1,
+  debug: 0,
   mobileApi: 'index.php',
 
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
