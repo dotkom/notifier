@@ -1,11 +1,17 @@
 var Images = {
-  debug: 0,
+  debug: 1,
 
   get: function(affiliation, links, callback, options) {
-
-    // Return with stacktrace if links is undefined
+    if (affiliation == undefined) {
+      console.log('ERROR: Images.get needs the affiliation parameter');
+      return;
+    }
     if (links == undefined) {
-      if (this.debug) console.log('ERROR: no image links, var links is undefined');
+      console.log('ERROR: Images.get needs the links parameter');
+      return;
+    }
+    if (callback == undefined) {
+      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 
@@ -50,21 +56,13 @@ var Images = {
     for (var i=0; i<links.length; i++)
       placeholders.push(placeholder);
 
-    // If jQuery or Ajaxer.js is not loaded yet, just return placeholders.
-    // This could occur with like one in a million probability, but like almost everything else it's handled.
-    if (typeof $ == 'undefined' || typeof Ajaxer == 'undefined') {
-      if (this.debug) console.log('ERROR: getImages called before $ and Ajaxer was ready');
-      return placeholders;
-    }
-
     var self = this;
     Ajaxer.getCleanHtml({
       url: url,
       success: function(html) {
       try {
-        // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
-        html = $.trim(html);
-        // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
+        // jQuery tries to preload images found in the string, that is why the
+        // html has had all <img> replaced by <pic> by Ajaxer.getCleanHTML
         var doc = $(html);
 
         //
