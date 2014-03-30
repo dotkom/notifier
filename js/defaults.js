@@ -50,6 +50,10 @@ var Defaults = {
     if (ls.showBus == undefined)
       ls.showBus = 'true';
 
+    // Bus, general
+    if (ls.busTimetables == undefined)
+      ls.busTimetables = JSON.stringify({});
+    
     // Bus - If any of these properties are undefined we'll reset all of them
     var firstBusProps = [
       ls.firstBus,
