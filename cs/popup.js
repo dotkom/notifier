@@ -447,7 +447,7 @@
       Analytics.trackEvent('clickNews', link);
       return window.close();
     });
-    times = [500, 1000, 2500, 5000, 10000];
+    times = [100, 500, 1000, 2000, 3000, 5000, 10000];
     _results = [];
     for (i in times) {
       _results.push(setTimeout((function() {
@@ -477,6 +477,7 @@
   };
 
   updateNewsImages = function() {
+    console.lolg('updateNewsImages');
     return $.each($('#news .post .item'), function(i, val) {
       var image, link;
       link = $(this).attr('data');

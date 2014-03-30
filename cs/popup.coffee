@@ -398,8 +398,9 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     Analytics.trackEvent 'clickNews', link
     window.close()
 
-  # Update images some times after news are loaded in case of late image updates (common)
-  times = [500, 1000, 2500, 5000, 10000]
+  # Update images some times after news are loaded in case of late image updates
+  # which are common when the browser has just started Notifier
+  times = [100, 500, 1000, 2000, 3000, 5000, 10000]
   for i of times
     setTimeout ( ->
       updateNewsImages()
@@ -421,6 +422,10 @@ findUpdatedPosts = (newsList, viewedList) ->
   return updatedList
 
 updateNewsImages = ->
+  console.lolg 'updateNewsImages'
+  # The background process looks for images, and sometimes that process
+  # isn't finished before the popup loads, that's why we have to check
+  # in with localStorage.storedImages a couple of times.
   $.each($('#news .post .item'), (i, val) ->
     link = $(this).attr 'data'
     image = JSON.parse(localStorage.storedImages)[link]
