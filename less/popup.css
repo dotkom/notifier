@@ -418,13 +418,15 @@ body {
 }
 #container #bus #realtime .first,
 #container #bus #realtime .second,
-#container #bus #realtime .third {
+#container #bus #realtime .third,
+#container #bus #realtime .error {
   cursor: pointer;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #bus #realtime .first:hover,
 #container #bus #realtime .second:hover,
-#container #bus #realtime .third:hover {
+#container #bus #realtime .third:hover,
+#container #bus #realtime .error:hover {
   text-shadow: 0 0 10px white,
             0 0 15px white;
 }
