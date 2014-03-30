@@ -409,19 +409,28 @@ body {
   height: 87px;
 }
 #container #bus #realtime #firstBus {
-  cursor: pointer;
-}
-#container #bus #realtime #firstBus:hover {
-  text-decoration: underline;
+  /*nothing here*/
+
 }
 #container #bus #realtime #secondBus {
-  cursor: pointer;
+  /*nothing here*/
+
 }
-#container #bus #realtime #secondBus:hover {
-  text-decoration: underline;
+#container #bus #realtime .first,
+#container #bus #realtime .second,
+#container #bus #realtime .third {
+  cursor: pointer;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
+}
+#container #bus #realtime .first:hover,
+#container #bus #realtime .second:hover,
+#container #bus #realtime .third:hover {
+  text-shadow: 0 0 10px white,
+            0 0 15px white;
 }
 #container #bus #realtime .name {
   margin-bottom: 5px;
+  text-decoration: underline;
 }
 #container #bus #realtime .loadingLeft {
   width: 80px;

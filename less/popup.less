@@ -193,19 +193,23 @@ body {
       height: 87px;
       
       #firstBus {
-        cursor: pointer;
-        &:hover {
-          text-decoration: underline;
-        }
+        /*nothing here*/
       }
       #secondBus {
+        /*nothing here*/
+      }
+      .first, .second, .third {
         cursor: pointer;
+        -webkit-transition: text-shadow 0.15s ease-out 0s;
         &:hover {
-          text-decoration: underline;
+          text-shadow:
+            0 0 10px white,
+            0 0 15px white;
         }
       }
       .name {
         margin-bottom: 5px;
+        text-decoration: underline;
       }
       .loadingLeft {
         width: 80px;
