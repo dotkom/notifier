@@ -132,7 +132,7 @@
   };
 
   updateCantinas = function(first) {
-    var update;
+    var menu1, menu2, update;
     console.lolg('updateCantinas');
     update = function(shortname, menu, selector) {
       var name;
@@ -140,12 +140,10 @@
       $('#cantinas #' + selector + ' .title').html(name);
       return $('#cantinas #' + selector + ' #dinnerbox').html(listDinners(menu));
     };
-    Cantina.get(ls.leftCantina, function(menu) {
-      return update(ls.leftCantina, menu, 'left');
-    });
-    return Cantina.get(ls.rightCantina, function(menu) {
-      return update(ls.rightCantina, menu, 'right');
-    });
+    menu1 = JSON.parse(ls.leftCantinaMenu);
+    menu2 = JSON.parse(ls.rightCantinaMenu);
+    update(ls.leftCantina, menu1, 'left');
+    return update(ls.rightCantina, menu2, 'right');
   };
 
   listDinners = function(menu) {
@@ -169,14 +167,14 @@
     return dinnerlist;
   };
 
-  updateHours = function() {
+  updateHours = function(first) {
+    var update;
     console.lolg('updateHours');
-    Hours.get(ls.leftCantina, function(hours) {
-      return $('#cantinas #left .hours').html(hours);
-    });
-    return Hours.get(ls.rightCantina, function(hours) {
-      return $('#cantinas #right .hours').html(hours);
-    });
+    update = function(shortname, hours, selector) {
+      return $('#cantinas #' + selector + ' .hours').html(hours);
+    };
+    update(ls.leftCantina, ls.leftCantinaHours, 'left');
+    return update(ls.rightCantina, ls.rightCantinaHours, 'right');
   };
 
   updateBus = function() {
