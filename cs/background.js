@@ -178,9 +178,11 @@
         link = newsList[index];
         Affiliation.org[key].getImage(link, function(link, image) {
           var storedImages;
-          storedImages = JSON.parse(ls.storedImages);
-          storedImages[link] = image[0];
-          return ls.storedImages = JSON.stringify(storedImages);
+          if (null !== image[0]) {
+            storedImages = JSON.parse(ls.storedImages);
+            storedImages[link] = image[0];
+            return ls.storedImages = JSON.stringify(storedImages);
+          }
         });
       }
     }
@@ -189,7 +191,9 @@
         var storedImages;
         storedImages = JSON.parse(ls.storedImages);
         for (index in links) {
-          storedImages[links[index]] = images[index];
+          if (null !== images[index]) {
+            storedImages[links[index]] = images[index];
+          }
         }
         return ls.storedImages = JSON.stringify(storedImages);
       });
