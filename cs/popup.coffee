@@ -533,12 +533,22 @@ $ ->
     Analytics.trackEvent 'clickChatter', ls.affiliationKey1
     window.close()
 
+  # Bus lines lead to their timetables
+  timetables = JSON.parse(localStorage.busTimetables);
   clickBus = ->
-    Browser.openTab 'https://www.atb.no/rutetider/'
-    Analytics.trackEvent 'clickRealtimeBus'
-    window.close()
-  $('#bus #firstBus').click clickBus
-  $('#bus #secondBus').click clickBus
+    try
+      line = $(this).find('.line').text().trim().split(' ')[0]
+      link = timetables[line]
+      Browser.openTab link
+      Analytics.trackEvent 'clickTimetable'
+      window.close()
+    catch e
+      console.lolg 'ERROR: Failed at clickBus', e
+  # Register click event for all lines
+  busLanes = ['.first', '.second', '.third']
+  for i of busLanes
+    $('#bus #firstBus '+busLanes[i]).click clickBus
+    $('#bus #secondBus '+busLanes[i]).click clickBus
 
   $('#bus #atbLogo').click ->
     Browser.openTab 'http://www.atb.no'

@@ -499,7 +499,7 @@
   };
 
   $(function() {
-    var clickBus, icon, key, logo, placeholder, shorter, stayUpdated;
+    var busLanes, clickBus, i, icon, key, logo, placeholder, shorter, stayUpdated, timetables;
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       Analytics.trackEvent('toggleInfoscreen');
@@ -587,13 +587,24 @@
       Analytics.trackEvent('clickChatter', ls.affiliationKey1);
       return window.close();
     });
+    timetables = JSON.parse(localStorage.busTimetables);
     clickBus = function() {
-      Browser.openTab('https://www.atb.no/rutetider/');
-      Analytics.trackEvent('clickRealtimeBus');
-      return window.close();
+      var line, link;
+      try {
+        line = $(this).find('.line').text().trim().split(' ')[0];
+        link = timetables[line];
+        Browser.openTab(link);
+        Analytics.trackEvent('clickTimetable');
+        return window.close();
+      } catch (e) {
+        return console.lolg('ERROR: Failed at clickBus', e);
+      }
     };
-    $('#bus #firstBus').click(clickBus);
-    $('#bus #secondBus').click(clickBus);
+    busLanes = ['.first', '.second', '.third'];
+    for (i in busLanes) {
+      $('#bus #firstBus ' + busLanes[i]).click(clickBus);
+      $('#bus #secondBus ' + busLanes[i]).click(clickBus);
+    }
     $('#bus #atbLogo').click(function() {
       Browser.openTab('http://www.atb.no');
       Analytics.trackEvent('clickAtb');
