@@ -9,20 +9,18 @@ newsLimit = 4 # The best amount of news for the popup, IMO
 mainLoop = (force) ->
   console.lolg "\n#" + iteration
 
-  # Only if online, else keep good old
-  if navigator.onLine
-    if ls.showCantina is 'true'
-      if force or iteration % UPDATE_HOURS_INTERVAL is 0
-        updateHours()
-    if ls.showCantina is 'true'
-      if force or iteration % UPDATE_CANTINAS_INTERVAL is 0
-        updateCantinas()
-    if ls.showAffiliation1 is 'true'
-      if force or iteration % UPDATE_NEWS_INTERVAL is 0
-        updateAffiliationNews '1'
-    if ls.showAffiliation2 is 'true'
-      if force or iteration % UPDATE_NEWS_INTERVAL is 0
-        updateAffiliationNews '2'
+  if ls.showCantina is 'true'
+    if force or iteration % UPDATE_HOURS_INTERVAL is 0
+      updateHours()
+  if ls.showCantina is 'true'
+    if force or iteration % UPDATE_CANTINAS_INTERVAL is 0
+      updateCantinas()
+  if ls.showAffiliation1 is 'true'
+    if force or iteration % UPDATE_NEWS_INTERVAL is 0
+      updateAffiliationNews '1'
+  if ls.showAffiliation2 is 'true'
+    if force or iteration % UPDATE_NEWS_INTERVAL is 0
+      updateAffiliationNews '2'
   # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw
     if ls.showOffice is 'true'
@@ -633,3 +631,5 @@ $ ->
   # Go
   if navigator.onLine
     stayUpdated true
+  else
+    mainLoop()

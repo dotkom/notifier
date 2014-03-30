@@ -14,26 +14,24 @@
   mainLoop = function(force) {
     console.lolg("\n#" + iteration);
     if (ls.useInfoscreen !== 'true') {
-      if (navigator.onLine) {
-        if (ls.showCantina === 'true') {
-          if (force || iteration % UPDATE_HOURS_INTERVAL === 0) {
-            updateHours();
-          }
+      if (ls.showCantina === 'true') {
+        if (force || iteration % UPDATE_HOURS_INTERVAL === 0) {
+          updateHours();
         }
-        if (ls.showCantina === 'true') {
-          if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0) {
-            updateCantinas();
-          }
+      }
+      if (ls.showCantina === 'true') {
+        if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0) {
+          updateCantinas();
         }
-        if (ls.showAffiliation1 === 'true') {
-          if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
-            updateAffiliationNews('1');
-          }
+      }
+      if (ls.showAffiliation1 === 'true') {
+        if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
+          updateAffiliationNews('1');
         }
-        if (ls.showAffiliation2 === 'true') {
-          if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
-            updateAffiliationNews('2');
-          }
+      }
+      if (ls.showAffiliation2 === 'true') {
+        if (force || iteration % UPDATE_NEWS_INTERVAL === 0) {
+          updateAffiliationNews('2');
         }
       }
       if (Affiliation.org[ls.affiliationKey1].hw) {
@@ -265,6 +263,8 @@
     });
     if (navigator.onLine) {
       return stayUpdated(true);
+    } else {
+      return mainLoop();
     }
   });
 
