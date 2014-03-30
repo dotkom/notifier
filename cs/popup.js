@@ -169,8 +169,8 @@
       }
       $('#bus #firstBus .name').html(ls.firstBusName);
       $('#bus #secondBus .name').html(ls.secondBusName);
-      $('#bus #firstBus .first .line').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
-      return $('#bus #secondBus .first .line').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
+      $('#bus #firstBus .error').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
+      return $('#bus #secondBus .error').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
     } else {
       createBusDataRequest('firstBus', '#firstBus');
       return createBusDataRequest('secondBus', '#secondBus');
@@ -182,6 +182,7 @@
     activeLines = ls[bus + 'ActiveLines'];
     activeLines = JSON.parse(activeLines);
     return Bus.get(ls[bus], activeLines, function(lines) {
+      $('#bus ' + cssIdentificator + ' .error').html('');
       return insertBusInfo(lines, ls[bus + 'Name'], cssIdentificator);
     });
   };
@@ -197,13 +198,13 @@
     }
     if (typeof lines === 'string') {
       if (navigator.onLine) {
-        return $(busStop + ' .first .line').html('<div class="error">' + lines + '<br />Prøv Orakelet i stedet</div>');
+        return $(busStop + ' .first .error').html(lines + '<br />Prøv Orakelet i stedet');
       } else {
-        return $(busStop + ' .first .line').html('<div class="error">' + lines + '</div>');
+        return $(busStop + ' .first .error').html(lines);
       }
     } else {
       if (lines['departures'].length === 0) {
-        return $(busStop + ' .first .line').html('<div class="error">....zzzZZZzzz....</div>');
+        return $(busStop + ' .first .error').html('....zzzZZZzzz....');
       } else {
         _results = [];
         for (i in spans) {
@@ -499,7 +500,7 @@
   };
 
   $(function() {
-    var busLanes, clickBus, i, icon, key, logo, placeholder, shorter, stayUpdated, timetables;
+    var busLanes, clickBus, i, icon, key, logo, openAtb, placeholder, shorter, stayUpdated, timetables;
     if (ls.useInfoscreen === 'true') {
       Browser.openTab('infoscreen.html');
       Analytics.trackEvent('toggleInfoscreen');
@@ -605,11 +606,13 @@
       $('#bus #firstBus ' + busLanes[i]).click(clickBus);
       $('#bus #secondBus ' + busLanes[i]).click(clickBus);
     }
-    $('#bus #atbLogo').click(function() {
+    openAtb = function() {
       Browser.openTab('http://www.atb.no');
       Analytics.trackEvent('clickAtb');
       return window.close();
-    });
+    };
+    $('#bus #atbLogo').click(openAtb);
+    $('#bus .error').click(openAtb);
     bindOracle();
     $('#oracle #name').click(function() {
       return $('#oracle #question').focus();

@@ -124,8 +124,8 @@ updateBus = ->
     # Error message
     $('#bus #firstBus .name').html ls.firstBusName
     $('#bus #secondBus .name').html ls.secondBusName
-    $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'      
+    $('#bus #firstBus .error').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .error').html '<div class="error">Frakoblet fra api.visuweb.no</div>'      
   else
     createBusDataRequest('firstBus', '#firstBus')
     createBusDataRequest('secondBus', '#secondBus')
@@ -135,6 +135,7 @@ createBusDataRequest = (bus, cssIdentificator) ->
   activeLines = JSON.parse activeLines
   # Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get ls[bus], activeLines, (lines) ->
+    $('#bus '+cssIdentificator+' .error').html ''
     insertBusInfo lines, ls[bus+'Name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
@@ -152,13 +153,13 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
   if typeof lines is 'string'
     # if online, recommend oracle
     if navigator.onLine
-      $(busStop+' .first .line').html '<div class="error">'+lines+'<br />Prøv Orakelet i stedet</div>'
+      $(busStop+' .first .error').html lines+'<br />Prøv Orakelet i stedet'
     else
-      $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
+      $(busStop+' .first .error').html lines
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....</div>'
+      $(busStop+' .first .error').html '....zzzZZZzzz....'
     else
       # Display line for line with according times
       for i of spans
@@ -533,7 +534,7 @@ $ ->
     Analytics.trackEvent 'clickChatter', ls.affiliationKey1
     window.close()
 
-  # Bus lines lead to their timetables
+  # Bind realtimebus lines to their timetables
   timetables = JSON.parse(localStorage.busTimetables);
   clickBus = ->
     try
@@ -550,14 +551,16 @@ $ ->
     $('#bus #firstBus '+busLanes[i]).click clickBus
     $('#bus #secondBus '+busLanes[i]).click clickBus
 
-  $('#bus #atbLogo').click ->
+  # Bind AtB logo and any realtimebus error messages to atb.no
+  openAtb = ->
     Browser.openTab 'http://www.atb.no'
     Analytics.trackEvent 'clickAtb'
     window.close()
+  $('#bus #atbLogo').click openAtb
+  $('#bus .error').click openAtb
 
   # Bind oracle
   bindOracle()
-
   $('#oracle #name').click ->
     $('#oracle #question').focus()
 

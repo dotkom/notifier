@@ -408,14 +408,6 @@ body {
   line-height: 15px;
   height: 87px;
 }
-#container #bus #realtime #firstBus {
-  /*nothing here*/
-
-}
-#container #bus #realtime #secondBus {
-  /*nothing here*/
-
-}
 #container #bus #realtime .first,
 #container #bus #realtime .second,
 #container #bus #realtime .third,
