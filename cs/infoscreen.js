@@ -224,7 +224,6 @@
     activeLines = ls[bus + 'ActiveLines'];
     activeLines = JSON.parse(activeLines);
     return Bus.get(ls[bus], activeLines, function(lines) {
-      $('#bus ' + cssIdentificator + ' .error').html('');
       return insertBusInfo(lines, ls[bus + 'Name'], cssIdentificator);
     });
   };
@@ -238,11 +237,12 @@
       $(busStop + ' .' + spans[i] + ' .line').html('');
       $(busStop + ' .' + spans[i] + ' .time').html('');
     }
+    $(busStop + ' .error').html('');
     if (typeof lines === 'string') {
-      return $(busStop + ' .first .error').html(lines);
+      return $(busStop + ' .error').html(lines);
     } else {
       if (lines['departures'].length === 0) {
-        return $(busStop + ' .first .error').html('....zzzZZZzzz....');
+        return $(busStop + ' .error').html('....zzzZZZzzz....');
       } else {
         _results = [];
         for (i in spans) {

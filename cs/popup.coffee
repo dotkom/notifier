@@ -133,7 +133,6 @@ createBusDataRequest = (bus, cssIdentificator) ->
   activeLines = JSON.parse activeLines
   # Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get ls[bus], activeLines, (lines) ->
-    $('#bus '+cssIdentificator+' .error').html ''
     insertBusInfo lines, ls[bus+'Name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
@@ -146,18 +145,19 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
   for i of spans
     $(busStop+' .'+spans[i]+' .line').html ''
     $(busStop+' .'+spans[i]+' .time').html ''
+  $(busStop+' .error').html ''
   
   # if lines is an error message
   if typeof lines is 'string'
     # if online, recommend oracle
     if navigator.onLine
-      $(busStop+' .first .error').html lines+'<br />Prøv Orakelet i stedet'
+      $(busStop+' .error').html lines+'<br />Prøv Orakelet i stedet'
     else
-      $(busStop+' .first .error').html lines
+      $(busStop+' .error').html lines
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .first .error').html '....zzzZZZzzz....'
+      $(busStop+' .error').html '....zzzZZZzzz....'
     else
       # Display line for line with according times
       for i of spans
