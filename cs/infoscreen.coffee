@@ -144,8 +144,8 @@ updateBus = ->
     # Error message
     $('#bus #firstBus .name').html ls.firstBusName
     $('#bus #secondBus .name').html ls.secondBusName
-    $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #firstBus .error').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .error').html '<div class="error">Frakoblet fra api.visuweb.no</div>'      
   else
     createBusDataRequest('firstBus', '#firstBus')
     createBusDataRequest('secondBus', '#secondBus')
@@ -155,6 +155,7 @@ createBusDataRequest = (bus, cssIdentificator) ->
   activeLines = JSON.parse activeLines
   # Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get ls[bus], activeLines, (lines) ->
+    $('#bus '+cssIdentificator+' .error').html ''
     insertBusInfo lines, ls[bus+'Name'], cssIdentificator
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
@@ -168,13 +169,13 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
     $(busStop+' .'+spans[i]+' .line').html ''
     $(busStop+' .'+spans[i]+' .time').html ''
   
+  # if lines is an error message
   if typeof lines is 'string'
-    # Lines is an error message
-    $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
+    $(busStop+' .first .error').html lines
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....</div>'
+      $(busStop+' .first .error').html '....zzzZZZzzz....'
     else
       # Display line for line with according times
       for i of spans
