@@ -49,12 +49,6 @@ var Images = {
       'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
       'article', // leave <article> at the bottom of the preferred list, it's a bit misused
     ];
-    
-    // In case we don't find any images, prepare an array with placeholders
-    var placeholder = affiliation.placeholder;
-    var placeholders = [];
-    for (var i=0; i<links.length; i++)
-      placeholders.push(placeholder);
 
     var self = this;
     Ajaxer.getCleanHtml({
@@ -164,25 +158,29 @@ var Images = {
           }
 
           //
-          // Here we determine whether we have found an image or not, and callback the image or a placeholder
+          // Lastly we determine whether we have found an image or not, and then store the image or null
           //
 
           // If image is undefined
           if (typeof image == 'undefined') {
             if (self.debug) console.log('Images: No image exists for link "'+link+'"');
-            image = placeholder;
+            image = null;
           }
           // If image needs to be prefixed with the domain name
           else if (options.domainUrl) {
-            if (image.indexOf('//') == -1)
+            if (image.indexOf('//') == -1) {
               image = 'http://' + options.domainUrl + image;
-            if (self.debug) console.log('Images: Found a good image at "'+image+'"');
+              if (self.debug) console.log('Images: Found a good image (domain url added) "'+image+'"');
+            }
+            else {
+              if (self.debug) console.log('Images: Found a good image at "'+image+'"');
+            }
           }
           // If image does not start with http://, https:// or at least //
-          // NOTE: Must be done after adding "http" and domainUrl
+          // NOTE: Must be checked after adding "http" and domainUrl
           else if (image.match('^(http)?s?:?//') == null) {
             if (self.debug) console.log('Images: No good image exists for link "'+link+'", all we have is "'+image+'"');
-            image = placeholder;
+            image = null;
           }
           // If all is good
           else {
@@ -190,6 +188,7 @@ var Images = {
           }
           if (self.debug) console.log('');
 
+          // Store it
           images.push(image);
         }
         callback(links, images);
