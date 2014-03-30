@@ -102,6 +102,7 @@ updateCantinas = (first) ->
     name = Cantina.names[shortname]
     $('#cantinas #'+selector+' .title').html name
     $('#cantinas #'+selector+' #dinnerbox').html listDinners menu
+    clickDinnerLink '#cantinas #'+selector+' #dinnerbox li', shortname
   menu1 = JSON.parse ls.leftCantinaMenu
   menu2 = JSON.parse ls.rightCantinaMenu
   update ls.leftCantina, menu1, 'left'
@@ -123,13 +124,28 @@ listDinners = (menu) ->
         dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
   return dinnerlist
 
+clickDinnerLink = (cssSelector, cantina) ->
+  $(cssSelector).click ->
+    Analytics.trackEvent 'clickDinner', $(this).text()
+    ls.clickedCantina = cantina
+    Browser.openTab Cantina.url
+    window.close()
+
 updateHours = (first) ->
   # This function just fetches from localstorage (updates in background)
   console.lolg 'updateHours'
   update = (shortname, hours, selector) ->
     $('#cantinas #'+selector+' .hours').html hours
+    clickHours '#cantinas #'+selector+' .hours', shortname
   update ls.leftCantina, ls.leftCantinaHours, 'left'
   update ls.rightCantina, ls.rightCantinaHours, 'right'
+
+clickHours = (cssSelector, cantina) ->
+  $(cssSelector).click ->
+    Analytics.trackEvent 'clickHours', $(this).text()
+    ls.clickedHours = Hours.cantinas[cantina]
+    Browser.openTab Hours.url
+    window.close()
 
 updateBus = ->
   console.lolg 'updateBus'
@@ -185,29 +201,21 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
 
 updateAffiliationNews = (number) ->
   console.lolg 'updateAffiliationNews'+number
+  # Displaying the news feed (prefetched by the background page)
+  feedItems = ls['affiliationFeedItems'+number]
   # Detect selector
   selector = if number is '1' then '#left' else '#right'
   if ls.showAffiliation2 isnt 'true' then selector = '#full'
-  # Get affiliation object
-  affiliationKey = ls['affiliationKey'+number]
-  affiliation = Affiliation.org[affiliationKey]
-  if affiliation is undefined
-    console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
+
+  if feedItems isnt undefined
+    feedItems = JSON.parse feedItems
+    displayItems feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
   else
-    # Get more news than needed to check for old news that have been updated
-    newsLimit = 10
-    News.get affiliation, newsLimit, (items) ->
-      # Error message (log it maybe), or zero items in news feed
-      if typeof items is 'string' or items.length is 0
-        console.lolg 'ERROR:', items
-        key = ls['affiliationKey'+number]
-        name = Affiliation.org[key].name
-        $('#news '+selector).html '<div class="post"><div class="title">Nyheter</div><div class="item">Frakoblet fra '+name+'</div></div>'
-      # News is here! NEWS IS HERE! FRESH FROM THE PRESS!
-      else
-        newsList = 'affiliationNewsList'+number
-        ls[newsList] = News.refreshNewsList items
-        displayItems items, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number
+    key = ls['affiliationKey'+number]
+    name = Affiliation.org[key].name
+    $('#news '+selector).html '<div class="post"><div class="item"><div class="title">'+name+'</div>Frakoblet fra nyhetsstrøm</div></div>'
+    $('#news '+selector).click ->
+      Browser.openTab Affiliation.org[key].web
 
 displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Empty the news column
@@ -223,6 +231,9 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
 
   # Build list of last viewed for the next time the user views the news
   viewedList = []
+
+  # Prepare the list of images with salt, pepper and some vinegar
+  storedImages = JSON.parse ls.storedImages
 
   # Add feed items to popup
   $.each items, (index, item) ->
@@ -251,6 +262,12 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
         descLimit = 100
       if item.description.length > descLimit
         item.description = item.description.substr(0, descLimit) + '...'
+      # Use image we've found to accompany the news item
+      storedImage = storedImages[item.link]
+      if storedImage isnt undefined
+        # Also, check whether there's already a qualified image before replacing it
+        if -1 is item.image.indexOf 'http'
+          item.image = storedImage
 
       htmlItem = '
         <div class="post">
@@ -271,41 +288,19 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   ls[unreadCountName] = 0
 
   # Make news items open extension website while closing popup
-  $('.item').click ->
+  $('#news '+column+' .item').click ->
     # The link is embedded as the ID of the element, we don't want to use
     # <a> anchors because it creates an ugly box marking the focus element.
     # Note that altLinks are embedded in the name-property of the element,
     # - if preferred by the organization, we should use that instead.
+    link = $(this).attr 'data'
     altLink = $(this).attr 'name'
-    useAltLink = Affiliation.org[ls.affiliationKey1].useAltLink
+    useAltLink = Affiliation.org[feedKey].useAltLink
     if altLink isnt undefined and useAltLink is true
-      Browser.openTab $(this).attr 'name'
-    else
-      Browser.openTab $(this).attr 'data'
+      link = $(this).attr 'name'
+    Browser.openTab link
+    Analytics.trackEvent 'clickNews', link
     window.close()
-
-  # If organization prefers alternative links, use them
-  if Affiliation.org[feedKey].useAltLink
-    altLink = $('.item[data="'+link+'"]').attr 'name'
-    if altLink isnt 'null'
-      $('.item[data="'+link+'"]').attr 'data', altLink
-
-  # If the organization has it's own getImage function, use it
-  if Affiliation.org[feedKey].getImage isnt undefined
-    for index, link of viewedList
-      # It's important to get the link from the callback within the function below,
-      # not the above code, - because of race conditions mixing up the news posts, async ftw.
-      Affiliation.org[feedKey].getImage link, (link, image) ->
-        # Also, check whether there's already a qualified image before replacing it.
-        if ($('.item[data="'+link+'"] img').attr('src').indexOf('http') == -1)
-          $('.item[data="'+link+'"] img').attr 'src', image
-
-  # If the organization has it's own getImages (plural) function, use it
-  if Affiliation.org[feedKey].getImages isnt undefined
-    Affiliation.org[feedKey].getImages viewedList, (links, images) ->
-      for index of links
-        if ($('.item[data="'+links[index]+'"] img').attr('src').indexOf('http') == -1)
-          $('.item[data="'+links[index]+'"] img').attr 'src', images[index]
 
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
