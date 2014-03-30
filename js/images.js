@@ -195,14 +195,14 @@ var Images = {
         callback(links, images);
       }
       catch (e) {
-        if (self.debug) console.log('ERROR: could not parse "'+affiliation.name+'" website');
-        callback(links, placeholders);
-      }
+        if (self.debug) console.log('ERROR: failed at parsing "'+affiliation.name+'" website');
+          callback(links, []);
+        }
       },
       error: function(e) {
-      if (self.debug) console.log('ERROR: could not fetch "'+affiliation.name+'" website');
-      callback(links, placeholders);
-      },
+        if (self.debug) console.log('ERROR: could not fetch "'+affiliation.name+'" website');
+          callback(links, []);
+        },
     });
   },
 
