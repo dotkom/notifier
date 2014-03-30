@@ -302,6 +302,13 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     Analytics.trackEvent 'clickNews', link
     window.close()
 
+  # Update images some times after news are loaded in case of late image updates (common)
+  times = [500, 1000, 2500, 5000, 10000]
+  for i of times
+    setTimeout ( ->
+      updateNewsImages()
+    ), times[i]
+
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
   updatedList = []
@@ -316,6 +323,14 @@ findUpdatedPosts = (newsList, viewedList) ->
       if newsList[i] is viewedList[j]
         updatedList.push newsList[i]
   return updatedList
+
+updateNewsImages = ->
+  $.each($('#news .post .item'), (i, val) ->
+    link = $(this).attr 'data'
+    image = JSON.parse(localStorage.storedImages)[link]
+    if image isnt undefined
+      $(this).find('img').attr 'src', image
+  )
 
 officeFontRotate = (font) ->
   fonts = ['cardo','fondamento','oleoscript','sourcesans']
