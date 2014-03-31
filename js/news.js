@@ -493,21 +493,22 @@ var News = {
   },
 
   checkDescriptionForImageLink: function(oldImage, description, website) {
-    var pieces = description.match(/src="(.*(\.(jpg|bmp|png)))("|\?)/i);
+    var pieces = description.match(/src="(.*?(\.(jpg|bmp|png)))("|\?)/i);
     if (pieces != null) {
       var image = pieces[1];
-      if (image.startsWith('http')) {
-        // Direct link
-        return image;
-      }
-      else {
-        // Relative link
-        return website + image;
+      // Quick and dirty check for HTML, otherwise we would have to regex any image URL
+      if (image.match(/[\<\>]/g) == null) {
+        if (image.startsWith('http')) {
+          // Direct link
+          return image;
+        }
+        else {
+          // Relative link
+          return website + image;
+        }
       }
     }
-    else {
-      return oldImage;
-    }
+    return oldImage;
   },
 
   checkDescriptionForAltLink: function(description) {
