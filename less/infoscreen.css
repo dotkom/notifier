@@ -154,7 +154,6 @@ body {
 }
 #container #bus .name {
   margin-bottom: 5px;
-  text-decoration: underline;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -400,15 +399,16 @@ body {
   margin-bottom: 11px;
 }
 #container #bus {
+  box-shadow: 0 0 25px #aaa;
   top: 47px;
   font-size: 24px;
   line-height: 33px;
   height: 192px;
   margin-bottom: 60px;
-  box-shadow: 0 0 25px #aaa;
 }
 #container #bus .name {
   margin-bottom: 4px;
+  text-decoration: underline;
 }
 #container #bus .loadingLeft {
   width: 213px;
@@ -425,6 +425,8 @@ body {
   border: 0px solid #00ff00;
   height: 113px;
   margin-top: 2px;
+  border-radius: 6px;
+  border-top-left-radius: 30px;
 }
 #container #bus #middle #clock {
   border: 0px solid #00ff00;

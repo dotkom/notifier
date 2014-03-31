@@ -90,14 +90,10 @@
         ls.extensionName = name + ' Notifier';
         if (oldAffiliation === 'online') {
           ls.extensionCreator = 'Online';
-          $('#plusonebutton').fadeOut('slow', function() {
-            return changeCreatorName(ls.extensionCreator);
-          });
+          changeCreatorName(ls.extensionCreator);
         } else if (affiliationKey === 'online') {
           ls.extensionCreator = 'dotKom';
-          $('#plusonebutton').fadeIn('slow', function() {
-            return changeCreatorName(ls.extensionCreator);
-          });
+          changeCreatorName(ls.extensionCreator);
         }
       }
       ls.removeItem('affiliationFeedItems' + number);
@@ -134,10 +130,7 @@
         duration: 0
       });
       $('#container').css('top', '60%');
-      $('header').css('top', '60%');
-      return $('#plusonebutton').fadeOut({
-        duration: 0
-      });
+      return $('header').css('top', '60%');
     } else {
       $('label[for="showOffice"]').slideUp('slow');
       return $('label[for="coffeeSubscription"]').slideUp('slow', function() {
@@ -163,10 +156,7 @@
         duration: 0
       });
       $('#container').css('top', '50%');
-      $('header').css('top', '50%');
-      return $('#plusonebutton').fadeIn({
-        duration: 0
-      });
+      return $('header').css('top', '50%');
     } else {
       Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
       $('#container').animate({
@@ -348,75 +338,37 @@
   };
 
   getFavoriteLines = function(busField) {
-    var busStopId, cssSelector, direction, stopName;
+    var busStopId, counter, cssSelector, direction, line, lines, stopName, _i, _len;
     cssSelector = '#' + busField;
-    if (-1 !== busField.indexOf('first')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingLeft" src="img/loading-atb.gif" /></div>');
-    } else if (-1 !== busField.indexOf('second')) {
-      $(cssSelector + ' .lines').html('<div style="text-align:center;"><img class="loadingRight" src="img/loading-atb.gif" /></div>');
-    }
     $('#busBox .lines').slideDown();
     $('#busBox #arrowDown').fadeOut();
     stopName = $(cssSelector + ' input').val();
     direction = $(cssSelector + ' select').val();
     busStopId = Stops.nameAndDirectionToId(stopName, direction);
-    return Bus.getLines(busStopId, function(json) {
-      var arrayOfLines, counter, errorMessage, item, line, _i, _j, _len, _len1, _ref;
-      errorMessage = null;
-      if (typeof json === 'undefined') {
-        errorMessage = 'Oops, frakoblet';
-      }
-      if (typeof json === 'string') {
-        errorMessage = json;
-      }
-      if (typeof json[0] !== 'undefined') {
-        errorMessage = 'Feil: ' + json[0];
-      }
-      if (errorMessage !== null) {
-        $(cssSelector + ' .lines').html('<span class="error">' + errorMessage + '</span>');
-        clearTimeout($('#busBox').data('timeoutId'));
-        setTimeout((function() {
-          $(cssSelector + ' .lines').html('<span class="retry">Prøve igjen?</span>');
-          $(cssSelector + ' .lines .retry').click(function() {
-            return getFavoriteLines(busField);
-          });
-          return setTimeout((function() {
-            return slideFavoriteBusLines();
-          }), 1500);
-        }), 2200);
-      } else {
-        arrayOfLines = [];
-        _ref = json.next;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          item = _ref[_i];
-          if (-1 === arrayOfLines.indexOf(Number(item.line))) {
-            arrayOfLines.push(Number(item.line));
-          }
+    lines = Favorite.getLinesForStop(busStopId);
+    if (typeof lines === 'string') {
+      $(cssSelector + ' .lines').html('<span class="error">' + lines + '</span>');
+    } else {
+      $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
+      counter = 0;
+      for (_i = 0, _len = lines.length; _i < _len; _i++) {
+        line = lines[_i];
+        if (counter % 4 === 0) {
+          $(cssSelector + ' .lines table').append('</tr><tr>');
         }
-        arrayOfLines = arrayOfLines.sort(function(a, b) {
-          return a - b;
-        });
-        $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
-        counter = 0;
-        for (_j = 0, _len1 = arrayOfLines.length; _j < _len1; _j++) {
-          line = arrayOfLines[_j];
-          if (counter % 4 === 0) {
-            $(cssSelector + ' .lines table').append('</tr><tr>');
-          }
-          $(cssSelector + ' .lines table tr:last').append('<td class="line active">' + line + '</td>');
-          counter = counter + 1;
-        }
-        $(cssSelector + ' .lines').append('</tr></table>');
-        saveBus(busField);
-        bindFavoriteBusLines(busField);
+        $(cssSelector + ' .lines table tr:last').append('<td class="line active">' + line + '</td>');
+        counter = counter + 1;
       }
-      return setTimeout((function() {
-        if (!$('#busBox').hasClass('hover')) {
-          $('#busBox .lines').slideUp();
-          return $('#busBox #arrowDown').fadeIn();
-        }
-      }), 2500);
-    });
+      $(cssSelector + ' .lines').append('</tr></table>');
+      saveBus(busField);
+      bindFavoriteBusLines(busField);
+    }
+    return setTimeout((function() {
+      if (!$('#busBox').hasClass('hover')) {
+        $('#busBox .lines').slideUp();
+        return $('#busBox #arrowDown').fadeIn();
+      }
+    }), 2500);
   };
 
   saveBus = function(busField) {
@@ -712,8 +664,7 @@
     }
     $(window).bind("resize", resizeBackgroundImage);
     resizeBackgroundImage();
-    if (-1 !== navigator.appVersion.indexOf("Win")) {
-      alert('wat');
+    if (Browser.onWindows()) {
       $('#pfText').attr("style", "bottom:9px;");
       $('#pfLink').attr("style", "bottom:9px;");
     }
@@ -741,11 +692,6 @@
       setTimeout((function() {
         return blinkAffiliation(6);
       }), 3000);
-    }
-    if (ls.affiliationKey1 === 'online') {
-      setTimeout((function() {
-        return $('#plusonebutton').fadeIn(150);
-      }), 1100);
     }
     bindAffiliationSelector('1', true);
     bindAffiliationSelector('2', false);

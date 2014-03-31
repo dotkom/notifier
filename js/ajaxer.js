@@ -4,7 +4,7 @@ Ajaxer = {
 
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
   ajaxSetup: {
-    timeout: 9000,
+    timeout: 12000, // 10s+, the sole reason for this is Gemini's ridiculously slow and large news feed
     cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
   },
 
@@ -37,7 +37,9 @@ Ajaxer = {
 
   getHtml: function(params) {
     params.dataType = 'html';
-    return this.get(params);
+    var html = this.get(params);
+    html = html.trim(); // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
+    return html;
   },
 
   getCleanHtml: function(params) {
@@ -135,6 +137,9 @@ Ajaxer = {
     // When parsing for images, we will just look for the <pic> tags.
     html = html.replace(/<[\s]*?img/gi, '<pic');
     html = html.replace(/<[\s]*?\/[\s]*?img/gi, '</pic');
+
+    // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
+    html = html.trim();
 
     if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
     return html;

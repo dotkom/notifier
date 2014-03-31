@@ -86,12 +86,10 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # Extension creator name
       if oldAffiliation is 'online'
         ls.extensionCreator = 'Online'
-        $('#plusonebutton').fadeOut 'slow', ->
-          changeCreatorName ls.extensionCreator
+        changeCreatorName ls.extensionCreator
       else if affiliationKey is 'online'
         ls.extensionCreator = 'dotKom'
-        $('#plusonebutton').fadeIn 'slow', ->
-          changeCreatorName ls.extensionCreator
+        changeCreatorName ls.extensionCreator
     
     # Throw out old news
     ls.removeItem 'affiliationFeedItems'+number
@@ -132,7 +130,6 @@ disableHardwareFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideUp {duration:0}
     $('#container').css 'top', '60%'
     $('header').css 'top', '60%'
-    $('#plusonebutton').fadeOut {duration:0}
     # No need to change creator name in pageflip when quick-disabling
   else
     # Hide office status option
@@ -152,7 +149,6 @@ enableHardwareFeatures = (quick) ->
     $('label[for="coffeeSubscription"]').slideDown {duration:0}
     $('#container').css 'top', '50%'
     $('header').css 'top', '50%'
-    $('#plusonebutton').fadeIn {duration:0}
     # No need to change creator name in pageflip when quick-enabling
   else
     # Update office status
@@ -342,11 +338,6 @@ getDirections = (busField, correctStop) ->
 
 getFavoriteLines = (busField) ->
   cssSelector = '#' + busField
-  # Loading gif
-  if -1 isnt busField.indexOf 'first'
-    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loadingLeft" src="img/loading-atb.gif" /></div>'
-  else if -1 isnt busField.indexOf 'second'
-    $(cssSelector + ' .lines').html '<div style="text-align:center;"><img class="loadingRight" src="img/loading-atb.gif" /></div>'
 
   # Show it
   $('#busBox .lines').slideDown()
@@ -357,60 +348,34 @@ getFavoriteLines = (busField) ->
   direction = $(cssSelector + ' select').val()
   # Get and inject possible lines for correct stop
   busStopId = Stops.nameAndDirectionToId stopName, direction
+  # Load lines for that bus stop
+  lines = Favorite.getLinesForStop busStopId
   
-  Bus.getLines busStopId, (json) ->
-    # Did the json even reach us? Is the result an error message?
-    # HOTFIX console.log json ############################################################
-    errorMessage = null
-    if typeof json is 'undefined' then errorMessage = 'Oops, frakoblet'
-    if typeof json is 'string' then errorMessage = json
-    if typeof json[0] isnt 'undefined' then errorMessage = 'Feil: ' + json[0]
-    
-    if errorMessage isnt null
-      # Show error message
-      $(cssSelector + ' .lines').html '<span class="error">'+errorMessage+'</span>'
-      # Show retry-button
-      clearTimeout $('#busBox').data 'timeoutId'
-      setTimeout ( ->
-        $(cssSelector + ' .lines').html '<span class="retry">Prøve igjen?</span>'
-        $(cssSelector + ' .lines .retry').click ->
-          getFavoriteLines busField
-        setTimeout ( ->
-          slideFavoriteBusLines()
-        ), 1500
-      ), 2200
-    else
-      # Sort lines and remove duplicates
-      arrayOfLines = []
-      # for item in json.lines # this is probably more correct to use for the future
-      for item in json.next
-        if -1 is arrayOfLines.indexOf Number item.line
-          # Casting strings to numbers to make them easily sortable
-          arrayOfLines.push Number item.line
-      arrayOfLines = arrayOfLines.sort (a,b) -> return a-b
-      
-      # Add lines to bus stop
-      $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
-      counter = 0
-      for line in arrayOfLines
-        if counter % 4 == 0
-          $(cssSelector + ' .lines table').append '</tr><tr>'
-        $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+line+'</td>'
-        counter = counter + 1
-      $(cssSelector + ' .lines').append '</tr></table>'
+  # Error message? (string)
+  if typeof lines is 'string'
+    $(cssSelector + ' .lines').html '<span class="error">'+lines+'</span>'
+  else
+    # Add lines to bus stop
+    $(cssSelector + ' .lines').html '<table border="0" cellpadding="0" cellspacing="0"><tr>'
+    counter = 0
+    for line in lines
+      if counter % 4 == 0
+        $(cssSelector + ' .lines table').append '</tr><tr>'
+      $(cssSelector + ' .lines table tr:last').append '<td class="line active">'+line+'</td>'
+      counter = counter + 1
+    $(cssSelector + ' .lines').append '</tr></table>'
 
-      # Save the newly added lines
-      saveBus busField
+    # Save the newly added lines
+    saveBus busField
+    # Make the bus lines clickable
+    bindFavoriteBusLines busField
 
-      # Make the bus lines clickable
-      bindFavoriteBusLines busField
-
-    # Hide the favorite lines after a short timeout
-    setTimeout ( ->
-      if not $('#busBox').hasClass 'hover'
-        $('#busBox .lines').slideUp()
-        $('#busBox #arrowDown').fadeIn()
-    ), 2500
+  # Hide the favorite lines after a short timeout
+  setTimeout ( ->
+    if not $('#busBox').hasClass 'hover'
+      $('#busBox .lines').slideUp()
+      $('#busBox #arrowDown').fadeIn()
+  ), 2500
 
 saveBus = (busField) ->
   cssSelector = '#' + busField
@@ -702,8 +667,7 @@ $ ->
   # $('label[for=openChatter] span').html html
   
   # Minor esthetical adjustments for Windows
-  if -1 isnt navigator.appVersion.indexOf "Win"
-    alert 'wat'
+  if Browser.onWindows()
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Google Analytics
@@ -733,12 +697,6 @@ $ ->
     setTimeout ( ->
       blinkAffiliation 6
     ), 3000
-
-  # Fade in the +1 button when (probably) ready, PS: Online specific
-  if ls.affiliationKey1 is 'online'
-    setTimeout ( ->
-      $('#plusonebutton').fadeIn 150
-    ), 1100
 
   # Allow user to change affiliation and palette
   bindAffiliationSelector '1', true

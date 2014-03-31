@@ -140,7 +140,7 @@ var Affiliation = {
       placeholder: './org/aarhonen/placeholder.png',
       palette: 'purple',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.content'});
+        Images.get(this, link, callback, {newsSelector:'div.content'});
       },
     },
 
@@ -155,7 +155,7 @@ var Affiliation = {
       placeholder: './org/alf/placeholder.png',
       palette: 'green',
       getImages: function(link, callback) {
-        Affiliation.getImages(this, link, callback);
+        Images.get(this, link, callback);
       },
     },
 
@@ -170,7 +170,7 @@ var Affiliation = {
       placeholder: './org/berg/placeholder.png',
       palette: 'grey',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback);
+        Images.get(this, link, callback);
       },
     },
 
@@ -200,7 +200,7 @@ var Affiliation = {
         memePath: './org/delta/meme/',
       },
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -215,7 +215,7 @@ var Affiliation = {
       placeholder: './org/emil/placeholder.png',
       palette: 'green',
       getImages: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.frontpage'});
+        Images.get(this, link, callback, {newsSelector:'div.frontpage'});
       },
     },
 
@@ -229,8 +229,8 @@ var Affiliation = {
       symbol: './org/hybrida/symbol.png',
       placeholder: './org/hybrida/placeholder.png',
       palette: 'blue',
-      getImages: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.element', domainUrl:'hybrida.no'});
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'div.headerImage', domainUrl:'hybrida.no'});
       },
     },
 
@@ -245,7 +245,7 @@ var Affiliation = {
       placeholder: './org/leonardo/placeholder.png',
       palette: 'cyan',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1});
+        Images.get(this, link, callback, {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1});
       },
     },
 
@@ -260,7 +260,7 @@ var Affiliation = {
       placeholder: './org/mannhullet/placeholder.png',
       palette: 'blue',
       getImage: function(links, callback) {
-        Affiliation.getImages(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
+        Images.get(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
       },
     },
 
@@ -366,7 +366,7 @@ var Affiliation = {
         memePath: './org/nabla/meme/',
       },
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
+        Images.get(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
       },
     },
 
@@ -396,7 +396,7 @@ var Affiliation = {
         memePath: './org/solan/meme/',
       },
       getImage: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -411,7 +411,7 @@ var Affiliation = {
       placeholder: './org/spanskroeret/placeholder.png',
       palette: 'green',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -425,8 +425,8 @@ var Affiliation = {
       symbol: './org/volvox/symbol.png',
       placeholder: './org/volvox/placeholder.png',
       palette: 'green',
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+      getImage: function(links, callback) {
+        Images.get(this, links, callback);
       },
     },
 
@@ -443,14 +443,14 @@ var Affiliation = {
       placeholder: './org/communitas/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
     // De Folkevalgtes website is no longer in operation, uncommented for the unforseeable future
     // 'de_folkevalgte': {
     //   name: 'De Folkevalgte',
-    //   key: 'de folkevalgte',
+    //   key: 'de_folkevalgte',
     //   web: 'http://www.defolkevalgte.net/',
     //   feed: 'http://www.defolkevalgte.net/feed/rss/',
     //   logo: './org/de folkevalgte/logo.png',
@@ -459,7 +459,7 @@ var Affiliation = {
     //   placeholder: './org/de folkevalgte/placeholder.png',
     //   palette: 'yellow',
     //   getImages: function(links, callback) {
-    //     Affiliation.getImages(this, links, callback);
+    //     Images.get(this, links, callback);
     //   },
     // },
 
@@ -474,7 +474,7 @@ var Affiliation = {
       placeholder: './org/dhs/placeholder.png',
       palette: 'blue',
       getImage: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -489,7 +489,7 @@ var Affiliation = {
       placeholder: './org/dionysos/placeholder.png',
       palette: 'purple',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -504,7 +504,7 @@ var Affiliation = {
       placeholder: './org/erudio/placeholder.png',
       palette: 'red',
       getImage: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -519,7 +519,7 @@ var Affiliation = {
       placeholder: './org/eureka/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -534,7 +534,7 @@ var Affiliation = {
       placeholder: './org/geolf/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -549,13 +549,13 @@ var Affiliation = {
       placeholder: './org/gengangere/placeholder.png',
       palette: 'grey',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
     'jump_cut': {
       name: 'Jump Cut',
-      key: 'jump cut',
+      key: 'jump_cut',
       web: 'http://jumpcutdragvoll.wordpress.com/',
       feed: 'http://jumpcutdragvoll.wordpress.com/feed/',
       logo: './org/jump cut/logo.png',
@@ -564,7 +564,7 @@ var Affiliation = {
       placeholder: './org/jump cut/placeholder.png',
       palette: 'grey',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -579,7 +579,7 @@ var Affiliation = {
       placeholder: './org/ludimus/placeholder.png',
       palette: 'red',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -594,22 +594,22 @@ var Affiliation = {
       placeholder: './org/paideia/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
     'panoptikon': {
       name: 'Panoptikon',
       key: 'panoptikon',
-      web: 'http://panoptikon.blogg.no/',
-      feed: 'http://feeds.blogg.no/259521/post.rss',
+      web: 'http://panoptikonlinjeforening.wordpress.com/',
+      feed: 'http://panoptikonlinjeforening.wordpress.com/feed/',
       logo: './org/panoptikon/logo.png',
       icon: './org/panoptikon/icon.png',
       symbol: './org/panoptikon/symbol.png',
       placeholder: './org/panoptikon/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -637,7 +637,7 @@ var Affiliation = {
       placeholder: './org/primetime/placeholder.png',
       palette: 'cyan',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback);
+        Images.get(this, link, callback);
       },
     },
 
@@ -652,13 +652,13 @@ var Affiliation = {
       placeholder: './org/psi/placeholder.png',
       palette: 'red',
       getImages: function(link, callback) {
-        Affiliation.getImages(this, link, callback);
+        Images.get(this, link, callback);
       },
     },
 
     'sturm_und_drang': {
       name: 'Sturm Und Drang',
-      key: 'sturm und drang',
+      key: 'sturm_und_drang',
       web: 'http://www.sturm.ntnu.no/',
       feed: 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
       logo: './org/sturm und drang/logo.png',
@@ -667,7 +667,22 @@ var Affiliation = {
       placeholder: './org/sturm und drang/placeholder.png',
       palette: 'red',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
+      },
+    },
+
+    'teaterlosjen': {
+      name: 'Teaterlosjen',
+      key: 'teaterlosjen',
+      web: 'http://teaterlosjen.wordpress.com/',
+      feed: 'http://teaterlosjen.wordpress.com/feed/',
+      logo: './org/teaterlosjen/logo.png',
+      icon: './org/teaterlosjen/icon.png',
+      symbol: './org/teaterlosjen/symbol.png',
+      placeholder: './org/teaterlosjen/placeholder.png',
+      palette: 'red',
+      getImage: function(link, callback) {
+        Images.get(this, link, callback);
       },
     },
 
@@ -684,7 +699,7 @@ var Affiliation = {
       placeholder: './org/fraktur/placeholder.png',
       palette: 'cyan',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -699,7 +714,7 @@ var Affiliation = {
       placeholder: './org/kom/placeholder.png',
       palette: 'cyan',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -714,7 +729,7 @@ var Affiliation = {
       placeholder: './org/logistikkstudentene/placeholder.png',
       palette: 'cyan',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -729,7 +744,7 @@ var Affiliation = {
       placeholder: './org/nutrix/placeholder.png',
       palette: 'green',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -748,13 +763,13 @@ var Affiliation = {
         channel: '#tihlde',
       },
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
     'tim_og_shaenko': {
       name: 'Tim & Shænko',
-      key: 'tim og shaenko',
+      key: 'tim_og_shaenko',
       web: 'http://bygging.no/',
       feed: 'http://bygging.no/feed/',
       logo: './org/tim og shaenko/logo.png',
@@ -763,7 +778,7 @@ var Affiliation = {
       placeholder: './org/tim og shaenko/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -778,7 +793,7 @@ var Affiliation = {
       placeholder: './org/tjsf/placeholder.png',
       palette: 'grey',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -793,7 +808,7 @@ var Affiliation = {
       placeholder: './org/vivas/placeholder.png',
       palette: 'cyan',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, {newsSelector:'.post'});
+        Images.get(this, links, callback, {newsSelector:'.post'});
       },
     },
 
@@ -810,24 +825,24 @@ var Affiliation = {
       placeholder: './org/dion/placeholder.png',
       palette: 'cyan',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
-    'esn': {
-      name: 'ESN',
-      key: 'esn',
-      web: 'http://www.trondheim.esn.no/',
-      feed: 'http://www.trondheim.esn.no/feed',
-      logo: './org/esn/logo.png',
-      icon: './org/esn/icon.png',
-      symbol: './org/esn/symbol.png',
-      placeholder: './org/esn/placeholder.png',
-      palette: 'cyan',
-      getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
-      },
-    },
+    // 'esn': {
+    //   name: 'ESN',
+    //   key: 'esn',
+    //   web: 'http://www.trondheim.esn.no/',
+    //   feed: 'http://www.trondheim.esn.no/feed',
+    //   logo: './org/esn/logo.png',
+    //   icon: './org/esn/icon.png',
+    //   symbol: './org/esn/symbol.png',
+    //   placeholder: './org/esn/placeholder.png',
+    //   palette: 'cyan',
+    //   getImages: function(links, callback) {
+    //     Images.get(this, links, callback);
+    //   },
+    // },
 
     'iaeste': {
       name: 'IAESTE',
@@ -840,7 +855,7 @@ var Affiliation = {
       placeholder: './org/iaeste/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -855,7 +870,7 @@ var Affiliation = {
       placeholder: './org/isu/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -870,7 +885,7 @@ var Affiliation = {
       placeholder: './org/projeksjon/placeholder.png',
       palette: 'blue',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback);
+        Images.get(this, link, callback);
       },
     },
 
@@ -885,7 +900,7 @@ var Affiliation = {
     //   placeholder: './org/signifikant/placeholder.png',
     //   palette: 'cyan',
     //   getImages: function(links, callback) {
-    //     Affiliation.getImages(this, links, callback);
+    //     Images.get(this, links, callback);
     //   },
     // },
 
@@ -913,7 +928,7 @@ var Affiliation = {
       placeholder: './org/symbiosis/placeholder.png',
       palette: 'green',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -931,7 +946,7 @@ var Affiliation = {
       palette: 'grey',
       // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
       },
     },
 
@@ -987,7 +1002,7 @@ var Affiliation = {
       placeholder: './org/samfundet/placeholder.png',
       palette: 'red',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div#banner'});
+        Images.get(this, link, callback, {newsSelector:'div#banner'});
       },
     },
 
@@ -1004,13 +1019,13 @@ var Affiliation = {
       placeholder: './org/velferdstinget/placeholder.png',
       palette: 'cyan',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'#innhold'});
+        Images.get(this, link, callback, {newsSelector:'#innhold'});
       },
     },
 
     'studenttinget_ntnu': {
       name: 'Studenttinget NTNU',
-      key: 'studenttinget ntnu',
+      key: 'studenttinget_ntnu',
       web: 'http://www.studenttinget.no/',
       feed: 'http://www.studenttinget.no/feed/',
       logo: './org/studenttinget ntnu/logo.png',
@@ -1019,13 +1034,13 @@ var Affiliation = {
       placeholder: './org/studenttinget ntnu/placeholder.png',
       palette: 'purple',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
     'studentparlamentet_hist': {
       name: 'Studentparlamentet HiST',
-      key: 'studentparlamentet hist',
+      key: 'studentparlamentet_hist',
       web: 'http://studentparlamentet.com/',
       feed: 'http://studentparlamentet.com/?feed=rss2',
       logo: './org/studentparlamentet hist/logo.png',
@@ -1034,7 +1049,7 @@ var Affiliation = {
       placeholder: './org/studentparlamentet hist/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback);
+        Images.get(this, links, callback);
       },
     },
 
@@ -1052,54 +1067,54 @@ var Affiliation = {
       palette: 'blue',
       getImage: function(link, callback) {
         if (link.indexOf('adressa.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div.media'});
+          Images.get(this, link, callback, {newsSelector:'div.media'});
         }
         else if (link.indexOf('bygg.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div#article'});
+          Images.get(this, link, callback, {newsSelector:'div#article'});
         }
         else if (link.indexOf('byggfakta.no') !== -1 || link.indexOf('byggaktuelt.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div.body-content'});
+          Images.get(this, link, callback, {newsSelector:'div.body-content'});
         }
         else if (link.indexOf('dn.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div#content'});
+          Images.get(this, link, callback, {newsSelector:'div#content'});
         }
         else if (link.indexOf('dusken.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
+          Images.get(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
         }
         else if (link.indexOf('forskningsradet.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
+          Images.get(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
         }
         else if (link.indexOf('npolar.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div.paragraph', domainUrl:'www.npolar.no'});
+          Images.get(this, link, callback, {newsSelector:'div.paragraph', domainUrl:'www.npolar.no'});
         }
         else if (link.indexOf('nrk.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/.*)"/});
+          Images.get(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/.*)"/});
         }
         else if (link.indexOf('regjeringen.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div.imagecontainer', domainUrl:'regjeringen.no'});
+          Images.get(this, link, callback, {newsSelector:'div.imagecontainer', domainUrl:'regjeringen.no'});
         }
         else if (link.indexOf('stfk.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div.documentbody', domainUrl:'www.stfk.no'});
+          Images.get(this, link, callback, {newsSelector:'div.documentbody', domainUrl:'www.stfk.no'});
         }
         else if (link.indexOf('trondheim.kommune.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {domainUrl:'www.trondheim.kommune.no'});
+          Images.get(this, link, callback, {domainUrl:'www.trondheim.kommune.no'});
         }
         else if (link.indexOf('tu.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div#topImage'});
+          Images.get(this, link, callback, {newsSelector:'div#topImage'});
         }
         else if (link.indexOf('utdanningsnytt.no') !== -1) {
-          Affiliation.getImages(this, link, callback, {newsSelector:'div#hovedartikkelContainer', domainUrl:'utdanningsnytt.no'});
+          Images.get(this, link, callback, {newsSelector:'div#hovedartikkelContainer', domainUrl:'utdanningsnytt.no'});
         }
         else {
           // Just try something, might work!
-          Affiliation.getImages(this, link, callback);
+          Images.get(this, link, callback);
         }
       },
     },
 
     'rektoratet_ntnu': {
       name: 'Rektoratet NTNU',
-      key: 'rektoratet ntnu',
+      key: 'rektoratet_ntnu',
       web: 'http://www.ntnu.no/blogger/rektoratet/',
       feed: 'http://www.ntnu.no/blogger/rektoratet/feed/',
       logo: './org/rektoratet ntnu/logo.png',
@@ -1108,7 +1123,7 @@ var Affiliation = {
       placeholder: './org/rektoratet ntnu/placeholder.png',
       palette: 'blue',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.entry'});
+        Images.get(this, link, callback, {newsSelector:'div.entry'});
       },
     },
 
@@ -1123,7 +1138,7 @@ var Affiliation = {
       placeholder: './org/hist/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Affiliation.getImages(this, links, callback, {newsSelector:'div.unit', domainUrl:'hist.no'});
+        Images.get(this, links, callback, {newsSelector:'div.unit', domainUrl:'hist.no'});
       },
     },
 
@@ -1138,11 +1153,14 @@ var Affiliation = {
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
       getImage: function(link, callback) {
-        Affiliation.getImages(this, link, callback, {newsSelector:'div.articlewrp', domainUrl:'dmmh.no'});
+        Images.get(this, link, callback, {newsSelector:'div#content', domainUrl:'dmmh.no'});
       },
     },
 
   },
+
+  // Affiliations above
+  // Functions below
 
   getMemeCount: function(affiliation) {
     if (Affiliation.org[affiliation].hw.memePath) {
@@ -1157,212 +1175,6 @@ var Affiliation = {
       console.log('ERROR: affiliation', affiliation, 'does not have a memepath');
       return 0;
     }
-  },
-
-  getImages: function(affiliation, links, callback, options) {
-
-    // Return with stacktrace if links is undefined
-    if (links == undefined) {
-      if (this.debug) console.log('ERROR: no image links, var links is undefined');
-      return;
-    }
-
-    // TODO: Point of improvement: A few sites have differing selectors for
-    // news articles across different news pages. Like e.g. if one of their
-    // news pages have a regular header image and another has a slideshow.
-    // Make sure this function can check for multiple different selectors.
-    // TODO: Refactor, think of an awesome new way to organize this function.
-
-    // Possible values in options:
-    // options = {
-    //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
-    //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
-    //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
-    //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
-    //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/ // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
-    // };
-
-    // Create empty object to avoid crashes when looking up undefined props of undefined object
-    if (options == undefined)
-      options = {};
-
-    var url = affiliation.web;
-    var isSingleLink = false;
-    if (typeof links == 'string') {
-      url = links;
-      // If links is just a single link, convert to single item array
-      links = [links];
-      isSingleLink = true;
-    }
-
-    // Array of possible news containers sorted by estimated probabilty
-    var containers = [
-      'div.entry',
-      'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
-      'article', // leave <article> at the bottom of the preferred list, it's a bit misused
-    ];
-    
-    // In case we don't find any images, prepare an array with placeholders
-    var placeholder = affiliation.placeholder;
-    var placeholders = [];
-    for (var i=0; i<links.length; i++)
-      placeholders.push(placeholder);
-
-    // If jQuery or Ajaxer.js is not loaded yet, just return placeholders.
-    // This could occur with like one in a million probability, but like almost everything else it's handled.
-    if (typeof $ == 'undefined' || typeof Ajaxer == 'undefined') {
-      if (this.debug) console.log('ERROR: getImages called before $ and Ajaxer was ready');
-      return placeholders;
-    }
-
-    var self = this;
-    Ajaxer.getCleanHtml({
-      url: url,
-      success: function(html) {
-        try {
-          // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
-          html = $.trim(html);
-          // jQuery tries to preload images found in the string, the following line causes errors, ignore it for now
-          var doc = $(html);
-
-          //
-          // Decide which selector to use for identifying news containers
-          //
-
-          var newsSelector = null;
-          if (options.newsSelector) {
-            newsSelector = options.newsSelector;
-            if (self.debug) console.log('Using selector', '"'+newsSelector+'" for news at '+url+'\n');
-          }
-          else {
-            for (var i=0; i<containers.length; i++) {
-              var current = containers[i];
-              if (doc.find(current).length != 0) {
-                newsSelector = current;
-                if (self.debug) console.log('Using selector', '"'+current+'" for news at '+url+'\n');
-                break;
-              }
-            }
-          }
-
-          // A place to store all the image links
-          var images = [];
-
-          for (i in links) {
-
-            //
-            // Find the news container which contains the news image, using our selector
-            //
-            
-            var link = links[i];
-
-            if (self.debug) console.log('Checking for '+(isSingleLink? 'image at' : 'posts with link'), link);
-
-            // If posts are using relative links, split by domainUrl, like 'hist.no'
-            if (options.domainUrl) {
-              if (self.debug) console.log('Splitting link by domain url', options.domainUrl);
-              link = links[i].split(options.domainUrl)[1];
-            }
-
-            // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
-            if (options.linkDelimiter) {
-              if (self.debug) console.log('Splitting link by delimiter', options.linkDelimiter);
-              link = links[i].split(options.linkDelimiter)[0];
-            }
-
-            // Look up the first post with the link inside it...
-            var image = doc.find(newsSelector + ' a[href="' + link + '"]');
-
-            // ...then find parent 'article' or 'div.post' or the like...
-            if (image.length != 0) {
-              if (self.debug) console.log('Found something with the link, finding the parent (the news box');
-              image = image.parents(newsSelector);
-            }
-            // ...unless we didn't find anything with the link, in which case we just look for the news selector
-            else if (isSingleLink) {
-              if (self.debug) console.log('Found nothing with a[href=url], trying news selector instead');
-              // On a specific news page (not a frontpage) we can allow ourselves to search
-              // more broadly if we didn't find anything while searching for the link. We'll
-              // search for the newsSelector instead and assume that the first news container
-              // we find contains the image we're looking for (which is highly likely based
-              // on experience).
-              image = doc.find(newsSelector);
-            }
-
-            //
-            // Presumably we've found the news container here, now we need to find the image within it
-            //
-
-            if (options.noscriptMatching) {
-              // If a <noscript> tag is used, we'll just find the image URL by matching
-              // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
-              image = image.html().match(options.noscriptMatching)[1];
-            }
-            else {
-              // Find all image tags within post
-              image = image.find('pic');
-
-              // Exclude gifs since they're most likely smilies and the likes
-              image = image.not('pic[src*=".gif"]');
-              image = image.not('pic[src*="data:image/gif"]');
-
-              // Exclude social image icons (only applies for some blogs)
-              image = image.not('pic[src*="sociable"]');
-
-              // Exclude static content, most likely icons
-              image = image.not('pic[src*="static"]');
-
-              // Exclude comments, most likely text in image as "Add comment here"
-              image = image.not('pic[src*="comments"]');
-
-              // Use image at specified index if requested
-              if (options.imageIndex)
-                image = image.eq(options.imageIndex);
-
-              // Get the src for the first image left in the array
-              image = image.attr('src');
-            }
-
-            //
-            // Here we determine whether we have found an image or not, and callback the image or a placeholder
-            //
-
-            // If image is undefined
-            if (typeof image == 'undefined') {
-              if (self.debug) console.log('No image exists for link', link);
-              image = placeholder;
-            }
-            // If image needs to be prefixed with the domain name
-            else if (options.domainUrl) {
-              image = 'http://' + options.domainUrl + image;
-              if (self.debug) console.log('Found a good image at', image);
-            }
-            // If image is something useless like "//assets.pinterest.com/whatever.png"
-            // NOTE: Must be done after adding "http" and domainUrl
-            else if (image.match('^https?://') == null) {
-              if (self.debug) console.log('No good image exists for link', link);
-              image = placeholder;
-            }
-            // If all is good
-            else {
-              if (self.debug) console.log('Found a good image at', image);
-            }
-            if (self.debug) console.log('\n');
-
-            images.push(image);
-          }
-          callback(links, images);
-        }
-        catch (e) {
-          if (self.debug) console.log('ERROR: could not parse '+affiliation.name+' website');
-          callback(links, placeholders);
-        }
-      },
-      error: function(e) {
-        if (self.debug) console.log('ERROR: could not fetch '+affiliation.name+' website');
-        callback(links, placeholders);
-      },
-    });
   },
 
 }

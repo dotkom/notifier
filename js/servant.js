@@ -74,7 +74,7 @@ var Servant = {
         }
       },
       error: function(jqXHR, text, err) {
-        console.log('ERROR: Failed to get current servant.');
+        if (self.debug) console.log('ERROR: Failed to get current servant.');
         callback(self.msgError);
       },
     });

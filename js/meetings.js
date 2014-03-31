@@ -40,7 +40,7 @@ var Meetings = {
         }
       },
       error: function(jqXHR, text, err) {
-        console.lolg('ERROR: Failed to get todays meeting plan.');
+        if (self.debug) console.log('ERROR: Failed to get todays meeting plan.');
         callback(self.msgError);
       },
     });

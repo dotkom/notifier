@@ -24,10 +24,6 @@ mainLoop = ->
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
-  
-  setTimeout ( ->
-    mainLoop()
-  ), PAGE_LOOP
 
 updateOffice = ->
   console.lolg 'updateOffice'
@@ -107,10 +103,18 @@ updateHours = ->
 updateBus = ->
   console.lolg 'updateBus'
   if !navigator.onLine
+    # Reset
+    stops = ['firstBus', 'secondBus']
+    spans = ['first', 'second', 'third']
+    for i of stops
+      for j of spans
+        $('#bus #'+stops[i]+' .'+spans[j]+' .line').html ''
+        $('#bus #'+stops[i]+' .'+spans[j]+' .time').html ''
+    # Error message
     $('#bus #firstBus .name').html ls.firstBusName
     $('#bus #secondBus .name').html ls.secondBusName
     $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'      
   else
     createBusDataRequest('firstBus', '#firstBus')
     createBusDataRequest('secondBus', '#secondBus')
@@ -304,4 +308,16 @@ $ ->
     ls.background_image = BACKGROUND_IMAGE
 
   # Enter main loop, keeping everything up-to-date
+  stayUpdated = ->
+    console.lolg ONLINE_MESSAGE
+    intervalId = setInterval ( ->
+      mainLoop()
+    ), PAGE_LOOP
+  # When offline mainloop is stopped to decrease power consumption
+  window.addEventListener 'online', stayUpdated
+  window.addEventListener 'offline', ->
+    console.lolg OFFLINE_MESSAGE
+    clearInterval intervalId
+  # Go
   mainLoop()
+  stayUpdated()

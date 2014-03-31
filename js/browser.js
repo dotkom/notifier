@@ -3,7 +3,7 @@ var Browser = {
   msgCallbackMissing: 'ERROR: Callback is missing',
   msgUnsupported: 'ERROR: Unsupported browser',
 
-  name: 'Unknown', // Changed automatically at the end of this file
+  name: 'Unknown', // Changed automatically at the end of this file with Browser.detect()
 
   detect: function() {
     if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1)
@@ -12,6 +12,18 @@ var Browser = {
       return 'Opera';
     console.log(this.msgUnsupported);
     return 'Unknown';
+  },
+
+  onMac: function() {
+    return navigator.platform.toLowerCase().indexOf('mac')!==-1;
+  },
+
+  onLinux: function() {
+    return navigator.platform.toLowerCase().indexOf('linux')!==-1;
+  },
+  
+  onWindows: function() {
+    return navigator.platform.toLowerCase().indexOf('win')!==-1;
   },
 
   setIcon: function(path) {

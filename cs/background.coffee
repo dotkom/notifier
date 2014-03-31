@@ -2,38 +2,35 @@
 $ = jQuery
 ls = localStorage
 iteration = 0
+intervalId = null
 
-mainLoop = ->
+mainLoop = (force) ->
   console.lolg "\n#" + iteration
 
+  if ls.showCantina is 'true'
+    if force or iteration % UPDATE_HOURS_INTERVAL is 0
+      updateHours()
+  if ls.showCantina is 'true'
+    if force or iteration % UPDATE_CANTINAS_INTERVAL is 0
+      updateCantinas()
+  if ls.showAffiliation1 is 'true'
+    if force or iteration % UPDATE_NEWS_INTERVAL is 0
+      updateAffiliationNews '1'
+  if ls.showAffiliation2 is 'true'
+    if force or iteration % UPDATE_NEWS_INTERVAL is 0
+      updateAffiliationNews '2'
+  # Only if hardware and not infoscreen
   if ls.useInfoscreen isnt 'true'
-    # Only if online, else keep good old
-    if navigator.onLine
-      updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-      updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-      updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
-      updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
-    # Only if hardware
     if Affiliation.org[ls.affiliationKey1].hw
-      updateOfficeAndMeetings() if iteration % UPDATE_OFFICE_INTERVAL is 0 and ls.showOffice is 'true'
-      updateCoffeeSubscription() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.coffeeSubscription is 'true'
+      if ls.showOffice is 'true'
+        if force or iteration % UPDATE_OFFICE_INTERVAL is 0
+          updateOfficeAndMeetings()
+      if ls.coffeeSubscription is 'true'
+        if force or iteration % UPDATE_COFFEE_INTERVAL is 0
+          updateCoffeeSubscription()
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
-  
-  # Schedule for repetition once a minute (checking connectivity,
-  # feed and office status). Runs every 3rd second if it's offline,
-  # trying to react quickly upon reconnection...
-  if !navigator.onLine
-    loopTimeout = BACKGROUND_LOOP_OFFLINE
-  else if DEBUG
-    loopTimeout = BACKGROUND_LOOP_DEBUG
-  else
-    loopTimeout = BACKGROUND_LOOP
-
-  setTimeout ( ->
-    mainLoop()
-  ), loopTimeout
 
 updateOfficeAndMeetings = (force) ->
   console.lolg 'updateOfficeAndMeetings'
@@ -118,7 +115,7 @@ updateAffiliationNews = (number) ->
       else
         saveAndCountNews items, number
         updateUnreadCount()
-        storeImageLinks number
+        fetchAndStoreImageLinks number
   else
     console.lolg 'ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known'
 
@@ -137,7 +134,7 @@ updateUnreadCount = (count1, count2) ->
   unreadCount = (Number ls.affiliationUnreadCount1) + (Number ls.affiliationUnreadCount2)
   Browser.setBadgeText String unreadCount
 
-storeImageLinks = (number) ->
+fetchAndStoreImageLinks = (number) ->
   key = ls['affiliationKey'+number]
   newsList = JSON.parse ls['affiliationNewsList'+number]
   # If the organization has it's own getImage function, use it
@@ -146,16 +143,17 @@ storeImageLinks = (number) ->
       # It's important to get the link from the callback within the function below,
       # not the above code, - because of race conditions mixing up the news posts, async ftw.
       Affiliation.org[key].getImage link, (link, image) ->
-        # Also, check whether there's already a qualified image before replacing it.
-        storedImages = JSON.parse ls.storedImages
-        storedImages[link] = image
-        ls.storedImages = JSON.stringify storedImages
+        unless null is image[0]
+          storedImages = JSON.parse ls.storedImages
+          storedImages[link] = image[0]
+          ls.storedImages = JSON.stringify storedImages
   # If the organization has it's own getImages (plural) function, use it
   if Affiliation.org[key].getImages isnt undefined
     Affiliation.org[key].getImages newsList, (links, images) ->
       storedImages = JSON.parse ls.storedImages
       for index of links
-        storedImages[links[index]] = images[index]
+        unless null is images[index]
+          storedImages[links[index]] = images[index]
       ls.storedImages = JSON.stringify storedImages
 
 loadAffiliationIcon = ->
@@ -223,4 +221,25 @@ $ ->
   ), 1000 * 60 * 60 * 24
 
   # Enter main loop, keeping everything up-to-date
-  mainLoop()
+  stayUpdated = (now) ->
+    console.lolg ONLINE_MESSAGE
+    loopTimeout = if DEBUG then BACKGROUND_LOOP_DEBUG else BACKGROUND_LOOP
+    # Schedule for repetition
+    intervalId = setInterval ( ->
+      mainLoop()
+    ), loopTimeout
+    # Run once right now (just wait 2 secs to avoid network-change errors)
+    timeout = if now then 0 else 2000
+    setTimeout ( ->
+      mainLoop true
+    ), timeout
+  # When offline mainloop is stopped to decrease power consumption
+  window.addEventListener 'online', stayUpdated
+  window.addEventListener 'offline', ->
+    console.lolg OFFLINE_MESSAGE
+    clearInterval intervalId
+  # Go
+  if navigator.onLine
+    stayUpdated true
+  else
+    mainLoop()

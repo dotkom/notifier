@@ -70,10 +70,11 @@
                 <option value="primetime">Primetime</option>
                 <option value="psi">Psi</option>
                 <option value="sturm_und_drang">Sturm und Drang</option>
+                <option value="teaterlosjen">Teaterlosjen</option>
               </optgroup>
               <optgroup label="Master-/doktor-/internasjonale foreninger">
                 <option value="dion">DION</option>
-                <option value="esn">ESN</option>
+                <!-- <option value="esn">ESN</option> -->
                 <option value="iaeste">IAESTE</option>
                 <option value="isu">ISU</option>
                 <option value="projeksjon">Projeksjon</option>
@@ -165,10 +166,11 @@
                 <option value="primetime">Primetime</option>
                 <option value="psi">Psi</option>
                 <option value="sturm_und_drang">Sturm und Drang</option>
+                <option value="teaterlosjen">Teaterlosjen</option>
               </optgroup>
               <optgroup label="Master-/doktor-/internasjonale foreninger">
                 <option value="dion">DION</option>
-                <option value="esn">ESN</option>
+                <!-- <option value="esn">ESN</option> -->
                 <option value="iaeste">IAESTE</option>
                 <option value="isu">ISU</option>
                 <option value="projeksjon">Projeksjon</option>
@@ -295,12 +297,9 @@
               <option>til byen</option>
               <option selected="selected">fra byen</option>
             </select>
-            <!-- HOTFIX -->
-            <!--
             <div class="lines">
-              <!- a wrapping div makes the slide animation smooth for the table that's injected here ->
+              <!-- a wrapping div makes the slide animation smooth for the table that's injected here -->
             </div>
-            -->
           </div>
           <label for="showBus">
             <img id="busLogo" src="/img/logo-atb.png" />
@@ -311,17 +310,13 @@
               <option selected="selected">til byen</option>
               <option>fra byen</option>
             </select>
-            <!-- HOTFIX -->
-            <!--
             <div class="lines">
-              <!- a wrapping div makes the slide animation smooth for the table that's injected here ->
+              <!-- a wrapping div makes the slide animation smooth for the table that's injected here -->
             </div>
-            -->
           </div>
-          <!-- HOTFIX -->
-          <!-- <div id="arrowDown">
+          <div id="arrowDown">
             <img src="img/options-arrow-down.png" />
-          </div> -->
+          </div>
         </div>
       </div>
 
@@ -427,11 +422,6 @@
     </div>
   </div>
 
-  <!-- +1 button -->
-  <div id="plusonebutton" style="display:none;">
-    <div class="g-plusone" data-annotation="inline" data-width="170" data-href="https://online.ntnu.no"></div>
-  </div>
-
   <!-- "Popup is up here"-bubble -->
   <div id="popupHere">
     <img class="icon" src="/org/online/symbol.png" />
@@ -442,9 +432,8 @@
 
   <!-- JS No Dependencies -->
   <script src="libs/jquery-2.0.0.min.js"></script>
-  <script src="js/missing_functions.js"></script>
-  <script src="js/missing_prototypes.js"></script>
-  <script src="js/google_plus_one.js"></script>
+  <script src="js/missing.js"></script>
+  <script src="js/hotfix.js"></script>
 
   <!-- JS Behind the scenes -->
   <script src="js/browser.js"></script> <!-- browser needs jquery -->
@@ -453,12 +442,13 @@
 
   <!-- JS Affiliation and Such -->
   <script src="js/ajaxer.js"></script> <!-- ajaxer needs jquery -->
-  <script src="js/affiliation.js"></script> <!-- affiliation needs ajaxer -->
+  <script src="js/affiliation.js"></script> <!-- affiliation needs images -->
   <script src="js/palettes.js"></script> <!-- palettes needs affiliation -->
   
   <!-- JS Services -->
   <script src="js/bus.js"></script>
   <script src="js/coffee.js"></script>
+  <script src="js/favorite.js"></script>
   <script src="js/meetings.js"></script>
   <script src="js/news.js"></script>
   <script src="js/office.js"></script>

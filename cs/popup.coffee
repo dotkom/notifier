@@ -2,32 +2,43 @@
 $ = jQuery
 ls = localStorage
 iteration = 0
+intervalId = null
 
 newsLimit = 4 # The best amount of news for the popup, IMO
 
-mainLoop = ->
+mainLoop = (force) ->
   console.lolg "\n#" + iteration
 
-  # Only if online, else keep good old
-  if navigator.onLine
-    updateHours() if iteration % UPDATE_HOURS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateCantinas() if iteration % UPDATE_CANTINAS_INTERVAL is 0 and ls.showCantina is 'true'
-    updateAffiliationNews '1' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation1 is 'true'
-    updateAffiliationNews '2' if iteration % UPDATE_NEWS_INTERVAL is 0 and ls.showAffiliation2 is 'true'
+  if ls.showCantina is 'true'
+    if force or iteration % UPDATE_HOURS_INTERVAL is 0
+      updateHours()
+  if ls.showCantina is 'true'
+    if force or iteration % UPDATE_CANTINAS_INTERVAL is 0
+      updateCantinas()
+  if ls.showAffiliation1 is 'true'
+    if force or iteration % UPDATE_NEWS_INTERVAL is 0
+      updateAffiliationNews '1'
+  if ls.showAffiliation2 is 'true'
+    if force or iteration % UPDATE_NEWS_INTERVAL is 0
+      updateAffiliationNews '2'
   # Only if hardware
   if Affiliation.org[ls.affiliationKey1].hw
-    updateServant() if iteration % UPDATE_SERVANT_INTERVAL is 0 and ls.showOffice is 'true'
-    updateMeetings() if iteration % UPDATE_MEETINGS_INTERVAL is 0 and ls.showOffice is 'true'
-    updateCoffee() if iteration % UPDATE_COFFEE_INTERVAL is 0 and ls.showOffice is 'true'
+    if ls.showOffice is 'true'
+      if force or iteration % UPDATE_SERVANT_INTERVAL is 0
+        updateServant()
+    if ls.showOffice is 'true'
+      if force or iteration % UPDATE_MEETINGS_INTERVAL is 0
+        updateMeetings()
+    if ls.showOffice is 'true'
+      if force or iteration % UPDATE_COFFEE_INTERVAL is 0
+        updateCoffee()
   # Always update, tell when offline
-  updateBus() if iteration % UPDATE_BUS_INTERVAL is 0 and ls.showBus is 'true'
+  if ls.showBus is 'true'
+    if force or iteration % UPDATE_BUS_INTERVAL is 0
+      updateBus()
   
   # No reason to count to infinity
   if 10000 < iteration then iteration = 0 else iteration++
-  
-  setTimeout ( ->
-    mainLoop()
-  ), PAGE_LOOP
 
 updateServant = ->
   console.lolg 'updateServant'
@@ -101,10 +112,18 @@ clickHours = (cssSelector, cantina) ->
 updateBus = ->
   console.lolg 'updateBus'
   if !navigator.onLine
+    # Reset
+    stops = ['firstBus', 'secondBus']
+    spans = ['first', 'second', 'third']
+    for i of stops
+      for j of spans
+        $('#bus #'+stops[i]+' .'+spans[j]+' .line').html ''
+        $('#bus #'+stops[i]+' .'+spans[j]+' .time').html ''
+    # Error message
     $('#bus #firstBus .name').html ls.firstBusName
     $('#bus #secondBus .name').html ls.secondBusName
-    $('#bus #firstBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
-    $('#bus #secondBus .first .line').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #firstBus .error').html '<div class="error">Frakoblet fra api.visuweb.no</div>'
+    $('#bus #secondBus .error').html '<div class="error">Frakoblet fra api.visuweb.no</div>'      
   else
     createBusDataRequest('firstBus', '#firstBus')
     createBusDataRequest('secondBus', '#secondBus')
@@ -126,18 +145,19 @@ insertBusInfo = (lines, stopName, cssIdentificator) ->
   for i of spans
     $(busStop+' .'+spans[i]+' .line').html ''
     $(busStop+' .'+spans[i]+' .time').html ''
+  $(busStop+' .error').html ''
   
   # if lines is an error message
   if typeof lines is 'string'
     # if online, recommend oracle
     if navigator.onLine
-      $(busStop+' .first .line').html '<div class="error">'+lines+'<br />Prøv Orakelet i stedet</div>'
+      $(busStop+' .error').html lines+'<br />Prøv Orakelet i stedet'
     else
-      $(busStop+' .first .line').html '<div class="error">'+lines+'</div>'
+      $(busStop+' .error').html lines
   else
     # No lines to display, busstop is sleeping
     if lines['departures'].length is 0
-      $(busStop+' .first .line').html '<div class="error">....zzzZZZzzz....</div>'
+      $(busStop+' .error').html '....zzzZZZzzz....'
     else
       # Display line for line with according times
       for i of spans
@@ -378,6 +398,14 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
     Analytics.trackEvent 'clickNews', link
     window.close()
 
+  # Update images some times after news are loaded in case of late image updates
+  # which are common when the browser has just started Notifier
+  times = [100, 500, 1000, 2000, 3000, 5000, 10000]
+  for i of times
+    setTimeout ( ->
+      updateNewsImages()
+    ), times[i]
+
 # Checks the most recent list of news against the most recently viewed list of news
 findUpdatedPosts = (newsList, viewedList) ->
   updatedList = []
@@ -392,6 +420,18 @@ findUpdatedPosts = (newsList, viewedList) ->
       if newsList[i] is viewedList[j]
         updatedList.push newsList[i]
   return updatedList
+
+updateNewsImages = ->
+  console.lolg 'updateNewsImages'
+  # The background process looks for images, and sometimes that process
+  # isn't finished before the popup loads, that's why we have to check
+  # in with localStorage.storedImages a couple of times.
+  $.each($('#news .post .item'), (i, val) ->
+    link = $(this).attr 'data'
+    image = JSON.parse(localStorage.storedImages)[link]
+    if image isnt undefined
+      $(this).find('img').attr 'src', image
+  )
 
 optionsText = (show) ->
   fadeButtonText show, 'Innstillinger'
@@ -454,11 +494,6 @@ $ ->
   $('#cantinas').hide() if ls.showCantina isnt 'true'
   $('#bus').hide() if ls.showBus isnt 'true'
 
-  #####################
-  # HOTFIX
-  #####################
-  hotFixBusLines()
-
   if ls.affiliationKey1 isnt 'online'
     $('#mobileText').hide() # Hide Notifier Mobile info in Tips box
 
@@ -508,7 +543,7 @@ $ ->
     Analytics.trackEvent 'clickTipsLink', link
     window.close()
 
-  clickChatter = ->
+  $('#chatterButton').click ->
     irc = Affiliation.org[ls.affiliationKey1].irc
     server = irc.server
     channel = irc.channel
@@ -516,17 +551,34 @@ $ ->
     Browser.openTab 'https://kiwiirc.com/client/' + server + '/' + channel
     Analytics.trackEvent 'clickChatter', ls.affiliationKey1
     window.close()
-  $('#chatterButton').click clickChatter
-  $('#chatterIcon').click clickChatter
-  
-  $('#bus #atbLogo').click ->
+
+  # Bind realtimebus lines to their timetables
+  timetables = JSON.parse(localStorage.busTimetables);
+  clickBus = ->
+    try
+      line = $(this).find('.line').text().trim().split(' ')[0]
+      link = timetables[line]
+      Browser.openTab link
+      Analytics.trackEvent 'clickTimetable'
+      window.close()
+    catch e
+      console.lolg 'ERROR: Failed at clickBus', e
+  # Register click event for all lines
+  busLanes = ['.first', '.second', '.third']
+  for i of busLanes
+    $('#bus #firstBus '+busLanes[i]).click clickBus
+    $('#bus #secondBus '+busLanes[i]).click clickBus
+
+  # Bind AtB logo and any realtimebus error messages to atb.no
+  openAtb = ->
     Browser.openTab 'http://www.atb.no'
     Analytics.trackEvent 'clickAtb'
     window.close()
+  $('#bus #atbLogo').click openAtb
+  $('#bus .error').click openAtb
 
   # Bind oracle
   bindOracle()
-
   $('#oracle #name').click ->
     $('#oracle #question').focus()
 
@@ -578,4 +630,26 @@ $ ->
   $('#oracle #question').focus()
 
   # Enter main loop, keeping everything up-to-date
-  mainLoop()
+  stayUpdated = (now) ->
+    console.lolg ONLINE_MESSAGE
+    loopTimeout = if DEBUG then PAGE_LOOP_DEBUG else PAGE_LOOP
+    # Schedule for repetition
+    intervalId = setInterval ( ->
+      mainLoop()
+    ), PAGE_LOOP
+    # Run once right now (just wait 2 secs to avoid network-change errors)
+    timeout = if now then 0 else 2000
+    setTimeout ( ->
+      mainLoop true
+    ), timeout
+  # When offline mainloop is stopped to decrease power consumption
+  window.addEventListener 'online', stayUpdated
+  window.addEventListener 'offline', ->
+    console.lolg OFFLINE_MESSAGE
+    clearInterval intervalId
+    updateBus()
+  # Go
+  if navigator.onLine
+    stayUpdated true
+  else
+    mainLoop()

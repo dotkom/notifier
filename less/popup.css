@@ -154,7 +154,6 @@ body {
 }
 #container #bus .name {
   margin-bottom: 5px;
-  text-decoration: underline;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -409,8 +408,21 @@ body {
   line-height: 15px;
   height: 87px;
 }
+#container #bus #realtime .first,
+#container #bus #realtime .second,
+#container #bus #realtime .third,
+#container #bus #realtime .error {
+  cursor: pointer;
+}
+#container #bus #realtime .first:hover,
+#container #bus #realtime .second:hover,
+#container #bus #realtime .third:hover,
+#container #bus #realtime .error:hover {
+  text-decoration: underline;
+}
 #container #bus #realtime .name {
   margin-bottom: 5px;
+  text-decoration: underline;
 }
 #container #bus #realtime .loadingLeft {
   width: 80px;
@@ -429,6 +441,8 @@ body {
   margin: 15px auto;
   height: 61px;
   cursor: pointer;
+  border-radius: 3px;
+  border-top-left-radius: 16px;
 }
 #container #bus #oracle {
   border: 0px solid #ff0000;
@@ -439,11 +453,13 @@ body {
 }
 #container #bus #oracle #name {
   margin-right: 7px;
+  cursor: pointer;
 }
 #container #bus #oracle #question {
   border: 0px solid #ffff00;
   width: 88%;
-  background-color: transparent;
+  background-color: rgba(115, 115, 115, 0.2);
+  border-radius: 4px;
   color: NavajoWhite;
   display: inline;
   font-family: Helvetica;

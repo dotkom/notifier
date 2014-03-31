@@ -417,16 +417,17 @@ header #notification .saved {
 .item #busBox .busStop .lines .active {
   cursor: pointer;
   color: black;
+  font-weight: bold;
 }
 .item #busBox .busStop .lines .active:hover {
-  font-weight: bold;
+  text-decoration: underline;
 }
 .item #busBox .busStop .lines .inactive {
   cursor: pointer;
   color: gray;
 }
 .item #busBox .busStop .lines .inactive:hover {
-  font-weight: bold;
+  text-decoration: underline;
 }
 .item #busBox .busStop .lines .error {
   color: black;
@@ -592,14 +593,6 @@ header #notification .saved {
   bottom: 5px;
   width: 170px;
   height: 36px;
-}
-/* Google +1 button */
-#plusonebutton {
-  position: fixed;
-  right: 3px;
-  bottom: 5px;
-  width: 170px;
-  z-index: 1;
 }
 /* "Popup is here"-bubble */
 #popupHere {
