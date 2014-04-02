@@ -254,7 +254,6 @@ var Cantina = {
           text = self.expandAbbreviations(text);
           text = self.removeFoodHomeMade(text);
           text = text.trim();
-          text = text.capitalize();
           // If current item is NOT about the buffet, a special or the takeaway, continue with:
           if (text.match(/buffet|dag|takeaway/gi) === null) {
             text = self.removePartsAfter(['.','('], text); // don't use: '/', ','
@@ -268,9 +267,10 @@ var Cantina = {
               'krydret',
               'strimla','strimlet',
             ], text);
-            text = self.removePunctuationAtEndOfLine(text);
-            text = text.trim();
           }
+          text = text.trim();
+          text = text.capitalize();
+          text = self.removePunctuationAtEndOfLine(text);
         }
         text = text.capitalize();
         if (self.debug) console.log('\nFrom\t"'+dinner.text+'"\nTo\t\t"'+text+'"\n');
