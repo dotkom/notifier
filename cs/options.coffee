@@ -88,7 +88,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
         ls.extensionCreator = 'Online'
         changeCreatorName ls.extensionCreator
       else if affiliationKey is 'online'
-        ls.extensionCreator = 'dotKom'
+        ls.extensionCreator = 'appKom'
         changeCreatorName ls.extensionCreator
     
     # Throw out old news

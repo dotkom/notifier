@@ -52,7 +52,7 @@ var Office = {
     
     // Receives info on current event from Onlines servers (without comments)
     // meeting        // current status
-    // Møte: dotKom   // event title or 'No title'-meeting or nothing
+    // Møte: appKom   // event title or 'No title'-meeting or nothing
     var self = this;
     Ajaxer.getPlainText({
       url: eventApi,

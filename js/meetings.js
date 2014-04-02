@@ -3,7 +3,7 @@ var Meetings = {
   debugApi: 0,
   debugThisApi: 'https://online.ntnu.no/service_static/dev_meeting_plan',
   debugString: 0,
-  debugThisString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 dotKom',
+  debugThisString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 appKom',
   
   msgNone: 'Kontoret er ledig resten av dagen',
   msgError: 'Frakoblet fra møteplan',

@@ -92,7 +92,7 @@
           ls.extensionCreator = 'Online';
           changeCreatorName(ls.extensionCreator);
         } else if (affiliationKey === 'online') {
-          ls.extensionCreator = 'dotKom';
+          ls.extensionCreator = 'appKom';
           changeCreatorName(ls.extensionCreator);
         }
       }
