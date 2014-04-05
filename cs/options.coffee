@@ -681,22 +681,6 @@ $ ->
   pageFlipCursorBlinking()
 
   popupHere()
-  
-  # Blink the first affiliation-field with light green colors to attract the bees
-  if ls.everOpenedOptions is 'false'
-    ls.everOpenedOptions = 'true'
-    blinkAffiliation = (iteration) ->
-      if 0 < iteration
-        setTimeout ( ->
-          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1px solid black;'
-          setTimeout ( ->
-            $('#affiliationKey1').attr 'style', ''
-            blinkAffiliation iteration-1
-          ), 140
-        ), 140
-    setTimeout ( ->
-      blinkAffiliation 6
-    ), 3000
 
   # Allow user to change affiliation and palette
   bindAffiliationSelector '1', true
