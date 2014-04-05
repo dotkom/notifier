@@ -634,7 +634,7 @@
   };
 
   $(function() {
-    var blinkAffiliation, icon, symbol, text, web;
+    var icon, symbol, text, web;
     if (DEBUG) {
       $('#debugLinks').show();
       $('button.debug').click(function() {
@@ -676,23 +676,6 @@
     }), 2500);
     pageFlipCursorBlinking();
     popupHere();
-    if (ls.everOpenedOptions === 'false') {
-      ls.everOpenedOptions = 'true';
-      blinkAffiliation = function(iteration) {
-        if (0 < iteration) {
-          return setTimeout((function() {
-            $('#affiliationKey1').attr('style', 'background-color:#87d677; color:black; border:1px solid black;');
-            return setTimeout((function() {
-              $('#affiliationKey1').attr('style', '');
-              return blinkAffiliation(iteration - 1);
-            }), 140);
-          }), 140);
-        }
-      };
-      setTimeout((function() {
-        return blinkAffiliation(6);
-      }), 3000);
-    }
     bindAffiliationSelector('1', true);
     bindAffiliationSelector('2', false);
     bindPaletteSelector();
