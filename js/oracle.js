@@ -380,6 +380,8 @@ var Oracle = {
     // Replace "og kl." with just a comma
     answer = answer.replace(/,?( og)? kl\. /gi, ', ');
     answer = answer.replace(/,?( and)? at (\d+)/gi, ', $2');
+    // Make sure the first time isn't prefixed with a comma, "Dragvoll, 11:08, 12:10" -> "Dragvoll 11:08, 12:10"
+    answer = answer.replace(/(\w+), (\d{2}:?\d{2})/gi, '$1 $2');
     // Replace "og kommer til Munkegata M4, 16 minutter senere" with just ""
     answer = answer.replace(/og kommer til (.*?), (\d+)(-\d+)? minutter senere./gi, 'til $1'); // på $2 min');
     answer = answer.replace(/and arrives at (.*?), (\d+)(-\d+)? minutes later./gi, 'to $1');
