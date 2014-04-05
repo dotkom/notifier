@@ -39,9 +39,9 @@
   border: 0 solid #00ff00;
 }
 body {
-  background: #001429;
+  background: black;
   font-family: helvetica;
-  color: #ffffff;
+  color: white;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -282,6 +282,7 @@ header #notification .saved {
   display: inline-block;
   float: left;
   border: 1px solid #7a7a7a;
+  background-color: yellow;
   position: relative;
   margin-top: 3px;
   white-space: nowrap;
