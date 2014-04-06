@@ -33,8 +33,9 @@
           </span><br />
         </label>
         <div id="affiliationBox" class="image">
-          <img id="affiliationSymbol" src="/img/options-gloss.png" />
-          <div id="topRow" class="row">
+          <img id="affiliation1Symbol" src="/img/options-gloss.png" />
+          <img id="affiliation2Symbol" src="/img/options-gloss.png" />
+          <div id="primary" class="box">
             <!-- IMPORTANT: Keep the same order here as in affiliation.js -->
             <select id="affiliationKey1">
               <optgroup label="Linjeforeninger Gløshaugen">
@@ -129,8 +130,7 @@
               </optgroup>
             </select>
           </div>
-          <div id="bottomRow" class="row">
-            <input id="showAffiliation2" type="checkbox" /><label for="showAffiliation2">Bruk ekstra nyhetskilde:</label>
+          <div id="secondary" class="box">
             <!-- IMPORTANT: Keep the same order here as in affiliation.js -->
             <select id="affiliationKey2">
               <optgroup label="Linjeforeninger Gløshaugen">
@@ -209,6 +209,9 @@
                 <option value="dmmh">DMMH</option>
               </optgroup>
             </select>
+            <div id="affiliation2Checkbox">
+              <input id="showAffiliation2" type="checkbox" /><label for="showAffiliation2">Vis denne også</label>
+            </div>
           </div>
         </div>
       </div>
