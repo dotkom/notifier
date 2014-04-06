@@ -208,14 +208,56 @@ body {
         .debugElement;
         text-overflow: ellipsis;
         overflow: hidden;
+
+        .title {
+          position: relative;
+        }
+        .title.regular {
+          
+        }
+        .title.flashy {
+          position: absolute;
+          width: 92%;
+          color: white;
+          font-family: Helvetica;
+          font-weight: lighter;
+          text-transform: none;
+          text-shadow:
+            0 0 4px #444,
+            0 0 4px #444,
+            0 0 6px #444,
+            0 0 6px #444;
+        }
+
         .author {
           display: inline;
           position: relative;
           font-style: italic;
         }
+        .author.regular {
+          
+        }
+        .author.flashy {
+          position: absolute;
+          width: 92%;
+          color: white;
+          font-family: Helvetica;
+          font-weight: lighter;
+        }
+
         img {
-          float: left;
+          width: auto;
+          height: auto;
           background: snow;
+        }
+        img.regular {
+          float: right;
+          width: 33%;
+        }
+        img.flashy {
+          float: left;
+          width: 96%;
+          margin: 0;
         }
       }
     }
