@@ -62,6 +62,7 @@ var Affiliation = {
       symbol: './org/abakus/symbol.png',
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
+      flashyNews: true,
       hw: {
         apis: {
           coffee: 'http://kaffe.abakus.no/coffee.txt',
@@ -244,6 +245,7 @@ var Affiliation = {
       symbol: './org/leonardo/symbol.png',
       placeholder: './org/leonardo/placeholder.png',
       palette: 'cyan',
+      flashyNews: true,
       getImage: function(link, callback) {
         Images.get(this, link, callback, {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1});
       },
@@ -275,6 +277,7 @@ var Affiliation = {
       sponsor: './org/online/sponsor.png',
       palette: 'online',
       palettePath: './org/online/palette.css',
+      flashyNews: true,
       useAltLink: true,
       hw: {
         apis: {
@@ -425,6 +428,7 @@ var Affiliation = {
       symbol: './org/volvox/symbol.png',
       placeholder: './org/volvox/placeholder.png',
       palette: 'green',
+      flashyNews: true,
       getImage: function(links, callback) {
         Images.get(this, links, callback);
       },
@@ -578,6 +582,7 @@ var Affiliation = {
       symbol: './org/ludimus/symbol.png',
       placeholder: './org/ludimus/placeholder.png',
       palette: 'red',
+      flashyNews: true,
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
@@ -608,6 +613,7 @@ var Affiliation = {
       symbol: './org/panoptikon/symbol.png',
       placeholder: './org/panoptikon/placeholder.png',
       palette: 'blue',
+      flashyNews: true,
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
@@ -728,6 +734,7 @@ var Affiliation = {
       symbol: './org/logistikkstudentene/symbol.png',
       placeholder: './org/logistikkstudentene/placeholder.png',
       palette: 'cyan',
+      flashyNews: true,
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
@@ -758,6 +765,7 @@ var Affiliation = {
       symbol: './org/tihlde/symbol.png',
       placeholder: './org/tihlde/placeholder.png',
       palette: 'blue',
+      flashyNews: true,
       irc: {
         server: 'irc.freenode.net',
         channel: '#tihlde',
@@ -854,6 +862,7 @@ var Affiliation = {
       symbol: './org/iaeste/symbol.png',
       placeholder: './org/iaeste/placeholder.png',
       palette: 'blue',
+      flashyNews: true,
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
@@ -884,6 +893,7 @@ var Affiliation = {
       symbol: './org/projeksjon/symbol.png',
       placeholder: './org/projeksjon/placeholder.png',
       palette: 'blue',
+      flashyNews: true,
       getImage: function(link, callback) {
         Images.get(this, link, callback);
       },
@@ -914,6 +924,7 @@ var Affiliation = {
       symbol: './org/soma/symbol.png',
       placeholder: './org/soma/placeholder.png',
       palette: 'cyan',
+      flashyNews: true,
       // getImages unnecessary, images are extracted from HTML in entries
     },
 
@@ -944,6 +955,7 @@ var Affiliation = {
       symbol: './org/dusken/symbol.png',
       placeholder: './org/dusken/placeholder.png',
       palette: 'grey',
+      flashyNews: true,
       // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
       getImage: function(link, callback) {
         Images.get(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
@@ -960,6 +972,7 @@ var Affiliation = {
       symbol: './org/universitetsavisa/symbol.png',
       placeholder: './org/universitetsavisa/placeholder.png',
       palette: 'cyan',
+      flashyNews: true,
       // getImages unnecessary, Universitetsavisa uses <enclosure>-tag for images
     },
 
@@ -973,6 +986,7 @@ var Affiliation = {
       symbol: './org/gemini/symbol.png',
       placeholder: './org/gemini/placeholder.png',
       palette: 'cyan',
+      flashyNews: true,
       // getImages unnecessary, Gemini uses <bilde>-tag for images
     },
 
@@ -986,6 +1000,7 @@ var Affiliation = {
       symbol: './org/adressa/symbol.png',
       placeholder: './org/adressa/placeholder.png',
       palette: 'blue',
+      flashyNews: true,
       // getImages unnecessary, Adresseavisen uses <enclosure>-tag, attribute "url", for images
     },
 
@@ -1001,6 +1016,7 @@ var Affiliation = {
       symbol: './org/samfundet/symbol.png',
       placeholder: './org/samfundet/placeholder.png',
       palette: 'red',
+      flashyNews: true,
       getImage: function(link, callback) {
         Images.get(this, link, callback, {newsSelector:'div#banner'});
       },
@@ -1122,6 +1138,7 @@ var Affiliation = {
       symbol: './org/rektoratet ntnu/symbol.png',
       placeholder: './org/rektoratet ntnu/placeholder.png',
       palette: 'blue',
+      flashyNews: true,
       getImage: function(link, callback) {
         Images.get(this, link, callback, {newsSelector:'div.entry'});
       },
@@ -1137,6 +1154,7 @@ var Affiliation = {
       symbol: './org/hist/symbol.png',
       placeholder: './org/hist/placeholder.png',
       palette: 'blue',
+      flashyNews: true,
       getImages: function(links, callback) {
         Images.get(this, links, callback, {newsSelector:'div.unit', domainUrl:'hist.no'});
       },
@@ -1152,6 +1170,7 @@ var Affiliation = {
       symbol: './org/dmmh/symbol.png',
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
+      flashyNews: true,
       getImage: function(link, callback) {
         Images.get(this, link, callback, {newsSelector:'div#content', domainUrl:'dmmh.no'});
       },
