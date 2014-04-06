@@ -256,8 +256,9 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       date = altLink = ''
       if item.altLink isnt null
         altLink = ' name="' + item.altLink + '"'
-      if item.date isnt null and ls.showAffiliation2 is 'false'
-        date = ' den ' + item.date
+      # NOTE: Removing date from use for now because it's borked
+      # if item.date isnt null and ls.showAffiliation2 is 'false'
+      #   date = ' den ' + item.date
       descLimit = 140
       if ls.showAffiliation2 is 'true'
         descLimit = 100
@@ -276,7 +277,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
             <div class="item" data="' + item.link + '"' + altLink + '>
               <img class="flashy" src="' + item.image + '" />
               <div class="title flashy">' + readUnread + item.title + '</div>
-              <div class="author flashy">&ndash; Av ' + item.creator + date + '</div>
+              <div class="author flashy">&ndash; Av ' + item.creator + '</div>
             </div>
           </div>'
 
@@ -287,7 +288,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
               <div class="title">' + readUnread + item.title + '</div>
               <img class="regular" src="' + item.image + '" />
               ' + item.description + '
-              <div class="author">&ndash; Av ' + item.creator + date + '</div>
+              <div class="author">&ndash; Av ' + item.creator + '</div>
             </div>
           </div>'
           

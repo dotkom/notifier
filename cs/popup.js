@@ -406,9 +406,6 @@
         if (item.altLink !== null) {
           altLink = ' name="' + item.altLink + '"';
         }
-        if (item.date !== null && ls.showAffiliation2 === 'false') {
-          date = ' den ' + item.date;
-        }
         descLimit = 140;
         if (ls.showAffiliation2 === 'true') {
           descLimit = 100;
@@ -428,7 +425,7 @@
             <div class="item" data="' + item.link + '"' + altLink + '>\
               <img class="flashy" src="' + item.image + '" />\
               <div class="title flashy">' + readUnread + item.title + '</div>\
-              <div class="author flashy">&ndash; Av ' + item.creator + date + '</div>\
+              <div class="author flashy">&ndash; Av ' + item.creator + '</div>\
             </div>\
           </div>';
         } else {
@@ -438,7 +435,7 @@
               <div class="title">' + readUnread + item.title + '</div>\
               <img class="regular" src="' + item.image + '" />\
               ' + item.description + '\
-              <div class="author">&ndash; Av ' + item.creator + date + '</div>\
+              <div class="author">&ndash; Av ' + item.creator + '</div>\
             </div>\
           </div>';
         }
