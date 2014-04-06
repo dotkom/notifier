@@ -277,7 +277,6 @@ header #notification .saved {
   position: relative;
   left: -6px;
   top: -6px;
-  height: 57px;
   padding: 5px;
 }
 .item #affiliationBox select {
