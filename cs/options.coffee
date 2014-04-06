@@ -40,7 +40,16 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     # Save the change
     ls[id] = affiliationKey
 
-    if isPrimaryAffiliation
+    if not isPrimaryAffiliation
+      # Symbol
+      symbol = Affiliation.org[ls.affiliationKey2].symbol
+      $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # Website link
+      web = Affiliation.org[ls.affiliationKey2].web
+      $('#affiliation2Symbol').unbind 'click'
+      $('#affiliation2Symbol').click ->
+        Browser.openTab web
+    else
       # Check if switching from or to an affiliation with fancy features
       old_has_hardware = if Affiliation.org[oldAffiliation].hw then true else false
       new_has_hardware = if Affiliation.org[affiliationKey].hw then true else false
@@ -71,13 +80,13 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       $('link[rel="shortcut icon"]').attr 'href', icon
       # Symbol
       symbol = Affiliation.org[affiliationKey].symbol
-      $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+      $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol+'");'
       # "Popup here"-bubble
       $('#popupHere img.icon').attr 'src', symbol
       # Website link
       web = Affiliation.org[affiliationKey].web
-      $('#affiliationSymbol').unbind 'click'
-      $('#affiliationSymbol').click ->
+      $('#affiliation1Symbol').unbind 'click'
+      $('#affiliation1Symbol').click ->
         Browser.openTab web
       # Name to badge title and localstorage
       name = Affiliation.org[affiliationKey].name
@@ -636,12 +645,18 @@ $ ->
   $('link[rel="shortcut icon"]').attr 'href', icon
   # news symbol
   symbol = Affiliation.org[ls.affiliationKey1].symbol
-  $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+  $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol+'");'
+  symbol2 = Affiliation.org[ls.affiliationKey2].symbol
+  $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol2+'");'
   # website
-  web = Affiliation.org[ls.affiliationKey1].web
-  $('#affiliationSymbol').unbind 'click'
-  $('#affiliationSymbol').click ->
-    Browser.openTab web
+  web1 = Affiliation.org[ls.affiliationKey1].web
+  $('#affiliation1Symbol').unbind 'click'
+  $('#affiliation1Symbol').click ->
+    Browser.openTab web1
+  web2 = Affiliation.org[ls.affiliationKey2].web
+  $('#affiliation2Symbol').unbind 'click'
+  $('#affiliation2Symbol').click ->
+    Browser.openTab web2
   # palette
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
   # icons

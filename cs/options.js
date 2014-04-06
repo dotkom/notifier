@@ -54,7 +54,15 @@
       affiliationKey = $(this).val();
       oldAffiliation = ls[id];
       ls[id] = affiliationKey;
-      if (isPrimaryAffiliation) {
+      if (!isPrimaryAffiliation) {
+        symbol = Affiliation.org[ls.affiliationKey2].symbol;
+        $('#affiliation2Symbol').attr('style', 'background-image:url("' + symbol + '");');
+        web = Affiliation.org[ls.affiliationKey2].web;
+        $('#affiliation2Symbol').unbind('click');
+        $('#affiliation2Symbol').click(function() {
+          return Browser.openTab(web);
+        });
+      } else {
         old_has_hardware = Affiliation.org[oldAffiliation].hw ? true : false;
         new_has_hardware = Affiliation.org[affiliationKey].hw ? true : false;
         if (old_has_hardware && !new_has_hardware) {
@@ -78,11 +86,11 @@
         Browser.setIcon(icon);
         $('link[rel="shortcut icon"]').attr('href', icon);
         symbol = Affiliation.org[affiliationKey].symbol;
-        $('#affiliationSymbol').attr('style', 'background-image:url("' + symbol + '");');
+        $('#affiliation1Symbol').attr('style', 'background-image:url("' + symbol + '");');
         $('#popupHere img.icon').attr('src', symbol);
         web = Affiliation.org[affiliationKey].web;
-        $('#affiliationSymbol').unbind('click');
-        $('#affiliationSymbol').click(function() {
+        $('#affiliation1Symbol').unbind('click');
+        $('#affiliation1Symbol').click(function() {
           return Browser.openTab(web);
         });
         name = Affiliation.org[affiliationKey].name;
@@ -634,7 +642,7 @@
   };
 
   $(function() {
-    var icon, symbol, text, web;
+    var icon, symbol, symbol2, text, web1, web2;
     if (DEBUG) {
       $('#debugLinks').show();
       $('button.debug').click(function() {
@@ -647,11 +655,18 @@
     icon = Affiliation.org[ls.affiliationKey1].icon;
     $('link[rel="shortcut icon"]').attr('href', icon);
     symbol = Affiliation.org[ls.affiliationKey1].symbol;
-    $('#affiliationSymbol').attr('style', 'background-image:url("' + symbol + '");');
-    web = Affiliation.org[ls.affiliationKey1].web;
-    $('#affiliationSymbol').unbind('click');
-    $('#affiliationSymbol').click(function() {
-      return Browser.openTab(web);
+    $('#affiliation1Symbol').attr('style', 'background-image:url("' + symbol + '");');
+    symbol2 = Affiliation.org[ls.affiliationKey2].symbol;
+    $('#affiliation2Symbol').attr('style', 'background-image:url("' + symbol2 + '");');
+    web1 = Affiliation.org[ls.affiliationKey1].web;
+    $('#affiliation1Symbol').unbind('click');
+    $('#affiliation1Symbol').click(function() {
+      return Browser.openTab(web1);
+    });
+    web2 = Affiliation.org[ls.affiliationKey2].web;
+    $('#affiliation2Symbol').unbind('click');
+    $('#affiliation2Symbol').click(function() {
+      return Browser.openTab(web2);
     });
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     changeOfficeStatusIcons();
