@@ -227,33 +227,29 @@ body {
       position: relative;
       width: 100%;
       float: left;
-      img {
-        float: left;
-        width: 200px;
-        max-height: 200px;
-        margin: 0 9px 6px 0;
+      .post {
+        .item {
+          img.regular {
+            float: left;
+            width: 33%;
+            max-height: 300px;
+            margin: 0 9px 6px 0;
+          }
+        }
       }
     }
     /* #left and #right for using double columns */
     #left {
       position: relative;
-      width: 45%;
+      width: 47%;
       float: left;
-      img {
-        float: right;
-        margin: 0 0 4px 4px;
-      }
     }
     #right {
       position: relative;
-      width: 50%;
+      width: 48%;
       float: right;
-      .title {
+      .title.regular {
         color: LightGrey;
-      }
-      img {
-        float: right;
-        margin: 0 0 4px 4px;
       }
     }
     .post {
@@ -272,16 +268,42 @@ body {
             inset 0 0 3px #bbb,
             0 0 13px white;
         }
+
         .title {
           margin-top: 0; /* overrides default value */
         }
+        .title.regular {
+          // nothing here yet
+        }
+        .title.flashy {
+          font-size: 35px;
+          line-height: 38px;
+          top: 23px;
+          left: 18px;
+        }
+
+        .author {
+          
+        }
+        .author.regular {
+          
+        }
+        .author.flashy {
+          font-size: 32px;
+          bottom: 24px;
+          left: 18px;
+        }
+
         img {
-          width: auto;
-          height: auto;
-          max-width: 160px;
-          max-height: 160px;
+          max-height: 300px;
           padding: 8px;
           box-shadow: 0 0 27px #bbb;
+        }
+        img.regular {
+          margin: 2px 0 0 4px;
+        }
+        img.flashy {
+          /* nothing here yet */
         }
       }
     }
