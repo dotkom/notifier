@@ -230,14 +230,44 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+#container #news .post .item .title {
+  position: relative;
+}
+#container #news .post .item .title.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-transform: none;
+  text-shadow: 0 0 5px #333333, 0 0 10px #333333, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+}
 #container #news .post .item .author {
   display: inline;
   position: relative;
   font-style: italic;
 }
+#container #news .post .item .author.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+}
 #container #news .post .item img {
-  float: left;
+  width: auto;
+  height: auto;
   background: snow;
+}
+#container #news .post .item img.regular {
+  float: right;
+  width: 33%;
+}
+#container #news .post .item img.flashy {
+  float: left;
+  width: 96%;
+  margin: 0;
 }
 #container #news .unread {
   text-shadow: 0 0 10px white,
@@ -484,32 +514,24 @@ body {
   width: 100%;
   float: left;
 }
-#container #news #full img {
+#container #news #full .post .item img.regular {
   float: left;
-  width: 93px;
-  max-height: 93px;
+  width: 33%;
+  max-height: 200px;
   margin: 0 7px 4px 0;
 }
 #container #news #left {
   position: relative;
-  width: 45%;
+  width: 47%;
   float: left;
-}
-#container #news #left img {
-  float: right;
-  margin: 0 0 4px 4px;
 }
 #container #news #right {
   position: relative;
-  width: 50%;
+  width: 48%;
   float: right;
 }
-#container #news #right .title {
+#container #news #right .title.regular {
   color: LightGrey;
-}
-#container #news #right img {
-  float: right;
-  margin: 0 0 4px 4px;
 }
 #container #news .post {
   margin-top: 13px;
@@ -532,13 +554,28 @@ body {
   /* overrides default value */
 
 }
+#container #news .post .item .title.flashy {
+  font-size: 15px;
+  line-height: 18px;
+  top: 13px;
+  left: 8px;
+}
+#container #news .post .item .author.flashy {
+  font-size: 12px;
+  bottom: 14px;
+  left: 8px;
+}
 #container #news .post .item img {
-  width: auto;
-  height: auto;
-  max-width: 80px;
-  max-height: 80px;
+  max-height: 200px;
   padding: 4px;
   box-shadow: 0 0 13px #bbb;
+}
+#container #news .post .item img.regular {
+  margin: 2px 0 0 4px;
+}
+#container #news .post .item img.flashy {
+  /* nothing here yet */
+
 }
 #container #news .unread {
   font-size: 11px;
