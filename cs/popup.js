@@ -393,11 +393,13 @@
         viewedList.push(item.link);
         unreadCount = Number(ls[unreadCountName]);
         readUnread = '';
-        if (index < unreadCount) {
-          if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
-            readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
-          } else {
-            readUnread += '<span class="unread">NEW <b>::</b> </span>';
+        if (!Affiliation.org[feedKey].flashyNews) {
+          if (index < unreadCount) {
+            if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
+              readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
+            } else {
+              readUnread += '<span class="unread">NEW <b>::</b> </span>';
+            }
           }
         }
         date = altLink = '';
@@ -420,15 +422,26 @@
             item.image = storedImage;
           }
         }
-        htmlItem = '\
-        <div class="post">\
-          <div class="item" data="' + item.link + '"' + altLink + '>\
-            <div class="title">' + readUnread + item.title + '</div>\
-            <img src="' + item.image + '" width="107" />\
-            ' + item.description + '\
-            <div class="author">&ndash; Av ' + item.creator + date + '</div>\
-          </div>\
-        </div>';
+        if (Affiliation.org[feedKey].flashyNews && ls.showAffiliation2 === 'true') {
+          htmlItem = '\
+          <div class="post">\
+            <div class="item" data="' + item.link + '"' + altLink + '>\
+              <img class="flashy" src="' + item.image + '" />\
+              <div class="title flashy">' + readUnread + item.title + '</div>\
+              <div class="author flashy">&ndash; Av ' + item.creator + date + '</div>\
+            </div>\
+          </div>';
+        } else {
+          htmlItem = '\
+          <div class="post">\
+            <div class="item" data="' + item.link + '"' + altLink + '>\
+              <div class="title">' + readUnread + item.title + '</div>\
+              <img class="regular" src="' + item.image + '" />\
+              ' + item.description + '\
+              <div class="author">&ndash; Av ' + item.creator + date + '</div>\
+            </div>\
+          </div>';
+        }
         return $('#news ' + column).append(htmlItem);
       }
     });
