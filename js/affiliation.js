@@ -899,20 +899,20 @@ var Affiliation = {
       },
     },
 
-    // 'signifikant': {
-    //   name: 'Signifikant',
-    //   key: 'signifikant',
-    //   web: 'http://org.ntnu.no/signifikant/',
-    //   feed: 'http://org.ntnu.no/signifikant/?q=rss.xml',
-    //   logo: './org/signifikant/logo.png',
-    //   icon: './org/signifikant/icon.png',
-    //   symbol: './org/signifikant/symbol.png',
-    //   placeholder: './org/signifikant/placeholder.png',
-    //   palette: 'cyan',
-    //   getImages: function(links, callback) {
-    //     Images.get(this, links, callback);
-    //   },
-    // },
+    'signifikant': {
+      name: 'Signifikant',
+      key: 'signifikant',
+      web: 'http://org.ntnu.no/signifikant/',
+      feed: 'http://org.ntnu.no/signifikant/?q=rss.xml',
+      logo: './org/signifikant/logo.png',
+      icon: './org/signifikant/icon.png',
+      symbol: './org/signifikant/symbol.png',
+      placeholder: './org/signifikant/placeholder.png',
+      palette: 'cyan',
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'div.content', domainUrl:'org.ntnu.no'});
+      },
+    },
 
     'soma': {
       name: 'Soma',
