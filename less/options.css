@@ -224,7 +224,6 @@ header #notification .saved {
 }
 .item #affiliationBox {
   width: 353px;
-  height: 47px;
   border-top: 1px solid white;
   border-bottom: 1px solid #7a7a7a;
   border-radius: 4px;
@@ -237,19 +236,15 @@ header #notification .saved {
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
 
-  padding: 5px 11px;
   overflow: hidden;
   white-space: nowrap;
   word-wrap: break-word;
 }
-.item #affiliationBox #affiliation1Symbol {
+.item #affiliationBox .symbol {
   border: 0 solid #ff0000;
-  float: left;
   white-space: nowrap;
   cursor: pointer;
   width: 59px;
-  margin: -7px 5px -7px -11px;
-  border-right: 1px solid #aaa;
   background-position: center center;
   background-size: 59px 59px;
   background-repeat: no-repeat;
@@ -257,30 +252,21 @@ header #notification .saved {
   /* is switched for affiliation1 logo */
 
 }
+.item #affiliationBox #affiliation1Symbol {
+  float: left;
+  border-right: 1px solid #aaa;
+}
 .item #affiliationBox #affiliation2Symbol {
-  border: 0 solid #ff0000;
   float: right;
-  white-space: nowrap;
-  cursor: pointer;
-  width: 59px;
-  margin: -7px -11px -7px 5px;
   border-left: 1px solid #aaa;
-  background-position: center center;
-  background-size: 59px 59px;
-  background-repeat: no-repeat;
-  background-image: url(../org/dusken/symbol.png);
-  /* is switched for affiliation2 logo */
-
 }
 .item #affiliationBox .box {
   border: 0 solid #ff0000;
   position: relative;
-  left: -6px;
-  top: -6px;
-  padding: 5px;
+  padding: 5px 6px;
 }
-.item #affiliationBox select {
-  width: 110px;
+.item #affiliationBox .box select {
+  width: 100px;
   margin-top: 4px;
   border: 1px solid #7a7a7a;
   word-wrap: initial;
@@ -288,8 +274,10 @@ header #notification .saved {
 .item #affiliationBox #primary {
   float: left;
   border-right: 1px solid #aaa;
-  width: 114px;
-  margin-left: 6px;
+  width: 105px;
+}
+.item #affiliationBox #primary select {
+  margin-left: 2px;
 }
 .item #affiliationBox #primary #affiliationKey1 {
   background-color: yellow;
@@ -309,8 +297,42 @@ header #notification .saved {
   box-shadow: 0 0 0 black;
 }
 .item #affiliationBox #secondary #affiliation2Checkbox label {
+  position: relative;
+  left: -2px;
   color: black;
   font-size: 12px;
+}
+.item #affiliationBox #flashyNews {
+  position: relative;
+  float: left;
+  border-top: 1px solid #aaa;
+  background: -webkit-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
+  /* Chrome10+,Safari5.1+,Opera15+ */
+
+  background: linear-gradient(to bottom, #e8e8e8 0%, #c0c0c0 100%);
+  /* W3C */
+
+  width: 100%;
+  padding: 4px 11px;
+  color: black;
+  font-size: 12px;
+}
+.item #affiliationBox #flashyNews img {
+  position: relative;
+  float: left;
+  border: 1px solid #aaa;
+  width: 80px;
+  height: auto;
+}
+.item #affiliationBox #flashyNews div {
+  margin-top: 2px;
+  margin-left: 5px;
+  position: relative;
+  float: left;
+  max-width: 240px;
+}
+.item #affiliationBox #flashyNews div input {
+  box-shadow: 0 0 0 black;
 }
 .item #cantinaBox {
   width: 352px;
