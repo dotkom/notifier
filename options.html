@@ -33,8 +33,8 @@
           </span><br />
         </label>
         <div id="affiliationBox" class="image">
-          <img id="affiliation1Symbol" src="/img/options-gloss.png" />
-          <img id="affiliation2Symbol" src="/img/options-gloss.png" />
+          <img id="affiliation1Symbol" class="symbol" src="/img/options-gloss.png" />
+          <img id="affiliation2Symbol" class="symbol" src="/img/options-gloss.png" />
           <div id="primary" class="box">
             <!-- IMPORTANT: Keep the same order here as in affiliation.js -->
             <select id="affiliationKey1">
@@ -211,6 +211,13 @@
             </select>
             <div id="affiliation2Checkbox">
               <input id="showAffiliation2" type="checkbox" /><label for="showAffiliation2">Vis denne også</label>
+            </div>
+          </div>
+          <div id="flashyNews">
+            <img src="img/options-flashy-news.png" />
+            <div>
+              <input id="flashy1" type="checkbox">Store nyhetsbilder fra _PRIMARY_</input><br />
+              <input id="flashy2" type="checkbox">Store nyhetsbilder fra _SECONDARY_</input>
             </div>
           </div>
         </div>
