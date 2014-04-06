@@ -57,6 +57,8 @@
       if (!isPrimaryAffiliation) {
         symbol = Affiliation.org[ls.affiliationKey2].symbol;
         $('#affiliation2Symbol').attr('style', 'background-image:url("' + symbol + '");');
+        name = Affiliation.org[ls.affiliationKey2].name.split(' ').splice(0, 1);
+        $('#flashyName2').text(name);
         web = Affiliation.org[ls.affiliationKey2].web;
         $('#affiliation2Symbol').unbind('click');
         $('#affiliation2Symbol').click(function() {
@@ -87,6 +89,8 @@
         $('link[rel="shortcut icon"]').attr('href', icon);
         symbol = Affiliation.org[affiliationKey].symbol;
         $('#affiliation1Symbol').attr('style', 'background-image:url("' + symbol + '");');
+        name = Affiliation.org[ls.affiliationKey1].name.split(' ').splice(0, 1);
+        $('#flashyName1').text(name);
         $('#popupHere img.icon').attr('src', symbol);
         web = Affiliation.org[affiliationKey].web;
         $('#affiliation1Symbol').unbind('click');
@@ -642,7 +646,7 @@
   };
 
   $(function() {
-    var icon, symbol, symbol2, text, web1, web2;
+    var icon, name1, name2, symbol1, symbol2, text, web1, web2;
     if (DEBUG) {
       $('#debugLinks').show();
       $('button.debug').click(function() {
@@ -654,10 +658,14 @@
     }
     icon = Affiliation.org[ls.affiliationKey1].icon;
     $('link[rel="shortcut icon"]').attr('href', icon);
-    symbol = Affiliation.org[ls.affiliationKey1].symbol;
-    $('#affiliation1Symbol').attr('style', 'background-image:url("' + symbol + '");');
+    symbol1 = Affiliation.org[ls.affiliationKey1].symbol;
+    $('#affiliation1Symbol').attr('style', 'background-image:url("' + symbol1 + '");');
     symbol2 = Affiliation.org[ls.affiliationKey2].symbol;
     $('#affiliation2Symbol').attr('style', 'background-image:url("' + symbol2 + '");');
+    name1 = Affiliation.org[ls.affiliationKey1].name.split(' ').splice(0, 1);
+    $('#flashyName1').text(name1);
+    name2 = Affiliation.org[ls.affiliationKey2].name.split(' ').splice(0, 1);
+    $('#flashyName2').text(name2);
     web1 = Affiliation.org[ls.affiliationKey1].web;
     $('#affiliation1Symbol').unbind('click');
     $('#affiliation1Symbol').click(function() {
@@ -670,7 +678,7 @@
     });
     $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
     changeOfficeStatusIcons();
-    $('#popupHere img.icon').attr('src', symbol);
+    $('#popupHere img.icon').attr('src', symbol1);
     restoreChecksToBoxes();
     if (ls.useInfoscreen === 'true') {
       setTimeout((function() {

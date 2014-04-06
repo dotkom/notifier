@@ -44,6 +44,9 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # Symbol
       symbol = Affiliation.org[ls.affiliationKey2].symbol
       $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # Flashy news text
+      name = Affiliation.org[ls.affiliationKey2].name.split(' ').splice(0,1)
+      $('#flashyName2').text name
       # Website link
       web = Affiliation.org[ls.affiliationKey2].web
       $('#affiliation2Symbol').unbind 'click'
@@ -81,6 +84,9 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       # Symbol
       symbol = Affiliation.org[affiliationKey].symbol
       $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # Flashy news text
+      name = Affiliation.org[ls.affiliationKey1].name.split(' ').splice(0,1)
+      $('#flashyName1').text name
       # "Popup here"-bubble
       $('#popupHere img.icon').attr 'src', symbol
       # Website link
@@ -644,10 +650,15 @@ $ ->
   icon = Affiliation.org[ls.affiliationKey1].icon
   $('link[rel="shortcut icon"]').attr 'href', icon
   # news symbol
-  symbol = Affiliation.org[ls.affiliationKey1].symbol
-  $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol+'");'
+  symbol1 = Affiliation.org[ls.affiliationKey1].symbol
+  $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol1+'");'
   symbol2 = Affiliation.org[ls.affiliationKey2].symbol
   $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol2+'");'
+  # flashy news text
+  name1 = Affiliation.org[ls.affiliationKey1].name.split(' ').splice(0,1)
+  $('#flashyName1').text name1
+  name2 = Affiliation.org[ls.affiliationKey2].name.split(' ').splice(0,1)
+  $('#flashyName2').text name2
   # website
   web1 = Affiliation.org[ls.affiliationKey1].web
   $('#affiliation1Symbol').unbind 'click'
@@ -662,7 +673,7 @@ $ ->
   # icons
   changeOfficeStatusIcons()
   # popup-here bubble
-  $('#popupHere img.icon').attr 'src', symbol
+  $('#popupHere img.icon').attr 'src', symbol1
 
   restoreChecksToBoxes()
 
