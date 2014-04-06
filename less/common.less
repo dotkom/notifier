@@ -198,7 +198,38 @@ body {
 
   #news {
     .fullbox;
+    
+    /* #full for using a single column */
+    #full {
+      position: relative;
+      width: 100%;
+      float: left;
+      .post {
+        .item {
+          img.regular {
+            float: left;
+            width: 33%;
+          }
+        }
+      }
+    }
+    
+    /* #left and #right for using double columns */
+    #left {
+      position: relative;
+      width: 47%;
+      float: left;
+    }
+    #right {
+      position: relative;
+      width: 48%;
+      float: right;
+      .title.regular {
+        color: LightGrey;
+      }
+    }
 
+    /* for each news post, and item within */
     .post {
       .debugBox;
       position: relative;
@@ -211,6 +242,7 @@ body {
 
         .title {
           position: relative;
+          margin-top: 0; /* overrides default value */
         }
         .title.regular {
           

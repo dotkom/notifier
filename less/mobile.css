@@ -219,6 +219,34 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  /* #full for using a single column */
+
+  /* #left and #right for using double columns */
+
+  /* for each news post, and item within */
+
+}
+#container #news #full {
+  position: relative;
+  width: 100%;
+  float: left;
+}
+#container #news #full .post .item img.regular {
+  float: left;
+  width: 33%;
+}
+#container #news #left {
+  position: relative;
+  width: 47%;
+  float: left;
+}
+#container #news #right {
+  position: relative;
+  width: 48%;
+  float: right;
+}
+#container #news #right .title.regular {
+  color: LightGrey;
 }
 #container #news .post {
   border: 0px solid #ff0000;
@@ -232,6 +260,9 @@ body {
 }
 #container #news .post .item .title {
   position: relative;
+  margin-top: 0;
+  /* overrides default value */
+
 }
 #container #news .post .item .title.flashy {
   position: absolute;

@@ -224,34 +224,16 @@ body {
   #news {
     /* #full for using a single column */
     #full {
-      position: relative;
-      width: 100%;
-      float: left;
       .post {
         .item {
           img.regular {
-            float: left;
-            width: 33%;
             max-height: 300px;
             margin: 0 9px 6px 0;
           }
         }
       }
     }
-    /* #left and #right for using double columns */
-    #left {
-      position: relative;
-      width: 47%;
-      float: left;
-    }
-    #right {
-      position: relative;
-      width: 48%;
-      float: right;
-      .title.regular {
-        color: LightGrey;
-      }
-    }
+
     .post {
       margin-top: 33px;
       .item {
@@ -269,12 +251,6 @@ body {
             0 0 13px white;
         }
 
-        .title {
-          margin-top: 0; /* overrides default value */
-        }
-        .title.regular {
-          // nothing here yet
-        }
         .title.flashy {
           font-size: 35px;
           line-height: 38px;
@@ -282,12 +258,6 @@ body {
           left: 18px;
         }
 
-        .author {
-          
-        }
-        .author.regular {
-          
-        }
         .author.flashy {
           font-size: 32px;
           bottom: 24px;
@@ -300,10 +270,7 @@ body {
           box-shadow: 0 0 27px #bbb;
         }
         img.regular {
-          margin: 2px 0 0 4px;
-        }
-        img.flashy {
-          /* nothing here yet */
+          margin: 4px 0 0 6px;
         }
       }
     }

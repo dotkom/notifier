@@ -219,6 +219,34 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  /* #full for using a single column */
+
+  /* #left and #right for using double columns */
+
+  /* for each news post, and item within */
+
+}
+#container #news #full {
+  position: relative;
+  width: 100%;
+  float: left;
+}
+#container #news #full .post .item img.regular {
+  float: left;
+  width: 33%;
+}
+#container #news #left {
+  position: relative;
+  width: 47%;
+  float: left;
+}
+#container #news #right {
+  position: relative;
+  width: 48%;
+  float: right;
+}
+#container #news #right .title.regular {
+  color: LightGrey;
 }
 #container #news .post {
   border: 0px solid #ff0000;
@@ -232,6 +260,9 @@ body {
 }
 #container #news .post .item .title {
   position: relative;
+  margin-top: 0;
+  /* overrides default value */
+
 }
 #container #news .post .item .title.flashy {
   position: absolute;
@@ -506,32 +537,10 @@ body {
 #container #news {
   /* #full for using a single column */
 
-  /* #left and #right for using double columns */
-
-}
-#container #news #full {
-  position: relative;
-  width: 100%;
-  float: left;
 }
 #container #news #full .post .item img.regular {
-  float: left;
-  width: 33%;
   max-height: 200px;
   margin: 0 7px 4px 0;
-}
-#container #news #left {
-  position: relative;
-  width: 47%;
-  float: left;
-}
-#container #news #right {
-  position: relative;
-  width: 48%;
-  float: right;
-}
-#container #news #right .title.regular {
-  color: LightGrey;
 }
 #container #news .post {
   margin-top: 13px;
@@ -548,11 +557,6 @@ body {
 #container #news .post .item:hover {
   box-shadow: inset 0 0 2px #bbb,
             0 0 13px white;
-}
-#container #news .post .item .title {
-  margin-top: 0;
-  /* overrides default value */
-
 }
 #container #news .post .item .title.flashy {
   font-size: 15px;
@@ -572,10 +576,6 @@ body {
 }
 #container #news .post .item img.regular {
   margin: 2px 0 0 4px;
-}
-#container #news .post .item img.flashy {
-  /* nothing here yet */
-
 }
 #container #news .unread {
   font-size: 11px;
