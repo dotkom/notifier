@@ -220,7 +220,8 @@ header {
     overflow: hidden;
     white-space: nowrap;
     word-wrap: break-word;
-    #affiliationSymbol {
+    
+    #affiliation1Symbol {
       .debugred;
       float: left;
       white-space: nowrap;
@@ -231,60 +232,71 @@ header {
       background-position: center center;
       background-size: 59px 59px;
       background-repeat: no-repeat;
-      background-image: url(../org/online/symbol.png); /* is switched for affiliation logo */
+      background-image: url(../org/online/symbol.png); /* is switched for affiliation1 logo */
     }
-    .row {
+
+    #affiliation2Symbol {
       .debugred;
       float: right;
-      width: 293px;
-      color: black;
-      text-shadow: 0 0 0 black;
-      select {
-        position: relative;
-      }
-      input {
-        box-shadow: 0 0 0 black;
-      }
+      white-space: nowrap;
+      cursor: pointer;
+      width: 59px;
+      margin: -7px -11px -7px 5px;
+      border-left: 1px solid #aaa;
+      background-position: center center;
+      background-size: 59px 59px;
+      background-repeat: no-repeat;
+      background-image: url(../org/dusken/symbol.png); /* is switched for affiliation2 logo */
     }
-    #topRow {
+
+    .box {
+      .debugred;
+      position: relative;
+      left: -6px;
+      top: -6px;
+      height: 57px;
+      padding: 5px;
     }
-    #bottomRow {
-      font-size: 13px;
+
+    select {
+      width: 110px;
       margin-top: 4px;
-      select {
-        top: -4px;
+      border: 1px solid #7a7a7a;
+      word-wrap: initial;
+    }
+
+    #primary {
+      float: left;
+      border-right: 1px solid #aaa;
+      width: 114px;
+      margin-left: 6px;
+      
+      #affiliationKey1 {
+        background-color: yellow;
+      }
+      #affiliationPalette {
+        position: relative;
+        float: left;
       }
     }
-    #affiliationKey1 {
-      .debugred;
-      display: inline-block;
-      float: left;
-      border: 1px solid #7a7a7a;
-      background-color: yellow;
-      position: relative;
-      margin-top: 3px;
-      white-space: nowrap;
-      width: 156px;
-    }
-    #affiliationPalette {
-      .debugred;
-      display: inline-block;
+
+    #secondary {
       float: right;
-      border: 1px solid #7a7a7a;
-      position: relative;
-      margin-top: 3px;
-      white-space: nowrap;
-      width: 128px;
-    }
-    #affiliationKey2 {
-      .debugred;
-      display: inline-block;
-      border: 1px solid #7a7a7a;
-      float: right;
-      position: relative;
-      margin-top: 3px;
-      white-space: nowrap;
-      width: 128px;
+      width: 100px;
+      
+      #affiliationKey2 {
+        // nothing here yet
+      }
+      #affiliation2Checkbox {
+        margin-top: 3px;
+        input {
+          box-shadow: 0 0 0 black;
+        }
+        label {
+          color: black;
+          font-size: 12px;
+        }
+      }
     }
   }
 

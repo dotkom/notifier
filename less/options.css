@@ -242,7 +242,7 @@ header #notification .saved {
   white-space: nowrap;
   word-wrap: break-word;
 }
-.item #affiliationBox #affiliationSymbol {
+.item #affiliationBox #affiliation1Symbol {
   border: 0 solid #ff0000;
   float: left;
   white-space: nowrap;
@@ -254,59 +254,64 @@ header #notification .saved {
   background-size: 59px 59px;
   background-repeat: no-repeat;
   background-image: url(../org/online/symbol.png);
-  /* is switched for affiliation logo */
+  /* is switched for affiliation1 logo */
 
 }
-.item #affiliationBox .row {
+.item #affiliationBox #affiliation2Symbol {
   border: 0 solid #ff0000;
   float: right;
-  width: 293px;
-  color: black;
-  text-shadow: 0 0 0 black;
+  white-space: nowrap;
+  cursor: pointer;
+  width: 59px;
+  margin: -7px -11px -7px 5px;
+  border-left: 1px solid #aaa;
+  background-position: center center;
+  background-size: 59px 59px;
+  background-repeat: no-repeat;
+  background-image: url(../org/dusken/symbol.png);
+  /* is switched for affiliation2 logo */
+
 }
-.item #affiliationBox .row select {
+.item #affiliationBox .box {
+  border: 0 solid #ff0000;
   position: relative;
+  left: -6px;
+  top: -6px;
+  height: 57px;
+  padding: 5px;
 }
-.item #affiliationBox .row input {
+.item #affiliationBox select {
+  width: 110px;
+  margin-top: 4px;
+  border: 1px solid #7a7a7a;
+  word-wrap: initial;
+}
+.item #affiliationBox #primary {
+  float: left;
+  border-right: 1px solid #aaa;
+  width: 114px;
+  margin-left: 6px;
+}
+.item #affiliationBox #primary #affiliationKey1 {
+  background-color: yellow;
+}
+.item #affiliationBox #primary #affiliationPalette {
+  position: relative;
+  float: left;
+}
+.item #affiliationBox #secondary {
+  float: right;
+  width: 100px;
+}
+.item #affiliationBox #secondary #affiliation2Checkbox {
+  margin-top: 3px;
+}
+.item #affiliationBox #secondary #affiliation2Checkbox input {
   box-shadow: 0 0 0 black;
 }
-.item #affiliationBox #bottomRow {
-  font-size: 13px;
-  margin-top: 4px;
-}
-.item #affiliationBox #bottomRow select {
-  top: -4px;
-}
-.item #affiliationBox #affiliationKey1 {
-  border: 0 solid #ff0000;
-  display: inline-block;
-  float: left;
-  border: 1px solid #7a7a7a;
-  background-color: yellow;
-  position: relative;
-  margin-top: 3px;
-  white-space: nowrap;
-  width: 156px;
-}
-.item #affiliationBox #affiliationPalette {
-  border: 0 solid #ff0000;
-  display: inline-block;
-  float: right;
-  border: 1px solid #7a7a7a;
-  position: relative;
-  margin-top: 3px;
-  white-space: nowrap;
-  width: 128px;
-}
-.item #affiliationBox #affiliationKey2 {
-  border: 0 solid #ff0000;
-  display: inline-block;
-  border: 1px solid #7a7a7a;
-  float: right;
-  position: relative;
-  margin-top: 3px;
-  white-space: nowrap;
-  width: 128px;
+.item #affiliationBox #secondary #affiliation2Checkbox label {
+  color: black;
+  font-size: 12px;
 }
 .item #cantinaBox {
   width: 352px;
