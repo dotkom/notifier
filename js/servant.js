@@ -10,6 +10,10 @@ var Servant = {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
+    if (!Affiliation.org[localStorage.affiliationKey1].hw) {
+      if (this.debug) console.log('ERROR: affiliation without hw-features tried checking for servants');
+      return;
+    }
 
     var api = Affiliation.org[localStorage.affiliationKey1].hw.apis.servant;
 

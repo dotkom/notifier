@@ -26,6 +26,10 @@ var Office = {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
+    if (!Affiliation.org[localStorage.affiliationKey1].hw) {
+      if (this.debug) console.log('ERROR: affiliation without hw-features tried checking office status');
+      return;
+    }
 
     var self = this;
     this.getEventData( function(status, message) {
