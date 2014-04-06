@@ -230,14 +230,44 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+#container #news .post .item .title {
+  position: relative;
+}
+#container #news .post .item .title.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-transform: none;
+  text-shadow: 0 0 5px #333333, 0 0 10px #333333, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+}
 #container #news .post .item .author {
   display: inline;
   position: relative;
   font-style: italic;
 }
+#container #news .post .item .author.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+}
 #container #news .post .item img {
-  float: left;
+  width: auto;
+  height: auto;
   background: snow;
+}
+#container #news .post .item img.regular {
+  float: right;
+  width: 33%;
+}
+#container #news .post .item img.flashy {
+  float: left;
+  width: 96%;
+  margin: 0;
 }
 #container #news .unread {
   text-shadow: 0 0 10px white,
