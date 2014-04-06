@@ -243,11 +243,12 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       
       unreadCount = Number ls[unreadCountName]
       readUnread = ''
-      if index < unreadCount
-        if item.link in updatedList.indexOf
-          readUnread += '<span class="unread">UPDATED <b>::</b> </span>'
-        else
-          readUnread += '<span class="unread">NEW <b>::</b> </span>'
+      unless Affiliation.org[feedKey].flashyNews
+        if index < unreadCount
+          if item.link in updatedList.indexOf
+            readUnread += '<span class="unread">UPDATED <b>::</b> </span>'
+          else
+            readUnread += '<span class="unread">NEW <b>::</b> </span>'
 
       # EXPLANATION NEEDED:
       # .item[data] contains the link
@@ -269,15 +270,27 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
         if -1 is item.image.indexOf 'http'
           item.image = storedImage
 
-      htmlItem = '
-        <div class="post">
-          <div class="item" data="' + item.link + '"' + altLink + '>
-            <div class="title">' + readUnread + item.title + '</div>
-            <img src="' + item.image + '" width="107" />
-            ' + item.description + '
-            <div class="author">&ndash; Av ' + item.creator + date + '</div>
-          </div>
-        </div>'
+      if Affiliation.org[feedKey].flashyNews and ls.showAffiliation2 is 'true'
+        htmlItem = '
+          <div class="post">
+            <div class="item" data="' + item.link + '"' + altLink + '>
+              <img class="flashy" src="' + item.image + '" />
+              <div class="title flashy">' + readUnread + item.title + '</div>
+              <div class="author flashy">&ndash; Av ' + item.creator + date + '</div>
+            </div>
+          </div>'
+
+      else
+        htmlItem = '
+          <div class="post">
+            <div class="item" data="' + item.link + '"' + altLink + '>
+              <div class="title">' + readUnread + item.title + '</div>
+              <img class="regular" src="' + item.image + '" />
+              ' + item.description + '
+              <div class="author">&ndash; Av ' + item.creator + date + '</div>
+            </div>
+          </div>'
+          
       $('#news '+column).append htmlItem
   
   # Store list of last viewed items
