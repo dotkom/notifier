@@ -45,7 +45,8 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       symbol = Affiliation.org[ls.affiliationKey2].symbol
       $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol+'");'
       # Flashy news text
-      name = Affiliation.org[ls.affiliationKey2].name.split(' ').splice(0,1)
+      name = Affiliation.org[ls.affiliationKey2].name
+      if name.length > 20 then name = name.substring(0, 18) + '..'
       $('#flashyName2').text name
       # Website link
       web = Affiliation.org[ls.affiliationKey2].web
@@ -85,7 +86,8 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       symbol = Affiliation.org[affiliationKey].symbol
       $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol+'");'
       # Flashy news text
-      name = Affiliation.org[ls.affiliationKey1].name.split(' ').splice(0,1)
+      name = Affiliation.org[ls.affiliationKey1].name
+      if name.length > 20 then name = name.substring(0, 18) + '..'
       $('#flashyName1').text name
       # "Popup here"-bubble
       $('#popupHere img.icon').attr 'src', symbol
@@ -483,6 +485,26 @@ slideFavoriteBusLines = ->
     # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
     $('#busBox').data 'timeoutId', timeoutId
 
+slideFlashyNews = ->
+  # Hide the flashy news options from the start
+  setTimeout ( ->
+    if not $('#affiliationBox').hasClass 'hover'
+      $('#affiliationBox #flashyNews').slideUp()
+      $('#affiliationBox #arrowDown').fadeIn()
+  ), 1500
+  # Show flashy news options when hovering
+  $('#affiliationBox').mouseenter ->
+    clearTimeout $(this).data 'timeoutId'
+    $('#affiliationBox #flashyNews').slideDown()
+    $('#affiliationBox #arrowDown').fadeOut()
+  $('#affiliationBox').mouseleave ->
+    timeoutId = setTimeout ( ->
+      $('#affiliationBox #flashyNews').slideUp()
+      $('#affiliationBox #arrowDown').fadeIn()
+    ), 500
+    # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
+    $('#affiliationBox').data 'timeoutId', timeoutId
+
 bindSuggestions = ->
   $('.suggestion').click ->
     if ls.busInFocus isnt undefined
@@ -655,9 +677,11 @@ $ ->
   symbol2 = Affiliation.org[ls.affiliationKey2].symbol
   $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol2+'");'
   # flashy news text
-  name1 = Affiliation.org[ls.affiliationKey1].name.split(' ').splice(0,1)
+  name1 = Affiliation.org[ls.affiliationKey1].name
+  if name1.length > 20 then name1 = name1.substring(0, 18) + '..'
   $('#flashyName1').text name1
-  name2 = Affiliation.org[ls.affiliationKey2].name.split(' ').splice(0,1)
+  name2 = Affiliation.org[ls.affiliationKey2].name
+  if name2.length > 20 then name2 = name2.substring(0, 18) + '..'
   $('#flashyName2').text name2
   # website
   web1 = Affiliation.org[ls.affiliationKey1].web
@@ -726,6 +750,9 @@ $ ->
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
 
+  # Slide away flashy news options when not needed to conserve space
+  slideFlashyNews()
+
   # Load lists of bus stops
   Stops.load()
 
@@ -747,6 +774,12 @@ $ ->
 
   # Adding a hover class to #busBox whenever the mouse is hovering over it
   $('#busBox').hover ->
+    $(this).addClass 'hover'
+  , ->
+    $(this).removeClass 'hover'
+
+  # Adding a hover class to #affiliationBox whenever the mouse is hovering over it
+  $('#affiliationBox').hover ->
     $(this).addClass 'hover'
   , ->
     $(this).removeClass 'hover'
