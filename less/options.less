@@ -294,6 +294,7 @@ header {
     #flashyNews {
       position: relative;
       float: left;
+      display: none;
       border-top: 1px solid #aaa;
       background: -webkit-linear-gradient(top, #e8e8e8 0%,#c0c0c0 100%); /* Chrome10+,Safari5.1+,Opera15+ */
       background: linear-gradient(to bottom, #e8e8e8 0%,#c0c0c0 100%); /* W3C */
@@ -318,6 +319,16 @@ header {
         input {
           box-shadow: 0 0 0 black;
         }
+      }
+    }
+
+    #arrowDown {
+      position: relative; /* paint behind other stuff */
+      z-index: 100;  /* paint behind other stuff */
+      left: -6px;
+      top: 45px;
+      img {
+        width: 12px;
       }
     }
   }
