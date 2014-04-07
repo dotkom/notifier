@@ -276,7 +276,7 @@
   };
 
   displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
-    var feedKey, i, newsList, storedImages, times, updatedList, viewedList, _results;
+    var canHaveFlashy, feedKey, i, isDuplicate, isFlashy, isFlashyEnabled, isPrimaryAffiliation, newsList, storedImages, times, updatedList, viewedList, _results;
     $('#news ' + column).html('');
     feedKey = items[0].feedKey;
     newsList = JSON.parse(ls[newsListName]);
@@ -284,13 +284,25 @@
     updatedList = findUpdatedPosts(newsList, viewedList);
     viewedList = [];
     storedImages = JSON.parse(ls.storedImages);
+    isDuplicate = ls.affiliationKey1 === ls.affiliationKey2;
+    isPrimaryAffiliation = ls.affiliationKey1 === feedKey;
+    canHaveFlashy = Affiliation.org[feedKey].flashyNews;
+    isFlashyEnabled = false;
+    if (isDuplicate) {
+      isFlashyEnabled = ls.affiliationFlashy1 === 'true' || ls.affiliationFlashy2 === 'true';
+    } else if (isPrimaryAffiliation) {
+      isFlashyEnabled = ls.affiliationFlashy1 === 'true';
+    } else {
+      isFlashyEnabled = ls.affiliationFlashy2 === 'true';
+    }
+    isFlashy = canHaveFlashy && isFlashyEnabled;
     $.each(items, function(index, item) {
       var altLink, date, descLimit, htmlItem, readUnread, storedImage, unreadCount, _ref;
       if (index < newsLimit) {
         viewedList.push(item.link);
         unreadCount = Number(ls[unreadCountName]);
         readUnread = '';
-        if (!Affiliation.org[feedKey].flashyNews) {
+        if (!isFlashy) {
           if (index < unreadCount) {
             if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
               readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
@@ -316,7 +328,7 @@
             item.image = storedImage;
           }
         }
-        if (Affiliation.org[feedKey].flashyNews && ls.showAffiliation2 === 'true') {
+        if (isFlashy && ls.showAffiliation2 === 'true') {
           htmlItem = '\
           <div class="post">\
             <div class="item" data="' + item.link + '"' + altLink + '>\
