@@ -331,6 +331,19 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Prepare the list of images with salt, pepper and some vinegar
   storedImages = JSON.parse ls.storedImages
 
+  # Figure out if flashy news are prefered
+  isDuplicate = ls.affiliationKey1 == ls.affiliationKey2
+  isPrimaryAffiliation = ls.affiliationKey1 == feedKey
+  canHaveFlashy = Affiliation.org[feedKey].flashyNews
+  isFlashyEnabled = false
+  if isDuplicate
+    isFlashyEnabled = (ls.affiliationFlashy1 == 'true' || ls.affiliationFlashy2 == 'true')
+  else if isPrimaryAffiliation
+    isFlashyEnabled = ls.affiliationFlashy1 == 'true'
+  else
+    isFlashyEnabled = ls.affiliationFlashy2 == 'true'
+  isFlashy = (canHaveFlashy && isFlashyEnabled)
+
   # Add feed items to popup
   $.each items, (index, item) ->
     
@@ -339,7 +352,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
       
       unreadCount = Number ls[unreadCountName]
       readUnread = ''
-      unless Affiliation.org[feedKey].flashyNews
+      unless isFlashy
         if index < unreadCount
           if item.link in updatedList.indexOf
             readUnread += '<span class="unread">UPDATED <b>::</b> </span>'
@@ -367,7 +380,7 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
         if -1 is item.image.indexOf 'http'
           item.image = storedImage
 
-      if Affiliation.org[feedKey].flashyNews and ls.showAffiliation2 is 'true'
+      if isFlashy and ls.showAffiliation2 is 'true'
         htmlItem = '
           <div class="post">
             <div class="item" data="' + item.link + '"' + altLink + '>
