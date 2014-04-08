@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Officescreen</title>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="img/blank.png"/>
+  
+  <!-- CSS Less -->
+  <link rel="stylesheet" type="text/css" href="less/officescreen.css" />
+  <link rel="stylesheet" type="text/css" href="less/palettes/blue.css" id="palette" />
+
+</head>
+
+<body>
+  <div id="overlay"></div>
+  <div id="fadeOutNews"></div>
+  <div id="background"></div>
+  <div id="container">
+
+    <div id="now">
+      <div id="text">
+        <div id="status">Henter status:</div>
+        <div id="info">henter info...</div>
+      </div>
+
+      <div id="clockbox">
+        <div id="clock">
+          <div id="hh"><div class="digit">0</div><div class="digit">0</div></div>
+          <div class="sep">:</div>
+          <div id="mm"><div class="digit">0</div><div class="digit">0</div></div>
+          <div class="sep">:</div>
+          <div id="ss"><div class="digit">0</div><div class="digit">0</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="todays">
+      <div id="schedule">
+        <div class="title">Kontoret</div>
+        <div id="servant">- Laster kontorvakt...</div>
+        <div id="meetings">Laster møteplan...</div>
+      </div>
+      <div id="coffee">
+        <div class="title">Kaffe</div>
+        <div id="pots">- Laster antall kanner...</div>
+        <div id="age">Laster kaffestatus...</div>
+      </div>
+    </div>
+    
+    <div id="cantinas">
+      <div id="left">
+        <div id="head">
+          <div class="title">Laster...</div>
+          <div class="hours">- Laster...</div>
+        </div>
+        <div id="dinnerbox"></div>
+      </div>
+      <div id="right">
+        <div id="head">
+          <div class="title">Laster...</div>
+          <div class="hours">- Laster...</div>
+        </div>
+        <div id="dinnerbox"></div>
+      </div>
+    </div>
+
+    <div id="bus">
+      <div id="firstBus">
+        <div class="name">
+          <!-- br's are hackish -->
+          <img class="loadingLeft" src="img/loading.gif" />
+        </div>
+        <div class="first">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="second">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="third">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="fourth">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="fifth">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div id="secondBus">
+        <div class="name">
+          <!-- br's are hackish -->
+          <img class="loadingRight" src="img/loading.gif" />
+        </div>
+        <div class="first">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="second">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="third">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="fourth">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+        <div class="fifth">
+          <div class="time"></div>
+          <div class="line"></div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  <!-- affiliation logo (will switch to sponsor logo automatically if available -->
+  <img id="logo" src="img/blank.png" />
+  <!-- "from dotKom with <3" -->
+  <div id="pageflip">
+    <div id="pfBackground"></div>
+    <div id="pfText">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
+    <div id="pfFlip"></div>
+    <div id="pfLink">
+      <br />
+      <a href="http://github.com/dotkom/online-notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pagefliptyping"></span><span class="pageflipcursor">_</span></a>
+    </div>
+  </div>
+
+  <!-- JS No Dependencies -->
+  <script src="libs/jquery-2.0.0.min.js"></script>
+  <script src="js/missing.js"></script>
+
+  <!-- JS Behind the scenes -->
+  <script src="js/browser.js"></script>
+  <script src="js/constants.js"></script>
+  <script src="js/analytics.js"></script>
+
+  <!-- JS Affiliation and Such -->
+  <script src="js/affiliation.js"></script>
+  <script src="js/palettes.js"></script>
+
+  <!-- JS Services -->
+  <script src="js/ajaxer.js"></script>
+  <script src="js/bus.js"></script>
+  <script src="js/cantina.js"></script>
+  <script src="js/coffee.js"></script>
+  <script src="js/hours.js"></script>
+  <script src="js/meetings.js"></script>
+  <script src="js/office.js"></script>
+  <script src="js/servant.js"></script>
+
+  <!-- Document ready sript -->
+  <script src="cs/officescreen.js"></script>
+
+  <!-- Digital Clock -->
+  <script src="js/digitalClock.js"></script>
+
+</body>
+</html>
