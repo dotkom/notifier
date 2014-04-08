@@ -1,8 +1,7 @@
 var Bus = {
   debug: 0,
-  api: 'http://api.visuweb.no/bybussen/4.0/Departure/Route/',
-  apiKey: '/5ce70df7d7ffa2a6728aef4eaf9200db', // phasing out oldkey: f6975f3c1a3d838dc69724b9445b3466
-  msgDisconnected: 'Frakoblet fra api.visuweb.no',
+  api: 'http://bybussen.api.tmn.io/rt/',
+  msgDisconnected: 'Frakoblet fra api.tmn.io',
   msgConnectionError: 'Tilkoblingsfeil',
   msgInvalidDirection: 'Ugyldig retning',
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
@@ -15,7 +14,7 @@ var Bus = {
 
     var self = this;
     Ajaxer.getJson({
-      url: self.api + stopId + self.apiKey,
+      url: self.api + stopId,
       success: function(json) {
         self.parseDepartures(json, favoriteLines, callback);
       },
