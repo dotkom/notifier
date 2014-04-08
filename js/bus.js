@@ -1,21 +1,20 @@
 var Bus = {
   debug: 0,
-  api: 'http://api.visuweb.no/bybussen/4.0/Departure/Route/',
-  apiKey: '/5ce70df7d7ffa2a6728aef4eaf9200db', // phasing out oldkey: f6975f3c1a3d838dc69724b9445b3466
-  msgDisconnected: 'Frakoblet fra api.visuweb.no',
+  api: 'http://bybussen.api.tmn.io/rt/',
+  msgDisconnected: 'Frakoblet fra api.tmn.io',
   msgConnectionError: 'Tilkoblingsfeil',
   msgInvalidDirection: 'Ugyldig retning',
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
 
   get: function(stopId, favoriteLines, callback) {
-    if (callback == undefined) {
+    if (callback === undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 
     var self = this;
     Ajaxer.getJson({
-      url: self.api + stopId + self.apiKey,
+      url: self.api + stopId,
       success: function(json) {
         self.parseDepartures(json, favoriteLines, callback);
       },
@@ -29,7 +28,7 @@ var Bus = {
 
   parseDepartures: function(json, favoriteLines, callback) {
 
-    var departures = json['next'];
+    var departures = json.next;
     if (typeof departures == 'string') {
       if (departures.match(/unauthorized/gi) !== null)
         callback(this.msgKeyExpired);
@@ -40,15 +39,15 @@ var Bus = {
 
     // Create a map with an array of departures for each bus line
     var lines = {};
-    lines['destination'] = [];
-    lines['departures'] = [];
+    lines.destination = [];
+    lines.departures = [];
 
     var count = 0;
-    var nLines = (favoriteLines.length == 0 ? 10 : 100);
+    var nLines = (favoriteLines.length === 0 ? 10 : 100);
 
     for (i in departures) {
 
-      var line = departures[i]['l'];
+      var line = departures[i].l;
 
       // Usually controlled by favorite lines
       if (favoriteLines.length != 0)
@@ -57,17 +56,17 @@ var Bus = {
       // Otherwise controlled with counter
       else if (count++ >= nLines) break;
 
-      var time = departures[i]['t'];
-      var isRealtime = departures[i]['r'];
-      var destination = departures[i]['d'].trim();
+      var time = departures[i].t;
+      var isRealtime = departures[i].r;
+      var destination = departures[i].d.trim();
       destination = this.prettifyDestination(destination);
 
       // Add destination
-      lines['destination'].push(line + ' ' + destination);
+      lines.destination.push(line + ' ' + destination);
 
       // Add departure
       var calculatedTime = this.calculateTime(time, isRealtime);
-      lines['departures'].push(calculatedTime);
+      lines.departures.push(calculatedTime);
     }
 
     // lines: {
@@ -106,7 +105,7 @@ var Bus = {
     else if (60 <= diff)
       calculatedTime = timePieces[0] + ':' + timePieces[1];
 
-    if (this.debug) console.log('Calculated time:', calculatedTime)
+    if (this.debug) console.log('Calculated time:', calculatedTime);
     return calculatedTime;
   },
 
@@ -118,4 +117,4 @@ var Bus = {
     return destination;
   },
 
-}
+};
