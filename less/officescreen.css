@@ -1,0 +1,444 @@
+/* The pageflip at the bottom of some pages */
+#pageflip {
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  bottom: 0;
+  color: #ccf2cc;
+}
+#pageflip #pfBackground {
+  position: fixed;
+  z-index: 201;
+}
+#pageflip #pfText {
+  position: fixed;
+  z-index: 202;
+}
+#pageflip #pfFlip {
+  position: fixed;
+  z-index: 203;
+}
+#pageflip #pfLink {
+  position: fixed;
+  z-index: 204;
+}
+#pageflip #pfLink a {
+  text-decoration: none;
+  color: #ccf2cc;
+}
+#pageflip #pfLink a:hover {
+  text-decoration: underline;
+}
+/* This file contains infoscreen-additions to common.less */
+@font-face {
+  font-family: 'HelveticaLT';
+  src: url('../fonts/helvetica/helvetica.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'DidotLT';
+  src: url('../fonts/didolt/didolt.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Rotis';
+  src: url('../fonts/rotis/rotis_serif.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Digi';
+  src: url('../fonts/digi/digi.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Penumbra';
+  src: url('../fonts/penumbra/penumbra.otf') format('opentype');
+}
+.fullbox {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.title {
+  font-family: 'Penumbra', Helvetica;
+  font-weight: 100;
+  font-size: 68px;
+  margin-top: 44px;
+  margin-bottom: 18px;
+  display: block;
+  text-transform: uppercase;
+}
+.emphasized {
+  font-style: italic;
+  margin-top: 22px;
+  margin-bottom: 5px;
+  color: #cff;
+}
+html {
+  cursor: none;
+}
+body {
+  background: #001429;
+  color: white;
+  font-family: 'Rotis';
+  font-size: 38px;
+  line-height: 42px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+#overlay {
+  /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
+  /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
+  /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: black;
+  text-align: center;
+  opacity: 0;
+}
+#fadeOutNews {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 505px;
+  z-index: 100;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
+  display: none;
+}
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+  background-image: url('/img/background-large-vertical.png');
+  position: absolute;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+/* This container keeps the content centered */
+#container {
+  overflow: hidden;
+  padding: 0 40px 40px 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+#container #now {
+  width: 110%;
+  height: 100px;
+  margin-left: -5%;
+  box-shadow: 0 4px 18px #aaa;
+  background-color: #000f1f;
+  overflow: hidden;
+}
+#container #now #text {
+  float: left;
+  width: 65%;
+  font-size: 52px;
+  line-height: 44px;
+  margin-left: 4%;
+}
+#container #now #text #status {
+  margin-top: 30px;
+  float: left;
+}
+#container #now #text #info {
+  margin-top: 30px;
+  float: left;
+  margin-left: 12px;
+  color: #cff;
+}
+#container #now #clockbox {
+  height: 100px;
+  float: right;
+  margin-right: 3%;
+  font-family: 'Digi';
+  font-size: 80px;
+  color: #eee;
+  text-shadow: 0 0 5px #ddd,
+        0 0 10px #ccc,
+        0 0 15px #bbb;
+}
+#container #now #clockbox #clock {
+  margin-top: 30px;
+}
+#container #now #clockbox #clock #hh,
+#container #now #clockbox #clock #mm,
+#container #now #clockbox #clock #ss,
+#container #now #clockbox #clock .sep {
+  float: left;
+}
+#container #now #clockbox #clock #hh .digit,
+#container #now #clockbox #clock #mm .digit,
+#container #now #clockbox #clock #ss .digit,
+#container #now #clockbox #clock .sep .digit {
+  float: left;
+  width: 40px;
+  text-align: right;
+}
+#container #todays {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  margin-top: 22px;
+}
+#container #todays #schedule {
+  float: left;
+  width: 48%;
+}
+#container #todays #schedule #servant {
+  font-style: italic;
+  margin-top: 22px;
+  margin-bottom: 5px;
+  color: #cff;
+}
+#container #todays #schedule span {
+  color: #bbb;
+}
+#container #todays #coffee {
+  float: right;
+  width: 50%;
+}
+#container #todays #coffee #pots {
+  font-style: italic;
+  margin-top: 22px;
+  margin-bottom: 5px;
+  color: #cff;
+}
+#container #cantinas {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  clear: both;
+  display: inline-block;
+}
+#container #cantinas #left,
+#container #cantinas #right {
+  width: 100%;
+  float: left;
+}
+#container #cantinas #left #head,
+#container #cantinas #right #head {
+  margin-top: 44px;
+  width: 100%;
+  display: inline-block;
+  clear: both;
+}
+#container #cantinas #left #head .title,
+#container #cantinas #right #head .title {
+  display: inline;
+  margin-top: 0;
+}
+#container #cantinas #left #head .hours,
+#container #cantinas #right #head .hours {
+  display: inline;
+  margin-left: 20px;
+  color: #aaa;
+}
+#container #cantinas #left #dinnerbox,
+#container #cantinas #right #dinnerbox {
+  font-size: 52px;
+  line-height: 55px;
+  margin-top: 8px;
+  width: 100%;
+}
+#container #cantinas #left #dinnerbox li,
+#container #cantinas #right #dinnerbox li {
+  position: relative;
+  width: 95%;
+  list-style-type: none;
+  -webkit-transition: text-shadow 0.15s ease-out 0s;
+}
+#container #cantinas #left #dinnerbox li span,
+#container #cantinas #right #dinnerbox li span {
+  color: #bbb;
+}
+#container #cantinas #left #dinnerbox li.message,
+#container #cantinas #right #dinnerbox li.message {
+  /*font-style: italic;*/
+}
+#container #bus {
+  width: 110%;
+  margin-left: -5%;
+  left: 0;
+  clear: both;
+  display: inline-block;
+  margin-top: 42px;
+  box-shadow: 0 0 33px #ccc;
+}
+#container #bus #firstBus,
+#container #bus #secondBus {
+  padding: 32px 0;
+}
+#container #bus #firstBus .name,
+#container #bus #secondBus .name {
+  color: #cf9;
+  font-size: 44px;
+  margin-bottom: 12px;
+}
+#container #bus #firstBus .first,
+#container #bus #secondBus .first,
+#container #bus #firstBus .second,
+#container #bus #secondBus .second,
+#container #bus #firstBus .third,
+#container #bus #secondBus .third,
+#container #bus #firstBus .fourth,
+#container #bus #secondBus .fourth,
+#container #bus #firstBus .fifth,
+#container #bus #secondBus .fifth {
+  clear: both;
+}
+#container #bus #firstBus .first .urg0,
+#container #bus #secondBus .first .urg0,
+#container #bus #firstBus .second .urg0,
+#container #bus #secondBus .second .urg0,
+#container #bus #firstBus .third .urg0,
+#container #bus #secondBus .third .urg0,
+#container #bus #firstBus .fourth .urg0,
+#container #bus #secondBus .fourth .urg0,
+#container #bus #firstBus .fifth .urg0,
+#container #bus #secondBus .fifth .urg0 {
+  color: #ccc;
+}
+#container #bus #firstBus .first .urg1,
+#container #bus #secondBus .first .urg1,
+#container #bus #firstBus .second .urg1,
+#container #bus #secondBus .second .urg1,
+#container #bus #firstBus .third .urg1,
+#container #bus #secondBus .third .urg1,
+#container #bus #firstBus .fourth .urg1,
+#container #bus #secondBus .fourth .urg1,
+#container #bus #firstBus .fifth .urg1,
+#container #bus #secondBus .fifth .urg1 {
+  color: #fcc;
+}
+#container #bus #firstBus .first .urg2,
+#container #bus #secondBus .first .urg2,
+#container #bus #firstBus .second .urg2,
+#container #bus #secondBus .second .urg2,
+#container #bus #firstBus .third .urg2,
+#container #bus #secondBus .third .urg2,
+#container #bus #firstBus .fourth .urg2,
+#container #bus #secondBus .fourth .urg2,
+#container #bus #firstBus .fifth .urg2,
+#container #bus #secondBus .fifth .urg2 {
+  color: #ffb2b2;
+}
+#container #bus #firstBus .first .urg3,
+#container #bus #secondBus .first .urg3,
+#container #bus #firstBus .second .urg3,
+#container #bus #secondBus .second .urg3,
+#container #bus #firstBus .third .urg3,
+#container #bus #secondBus .third .urg3,
+#container #bus #firstBus .fourth .urg3,
+#container #bus #secondBus .fourth .urg3,
+#container #bus #firstBus .fifth .urg3,
+#container #bus #secondBus .fifth .urg3 {
+  color: #f66;
+}
+#container #bus #firstBus .first .urg4,
+#container #bus #secondBus .first .urg4,
+#container #bus #firstBus .second .urg4,
+#container #bus #secondBus .second .urg4,
+#container #bus #firstBus .third .urg4,
+#container #bus #secondBus .third .urg4,
+#container #bus #firstBus .fourth .urg4,
+#container #bus #secondBus .fourth .urg4,
+#container #bus #firstBus .fifth .urg4,
+#container #bus #secondBus .fifth .urg4 {
+  color: #f33;
+}
+#container #bus #firstBus .first .urg5,
+#container #bus #secondBus .first .urg5,
+#container #bus #firstBus .second .urg5,
+#container #bus #secondBus .second .urg5,
+#container #bus #firstBus .third .urg5,
+#container #bus #secondBus .third .urg5,
+#container #bus #firstBus .fourth .urg5,
+#container #bus #secondBus .fourth .urg5,
+#container #bus #firstBus .fifth .urg5,
+#container #bus #secondBus .fifth .urg5 {
+  color: #c00;
+}
+#container #bus #firstBus {
+  width: 45%;
+  float: left;
+  text-align: right;
+}
+#container #bus #firstBus .line {
+  float: right;
+  margin-right: 12px;
+}
+#container #bus #firstBus .time {
+  float: right;
+  color: #bbb;
+}
+#container #bus #secondBus {
+  width: 48%;
+  float: right;
+}
+#container #bus #secondBus .time {
+  float: left;
+  color: #bbb;
+}
+#container #bus #secondBus .line {
+  float: left;
+  margin-left: 12px;
+}
+/* the affiliation logo or sponsor logo */
+#logo {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  width: 400px;
+  z-index: 110;
+  display: none;
+}
+/* the pageflip at the bottom */
+#pageflip {
+  width: 356px;
+  height: 181px;
+  font: bold 22px monospace;
+  text-shadow: 0 0 5px #68bf70,
+    0 0 10px #60b95e,
+    0 0 15px #368f2c,
+    0 0 20px #25892e,
+    0 0 30px #183e1a;
+}
+#pageflip #pfBackground {
+  left: 0;
+  bottom: 0;
+  width: 356px;
+  height: 181px;
+  background: transparent url('/img/pageflip-big-background.png') no-repeat left bottom;
+}
+#pageflip #pfText {
+  left: 8px;
+  bottom: 5px;
+  width: 300px;
+  height: 76px;
+}
+#pageflip #pfFlip {
+  left: 0;
+  bottom: 0;
+  width: 356px;
+  height: 181px;
+  background: transparent url('/img/pageflip-big.png') no-repeat left bottom;
+}
+#pageflip #pfLink {
+  left: 8px;
+  bottom: 5px;
+  width: 300px;
+  height: 76px;
+}
