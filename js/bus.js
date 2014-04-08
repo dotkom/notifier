@@ -7,7 +7,7 @@ var Bus = {
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
 
   get: function(stopId, favoriteLines, callback) {
-    if (callback == undefined) {
+    if (callback === undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
@@ -28,7 +28,7 @@ var Bus = {
 
   parseDepartures: function(json, favoriteLines, callback) {
 
-    var departures = json['next'];
+    var departures = json.next;
     if (typeof departures == 'string') {
       if (departures.match(/unauthorized/gi) !== null)
         callback(this.msgKeyExpired);
@@ -39,15 +39,15 @@ var Bus = {
 
     // Create a map with an array of departures for each bus line
     var lines = {};
-    lines['destination'] = [];
-    lines['departures'] = [];
+    lines.destination = [];
+    lines.departures = [];
 
     var count = 0;
-    var nLines = (favoriteLines.length == 0 ? 10 : 100);
+    var nLines = (favoriteLines.length === 0 ? 10 : 100);
 
     for (i in departures) {
 
-      var line = departures[i]['l'];
+      var line = departures[i].l;
 
       // Usually controlled by favorite lines
       if (favoriteLines.length != 0)
@@ -56,17 +56,17 @@ var Bus = {
       // Otherwise controlled with counter
       else if (count++ >= nLines) break;
 
-      var time = departures[i]['t'];
-      var isRealtime = departures[i]['r'];
-      var destination = departures[i]['d'].trim();
+      var time = departures[i].t;
+      var isRealtime = departures[i].r;
+      var destination = departures[i].d.trim();
       destination = this.prettifyDestination(destination);
 
       // Add destination
-      lines['destination'].push(line + ' ' + destination);
+      lines.destination.push(line + ' ' + destination);
 
       // Add departure
       var calculatedTime = this.calculateTime(time, isRealtime);
-      lines['departures'].push(calculatedTime);
+      lines.departures.push(calculatedTime);
     }
 
     // lines: {
@@ -105,7 +105,7 @@ var Bus = {
     else if (60 <= diff)
       calculatedTime = timePieces[0] + ':' + timePieces[1];
 
-    if (this.debug) console.log('Calculated time:', calculatedTime)
+    if (this.debug) console.log('Calculated time:', calculatedTime);
     return calculatedTime;
   },
 
@@ -117,4 +117,4 @@ var Bus = {
     return destination;
   },
 
-}
+};

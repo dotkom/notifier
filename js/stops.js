@@ -19,7 +19,7 @@ var Stops = {
   names: null,
 
   load: function(callback) {
-    if (callback == undefined) {
+    if (callback === undefined) {
       if (this.debug) console.log('WARNING: Callback is recommended. The callback contains completion/error message.');
     }
 
@@ -28,7 +28,7 @@ var Stops = {
     // this is only checked when the user opens the options page.
     var needNewList = false;
     var listAge = localStorage.stopListAge;
-    if (listAge == undefined) {
+    if (listAge === undefined) {
       needNewList = true;
     }
     else {
@@ -45,12 +45,12 @@ var Stops = {
     }
 
     // Parse the saved copies of stopList and stopNames
-    if (!needNewList && localStorage.stopList != undefined && localStorage.stopNames != undefined) {
+    if (!needNewList && localStorage.stopList !== undefined && localStorage.stopNames !== undefined) {
       try {
         if (this.debug) console.log('load - parsing saved lists');
         this.list = JSON.parse(localStorage.stopList);
         this.names = JSON.parse(localStorage.stopNames);
-        if (callback != undefined)
+        if (callback !== undefined)
           callback(this.msgParsingCompleted);
       }
       catch (err) {
@@ -69,7 +69,7 @@ var Stops = {
           self.parse(json, callback);
         },
         error: function(jqXHR, text, err) {
-          if (callback != undefined)
+          if (callback !== undefined)
             callback(self.msgDisconnected);
         },
       });
@@ -92,7 +92,7 @@ var Stops = {
     if (typeof json === 'string') {
         if (json.indexOf('unauthorized') !== -1) {
         console.log('ERROR: ' + this.msgKeyExpired);
-        if (callback != undefined)
+        if (callback !== undefined)
           callback(this.msgKeyExpired);
         return;
       }
@@ -101,8 +101,8 @@ var Stops = {
       var busStops = json;
 
       // Bus stops missing from the json?
-      if (busStops == undefined) {
-        if (callback != undefined)
+      if (busStops === undefined) {
+        if (callback !== undefined)
           callback(this.msgMalformedExternalStops);
         console.log('ERROR: ' + this.msgMalformedExternalStops);
         return;
@@ -131,13 +131,13 @@ var Stops = {
 
       // All done!
       if (this.debug) console.log('parse - list parsing success');
-      if (callback != undefined) {
+      if (callback !== undefined) {
         callback(this.msgParsingStopsSuccess);
       }
     }
     catch (err) {
       console.log('ERROR: ' + this.msgParsingStopsFailed + ': ' + err);
-      if (callback != undefined)
+      if (callback !== undefined)
         callback(this.msgParsingStopsFailed);
     }
   },
@@ -228,7 +228,7 @@ var Stops = {
       return -1;
     }
   },
-  
+
   partialNameToPotentialNames: function(nameStart) {
     if (this.debug) console.log('partialNameToPotentialNames', nameStart);
     if (typeof nameStart != 'string')
@@ -241,7 +241,7 @@ var Stops = {
     // Find stops which start with nameStart
     for (id in this.names) {
       var currentName = this.names[id];
-      if (currentName.toLowerCase().indexOf(nameStart) == 0) {
+      if (currentName.toLowerCase().indexOf(nameStart) === 0) {
         // If not already added, add newfound name
         if (foundStops.indexOf(currentName) == -1) {
           foundStops.push(currentName);
@@ -251,4 +251,4 @@ var Stops = {
     return foundStops;
   },
 
-}
+};
