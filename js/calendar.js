@@ -2,7 +2,7 @@
 	 * date.prototype.getWeekNumber
 	 * @return current week number
 	 */
-	Date.prototype.getWeekNumber = function(){
+	Date.prototype.getWeekNumber = function () {
 	    var d = new Date(+this);
 	    d.setHours(0,0,0);
 	    d.setDate(d.getDate()+4-(d.getDay()||7));
@@ -27,11 +27,11 @@
 		currentYear: new Date().getFullYear(),
 		currentWeek: new Date().getWeekNumber(),
 		currentDay: function () {
-			weekday = ['søndag',  'mandag', 
-					   'tirsdag', 'onsdag',
-					   'torsdag', 'fredag',
-					   'lørdag',  'søndag'];
-			return weekday[new Date().getDay() + 3/*  */];
+			weekday = ['søndag', 'mandag', 
+			           'tirsdag', 'onsdag',
+				   'torsdag', 'fredag',
+				   'lørdag',  'søndag'];
+			return weekday[new Date().getDay()];
 		},
 		currentSemester: function () {
 			return this.semesters[0];
@@ -148,8 +148,8 @@
 			  url: this.url               + '/' + 
 			       this.currentYear       + '/' + 
 			       this.currentSemester() + '/' +
-				   this.username          + '/' + 
-				   this.currentWeek,
+			       this.username          + '/' + 
+		     	       this.currentWeek,
 			  success: function (response) {
 				   callback(that.parseCalendar($('tbody', $(response))[3]));
 			  }, 
