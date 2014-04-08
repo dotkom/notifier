@@ -1,6 +1,5 @@
 var Stops = {
-  api: 'http://api.visuweb.no/bybussen/3.0/Stops/GetStops',
-  apiKey: '/5ce70df7d7ffa2a6728aef4eaf9200db', // phasing out oldkey: f6975f3c1a3d838dc69724b9445b3466
+  api: 'http://bybussen.api.tmn.io/stops',
   msgDisconnected: 'Frakoblet fra api.visuweb.no',
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
   msgParsingCompleted: 'Busslister lastet fra localstorage',
@@ -64,7 +63,7 @@ var Stops = {
       if (this.debug) console.log('load - getting fresh lists');
       var self = this;
       Ajaxer.getJson({
-        url: self.api + self.apiKey,
+        url: self.api,
         success: function(json) {
           if (this.debug) console.log('load - fresh lists retrieved');
           self.parse(json, callback);
@@ -99,7 +98,7 @@ var Stops = {
       }
     }
     try {
-      var busStops = json['busStops'];
+      var busStops = json;
 
       // Bus stops missing from the json?
       if (busStops == undefined) {
