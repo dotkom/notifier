@@ -663,6 +663,8 @@
       code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
       callback: function() {
         Analytics.trackEvent('toggleKonami');
+        var rick = '<iframe width="532" height="600" src="http://www.youtube.com/embed/oHg5SJYRHA0?autoplay=1" frameborder="0" allowfullscreen></iframe>'
+        $("#background").html(rick);
         $('head').append('<style type="text/css">\
         @-webkit-keyframes adjustHue {\
           0% { -webkit-filter: hue-rotate(0deg); }\
