@@ -1,0 +1,378 @@
+
+@import "common.pageflip.less";
+
+/* This file contains infoscreen-additions to common.less */
+
+// Vars
+
+@showFadeOut: none;
+
+// Fonts
+
+@font-face {
+  font-family: 'HelveticaLT';
+  src: url('../fonts/helvetica/helvetica.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DidotLT';
+  src: url('../fonts/didolt/didolt.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Rotis';
+  src: url('../fonts/rotis/rotis_serif.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Digi';
+  src: url('../fonts/digi/digi.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Penumbra';
+  src: url('../fonts/penumbra/penumbra.otf') format('opentype');
+}
+
+// Mixins
+
+.fullbox {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.title {
+  font-family: 'Penumbra', Helvetica;
+  font-weight: 100;
+  font-size: 68px;
+  margin-top: 44px;
+  margin-bottom: 18px;
+  display: block;
+  text-transform: uppercase;
+}
+
+.emphasized {
+  font-style: italic;
+  margin-top: 22px;
+  margin-bottom: 5px;
+  color: #cff;
+}
+
+// Rules
+
+html {
+  cursor: none;
+}
+
+body {
+  background: #001429;
+  color: white;
+  font-family: 'Rotis';
+  font-size: 38px;
+  line-height: 42px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#overlay {
+  /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
+  /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
+  /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: black;
+  text-align: center;
+  opacity: 0;
+}
+
+#fadeOutNews {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 505px;
+  z-index: 100;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
+  display: @showFadeOut;
+}
+
+#background {
+  /* using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+  background-image: url('/img/background-large-vertical.png');
+  position: absolute;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* This container keeps the content centered */
+#container {
+  overflow: hidden;
+  padding: 0 40px 40px 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+
+  #now {
+    width: 110%;
+    height: 100px;
+    margin-left: -5%;
+    box-shadow: 0 4px 18px #aaa;
+    background-color: #000f1f;
+    overflow: hidden;
+
+    #text {
+      float: left;
+      width: 65%;
+      font-size: 52px;
+      line-height: 44px;
+      margin-left: 4%;
+      #status {
+        margin-top: 30px;
+        float: left;
+      }
+      #info {
+        margin-top: 30px;
+        float: left;
+        margin-left: 12px;
+        color: #cff;
+      }
+    }
+
+    #clockbox {
+      height: 100px;
+      float: right;
+      margin-right: 3%;
+      font-family: 'Digi';
+      font-size: 80px;
+      color: #eee;
+      text-shadow:
+        0 0 5px #ddd,
+        0 0 10px #ccc,
+        0 0 15px #bbb;
+
+      #clock {
+        margin-top: 30px;
+
+        #hh, #mm, #ss, .sep {
+          float: left;
+
+          .digit {
+            float: left;
+            width: 40px;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+
+  #todays {
+    .fullbox;
+    margin-top: 22px;
+
+    #schedule {
+      float: left;
+      width: 48%;
+      #servant {
+        .emphasized;
+      }
+      span {
+        color: #bbb;
+      }
+    }
+    #coffee {
+      float: right;
+      width: 50%;
+      #pots {
+        .emphasized;
+      }
+    }
+  }
+
+  #cantinas {
+    .fullbox;
+    clear: both;
+    display: inline-block;
+
+    #left, #right {
+      width: 100%;
+      float: left;
+
+      #head {
+        margin-top: 44px;
+        width: 100%;
+        display: inline-block;
+        clear: both;
+
+        .title {
+          display: inline;
+          margin-top: 0;
+        }
+        .hours {
+          display: inline;
+          margin-left: 20px;
+          color: #aaa;
+        }
+      }
+
+      #dinnerbox {
+        font-size: 52px;
+        line-height: 55px;
+        margin-top: 8px;
+        width: 100%;
+
+        li {
+          position: relative;
+          width: 95%;
+          list-style-type: none;
+          -webkit-transition: text-shadow 0.15s ease-out 0s;
+        }
+        li span {
+          color: #bbb;
+        }
+        li.message {
+          /*font-style: italic;*/
+        }
+      }
+    }
+  }
+
+  #bus {
+    width: 110%;
+    margin-left: -5%;
+    left: 0;
+    clear: both;
+    display: inline-block;
+    margin-top: 42px;
+    box-shadow: 0 0 33px #ccc;
+
+    #firstBus, #secondBus {
+      padding: 32px 0;
+
+      .name {
+        color: #cf9;
+        font-size: 44px;
+        margin-bottom: 12px;
+      }
+      .first, .second, .third, .fourth, .fifth {
+        clear: both;
+
+        .urg0 {
+          color: #ccc;
+        }
+        .urg1 {
+          color: #fcc;
+        }
+        .urg2 {
+          color: #ffb2b2;
+        }
+        .urg3 {
+          color: #f66;
+        }
+        .urg4 {
+          color: #f33;
+        }
+        .urg5 {
+          color: #c00;
+        }
+      }
+    }
+
+    #firstBus {
+      width: 45%;
+      float: left;
+      text-align: right;
+      .line {
+        float: right;
+        margin-right: 12px;
+      }
+      .time {
+        float: right;
+        color: #bbb;
+      }
+    }
+    #secondBus {
+      width: 48%;
+      float: right;
+      .time {
+        float: left;
+        color: #bbb;
+      }
+      .line {
+        float: left;
+        margin-left: 12px;
+      }
+    }
+  }
+
+}
+
+/* the affiliation logo or sponsor logo */
+
+#logo {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  width: 400px;
+  z-index: 110;
+  display: @showFadeOut;
+}
+
+/* the pageflip at the bottom */
+
+#pageflip {
+  width: 356px;
+  height: 181px;
+  font: bold 22px monospace;
+  text-shadow:
+    0 0 5px #68bf70,
+    0 0 10px #60b95e,
+    0 0 15px #368f2c,
+    0 0 20px #25892e,
+    0 0 30px #183e1a;
+
+  #pfBackground {
+    left: 0;
+    bottom: 0;
+    width: 356px;
+    height: 181px;
+    background: transparent url('/img/pageflip-big-background.png') no-repeat left bottom;
+  }
+  #pfText {
+    left: 8px;
+    bottom: 5px;
+    width: 300px;
+    height: 76px;
+  }
+  #pfFlip {
+    left: 0;
+    bottom: 0;
+    width: 356px;
+    height: 181px;
+    background: transparent url('/img/pageflip-big.png') no-repeat left bottom;
+  }
+  #pfLink {
+    left: 8px;
+    bottom: 5px;
+    width: 300px;
+    height: 76px;
+  }
+}
+
