@@ -3,8 +3,6 @@ $ = jQuery
 ls = localStorage
 iteration = 0
 
-newsLimit = 8 # The most news you can cram into Infoscreen, if other features are disabled
-
 mainLoop = ->
   console.lolg "\n#" + iteration
 
@@ -229,7 +227,7 @@ $ ->
   Analytics.trackEvent 'loadPalette', ls.affiliationPalette
   
   # Minor esthetical adjustments for OS version
-  if OPERATING_SYSTEM == 'Windows'
+  if Browser.onWindows()
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
   # Adding creator name to pageflip
