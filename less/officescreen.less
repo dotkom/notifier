@@ -1,11 +1,11 @@
 
-@import "common.pageflip.less";
+@import "pageflip.less";
 
 /* This file contains infoscreen-additions to common.less */
 
 // Vars
 
-@showFadeOut: none;
+@showFadeOut: inherit;
 
 // Fonts
 
@@ -260,17 +260,18 @@ body {
     left: 0;
     clear: both;
     display: inline-block;
+    background-color: #111;
     margin-top: 42px;
     box-shadow: 0 0 33px #ccc;
 
+    .name {
+      color: #cf9;
+      font-size: 44px;
+      margin-bottom: 12px;
+    }
     #firstBus, #secondBus {
       padding: 32px 0;
 
-      .name {
-        color: #cf9;
-        font-size: 44px;
-        margin-bottom: 12px;
-      }
       .first, .second, .third, .fourth, .fifth {
         clear: both;
 

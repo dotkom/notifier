@@ -86,8 +86,11 @@ body {
 }
 #overlay {
   /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
+
   /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
+
   /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
+
   position: absolute;
   top: 0;
   left: 0;
@@ -106,11 +109,12 @@ body {
   height: 505px;
   z-index: 100;
   background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
-  display: none;
+  display: inherit;
 }
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
+
   background-image: url('/img/background-large-vertical.png');
   position: absolute;
   background-position: center center;
@@ -267,6 +271,7 @@ body {
 #container #cantinas #left #dinnerbox li.message,
 #container #cantinas #right #dinnerbox li.message {
   /*font-style: italic;*/
+
 }
 #container #bus {
   width: 110%;
@@ -274,18 +279,18 @@ body {
   left: 0;
   clear: both;
   display: inline-block;
+  background-color: #111;
   margin-top: 42px;
   box-shadow: 0 0 33px #ccc;
+}
+#container #bus .name {
+  color: #cf9;
+  font-size: 44px;
+  margin-bottom: 12px;
 }
 #container #bus #firstBus,
 #container #bus #secondBus {
   padding: 32px 0;
-}
-#container #bus #firstBus .name,
-#container #bus #secondBus .name {
-  color: #cf9;
-  font-size: 44px;
-  margin-bottom: 12px;
 }
 #container #bus #firstBus .first,
 #container #bus #secondBus .first,
@@ -403,7 +408,7 @@ body {
   bottom: 40px;
   width: 400px;
   z-index: 110;
-  display: none;
+  display: inherit;
 }
 /* the pageflip at the bottom */
 #pageflip {
