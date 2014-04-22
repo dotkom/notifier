@@ -8,7 +8,7 @@ var Office = {
   statuses: {
     'error': {title: 'Oops', color: 'LightGray', message: 'Klarte ikke hente kontorstatus'},
     'open': {title: 'Åpent', color: 'LimeGreen', message: 'Gratis kaffe og te til alle!'},
-    'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem for å åpne opp.'},
+    'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem'},
     'meeting': {title: 'Møte', color: 'red', message: 'Kontoret er opptatt'}, // meetings usually get message from calendar entries
   },
   // Food statuses have titles and icons (messages exist as calendar titles)
