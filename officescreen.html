@@ -136,18 +136,19 @@
   <!-- JS No Dependencies -->
   <script src="libs/jquery-2.0.0.min.js"></script>
   <script src="js/missing.js"></script>
-
-  <!-- JS Behind the scenes -->
-  <script src="js/browser.js"></script>
-  <script src="js/constants.js"></script>
-  <script src="js/analytics.js"></script>
+  <script src="js/hotfix.js"></script>
+  
+  <!-- JS Behind the Scenes -->
+  <script src="js/browser.js"></script> <!-- browser needs jquery -->
+  <script src="js/constants.js"></script> <!-- constants needs browser -->
+  <script src="js/analytics.js"></script> <!-- analytics needs constants -->
 
   <!-- JS Affiliation and Such -->
-  <script src="js/affiliation.js"></script>
-  <script src="js/palettes.js"></script>
+  <script src="js/ajaxer.js"></script> <!-- ajaxer needs jquery -->
+  <script src="js/affiliation.js"></script> <!-- affiliation needs images -->
+  <script src="js/palettes.js"></script> <!-- palettes needs affiliation -->
 
   <!-- JS Services -->
-  <script src="js/ajaxer.js"></script>
   <script src="js/bus.js"></script>
   <script src="js/cantina.js"></script>
   <script src="js/coffee.js"></script>
@@ -160,7 +161,7 @@
   <script src="cs/officescreen.js"></script>
 
   <!-- Digital Clock -->
-  <script src="js/digitalClock.js"></script>
+  <script src="js/digital_clock.js"></script>
 
 </body>
 </html>
