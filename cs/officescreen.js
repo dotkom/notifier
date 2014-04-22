@@ -9,41 +9,50 @@
 
   iteration = 0;
 
-  mainLoop = function() {
+  mainLoop = function(force) {
     console.lolg("\n#" + iteration);
-    if (navigator.onLine) {
-      if (iteration % UPDATE_HOURS_INTERVAL === 0 && ls.showCantina === 'true') {
+    if (ls.showCantina === 'true') {
+      if (force || iteration % UPDATE_HOURS_INTERVAL === 0) {
         updateHours();
       }
-      if (iteration % UPDATE_CANTINAS_INTERVAL === 0 && ls.showCantina === 'true') {
+    }
+    if (ls.showCantina === 'true') {
+      if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0) {
         updateCantinas();
       }
     }
     if (Affiliation.org[ls.affiliationKey1].hw) {
-      if (iteration % UPDATE_OFFICE_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateOffice();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
+          updateOffice();
+        }
       }
-      if (iteration % UPDATE_SERVANT_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateServant();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_SERVANT_INTERVAL === 0) {
+          updateServant();
+        }
       }
-      if (iteration % UPDATE_MEETINGS_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateMeetings();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0) {
+          updateMeetings();
+        }
       }
-      if (iteration % UPDATE_COFFEE_INTERVAL === 0 && ls.showOffice === 'true') {
-        updateCoffee();
+      if (ls.showOffice === 'true') {
+        if (force || iteration % UPDATE_COFFEE_INTERVAL === 0) {
+          updateCoffee();
+        }
       }
     }
-    if (iteration % UPDATE_BUS_INTERVAL === 0 && ls.showBus === 'true') {
-      updateBus();
+    if (ls.showBus === 'true') {
+      if (force || iteration % UPDATE_BUS_INTERVAL === 0) {
+        updateBus();
+      }
     }
     if (10000 < iteration) {
-      iteration = 0;
+      return iteration = 0;
     } else {
-      iteration++;
+      return iteration++;
     }
-    return setTimeout((function() {
-      return mainLoop();
-    }), PAGE_LOOP);
   };
 
   updateOffice = function(debugStatus) {
@@ -241,7 +250,7 @@
   };
 
   $(function() {
-    var icon, key, logo, placeholder, sponsor;
+    var icon, key, logo, placeholder, sponsor, stayUpdated;
     if (DEBUG) {
       $('html').css('cursor', 'auto');
       $('#container').css('overflow-y', 'auto');
@@ -311,7 +320,29 @@
         return $('#overlay').css('opacity', 0);
       }), 3500);
     }), 1800000);
-    return mainLoop();
+    stayUpdated = function(now) {
+      var intervalId, loopTimeout, timeout;
+      console.lolg(ONLINE_MESSAGE);
+      loopTimeout = DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP;
+      intervalId = setInterval((function() {
+        return mainLoop();
+      }), PAGE_LOOP);
+      timeout = now ? 0 : 2000;
+      return setTimeout((function() {
+        return mainLoop(true);
+      }), timeout);
+    };
+    window.addEventListener('online', stayUpdated);
+    window.addEventListener('offline', function() {
+      console.lolg(OFFLINE_MESSAGE);
+      clearInterval(intervalId);
+      return updateBus();
+    });
+    if (navigator.onLine) {
+      return stayUpdated(true);
+    } else {
+      return mainLoop();
+    }
   });
 
 }).call(this);
