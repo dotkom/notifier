@@ -238,15 +238,13 @@ displayItems = (items, column, newsListName, viewedListName, unreadCountName) ->
   # Figure out if flashy news are prefered
   isDuplicate = ls.affiliationKey1 == ls.affiliationKey2
   isPrimaryAffiliation = ls.affiliationKey1 == feedKey
-  canHaveFlashy = Affiliation.org[feedKey].flashyNews
-  isFlashyEnabled = false
+  isFlashy = false
   if isDuplicate
-    isFlashyEnabled = (ls.affiliationFlashy1 == 'true' || ls.affiliationFlashy2 == 'true')
+    isFlashy = (ls.affiliationFlashy1 == 'true' || ls.affiliationFlashy2 == 'true')
   else if isPrimaryAffiliation
-    isFlashyEnabled = ls.affiliationFlashy1 == 'true'
+    isFlashy = ls.affiliationFlashy1 == 'true'
   else
-    isFlashyEnabled = ls.affiliationFlashy2 == 'true'
-  isFlashy = (canHaveFlashy && isFlashyEnabled)
+    isFlashy = ls.affiliationFlashy2 == 'true'
 
   # Add feed items to popup
   $.each items, (index, item) ->

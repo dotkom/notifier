@@ -276,7 +276,7 @@
   };
 
   displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
-    var canHaveFlashy, feedKey, i, isDuplicate, isFlashy, isFlashyEnabled, isPrimaryAffiliation, newsList, storedImages, times, updatedList, viewedList, _results;
+    var feedKey, i, isDuplicate, isFlashy, isPrimaryAffiliation, newsList, storedImages, times, updatedList, viewedList, _results;
     $('#news ' + column).html('');
     feedKey = items[0].feedKey;
     newsList = JSON.parse(ls[newsListName]);
@@ -286,16 +286,14 @@
     storedImages = JSON.parse(ls.storedImages);
     isDuplicate = ls.affiliationKey1 === ls.affiliationKey2;
     isPrimaryAffiliation = ls.affiliationKey1 === feedKey;
-    canHaveFlashy = Affiliation.org[feedKey].flashyNews;
-    isFlashyEnabled = false;
+    isFlashy = false;
     if (isDuplicate) {
-      isFlashyEnabled = ls.affiliationFlashy1 === 'true' || ls.affiliationFlashy2 === 'true';
+      isFlashy = ls.affiliationFlashy1 === 'true' || ls.affiliationFlashy2 === 'true';
     } else if (isPrimaryAffiliation) {
-      isFlashyEnabled = ls.affiliationFlashy1 === 'true';
+      isFlashy = ls.affiliationFlashy1 === 'true';
     } else {
-      isFlashyEnabled = ls.affiliationFlashy2 === 'true';
+      isFlashy = ls.affiliationFlashy2 === 'true';
     }
-    isFlashy = canHaveFlashy && isFlashyEnabled;
     $.each(items, function(index, item) {
       var altLink, date, descLimit, htmlItem, readUnread, storedImage, unreadCount, _ref;
       if (index < newsLimit) {
