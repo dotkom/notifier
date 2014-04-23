@@ -694,7 +694,7 @@ header #notification .saved {
   color: black;
 }
 .modal button {
-  font-size: 16px;
+  font-size: 12px;
 }
 .modal #modalNotifier {
   font-weight: bold;
