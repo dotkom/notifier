@@ -134,9 +134,11 @@ var Defaults = {
       ls.coffeeSubscription = 'true';
     }
     
-    // Infoscreen
-    if (ls.useInfoscreen == undefined)
-      ls.useInfoscreen = 'false';
+    // Bigscreen
+    if (ls.useBigscreen == undefined)
+      ls.useBigscreen = 'false';
+    if (ls.whichScreen == undefined)
+      ls.whichScreen = 'notifier';
     
     // General
     if (ls.everOpenedOptions == undefined)
