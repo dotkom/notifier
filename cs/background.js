@@ -223,10 +223,6 @@
       Browser.openTab('infoscreen.html');
       Analytics.trackEvent('loadInfoscreen');
     }
-    if (ls.openChatter === 'true') {
-      Browser.openBackgroundTab('http://webchat.freenode.net/?channels=online');
-      Analytics.trackEvent('loadChatter');
-    }
     loadAffiliationIcon();
     Browser.bindCommandHotkeys(Affiliation.org[ls.affiliationKey1].web);
     Browser.registerNotificationListeners();
