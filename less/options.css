@@ -301,6 +301,7 @@ header #notification .saved {
   left: -2px;
   color: black;
   font-size: 12px;
+  text-shadow: none;
 }
 .item #affiliationBox #flashyNews {
   position: relative;
@@ -334,6 +335,9 @@ header #notification .saved {
 }
 .item #affiliationBox #flashyNews div input {
   box-shadow: 0 0 0 black;
+}
+.item #affiliationBox #flashyNews div label {
+  text-shadow: none;
 }
 .item #affiliationBox #arrowDown {
   position: relative;
