@@ -517,8 +517,7 @@ bindSuggestions = ->
         $('#busSuggestions').html ''
 
 toggleBigscreen = (activate, type, force) ->
-  # Wait till after the modal is properly closed
-  setTimeout ( ->
+  run = ->
     if activate
       # Welcome to callback hell, - be glad it's well commented
       speed = 400
@@ -527,6 +526,10 @@ toggleBigscreen = (activate, type, force) ->
       $('#bigscreenPreview').attr 'src', url
       # Remove subtext
       $('#headerText').fadeOut()
+      # No hw-features? Move content higher up on the page
+      unless Affiliation.org[ls.affiliationKey1].hw
+        $('#container').animate {'top':'50%'}, speed
+        $('header').animate {'top':'50%'}, speed
       # Animate away options for news notifications and coffee subscription
       $('#bigscreenSlider').slideUp speed, ->
         # Animate the useBigscreen image
@@ -559,14 +562,15 @@ toggleBigscreen = (activate, type, force) ->
         Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Notifier'
       # Animations
       revertBigscreen()
-  ), 600
+  # Wait till after the modal is properly closed
+  setTimeout run, 500
 
 switchBigScreen = (type) ->
   if type != 'infoscreen' && type != 'officescreen'
     console.lolg 'ERROR: Unsupported mode'
     return
   # Wait till after the modal is properly closed
-  setTimeout ( ->
+  run = ->
     speed = 600
     # Slide away the bigscreen preview
     $('#bigscreenPreview').slideUp speed, ->
@@ -582,16 +586,24 @@ switchBigScreen = (type) ->
           $('#headerText').html '<b>Officescreen</b> Options'
         # Fade header back in
         $('#headerText').fadeIn ->
-          # Slide bigscreen preview back down
-          $('#bigscreenPreview').slideDown speed
-  ), 500
+          # Wait for loading (looks better when the bigscreen is properly loaded)
+          setTimeout ( ->
+            # Slide bigscreen preview back down
+            $('#bigscreenPreview').slideDown speed
+          ), 500
+  # Wait till after the modal is properly closed
+  setTimeout run, 500
 
 revertBigscreen = ->
   # Wait till after the modal is properly closed
-  setTimeout ( ->
+  run = ->
     speed = 300
     # Remove subtext
     $('#headerText').fadeOut speed, ->
+      # No hw-features? Move content further down the page
+      unless Affiliation.org[ls.affiliationKey1].hw
+        $('#container').animate {'top':'60%'}, speed
+        $('header').animate {'top':'60%'}, speed
       # Animate in the bigscreen preview
       $('#bigscreenPreview').slideUp speed, ->
         # Animate the useBigscreen image
@@ -603,7 +615,8 @@ revertBigscreen = ->
             $('#headerText').fadeIn ->
               # Finally, unload bigscreen preview (resource heavy)
               $('#bigscreenPreview').attr 'src', 'about:blank'
-  ), 500
+  # Wait till after the modal is properly closed
+  setTimeout run, 500
 
 restoreChecksToBoxes = ->
   # Restore checks to boxes from localStorage

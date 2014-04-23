@@ -526,13 +526,22 @@
   };
 
   toggleBigscreen = function(activate, type, force) {
-    return setTimeout((function() {
+    var run;
+    run = function() {
       var speed, url;
       if (activate) {
         speed = 400;
         url = type + '.html';
         $('#bigscreenPreview').attr('src', url);
         $('#headerText').fadeOut();
+        if (!Affiliation.org[ls.affiliationKey1].hw) {
+          $('#container').animate({
+            'top': '50%'
+          }, speed);
+          $('header').animate({
+            'top': '50%'
+          }, speed);
+        }
         return $('#bigscreenSlider').slideUp(speed, function() {
           return $('img#useBigscreen').slideUp(speed, function() {
             return $('#bigscreenPreview').slideDown(speed, function() {
@@ -566,15 +575,17 @@
         }
         return revertBigscreen();
       }
-    }), 600);
+    };
+    return setTimeout(run, 500);
   };
 
   switchBigScreen = function(type) {
+    var run;
     if (type !== 'infoscreen' && type !== 'officescreen') {
       console.lolg('ERROR: Unsupported mode');
       return;
     }
-    return setTimeout((function() {
+    run = function() {
       var speed;
       speed = 600;
       return $('#bigscreenPreview').slideUp(speed, function() {
@@ -588,18 +599,30 @@
             $('#headerText').html('<b>Officescreen</b> Options');
           }
           return $('#headerText').fadeIn(function() {
-            return $('#bigscreenPreview').slideDown(speed);
+            return setTimeout((function() {
+              return $('#bigscreenPreview').slideDown(speed);
+            }), 500);
           });
         });
       });
-    }), 500);
+    };
+    return setTimeout(run, 500);
   };
 
   revertBigscreen = function() {
-    return setTimeout((function() {
+    var run;
+    run = function() {
       var speed;
       speed = 300;
       return $('#headerText').fadeOut(speed, function() {
+        if (!Affiliation.org[ls.affiliationKey1].hw) {
+          $('#container').animate({
+            'top': '60%'
+          }, speed);
+          $('header').animate({
+            'top': '60%'
+          }, speed);
+        }
         return $('#bigscreenPreview').slideUp(speed, function() {
           return $('img#useBigscreen').slideDown(speed, function() {
             return $('#bigscreenSlider').slideDown(speed, function() {
@@ -611,7 +634,8 @@
           });
         });
       });
-    }), 500);
+    };
+    return setTimeout(run, 500);
   };
 
   restoreChecksToBoxes = function() {
