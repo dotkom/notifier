@@ -116,10 +116,6 @@ var Defaults = {
     if (ls.rightCantina == undefined)
       ls.rightCantina = 'realfag';
     
-    // Chatter
-    // if (ls.openChatter == undefined) // Chatter is disabled
-      ls.openChatter = 'false';
-    
     // Notifications
     if (ls.showNotifications == undefined)
       ls.showNotifications = 'true';

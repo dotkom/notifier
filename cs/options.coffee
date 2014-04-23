@@ -517,97 +517,115 @@ bindSuggestions = ->
         $('#busSuggestions').html ''
 
 toggleBigscreen = (activate, type, force) ->
-  if activate
-    # Welcome to callback hell, - be glad it's well commented
-    speed = 400
-    url = type + '.html'
-    # Load bigscreen preview
-    $('#bigscreenPreview').attr 'src', url
-    # Remove subtext
-    $('#headerText').fadeOut()
-    # Animate away all other options
-    $('#container #left').animate {'width':'0'}, speed, ->
-      $('#container #left').hide()
-      $('#bigscreenSlider').slideUp speed, ->
-        # Animate the useBigscreen image
-        $('img#useBigscreen').slideUp speed, ->
-          # Animate in the bigscreen preview
-          $('#bigscreenPreview').slideDown speed, ->
-            # New logo subtext
-            if type == 'infoscreen'
-              $('#headerText').html '<b>Info</b>screen'
-            else if type == 'officescreen'
-              $('#headerText').html '<b>Office</b>screen'
-            $('#headerText').fadeIn ->
-              # Move bigscreen preview to the circa middle of the screen
-              $('#container #right').animate {'margin-left':'213px'}, speed
-              # Move all content a bit up
-              $('header').animate {'top':'50%'}, speed
-              $('#container').animate {'top':'50%'}, speed, ->
-                name = Affiliation.org[ls.affiliationKey1].name
-                if type == 'infoscreen'
-                  name = name + ' Infoscreen'
-                else if type == 'officescreen'
-                  name = name + ' Officescreen'
-                # Reset icon, icon title and icon badge
-                Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
-                Browser.setTitle name
-                Browser.setBadgeText ''
-                # Create Bigscreen in a new tab
-                Browser.openBackgroundTab url
-  else
-    # # Close any open Bigscreen tabs
-    # closeBigscreenTabs()
-    # Refresh office status
-    if Affiliation.org[ls.affiliationKey1].hw
-      Browser.getBackgroundProcess().updateOfficeAndMeetings true
+  # Wait till after the modal is properly closed
+  setTimeout ( ->
+    if activate
+      # Welcome to callback hell, - be glad it's well commented
+      speed = 400
+      url = type + '.html'
+      # Load bigscreen preview
+      $('#bigscreenPreview').attr 'src', url
+      # Remove subtext
+      $('#headerText').fadeOut()
+      # Animate away all other options
+      $('#container #left').animate {'width':'0'}, speed, ->
+        $('#container #left').hide()
+        $('#bigscreenSlider').slideUp speed, ->
+          # Animate the useBigscreen image
+          $('img#useBigscreen').slideUp speed, ->
+            # Animate in the bigscreen preview
+            $('#bigscreenPreview').slideDown speed, ->
+              # New logo subtext
+              if type == 'infoscreen'
+                $('#headerText').html '<b>Info</b>screen'
+              else if type == 'officescreen'
+                $('#headerText').html '<b>Office</b>screen'
+              $('#headerText').fadeIn ->
+                # Move bigscreen preview to the circa middle of the screen
+                $('#container #right').animate {'margin-left':'213px'}, speed
+                # Move all content a bit up
+                $('header').animate {'top':'50%'}, speed
+                $('#container').animate {'top':'50%'}, speed, ->
+                  name = Affiliation.org[ls.affiliationKey1].name
+                  if type == 'infoscreen'
+                    name = name + ' Infoscreen'
+                  else if type == 'officescreen'
+                    name = name + ' Officescreen'
+                  # Reset icon, icon title and icon badge
+                  Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
+                  Browser.setTitle name
+                  Browser.setBadgeText ''
+                  # Create Bigscreen in a new tab
+                  Browser.openBackgroundTab url
     else
-      Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
-      Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Notifier'
-    # Animations
-    revertBigscreen()
+      # # Close any open Bigscreen tabs
+      # closeBigscreenTabs()
+      # Refresh office status
+      if Affiliation.org[ls.affiliationKey1].hw
+        Browser.getBackgroundProcess().updateOfficeAndMeetings true
+      else
+        Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
+        Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Notifier'
+      # Animations
+      revertBigscreen()
+  ), 600
 
 switchBigScreen = (type) ->
   if type != 'infoscreen' && type != 'officescreen'
     console.lolg 'ERROR: Unsupported mode'
     return
-  # Logo text
-  if type == 'infoscreen'
-    $('#headerText').html '<b>Info</b>screen'
-  else if type == 'officescreen'
-    $('#headerText').html '<b>Office</b>screen'
-  # Load bigscreen preview
-  url = type + '.html'
-  $('#bigscreenPreview').attr 'src', url
+  # Wait till after the modal is properly closed
+  setTimeout ( ->
+    speed = 600
+    # Slide away the bigscreen preview
+    $('#bigscreenPreview').slideUp speed, ->
+      # Switch bigscreen preview
+      url = type + '.html'
+      $('#bigscreenPreview').attr 'src', url
+      # Fade out header
+      $('#headerText').fadeOut ->
+        # Change header
+        if type == 'infoscreen'
+          $('#headerText').html '<b>Info</b>screen'
+        else if type == 'officescreen'
+          $('#headerText').html '<b>Office</b>screen'
+        # Fade header back in
+        $('#headerText').fadeIn ->
+          # Slide bigscreen preview back down
+          $('#bigscreenPreview').slideDown speed
+  ), 500
 
 revertBigscreen = ->
-  speed = 300
-  # Remove subtext
-  $('#headerText').fadeOut speed, ->
-    # Move all content back down
-    if Affiliation.org[ls.affiliationKey1].hw
-      $('#container').animate {'top':'50%'}, speed
-      $('header').animate {'top':'50%'}, speed
-    else
-      $('#container').animate {'top':'60%'}, speed
-      $('header').animate {'top':'60%'}, speed
-    # Move bigscreen preview back in place (to the left)
-    $('#container #right').animate {'margin-left':'0'}, speed
-    # Animate in the bigscreen preview
-    $('#bigscreenPreview').slideUp speed, ->
-      # Animate the useBigscreen image
-      $('img#useBigscreen').slideDown speed, ->
-        # Slide more options back open
-        $('#bigscreenSlider').slideDown speed, ->
-          # Show the rest of the options again
-          $('#container #left').show()
-          # Animate in the rest of the options
-          $('#container #left').animate {'width':'54%'}, speed, ->
-            # Back to old logo subtext
-            $('#headerText').html '<b>Notifier</b> Options'
-            $('#headerText').fadeIn ->
-              # Finally, unload bigscreen preview (resource heavy)
-              $('#bigscreenPreview').attr 'src', 'about:blank'
+  # Wait till after the modal is properly closed
+  setTimeout ( ->
+    speed = 300
+    # Remove subtext
+    $('#headerText').fadeOut speed, ->
+      # Move all content back down
+      if Affiliation.org[ls.affiliationKey1].hw
+        $('#container').animate {'top':'50%'}, speed
+        $('header').animate {'top':'50%'}, speed
+      else
+        $('#container').animate {'top':'60%'}, speed
+        $('header').animate {'top':'60%'}, speed
+      # Move bigscreen preview back in place (to the left)
+      $('#container #right').animate {'margin-left':'0'}, speed
+      # Animate in the bigscreen preview
+      $('#bigscreenPreview').slideUp speed, ->
+        # Animate the useBigscreen image
+        $('img#useBigscreen').slideDown speed, ->
+          # Slide more options back open
+          $('#bigscreenSlider').slideDown speed, ->
+            # Show the rest of the options again
+            $('#container #left').show()
+            # Animate in the rest of the options
+            $('#container #left').animate {'width':'54%'}, speed, ->
+              # Back to old logo subtext
+              $('#headerText').html '<b>Notifier</b> Options'
+              $('#headerText').fadeIn ->
+                # Finally, unload bigscreen preview (resource heavy)
+                $('#bigscreenPreview').attr 'src', 'about:blank'
+  ), 500
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
@@ -851,6 +869,9 @@ $ ->
     
     # Special case for 'useBigscreen'
     if this.id is 'useBigscreen'
+      # Remove the check/no-check, it will be corrected after the user's coice
+      $('#useBigscreen').prop 'checked', !this.checked
+      # Present the user with a choice between notifier and bigscreen
       $('.modal').modal
         zIndex: 1000
         fadeDuration: 250

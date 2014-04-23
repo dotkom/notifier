@@ -184,10 +184,6 @@ $ ->
   if ls.useInfoscreen is 'true'
     Browser.openTab 'infoscreen.html'
     Analytics.trackEvent 'loadInfoscreen'
-  # Open Chatter if the option is set
-  if ls.openChatter is 'true'
-    Browser.openBackgroundTab 'http://webchat.freenode.net/?channels=online'
-    Analytics.trackEvent 'loadChatter'
 
   loadAffiliationIcon()
 
