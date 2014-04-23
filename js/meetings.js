@@ -3,7 +3,7 @@ var Meetings = {
   debugApi: 0,
   debugThisApi: 'https://online.ntnu.no/service_static/dev_meeting_plan',
   debugString: 0,
-  debugThisString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 dotKom',
+  debugThisString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 appKom',
   
   msgNone: 'Kontoret er ledig resten av dagen',
   msgError: 'Frakoblet fra møteplan',
@@ -11,6 +11,10 @@ var Meetings = {
   get: function(callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+    if (!Affiliation.org[localStorage.affiliationKey1].hw) {
+      if (this.debug) console.log('ERROR: affiliation without hw-features tried checking meetings');
       return;
     }
     

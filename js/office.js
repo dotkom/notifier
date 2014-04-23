@@ -8,7 +8,7 @@ var Office = {
   statuses: {
     'error': {title: 'Oops', color: 'LightGray', message: 'Klarte ikke hente kontorstatus'},
     'open': {title: 'Åpent', color: 'LimeGreen', message: 'Gratis kaffe og te til alle!'},
-    'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem for å åpne opp.'},
+    'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem'},
     'meeting': {title: 'Møte', color: 'red', message: 'Kontoret er opptatt'}, // meetings usually get message from calendar entries
   },
   // Food statuses have titles and icons (messages exist as calendar titles)
@@ -24,6 +24,10 @@ var Office = {
   get: function(callback) {
     if (callback == undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      return;
+    }
+    if (!Affiliation.org[localStorage.affiliationKey1].hw) {
+      if (this.debug) console.log('ERROR: affiliation without hw-features tried checking office status');
       return;
     }
 
@@ -52,7 +56,7 @@ var Office = {
     
     // Receives info on current event from Onlines servers (without comments)
     // meeting        // current status
-    // Møte: dotKom   // event title or 'No title'-meeting or nothing
+    // Møte: appKom   // event title or 'No title'-meeting or nothing
     var self = this;
     Ajaxer.getPlainText({
       url: eventApi,

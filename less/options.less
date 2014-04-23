@@ -16,11 +16,6 @@
 
 // Variables
 
-@online-orange: #ee861f;
-@background-blue: #002343;
-@background-dark: #001429;
-@color: white;
-@font-family: helvetica;
 @header-height: 67px;
 @header-padding: 13px;
 @content-width: 800px;
@@ -29,9 +24,9 @@
 // Rules
 
 body {
-  background: @background-dark;
-  font-family: @font-family;
-  color: @color;
+  background: black;
+  font-family: helvetica;
+  color: white;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -213,82 +208,129 @@ header {
   /* the affiliation option in particular */
 
   #affiliationBox {
-    width: 353px;
-    height: 47px;
+    width: 374px;
     border-top: 1px solid white;
     border-bottom: 1px solid #7a7a7a;
     border-radius: 4px;
     background: #e6e5e5; /* Old browsers */
     background: -webkit-linear-gradient(top, #e6e5e5 0%,#cececf 100%); /* Chrome10+,Safari5.1+,Opera15+ */
     background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%); /* W3C */
-    padding: 5px 11px;
     overflow: hidden;
     white-space: nowrap;
     word-wrap: break-word;
-    #affiliationSymbol {
+
+    .symbol {
       .debugred;
-      float: left;
       white-space: nowrap;
       cursor: pointer;
       width: 59px;
-      margin: -7px 5px -7px -11px;
-      border-right: 1px solid #aaa;
       background-position: center center;
       background-size: 59px 59px;
       background-repeat: no-repeat;
-      background-image: url(../org/online/symbol.png); /* is switched for affiliation logo */
+      background-image: url(../org/online/symbol.png); /* is switched for affiliation1 logo */
     }
-    .row {
-      .debugred;
-      float: right;
-      width: 293px;
-      color: black;
-      text-shadow: 0 0 0 black;
-      select {
-        position: relative;
-      }
-      input {
-        box-shadow: 0 0 0 black;
-      }
-    }
-    #topRow {
-    }
-    #bottomRow {
-      font-size: 13px;
-      margin-top: 4px;
-      select {
-        top: -4px;
-      }
-    }
-    #affiliationKey1 {
-      .debugred;
-      display: inline-block;
+    
+    #affiliation1Symbol {
       float: left;
-      border: 1px solid #7a7a7a;
-      position: relative;
-      margin-top: 3px;
-      white-space: nowrap;
-      width: 156px;
+      border-right: 1px solid #aaa;
     }
-    #affiliationPalette {
-      .debugred;
-      display: inline-block;
+
+    #affiliation2Symbol {
       float: right;
-      border: 1px solid #7a7a7a;
-      position: relative;
-      margin-top: 3px;
-      white-space: nowrap;
-      width: 128px;
+      border-left: 1px solid #aaa;
     }
-    #affiliationKey2 {
+
+    .box {
       .debugred;
-      display: inline-block;
-      border: 1px solid #7a7a7a;
-      float: right;
       position: relative;
-      margin-top: 3px;
-      white-space: nowrap;
-      width: 128px;
+      padding: 5px 6px 6px 6px;
+
+      select {
+        width: 100px;
+        margin-top: 4px;
+        border: 1px solid #7a7a7a;
+        word-wrap: initial;
+      }
+    }
+
+    #primary {
+      float: left;
+      border-right: 1px solid #aaa;
+      width: 115px;
+      
+      select {
+        margin-left: 7px;
+      }
+      
+      #affiliationKey1 {
+        background-color: yellow;
+      }
+      #affiliationPalette {
+        position: relative;
+        float: left;
+      }
+    }
+
+    #secondary {
+      float: right;
+      width: 107px;
+      
+      #affiliationKey2 {
+        // nothing here yet
+      }
+      #affiliation2Checkbox {
+        margin-top: 3px;
+        input {
+          box-shadow: 0 0 0 black;
+        }
+        label {
+          position: relative;
+          left: -2px;
+          color: black;
+          font-size: 12px;
+        }
+      }
+    }
+
+    #flashyNews {
+      position: relative;
+      float: left;
+      display: none;
+      border-top: 1px solid #aaa;
+      background: -webkit-linear-gradient(top, #e8e8e8 0%,#c0c0c0 100%); /* Chrome10+,Safari5.1+,Opera15+ */
+      background: linear-gradient(to bottom, #e8e8e8 0%,#c0c0c0 100%); /* W3C */
+      width: 100%;
+      padding: 9px 11px;
+      color: black;
+      font-size: 12px;
+
+      img {
+        position: relative;
+        float: left;
+        border: 1px solid #aaa;
+        width: 80px;
+        height: auto;
+      }
+      div {
+        margin-top: 2px;
+        margin-left: 5px;
+        position: relative;
+        float: left;
+        max-width: 260px;
+        input {
+          box-shadow: 0 0 0 black;
+        }
+      }
+    }
+
+    #arrowDown {
+      position: relative; /* paint behind other stuff */
+      z-index: 100;  /* paint behind other stuff */
+      left: -6px;
+      top: 45px;
+      img {
+        width: 12px;
+      }
     }
   }
 
@@ -435,9 +477,9 @@ header {
     }
   }
 
-  /* the infoscreen option in particular */
+  /* the bigscreen option in particular */
 
-  #infoscreenPreview {
+  #bigscreenPreview {
     display: none;
     overflow: hidden;
     margin-left: 93px;
@@ -626,5 +668,18 @@ header {
     display: inline;
     float: left;
     font-size: 12px;
+  }
+}
+
+/* Modal bigscreen dialog */
+
+.modal {
+  color: black;
+  
+  button {
+    font-size: 16px;
+  }
+  #modalNotifier {
+    font-weight: bold;
   }
 }

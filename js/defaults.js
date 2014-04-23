@@ -14,7 +14,7 @@ var Defaults = {
     if (ls.extensionName == undefined)
       ls.extensionName = 'Online Notifier';
     if (ls.extensionCreator == undefined)
-      ls.extensionCreator = 'dotKom'; // Max 8 letters because of styling
+      ls.extensionCreator = 'appKom'; // Max 8 letters because of styling
     if (ls.installTime == undefined)
       ls.installTime = new Date().getTime();
 
@@ -29,6 +29,8 @@ var Defaults = {
       ls.affiliationNewsList1 = JSON.stringify([]);
     if (ls.affiliationViewedList1 == undefined)
       ls.affiliationViewedList1 = JSON.stringify([]);
+    if (ls.affiliationFlashy1 == undefined)
+      ls.affiliationFlashy1 = 'true';
     
     if (ls.affiliationPalette == undefined)
       ls.affiliationPalette = 'online';
@@ -46,6 +48,8 @@ var Defaults = {
       ls.affiliationNewsList2 = JSON.stringify([]);
     if (ls.affiliationViewedList2 == undefined)
       ls.affiliationViewedList2 = JSON.stringify([]);
+    if (ls.affiliationFlashy2 == undefined)
+      ls.affiliationFlashy2 = 'true';
 
     if (ls.showBus == undefined)
       ls.showBus = 'true';
@@ -130,9 +134,11 @@ var Defaults = {
       ls.coffeeSubscription = 'true';
     }
     
-    // Infoscreen
-    if (ls.useInfoscreen == undefined)
-      ls.useInfoscreen = 'false';
+    // Bigscreen
+    if (ls.useBigscreen == undefined)
+      ls.useBigscreen = 'false';
+    if (ls.whichScreen == undefined)
+      ls.whichScreen = 'notifier';
     
     // General
     if (ls.everOpenedOptions == undefined)

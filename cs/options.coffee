@@ -40,7 +40,20 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
     # Save the change
     ls[id] = affiliationKey
 
-    if isPrimaryAffiliation
+    if not isPrimaryAffiliation
+      # Symbol
+      symbol = Affiliation.org[ls.affiliationKey2].symbol
+      $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # Flashy news text
+      name = Affiliation.org[ls.affiliationKey2].name
+      if name.length > 20 then name = name.substring(0, 18) + '..'
+      $('#flashyName2').text name
+      # Website link
+      web = Affiliation.org[ls.affiliationKey2].web
+      $('#affiliation2Symbol').unbind 'click'
+      $('#affiliation2Symbol').click ->
+        Browser.openTab web
+    else
       # Check if switching from or to an affiliation with fancy features
       old_has_hardware = if Affiliation.org[oldAffiliation].hw then true else false
       new_has_hardware = if Affiliation.org[affiliationKey].hw then true else false
@@ -71,13 +84,17 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
       $('link[rel="shortcut icon"]').attr 'href', icon
       # Symbol
       symbol = Affiliation.org[affiliationKey].symbol
-      $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+      $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol+'");'
+      # Flashy news text
+      name = Affiliation.org[ls.affiliationKey1].name
+      if name.length > 20 then name = name.substring(0, 18) + '..'
+      $('#flashyName1').text name
       # "Popup here"-bubble
       $('#popupHere img.icon').attr 'src', symbol
       # Website link
       web = Affiliation.org[affiliationKey].web
-      $('#affiliationSymbol').unbind 'click'
-      $('#affiliationSymbol').click ->
+      $('#affiliation1Symbol').unbind 'click'
+      $('#affiliation1Symbol').click ->
         Browser.openTab web
       # Name to badge title and localstorage
       name = Affiliation.org[affiliationKey].name
@@ -88,7 +105,7 @@ bindAffiliationSelector = (number, isPrimaryAffiliation) ->
         ls.extensionCreator = 'Online'
         changeCreatorName ls.extensionCreator
       else if affiliationKey is 'online'
-        ls.extensionCreator = 'dotKom'
+        ls.extensionCreator = 'appKom'
         changeCreatorName ls.extensionCreator
     
     # Throw out old news
@@ -468,6 +485,26 @@ slideFavoriteBusLines = ->
     # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
     $('#busBox').data 'timeoutId', timeoutId
 
+slideFlashyNews = ->
+  # Hide the flashy news options from the start
+  setTimeout ( ->
+    if not $('#affiliationBox').hasClass 'hover'
+      $('#affiliationBox #flashyNews').slideUp()
+      $('#affiliationBox #arrowDown').fadeIn()
+  ), 1500
+  # Show flashy news options when hovering
+  $('#affiliationBox').mouseenter ->
+    clearTimeout $(this).data 'timeoutId'
+    $('#affiliationBox #flashyNews').slideDown()
+    $('#affiliationBox #arrowDown').fadeOut()
+  $('#affiliationBox').mouseleave ->
+    timeoutId = setTimeout ( ->
+      $('#affiliationBox #flashyNews').slideUp()
+      $('#affiliationBox #arrowDown').fadeIn()
+    ), 500
+    # Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
+    $('#affiliationBox').data 'timeoutId', timeoutId
+
 bindSuggestions = ->
   $('.suggestion').click ->
     if ls.busInFocus isnt undefined
@@ -479,49 +516,48 @@ bindSuggestions = ->
       $('#busSuggestions .suggestion').fadeOut 50, ->
         $('#busSuggestions').html ''
 
-toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it's well commented
-  speed = 400
+toggleBigscreen = (activate, type, force) ->
   if activate
-    $('#useInfoscreen').attr 'checked', false
-    # Load infoscreen preview
-    $('#infoscreenPreview').attr 'src', 'infoscreen.html'
+    # Welcome to callback hell, - be glad it's well commented
+    speed = 400
+    url = type + '.html'
+    # Load bigscreen preview
+    $('#bigscreenPreview').attr 'src', url
     # Remove subtext
     $('#headerText').fadeOut()
     # Animate away all other options
     $('#container #left').animate {'width':'0'}, speed, ->
       $('#container #left').hide()
-      $('#infoscreenSlider').slideUp speed, ->
-        # Animate the useInfoscreen image
-        $('img#useInfoscreen').slideUp speed, ->
-          # Animate in the infoscreen preview
-          $('#infoscreenPreview').slideDown speed, ->
+      $('#bigscreenSlider').slideUp speed, ->
+        # Animate the useBigscreen image
+        $('img#useBigscreen').slideUp speed, ->
+          # Animate in the bigscreen preview
+          $('#bigscreenPreview').slideDown speed, ->
             # New logo subtext
-            $('#headerText').html '<b>Info</b>screen'
+            if type == 'infoscreen'
+              $('#headerText').html '<b>Info</b>screen'
+            else if type == 'officescreen'
+              $('#headerText').html '<b>Office</b>screen'
             $('#headerText').fadeIn ->
-              # Move infoscreen preview to the circa middle of the screen
+              # Move bigscreen preview to the circa middle of the screen
               $('#container #right').animate {'margin-left':'213px'}, speed
               # Move all content a bit up
               $('header').animate {'top':'50%'}, speed
               $('#container').animate {'top':'50%'}, speed, ->
                 name = Affiliation.org[ls.affiliationKey1].name
-                if force or confirm 'Sikker på at du vil skru på '+name+' Infoscreen?\n\n- Krever full-HD skjerm som står på høykant\n- Popup-knappen åpner Infoskjerm i stedet\n- Infoskjermen skjuler musepekeren\n- Infoskjermen åpnes hver gang '+Browser.name+' starter'
-                  # Enable, and check the checkbox
-                  ls['useInfoscreen'] = 'true'
-                  $('#useInfoscreen').prop 'checked', true
-                  # Reset icon, icon title and icon badge
-                  Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
-                  Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Infoscreen'
-                  Browser.setBadgeText ''
-                  # Create Infoscreen in a new tab
-                  if not force
-                    Browser.openBackgroundTab 'infoscreen.html'
-                else
-                  revertInfoscreen()
+                if type == 'infoscreen'
+                  name = name + ' Infoscreen'
+                else if type == 'officescreen'
+                  name = name + ' Officescreen'
+                # Reset icon, icon title and icon badge
+                Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
+                Browser.setTitle name
+                Browser.setBadgeText ''
+                # Create Bigscreen in a new tab
+                Browser.openBackgroundTab url
   else
-    # Disable
-    ls['useInfoscreen'] = 'false'
-    # # Close any open Infoscreen tabs
-    # closeInfoscreenTabs()
+    # # Close any open Bigscreen tabs
+    # closeBigscreenTabs()
     # Refresh office status
     if Affiliation.org[ls.affiliationKey1].hw
       Browser.getBackgroundProcess().updateOfficeAndMeetings true
@@ -529,9 +565,22 @@ toggleInfoscreen = (activate, force) -> # Welcome to callback hell, - be glad it
       Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
       Browser.setTitle Affiliation.org[ls.affiliationKey1].name + ' Notifier'
     # Animations
-    revertInfoscreen()
+    revertBigscreen()
 
-revertInfoscreen = ->
+switchBigScreen = (type) ->
+  if type != 'infoscreen' && type != 'officescreen'
+    console.lolg 'ERROR: Unsupported mode'
+    return
+  # Logo text
+  if type == 'infoscreen'
+    $('#headerText').html '<b>Info</b>screen'
+  else if type == 'officescreen'
+    $('#headerText').html '<b>Office</b>screen'
+  # Load bigscreen preview
+  url = type + '.html'
+  $('#bigscreenPreview').attr 'src', url
+
+revertBigscreen = ->
   speed = 300
   # Remove subtext
   $('#headerText').fadeOut speed, ->
@@ -542,14 +591,14 @@ revertInfoscreen = ->
     else
       $('#container').animate {'top':'60%'}, speed
       $('header').animate {'top':'60%'}, speed
-    # Move infoscreen preview back in place (to the left)
+    # Move bigscreen preview back in place (to the left)
     $('#container #right').animate {'margin-left':'0'}, speed
-    # Animate in the infoscreen preview
-    $('#infoscreenPreview').slideUp speed, ->
-      # Animate the useInfoscreen image
-      $('img#useInfoscreen').slideDown speed, ->
+    # Animate in the bigscreen preview
+    $('#bigscreenPreview').slideUp speed, ->
+      # Animate the useBigscreen image
+      $('img#useBigscreen').slideDown speed, ->
         # Slide more options back open
-        $('#infoscreenSlider').slideDown speed, ->
+        $('#bigscreenSlider').slideDown speed, ->
           # Show the rest of the options again
           $('#container #left').show()
           # Animate in the rest of the options
@@ -557,8 +606,8 @@ revertInfoscreen = ->
             # Back to old logo subtext
             $('#headerText').html '<b>Notifier</b> Options'
             $('#headerText').fadeIn ->
-              # Finally, unlaod infoscreen preview (resource heavy)
-              $('#infoscreenPreview').attr 'src', 'about:blank'
+              # Finally, unload bigscreen preview (resource heavy)
+              $('#bigscreenPreview').attr 'src', 'about:blank'
 
 # COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
 # closeInfoscreenTabs = ->
@@ -635,26 +684,40 @@ $ ->
   icon = Affiliation.org[ls.affiliationKey1].icon
   $('link[rel="shortcut icon"]').attr 'href', icon
   # news symbol
-  symbol = Affiliation.org[ls.affiliationKey1].symbol
-  $('#affiliationSymbol').attr 'style', 'background-image:url("'+symbol+'");'
+  symbol1 = Affiliation.org[ls.affiliationKey1].symbol
+  $('#affiliation1Symbol').attr 'style', 'background-image:url("'+symbol1+'");'
+  symbol2 = Affiliation.org[ls.affiliationKey2].symbol
+  $('#affiliation2Symbol').attr 'style', 'background-image:url("'+symbol2+'");'
+  # flashy news text
+  name1 = Affiliation.org[ls.affiliationKey1].name
+  if name1.length > 20 then name1 = name1.substring(0, 18) + '..'
+  $('#flashyName1').text name1
+  name2 = Affiliation.org[ls.affiliationKey2].name
+  if name2.length > 20 then name2 = name2.substring(0, 18) + '..'
+  $('#flashyName2').text name2
   # website
-  web = Affiliation.org[ls.affiliationKey1].web
-  $('#affiliationSymbol').unbind 'click'
-  $('#affiliationSymbol').click ->
-    Browser.openTab web
+  web1 = Affiliation.org[ls.affiliationKey1].web
+  $('#affiliation1Symbol').unbind 'click'
+  $('#affiliation1Symbol').click ->
+    Browser.openTab web1
+  web2 = Affiliation.org[ls.affiliationKey2].web
+  $('#affiliation2Symbol').unbind 'click'
+  $('#affiliation2Symbol').click ->
+    Browser.openTab web2
   # palette
   $('#palette').attr 'href', Palettes.get ls.affiliationPalette
   # icons
   changeOfficeStatusIcons()
   # popup-here bubble
-  $('#popupHere img.icon').attr 'src', symbol
+  $('#popupHere img.icon').attr 'src', symbol1
 
   restoreChecksToBoxes()
 
-  # If useInfoscreen is on, slide away the rest of the options and switch the logo subtext
-  if ls.useInfoscreen is 'true'
+  # If useBigscreen is on, slide away the rest of the options and switch the logo subtext
+  if ls.useBigscreen is 'true'
     setTimeout ( ->
-      toggleInfoscreen true, true
+      type = localStorage.whichScreen
+      toggleBigscreen true, type, true
     ), 300
 
   # Bind the windows resize function
@@ -666,10 +729,13 @@ $ ->
   # html = $('label[for=openChatter] span').html().replace /__nettleseren__/g, Browser.name
   # $('label[for=openChatter] span').html html
   
-  # Minor esthetical adjustments for Windows
+  # Minor esthetical adjustments for OS
   if Browser.onWindows()
     $('#pfText').attr "style", "bottom:9px;"
     $('#pfLink').attr "style", "bottom:9px;"
+  if Browser.onMac()
+    $('#popupHere .subtext b').text 'Cmd+Shift+A'
+
   # Google Analytics
   $('#pfLink').click ->
     Analytics.trackEvent 'clickPageflip'
@@ -681,22 +747,6 @@ $ ->
   pageFlipCursorBlinking()
 
   popupHere()
-  
-  # Blink the first affiliation-field with light green colors to attract the bees
-  if ls.everOpenedOptions is 'false'
-    ls.everOpenedOptions = 'true'
-    blinkAffiliation = (iteration) ->
-      if 0 < iteration
-        setTimeout ( ->
-          $('#affiliationKey1').attr 'style', 'background-color:#87d677; color:black; border:1px solid black;'
-          setTimeout ( ->
-            $('#affiliationKey1').attr 'style', ''
-            blinkAffiliation iteration-1
-          ), 140
-        ), 140
-    setTimeout ( ->
-      blinkAffiliation 6
-    ), 3000
 
   # Allow user to change affiliation and palette
   bindAffiliationSelector '1', true
@@ -715,6 +765,9 @@ $ ->
 
   # Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines()
+
+  # Slide away flashy news options when not needed to conserve space
+  slideFlashyNews()
 
   # Load lists of bus stops
   Stops.load()
@@ -741,14 +794,66 @@ $ ->
   , ->
     $(this).removeClass 'hover'
 
+  # Adding a hover class to #affiliationBox whenever the mouse is hovering over it
+  $('#affiliationBox').hover ->
+    $(this).addClass 'hover'
+  , ->
+    $(this).removeClass 'hover'
+
+  # Adding handling of buttons in the modal with infoscreen and officescreen
+  $('#modalNotifier').click ->
+    $.modal.close()
+    # Check the box
+    $('#useBigscreen').attr 'checked', false
+    # Is there change?
+    if localStorage.whichScreen != 'notifier'
+      toggleBigscreen false
+      # Store it
+      ls.useBigscreen = 'false'
+      localStorage.whichScreen = 'notifier'
+
+  $('#modalInfoscreen').click ->
+    $.modal.close()
+    # Check the box
+    $('#useBigscreen').prop 'checked', true
+    # Is there change?
+    if localStorage.whichScreen != 'infoscreen'
+      # Is it a bigscreen switch?
+      if localStorage.whichScreen == 'officescreen'
+        switchBigScreen 'infoscreen'
+      # From Notifier mode
+      else
+        toggleBigscreen true, 'infoscreen'
+      # Store it
+      ls.useBigscreen = 'true'
+      localStorage.whichScreen = 'infoscreen'
+
+  $('#modalOfficescreen').click ->
+    $.modal.close()
+    # Check the box
+    $('#useBigscreen').prop 'checked', true
+    # Is there change?
+    if localStorage.whichScreen != 'officescreen'
+      # Is it a bigscreen switch?
+      if localStorage.whichScreen == 'infoscreen'
+        switchBigScreen 'officescreen'
+      # From Notifier mode
+      else
+        toggleBigscreen true, 'officescreen'
+      # Store it
+      ls.useBigscreen = 'true'
+      localStorage.whichScreen = 'officescreen'
+
   # Catch new clicks
   $('input:checkbox').click ->
     _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1)
     Analytics.trackEvent 'click'+_capitalized, this.checked
     
-    # Special case for 'useInfoscreen'
-    if this.id is 'useInfoscreen'
-      toggleInfoscreen this.checked
+    # Special case for 'useBigscreen'
+    if this.id is 'useBigscreen'
+      $('.modal').modal
+        zIndex: 1000
+        fadeDuration: 250
 
     # All the other checkboxes (not Infoscreen)
     else

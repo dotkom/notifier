@@ -9,6 +9,9 @@
   <link rel="stylesheet" type="text/css" href="less/options.css" />
   <link rel="stylesheet" type="text/css" href="less/palettes/blue.css" id="palette" />
 
+  <!-- CSS jQuery Modal -->
+  <link rel="stylesheet" type="text/css" href="libs/modal/jquery.modal.css" />
+
 </head>
 
 <body>
@@ -33,8 +36,9 @@
           </span><br />
         </label>
         <div id="affiliationBox" class="image">
-          <img id="affiliationSymbol" src="/img/options-gloss.png" />
-          <div id="topRow" class="row">
+          <img id="affiliation1Symbol" class="symbol" src="/img/options-gloss.png" />
+          <img id="affiliation2Symbol" class="symbol" src="/img/options-gloss.png" />
+          <div id="primary" class="box">
             <!-- IMPORTANT: Keep the same order here as in affiliation.js -->
             <select id="affiliationKey1">
               <optgroup label="Linjeforeninger Gløshaugen">
@@ -72,16 +76,6 @@
                 <option value="sturm_und_drang">Sturm und Drang</option>
                 <option value="teaterlosjen">Teaterlosjen</option>
               </optgroup>
-              <optgroup label="Master-/doktor-/internasjonale foreninger">
-                <option value="dion">DION</option>
-                <!-- <option value="esn">ESN</option> -->
-                <option value="iaeste">IAESTE</option>
-                <option value="isu">ISU</option>
-                <option value="projeksjon">Projeksjon</option>
-                <!-- <option value="signifikant">Signifikant</option> -->
-                <option value="soma">Soma</option>
-                <option value="symbiosis">Symbiosis</option>
-              </optgroup>
               <optgroup label="Linjeforeninger HiST/DMMH/TJSF/BI">
                 <option value="fraktur">Fraktur</option>
                 <option value="kom">KOM</option>
@@ -91,6 +85,16 @@
                 <option value="tim_og_shaenko">Tim &amp; Shænko</option>
                 <option value="tjsf">TJSF</option>
                 <option value="vivas">Vivas</option>
+              </optgroup>
+              <optgroup label="Master-/doktor-/internasjonale foreninger">
+                <option value="dion">DION</option>
+                <!-- <option value="esn">ESN</option> -->
+                <option value="iaeste">IAESTE</option>
+                <option value="isu">ISU</option>
+                <option value="projeksjon">Projeksjon</option>
+                <option value="signifikant">Signifikant</option>
+                <option value="soma">Soma</option>
+                <option value="symbiosis">Symbiosis</option>
               </optgroup>
               <optgroup label="Studentmedier++">
                 <option value="dusken">Dusken</option>
@@ -129,8 +133,7 @@
               </optgroup>
             </select>
           </div>
-          <div id="bottomRow" class="row">
-            <input id="showAffiliation2" type="checkbox" /><label for="showAffiliation2">Bruk ekstra nyhetskilde:</label>
+          <div id="secondary" class="box">
             <!-- IMPORTANT: Keep the same order here as in affiliation.js -->
             <select id="affiliationKey2">
               <optgroup label="Linjeforeninger Gløshaugen">
@@ -168,16 +171,6 @@
                 <option value="sturm_und_drang">Sturm und Drang</option>
                 <option value="teaterlosjen">Teaterlosjen</option>
               </optgroup>
-              <optgroup label="Master-/doktor-/internasjonale foreninger">
-                <option value="dion">DION</option>
-                <!-- <option value="esn">ESN</option> -->
-                <option value="iaeste">IAESTE</option>
-                <option value="isu">ISU</option>
-                <option value="projeksjon">Projeksjon</option>
-                <!-- <option value="signifikant">Signifikant</option> -->
-                <option value="soma">Soma</option>
-                <option value="symbiosis">Symbiosis</option>
-              </optgroup>
               <optgroup label="Linjeforeninger HiST/DMMH/TJSF/BI">
                 <option value="fraktur">Fraktur</option>
                 <option value="kom">KOM</option>
@@ -187,6 +180,16 @@
                 <option value="tim_og_shaenko">Tim &amp; Shænko</option>
                 <option value="tjsf">TJSF</option>
                 <option value="vivas">Vivas</option>
+              </optgroup>
+              <optgroup label="Master-/doktor-/internasjonale foreninger">
+                <option value="dion">DION</option>
+                <!-- <option value="esn">ESN</option> -->
+                <option value="iaeste">IAESTE</option>
+                <option value="isu">ISU</option>
+                <option value="projeksjon">Projeksjon</option>
+                <option value="signifikant">Signifikant</option>
+                <option value="soma">Soma</option>
+                <option value="symbiosis">Symbiosis</option>
               </optgroup>
               <optgroup label="Studentmedier++">
                 <option value="dusken">Dusken</option>
@@ -209,6 +212,21 @@
                 <option value="dmmh">DMMH</option>
               </optgroup>
             </select>
+            <div id="affiliation2Checkbox">
+              <input id="showAffiliation2" type="checkbox" /><label for="showAffiliation2">Vis denne også</label>
+            </div>
+          </div>
+          <div id="flashyNews">
+            <img src="img/options-flashy-news.png" />
+            <div>
+              <input id="affiliationFlashy1" type="checkbox" />
+              <label for="affiliationFlashy1">Store nyhetsbilder fra <span id="flashyName1">_PRIMARY_</span></label><br />
+              <input id="affiliationFlashy2" type="checkbox" />
+              <label for="affiliationFlashy2">Store nyhetsbilder fra <span id="flashyName2">_SECONDARY_</span></label>
+            </div>
+          </div>
+          <div id="arrowDown">
+            <img src="img/options-arrow-down.png" />
           </div>
         </div>
       </div>
@@ -352,17 +370,17 @@
     <div id="right" class="side">
 
       <div class="item">
-        <label for="useInfoscreen">
-          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
+        <label for="useBigscreen">
+          <input type="checkbox" name="useBigscreen" value="useBigscreen" id="useBigscreen" />
           <span>
-            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
+            Bruk <b>Bigscreen</b> i stedet for <b>Notifier</b>
           </span><br />
-          <img id="useInfoscreen" class="image" src="/img/options-infoscreen.png" />
-          <iframe id="infoscreenPreview" class="image" src="about:blank"></iframe>
+          <img id="useBigscreen" class="image" src="/img/options-infoscreen.png" />
+          <iframe id="bigscreenPreview" class="image" src="about:blank"></iframe>
         </label>
       </div>
 
-      <div id="infoscreenSlider">
+      <div id="bigscreenSlider">
 
         <div class="item">
           <label for="showNotifications">
@@ -386,7 +404,7 @@
 
       </div>
 
-    </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
+    </div> <!-- the slideup div, slides away all other options if useBigscreen is checked -->
   </div>
 
   <!-- Suggestions for bus stops -->
@@ -396,6 +414,7 @@
   <div id="debugLinks">
     pages<br />
     <button type="button" class="debug" data="infoscreen.html">infoscreen.html</button><br />
+    <button type="button" class="debug" data="officescreen.html">officescreen.html</button><br />
     <button type="button" class="debug" data="popup.html">popup.html</button><br />
     <br />cantina feeds<br />
     <button type="button" class="debug" data="https://www.sit.no/rss.ap?thisId=38798">dmmh-feed</button><br />
@@ -411,14 +430,14 @@
     <button type="button" class="debug" data="https://www.sit.no/rss.ap?thisId=36450">tyholt-feed</button><br />
   </div>
 
-  <!-- "from dotKom with <3" -->
+  <!-- "from appKom with <3" -->
   <div id="pageflip">
     <div id="pfBackground"></div>
     <div id="pfText">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
     <div id="pfFlip"></div>
     <div id="pfLink">
       <br />
-      <a href="http://github.com/dotkom/online-notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pagefliptyping"></span><span class="pageflipcursor">_</span></a>
+      <a href="https://github.com/appkom/notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pagefliptyping"></span><span class="pageflipcursor">_</span></a>
     </div>
   </div>
 
@@ -427,11 +446,27 @@
     <img class="icon" src="/org/online/symbol.png" />
     <img class="arrow" src="/img/options-bubble-arrow.png" />
     <div class="text">Notifier is up here</div>
-    <div class="subtext"><b>Alt+A</b> opens the popup</div>
+    <div class="subtext"><b>Ctrl+Shift+A</b> opens the popup</div>
+  </div>
+
+  <!-- Bigscreen modal -->
+  <div class="modal">
+    What do you want? Bigscreen or Notifier?<br />
+    <br />
+    About bigscreen:
+    <ul>
+      <li>Requires large screen tilted to upward angle</li>
+      <li>Popup button will open the bigscreen instead</li>
+      <li>The bigscreen hides the mouse pointer</li>
+      <li>Bigscreen opens when the browser starts</li>
+    </ul>
+    <button type="button" id="modalNotifier">Back to Notifier</button>
+    <button type="button" id="modalInfoscreen">Infoscreen</button>
+    <button type="button" id="modalOfficescreen">Officescreen</button>
   </div>
 
   <!-- JS No Dependencies -->
-  <script src="libs/jquery-2.0.0.min.js"></script>
+  <script src="libs/jquery-2.1.0.min.js"></script>
   <script src="js/missing.js"></script>
   <script src="js/hotfix.js"></script>
 
@@ -453,6 +488,9 @@
   <script src="js/news.js"></script>
   <script src="js/office.js"></script>
   <script src="js/stops.js"></script>
+
+  <!-- JS jQuery Modal -->
+  <script src="libs/modal/jquery.modal.min.js"></script>
 
   <!-- Document ready sript -->
   <script src="cs/options.js"></script>

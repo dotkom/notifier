@@ -32,7 +32,7 @@
   font-style: italic;
 }
 body {
-  background: #001429;
+  background: black;
   color: white;
   font-family: Helvetica;
   overflow: hidden;
@@ -219,6 +219,34 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  /* #full for using a single column */
+
+  /* #left and #right for using double columns */
+
+  /* for each news post, and item within */
+
+}
+#container #news #full {
+  position: relative;
+  width: 100%;
+  float: left;
+}
+#container #news #full .post .item img.regular {
+  float: left;
+  width: 33%;
+}
+#container #news #left {
+  position: relative;
+  width: 47%;
+  float: left;
+}
+#container #news #right {
+  position: relative;
+  width: 48%;
+  float: right;
+}
+#container #news #right .title.regular {
+  color: LightGrey;
 }
 #container #news .post {
   border: 0px solid #ff0000;
@@ -230,14 +258,47 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+#container #news .post .item .title {
+  position: relative;
+  margin-top: 0;
+  /* overrides default value */
+
+}
+#container #news .post .item .title.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-transform: none;
+  text-shadow: 0 0 5px #333333, 0 0 10px #333333, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+}
 #container #news .post .item .author {
   display: inline;
   position: relative;
   font-style: italic;
 }
+#container #news .post .item .author.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+}
 #container #news .post .item img {
-  float: left;
+  width: auto;
+  height: auto;
   background: snow;
+}
+#container #news .post .item img.regular {
+  float: right;
+  width: 33%;
+}
+#container #news .post .item img.flashy {
+  float: left;
+  width: 96%;
+  margin: 0;
 }
 #container #news .unread {
   text-shadow: 0 0 10px white,
@@ -470,40 +531,10 @@ body {
 #container #news {
   /* #full for using a single column */
 
-  /* #left and #right for using double columns */
-
 }
-#container #news #full {
-  position: relative;
-  width: 100%;
-  float: left;
-}
-#container #news #full img {
-  float: left;
-  width: 200px;
-  max-height: 200px;
+#container #news #full .post .item img.regular {
+  max-height: 400px;
   margin: 0 9px 6px 0;
-}
-#container #news #left {
-  position: relative;
-  width: 45%;
-  float: left;
-}
-#container #news #left img {
-  float: right;
-  margin: 0 0 4px 4px;
-}
-#container #news #right {
-  position: relative;
-  width: 50%;
-  float: right;
-}
-#container #news #right .title {
-  color: LightGrey;
-}
-#container #news #right img {
-  float: right;
-  margin: 0 0 4px 4px;
 }
 #container #news .post {
   margin-top: 33px;
@@ -521,18 +552,24 @@ body {
   box-shadow: inset 0 0 3px #bbb,
             0 0 13px white;
 }
-#container #news .post .item .title {
-  margin-top: 0;
-  /* overrides default value */
-
+#container #news .post .item .title.flashy {
+  font-size: 35px;
+  line-height: 38px;
+  top: 23px;
+  left: 18px;
+}
+#container #news .post .item .author.flashy {
+  font-size: 32px;
+  bottom: 24px;
+  left: 18px;
 }
 #container #news .post .item img {
-  width: auto;
-  height: auto;
-  max-width: 160px;
-  max-height: 160px;
+  max-height: 400px;
   padding: 8px;
   box-shadow: 0 0 27px #bbb;
+}
+#container #news .post .item img.regular {
+  margin: 4px 0 0 6px;
 }
 #container #news .unread {
   font-size: 32px;

@@ -276,7 +276,7 @@
   };
 
   displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
-    var feedKey, i, newsList, storedImages, times, updatedList, viewedList, _results;
+    var feedKey, i, isDuplicate, isFlashy, isPrimaryAffiliation, newsList, storedImages, times, updatedList, viewedList, _results;
     $('#news ' + column).html('');
     feedKey = items[0].feedKey;
     newsList = JSON.parse(ls[newsListName]);
@@ -284,25 +284,34 @@
     updatedList = findUpdatedPosts(newsList, viewedList);
     viewedList = [];
     storedImages = JSON.parse(ls.storedImages);
+    isDuplicate = ls.affiliationKey1 === ls.affiliationKey2;
+    isPrimaryAffiliation = ls.affiliationKey1 === feedKey;
+    isFlashy = false;
+    if (isDuplicate) {
+      isFlashy = ls.affiliationFlashy1 === 'true' || ls.affiliationFlashy2 === 'true';
+    } else if (isPrimaryAffiliation) {
+      isFlashy = ls.affiliationFlashy1 === 'true';
+    } else {
+      isFlashy = ls.affiliationFlashy2 === 'true';
+    }
     $.each(items, function(index, item) {
       var altLink, date, descLimit, htmlItem, readUnread, storedImage, unreadCount, _ref;
       if (index < newsLimit) {
         viewedList.push(item.link);
         unreadCount = Number(ls[unreadCountName]);
         readUnread = '';
-        if (index < unreadCount) {
-          if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
-            readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
-          } else {
-            readUnread += '<span class="unread">NEW <b>::</b> </span>';
+        if (!isFlashy) {
+          if (index < unreadCount) {
+            if (_ref = item.link, __indexOf.call(updatedList.indexOf, _ref) >= 0) {
+              readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
+            } else {
+              readUnread += '<span class="unread">NEW <b>::</b> </span>';
+            }
           }
         }
         date = altLink = '';
         if (item.altLink !== null) {
           altLink = ' name="' + item.altLink + '"';
-        }
-        if (item.date !== null && ls.showAffiliation2 === 'false') {
-          date = ' den ' + item.date;
         }
         descLimit = 140;
         if (ls.showAffiliation2 === 'true') {
@@ -317,15 +326,26 @@
             item.image = storedImage;
           }
         }
-        htmlItem = '\
-        <div class="post">\
-          <div class="item" data="' + item.link + '"' + altLink + '>\
-            <div class="title">' + readUnread + item.title + '</div>\
-            <img src="' + item.image + '" width="107" />\
-            ' + item.description + '\
-            <div class="author">&ndash; Av ' + item.creator + date + '</div>\
-          </div>\
-        </div>';
+        if (isFlashy && ls.showAffiliation2 === 'true') {
+          htmlItem = '\
+          <div class="post">\
+            <div class="item" data="' + item.link + '"' + altLink + '>\
+              <img class="flashy" src="' + item.image + '" />\
+              <div class="title flashy">' + readUnread + item.title + '</div>\
+              <div class="author flashy">&ndash; Av ' + item.creator + '</div>\
+            </div>\
+          </div>';
+        } else {
+          htmlItem = '\
+          <div class="post">\
+            <div class="item" data="' + item.link + '"' + altLink + '>\
+              <div class="title">' + readUnread + item.title + '</div>\
+              <img class="regular" src="' + item.image + '" />\
+              ' + item.description + '\
+              <div class="author">&ndash; Av ' + item.creator + '</div>\
+            </div>\
+          </div>';
+        }
         return $('#news ' + column).append(htmlItem);
       }
     });

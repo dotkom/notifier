@@ -60,26 +60,26 @@
       var errorIcon, msgs, statusIcon, title;
       title = '';
       if (force || ls.officeStatus !== status || ls.officeStatusMessage !== message) {
+        ls.officeStatus = status;
+        ls.officeStatusMessage = message;
         if (__indexOf.call(Object.keys(Office.foods), status) >= 0) {
           title = Office.foods[status].title;
           Browser.setIcon(Office.foods[status].icon);
         } else {
           title = Office.statuses[status].title;
-          statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
-          if (statusIcon !== void 0) {
+          try {
+            statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
             Browser.setIcon(statusIcon);
-          } else {
+          } catch (e) {
             errorIcon = Affiliation.org[ls.affiliationKey1].icon;
             Browser.setIcon(errorIcon);
           }
         }
-        ls.officeStatus = status;
-        ls.officeStatusMessage = message;
-        msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
-        if (msgs) {
-          if (msgs[status]) {
-            message = msgs[status];
-          }
+        try {
+          msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
+          message = msgs[status];
+        } catch (e) {
+
         }
         return Meetings.get(function(meetings) {
           var today;

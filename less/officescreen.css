@@ -31,14 +31,6 @@
 }
 /* This file contains infoscreen-additions to common.less */
 @font-face {
-  font-family: 'HelveticaLT';
-  src: url('../fonts/helvetica/helvetica.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'DidotLT';
-  src: url('../fonts/didolt/didolt.otf') format('opentype');
-}
-@font-face {
   font-family: 'Rotis';
   src: url('../fonts/rotis/rotis_serif.otf') format('opentype');
 }
@@ -86,8 +78,11 @@ body {
 }
 #overlay {
   /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
+
   /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
+
   /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
+
   position: absolute;
   top: 0;
   left: 0;
@@ -106,11 +101,12 @@ body {
   height: 505px;
   z-index: 100;
   background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
-  display: none;
+  display: inherit;
 }
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
+
   background-image: url('/img/background-large-vertical.png');
   position: absolute;
   background-position: center center;
@@ -267,6 +263,7 @@ body {
 #container #cantinas #left #dinnerbox li.message,
 #container #cantinas #right #dinnerbox li.message {
   /*font-style: italic;*/
+
 }
 #container #bus {
   width: 110%;
@@ -274,18 +271,18 @@ body {
   left: 0;
   clear: both;
   display: inline-block;
+  background-color: #111;
   margin-top: 42px;
   box-shadow: 0 0 33px #ccc;
+}
+#container #bus .name {
+  color: #cf9;
+  font-size: 44px;
+  margin-bottom: 12px;
 }
 #container #bus #firstBus,
 #container #bus #secondBus {
   padding: 32px 0;
-}
-#container #bus #firstBus .name,
-#container #bus #secondBus .name {
-  color: #cf9;
-  font-size: 44px;
-  margin-bottom: 12px;
 }
 #container #bus #firstBus .first,
 #container #bus #secondBus .first,
@@ -296,7 +293,17 @@ body {
 #container #bus #firstBus .fourth,
 #container #bus #secondBus .fourth,
 #container #bus #firstBus .fifth,
-#container #bus #secondBus .fifth {
+#container #bus #secondBus .fifth,
+#container #bus #firstBus .sixth,
+#container #bus #secondBus .sixth,
+#container #bus #firstBus .seventh,
+#container #bus #secondBus .seventh,
+#container #bus #firstBus .eighth,
+#container #bus #secondBus .eighth,
+#container #bus #firstBus .ninth,
+#container #bus #secondBus .ninth,
+#container #bus #firstBus .tenth,
+#container #bus #secondBus .tenth {
   clear: both;
 }
 #container #bus #firstBus .first .urg0,
@@ -308,7 +315,17 @@ body {
 #container #bus #firstBus .fourth .urg0,
 #container #bus #secondBus .fourth .urg0,
 #container #bus #firstBus .fifth .urg0,
-#container #bus #secondBus .fifth .urg0 {
+#container #bus #secondBus .fifth .urg0,
+#container #bus #firstBus .sixth .urg0,
+#container #bus #secondBus .sixth .urg0,
+#container #bus #firstBus .seventh .urg0,
+#container #bus #secondBus .seventh .urg0,
+#container #bus #firstBus .eighth .urg0,
+#container #bus #secondBus .eighth .urg0,
+#container #bus #firstBus .ninth .urg0,
+#container #bus #secondBus .ninth .urg0,
+#container #bus #firstBus .tenth .urg0,
+#container #bus #secondBus .tenth .urg0 {
   color: #ccc;
 }
 #container #bus #firstBus .first .urg1,
@@ -320,7 +337,17 @@ body {
 #container #bus #firstBus .fourth .urg1,
 #container #bus #secondBus .fourth .urg1,
 #container #bus #firstBus .fifth .urg1,
-#container #bus #secondBus .fifth .urg1 {
+#container #bus #secondBus .fifth .urg1,
+#container #bus #firstBus .sixth .urg1,
+#container #bus #secondBus .sixth .urg1,
+#container #bus #firstBus .seventh .urg1,
+#container #bus #secondBus .seventh .urg1,
+#container #bus #firstBus .eighth .urg1,
+#container #bus #secondBus .eighth .urg1,
+#container #bus #firstBus .ninth .urg1,
+#container #bus #secondBus .ninth .urg1,
+#container #bus #firstBus .tenth .urg1,
+#container #bus #secondBus .tenth .urg1 {
   color: #fcc;
 }
 #container #bus #firstBus .first .urg2,
@@ -332,7 +359,17 @@ body {
 #container #bus #firstBus .fourth .urg2,
 #container #bus #secondBus .fourth .urg2,
 #container #bus #firstBus .fifth .urg2,
-#container #bus #secondBus .fifth .urg2 {
+#container #bus #secondBus .fifth .urg2,
+#container #bus #firstBus .sixth .urg2,
+#container #bus #secondBus .sixth .urg2,
+#container #bus #firstBus .seventh .urg2,
+#container #bus #secondBus .seventh .urg2,
+#container #bus #firstBus .eighth .urg2,
+#container #bus #secondBus .eighth .urg2,
+#container #bus #firstBus .ninth .urg2,
+#container #bus #secondBus .ninth .urg2,
+#container #bus #firstBus .tenth .urg2,
+#container #bus #secondBus .tenth .urg2 {
   color: #ffb2b2;
 }
 #container #bus #firstBus .first .urg3,
@@ -344,7 +381,17 @@ body {
 #container #bus #firstBus .fourth .urg3,
 #container #bus #secondBus .fourth .urg3,
 #container #bus #firstBus .fifth .urg3,
-#container #bus #secondBus .fifth .urg3 {
+#container #bus #secondBus .fifth .urg3,
+#container #bus #firstBus .sixth .urg3,
+#container #bus #secondBus .sixth .urg3,
+#container #bus #firstBus .seventh .urg3,
+#container #bus #secondBus .seventh .urg3,
+#container #bus #firstBus .eighth .urg3,
+#container #bus #secondBus .eighth .urg3,
+#container #bus #firstBus .ninth .urg3,
+#container #bus #secondBus .ninth .urg3,
+#container #bus #firstBus .tenth .urg3,
+#container #bus #secondBus .tenth .urg3 {
   color: #f66;
 }
 #container #bus #firstBus .first .urg4,
@@ -356,7 +403,17 @@ body {
 #container #bus #firstBus .fourth .urg4,
 #container #bus #secondBus .fourth .urg4,
 #container #bus #firstBus .fifth .urg4,
-#container #bus #secondBus .fifth .urg4 {
+#container #bus #secondBus .fifth .urg4,
+#container #bus #firstBus .sixth .urg4,
+#container #bus #secondBus .sixth .urg4,
+#container #bus #firstBus .seventh .urg4,
+#container #bus #secondBus .seventh .urg4,
+#container #bus #firstBus .eighth .urg4,
+#container #bus #secondBus .eighth .urg4,
+#container #bus #firstBus .ninth .urg4,
+#container #bus #secondBus .ninth .urg4,
+#container #bus #firstBus .tenth .urg4,
+#container #bus #secondBus .tenth .urg4 {
   color: #f33;
 }
 #container #bus #firstBus .first .urg5,
@@ -368,7 +425,17 @@ body {
 #container #bus #firstBus .fourth .urg5,
 #container #bus #secondBus .fourth .urg5,
 #container #bus #firstBus .fifth .urg5,
-#container #bus #secondBus .fifth .urg5 {
+#container #bus #secondBus .fifth .urg5,
+#container #bus #firstBus .sixth .urg5,
+#container #bus #secondBus .sixth .urg5,
+#container #bus #firstBus .seventh .urg5,
+#container #bus #secondBus .seventh .urg5,
+#container #bus #firstBus .eighth .urg5,
+#container #bus #secondBus .eighth .urg5,
+#container #bus #firstBus .ninth .urg5,
+#container #bus #secondBus .ninth .urg5,
+#container #bus #firstBus .tenth .urg5,
+#container #bus #secondBus .tenth .urg5 {
   color: #c00;
 }
 #container #bus #firstBus {
@@ -403,7 +470,7 @@ body {
   bottom: 40px;
   width: 400px;
   z-index: 110;
-  display: none;
+  display: inherit;
 }
 /* the pageflip at the bottom */
 #pageflip {

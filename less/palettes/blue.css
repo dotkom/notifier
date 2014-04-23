@@ -1,8 +1,2 @@
 
-#background, #fadeOutNews {
-  -webkit-filter: hue-rotate(0deg) saturate(1) brightness(1);
-}
-
-#pfFlip {
-  -webkit-filter: hue-rotate(0deg) saturate(1) brightness(1.1);
-}
+/* blue is default */

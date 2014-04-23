@@ -4,6 +4,7 @@ var Oracle = {
   msgAboutPredict: 'Etter å ha brukt orakelet en stund kan det forutsi spørsmålet ditt når du trykker [tab]',
   msgDisconnected: 'Frakoblet fra m.atb.no',
   msgPredictPostfix: ' [tab]',
+  msg503: 'Orakelet har for mye å gjøre, vent littegrann er du grei',
 
   _autoLoad_: function() {
     if (localStorage.oracleBrain == undefined) {
@@ -31,11 +32,25 @@ var Oracle = {
     Ajaxer.getPlainText({
       url: self.api + encodedQuestion,
       success: function(answer) {
+
+        // Handle errors
+        if (answer.match(/error/gi) != null) {
+          if (answer.match(/503/gi) != null) {
+            callback(self.msg503);
+            return;
+          }
+          else {
+            callback(self.msgDisconnected);
+            return;
+          }
+        }
+
         // Store answer for later prediction (should be done before shorten+prettify)
         self.consider(question, answer);
 
         // Shorten, prettify
         answer = self.shorten(answer);
+        answer = self.convert12to24(answer);
         answer = self.prettify(answer);
 
         // Call it back
@@ -231,33 +246,36 @@ var Oracle = {
   },
 
   shorten: function(answer) {
-    // Example:
-    // "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd. Buss 5 går fra
+    if (this.debug) console.log('\nBEFORE shorten\n' + answer);
+    // Example input:
+    // "
+    // Holdeplassen nærmest Gløshaugen er Gløshaugen Syd. Buss 5 går fra
     // Gløshaugen Syd kl. 2054 til Prinsen kinosenter kl. 2058 og buss 19
     // går fra Prinsen kinosenter kl. 2105 til Studentersamfundet kl. 2106.
-    // Tidene angir tidligste passeringer av holdeplassene."
-    var pieces = answer.split('. ');
-    // // Slice away "Holdeplassen nærmest X er X."
-    // if (pieces[0].startsWith('Holdeplassen nærmest') || pieces[0].startsWith('The station nearest')) {
-    //   pieces = pieces.slice(1);
-    // }
-    // Slice away "Tidene angir tidligste passeringer av holdeplassene."
-    var last = pieces[pieces.length-1];
-    if (last.startsWith('Tidene angir tidligste') || last.startsWith('The hours indicate the earliest')) {
-      pieces = pieces.slice(0, pieces.length-1);
-    }
+    //
+    // Tidene angir tidligste passeringer av holdeplassene.
+    // "
+
+    // All newlines -> Spaces, we don't want to work with multiline strings when regexing
+    answer = answer.replace(/\n/g, ' ').trim();
+    // Slice away from string end: "Tidene angir tidligste passeringer av holdeplassene."
+    answer = answer.replace(/(Tidene angir|The hours indicate).*/gi, '');
     // Remove "Jeg antar du mener avganger fra ikveld. 27. Jan. 2014 er en mandag."
-    var newAnswer = pieces.join('. ') + '.';
-    newAnswer = newAnswer.replace(/^Jeg antar.*[man|tirs|ons|tors|fre|lør]dag\. /i, '');
-    newAnswer = newAnswer.replace(/^I assume.*[mon|tues|wednes|thurs|fri|satur]day\. /i, '');
+    answer = answer.replace(/^Jeg antar.*?[man|tirs|ons|tors|fre|lør]dag\. /i, '');
+    answer = answer.replace(/^I assume.*?[mon|tues|wednes|thurs|fri|satur]day\. /i, '');
+    // Remove any double spaces
+    answer = answer.replace(/  /g, ' ');
     // Done!
-    return newAnswer;
+    if (this.debug) console.log('\nAFTER shorten\n' + answer);
+    return answer;
   },
 
   convert12to24: function(answer) {
     // Don't convert
     if (answer.match(/ (am|pm)/gi) === null)
       return answer;
+    
+    if (this.debug) console.log('BEFORE 12to24\n' + answer);
 
     // Extract time strings
     var gotcha = true;
@@ -287,24 +305,27 @@ var Oracle = {
     for (i in timePieces) {
       answer = answer.replace(/§/, timePieces[i]);
     }
+    if (this.debug) console.log('AFTER 12to24\n' + answer);
     return answer;
   },
 
   prettify: function(answer) {
-
     // If not meant to be prettified
     if (answer.match(/(Buss \d+ (passerer|går fra) .*? kl\. )|(Bus \d+ (|passes by|goes from) .*? at )/) == null)
       return answer;
+    
+    if (this.debug) console.log('\nBEFORE prettify\n' + answer);
 
-    // Replace am/pm time with 24-hour format
-    answer = Oracle.convert12to24(answer);
-
-    // Advanced first, capture groups are shown below:
+    //
+    // The advanced stuff first: the routes with stops in-between
+    //
 
     // Answer:
-    // Buss 5 går fra Gløshaugen Syd, 1009 til Prinsen kinosenter, 1013
-    // og buss 66 går fra Prinsen kinosenter, 1018 til Studentersamfundet, 1019.
+    // Holdeplassen nærmest Gløshaugen er Gløshaugen Syd. Buss 5 går fra
+    // Gløshaugen Syd kl. 2139 til Prinsen kinosenter kl. 2143 og buss 66
+    // går fra Prinsen kinosenter kl. 2148 til Studentersamfundet kl. 2149."
 
+    // Capture groups:
     // 1. 36
     // 2. Høiset
     // 3. 1002
@@ -319,10 +340,15 @@ var Oracle = {
     // Target:
     // Ta buss 36 fra Høiset 0616 til 1009 Lerkendal Gård
     // -> Så buss 8 fra Lerkendal Gård 1027 til 1040 Steinan
+
     answer = answer.replace(/Buss (\d+) går fra (.*?) kl\. (\d{4}) til (.*?) kl\. (\d{4}) og buss (\d+) går fra (.*?) kl\. (\d{4}) til (.*?) kl\. (\d{4})\./gi,
       '@Ta først buss $1 fra $2 $3 til $4 $5...@...deretter buss $6 fra $7 $8 til $9 $10');
     answer = answer.replace(/Bus (\d+) goes from (.*?) at (\d+:\d+) to (.*?) at (\d+:\d+) and bus (\d+) goes from (.*?) at (\d+:\d+) to (.*?) at (\d+:\d+\.)/gi,
       '@Take the first bus $1 from $2 $3 to $4 $5...@...then bus $6 from $7 $8 to $9 $10');
+
+    //
+    // Now the easier stuff: the direct routes
+    //
 
     // Answer 1:
     // Buss 66 passerer NTNU Dragvoll kl. 1816 og kl. 1831 og kommer til
@@ -354,18 +380,23 @@ var Oracle = {
     // Replace "og kl." with just a comma
     answer = answer.replace(/,?( og)? kl\. /gi, ', ');
     answer = answer.replace(/,?( and)? at (\d+)/gi, ', $2');
+    // Make sure the first time isn't prefixed with a comma, "Dragvoll, 11:08, 12:10" -> "Dragvoll 11:08, 12:10"
+    answer = answer.replace(/(\w+), (\d{2}:?\d{2})/gi, '$1 $2');
     // Replace "og kommer til Munkegata M4, 16 minutter senere" with just ""
     answer = answer.replace(/og kommer til (.*?), (\d+)(-\d+)? minutter senere./gi, 'til $1'); // på $2 min');
     answer = answer.replace(/and arrives at (.*?), (\d+)(-\d+)? minutes later./gi, 'to $1');
 
     // Replace 2321 with 23:21, but not when it says "11 Des. 2013 er en onsdag"
-    answer = answer.replace(/(\d\d)(\d\d)(?! er en)/gi, '$1:$2');
+    answer = answer.replace(/(\d\d)(\d\d)(?! (er en|is a))/gi, '$1:$2');
     // English version already contains colons
 
+    // Trim and remove punctuation at end of line
+    answer = answer.trim();
+    answer = answer.replace(/[\.,;:]$/,'');
     // Don't start with a line break
-    if (answer.charAt(0) == '@')
-      answer = answer.substring(1);
+    answer = answer.replace(/^@/, '');
 
+    if (this.debug) console.log('\nAFTER prettify\n' + answer);
     return answer;
   },
 
