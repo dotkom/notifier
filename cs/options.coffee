@@ -527,36 +527,29 @@ toggleBigscreen = (activate, type, force) ->
       $('#bigscreenPreview').attr 'src', url
       # Remove subtext
       $('#headerText').fadeOut()
-      # Animate away all other options
-      $('#container #left').animate {'width':'0'}, speed, ->
-        $('#container #left').hide()
-        $('#bigscreenSlider').slideUp speed, ->
-          # Animate the useBigscreen image
-          $('img#useBigscreen').slideUp speed, ->
-            # Animate in the bigscreen preview
-            $('#bigscreenPreview').slideDown speed, ->
-              # New logo subtext
+      # Animate away options for news notifications and coffee subscription
+      $('#bigscreenSlider').slideUp speed, ->
+        # Animate the useBigscreen image
+        $('img#useBigscreen').slideUp speed, ->
+          # Animate in the bigscreen preview
+          $('#bigscreenPreview').slideDown speed, ->
+            # New logo subtext
+            if type == 'infoscreen'
+              $('#headerText').html '<b>Infoscreen</b> Options'
+            else if type == 'officescreen'
+              $('#headerText').html '<b>Officescreen</b> Options'
+            $('#headerText').fadeIn ->
+              name = Affiliation.org[ls.affiliationKey1].name
               if type == 'infoscreen'
-                $('#headerText').html '<b>Info</b>screen'
+                name = name + ' Infoscreen'
               else if type == 'officescreen'
-                $('#headerText').html '<b>Office</b>screen'
-              $('#headerText').fadeIn ->
-                # Move bigscreen preview to the circa middle of the screen
-                $('#container #right').animate {'margin-left':'213px'}, speed
-                # Move all content a bit up
-                $('header').animate {'top':'50%'}, speed
-                $('#container').animate {'top':'50%'}, speed, ->
-                  name = Affiliation.org[ls.affiliationKey1].name
-                  if type == 'infoscreen'
-                    name = name + ' Infoscreen'
-                  else if type == 'officescreen'
-                    name = name + ' Officescreen'
-                  # Reset icon, icon title and icon badge
-                  Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
-                  Browser.setTitle name
-                  Browser.setBadgeText ''
-                  # Create Bigscreen in a new tab
-                  Browser.openBackgroundTab url
+                name = name + ' Officescreen'
+              # Reset icon, icon title and icon badge
+              Browser.setIcon Affiliation.org[ls.affiliationKey1].icon
+              Browser.setTitle name
+              Browser.setBadgeText ''
+              # Create Bigscreen in a new tab
+              Browser.openBackgroundTab url
     else
       # Refresh office status
       if Affiliation.org[ls.affiliationKey1].hw
@@ -584,9 +577,9 @@ switchBigScreen = (type) ->
       $('#headerText').fadeOut ->
         # Change header
         if type == 'infoscreen'
-          $('#headerText').html '<b>Info</b>screen'
+          $('#headerText').html '<b>Infoscreen</b> Options'
         else if type == 'officescreen'
-          $('#headerText').html '<b>Office</b>screen'
+          $('#headerText').html '<b>Officescreen</b> Options'
         # Fade header back in
         $('#headerText').fadeIn ->
           # Slide bigscreen preview back down
@@ -599,30 +592,17 @@ revertBigscreen = ->
     speed = 300
     # Remove subtext
     $('#headerText').fadeOut speed, ->
-      # Move all content back down
-      if Affiliation.org[ls.affiliationKey1].hw
-        $('#container').animate {'top':'50%'}, speed
-        $('header').animate {'top':'50%'}, speed
-      else
-        $('#container').animate {'top':'60%'}, speed
-        $('header').animate {'top':'60%'}, speed
-      # Move bigscreen preview back in place (to the left)
-      $('#container #right').animate {'margin-left':'0'}, speed
       # Animate in the bigscreen preview
       $('#bigscreenPreview').slideUp speed, ->
         # Animate the useBigscreen image
         $('img#useBigscreen').slideDown speed, ->
           # Slide more options back open
           $('#bigscreenSlider').slideDown speed, ->
-            # Show the rest of the options again
-            $('#container #left').show()
-            # Animate in the rest of the options
-            $('#container #left').animate {'width':'54%'}, speed, ->
-              # Back to old logo subtext
-              $('#headerText').html '<b>Notifier</b> Options'
-              $('#headerText').fadeIn ->
-                # Finally, unload bigscreen preview (resource heavy)
-                $('#bigscreenPreview').attr 'src', 'about:blank'
+            # Back to old logo subtext
+            $('#headerText').html '<b>Notifier</b> Options'
+            $('#headerText').fadeIn ->
+              # Finally, unload bigscreen preview (resource heavy)
+              $('#bigscreenPreview').attr 'src', 'about:blank'
   ), 500
 
 restoreChecksToBoxes = ->

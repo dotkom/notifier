@@ -533,41 +533,26 @@
         url = type + '.html';
         $('#bigscreenPreview').attr('src', url);
         $('#headerText').fadeOut();
-        return $('#container #left').animate({
-          'width': '0'
-        }, speed, function() {
-          $('#container #left').hide();
-          return $('#bigscreenSlider').slideUp(speed, function() {
-            return $('img#useBigscreen').slideUp(speed, function() {
-              return $('#bigscreenPreview').slideDown(speed, function() {
+        return $('#bigscreenSlider').slideUp(speed, function() {
+          return $('img#useBigscreen').slideUp(speed, function() {
+            return $('#bigscreenPreview').slideDown(speed, function() {
+              if (type === 'infoscreen') {
+                $('#headerText').html('<b>Infoscreen</b> Options');
+              } else if (type === 'officescreen') {
+                $('#headerText').html('<b>Officescreen</b> Options');
+              }
+              return $('#headerText').fadeIn(function() {
+                var name;
+                name = Affiliation.org[ls.affiliationKey1].name;
                 if (type === 'infoscreen') {
-                  $('#headerText').html('<b>Info</b>screen');
+                  name = name + ' Infoscreen';
                 } else if (type === 'officescreen') {
-                  $('#headerText').html('<b>Office</b>screen');
+                  name = name + ' Officescreen';
                 }
-                return $('#headerText').fadeIn(function() {
-                  $('#container #right').animate({
-                    'margin-left': '213px'
-                  }, speed);
-                  $('header').animate({
-                    'top': '50%'
-                  }, speed);
-                  return $('#container').animate({
-                    'top': '50%'
-                  }, speed, function() {
-                    var name;
-                    name = Affiliation.org[ls.affiliationKey1].name;
-                    if (type === 'infoscreen') {
-                      name = name + ' Infoscreen';
-                    } else if (type === 'officescreen') {
-                      name = name + ' Officescreen';
-                    }
-                    Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-                    Browser.setTitle(name);
-                    Browser.setBadgeText('');
-                    return Browser.openBackgroundTab(url);
-                  });
-                });
+                Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
+                Browser.setTitle(name);
+                Browser.setBadgeText('');
+                return Browser.openBackgroundTab(url);
               });
             });
           });
@@ -598,9 +583,9 @@
         $('#bigscreenPreview').attr('src', url);
         return $('#headerText').fadeOut(function() {
           if (type === 'infoscreen') {
-            $('#headerText').html('<b>Info</b>screen');
+            $('#headerText').html('<b>Infoscreen</b> Options');
           } else if (type === 'officescreen') {
-            $('#headerText').html('<b>Office</b>screen');
+            $('#headerText').html('<b>Officescreen</b> Options');
           }
           return $('#headerText').fadeIn(function() {
             return $('#bigscreenPreview').slideDown(speed);
@@ -615,35 +600,12 @@
       var speed;
       speed = 300;
       return $('#headerText').fadeOut(speed, function() {
-        if (Affiliation.org[ls.affiliationKey1].hw) {
-          $('#container').animate({
-            'top': '50%'
-          }, speed);
-          $('header').animate({
-            'top': '50%'
-          }, speed);
-        } else {
-          $('#container').animate({
-            'top': '60%'
-          }, speed);
-          $('header').animate({
-            'top': '60%'
-          }, speed);
-        }
-        $('#container #right').animate({
-          'margin-left': '0'
-        }, speed);
         return $('#bigscreenPreview').slideUp(speed, function() {
           return $('img#useBigscreen').slideDown(speed, function() {
             return $('#bigscreenSlider').slideDown(speed, function() {
-              $('#container #left').show();
-              return $('#container #left').animate({
-                'width': '54%'
-              }, speed, function() {
-                $('#headerText').html('<b>Notifier</b> Options');
-                return $('#headerText').fadeIn(function() {
-                  return $('#bigscreenPreview').attr('src', 'about:blank');
-                });
+              $('#headerText').html('<b>Notifier</b> Options');
+              return $('#headerText').fadeIn(function() {
+                return $('#bigscreenPreview').attr('src', 'about:blank');
               });
             });
           });
