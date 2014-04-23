@@ -1,6 +1,5 @@
 Ajaxer = {
   debug: 0,
-  mobileApi: 'index.php',
 
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
   ajaxSetup: {
@@ -71,37 +70,15 @@ Ajaxer = {
     }
 
     var self = this;
-    // Using the constant window.IS_MOBILE here is a small hack
-    // which saves a considerable amount of code clutter
-    if (window.IS_MOBILE) {
-      // Notifier Mobile
-      var dataBlob = {};
-      dataBlob.url = params.url;
-      if (params.data != undefined) {
-        dataBlob.data = params.data;
-      }
-      return $.ajax({
-        type: 'POST',
-        data: dataBlob,
-        url: self.mobileApi,
-        dataFilter: params.dataFilter,
-        dataType: params.dataType,
-        success: params.success,
-        error: params.error,
-      });
-    }
-    else {
-      // Notifier
-      return $.ajax({
-        type: (params.data ? 'POST' : 'GET'),
-        data: (params.data ? params.data : ''),
-        url: params.url,
-        dataFilter: params.dataFilter,
-        dataType: params.dataType,
-        success: params.success,
-        error: params.error,
-      });
-    }
+    return $.ajax({
+      type: (params.data ? 'POST' : 'GET'),
+      data: (params.data ? params.data : ''),
+      url: params.url,
+      dataFilter: params.dataFilter,
+      dataType: params.dataType,
+      success: params.success,
+      error: params.error,
+    });
   },
 
   // IMPORTANT: This function replaces all <img> tags with <pic>

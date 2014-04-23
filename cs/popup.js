@@ -569,9 +569,6 @@
     if (ls.showBus !== 'true') {
       $('#bus').hide();
     }
-    if (ls.affiliationKey1 !== 'online') {
-      $('#mobileText').hide();
-    }
     key = ls.affiliationKey1;
     logo = Affiliation.org[key].logo;
     icon = Affiliation.org[key].icon;
