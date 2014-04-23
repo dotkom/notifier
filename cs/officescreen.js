@@ -175,7 +175,7 @@
   insertBusInfo = function(lines, stopName, cssIdentificator) {
     var busStop, departString, i, spans, urgency, _results;
     busStop = '#bus ' + cssIdentificator;
-    spans = ['first', 'second', 'third', 'fourth', 'fifth'];
+    spans = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
     $(busStop + ' .name').html(stopName);
     for (i in spans) {
       $(busStop + ' .' + spans[i] + ' .line').html('');

@@ -9,6 +9,9 @@
   <link rel="stylesheet" type="text/css" href="less/options.css" />
   <link rel="stylesheet" type="text/css" href="less/palettes/blue.css" id="palette" />
 
+  <!-- CSS jQuery Modal -->
+  <link rel="stylesheet" type="text/css" href="libs/modal/jquery.modal.css" />
+
 </head>
 
 <body>
@@ -367,17 +370,17 @@
     <div id="right" class="side">
 
       <div class="item">
-        <label for="useInfoscreen">
-          <input type="checkbox" name="useInfoscreen" value="useInfoscreen" id="useInfoscreen" />
+        <label for="useBigscreen">
+          <input type="checkbox" name="useBigscreen" value="useBigscreen" id="useBigscreen" />
           <span>
-            Skru av <b>Notifier</b>, skru på <b>Infoscreen</b>
+            Bruk <b>Bigscreen</b> i stedet for <b>Notifier</b>
           </span><br />
-          <img id="useInfoscreen" class="image" src="/img/options-infoscreen.png" />
-          <iframe id="infoscreenPreview" class="image" src="about:blank"></iframe>
+          <img id="useBigscreen" class="image" src="/img/options-infoscreen.png" />
+          <iframe id="bigscreenPreview" class="image" src="about:blank"></iframe>
         </label>
       </div>
 
-      <div id="infoscreenSlider">
+      <div id="bigscreenSlider">
 
         <div class="item">
           <label for="showNotifications">
@@ -401,7 +404,7 @@
 
       </div>
 
-    </div> <!-- the slideup div, slides away all other options if useInfoscreen is checked -->
+    </div> <!-- the slideup div, slides away all other options if useBigscreen is checked -->
   </div>
 
   <!-- Suggestions for bus stops -->
@@ -443,7 +446,23 @@
     <img class="icon" src="/org/online/symbol.png" />
     <img class="arrow" src="/img/options-bubble-arrow.png" />
     <div class="text">Notifier is up here</div>
-    <div class="subtext"><b>Alt+A</b> opens the popup</div>
+    <div class="subtext"><b>Ctrl+Shift+A</b> opens the popup</div>
+  </div>
+
+  <!-- Bigscreen modal -->
+  <div class="modal">
+    What do you want? Bigscreen or Notifier?<br />
+    <br />
+    About bigscreen:
+    <ul>
+      <li>Requires large screen tilted to upward angle</li>
+      <li>Popup button will open the bigscreen instead</li>
+      <li>The bigscreen hides the mouse pointer</li>
+      <li>Bigscreen opens when the browser starts</li>
+    </ul>
+    <button type="button" id="modalNotifier">Back to Notifier</button>
+    <button type="button" id="modalInfoscreen">Infoscreen</button>
+    <button type="button" id="modalOfficescreen">Officescreen</button>
   </div>
 
   <!-- JS No Dependencies -->
@@ -469,6 +488,9 @@
   <script src="js/news.js"></script>
   <script src="js/office.js"></script>
   <script src="js/stops.js"></script>
+
+  <!-- JS jQuery Modal -->
+  <script src="libs/modal/jquery.modal.min.js"></script>
 
   <!-- Document ready sript -->
   <script src="cs/options.js"></script>

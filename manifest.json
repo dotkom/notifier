@@ -52,7 +52,7 @@
 	"content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["libs/jquery-2.0.0.min.js", "js/on_website.js"]
+      "js": ["libs/jquery-2.1.0.min.js", "js/on_website.js"]
     }
   ],
 

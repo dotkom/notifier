@@ -172,7 +172,7 @@ header #notification .saved {
 
   /* the bus option in particular */
 
-  /* the infoscreen option in particular */
+  /* the bigscreen option in particular */
 
 }
 .item .icon {
@@ -517,7 +517,7 @@ header #notification .saved {
 .item #busBox #arrowDown img {
   width: 12px;
 }
-.item #infoscreenPreview {
+.item #bigscreenPreview {
   display: none;
   overflow: hidden;
   margin-left: 93px;
@@ -688,4 +688,14 @@ header #notification .saved {
   display: inline;
   float: left;
   font-size: 12px;
+}
+/* Modal bigscreen dialog */
+.modal {
+  color: black;
+}
+.modal button {
+  font-size: 16px;
+}
+.modal #modalNotifier {
+  font-weight: bold;
 }
