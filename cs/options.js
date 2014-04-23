@@ -526,115 +526,130 @@
   };
 
   toggleBigscreen = function(activate, type, force) {
-    var speed, url;
-    if (activate) {
-      speed = 400;
-      url = type + '.html';
-      $('#bigscreenPreview').attr('src', url);
-      $('#headerText').fadeOut();
-      return $('#container #left').animate({
-        'width': '0'
-      }, speed, function() {
-        $('#container #left').hide();
-        return $('#bigscreenSlider').slideUp(speed, function() {
-          return $('img#useBigscreen').slideUp(speed, function() {
-            return $('#bigscreenPreview').slideDown(speed, function() {
-              if (type === 'infoscreen') {
-                $('#headerText').html('<b>Info</b>screen');
-              } else if (type === 'officescreen') {
-                $('#headerText').html('<b>Office</b>screen');
-              }
-              return $('#headerText').fadeIn(function() {
-                $('#container #right').animate({
-                  'margin-left': '213px'
-                }, speed);
-                $('header').animate({
-                  'top': '50%'
-                }, speed);
-                return $('#container').animate({
-                  'top': '50%'
-                }, speed, function() {
-                  var name;
-                  name = Affiliation.org[ls.affiliationKey1].name;
-                  if (type === 'infoscreen') {
-                    name = name + ' Infoscreen';
-                  } else if (type === 'officescreen') {
-                    name = name + ' Officescreen';
-                  }
-                  Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-                  Browser.setTitle(name);
-                  Browser.setBadgeText('');
-                  return Browser.openBackgroundTab(url);
+    return setTimeout((function() {
+      var speed, url;
+      if (activate) {
+        speed = 400;
+        url = type + '.html';
+        $('#bigscreenPreview').attr('src', url);
+        $('#headerText').fadeOut();
+        return $('#container #left').animate({
+          'width': '0'
+        }, speed, function() {
+          $('#container #left').hide();
+          return $('#bigscreenSlider').slideUp(speed, function() {
+            return $('img#useBigscreen').slideUp(speed, function() {
+              return $('#bigscreenPreview').slideDown(speed, function() {
+                if (type === 'infoscreen') {
+                  $('#headerText').html('<b>Info</b>screen');
+                } else if (type === 'officescreen') {
+                  $('#headerText').html('<b>Office</b>screen');
+                }
+                return $('#headerText').fadeIn(function() {
+                  $('#container #right').animate({
+                    'margin-left': '213px'
+                  }, speed);
+                  $('header').animate({
+                    'top': '50%'
+                  }, speed);
+                  return $('#container').animate({
+                    'top': '50%'
+                  }, speed, function() {
+                    var name;
+                    name = Affiliation.org[ls.affiliationKey1].name;
+                    if (type === 'infoscreen') {
+                      name = name + ' Infoscreen';
+                    } else if (type === 'officescreen') {
+                      name = name + ' Officescreen';
+                    }
+                    Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
+                    Browser.setTitle(name);
+                    Browser.setBadgeText('');
+                    return Browser.openBackgroundTab(url);
+                  });
+                });
+              });
+            });
+          });
+        });
+      } else {
+        if (Affiliation.org[ls.affiliationKey1].hw) {
+          Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+        } else {
+          Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
+          Browser.setTitle(Affiliation.org[ls.affiliationKey1].name + ' Notifier');
+        }
+        return revertBigscreen();
+      }
+    }), 600);
+  };
+
+  switchBigScreen = function(type) {
+    if (type !== 'infoscreen' && type !== 'officescreen') {
+      console.lolg('ERROR: Unsupported mode');
+      return;
+    }
+    return setTimeout((function() {
+      var speed;
+      speed = 600;
+      return $('#bigscreenPreview').slideUp(speed, function() {
+        var url;
+        url = type + '.html';
+        $('#bigscreenPreview').attr('src', url);
+        return $('#headerText').fadeOut(function() {
+          if (type === 'infoscreen') {
+            $('#headerText').html('<b>Info</b>screen');
+          } else if (type === 'officescreen') {
+            $('#headerText').html('<b>Office</b>screen');
+          }
+          return $('#headerText').fadeIn(function() {
+            return $('#bigscreenPreview').slideDown(speed);
+          });
+        });
+      });
+    }), 500);
+  };
+
+  revertBigscreen = function() {
+    return setTimeout((function() {
+      var speed;
+      speed = 300;
+      return $('#headerText').fadeOut(speed, function() {
+        if (Affiliation.org[ls.affiliationKey1].hw) {
+          $('#container').animate({
+            'top': '50%'
+          }, speed);
+          $('header').animate({
+            'top': '50%'
+          }, speed);
+        } else {
+          $('#container').animate({
+            'top': '60%'
+          }, speed);
+          $('header').animate({
+            'top': '60%'
+          }, speed);
+        }
+        $('#container #right').animate({
+          'margin-left': '0'
+        }, speed);
+        return $('#bigscreenPreview').slideUp(speed, function() {
+          return $('img#useBigscreen').slideDown(speed, function() {
+            return $('#bigscreenSlider').slideDown(speed, function() {
+              $('#container #left').show();
+              return $('#container #left').animate({
+                'width': '54%'
+              }, speed, function() {
+                $('#headerText').html('<b>Notifier</b> Options');
+                return $('#headerText').fadeIn(function() {
+                  return $('#bigscreenPreview').attr('src', 'about:blank');
                 });
               });
             });
           });
         });
       });
-    } else {
-      if (Affiliation.org[ls.affiliationKey1].hw) {
-        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
-      } else {
-        Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-        Browser.setTitle(Affiliation.org[ls.affiliationKey1].name + ' Notifier');
-      }
-      return revertBigscreen();
-    }
-  };
-
-  switchBigScreen = function(type) {
-    var url;
-    if (type !== 'infoscreen' && type !== 'officescreen') {
-      console.lolg('ERROR: Unsupported mode');
-      return;
-    }
-    if (type === 'infoscreen') {
-      $('#headerText').html('<b>Info</b>screen');
-    } else if (type === 'officescreen') {
-      $('#headerText').html('<b>Office</b>screen');
-    }
-    url = type + '.html';
-    return $('#bigscreenPreview').attr('src', url);
-  };
-
-  revertBigscreen = function() {
-    var speed;
-    speed = 300;
-    return $('#headerText').fadeOut(speed, function() {
-      if (Affiliation.org[ls.affiliationKey1].hw) {
-        $('#container').animate({
-          'top': '50%'
-        }, speed);
-        $('header').animate({
-          'top': '50%'
-        }, speed);
-      } else {
-        $('#container').animate({
-          'top': '60%'
-        }, speed);
-        $('header').animate({
-          'top': '60%'
-        }, speed);
-      }
-      $('#container #right').animate({
-        'margin-left': '0'
-      }, speed);
-      return $('#bigscreenPreview').slideUp(speed, function() {
-        return $('img#useBigscreen').slideDown(speed, function() {
-          return $('#bigscreenSlider').slideDown(speed, function() {
-            $('#container #left').show();
-            return $('#container #left').animate({
-              'width': '54%'
-            }, speed, function() {
-              $('#headerText').html('<b>Notifier</b> Options');
-              return $('#headerText').fadeIn(function() {
-                return $('#bigscreenPreview').attr('src', 'about:blank');
-              });
-            });
-          });
-        });
-      });
-    });
+    }), 500);
   };
 
   restoreChecksToBoxes = function() {
@@ -827,6 +842,7 @@
       _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
       Analytics.trackEvent('click' + _capitalized, this.checked);
       if (this.id === 'useBigscreen') {
+        $('#useBigscreen').prop('checked', !this.checked);
         return $('.modal').modal({
           zIndex: 1000,
           fadeDuration: 250
