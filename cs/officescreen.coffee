@@ -127,7 +127,7 @@ createBusDataRequest = (bus, cssIdentificator) ->
 
 insertBusInfo = (lines, stopName, cssIdentificator) ->
   busStop = '#bus '+cssIdentificator
-  spans = ['first', 'second', 'third', 'fourth', 'fifth'] #, 'sixth', 'seventh', 'eighth', 'ninth', 'tenth']
+  spans = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth']
 
   $(busStop+' .name').html stopName
 
