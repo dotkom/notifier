@@ -4,7 +4,6 @@ This is a Chrome/Opera extension and a WebApp from the student organization Onli
 
 * Install for Chrome: https://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf
 * Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
-* Add WebApp for Mobile: Navigate to http://informatikk.org/mobile and tap "Add to Home Screen" in the context menu of the browser
 
 # OmegaV NotiPi
 
