@@ -558,8 +558,6 @@ toggleBigscreen = (activate, type, force) ->
                   # Create Bigscreen in a new tab
                   Browser.openBackgroundTab url
     else
-      # # Close any open Bigscreen tabs
-      # closeBigscreenTabs()
       # Refresh office status
       if Affiliation.org[ls.affiliationKey1].hw
         Browser.getBackgroundProcess().updateOfficeAndMeetings true
@@ -626,22 +624,6 @@ revertBigscreen = ->
                 # Finally, unload bigscreen preview (resource heavy)
                 $('#bigscreenPreview').attr 'src', 'about:blank'
   ), 500
-
-# COMMENTED OUT: This requires 'tabs' permission, which isn't cool.
-# closeInfoscreenTabs = ->
-#   chrome.windows.getAll # OPERA?
-#     populate: true,
-#     (window_list) ->
-#       list = []
-#       for win of window_list
-#         tabs = window_list[win].tabs
-#         for tab of tabs
-#           tab = tabs[tab]
-#           titleIndex = tab.title.indexOf "Infoscreen"
-#           urlIndex = tab.url.indexOf "infoscreen.html"
-#           if titleIndex >= 0
-#             if urlIndex >= 0
-#               chrome.tabs.remove tab.id # OPERA?
 
 restoreChecksToBoxes = ->
   # Restore checks to boxes from localStorage
