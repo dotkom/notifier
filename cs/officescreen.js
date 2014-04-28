@@ -268,6 +268,14 @@
     }
     ls.removeItem('officescreenOfficeStatus');
     ls.removeItem('officescreenOfficeStatusMessage');
+    if (ls.showAffiliation2 !== 'true') {
+      Analytics.trackEvent('loadSingleAffiliation', ls.affiliationKey1);
+      Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
+    } else {
+      Analytics.trackEvent('loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2);
+      Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
+      Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
+    }
     if (ls.showOffice !== 'true') {
       $('#todays').hide();
     }

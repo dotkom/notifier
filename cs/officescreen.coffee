@@ -214,6 +214,20 @@ $ ->
   ls.removeItem 'officescreenOfficeStatus'
   ls.removeItem 'officescreenOfficeStatusMessage'
 
+  # If only one affiliation is to be shown remove the second news column
+  if ls.showAffiliation2 isnt 'true'
+    # Who uses single affiliations?
+    Analytics.trackEvent 'loadSingleAffiliation', ls.affiliationKey1
+    # What is the prefered primary affiliation?
+    Analytics.trackEvent 'loadAffiliation1', ls.affiliationKey1
+  else
+    # What kind of double affiliations are used?
+    Analytics.trackEvent 'loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2
+    # What is the prefered primary affiliation?
+    Analytics.trackEvent 'loadAffiliation1', ls.affiliationKey1
+    # What is the prefered secondary affiliation?
+    Analytics.trackEvent 'loadAffiliation2', ls.affiliationKey2
+
   # Hide stuff that the user has disabled in options
   $('#todays').hide() if ls.showOffice isnt 'true'
   $('#cantinas').hide() if ls.showCantina isnt 'true'
