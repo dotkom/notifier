@@ -578,6 +578,9 @@
         return $('#overlay').css('opacity', 0);
       }), 3500);
     }), 1800000);
+    setInterval((function() {
+      return document.location.reload();
+    }), 86400000);
     stayUpdated = function(now) {
       var loopTimeout, timeout;
       console.lolg(ONLINE_MESSAGE);

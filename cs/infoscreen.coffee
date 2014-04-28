@@ -511,6 +511,11 @@ $ ->
     ), 3500
   ), 1800000
 
+  # Reload entirely every 24 hours, in case of app updates
+  setInterval ( ->
+    document.location.reload()
+  ), 86400000
+
   # Enter main loop, keeping everything up-to-date
   stayUpdated = (now) ->
     console.lolg ONLINE_MESSAGE
