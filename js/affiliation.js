@@ -322,6 +322,8 @@ var Affiliation = {
                   post.date = article.created_date;
                   post.image = self.web + article.image_article_front_featured;
                   posts[count++] = post;
+                  // Postprocess description to remove markdown stuff (crude method)
+                  post.description = post.description.replace(/(####|###|\*\*)/gi, '');
                 }
               }
             }
