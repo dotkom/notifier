@@ -33,7 +33,7 @@
         updateAffiliationNews('2');
       }
     }
-    if (ls.useInfoscreen !== 'true') {
+    if (ls.useBigscreen !== 'true') {
       if (Affiliation.org[ls.affiliationKey1].hw) {
         if (ls.showOffice === 'true') {
           if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
@@ -219,9 +219,16 @@
       Browser.openTab('options.html');
       Analytics.trackEvent('loadOptions (fresh install)');
     }
-    if (ls.useInfoscreen === 'true') {
-      Browser.openTab('infoscreen.html');
-      Analytics.trackEvent('loadInfoscreen');
+    if (ls.useBigscreen === 'true') {
+      if (ls.whichScreen === 'infoscreen') {
+        Browser.openTab('infoscreen.html');
+        Analytics.trackEvent('loadInfoscreen');
+      } else if (ls.whichScreen === 'officescreen') {
+        Browser.openTab('officescreen.html');
+        Analytics.trackEvent('loadOfficescreen');
+      } else {
+        console.lolg('ERROR: useBigscreen enabled, but whichScreen was', ls.whichScreen);
+      }
     }
     loadAffiliationIcon();
     Browser.bindCommandHotkeys(Affiliation.org[ls.affiliationKey1].web);

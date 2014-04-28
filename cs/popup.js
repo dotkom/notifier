@@ -539,9 +539,16 @@
 
   $(function() {
     var busLanes, clickBus, i, icon, key, logo, openAtb, placeholder, shorter, stayUpdated, timetables;
-    if (ls.useInfoscreen === 'true') {
-      Browser.openTab('infoscreen.html');
-      Analytics.trackEvent('toggleInfoscreen');
+    if (ls.useBigscreen === 'true') {
+      if (ls.whichScreen === 'infoscreen') {
+        Browser.openTab('infoscreen.html');
+        Analytics.trackEvent('toggleInfoscreen');
+      } else if (ls.whichScreen === 'officescreen') {
+        Browser.openTab('officescreen.html');
+        Analytics.trackEvent('toggleOfficescreen');
+      } else {
+        console.lolg('ERROR: useBigscreen was enabled, but whichScreen was', ls.whichScreen);
+      }
       setTimeout((function() {
         return window.close();
       }), 250);

@@ -482,10 +482,16 @@ fadeButtonText = (show, msg) ->
 
 # Document ready, go!
 $ ->
-  # If Infoscreen mode is enabled we'll open the infoscreen when the icon is clicked
-  if ls.useInfoscreen is 'true'
-    Browser.openTab 'infoscreen.html'
-    Analytics.trackEvent 'toggleInfoscreen'
+  # If Bigscreen mode is enabled we'll open the bigscreen when the icon is clicked
+  if ls.useBigscreen is 'true'
+    if ls.whichScreen is 'infoscreen'
+      Browser.openTab 'infoscreen.html'
+      Analytics.trackEvent 'toggleInfoscreen'
+    else if ls.whichScreen is 'officescreen'
+      Browser.openTab 'officescreen.html'
+      Analytics.trackEvent 'toggleOfficescreen'
+    else
+      console.lolg 'ERROR: useBigscreen was enabled, but whichScreen was', ls.whichScreen
     setTimeout ( ->
       window.close()
     ), 250

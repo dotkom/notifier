@@ -20,7 +20,7 @@ mainLoop = (force) ->
     if force or iteration % UPDATE_NEWS_INTERVAL is 0
       updateAffiliationNews '2'
   # Only if hardware and not infoscreen
-  if ls.useInfoscreen isnt 'true'
+  if ls.useBigscreen isnt 'true'
     if Affiliation.org[ls.affiliationKey1].hw
       if ls.showOffice is 'true'
         if force or iteration % UPDATE_OFFICE_INTERVAL is 0
@@ -180,10 +180,16 @@ $ ->
   if ls.everOpenedOptions is 'false' and !DEBUG
     Browser.openTab 'options.html'
     Analytics.trackEvent 'loadOptions (fresh install)'
-  # Open Infoscreen if the option is set
-  if ls.useInfoscreen is 'true'
-    Browser.openTab 'infoscreen.html'
-    Analytics.trackEvent 'loadInfoscreen'
+  # Open Bigscreen if the option is set
+  if ls.useBigscreen is 'true'
+    if ls.whichScreen is 'infoscreen'
+      Browser.openTab 'infoscreen.html'
+      Analytics.trackEvent 'loadInfoscreen'
+    else if ls.whichScreen is 'officescreen'
+      Browser.openTab 'officescreen.html'
+      Analytics.trackEvent 'loadOfficescreen'
+    else
+      console.lolg 'ERROR: useBigscreen enabled, but whichScreen was', ls.whichScreen
 
   loadAffiliationIcon()
 
