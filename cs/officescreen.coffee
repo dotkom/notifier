@@ -283,7 +283,7 @@ $ ->
     # Schedule for repetition
     intervalId = setInterval ( ->
       mainLoop()
-    ), PAGE_LOOP
+    ), loopTimeout
     # Run once right now (just wait 2 secs to avoid network-change errors)
     timeout = if now then 0 else 2000
     setTimeout ( ->
