@@ -7,7 +7,7 @@ var Timetables = {
       ls.busTimetables = JSON.stringify({});
     if (ls.busTimetablesAge == undefined)
       ls.busTimetablesAge = 0;
-  }
+  },
 
   load: function() {
     // Old list of PDFs?
