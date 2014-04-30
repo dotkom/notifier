@@ -22,10 +22,6 @@ function stacktrace() {
 
 // Small prototype library for Online Notifier
 
-Array.prototype.contains = function(value) {
-  return (this.indexOf(value) > -1);
-};
-
 Date.prototype.getWeekNumber = function () {
     var d = new Date(+this);
     d.setHours(0,0,0);
