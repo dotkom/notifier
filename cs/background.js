@@ -172,7 +172,8 @@ fetchAndStoreImageLinks = function(number) {
   var newsList = JSON.parse(ls['affiliationNewsList'+number]);
   // If the organization has it's own getImage function, use it
   if (Affiliation.org[key].getImage !== undefined) {
-    for (index, link in newsList) {
+    for (index in newsList) {
+      link = newsList[index];
       // It's important to get the link from the callback within the function below,
       // not the above code, - because of race conditions mixing up the news posts, async ftw.
       Affiliation.org[key].getImage(link, function(link, image) {
