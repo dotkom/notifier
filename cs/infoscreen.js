@@ -199,6 +199,7 @@ updateBus = function() {
     $('#bus #secondBus .error').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
   }
   else {
+    // All good, go ahead!
     createBusDataRequest('firstBus', '#firstBus');
     createBusDataRequest('secondBus', '#secondBus');
   }
@@ -536,6 +537,9 @@ $(document).ready(function() {
   ls.removeItem('infoscreenOfficeStatus');
   ls.removeItem('infoscreenOfficeStatusMessage');
 
+  // Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
+  Analytics.trackEvent('loadPalette', ls.affiliationPalette);
+
   // If only one affiliation is to be shown remove the second news column
   if (ls.showAffiliation2 !== 'true') {
     $('#news #right').hide();
@@ -576,9 +580,6 @@ $(document).ready(function() {
     $('#logo').prop('src', logo);
   $('link[rel="shortcut icon"]').attr('href', icon);
   $('#news .post img').attr('src', placeholder);
-
-  // Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
-  Analytics.trackEvent('loadPalette', ls.affiliationPalette);
   
   // Adding creator name to pageflip
   changeCreatorName(ls.extensionCreator);
