@@ -75,7 +75,7 @@ updateOfficeAndMeetings = function(force) {
       }
       // Extension title (hovering mouse over icon shows the title text)
       Meetings.get(function(meetings) {
-        var today = '##// Nå\n' + title + ": " + message + "\n##// Resten av dagen\n" + meetings;
+        var today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
         Browser.setTitle(today);
       });
     }
