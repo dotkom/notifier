@@ -279,11 +279,7 @@ changeOracleAnswer = function(answer) {
         $('#oracle #answer').append('<div class="piece"></div>');
       }
       for (i in pieces) {
-        animateOracleAnswer(pieces[i], i, function(index) {
-          // html = $('#oracle #answer .piece').eq(index).html()
-          // html = html.replace /((Buss \d+)|(Holdeplass):)/gi, '<u>$1</u>'
-          // $('#oracle #answer .piece').eq(index).html(html);
-        });
+        animateOracleAnswer(pieces[i], i);
       }
     }
     // Check for preexisting pieces
@@ -308,7 +304,7 @@ animateOracleAnswer = function(line, index, callback, build) {
   }
   var millisecs = 6;
   if (!build) {
-    $('#oracle #answer .piece').eq(index).text(text.slice(0), text.length-1);
+    $('#oracle #answer .piece').eq(index).text(text.slice(0, text.length-1));
     ls.animateOracleAnswerTimeoutId = setTimeout(function() {
       animateOracleAnswer(line, index, callback);
     }, millisecs);
@@ -319,7 +315,7 @@ animateOracleAnswer = function(line, index, callback, build) {
         $('#oracle #answer .piece').eq(index).text(line.slice(0, 1));
       }
       else {
-        $('#oracle #answer .piece').eq(index).text(line.slice(0), text.length+1);
+        $('#oracle #answer .piece').eq(index).text(line.slice(0, text.length+1));
       }
       ls.animateOracleAnswerTimeoutId = setTimeout(function() {
         animateOracleAnswer(line, index, callback, true);
@@ -327,7 +323,9 @@ animateOracleAnswer = function(line, index, callback, build) {
     }
     else {
       // Animation for this element is complete
-      callback(index);
+      if (typeof callback != 'undefined') {
+        callback(index);
+      }
     }
   }
 }
@@ -372,7 +370,7 @@ animateOracleQuestion = function(line) {
       $('#oracle #question').val(line.slice(0, 1));
     }
     else {
-      $('#oracle #question').val(line.slice(0), text.length+1);
+      $('#oracle #question').val(line.slice(0, text.length+1));
     }
     ls.animateOracleQuestionTimeoutId = setTimeout(function() {
       animateOracleQuestion(line);
@@ -422,23 +420,20 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
   viewedList = [];
 
   // Prepare the list of images with salt, pepper and some vinegar
-  var storedImages = JSON.parse(ls.storedImages);
+  storedImages = JSON.parse(ls.storedImages);
 
   // Figure out if flashy news are prefered
-  var isDuplicate = ls.affiliationKey1 === ls.affiliationKey2;
-  var isPrimaryAffiliation = ls.affiliationKey1 === feedKey;
+  var isDuplicate = (ls.affiliationKey1 === ls.affiliationKey2);
+  var isPrimaryAffiliation = (ls.affiliationKey1 === feedKey);
   var isFlashy = false;
-  if (isDuplicate) {
+  if (isDuplicate)
     isFlashy = (ls.affiliationFlashy1 === 'true' || ls.affiliationFlashy2 === 'true');
-  }
-  else if (isPrimaryAffiliation) {
-    isFlashy = ls.affiliationFlashy1 === 'true';
-  }
-  else {
-    isFlashy = ls.affiliationFlashy2 === 'true';
-  }
+  else if (isPrimaryAffiliation)
+    isFlashy = (ls.affiliationFlashy1 === 'true');
+  else
+    isFlashy = (ls.affiliationFlashy2 === 'true');
 
-  // Add feed items to popup
+  // Add feed items
   $.each(items, function (index, item) {
     
     if (index < newsLimit) {
