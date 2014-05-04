@@ -3,11 +3,11 @@ var Timetables = {
   api: 'https://www.atb.no/rutetider/',
 
   initStorage: function() {
-    if (ls.busTimetables == undefined)
-      ls.busTimetables = JSON.stringify({});
-    if (ls.busTimetablesAge == undefined)
-      ls.busTimetablesAge = 0;
-  }
+    if (localStorage.busTimetables == undefined)
+      localStorage.busTimetables = JSON.stringify({});
+    if (localStorage.busTimetablesAge == undefined)
+      localStorage.busTimetablesAge = 0;
+  },
 
   load: function() {
     // Old list of PDFs?
