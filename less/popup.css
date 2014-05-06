@@ -314,11 +314,6 @@ body {
 .emphasized {
   margin-bottom: 4px;
 }
-/* 60fps scrolling, thecssninja.com/javascript/pointer-events-60fps */
-.disable-hover,
-.disable-hover * {
-  pointer-events: none !important;
-}
 body {
   width: 532px;
   height: 600px;
