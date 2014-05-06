@@ -1,5 +1,3 @@
-// Notify Coffeescript that jQuery is here
-var $ = jQuery;
 var ls = localStorage;
 var iteration = 0;
 

@@ -28,7 +28,7 @@ For all the included affiliations
 - Displays and notifies about news from the selected "linjeforening"
 - Displays todays dinner menu and opening hours from SiT cantinas, cafés and kiosks
 - Displays bus data from AtB in real time
-- Written in HTML5, CSS3, LESS, JavaScript, CoffeeScript, jQuery and WebGL
+- Written in HTML5, CSS3, LESS, JavaScript, jQuery and WebGL
 - All pages in the extension are live, they keep themselves updated
 - Can be used as an infoscreen (full HD vertical screen) for continous use
 
@@ -180,7 +180,7 @@ Analytics
 
 - All statistics are anonymously collected and helps develop the project further
 - Runs page tracking on all pages which gives general traffic, OS, browsers, countries etc.
-- Runs event tracking on key events throughout all coffeescript files in /cs/
+- Runs event tracking on key events throughout all main javascript files
 - Event tracking is split into categories which have the same name as the page name it originates from, this is done because there are so few pages in the project
 - Categories are split into actions which are either clickSomething, loadSomething or toggleSomething
 - An action may have a label, which is usually the clicked link, the loaded file, and so on
