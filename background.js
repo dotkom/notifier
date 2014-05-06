@@ -1,8 +1,6 @@
-// Notify JavaScript that jQuery is here
-var $ = jQuery
-var ls = localStorage
-var iteration = 0
-var intervalId = null
+var ls = localStorage;
+var iteration = 0;
+var intervalId = null;
 
 var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
@@ -241,18 +239,6 @@ $(document).ready( function() {
   Browser.bindCommandHotkeys(Affiliation.org[ls.affiliationKey1].web);
   Browser.registerNotificationListeners();
   Browser.bindOmniboxToOracle();
-
-  // UNNECESSARY IN JS, only needed in CoffeeScript
-  // // Attaching the update-functions to the window (global) object so other pages
-  // // may lend these functions via Browser.getBackgroundProcess().function()
-  // // instead of having to rewrite the function on that page which may lead
-  // // to code rot.
-  // window.updateOfficeAndMeetings = updateOfficeAndMeetings;
-  // window.updateCoffeeSubscription = updateCoffeeSubscription;
-  // window.updateHours = updateHours;
-  // window.updateCantinas = updateCantinas;
-  // window.updateAffiliationNews = updateAffiliationNews;
-  // window.loadAffiliationIcon = loadAffiliationIcon;
 
   // Send some basic statistics once a day
   setInterval( function() {
