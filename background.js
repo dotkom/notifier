@@ -87,13 +87,16 @@ updateCoffeeSubscription = function() {
     if (!isNaN(pots) && !isNaN(age)) {
       storedPots = Number(ls.coffeePots);
       // New pot number?
-      if (storedPots < pots)
+      if (storedPots < pots) {
         // Not a meeting?
-        if (ls.officeStatus !== 'meeting')
+        if (ls.officeStatus !== 'meeting') {
           // Made less than 10 minutes ago?
-          if (age < 10)
+          if (age < 10) {
             // Notify everyone with a coffee subscription :D
             Coffee.showNotification(pots, age);
+          }
+        }
+      }
       // And remember to update localStorage
       ls.coffeePots = pots;
     }
@@ -130,11 +133,13 @@ updateAffiliationNews = function(number) {
     var newsLimit = 10;
     News.get(affiliationObject, newsLimit, function(items) {
       // Error message, log it maybe
-      if (typeof items === 'string')
+      if (typeof items === 'string') {
         console.lolg('ERROR:', items);
+      }
       // Empty news items, don't count
-      else if (items.length === 0)
+      else if (items.length === 0) {
         updateUnreadCount(0, 0);
+      }
       // News is here! NEWS IS HERE! FRESH FROM THE PRESS!
       else {
         saveAndCountNews(items, number);
@@ -187,9 +192,11 @@ fetchAndStoreImageLinks = function(number) {
   if (Affiliation.org[key].getImages !== undefined) {
     Affiliation.org[key].getImages(newsList, function(links, images) {
       var storedImages = JSON.parse(ls.storedImages);
-      for (index in links)
-        if (null !== images[index])
+      for (index in links) {
+        if (null !== images[index]) {
           storedImages[links[index]] = images[index];
+        }
+      }
       ls.storedImages = JSON.stringify(storedImages);
     });
   }
@@ -216,9 +223,10 @@ $(document).ready( function() {
   Defaults.setHardwareFeatures(isAvailable);
 
   // Open options page after install
-  if (ls.everOpenedOptions === 'false' && !DEBUG)
+  if (ls.everOpenedOptions === 'false' && !DEBUG) {
     Browser.openTab('options.html');
     Analytics.trackEvent('loadOptions (fresh install)');
+  }
   // Open Bigscreen if the option is set
   if (ls.useBigscreen === 'true') {
     if (ls.whichScreen === 'infoscreen') {
@@ -278,8 +286,10 @@ $(document).ready( function() {
     clearInterval(intervalId);
   });
   // Go
-  if (navigator.onLine)
+  if (navigator.onLine) {
     stayUpdated(true);
-  else
+  }
+  else {
     mainLoop();
+  }
 });

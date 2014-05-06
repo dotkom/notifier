@@ -1052,4 +1052,7 @@ $(document).ready(function() {
     }
   });
 
+  // Note the options page as opened so that it won't be opened automatically again
+  ls.everOpenedOptions = 'true'; // Will never be false again
+
 });
