@@ -5,6 +5,7 @@ var Oracle = {
   msgDisconnected: 'Frakoblet fra m.atb.no',
   msgPredictPostfix: ' [tab]',
   msg503: 'Orakelet har for mye å gjøre, vent littegrann er du grei',
+  msgPaywall: 'Du har ikke logget på WiFien, åpne en hvilken som helst nettside for å få opp påloggingssiden, for eksempel denne: <a href="http://dusken.no">dusken.no</a>',
 
   _autoLoad_: function() {
     if (localStorage.oracleBrain == undefined) {
@@ -34,13 +35,36 @@ var Oracle = {
       success: function(answer) {
 
         // Handle errors
-        if (answer.match(/error/gi) != null) {
-          if (answer.match(/503/gi) != null) {
+        if (answer.match(/error/gi) !== null) {
+          if (answer.match(/503/gi) !== null) {
             callback(self.msg503);
             return;
           }
           else {
             callback(self.msgDisconnected);
+            return;
+          }
+        }
+
+        // Handle paywall
+        if (answer.match(/\<.*\>/gi) !== null) {
+          try {
+            var title = answer.match(/\<title\>(.*)\<\/title\>/);
+            var flight = answer.match(/flight/gi);
+
+            callback([
+              '<b>',
+              (flight !== null ? 'God tur med ' : ''),
+              title[1],
+              ' - ',
+              '</b>',
+              self.msgPaywall,
+            ].join(''));
+            return;
+          }
+          catch (e) {
+            if (self.debug) console.log('ERROR:', e);
+            callback(self.msgPaywall);
             return;
           }
         }
