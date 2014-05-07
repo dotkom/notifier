@@ -279,9 +279,6 @@ header #notification .saved {
 .item #affiliationBox #primary select {
   margin-left: 7px;
 }
-.item #affiliationBox #primary #affiliationKey1 {
-  background-color: yellow;
-}
 .item #affiliationBox #primary #affiliationPalette {
   position: relative;
   float: left;

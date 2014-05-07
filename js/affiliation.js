@@ -92,7 +92,6 @@ var Affiliation = {
         Ajaxer.getCleanHtml({
           url: self.web,
           success: function(html) {
-            html = html.trim(); // Why all the newlines in the start of the file? jQuery doesn't liek dat.
             var count = 0;
             // Add each item from news tags
             if ($(html).find('.article').length != 0) {
@@ -655,6 +654,62 @@ var Affiliation = {
       palette: 'red',
       getImages: function(link, callback) {
         Images.get(this, link, callback);
+      },
+    },
+
+    'psykolosjen': {
+      name: 'Psykolosjen',
+      key: 'psykolosjen',
+      web: 'http://psykolosjen.no/',
+      // no feed, using getNews instead
+      logo: './org/psykolosjen/logo.png',
+      icon: './org/psykolosjen/icon.png',
+      symbol: './org/psykolosjen/symbol.png',
+      placeholder: './org/psykolosjen/placeholder.png',
+      palette: 'blue',
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(posts, callback) {
+        if (typeof callback == 'undefined') {
+          console.log('ERROR: callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+            
+            // Add each item from news tags
+            if ($(html).find('#articles').children().length != 0) {
+              $(html).find('#articles').children().each( function() {
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find('.articleBody h2 a').text();
+                  post.link = $(this).find('.articleBody h2 a').prop('href');
+                  post.description = $(this).find('.articleBody p:first span').text();
+                  post.author = $(this).find('.articleMeta').find('a:first').text();
+                  post.image = $(this).find('.articleBody pic').attr('src');
+
+                  console.log('\ntitle:',post.title,'\nlink:',post.link,'\ndesc:',post.description,'\nauthor:',post.author,'\nimage:',post.image);
+
+                  if (typeof post.image === 'undefined')
+                    post.image = self.placeholder;
+
+                  posts[count++] = post;
+                }
+              });
+            }
+            else {
+              if (self.debug) console.log('ERROR: No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+          },
+        });
       },
     },
 
