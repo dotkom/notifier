@@ -485,7 +485,7 @@ saveBus = function(busField) {
   ls[busField + 'InactiveLines'] = JSON.stringify(inactiveLines);
   console.lolg('saved activeLines for '+busField, '"', activeLines, '"');
   console.lolg('saved inactiveLines '+busField, '"', inactiveLines, '"');
-  console.lolg('saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466');
+  console.lolg('saved for busStopId ' + busStopId);
   showSavedNotification();
   // Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 }
