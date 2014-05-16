@@ -251,6 +251,7 @@ var Cantina = {
           text = self.shortenFoodServedWith(text);
           text = self.shortenFoodWithATasteOf(text);
           text = self.shortenTodaysSoup(text);
+          text = self.lessUPPERCASEplease(text);
           text = self.expandAbbreviations(text);
           text = self.removeFoodHomeMade(text);
           text = text.trim();
@@ -438,6 +439,14 @@ var Cantina = {
     if (this.debugText) console.log('Soup\t:: ' + text);
     // Shortening "Dagens suppe - Løksuppe med løk (G)" to "Løksuppe med løk (G)"
     return text.replace(/dagens suppe(\: | - )/gi, '');
+  },
+
+  lessUPPERCASEplease: function(text) {
+    if (this.debugText) console.log('UPPER\t:: ' + text);
+    // Changing "FREDAGS RETTEN" to "fredags retten" (capitalized first letter added later)
+    return text.replace(/([A-ZÆØÅ]{4,})/g, function(v) {
+      return v.toLowerCase();
+    });
   },
 
   expandAbbreviations: function(text) {
