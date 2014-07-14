@@ -148,8 +148,8 @@ updateBus = function() {
     // Error message
     $('#bus #firstBus .name').html(ls.firstBusName);
     $('#bus #secondBus .name').html(ls.secondBusName);
-    $('#bus #firstBus .error').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
-    $('#bus #secondBus .error').html('<div class="error">Frakoblet fra api.visuweb.no</div>');     
+    $('#bus #firstBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
+    $('#bus #secondBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');     
   }
   else {
     createBusDataRequest('firstBus', '#firstBus');

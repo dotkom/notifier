@@ -1,6 +1,6 @@
 var Stops = {
   api: 'http://bybussen.api.tmn.io/stops',
-  msgDisconnected: 'Frakoblet fra api.visuweb.no',
+  msgDisconnected: 'Frakoblet fra bybussen.api.tmn.io',
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
   msgParsingCompleted: 'Busslister lastet fra localstorage',
   msgParsingStopsSuccess: 'Busslister lastet fra API',

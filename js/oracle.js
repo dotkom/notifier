@@ -124,7 +124,7 @@ var Oracle = {
       'Bussorakelet ble utviklet på NTNU, spør om noe!',
       'Michael Johansen laget Notifier. Det tok mye tid, men var visst veldig gøy.',
       'Tri M. Nguyen har laget APIet som brukes til sanntiden. Takk, Tri <3',
-      'Tri M. Nguyen har laget APIet som Notifier bruker, det er på <a href="http://api.visuweb.no/bybussen">api.visuweb.no/bybussen</a>',
+      'Tri M. Nguyen har laget APIet som Notifier bruker, det er på <a href="http://bybussen.api.tmn.io">bybussen.api.tmn.io</a>',
       'Morten Noddeland har laget <a href="http://instabart.no">instabart.no</a>, den siden bør alle Trondheimsstudenter vite om.',
       'Om du liker Notifier kommer du sikkert også til å like <a href="http://instabart.no">instabart.no</a>.',
       'AtB har minibusser også.',
