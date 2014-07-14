@@ -741,6 +741,24 @@ var Affiliation = {
       getImage: function(link, callback) {
         Images.get(this, link, callback);
       },
+      // TODO: This, alternate feeds per organization
+      // altFeeds: {
+      //   'Universitetsteatret': 'http://universitetsteatret.wordpress.com/feed/',
+      // },
+    },
+    'universitetsteatret': {
+      name: 'Universitetsteatret',
+      key: 'universitetsteatret',
+      web: 'http://universitetsteatret.wordpress.com',
+      feed: 'http://universitetsteatret.wordpress.com/feed/',
+      logo: './org/universitetsteatret/logo.png',
+      icon: './org/universitetsteatret/icon.png',
+      symbol: './org/universitetsteatret/symbol.png',
+      placeholder: './org/universitetsteatret/placeholder.png',
+      palette: 'blue',
+      getImage: function(link, callback) {
+        Images.get(this, link, callback);
+      },
     },
 
     // Linjeforeninger HiST/DMMH/TJSF/BI
