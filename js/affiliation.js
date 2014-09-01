@@ -107,6 +107,7 @@ var Affiliation = {
 
                   // Link fixing
                   post.link = 'http://abakus.no' + post.link;
+                  // Image fixing
                   if (typeof post.image != 'undefined')
                     post.image = 'http://abakus.no' + post.image;
                   else
@@ -252,14 +253,56 @@ var Affiliation = {
       name: 'Mannhullet',
       key: 'mannhullet',
       web: 'http://mannhullet.no/',
-      feed: 'http://mannhullet.no/index.php?format=feed&type=rss',
+      // feed: 'http://mannhullet.no/index.php?format=feed&type=rss',
       logo: './org/mannhullet/logo.png',
       icon: './org/mannhullet/icon.png',
       symbol: './org/mannhullet/symbol.png',
       placeholder: './org/mannhullet/placeholder.png',
       palette: 'blue',
-      getImage: function(links, callback) {
-        Images.get(this, links, callback, {newsSelector:'div#container', imageIndex: 1});
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(posts, callback) {
+        if (typeof callback == 'undefined') {
+          console.log('ERROR: callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+            // Add each item from news tags
+            if ($(html).find('div .post .caption').length != 0) {
+              $(html).find('div .post .caption').each( function() {
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find("h3 a").filter(':first').text();
+                  post.link = $(this).find("p:last a").attr('href');
+                  post.description = $(this).find(".introtext p").filter(':first').text();
+                  post.image = $(this).find("pic").filter(':first').attr('src');
+
+                  // Link fixing
+                  post.link = 'http://mannhullet.no' + post.link;
+                  // Image fixing
+                  if (typeof post.image != 'undefined')
+                    post.image = 'http://mannhullet.no' + post.image;
+                  else
+                    post.image = self.placeholder;
+
+                  posts[count++] = post;
+                }
+              });
+            }
+            else {
+              if (self.debug) console.log('ERROR: No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+          },
+        });
       },
     },
 
@@ -367,7 +410,7 @@ var Affiliation = {
         memePath: './org/nabla/meme/',
       },
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.row div.span8 div.row div.span8', domainUrl:'nabla.no'});
+        Images.get(this, link, callback, {newsSelector:'div.row div.col-md-8', domainUrl:'nabla.no'});
       },
     },
 
@@ -375,7 +418,7 @@ var Affiliation = {
       name: 'Solan',
       key: 'solan',
       web: 'http://solanlinjeforening.no',
-      feed: 'http://www.oneclick.solanlinjeforening.no/feed/',
+      feed: 'http://www.solanlinjeforening.no/feed/',
       logo: './org/solan/logo.png',
       icon: './org/solan/icon.png',
       symbol: './org/solan/symbol.png',
@@ -763,20 +806,21 @@ var Affiliation = {
 
     // Linjeforeninger HiST/DMMH/TJSF/BI
 
-    'fraktur': {
-      name: 'Fraktur',
-      key: 'fraktur',
-      web: 'http://www.fraktur.no/',
-      feed: 'http://www.fraktur.no/feed/',
-      logo: './org/fraktur/logo.png',
-      icon: './org/fraktur/icon.png',
-      symbol: './org/fraktur/symbol.png',
-      placeholder: './org/fraktur/placeholder.png',
-      palette: 'cyan',
-      getImages: function(links, callback) {
-        Images.get(this, links, callback);
-      },
-    },
+    // Fraktur website is no longer in operation, uncommented for the unforseeable future
+    // 'fraktur': {
+    //   name: 'Fraktur',
+    //   key: 'fraktur',
+    //   web: 'http://www.fraktur.no/',
+    //   feed: 'http://www.fraktur.no/feed/',
+    //   logo: './org/fraktur/logo.png',
+    //   icon: './org/fraktur/icon.png',
+    //   symbol: './org/fraktur/symbol.png',
+    //   placeholder: './org/fraktur/placeholder.png',
+    //   palette: 'cyan',
+    //   getImages: function(links, callback) {
+    //     Images.get(this, links, callback);
+    //   },
+    // },
 
     'kom': {
       name: 'KOM',
@@ -1052,16 +1096,18 @@ var Affiliation = {
     },
 
     'adressa': {
-      name: 'Adresseavisen',
+      name: 'Adressa Student',
       key: 'adressa',
       web: 'http://adressa.no/',
-      feed: 'http://www.adressa.no/?widgetName=polarisFeeds&widgetId=3185248&getXmlFeed=true',
+      feed: 'http://www.adressa.no/student/?widgetName=polarisFeeds&widgetId=3185248&getXmlFeed=true',
       logo: './org/adressa/logo.png',
       icon: './org/adressa/icon.png',
       symbol: './org/adressa/symbol.png',
       placeholder: './org/adressa/placeholder.png',
       palette: 'blue',
-      // getImages unnecessary, Adresseavisen uses <enclosure>-tag, attribute "url", for images
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'div.image.top'});
+      },
     },
 
     // Store studentorganisasjoner
@@ -1151,7 +1197,7 @@ var Affiliation = {
           Images.get(this, link, callback, {newsSelector:'div.body-content'});
         }
         else if (link.indexOf('dn.no') !== -1) {
-          Images.get(this, link, callback, {newsSelector:'div#content'});
+          Images.get(this, link, callback, {newsSelector:'figure', domainUrl:'www.dn.no'});
         }
         else if (link.indexOf('dusken.no') !== -1) {
           Images.get(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
@@ -1213,7 +1259,7 @@ var Affiliation = {
       placeholder: './org/hist/placeholder.png',
       palette: 'blue',
       getImages: function(links, callback) {
-        Images.get(this, links, callback, {newsSelector:'div.unit', domainUrl:'hist.no'});
+        Images.get(this, links, callback, {newsSelector:'div.nyhet', domainUrl:'hist.no'});
       },
     },
 
@@ -1228,7 +1274,7 @@ var Affiliation = {
       placeholder: './org/dmmh/placeholder.png',
       palette: 'red',
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div#content', domainUrl:'dmmh.no'});
+        Images.get(this, link, callback, {domainUrl:'dmmh.no'});
       },
     },
 
