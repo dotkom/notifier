@@ -42,7 +42,6 @@ body {
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
-
   position: absolute;
   background-position: center center;
   background-repeat: no-repeat;
@@ -93,7 +92,6 @@ body {
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
-
 }
 #container #todays #coffee #pots {
   border: 0px solid #ffff00;
@@ -125,7 +123,6 @@ body {
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
-
 }
 #container #cantinas #dinnerbox {
   border: 0px solid #00ff00;
@@ -139,7 +136,6 @@ body {
 }
 #container #cantinas li.message {
   /*font-style: italic;*/
-
 }
 #container #bus {
   border: 0px solid #00ffff;
@@ -220,11 +216,8 @@ body {
   padding: 0;
   width: 100%;
   /* #full for using a single column */
-
   /* #left and #right for using double columns */
-
   /* for each news post, and item within */
-
 }
 #container #news #full {
   position: relative;
@@ -262,7 +255,6 @@ body {
   position: relative;
   margin-top: 0;
   /* overrides default value */
-
 }
 #container #news .post .item .title.flashy {
   position: absolute;
@@ -381,11 +373,8 @@ body {
 }
 #overlay {
   /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
-
   /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
-
   /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
-
   position: absolute;
   top: 0;
   left: 0;
@@ -409,7 +398,6 @@ body {
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
-
   background-image: url('/img/background-large-vertical.png');
 }
 /* This container keeps the content centered */
@@ -530,7 +518,6 @@ body {
 }
 #container #news {
   /* #full for using a single column */
-
 }
 #container #news #full .post .item img.regular {
   min-height: 180px;

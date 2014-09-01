@@ -291,6 +291,8 @@ var News = {
 
     // Link field
 
+    // Trim link either way
+    post.link = post.link.trim(); // This is muy importanté for everything to work well later on
     // Sometimes we would like to link directly to a link in the news description,
     // this can help users avoid one step while navigating to links via Notifier
     post.altLink = this.checkDescriptionForAltLink(post.description);
