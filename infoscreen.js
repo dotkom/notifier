@@ -254,16 +254,22 @@ updateAffiliationNews = function(number) {
   if (ls.showAffiliation2 !== 'true') {
     selector = '#full';
   }
+  // Set affiliation name
+  var name = Affiliation.org[ls['affiliationKey'+number]].name;
+  $('#news '+selector+' .title').html(name);
 
+  // Display news from storage
   if (typeof feedItems !== 'undefined') {
     feedItems = JSON.parse(feedItems);
     displayItems(feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number);
   }
   else {
+    // Offline or unresponsive
     var key = ls['affiliationKey'+number];
     var name = Affiliation.org[key].name;
-    $('#news '+selector).html('<div class="post"><div class="item"><div class="title">'+name+'</div>Frakoblet fra nyhetsstrøm</div></div>');
-    $('#news '+selector).click(function() {
+    $('#news '+selector+' .post').remove();
+    $('#news '+selector).append('<div class="post"><div class="item">Frakoblet fra nyhetsstrøm</div></div>');
+    $('#news '+selector+' .post').click(function() {
       Browser.openTab(Affiliation.org[key].web);
     });
   }
@@ -271,7 +277,7 @@ updateAffiliationNews = function(number) {
 
 displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
   // Empty the news column
-  $('#news '+column).html('');
+  $('#news '+column+' .post').remove();
   // Get feedkey
   var feedKey = items[0].feedKey;
 
