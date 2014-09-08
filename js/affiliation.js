@@ -144,21 +144,6 @@ var Affiliation = {
       },
     },
 
-    'alf': {
-      name: 'Alf',
-      key: 'alf',
-      web: 'http://org.ntnu.no/alf/',
-      feed: 'http://org.ntnu.no/alf/?feed=rss2',
-      logo: './org/alf/logo.png',
-      icon: './org/alf/icon.png',
-      symbol: './org/alf/symbol.png',
-      placeholder: './org/alf/placeholder.png',
-      palette: 'green',
-      getImages: function(link, callback) {
-        Images.get(this, link, callback);
-      },
-    },
-
     'berg': {
       name: 'Bergstuderendes Forening',
       key: 'berg',
@@ -170,6 +155,21 @@ var Affiliation = {
       placeholder: './org/berg/placeholder.png',
       palette: 'grey',
       getImage: function(link, callback) {
+        Images.get(this, link, callback);
+      },
+    },
+
+    'broderskabet': {
+      name: 'Broderskabet',
+      key: 'broderskabet',
+      web: 'http://broderskabet.no/',
+      feed: 'http://broderskabet.no/feed/',
+      logo: './org/broderskabet/logo.png',
+      icon: './org/broderskabet/icon.png',
+      symbol: './org/broderskabet/symbol.png',
+      placeholder: './org/broderskabet/placeholder.png',
+      palette: 'grey',
+      getImages: function(link, callback) {
         Images.get(this, link, callback);
       },
     },
