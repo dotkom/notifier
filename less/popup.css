@@ -22,7 +22,6 @@
   color: NavajoWhite;
   display: block;
   font-weight: bold;
-  text-transform: uppercase;
 }
 .title .unread {
   color: white;
@@ -434,16 +433,14 @@ body {
   margin-bottom: 4px;
   cursor: pointer;
 }
-#container #cantinas .hours:hover {
-  text-shadow: 0 0 10px white,
-        0 0 15px white;
+#container #cantinas .hours:hover:hover {
+  text-decoration: underline;
 }
 #container #cantinas li {
   cursor: pointer;
 }
 #container #cantinas li:hover {
-  text-shadow: 0 0 10px white,
-        0 0 15px white;
+  text-decoration: underline;
 }
 #container #bus {
   box-shadow: 0 0 15px #aaa;
@@ -470,7 +467,6 @@ body {
 }
 #container #bus #realtime .name {
   margin-bottom: 5px;
-  text-decoration: underline;
 }
 #container #bus #realtime .loadingLeft {
   width: 80px;
@@ -501,7 +497,6 @@ body {
 }
 #container #bus #oracle #name {
   margin-right: 7px;
-  cursor: pointer;
 }
 #container #bus #oracle #question {
   border: 0px solid #ffff00;
