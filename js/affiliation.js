@@ -219,6 +219,19 @@ var Affiliation = {
       },
     },
 
+    'hc': {
+      name: 'Høiskolens Chemikerforening',
+      key: 'hc',
+      web: 'https://chemie.no/',
+      feed: 'https://chemie.no/feed/',
+      logo: './org/hc/logo.png',
+      icon: './org/hc/icon.png',
+      symbol: './org/hc/symbol.png',
+      placeholder: './org/hc/placeholder.png',
+      palette: 'yellow',
+      // images extracted from feed content
+    },
+
     'hybrida': {
       name: 'Hybrida',
       key: 'hybrida',
