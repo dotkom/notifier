@@ -293,17 +293,6 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
   // Prepare the list of images with salt, pepper and some vinegar
   storedImages = JSON.parse(ls.storedImages);
 
-  // Figure out if flashy news are prefered
-  var isDuplicate = (ls.affiliationKey1 === ls.affiliationKey2);
-  var isPrimaryAffiliation = (ls.affiliationKey1 === feedKey);
-  var isFlashy = false;
-  if (isDuplicate)
-    isFlashy = (ls.affiliationFlashy1 === 'true' || ls.affiliationFlashy2 === 'true');
-  else if (isPrimaryAffiliation)
-    isFlashy = (ls.affiliationFlashy1 === 'true');
-  else
-    isFlashy = (ls.affiliationFlashy2 === 'true');
-
   // Add feed items
   $.each(items, function (index, item) {
     
@@ -312,16 +301,16 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
       
       var unreadCount = Number(ls[unreadCountName]);
       var readUnread = '';
-      if (!isFlashy) {
-        if (index < unreadCount) {
-          if (updatedList.indexOf(item.link) > -1) {
-            readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
-          }
-          else {
-            readUnread += '<span class="unread">NEW <b>::</b> </span>';
-          }
-        }
-      }
+      // if (!isFlashy) {
+      //   if (index < unreadCount) {
+      //     if (updatedList.indexOf(item.link) > -1) {
+      //       readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
+      //     }
+      //     else {
+      //       readUnread += '<span class="unread">NEW <b>::</b> </span>';
+      //     }
+      //   }
+      // }
 
       // EXPLANATION NEEDED:
       // .item[data] contains the link
@@ -352,7 +341,7 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
 
       var htmlItem = '';
 
-      if (isFlashy && ls.showAffiliation2 === 'true') {
+      if (ls.showAffiliation2 === 'true') {
         htmlItem = [
           '<div class="post">',
             '<div class="item" data="' + item.link + '"' + altLink + '>',
