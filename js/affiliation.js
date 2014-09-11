@@ -63,6 +63,7 @@ var Affiliation = {
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
       hw: {
+        office: "Abakuskontoret",
         apis: {
           coffee: 'http://kaffe.abakus.no/coffee.txt',
           light: 'http://informatikk.org/abakus/lys.txt',
@@ -185,6 +186,7 @@ var Affiliation = {
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
       hw: {
+        office: 'Deltakontoret',
         apis: {
           coffee: 'http://pi.deltahouse.no/coffee.txt',
           light: 'http://pi.deltahouse.no/office.txt',
@@ -332,6 +334,7 @@ var Affiliation = {
       palettePath: './org/online/palette.css',
       useAltLink: true,
       hw: {
+        office: 'Onlinekontoret',
         apis: {
           coffee: 'http://draug.online.ntnu.no/coffee.txt',
           light: 'http://draug.online.ntnu.no/lys.txt',
@@ -405,6 +408,7 @@ var Affiliation = {
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
       hw: {
+        office: 'Nablakontoret',
         apis: {
           coffee: 'https://online.ntnu.no/notifier/nabla/coffee',
           event: 'https://online.ntnu.no/notifier/nabla/office',
@@ -438,6 +442,7 @@ var Affiliation = {
       placeholder: './org/solan/placeholder.png',
       palette: 'blue',
       hw: {
+        office: "Solanstua",
         apis: {
           coffee: 'https://online.ntnu.no/notifier/solan/coffee',
           event: 'https://online.ntnu.no/notifier/solan/office',
@@ -498,7 +503,7 @@ var Affiliation = {
       icon: './org/communitas/icon.png',
       symbol: './org/communitas/symbol.png',
       placeholder: './org/communitas/placeholder.png',
-      palette: 'blue',
+      palette: 'cyan',
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
