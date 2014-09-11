@@ -18,6 +18,7 @@ var Affiliation = {
   // palettePath: './org/orgx/palette.css',     // OPTIONAL: Path to the special palette
   // useAltLink: true,                          // OPTIONAL: Search each news post for alternative link to use?
   // hw: {                                      // OPTIONAL: Has hardwarefeatures?
+  //   office: "orgxkontoret",                  // OPTIONAL: Friendly name for the affiliation office
   //   apis: {
   //     coffee: 'http://orgx.no/coffee',       // Coffee data
   //     light: 'http://orgx.no/lys',           // Light data
