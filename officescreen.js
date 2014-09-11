@@ -322,6 +322,13 @@ $(document).ready(function() {
   else
     $('#logo').prop('src', logo);
   $('link[rel="shortcut icon"]').attr('href', icon);
+
+  // Apply the affiliation's own name for it's office
+  if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hw.office) {
+      $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
+    }
+  }
   
   // Adding creator name to pageflip
   changeCreatorName(ls.extensionCreator);
