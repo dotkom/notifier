@@ -99,7 +99,14 @@ updateMeetings = function() {
   console.lolg('updateMeetings');
   Meetings.get(function(meetings) {
     meetings = meetings.replace(/\n/g, '<br />');
-    $('#todays #schedule #meetings').html(meetings);
+    if (ls.affiliationKey1.match(/online|abakus/g) === null) {
+      $('#todays #schedule #meetings').html(meetings);
+    }
+    else {
+      Hackerspace.get(function(hackerspace) {
+        $('#todays #schedule #meetings').html(meetings + '<br />' + hackerspace);
+      }); 
+    }
   });
 }
 

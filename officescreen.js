@@ -75,7 +75,14 @@ updateMeetings = function() {
     meetings = '<span>'+meetings;
     meetings = meetings.replace(/\n/g, '<br /><span>');
     meetings = meetings.replace(/:/g, ':</span>');
-    $('#todays #schedule #meetings').html(meetings);
+    if (ls.affiliationKey1.match(/online|abakus/g) === null) {
+      $('#todays #schedule #meetings').html(meetings);
+    }
+    else {
+      Hackerspace.get(function(hackerspace) {
+        $('#todays #schedule #meetings').html(meetings + '<br />' + hackerspace);
+      }); 
+    }
   });
 }
 
