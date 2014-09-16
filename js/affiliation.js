@@ -9,10 +9,10 @@ var Affiliation = {
   // key: 'orgx',
   // web: 'https://orgx.com',
   // feed: 'https://orgx.com/feed',             // ALTERNATIVE: Use either 'feed' or 'getNews', not both
-  // logo: './org/orgx/logo.png',               // 512x128 transparent logo, for dark background
-  // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
-  // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with 20% empty padding
-  // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
+  // logo: './org/orgx/logo.png',               // 512x128 transparent white logo, for dark backgrounds
+  // icon: './org/orgx/icon.png',               //  76x76  transparent icon, for extension icon
+  // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with ~20% empty padding
+  // placeholder: './org/orgx/placeholder.png', // 512x256 placeholder, used when news images is loading, standard was previously 512x384
   // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',     // OPTIONAL: Path to the special palette
