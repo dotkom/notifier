@@ -552,7 +552,7 @@ body {
 }
 #container #news .post .item img {
   min-height: 20px;
-  max-height: 200px;
+  max-height: 250px;
   padding: 4px;
   box-shadow: 0 0 13px #bbb;
 }
