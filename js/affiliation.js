@@ -823,6 +823,19 @@ var Affiliation = {
       },
     },
 
+    'theodor': {
+      name: 'Theodor',
+      key: 'theodor',
+      web: 'http://lftheodor.no/',
+      feed: 'http://lftheodor.no/index.php/component/k2/itemlist?format=feed&moduleID=148',
+      logo: './org/theodor/logo.png',
+      icon: './org/theodor/icon.png',
+      symbol: './org/theodor/symbol.png',
+      placeholder: './org/theodor/placeholder.png',
+      palette: 'red',
+      // images extract from feed item description
+    },
+
     // Linjeforeninger HiST/DMMH/TJSF/BI
 
     // Fraktur website is no longer in operation, uncommented for the unforseeable future
@@ -1084,7 +1097,7 @@ var Affiliation = {
       palette: 'grey',
       // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
       },
     },
 
@@ -1219,7 +1232,7 @@ var Affiliation = {
           Images.get(this, link, callback, {newsSelector:'figure', domainUrl:'www.dn.no'});
         }
         else if (link.indexOf('dusken.no') !== -1) {
-          Images.get(this, link, callback, {newsSelector:'div.span8', domainUrl:'dusken.no'});
+          Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
         }
         else if (link.indexOf('forskningsradet.no') !== -1) {
           Images.get(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
