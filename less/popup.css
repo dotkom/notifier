@@ -421,6 +421,16 @@ body {
   font-style: italic;
   margin-bottom: 4px;
 }
+#container #todays #schedule #hackerspace {
+  margin-top: 4px;
+}
+#container #todays #schedule #hackerspace span {
+  font-weight: bold;
+  cursor: pointer;
+}
+#container #todays #schedule #hackerspace span:hover {
+  text-decoration: underline;
+}
 #container #todays #coffee #pots {
   border: 0px solid #ffff00;
   font-style: italic;
