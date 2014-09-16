@@ -9,15 +9,16 @@ var Affiliation = {
   // key: 'orgx',
   // web: 'https://orgx.com',
   // feed: 'https://orgx.com/feed',             // ALTERNATIVE: Use either 'feed' or 'getNews', not both
-  // logo: './org/orgx/logo.png',               // 512x128 transparent logo, for dark background
-  // icon: './org/orgx/icon.png',               //  38x38  transparent icon, for extension icon
-  // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with 20% empty padding
-  // placeholder: './org/orgx/placeholder.png', // 512x384 placeholder, used when news images is loading
+  // logo: './org/orgx/logo.png',               // 512x128 transparent white logo, for dark backgrounds
+  // icon: './org/orgx/icon.png',               //  76x76  transparent icon, for extension icon
+  // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with ~20% empty padding
+  // placeholder: './org/orgx/placeholder.png', // 512x256 placeholder, used when news images is loading, standard was previously 512x384
   // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',     // OPTIONAL: Path to the special palette
   // useAltLink: true,                          // OPTIONAL: Search each news post for alternative link to use?
   // hw: {                                      // OPTIONAL: Has hardwarefeatures?
+  //   office: "orgxkontoret",                  // OPTIONAL: Friendly name for the affiliation office
   //   apis: {
   //     coffee: 'http://orgx.no/coffee',       // Coffee data
   //     light: 'http://orgx.no/lys',           // Light data
@@ -63,6 +64,7 @@ var Affiliation = {
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
       hw: {
+        office: "Abakuskontoret",
         apis: {
           coffee: 'http://kaffe.abakus.no/coffee.txt',
           light: 'http://informatikk.org/abakus/lys.txt',
@@ -144,21 +146,6 @@ var Affiliation = {
       },
     },
 
-    'alf': {
-      name: 'Alf',
-      key: 'alf',
-      web: 'http://org.ntnu.no/alf/',
-      feed: 'http://org.ntnu.no/alf/?feed=rss2',
-      logo: './org/alf/logo.png',
-      icon: './org/alf/icon.png',
-      symbol: './org/alf/symbol.png',
-      placeholder: './org/alf/placeholder.png',
-      palette: 'green',
-      getImages: function(link, callback) {
-        Images.get(this, link, callback);
-      },
-    },
-
     'berg': {
       name: 'Bergstuderendes Forening',
       key: 'berg',
@@ -174,6 +161,21 @@ var Affiliation = {
       },
     },
 
+    'broderskabet': {
+      name: 'Broderskabet',
+      key: 'broderskabet',
+      web: 'http://broderskabet.no/',
+      feed: 'http://broderskabet.no/feed/',
+      logo: './org/broderskabet/logo.png',
+      icon: './org/broderskabet/icon.png',
+      symbol: './org/broderskabet/symbol.png',
+      placeholder: './org/broderskabet/placeholder.png',
+      palette: 'grey',
+      getImages: function(link, callback) {
+        Images.get(this, link, callback);
+      },
+    },
+
     'delta': {
       name: 'Delta',
       key: 'delta',
@@ -185,6 +187,7 @@ var Affiliation = {
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
       hw: {
+        office: 'Deltakontoret',
         apis: {
           coffee: 'http://pi.deltahouse.no/coffee.txt',
           light: 'http://pi.deltahouse.no/office.txt',
@@ -332,6 +335,7 @@ var Affiliation = {
       palettePath: './org/online/palette.css',
       useAltLink: true,
       hw: {
+        office: 'Onlinekontoret',
         apis: {
           coffee: 'http://draug.online.ntnu.no/coffee.txt',
           light: 'http://draug.online.ntnu.no/lys.txt',
@@ -405,6 +409,7 @@ var Affiliation = {
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
       hw: {
+        office: 'Nablakontoret',
         apis: {
           coffee: 'https://online.ntnu.no/notifier/nabla/coffee',
           event: 'https://online.ntnu.no/notifier/nabla/office',
@@ -438,6 +443,7 @@ var Affiliation = {
       placeholder: './org/solan/placeholder.png',
       palette: 'blue',
       hw: {
+        office: "Solanstua",
         apis: {
           coffee: 'https://online.ntnu.no/notifier/solan/coffee',
           event: 'https://online.ntnu.no/notifier/solan/office',
@@ -498,7 +504,7 @@ var Affiliation = {
       icon: './org/communitas/icon.png',
       symbol: './org/communitas/symbol.png',
       placeholder: './org/communitas/placeholder.png',
-      palette: 'blue',
+      palette: 'cyan',
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },

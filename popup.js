@@ -665,6 +665,13 @@ $(document).ready(function() {
     $('#chatterButton').hide();
     $('#chatterIcon').hide();
   }
+
+  // Apply the affiliation's own name for it's office
+  if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hw.office) {
+      $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
+    }
+  }
   
   // Track popularity of the chosen palette, the palette
   // itself is loaded a lot earlier for perceived speed
@@ -735,14 +742,19 @@ $(document).ready(function() {
     $('#bus #secondBus '+busLanes[i]).click(clickBus);
   }
 
-  // Bind AtB logo and any realtimebus error messages to atb.no
+  // Bind AtB logo and any realtimebus error messages to atb.no/…
   var openAtb = function() {
     Browser.openTab('http://www.atb.no');
     Analytics.trackEvent('clickAtb');
     window.close();
   };
   $('#bus #atbLogo').click(openAtb);
-  $('#bus .error').click(openAtb);
+  var openOracle = function() {
+    Browser.openTab('http://www.atb.no/bussorakelet');
+    Analytics.trackEvent('clickAtbError');
+    window.close();
+  };
+  $('#bus .error').click(openOracle);
 
   // Bind oracle
   bindOracle();
