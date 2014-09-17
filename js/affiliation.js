@@ -510,22 +510,6 @@ var Affiliation = {
       },
     },
 
-    // De Folkevalgtes website is no longer in operation, uncommented for the unforseeable future
-    // 'de_folkevalgte': {
-    //   name: 'De Folkevalgte',
-    //   key: 'de_folkevalgte',
-    //   web: 'http://www.defolkevalgte.net/',
-    //   feed: 'http://www.defolkevalgte.net/feed/rss/',
-    //   logo: './org/de folkevalgte/logo.png',
-    //   icon: './org/de folkevalgte/icon.png',
-    //   symbol: './org/de folkevalgte/symbol.png',
-    //   placeholder: './org/de folkevalgte/placeholder.png',
-    //   palette: 'yellow',
-    //   getImages: function(links, callback) {
-    //     Images.get(this, links, callback);
-    //   },
-    // },
-
     'dhs': {
       name: 'Det Historiske Selskab',
       key: 'dhs',
@@ -838,22 +822,6 @@ var Affiliation = {
 
     // Linjeforeninger HiST/DMMH/TJSF/BI
 
-    // Fraktur website is no longer in operation, uncommented for the unforseeable future
-    // 'fraktur': {
-    //   name: 'Fraktur',
-    //   key: 'fraktur',
-    //   web: 'http://www.fraktur.no/',
-    //   feed: 'http://www.fraktur.no/feed/',
-    //   logo: './org/fraktur/logo.png',
-    //   icon: './org/fraktur/icon.png',
-    //   symbol: './org/fraktur/symbol.png',
-    //   placeholder: './org/fraktur/placeholder.png',
-    //   palette: 'cyan',
-    //   getImages: function(links, callback) {
-    //     Images.get(this, links, callback);
-    //   },
-    // },
-
     'kom': {
       name: 'KOM',
       key: 'kom',
@@ -980,20 +948,20 @@ var Affiliation = {
       },
     },
 
-    // 'esn': {
-    //   name: 'ESN',
-    //   key: 'esn',
-    //   web: 'http://www.trondheim.esn.no/',
-    //   feed: 'http://www.trondheim.esn.no/feed',
-    //   logo: './org/esn/logo.png',
-    //   icon: './org/esn/icon.png',
-    //   symbol: './org/esn/symbol.png',
-    //   placeholder: './org/esn/placeholder.png',
-    //   palette: 'cyan',
-    //   getImages: function(links, callback) {
-    //     Images.get(this, links, callback);
-    //   },
-    // },
+    'esn': {
+      name: 'ESN',
+      key: 'esn',
+      web: 'http://www.trondheim.esn.no/',
+      feed: 'http://www.trondheim.esn.no/rss.xml',
+      logo: './org/esn/logo.png',
+      icon: './org/esn/icon.png',
+      symbol: './org/esn/symbol.png',
+      placeholder: './org/esn/placeholder.png',
+      palette: 'cyan',
+      getImages: function(links, callback) {
+        Images.get(this, links, callback);
+      },
+    },
 
     'iaeste': {
       name: 'IAESTE',
