@@ -157,6 +157,7 @@ header #notification .saved {
   /* the affiliation option in particular */
   /* the cantina option in particular */
   /* the bus option in particular */
+  /* the showoffice option in particular */
   /* the bigscreen option in particular */
 }
 .item .icon {
@@ -475,6 +476,14 @@ header #notification .saved {
 }
 .item #busBox #arrowDown img {
   width: 12px;
+}
+.item img#showOfficeImage {
+  width: 251px;
+  height: 103px;
+}
+.item img#useBigscreen {
+  width: 304px;
+  height: 68px;
 }
 .item #bigscreenPreview {
   display: none;
