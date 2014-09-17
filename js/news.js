@@ -480,8 +480,6 @@ var News = {
     field = $('<div/>').html(field).text();
     // Remove multiple whitespace
     field = field.replace(/\s\s+/g,'');
-    // "..stedHvor.." -> "..sted. Hvor.."
-    field = field.replace(/([a-z])([A-Z])/g, '$1. '+'$2'.capitalize());
     // Remove meta information from title or description, within curly brackets {}
     field = field.replace(/\{.*\}/gi,'');
     // Shorten 'bedriftspresentasjon' to 'bedpres'

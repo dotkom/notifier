@@ -29,7 +29,12 @@ var Browser = {
   setIcon: function(path) {
     if (this.name == 'Chrome' || this.name == 'Opera') {
       if (chrome.browserAction != undefined) {
-        chrome.browserAction.setIcon({path: path});
+        chrome.browserAction.setIcon({
+          path: {
+            "19": path,
+            "38": path,
+          }
+        });
       }
     }
     else {

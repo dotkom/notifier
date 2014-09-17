@@ -157,7 +157,9 @@ header #notification .saved {
   /* the affiliation option in particular */
   /* the cantina option in particular */
   /* the bus option in particular */
+  /* the showoffice option in particular */
   /* the bigscreen option in particular */
+  /* the coffee subscription option in particular*/
 }
 .item .icon {
   width: 20px;
@@ -476,6 +478,14 @@ header #notification .saved {
 .item #busBox #arrowDown img {
   width: 12px;
 }
+.item img#showOfficeImage {
+  width: 251px;
+  height: 103px;
+}
+.item img#useBigscreen {
+  width: 304px;
+  height: 68px;
+}
 .item #bigscreenPreview {
   display: none;
   overflow: hidden;
@@ -485,6 +495,10 @@ header #notification .saved {
   zoom: 0.25;
   -webkit-transform: scale(0.25);
   -webkit-transform-origin: 0 0;
+}
+.item img#coffeeSubscriptionImage {
+  width: 304px;
+  height: auto;
 }
 /* Suggestions for bus stops */
 #busSuggestions {

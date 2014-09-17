@@ -146,6 +146,16 @@ body {
       #servant {
         .emphasized;
       }
+      #hackerspace {
+        margin-top: 4px;
+        span {
+          font-weight: bold;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
     }
     #coffee {
       #pots {
@@ -160,17 +170,15 @@ body {
       cursor: pointer;
     }
     .hours:hover {
-      text-shadow:
-        0 0 10px white,
-        0 0 15px white;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     li {
       cursor: pointer;
-    }
-    li:hover {
-      text-shadow:
-        0 0 10px white,
-        0 0 15px white;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -194,7 +202,6 @@ body {
       }
       .name {
         margin-bottom: 5px;
-        text-decoration: underline;
       }
       .loadingLeft {
         width: 80px;
@@ -227,7 +234,6 @@ body {
   
       #name {
         margin-right: 7px;
-        cursor: pointer;
       }
       #question {
         .debugText;
@@ -296,7 +302,7 @@ body {
 
         img {
           min-height: 20px;
-          max-height: 200px;
+          max-height: 250px;
           padding: 4px;
           box-shadow: 0 0 13px #bbb;
         }

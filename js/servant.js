@@ -2,8 +2,8 @@ var Servant = {
   debug: 0,
   debugString: '11:00-12:00 Steinar Hagen\n12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
   
-  msgNone: 'Ingen har ansvar nå',
-  msgError: 'Frakoblet fra vaktplan',
+  msgNone: 'Ingen ansvarlige nå',
+  msgError: 'Frakoblet fra ansvarkalender',
 
   get: function(callback) {
     if (callback == undefined) {
@@ -53,7 +53,7 @@ var Servant = {
           
           if (start <= now && now <= end) {
             servantName = self.shortenServantName(servantName);
-            callback('Vakt: '+servantName);
+            callback(servantName);
           }
           else {
             // No servant in this timeslot
@@ -70,7 +70,7 @@ var Servant = {
 
           // Assume we are within the correct dates
           servantName = self.shortenServantName(servantName);
-          callback('Vakter: '+servantName);
+          callback(servantName);
         }
         else {
           // No more servants today

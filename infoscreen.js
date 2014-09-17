@@ -99,7 +99,14 @@ updateMeetings = function() {
   console.lolg('updateMeetings');
   Meetings.get(function(meetings) {
     meetings = meetings.replace(/\n/g, '<br />');
-    $('#todays #schedule #meetings').html(meetings);
+    if (ls.affiliationKey1.match(/online|abakus/g) === null) {
+      $('#todays #schedule #meetings').html(meetings);
+    }
+    else {
+      Hackerspace.get(function(hackerspace) {
+        $('#todays #schedule #meetings').html(meetings + '<br />' + hackerspace);
+      }); 
+    }
   });
 }
 
@@ -254,16 +261,22 @@ updateAffiliationNews = function(number) {
   if (ls.showAffiliation2 !== 'true') {
     selector = '#full';
   }
+  // Set affiliation name
+  var name = Affiliation.org[ls['affiliationKey'+number]].name;
+  $('#news '+selector+' .title').html(name);
 
+  // Display news from storage
   if (typeof feedItems !== 'undefined') {
     feedItems = JSON.parse(feedItems);
     displayItems(feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number);
   }
   else {
+    // Offline or unresponsive
     var key = ls['affiliationKey'+number];
     var name = Affiliation.org[key].name;
-    $('#news '+selector).html('<div class="post"><div class="item"><div class="title">'+name+'</div>Frakoblet fra nyhetsstrøm</div></div>');
-    $('#news '+selector).click(function() {
+    $('#news '+selector+' .post').remove();
+    $('#news '+selector).append('<div class="post"><div class="item">Frakoblet fra nyhetsstrøm</div></div>');
+    $('#news '+selector+' .post').click(function() {
       Browser.openTab(Affiliation.org[key].web);
     });
   }
@@ -271,7 +284,7 @@ updateAffiliationNews = function(number) {
 
 displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
   // Empty the news column
-  $('#news '+column).html('');
+  $('#news '+column+' .post').remove();
   // Get feedkey
   var feedKey = items[0].feedKey;
 
@@ -287,17 +300,6 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
   // Prepare the list of images with salt, pepper and some vinegar
   storedImages = JSON.parse(ls.storedImages);
 
-  // Figure out if flashy news are prefered
-  var isDuplicate = (ls.affiliationKey1 === ls.affiliationKey2);
-  var isPrimaryAffiliation = (ls.affiliationKey1 === feedKey);
-  var isFlashy = false;
-  if (isDuplicate)
-    isFlashy = (ls.affiliationFlashy1 === 'true' || ls.affiliationFlashy2 === 'true');
-  else if (isPrimaryAffiliation)
-    isFlashy = (ls.affiliationFlashy1 === 'true');
-  else
-    isFlashy = (ls.affiliationFlashy2 === 'true');
-
   // Add feed items
   $.each(items, function (index, item) {
     
@@ -306,16 +308,16 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
       
       var unreadCount = Number(ls[unreadCountName]);
       var readUnread = '';
-      if (!isFlashy) {
-        if (index < unreadCount) {
-          if (updatedList.indexOf(item.link) > -1) {
-            readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
-          }
-          else {
-            readUnread += '<span class="unread">NEW <b>::</b> </span>';
-          }
-        }
-      }
+      // if (!isFlashy) {
+      //   if (index < unreadCount) {
+      //     if (updatedList.indexOf(item.link) > -1) {
+      //       readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
+      //     }
+      //     else {
+      //       readUnread += '<span class="unread">NEW <b>::</b> </span>';
+      //     }
+      //   }
+      // }
 
       // EXPLANATION NEEDED:
       // .item[data] contains the link
@@ -346,7 +348,7 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
 
       var htmlItem = '';
 
-      if (isFlashy && ls.showAffiliation2 === 'true') {
+      if (ls.showAffiliation2 === 'true') {
         htmlItem = [
           '<div class="post">',
             '<div class="item" data="' + item.link + '"' + altLink + '>',
@@ -578,6 +580,13 @@ $(document).ready(function() {
     $('#logo').prop('src', logo);
   $('link[rel="shortcut icon"]').attr('href', icon);
   $('#news .post img').attr('src', placeholder);
+
+  // Apply the affiliation's own name for it's office
+  if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hw.office) {
+      $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
+    }
+  }
   
   // Adding creator name to pageflip
   changeCreatorName(ls.extensionCreator);

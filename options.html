@@ -43,12 +43,13 @@
             <select id="affiliationKey1">
               <optgroup label="Linjeforeninger Gløshaugen">
                 <option value="abakus">Abakus</option>
-                <option value="alf">Alf</option>
                 <option value="berg">Berg</option>
+                <option value="broderskabet">Broderskabet</option>
                 <option value="delta">Delta</option>
                 <option value="emil">EMIL</option>
                 <option value="aarhonen">H.M. Aarhønen</option>
                 <option value="hybrida">Hybrida</option>
+                <option value="hc">Høiskolens Chemikerforening</option>
                 <option value="leonardo">Leonardo</option>
                 <option value="mannhullet">Mannhullet</option>
                 <option value="online">Online</option>
@@ -59,7 +60,6 @@
               </optgroup>
               <optgroup label="Linjeforeninger Dragvoll">
                 <option value="communitas">Communitas</option>
-                <!-- <option value="de_folkevalgte">De Folkevalgte</option> -->
                 <option value="dhs">Det Historiske Selskab</option>
                 <option value="dionysos">Dionysos</option>
                 <option value="erudio">Erudio</option>
@@ -76,10 +76,10 @@
                 <option value="psykolosjen">Psykolosjen</option>
                 <option value="sturm_und_drang">Sturm und Drang</option>
                 <option value="teaterlosjen">Teaterlosjen</option>
+                <option value="theodor">Theodor</option>
                 <option value="universitetsteatret">Universitetsteatret</option>
               </optgroup>
               <optgroup label="Linjeforeninger HiST/DMMH/TJSF/BI">
-                <!-- <option value="fraktur">Fraktur</option> -->
                 <option value="kom">KOM</option>
                 <option value="logistikkstudentene">Logistikkstudentene</option>
                 <option value="nutrix">Nutrix</option>
@@ -90,7 +90,7 @@
               </optgroup>
               <optgroup label="Master-/doktor-/internasjonale foreninger">
                 <option value="dion">DION</option>
-                <!-- <option value="esn">ESN</option> -->
+                <option value="esn">ESN</option>
                 <option value="iaeste">IAESTE</option>
                 <option value="isu">ISU</option>
                 <option value="projeksjon">Projeksjon</option>
@@ -140,12 +140,13 @@
             <select id="affiliationKey2">
               <optgroup label="Linjeforeninger Gløshaugen">
                 <option value="abakus">Abakus</option>
-                <option value="alf">Alf</option>
                 <option value="berg">Berg</option>
+                <option value="broderskabet">Broderskabet</option>
                 <option value="delta">Delta</option>
                 <option value="emil">EMIL</option>
                 <option value="aarhonen">H.M. Aarhønen</option>
                 <option value="hybrida">Hybrida</option>
+                <option value="hc">Høiskolens Chemikerforening</option>
                 <option value="leonardo">Leonardo</option>
                 <option value="mannhullet">Mannhullet</option>
                 <option value="online">Online</option>
@@ -156,7 +157,6 @@
               </optgroup>
               <optgroup label="Linjeforeninger Dragvoll">
                 <option value="communitas">Communitas</option>
-                <!-- <option value="de_folkevalgte">De Folkevalgte</option> -->
                 <option value="dhs">Det Historiske Selskab</option>
                 <option value="dionysos">Dionysos</option>
                 <option value="erudio">Erudio</option>
@@ -173,10 +173,10 @@
                 <option value="psykolosjen">Psykolosjen</option>
                 <option value="sturm_und_drang">Sturm und Drang</option>
                 <option value="teaterlosjen">Teaterlosjen</option>
+                <option value="theodor">Theodor</option>
                 <option value="universitetsteatret">Universitetsteatret</option>
               </optgroup>
               <optgroup label="Linjeforeninger HiST/DMMH/TJSF/BI">
-                <!-- <option value="fraktur">Fraktur</option> -->
                 <option value="kom">KOM</option>
                 <option value="logistikkstudentene">Logistikkstudentene</option>
                 <option value="nutrix">Nutrix</option>
@@ -187,7 +187,7 @@
               </optgroup>
               <optgroup label="Master-/doktor-/internasjonale foreninger">
                 <option value="dion">DION</option>
-                <!-- <option value="esn">ESN</option> -->
+                <option value="esn">ESN</option>
                 <option value="iaeste">IAESTE</option>
                 <option value="isu">ISU</option>
                 <option value="projeksjon">Projeksjon</option>
@@ -219,18 +219,6 @@
             <div id="affiliation2Checkbox">
               <input id="showAffiliation2" type="checkbox" /><label for="showAffiliation2">Vis denne også</label>
             </div>
-          </div>
-          <div id="flashyNews">
-            <img src="img/options-flashy-news.png" />
-            <div>
-              <input id="affiliationFlashy1" type="checkbox" />
-              <label for="affiliationFlashy1">Store nyhetsbilder fra <span id="flashyName1">_PRIMARY_</span></label><br />
-              <input id="affiliationFlashy2" type="checkbox" />
-              <label for="affiliationFlashy2">Store nyhetsbilder fra <span id="flashyName2">_SECONDARY_</span></label>
-            </div>
-          </div>
-          <div id="arrowDown">
-            <img src="img/options-arrow-down.png" />
           </div>
         </div>
       </div>
@@ -353,7 +341,7 @@
             <img class="icon waffle" src="/img/icon-waffle.png"/>Vafler
           </span>
           <br />
-          <img class="image" src="/img/options-office-plan.png" />
+          <img id="showOfficeImage" class="image" src="/img/options-office-plan.png" />
           <img id="officeStatusOverlay" src="/org/online/icon-open.png" />
         </label>
       </div>
@@ -390,7 +378,7 @@
             <span>
               Abonner på nytraktet kaffe
             </span><br />
-            <img class="image" src="/img/options-coffee-subscription.png" />
+            <img id="coffeeSubscriptionImage" class="image" src="/img/options-coffee-subscription.png" />
           </label>
         </div>
 
