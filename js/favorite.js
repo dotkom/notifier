@@ -1,6 +1,6 @@
 var Favorite = {
   debug: 0,
-  api: 'https://www.atb.no/holdeplassoversikt/category1254.html',
+  api: 'https://www.atb.no/holdeplassoversikt/',
   msgFailed: 'Oops! :(',
 
   getLinesForStop: function(stopId) {
@@ -54,8 +54,8 @@ var Favorite = {
         // Parse out all busstop IDs and the lines that pass each stop
         var stopsAndLines = {}, id = '', lines = '';
         $(html).find('table.holdeplasser tr').each(function(i, v) {
-          var id = $(this).children().eq(3).text().trim();
-          var lines = $(this).children().eq(2).text().trim().split(', ');
+          var id = $(this).children().eq(2).text().trim();
+          var lines = $(this).children().eq(1).text().trim().split(', ');
           if (id != '' && lines != '') {
             stopsAndLines[id] = lines;
           }
