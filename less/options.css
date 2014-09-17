@@ -159,6 +159,7 @@ header #notification .saved {
   /* the bus option in particular */
   /* the showoffice option in particular */
   /* the bigscreen option in particular */
+  /* the coffee subscription option in particular*/
 }
 .item .icon {
   width: 20px;
@@ -494,6 +495,10 @@ header #notification .saved {
   zoom: 0.25;
   -webkit-transform: scale(0.25);
   -webkit-transform-origin: 0 0;
+}
+.item img#coffeeSubscriptionImage {
+  width: 304px;
+  height: auto;
 }
 /* Suggestions for bus stops */
 #busSuggestions {
