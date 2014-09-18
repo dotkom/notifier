@@ -322,6 +322,69 @@ var Affiliation = {
       },
     },
 
+    'omega': {
+      name: 'Omega',
+      key: 'omega',
+      web: 'http://omega.ntnu.no/',
+      // no feed, use getNews
+      logo: './org/omega/logo.png',
+      icon: './org/omega/icon.png',
+      symbol: './org/omega/symbol.png',
+      placeholder: './org/omega/placeholder.png',
+      palette: 'grey',
+      // images also fetched when fetching news
+      getNews: function(posts, callback) {
+        if (typeof callback == 'undefined') {
+          console.log('ERROR: callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+
+            console.log($(html).find('div.news'));
+            
+            // Add each item from news tags
+            if ($(html).find('div.news').length != 0) {
+              $(html).find('div.news').each( function() {
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find('h5 a').text();
+                  post.link = $(this).find('h5 a').prop('href');
+                  post.description = $(this).eq(0).find('div:first').text().trim().replace(/\s+/g, ' ');
+                  post.author = $(this).next().find('span i').text().trim();
+                  post.image = $(this).find('pic').attr('src');
+
+                  // Link fixing
+                  post.link = self.web + post.link
+
+                  // Image fixing
+                  if (typeof post.image === 'undefined')
+                    post.image = self.placeholder;
+                  else
+                    post.image = self.web + post.image;
+
+                  console.log('\ntitle:',post.title,'\nlink:',post.link,'\ndesc:',post.description,'\nauthor:',post.author,'\nimage:',post.image);
+                  posts[count++] = post;
+                }
+              });
+            }
+            else {
+              if (self.debug) console.log('ERROR: No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+          },
+        });
+      },
+    },
+
     'online': {
       name: 'Online',
       key: 'online',
@@ -737,8 +800,6 @@ var Affiliation = {
                   post.description = $(this).find('.articleBody p:first span').text();
                   post.author = $(this).find('.articleMeta').find('a:first').text();
                   post.image = $(this).find('.articleBody pic').attr('src');
-
-                  console.log('\ntitle:',post.title,'\nlink:',post.link,'\ndesc:',post.description,'\nauthor:',post.author,'\nimage:',post.image);
 
                   if (typeof post.image === 'undefined')
                     post.image = self.placeholder;
