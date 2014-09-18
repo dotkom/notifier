@@ -49,7 +49,6 @@ body {
 body #background {
   /* using a div for bg image because the background needs to be resized
     if the display is really big (1500px-2000px in width or height) */
-
   background: url('/img/background-medium.png') center center no-repeat;
   position: fixed;
   left: 0;
@@ -82,10 +81,8 @@ header #headerText {
   font-weight: lighter;
   /* For text that is skewed the same amount as the Online logo:
     - more precise than italic, the Online logo is skewered exactly 15 degrees */
-
   /*-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
     transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);*/
-
 }
 header #notification {
   position: absolute;
@@ -97,15 +94,11 @@ header #notification {
   background: #FFFF99;
   font-size: 59px;
   /*font-weight: bold;*/
-
   /* more precise than italic, the Online logo is skewered exactly 15 degrees */
-
   /*-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
     transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);*/
-
   color: white;
   /*box-shadow: 0 0 13px @background-dark, 0 0 20px @background-dark, 0 0 40px @background-dark;*/
-
   box-shadow: 0 0 13px White,
       0 0 20px White,
       0 0 40px White,
@@ -120,7 +113,6 @@ header #notification .heart {
 header #notification .saved {
   color: #ff44f8;
   /*color: #FFFEA8;*/
-
 }
 /* all the options, main content */
 #container {
@@ -150,7 +142,6 @@ header #notification .saved {
   border: 0 solid #ff0000;
   width: 42%;
   /*padding-top: 12px;*/
-
   padding-top: 7px;
 }
 /* an option item */
@@ -161,19 +152,14 @@ header #notification .saved {
   clear: both;
   -webkit-transition: all 0.2s ease-out;
   /* for icon images */
-
   /* for logo images */
-
   /* for regular size images */
-
   /* the affiliation option in particular */
-
   /* the cantina option in particular */
-
   /* the bus option in particular */
-
+  /* the showoffice option in particular */
   /* the bigscreen option in particular */
-
+  /* the coffee subscription option in particular*/
 }
 .item .icon {
   width: 20px;
@@ -210,7 +196,6 @@ header #notification .saved {
   /* Turning off news feed is not allowed since it would
     turn off the primary purpose of Online Notifier. Don't
     show the checkbox, it's disabled anyway. */
-
 }
 .item label {
   cursor: pointer;
@@ -229,13 +214,10 @@ header #notification .saved {
   border-radius: 4px;
   background: #e6e5e5;
   /* Old browsers */
-
   background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
   /* Chrome10+,Safari5.1+,Opera15+ */
-
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
-
   overflow: hidden;
   white-space: nowrap;
   word-wrap: break-word;
@@ -250,7 +232,6 @@ header #notification .saved {
   background-repeat: no-repeat;
   background-image: url(../org/online/symbol.png);
   /* is switched for affiliation1 logo */
-
 }
 .item #affiliationBox #affiliation1Symbol {
   float: left;
@@ -307,10 +288,8 @@ header #notification .saved {
   border-top: 1px solid #aaa;
   background: -webkit-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
   /* Chrome10+,Safari5.1+,Opera15+ */
-
   background: linear-gradient(to bottom, #e8e8e8 0%, #c0c0c0 100%);
   /* W3C */
-
   width: 100%;
   padding: 9px 11px;
   color: black;
@@ -339,10 +318,8 @@ header #notification .saved {
 .item #affiliationBox #arrowDown {
   position: relative;
   /* paint behind other stuff */
-
   z-index: 100;
   /* paint behind other stuff */
-
   left: -6px;
   top: 45px;
 }
@@ -357,13 +334,10 @@ header #notification .saved {
   border-radius: 4px;
   background: #e6e5e5;
   /* Old browsers */
-
   background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
   /* Chrome10+,Safari5.1+,Opera15+ */
-
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
-
   padding: 4px 11px;
   white-space: nowrap;
   word-wrap: break-word;
@@ -392,13 +366,10 @@ header #notification .saved {
   border-radius: 4px;
   background: #e6e5e5;
   /* Old browsers */
-
   background: -webkit-linear-gradient(top, #e6e5e5 0%, #cececf 100%);
   /* Chrome10+,Safari5.1+,Opera15+ */
-
   background: linear-gradient(to bottom, #e6e5e5 0%, #cececf 100%);
   /* W3C */
-
   padding: 8px 11px;
   white-space: nowrap;
   word-wrap: break-word;
@@ -414,19 +385,15 @@ header #notification .saved {
 .item #busBox .busStop select {
   z-index: 10;
   /* allows the down-arrow to be painted behind this */
-
   position: relative;
   /* allows the down-arrow to be painted behind this */
-
   width: 141px;
 }
 .item #busBox .busStop .lines {
   z-index: 10;
   /* allows the down-arrow to be painted behind this */
-
   position: relative;
   /* allows the down-arrow to be painted behind this */
-
   display: none;
   width: 128px;
   margin-top: 1px;
@@ -435,16 +402,13 @@ header #notification .saved {
   border-radius: 4px;
   background: -webkit-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
   /* Chrome10+,Safari5.1+,Opera15+ */
-
   background: linear-gradient(to bottom, #e8e8e8 0%, #c0c0c0 100%);
   /* W3C */
-
   padding: 2px 7px 1px 7px;
   text-align: left;
   font-size: 12px;
   text-shadow: 0 0 0 white;
   /* resets inhertied value from parent element */
-
 }
 .item #busBox .busStop .lines table {
   border: 0 solid #ff0000;
@@ -496,10 +460,8 @@ header #notification .saved {
   border: 0 solid #ff0000;
   position: relative;
   /* allows the down-arrow to be painted behind this */
-
   z-index: 10;
   /* allows the down-arrow to be painted behind this */
-
   float: left;
   white-space: nowrap;
   width: 45px;
@@ -508,15 +470,21 @@ header #notification .saved {
 .item #busBox #arrowDown {
   position: relative;
   /* paint behind other stuff */
-
   z-index: 2;
   /* paint behind other stuff */
-
   left: -180px;
   top: 39px;
 }
 .item #busBox #arrowDown img {
   width: 12px;
+}
+.item img#showOfficeImage {
+  width: 251px;
+  height: 103px;
+}
+.item img#useBigscreen {
+  width: 304px;
+  height: 68px;
 }
 .item #bigscreenPreview {
   display: none;
@@ -527,6 +495,10 @@ header #notification .saved {
   zoom: 0.25;
   -webkit-transform: scale(0.25);
   -webkit-transform-origin: 0 0;
+}
+.item img#coffeeSubscriptionImage {
+  width: 304px;
+  height: auto;
 }
 /* Suggestions for bus stops */
 #busSuggestions {
@@ -594,7 +566,6 @@ header #notification .saved {
 }
 #debugLinks button {
   /* nothing here yet */
-
 }
 #debugLinks:hover {
   opacity: 1;

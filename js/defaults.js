@@ -29,8 +29,6 @@ var Defaults = {
       ls.affiliationNewsList1 = JSON.stringify([]);
     if (ls.affiliationViewedList1 == undefined)
       ls.affiliationViewedList1 = JSON.stringify([]);
-    if (ls.affiliationFlashy1 == undefined)
-      ls.affiliationFlashy1 = 'true';
     
     if (ls.affiliationPalette == undefined)
       ls.affiliationPalette = 'online';
@@ -48,8 +46,6 @@ var Defaults = {
       ls.affiliationNewsList2 = JSON.stringify([]);
     if (ls.affiliationViewedList2 == undefined)
       ls.affiliationViewedList2 = JSON.stringify([]);
-    if (ls.affiliationFlashy2 == undefined)
-      ls.affiliationFlashy2 = 'true';
 
     if (ls.showBus == undefined)
       ls.showBus = 'true';

@@ -51,10 +51,6 @@ bindAffiliationSelector = function(number, isPrimaryAffiliation) {
       // Symbol
       var symbol = Affiliation.org[ls.affiliationKey2].symbol;
       $('#affiliation2Symbol').attr('style', 'background-image:url("'+symbol+'");');
-      // Flashy news text
-      var name = Affiliation.org[ls.affiliationKey2].name;
-      if (name.length > 20) name = name.substring(0, 18) + '..';
-      $('#flashyName2').text(name);
       // Website link
       var web = Affiliation.org[ls.affiliationKey2].web
       $('#affiliation2Symbol').unbind('click');
@@ -98,10 +94,6 @@ bindAffiliationSelector = function(number, isPrimaryAffiliation) {
       // Symbol
       var symbol = Affiliation.org[affiliationKey].symbol;
       $('#affiliation1Symbol').attr('style', 'background-image:url("'+symbol+'");');
-      // Flashy news text
-      var name = Affiliation.org[affiliationKey].name;
-      if (name.length > 20) name = name.substring(0, 18) + '..';
-      $('#flashyName1').text(name);
       // "Popup here"-bubble
       $('#popupHere img.icon').attr('src', symbol);
       // Website link
@@ -485,7 +477,7 @@ saveBus = function(busField) {
   ls[busField + 'InactiveLines'] = JSON.stringify(inactiveLines);
   console.lolg('saved activeLines for '+busField, '"', activeLines, '"');
   console.lolg('saved inactiveLines '+busField, '"', inactiveLines, '"');
-  console.lolg('saved http://api.visuweb.no/bybussen/1.0/Departure/Realtime/' + busStopId + '/f6975f3c1a3d838dc69724b9445b3466');
+  console.lolg('saved for busStopId ' + busStopId);
   showSavedNotification();
   // Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 }
@@ -572,30 +564,6 @@ slideFavoriteBusLines = function() {
     }, 500);
     // Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
     $('#busBox').data('timeoutId', timeoutId);
-  });
-}
-
-slideFlashyNews = function() {
-  // Hide the flashy news options from the start
-  setTimeout(function() {
-    if (!$('#affiliationBox').hasClass('hover')) {
-      $('#affiliationBox #flashyNews').slideUp();
-      $('#affiliationBox #arrowDown').fadeIn();
-    }
-  }, 1500);
-  // Show flashy news options when hovering
-  $('#affiliationBox').mouseenter(function() {
-    clearTimeout($(this).data('timeoutId'));
-    $('#affiliationBox #flashyNews').slideDown();
-    $('#affiliationBox #arrowDown').fadeOut();
-  });
-  $('#affiliationBox').mouseleave(function() {
-    var timeoutId = setTimeout(function() {
-      $('#affiliationBox #flashyNews').slideUp();
-      $('#affiliationBox #arrowDown').fadeIn();
-    }, 500);
-    // Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
-    $('#affiliationBox').data('timeoutId', timeoutId);
   });
 }
 
@@ -827,13 +795,6 @@ $(document).ready(function() {
   $('#affiliation1Symbol').attr('style', 'background-image:url("'+symbol1+'");');
   var symbol2 = Affiliation.org[ls.affiliationKey2].symbol;
   $('#affiliation2Symbol').attr('style', 'background-image:url("'+symbol2+'");');
-  // flashy news text
-  var name1 = Affiliation.org[ls.affiliationKey1].name;
-  if (name1.length > 20) name1 = name1.substring(0, 18) + '..';
-  $('#flashyName1').text(name1);
-  var name2 = Affiliation.org[ls.affiliationKey2].name;
-  if (name2.length > 20) name2 = name2.substring(0, 18) + '..';
-  $('#flashyName2').text(name2);
   // website
   var web1 = Affiliation.org[ls.affiliationKey1].web;
   $('#affiliation1Symbol').unbind('click');
@@ -907,9 +868,6 @@ $(document).ready(function() {
 
   // Slide away favorite bus lines when not needed to conserve space
   slideFavoriteBusLines();
-
-  // Slide away flashy news options when not needed to conserve space
-  slideFlashyNews();
 
   // Load lists of bus stops
   Stops.load();

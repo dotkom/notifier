@@ -75,7 +75,14 @@ updateMeetings = function() {
     meetings = '<span>'+meetings;
     meetings = meetings.replace(/\n/g, '<br /><span>');
     meetings = meetings.replace(/:/g, ':</span>');
-    $('#todays #schedule #meetings').html(meetings);
+    if (ls.affiliationKey1.match(/online|abakus/g) === null) {
+      $('#todays #schedule #meetings').html(meetings);
+    }
+    else {
+      Hackerspace.get(function(hackerspace) {
+        $('#todays #schedule #meetings').html(meetings + '<br />' + hackerspace);
+      }); 
+    }
   });
 }
 
@@ -149,8 +156,8 @@ updateBus = function() {
     // Error message
     $('#bus #firstBus .name').html(ls.firstBusName);
     $('#bus #secondBus .name').html(ls.secondBusName);
-    $('#bus #firstBus .error').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
-    $('#bus #secondBus .error').html('<div class="error">Frakoblet fra api.visuweb.no</div>');
+    $('#bus #firstBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
+    $('#bus #secondBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
   }
   else {
     // All good, go ahead!
@@ -322,6 +329,13 @@ $(document).ready(function() {
   else
     $('#logo').prop('src', logo);
   $('link[rel="shortcut icon"]').attr('href', icon);
+
+  // Apply the affiliation's own name for it's office
+  if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hw.office) {
+      $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
+    }
+  }
   
   // Adding creator name to pageflip
   changeCreatorName(ls.extensionCreator);

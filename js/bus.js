@@ -1,7 +1,7 @@
 var Bus = {
   debug: 0,
   api: 'http://bybussen.api.tmn.io/rt/',
-  msgDisconnected: 'Frakoblet fra api.tmn.io',
+  msgDisconnected: 'Frakoblet fra bybussen.api.tmn.io',
   msgConnectionError: 'Tilkoblingsfeil',
   msgInvalidDirection: 'Ugyldig retning',
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',

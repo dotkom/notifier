@@ -22,7 +22,6 @@
   color: NavajoWhite;
   display: block;
   font-weight: bold;
-  text-transform: uppercase;
 }
 .title .unread {
   color: white;
@@ -42,7 +41,6 @@ body {
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
-
   position: absolute;
   background-position: center center;
   background-repeat: no-repeat;
@@ -93,7 +91,6 @@ body {
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
-
 }
 #container #todays #coffee #pots {
   border: 0px solid #ffff00;
@@ -125,7 +122,6 @@ body {
   float: right;
   width: 50%;
   /* when the right floating box is half the width it'll appear they're both aligned to 50% */
-
 }
 #container #cantinas #dinnerbox {
   border: 0px solid #00ff00;
@@ -139,7 +135,6 @@ body {
 }
 #container #cantinas li.message {
   /*font-style: italic;*/
-
 }
 #container #bus {
   border: 0px solid #00ffff;
@@ -220,11 +215,8 @@ body {
   padding: 0;
   width: 100%;
   /* #full for using a single column */
-
   /* #left and #right for using double columns */
-
   /* for each news post, and item within */
-
 }
 #container #news #full {
   position: relative;
@@ -262,7 +254,6 @@ body {
   position: relative;
   margin-top: 0;
   /* overrides default value */
-
 }
 #container #news .post .item .title.flashy {
   position: absolute;
@@ -301,8 +292,7 @@ body {
   margin: 0;
 }
 #container #news .unread {
-  text-shadow: 0 0 10px white,
-        0 0 15px white;
+  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
 }
 /* This file contains popup-additions to common.less */
 /* Nothing here yet */
@@ -383,7 +373,7 @@ body {
 }
 #container #header #buttons {
   border: 0px solid #ff0000;
-  width: 213px;
+  width: 220px;
   float: left;
 }
 #container #header #buttons .popupbutton {
@@ -431,6 +421,16 @@ body {
   font-style: italic;
   margin-bottom: 4px;
 }
+#container #todays #schedule #hackerspace {
+  margin-top: 4px;
+}
+#container #todays #schedule #hackerspace span {
+  font-weight: bold;
+  cursor: pointer;
+}
+#container #todays #schedule #hackerspace span:hover {
+  text-decoration: underline;
+}
 #container #todays #coffee #pots {
   border: 0px solid #ffff00;
   font-style: italic;
@@ -442,16 +442,14 @@ body {
   margin-bottom: 4px;
   cursor: pointer;
 }
-#container #cantinas .hours:hover {
-  text-shadow: 0 0 10px white,
-        0 0 15px white;
+#container #cantinas .hours:hover:hover {
+  text-decoration: underline;
 }
 #container #cantinas li {
   cursor: pointer;
 }
 #container #cantinas li:hover {
-  text-shadow: 0 0 10px white,
-        0 0 15px white;
+  text-decoration: underline;
 }
 #container #bus {
   box-shadow: 0 0 15px #aaa;
@@ -478,7 +476,6 @@ body {
 }
 #container #bus #realtime .name {
   margin-bottom: 5px;
-  text-decoration: underline;
 }
 #container #bus #realtime .loadingLeft {
   width: 80px;
@@ -509,7 +506,6 @@ body {
 }
 #container #bus #oracle #name {
   margin-right: 7px;
-  cursor: pointer;
 }
 #container #bus #oracle #question {
   border: 0px solid #ffff00;
@@ -531,7 +527,6 @@ body {
 }
 #container #news {
   /* #full for using a single column */
-
 }
 #container #news #full .post .item img.regular {
   min-height: 80px;
@@ -566,8 +561,8 @@ body {
   left: 8px;
 }
 #container #news .post .item img {
-  min-height: 80px;
-  max-height: 200px;
+  min-height: 20px;
+  max-height: 250px;
   padding: 4px;
   box-shadow: 0 0 13px #bbb;
 }

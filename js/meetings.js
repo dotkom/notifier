@@ -5,8 +5,8 @@ var Meetings = {
   debugString: 0,
   debugThisString: '08:00-10:00 arrKom\n14:00-16:00 triKom\n18:00-23:59 appKom',
   
-  msgNone: 'Kontoret er ledig resten av dagen',
-  msgError: 'Frakoblet fra møteplan',
+  msgNone: 'Ledig resten av dagen',
+  msgError: 'Frakoblet fra møtekalender',
   
   get: function(callback) {
     if (callback == undefined) {

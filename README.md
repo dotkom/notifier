@@ -120,7 +120,7 @@ Cantinas
 Bus
 
 - Displays the user's two favorite stops
-- Fetches realtime bus data from a third-party API at api.visuweb.no
+- Fetches realtime bus data from a third-party API at bybussen.api.tmn.io
 - Frequently updated in order to always show correct information
 - Support for favorite bus lines, simplifying finding a particular bus at a busy stop
 - Smart selection of bus stops at the options page, quickly determining which stop the user wants

@@ -1,5 +1,5 @@
 var Events = {
-  debug: 1,
+  debug: 0,
   api: 'https://online.ntnu.no/events/events.ics',
 
   get: function(callback) {

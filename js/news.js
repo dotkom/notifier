@@ -291,6 +291,8 @@ var News = {
 
     // Link field
 
+    // Trim link either way
+    post.link = post.link.trim(); // This is muy importanté for everything to work well later on
     // Sometimes we would like to link directly to a link in the news description,
     // this can help users avoid one step while navigating to links via Notifier
     post.altLink = this.checkDescriptionForAltLink(post.description);
@@ -478,8 +480,6 @@ var News = {
     field = $('<div/>').html(field).text();
     // Remove multiple whitespace
     field = field.replace(/\s\s+/g,'');
-    // "..stedHvor.." -> "..sted. Hvor.."
-    field = field.replace(/([a-z])([A-Z])/g, '$1. '+'$2'.capitalize());
     // Remove meta information from title or description, within curly brackets {}
     field = field.replace(/\{.*\}/gi,'');
     // Shorten 'bedriftspresentasjon' to 'bedpres'
@@ -507,6 +507,13 @@ var News = {
           return website + image;
         }
       }
+    }
+    // Check for YouTube-links as well (we can fetch thumbnail images)
+    pieces = description.match(/youtube.com\/embed\/([a-z0-9]+)/i);
+    if (pieces != null) {
+      var id = pieces[1];
+      // A YouTube thumbnail has the format http://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg
+      return 'http://img.youtube.com/vi/' + id + '/0.jpg';
     }
     return oldImage;
   },

@@ -78,11 +78,8 @@ body {
 }
 #overlay {
   /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
-
   /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
-
   /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
-
   position: absolute;
   top: 0;
   left: 0;
@@ -106,7 +103,6 @@ body {
 #background {
   /* using a div because the background needs to be resized if
   the display is really big (1500px-2000px in width or height) */
-
   background-image: url('/img/background-large-vertical.png');
   position: absolute;
   background-position: center center;
@@ -263,7 +259,6 @@ body {
 #container #cantinas #left #dinnerbox li.message,
 #container #cantinas #right #dinnerbox li.message {
   /*font-style: italic;*/
-
 }
 #container #bus {
   width: 110%;

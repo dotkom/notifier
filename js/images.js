@@ -34,6 +34,7 @@ var Images = {
     if (options == undefined)
       options = {};
 
+    // Single link?
     var url = affiliation.web;
     var isSingleLink = false;
     if (typeof links == 'string') {
@@ -72,9 +73,9 @@ var Images = {
           for (var i=0; i<containers.length; i++) {
             var current = containers[i];
             if (doc.find(current).length != 0) {
-            newsSelector = current;
-            if (self.debug) console.log('Images: Using selector "'+current+'" for news at "'+url+'"');
-            break;
+              newsSelector = current;
+              if (self.debug) console.log('Images: Using selector "'+current+'" for news at "'+url+'"');
+              break;
             }
           }
         }
@@ -87,7 +88,7 @@ var Images = {
           //
           // Find the news container which contains the news image, using our selector
           //
-          
+
           var link = links[i];
 
           if (self.debug) console.log('Images: Checking for '+(isSingleLink? 'single image at' : 'news post with link'), link);
@@ -170,15 +171,20 @@ var Images = {
           else if (options.domainUrl) {
             if (image.indexOf('//') == -1) {
               image = 'http://' + options.domainUrl + image;
-              if (self.debug) console.log('Images: Found a good image (domain url added) "'+image+'"');
+              if (self.debug) console.log('Images: Found image (domain url added) "'+image+'"');
             }
             else {
               if (self.debug) console.log('Images: Found a good image at "'+image+'"');
             }
           }
+
+          // If images uses optional protocol "//", specify "http://"
+          if (image !== null && image.match(/^\/\//) !== null) {
+            image = image.replace(/^\/\//, 'http://');
+          }
           // If image does not start with http://, https:// or at least //
           // NOTE: Must be checked after adding "http" and domainUrl
-          else if (image.match('^(http)?s?:?//') == null) {
+          else if (image !== null && image.match(/^(http)?s?:?\/\//) == null) {
             if (self.debug) console.log('Images: No good image exists for link "'+link+'", all we have is "'+image+'"');
             image = null;
           }
@@ -186,6 +192,7 @@ var Images = {
           else {
             if (self.debug) console.log('Images: Found a good image at "'+image+'"');
           }
+
           if (self.debug) console.log('');
 
           // Store it
