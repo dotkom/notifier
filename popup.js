@@ -805,9 +805,7 @@ $(document).ready(function() {
       Analytics.trackEvent('toggleKonami');
       // Animate background
       //Sets the background to awesomeness
-      //var rick = '<iframe id="konamiVid" width="532" height="600" src="http://www.youtube.com/embed/qyXTgqJtoGM?autoplay=1&showinfo=0" frameborder="0"></iframe>'
       $('#bus').css('background-color', 'transparent');
-      //$('#background').append(rick);
       var trollvid = '<iframe width="532" height="600" src="http://www.youtube.com/embed/eh7lp9umG2I?autoplay=1&loop=1&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>'
       $("#background").html(trollvid);
     },
