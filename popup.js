@@ -803,24 +803,12 @@ $(document).ready(function() {
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: function() {
       Analytics.trackEvent('toggleKonami');
-      // Animate background
-      $('head').append(([
-        '<style type="text/css">',
-          '@-webkit-keyframes adjustHue {',
-          '0% { -webkit-filter: hue-rotate(0deg); }',
-          '10% { -webkit-filter: hue-rotate(36deg); }',
-          '20% { -webkit-filter: hue-rotate(72deg); }',
-          '30% { -webkit-filter: hue-rotate(108deg); }',
-          '40% { -webkit-filter: hue-rotate(144deg); }',
-          '50% { -webkit-filter: hue-rotate(180deg); }',
-          '60% { -webkit-filter: hue-rotate(216deg); }',
-          '70% { -webkit-filter: hue-rotate(252deg); }',
-          '80% { -webkit-filter: hue-rotate(288deg); }',
-          '90% { -webkit-filter: hue-rotate(324deg); }',
-          '100% { -webkit-filter: hue-rotate(360deg); }',
-        '}</style>'
-        ]).join('\n'));
-      $('#background').attr('style','-webkit-animation:adjustHue 10s alternate infinite;');
+      // Remove #bus background color and any #background filters
+      $('#bus').attr('style', 'background-color:transparent; box-shadow:none;');
+      $('#background').attr('style', '-webkit-filter: none');
+      // Sets the background to awesomeness
+      var trollvid = '<iframe style="position:absolute;width:800px;height:660px;left:-145px;top:-30px;" src="http://www.youtube.com/embed/eh7lp9umG2I?autoplay=1&loop=1&autohide=1" frameborder="0" allowfullscreen></iframe>';
+      $("#background").html(trollvid);
     },
   });
 
