@@ -803,10 +803,11 @@ $(document).ready(function() {
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: function() {
       Analytics.trackEvent('toggleKonami');
-      // Animate background
-      //Sets the background to awesomeness
-      $('#bus').css('background-color', 'transparent');
-      var trollvid = '<iframe width="532" height="600" src="http://www.youtube.com/embed/eh7lp9umG2I?autoplay=1&loop=1&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>'
+      // Remove #bus background color and any #background filters
+      $('#bus').attr('style', 'background-color:transparent; box-shadow:none;');
+      $('#background').attr('style', '-webkit-filter: none');
+      // Sets the background to awesomeness
+      var trollvid = '<iframe style="position:absolute;width:800px;height:660px;left:-145px;top:-30px;" src="http://www.youtube.com/embed/eh7lp9umG2I?autoplay=1&loop=1&autohide=1" frameborder="0" allowfullscreen></iframe>';
       $("#background").html(trollvid);
     },
   });
