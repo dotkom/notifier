@@ -452,7 +452,7 @@ var Cantina = {
   expandAbbreviations: function(text) {
     if (this.debugText) console.log('Abbrev.\t:: ' + text);
     // Replace wordings like 'm', 'm/' with the actual word, make sure there is one space on either side of the word
-    return text.replace(/([a-zæøåÆØÅ]*)[ ,\.]\/?m(\/| |\b|[æøåÆØÅ]) ?/gi, '$1 med ');
+    return text.replace(/([a-zæøåÆØÅ]*)[ ,\.]\/?m(\/|\s) ?/gi, '$1 med ');
   },
 
   removeFoodHomeMade: function(text) {
