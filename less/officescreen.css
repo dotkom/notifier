@@ -31,16 +31,8 @@
 }
 /* This file contains infoscreen-additions to common.less */
 @font-face {
-  font-family: 'Rotis';
-  src: url('../fonts/rotis/rotis_serif.otf') format('opentype');
-}
-@font-face {
   font-family: 'Digi';
   src: url('../fonts/digi/digi.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Penumbra';
-  src: url('../fonts/penumbra/penumbra.otf') format('opentype');
 }
 .fullbox {
   clear: both;
@@ -49,13 +41,12 @@
   width: 100%;
 }
 .title {
-  font-family: 'Penumbra', Helvetica;
-  font-weight: 100;
-  font-size: 68px;
+  font-family: 'Helvetica Neue', 'Helvetica';
+  font-weight: 200;
+  font-size: 60px;
   margin-top: 44px;
   margin-bottom: 18px;
   display: block;
-  text-transform: uppercase;
 }
 .emphasized {
   font-style: italic;
@@ -69,7 +60,8 @@ html {
 body {
   background: #001429;
   color: white;
-  font-family: 'Rotis';
+  font-family: 'Helvetica Neue', 'Helvetica';
+  font-weight: 200;
   font-size: 38px;
   line-height: 42px;
   overflow: hidden;
