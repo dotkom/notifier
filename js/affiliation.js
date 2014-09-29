@@ -343,8 +343,6 @@ var Affiliation = {
           url: self.web,
           success: function(html) {
             var count = 0;
-
-            console.log($(html).find('div.news'));
             
             // Add each item from news tags
             if ($(html).find('div.news').length != 0) {
@@ -354,13 +352,13 @@ var Affiliation = {
                   
                   // The popular fields
                   post.title = $(this).find('h5 a').text();
-                  post.link = $(this).find('h5 a').prop('href');
+                  post.link = $(this).find('h5 a').attr('href');
                   post.description = $(this).eq(0).find('div:first').text().trim().replace(/\s+/g, ' ');
                   post.author = $(this).next().find('span i').text().trim();
                   post.image = $(this).find('pic').attr('src');
 
                   // Link fixing
-                  post.link = self.web + post.link
+                  post.link = self.web + post.link;
 
                   // Image fixing
                   if (typeof post.image === 'undefined')
@@ -368,7 +366,6 @@ var Affiliation = {
                   else
                     post.image = self.web + post.image;
 
-                  console.log('\ntitle:',post.title,'\nlink:',post.link,'\ndesc:',post.description,'\nauthor:',post.author,'\nimage:',post.image);
                   posts[count++] = post;
                 }
               });
