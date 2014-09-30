@@ -1150,7 +1150,9 @@ var Affiliation = {
       symbol: './org/gemini/symbol.png',
       placeholder: './org/gemini/placeholder.png',
       palette: 'cyan',
-      // getImages unnecessary, Gemini uses <bilde>-tag for images
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'header.entry-header'});
+      },
     },
 
     'adressa': {
