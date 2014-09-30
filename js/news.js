@@ -312,6 +312,8 @@ var News = {
       post.creator = post.feedName;
     // Capitalize creator name either way
     post.creator = post.creator.capitalize();
+    // Remove unnecessary inline spaces
+    post.creator = post.creator.replace(/\s+/g,' ');
     // Abbreviate long creator names
     if (post.creator != affiliationObject.name)
       post.creator = this.abbreviateName(post.creator);
