@@ -139,7 +139,7 @@ Office (requires OmegaV NotiPi)
 - Reads roof light intensity from an Arduino Uno, the service displays a file like this: http://draug.online.ntnu.no/lys.txt
 - Uses a stable border value, fairly unaffected by sunlight
 - Reads the light value frequently in order to react quickly to changes
-- Reads events which are parsed from the affiliation systems which in turn is parsed from a GoogleCal, the running service displays a file like this: https://online.ntnu.no/notifier/delta/office
+- Reads events which are parsed from the affiliation systems which in turn is parsed from a GoogleCal, the running service displays a file like this: http://passoa.online.ntnu.no/notifier/delta/office
 - Retrieves very lightweight requests with event information from GCal
 - Updates often in order to react to changes quickly
 - Icon changes based on light values and calendar events
@@ -150,12 +150,12 @@ Office (requires OmegaV NotiPi)
 Meetings (requires OmegaV NotiPi)
 
 - Showing the rest of the days meetings so users may easily spot when to grab a coffee
-- Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at https://online.ntnu.no/notifier/meetings
+- Fetched via a service running at Onlines servers, which is fetched from a GoogleCal, service running at http://passoa.online.ntnu.no/notifier/meetings
 
 Servant (requires OmegaV NotiPi)
 
 - Shows who is responsible for the affiliation office at any given time
-- Fetched via Online, which has prefetched from a GoogleCal, service running at e.g. https://online.ntnu.no/notifier/delta/office
+- Fetched via Online, which has prefetched from a GoogleCal, service running at e.g. http://passoa.online.ntnu.no/notifier/delta/office
 
 Coffee (requires OmegaV NotiPi)
 
