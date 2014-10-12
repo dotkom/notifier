@@ -498,8 +498,8 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
         htmlItem = [
           '<div class="post">',
             '<div class="item" data="' + item.link + '"' + altLink + '>',
-              '<div class="title">' + readUnread + item.title + '</div>',
               '<img class="regular" src="' + item.image + '" />',
+              '<div class="title">' + readUnread + item.title + '</div>',
               item.description,
               '<div class="author">&ndash; Av ' + item.creator + '</div>',
             '</div>',
