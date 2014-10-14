@@ -395,14 +395,15 @@ header {
       select {
         z-index: 10; /* allows the down-arrow to be painted behind this */
         position: relative; /* allows the down-arrow to be painted behind this */
+        margin-top: 7px;
         width: 141px;
       }
       .lines {
         z-index: 10; /* allows the down-arrow to be painted behind this */
         position: relative; /* allows the down-arrow to be painted behind this */
+        margin-top: 7px;
         display: none;
         width: 128px;
-        margin-top: 1px;
         border-top: 1px solid white;
         box-shadow: 0 1px 2px #888;
         border-radius: 4px;
@@ -578,6 +579,12 @@ header {
     width: 160px;
   }
 }*/
+
+/* Debug affiliation in the top of the affiliation selection lists */
+
+optgroup.debugAffiliation {
+  display: none;
+}
 
 /* Debug toolbox in the the top right corner, only shown in debug mode */
 

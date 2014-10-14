@@ -28,10 +28,15 @@ var Meetings = {
         if (self.debug) console.log('Raw meetings:\n\n', meetings);
         
         // Debugging a particular string right now?
-        if (self.debugString)
+        if (self.debugString) {
           meetings = self.debugThisString;
+        }
 
-        if (meetings != '') {
+        if (meetings.indexOf('error') !== -1) {
+          if (self.debug) console.log('ERROR:', meetings);
+          callback(self.msgError);
+        }
+        else if (meetings != '') {
           // Prettify todays meetings
           var prettyMeetings = self.prettifyTodaysMeetings(meetings);
           if (self.debug) console.log('Pretty meetings:', prettyMeetings);

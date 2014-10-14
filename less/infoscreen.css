@@ -520,7 +520,7 @@ body {
 #container #news #full .post .item img.regular {
   min-height: 180px;
   max-height: 400px;
-  margin: 0 9px 6px 0;
+  margin: 0 15px 0 0;
 }
 #container #news .post {
   margin-top: 33px;

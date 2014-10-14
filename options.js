@@ -775,6 +775,9 @@ popupHere = function(time) {
 // Document ready, go!
 $(document).ready(function() {
   if (DEBUG) {
+    // Show the DEBUG affiliation
+    $('optgroup.debugAffiliation').show();
+    // Show buttons directly to cantina feeds
     $('#debugLinks').show();
     $('button.debug').click(function() {
       Browser.openTab($(this).attr('data'));

@@ -51,6 +51,38 @@ var Affiliation = {
 
   org: {
 
+    // DEBUG (separate affiliation that fetches data from Notipis / Notiwire in DEBUG mode)
+
+    'DEBUG': {
+      name: 'DEBUG',
+      key: 'DEBUG',
+      web: 'http://example.com/',
+      feed: 'http://dusken.no/feed/',
+      logo: './org/DEBUG/logo.png',
+      icon: './org/DEBUG/icon.png',
+      symbol: './org/DEBUG/symbol.png',
+      placeholder: './org/DEBUG/placeholder.png',
+      palette: 'grey',
+      hw: {
+        office: 'DEBUG-kontoret',
+        apis: {
+          coffee: 'http://passoa.online.ntnu.no/notifier/DEBUG/coffee',
+          light: 'http://passoa.online.ntnu.no/notifier/DEBUG/light',
+          event: 'http://passoa.online.ntnu.no/notifier/DEBUG/office',
+          servant: 'http://passoa.online.ntnu.no/notifier/DEBUG/servant',
+          meetings: 'http://passoa.online.ntnu.no/notifier/DEBUG/meetings',
+        },
+        statusIcons: {
+          open: './org/DEBUG/icon-open.png',
+          closed: './org/DEBUG/icon-closed.png',
+          meeting: './org/DEBUG/icon-meeting.png',
+        },
+      },
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
+      },
+    },
+
     // Linjeforeninger Gløshaugen
     
     'abakus': {
@@ -232,6 +264,22 @@ var Affiliation = {
       symbol: './org/hc/symbol.png',
       placeholder: './org/hc/placeholder.png',
       palette: 'yellow',
+      hw: {
+        office: 'HC-kontoret',
+        apis: {
+          coffee: 'http://passoa.online.ntnu.no/notifier/hc/coffee',
+          light: 'http://passoa.online.ntnu.no/notifier/hc/light',
+          event: 'http://passoa.online.ntnu.no/notifier/hc/office',
+          servant: 'http://passoa.online.ntnu.no/notifier/hc/servant',
+          meetings: 'http://passoa.online.ntnu.no/notifier/hc/meetings',
+        },
+        statusIcons: {
+          open: './org/hc/icon-open.png',
+          closed: './org/hc/icon-closed.png',
+          meeting: './org/hc/icon-meeting.png',
+        },
+        memePath: './org/hc/meme/',
+      },
       // images extracted from feed content
     },
 
@@ -579,7 +627,7 @@ var Affiliation = {
       icon: './org/dhs/icon.png',
       symbol: './org/dhs/symbol.png',
       placeholder: './org/dhs/placeholder.png',
-      palette: 'blue',
+      palette: 'purple',
       getImage: function(links, callback) {
         Images.get(this, links, callback);
       },
