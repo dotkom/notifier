@@ -229,12 +229,12 @@ body {
 }
 #container #news #left {
   position: relative;
-  width: 47%;
+  width: 47.5%;
   float: left;
 }
 #container #news #right {
   position: relative;
-  width: 48%;
+  width: 47.5%;
   float: right;
 }
 #container #news #right .title.regular {
