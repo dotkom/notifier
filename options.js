@@ -775,6 +775,10 @@ popupHere = function(time) {
 // Document ready, go!
 $(document).ready(function() {
   if (DEBUG) {
+    // Show the DEBUG affiliation
+    $('select#affiliationKey1').prepend('<optgroup label="DEBUG"><option value="DEBUG">DEBUG</option></optgroup>')
+    $('select#affiliationKey2').prepend('<optgroup label="DEBUG"><option value="DEBUG">DEBUG</option></optgroup>')
+    // Show buttons directly to cantina feeds
     $('#debugLinks').show();
     $('button.debug').click(function() {
       Browser.openTab($(this).attr('data'));

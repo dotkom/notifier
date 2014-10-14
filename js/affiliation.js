@@ -51,6 +51,38 @@ var Affiliation = {
 
   org: {
 
+    // DEBUG (separate affiliation that fetches data from Notipis / Notiwire in DEBUG mode)
+
+    'DEBUG': {
+      name: 'DEBUG',
+      key: 'DEBUG',
+      web: 'http://example.com/',
+      feed: 'http://dusken.no/feed/',
+      logo: './org/DEBUG/logo.png',
+      icon: './org/DEBUG/icon.png',
+      symbol: './org/DEBUG/symbol.png',
+      placeholder: './org/DEBUG/placeholder.png',
+      palette: 'grey',
+      hw: {
+        office: 'DEBUG-kontoret',
+        apis: {
+          coffee: 'http://passoa.online.ntnu.no/notifier/DEBUG/coffee',
+          light: 'http://passoa.online.ntnu.no/notifier/DEBUG/light',
+          event: 'http://passoa.online.ntnu.no/notifier/DEBUG/office',
+          servant: 'http://passoa.online.ntnu.no/notifier/DEBUG/servant',
+          meetings: 'http://passoa.online.ntnu.no/notifier/DEBUG/meetings',
+        },
+        statusIcons: {
+          open: './org/DEBUG/icon-open.png',
+          closed: './org/DEBUG/icon-closed.png',
+          meeting: './org/DEBUG/icon-meeting.png',
+        },
+      },
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
+      },
+    },
+
     // Linjeforeninger Gløshaugen
     
     'abakus': {
