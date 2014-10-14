@@ -541,6 +541,10 @@ body {
   max-height: 200px;
   margin: 0 7px 0 0;
 }
+#container #news #left > .title,
+#container #news #right > .title {
+  margin-bottom: -5px;
+}
 #container #news .post {
   margin-top: 13px;
 }
