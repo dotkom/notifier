@@ -232,6 +232,22 @@ var Affiliation = {
       symbol: './org/hc/symbol.png',
       placeholder: './org/hc/placeholder.png',
       palette: 'yellow',
+      hw: {
+        office: 'HC-kontoret',
+        apis: {
+          coffee: 'http://passoa.online.ntnu.no/notifier/hc/coffee',
+          light: 'http://passoa.online.ntnu.no/notifier/hc/light',
+          event: 'http://passoa.online.ntnu.no/notifier/hc/office',
+          servant: 'http://passoa.online.ntnu.no/notifier/hc/servant',
+          meetings: 'http://passoa.online.ntnu.no/notifier/hc/meetings',
+        },
+        statusIcons: {
+          open: './org/hc/icon-open.png',
+          closed: './org/hc/icon-closed.png',
+          meeting: './org/hc/icon-meeting.png',
+        },
+        memePath: './org/hc/meme/',
+      },
       // images extracted from feed content
     },
 
