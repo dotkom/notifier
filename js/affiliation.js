@@ -1130,7 +1130,7 @@ var Affiliation = {
     },
 
     'soma': {
-      name: 'Soma',
+      name: 'SOMA',
       key: 'soma',
       web: 'http://somantnu.blogspot.com/',
       feed: 'http://somantnu.blogspot.com/feeds/posts/default',

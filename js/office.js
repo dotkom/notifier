@@ -82,6 +82,11 @@ var Office = {
           message = message.trim();
         }
 
+        // Unavailable calendars will be treated as empty (free status)
+        if (message.indexOf('does not have a calendar for') !== -1) {
+          status = 'free';
+        }
+
         // Temporary support for the old system, backwards compatibility
         if (isNumber(status)) {
           switch(Number(status)) {
