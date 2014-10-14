@@ -179,7 +179,7 @@ body {
 }
 #container #todays #schedule {
   float: left;
-  width: 48%;
+  width: 47.5%;
 }
 #container #todays #schedule #servant {
   font-style: italic;
@@ -192,7 +192,7 @@ body {
 }
 #container #todays #coffee {
   float: right;
-  width: 50%;
+  width: 47.5%;
 }
 #container #todays #coffee #pots {
   font-style: italic;

@@ -1,24 +1,30 @@
+/*
+@debugRed: red;
+@debugCyan: cyan;
+@debugLime: lime;
+@debugYellow: yellow;
+*/
 .debugContainer {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
 }
 .debugBox {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
 }
 .debugText {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
 }
 .debugElement {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
 }
 .fullbox {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 .title {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   color: NavajoWhite;
   display: block;
   font-weight: bold;
@@ -27,7 +33,7 @@
   color: white;
 }
 .emphasized {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
 }
 body {
@@ -53,7 +59,7 @@ body {
 }
 /* This container keeps the content centered */
 #container {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   position: absolute;
   top: 0;
   right: 0;
@@ -63,71 +69,69 @@ body {
   z-index: 10;
 }
 #container #office {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays #schedule {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   float: left;
-  width: 48%;
+  width: 47.5%;
 }
 #container #todays #schedule #servant {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 11px;
 }
 #container #todays #coffee {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   float: right;
-  width: 50%;
-  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+  width: 47.5%;
 }
 #container #todays #coffee #pots {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 11px;
 }
 #container #cantinas {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #cantinas .hours {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 11px;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas #left {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
-  width: 48%;
+  width: 47.5%;
 }
 #container #cantinas #right {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: right;
-  width: 50%;
-  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+  width: 47.5%;
 }
 #container #cantinas #dinnerbox {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
 }
 #container #cantinas li {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   position: relative;
   width: 95%;
   list-style-type: none;
@@ -137,7 +141,7 @@ body {
   /*font-style: italic;*/
 }
 #container #bus {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
@@ -155,7 +159,7 @@ body {
   text-overflow: ellipsis;
 }
 #container #bus #firstBus {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: right;
@@ -163,7 +167,7 @@ body {
   width: 40%;
 }
 #container #bus #secondBus {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: left;
@@ -189,7 +193,7 @@ body {
 #container #bus .eighth,
 #container #bus .nineth,
 #container #bus .tenth {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -202,14 +206,14 @@ body {
   font-style: italic;
 }
 #container #bus #middle {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: center;
   height: 100%;
 }
 #container #news {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
@@ -241,12 +245,12 @@ body {
   color: LightGrey;
 }
 #container #news .post {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   clear: both;
 }
 #container #news .post .item {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -384,7 +388,7 @@ body {
   opacity: 0;
 }
 #fadeOutNews {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   position: absolute;
   left: 0;
   right: 0;
@@ -407,22 +411,22 @@ body {
   text-align: center;
 }
 #container #office #status {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
 }
 #container #office #status #text {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-size: 250px;
   line-height: 250px;
   text-shadow: 0 0 20px black;
   padding: 27px 0 13px 0;
 }
 #container #office #status img {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   width: 90%;
   display: none;
 }
 #container #office #subtext {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-size: 42px;
   line-height: 42px;
   font-weight: bold;
@@ -431,17 +435,17 @@ body {
   padding-bottom: 13px;
 }
 #container #todays #schedule #servant {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 11px;
 }
 #container #todays #coffee #pots {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 11px;
 }
 #container #cantinas .hours {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 11px;
 }
@@ -469,20 +473,20 @@ body {
   width: 14%;
 }
 #container #bus #middle #atbLogo {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   height: 113px;
   margin-top: 2px;
   border-radius: 6px;
   border-top-left-radius: 30px;
 }
 #container #bus #middle #clock {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   color: #fff;
   margin-top: 20px;
   text-align: center;
 }
 #container #bus #middle #clock li {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   display: inline-block;
   font-family: helvetica;
   font-size: 40px;
@@ -563,7 +567,7 @@ body {
 }
 /* the affiliation logo or sponsor logo */
 #logo {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   position: absolute;
   right: 40px;
   bottom: 40px;
