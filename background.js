@@ -54,13 +54,13 @@ updateOfficeAndMeetings = function(force) {
         // Set title
         title = Office.statuses[status].title;
         // Set icon
-        try {
-          var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
-          Browser.setIcon(statusIcon);
-        }
-        catch (e) {
-          var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
+        var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
+        var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
+        if (status === 'error' || typeof(statusIcon) === 'undefined') {
           Browser.setIcon(errorIcon);
+        }
+        else {
+          Browser.setIcon(statusIcon);
         }
       }
       // Check for Affiliation specific status message
