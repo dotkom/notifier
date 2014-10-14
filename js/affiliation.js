@@ -595,7 +595,7 @@ var Affiliation = {
       icon: './org/dhs/icon.png',
       symbol: './org/dhs/symbol.png',
       placeholder: './org/dhs/placeholder.png',
-      palette: 'blue',
+      palette: 'purple',
       getImage: function(links, callback) {
         Images.get(this, links, callback);
       },
