@@ -532,6 +532,8 @@ var Affiliation = {
         },
         statusMessages: {
           open: 'Velkommen inn!',
+          closed: 'Finn et komitemedlem for å åpne kontoret',
+          meeting: 'Det er møte på møterommet',
         },
         memePath: './org/nabla/meme/',
       },
