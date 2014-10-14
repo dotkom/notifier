@@ -48,7 +48,8 @@ Use a spare computer, one you don't need for anything else.
   * Add `unclutter`
 1. `sudo reboot`
 1. Enter the BIOS on startup (typically by clicking F2, F9, F10 or Del like a maniac)
-  * Find the option for what happens on power-loss, set it to turn power back on (this is very important for the infoscreen to survive power outages, which are frequent at NTNU due to construction work)
+  * Find the option for what happens on power-loss, set it to turn power back on
+  * This feature is very important for the infoscreen to survive power outages, which are frequent at NTNU due to construction work
 
 Technology stack
 ----------------
