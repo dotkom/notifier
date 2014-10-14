@@ -227,6 +227,10 @@ body {
   width: 100%;
   float: left;
 }
+#container #news #full > .title {
+  display: none;
+  /* no need for affiliation title when only one is in use */
+}
 #container #news #full .post .item img.regular {
   float: left;
   width: 33%;
