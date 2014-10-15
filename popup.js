@@ -803,12 +803,18 @@ $(document).ready(function() {
     code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
     callback: function() {
       Analytics.trackEvent('toggleKonami');
+
       // Remove #bus background color and any #background filters
       $('#bus').attr('style', 'background-color:transparent; box-shadow:none;');
       $('#background').attr('style', '-webkit-filter: none');
-      // Sets the background to awesomeness
-      var trollvid = '<iframe style="position:absolute;width:800px;height:660px;left:-145px;top:-30px;" src="http://www.youtube.com/embed/eh7lp9umG2I?autoplay=1&loop=1&autohide=1" frameborder="0" allowfullscreen></iframe>';
-      $("#background").html(trollvid);
+
+      // A list of the vids available. Add more vids here if you want more
+      var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', '0KltdN7TKDw', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
+
+      //gets a random number, builds the html and displays the vid
+      var konamiNum = Math.floor((Math.random() * links.length) + 1);
+      var htmlVid = '<iframe style="position:absolute;width:800px;height:660px;left:-145px;top:-30px;" src="http://www.youtube.com/embed/' + links[konamiNum] + '?autoplay=1&loop=1&autohide=1" frameborder="0" allowfullscreen></iframe>'
+      $("#background").html(htmlVid);
     },
   });
 
