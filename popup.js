@@ -811,8 +811,8 @@ $(document).ready(function() {
       // A list of the vids available. Add more vids here if you want more
       var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', '0KltdN7TKDw', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
 
-      //gets a random number, builds the html and displays the vid
-      var konamiNum = Math.floor((Math.random() * links.length) + 1);
+      // Gets a random number, builds the html and displays the vid
+      var konamiNum = Math.floor(Math.random() * links.length);
       var htmlVid = '<iframe style="position:absolute;width:800px;height:660px;left:-145px;top:-30px;" src="http://www.youtube.com/embed/' + links[konamiNum] + '?autoplay=1&loop=1&autohide=1" frameborder="0" allowfullscreen></iframe>'
       $("#background").html(htmlVid);
     },
