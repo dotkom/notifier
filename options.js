@@ -859,6 +859,7 @@ $(document).ready(function() {
   bindPaletteSelector();
   if (ls.showAffiliation2 !== 'true') {
     $('#affiliationKey2').attr('disabled', 'disabled');
+    $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
   }
 
   // Allow user to select cantinas
@@ -982,9 +983,11 @@ $(document).ready(function() {
 
       if (this.id === 'showAffiliation2' && this.checked === false) {
         $('#affiliationKey2').attr('disabled', 'disabled');
+        $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
       }
       if (this.id === 'showAffiliation2' && this.checked === true) {
         $('#affiliationKey2').removeAttr('disabled');
+        $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(0%)');
       }
       
       if (this.id === 'showOffice' && this.checked === true) {
