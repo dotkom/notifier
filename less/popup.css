@@ -530,6 +530,8 @@ body {
 }
 #container #bus #oracle #answer {
   border: 1px solid transparent;
+  position: relative;
+  left: -2px;
   padding: 0 1px;
 }
 #container #bus #oracle #answer a {
