@@ -255,7 +255,7 @@ $(document).ready( function() {
 
   loadAffiliationIcon();
 
-  Browser.bindCommandHotkeys(Affiliation.org[ls.affiliationKey1].web);
+  Browser.bindCommandHotkeys();
   Browser.registerNotificationListeners();
   Browser.bindOmniboxToOracle();
 

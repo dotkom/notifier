@@ -163,14 +163,12 @@ var Browser = {
     return false; // assume dev mode
   },
 
-  bindCommandHotkeys: function(affiliationWeb) {
+  bindCommandHotkeys: function() {
     if (this.name == 'Chrome') {
       chrome.commands.onCommand.addListener(function(command) {
         if (command == 'open_instabart') {
+          Analytics.trackEvent('usedHotkey', 'open_instabart');
           Browser.openTab('http://instabart.no');
-        }
-        else if (command == 'open_affiliation') {
-          Browser.openTab(affiliationWeb);
         }
         else {
           console.log('ERROR: Unrecognized browser command');
