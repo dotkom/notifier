@@ -587,13 +587,13 @@ optionsText = function(show) {
 }
 
 tipsText = function(show) {
-  fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tips++');
+  fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++');
 }
 
 chatterText = function(show) {
   var irc = Affiliation.org[ls.affiliationKey1].irc;
   var text = 'Join ' + irc.channel + ' :)';
-  fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ' + text); // lol i know ^^
+  fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ' + text); // lol i know ^^
 }
 
 fadeButtonText = function(show, msg) {
