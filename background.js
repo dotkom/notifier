@@ -88,8 +88,8 @@ updateCoffeeSubscription = function() {
       storedPots = Number(ls.coffeePots);
       // New pot number?
       if (storedPots < pots) {
-        // Not a meeting?
-        if (ls.officeStatus !== 'meeting') {
+        // Not a meeting? Or DEBUG mode.
+        if (ls.officeStatus !== 'meeting' || DEBUG) {
           // Made less than 10 minutes ago?
           if (age < 10) {
             // Notify everyone with a coffee subscription :D
