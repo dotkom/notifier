@@ -154,8 +154,8 @@ updateBus = function() {
       }
     }
     // Error message
-    $('#bus #firstBus .name').html(ls.firstBusName);
-    $('#bus #secondBus .name').html(ls.secondBusName);
+    $('#bus #firstBus .name').html(ls.firstBusName + ' ' + ls.firstBusDirection);
+    $('#bus #secondBus .name').html(ls.secondBusName + ' ' + ls.secondBusDirection);
     $('#bus #firstBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
     $('#bus #secondBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
   }
@@ -168,10 +168,11 @@ updateBus = function() {
 
 createBusDataRequest = function(bus, cssIdentificator) {
   var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
-  var activeLines = JSON.parse(activeLines);
+  // Parse self (was stored as array)
+  activeLines = JSON.parse(activeLines);
   // Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get(ls[bus], activeLines, function(lines) {
-    insertBusInfo(lines, ls[bus+'Name'], cssIdentificator);
+    insertBusInfo(lines, ls[bus+'Name'], ls[bus+'Direction'], cssIdentificator);
   });
 }
 
@@ -179,7 +180,7 @@ insertBusInfo = function(lines, stopName, cssIdentificator) {
   var busStop = '#bus '+cssIdentificator;
   var spans = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
 
-  $(busStop+' .name').html(stopName);
+  $(busStop+' .name').html(stopName + ' ' + direction);
 
   // Reset spans
   for (i in spans) {
