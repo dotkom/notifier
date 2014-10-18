@@ -247,7 +247,10 @@ insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
       for (i in spans) {
         // Add the current line
         $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
-        $(busStop+' .'+spans[i]+' .time').append(lines['departures'][i]);
+        // Calculate urgency
+        var urgency = Bus.calculateUrgency(lines['departures'][i]);
+        var departString = '<span style="color: ' + urgency + ';">' + lines['departures'][i] + '</span>';
+        $(busStop+' .'+spans[i]+' .time').append(departString);
       }
     }
   }

@@ -202,7 +202,7 @@ body {
   text-overflow: ellipsis;
 }
 #container #bus .time {
-  font-weight: bold;
+  /* nothing here yet */
 }
 #container #bus .error {
   font-style: italic;

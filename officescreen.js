@@ -204,31 +204,12 @@ insertBusInfo = function(lines, stopName, cssIdentificator) {
         // Add the current line
         $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
         // Calculate urgency
-        var urgency = calculateUrgency(lines['departures'][i]);
+        var urgency = Bus.calculateUrgency(lines['departures'][i]);
         var departString = '<span style="color: ' + urgency + ';">' + lines['departures'][i] + '</span>';
         $(busStop+' .'+spans[i]+' .time').append(departString);
       }
     }
   }
-}
-
-calculateUrgency = function(timeString) {
-  var urgencyColors = ['#DF0101', '#FF0000', '#FE2E2E', '#FA5858', '#F78181', '#F5A9A9', '#F6CECE', '#F8E0E0', '#FBEFEF', '#FFFFFF', '#DDDDDD', '#BBBBBB'];
-  timeString = timeString.replace('ca ', '');
-  timeString = timeString.replace(' min', '');
-  if (timeString === 'nå') {
-    return urgencyColors[0];
-  }
-  else if (timeString.match(/[0-9]{2}:[0-9]{2}/g)) {
-    return urgencyColors[11];
-  }
-  else {
-    time = Number(timeString);
-    if (time < 22) {
-      return urgencyColors[Math.floor(time / 2)];
-    }
-  }
-  return urgencyColors[11];
 }
 
 changeCreatorName = function(name) {

@@ -6,6 +6,8 @@ var Bus = {
   msgInvalidDirection: 'Ugyldig retning',
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
 
+  // Public functions
+
   get: function(stopId, favoriteLines, callback) {
     if (callback === undefined) {
       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
@@ -22,6 +24,25 @@ var Bus = {
         callback(self.msgDisconnected);
       },
     });
+  },
+
+  calculateUrgency: function(timeString) {
+    var urgencyColors = ['#df0101', '#ff0000', '#fe2e2e', '#ff5555', '#ff8686', '#ffadad', '#ffd1d1', '#f8e0e0', '#f0e2e2', '#eeeeee', '#cccccc', '#bbbbbb'];
+    timeString = timeString.replace('ca ', '');
+    timeString = timeString.replace(' min', '');
+    if (timeString === 'nå') {
+      return urgencyColors[0];
+    }
+    else if (timeString.match(/[0-9]{2}:[0-9]{2}/g)) {
+      return urgencyColors[11];
+    }
+    else {
+      var time = Number(timeString);
+      if (time < 22) {
+        return urgencyColors[Math.floor(time / 2)];
+      }
+    }
+    return urgencyColors[11];
   },
 
   // Private functions, do not use externally
