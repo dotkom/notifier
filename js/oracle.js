@@ -395,9 +395,9 @@ var Oracle = {
 
     // Put an @ where you want a linebreak
 
-    // Replace "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd." with just "Holdeplass: Gløshaugen Syd"
-    answer = answer.replace(/Holdeplassen nærmest .*? er (.*?)\. /gi, '@Holdeplass: $1 ');
-    answer = answer.replace(/The station nearest to .*? is (.*?)\. /gi, '@Station: $1 ');
+    // Replace "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd." with just: Valgte "Gløshaugen Syd" for "Gløshaugen"
+    answer = answer.replace(/Holdeplassen nærmest (.*?) er (.*?)\. /gi, '@Valgte "$2" for "$1"@');
+    answer = answer.replace(/The station nearest to .*? is (.*?)\. /gi, '@Chose "$2" for "$1"@');
     // Replace "Buss 66 passerer NTNU Dragvoll kl." with just "Buss 66:"
     answer = answer.replace(/(Buss \d+) passerer .*? kl\. /gi, '@$1 går ');
     answer = answer.replace(/(Bus \d+) passes by .*? at /gi, '@$1 leaves ');
