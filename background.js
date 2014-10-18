@@ -36,7 +36,7 @@ var mainLoop = function(force) {
     iteration++;
 }
 
-updateOfficeAndMeetings = function(force) {
+updateOfficeAndMeetings = function(force, callback) {
   console.lolg('updateOfficeAndMeetings');
   Office.get(function(status, message) {
     var title = '';
@@ -75,12 +75,16 @@ updateOfficeAndMeetings = function(force) {
       Meetings.get(function(meetings) {
         var today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
         Browser.setTitle(today);
+        if (typeof callback === 'function') callback();
       });
+    }
+    else {
+      if (typeof callback === 'function') callback();
     }
   });
 }
 
-updateCoffeeSubscription = function() {
+updateCoffeeSubscription = function(callback) {
   console.lolg('updateCoffeeSubscription');
   Coffee.get(false, function(pots, age) {
     // Error messages will be NaN here
@@ -100,30 +104,35 @@ updateCoffeeSubscription = function() {
       // And remember to update localStorage
       ls.coffeePots = pots;
     }
+    if (typeof callback === 'function') callback();
   });
 }
 
-updateCantinas = function() {
+updateCantinas = function(callback) {
   console.lolg('updateCantinas');
   Cantina.get(ls.leftCantina, function(menu) {
     ls.leftCantinaMenu = JSON.stringify(menu);
+    if (typeof callback === 'function') callback();
   });
   Cantina.get(ls.rightCantina, function(menu) {
     ls.rightCantinaMenu = JSON.stringify(menu);
+    if (typeof callback === 'function') callback();
   });
 }
 
-updateHours = function() {
+updateHours = function(callback) {
   console.lolg('updateHours');
   Hours.get(ls.leftCantina, function(hours) {
     ls.leftCantinaHours = hours;
+    if (typeof callback === 'function') callback();
   });
   Hours.get(ls.rightCantina, function(hours) {
     ls.rightCantinaHours = hours;
+    if (typeof callback === 'function') callback();
   });
 }
 
-updateAffiliationNews = function(number) {
+updateAffiliationNews = function(number, callback) {
   console.lolg('updateAffiliationNews'+number);
   // Get affiliation object
   var affiliationKey = ls['affiliationKey'+number];
@@ -146,10 +155,12 @@ updateAffiliationNews = function(number) {
         updateUnreadCount();
         fetchAndStoreImageLinks(number);
       }
+      if (typeof callback === 'function') callback();
     });
   }
   else {
     console.lolg('ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known');
+    if (typeof callback === 'function') callback();
   }
 }
 
