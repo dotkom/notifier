@@ -154,7 +154,6 @@ body {
   margin-left: -5%;
 }
 #container #bus .name {
-  margin-bottom: 5px;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -165,16 +164,14 @@ body {
   position: relative;
   float: left;
   text-align: right;
-  padding-top: 13px;
-  width: 40%;
+  padding-top: 14px;
 }
 #container #bus #secondBus {
   border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: left;
-  padding-top: 13px;
-  width: 40%;
+  padding-top: 14px;
 }
 #container #bus .loadingLeft {
   position: relative;
@@ -364,6 +361,10 @@ body {
 .sourcesans {
   font-family: 'Sourcesans';
 }
+@font-face {
+  font-family: 'Digi';
+  src: url('../fonts/digi/digi.ttf') format('truetype');
+}
 .title {
   font-size: 32px;
   margin-top: 33px;
@@ -459,14 +460,13 @@ body {
   box-shadow: 0 0 25px #aaa;
   top: 47px;
   font-size: 24px;
-  line-height: 32px;
-  height: 192px;
+  line-height: 30px;
+  height: 200px;
   margin-bottom: 60px;
   padding: 0 3%;
 }
 #container #bus .name {
-  margin-bottom: 4px;
-  text-decoration: underline;
+  margin-bottom: 11px;
 }
 #container #bus .loadingLeft {
   width: 213px;
@@ -475,6 +475,12 @@ body {
 #container #bus .loadingRight {
   width: 213px;
   bottom: 22px;
+}
+#container #bus #firstBus {
+  width: 42%;
+}
+#container #bus #secondBus {
+  width: 42%;
 }
 #container #bus #middle {
   width: 14%;
@@ -495,8 +501,8 @@ body {
 #container #bus #middle #clock li {
   border: 1px solid transparent;
   display: inline-block;
-  font-family: helvetica;
-  font-size: 40px;
+  font-family: Digi;
+  font-size: 45px;
   list-style: none;
 }
 #container #bus #middle #clock #hours {

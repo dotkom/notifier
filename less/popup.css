@@ -154,7 +154,6 @@ body {
   margin-left: -5%;
 }
 #container #bus .name {
-  margin-bottom: 5px;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -165,16 +164,14 @@ body {
   position: relative;
   float: left;
   text-align: right;
-  padding-top: 13px;
-  width: 40%;
+  padding-top: 14px;
 }
 #container #bus #secondBus {
   border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: left;
-  padding-top: 13px;
-  width: 40%;
+  padding-top: 14px;
 }
 #container #bus .loadingLeft {
   position: relative;
@@ -465,12 +462,12 @@ body {
   box-shadow: 0 0 15px #aaa;
   top: 16px;
   margin-bottom: 20px;
-  padding-bottom: 9px;
+  padding-bottom: 10px;
 }
 #container #bus #realtime {
   border: 1px solid transparent;
-  line-height: 15px;
-  height: 87px;
+  line-height: 13px;
+  height: 90px;
 }
 #container #bus #realtime .first,
 #container #bus #realtime .second,
@@ -485,7 +482,7 @@ body {
   text-decoration: underline;
 }
 #container #bus #realtime .name {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 #container #bus #realtime .loadingLeft {
   width: 80px;
@@ -495,8 +492,14 @@ body {
   width: 80px;
   bottom: 4px;
 }
+#container #bus #realtime #firstBus {
+  width: 41%;
+}
+#container #bus #realtime #secondBus {
+  width: 41%;
+}
 #container #bus #realtime #middle {
-  width: 18%;
+  width: 16%;
 }
 #container #bus #realtime #middle #atbLogo {
   position: relative;

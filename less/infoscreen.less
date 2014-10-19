@@ -38,6 +38,13 @@
   font-family: 'Sourcesans';
 }
 
+// Font for the clock
+
+@font-face {
+  font-family: 'Digi';
+  src: url('../fonts/digi/digi.ttf') format('truetype');
+}
+
 // Mixins
 
 .title {
@@ -154,14 +161,13 @@ body {
     box-shadow: 0 0 25px #aaa;
     top: 47px;
     font-size: 24px;
-    line-height: 32px;
-    height: 192px;
+    line-height: 30px;
+    height: 200px;
     margin-bottom: 60px;
     padding: 0 3%;
 
     .name {
-      margin-bottom: 4px;
-      text-decoration: underline;
+      margin-bottom: 11px;
     }
     .loadingLeft {
       width: 213px;
@@ -170,6 +176,12 @@ body {
     .loadingRight {
       width: 213px;
       bottom: 22px;
+    }
+    #firstBus {
+      width: 42%;
+    }
+    #secondBus {
+      width: 42%;
     }
     #middle {
       width: 14%;
@@ -188,8 +200,8 @@ body {
         li {
           .debugText;
           display: inline-block;
-          font-family: helvetica;
-          font-size: 40px;
+          font-family: Digi;
+          font-size: 45px;
           list-style: none;
         }
         #hours {
