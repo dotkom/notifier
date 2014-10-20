@@ -466,7 +466,8 @@ body {
   padding: 0 3%;
 }
 #container #bus .name {
-  margin-bottom: 11px;
+  margin-bottom: 5px;
+  line-height: 36px;
 }
 #container #bus .loadingLeft {
   width: 213px;
@@ -574,7 +575,6 @@ body {
   min-height: 180px;
   max-height: 400px;
   padding: 8px;
-  box-shadow: 0 0 27px #bbb;
 }
 #container #news .post .item img.regular {
   margin: 4px 0 0 6px;
