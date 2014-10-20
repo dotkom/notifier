@@ -72,19 +72,20 @@ var Office = {
         var status = data.split('\n',2)[0]; // 'meeting'
         var message = data.split('\n',2)[1]; // 'Arbeidskveld med arrKom'
 
-        console.log('LOOOL', message)
-
         if (self.debug) console.log('status is "'+status+'" and message is "'+message+'"');
 
+        // empty status message?
+        if (isEmpty(status)) {
+          status = 'error';
+        }
+        status = status.trim();
         // empty meeting message?
         if (isEmpty(message)) {
-          if (status == 'meeting') {
-            message = self.statuses['meeting'].message;
+          if (status.match(/^(error|open|closed|meeting)$/i) !== null) {
+            message = self.statuses[status].message;
           }
         }
-        else {
-          message = message.trim();
-        }
+        message = message.trim();
 
         // Unavailable calendars will be treated as empty (free status)
         if (message.indexOf('does not have a calendar for') !== -1) {
