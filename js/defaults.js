@@ -1,3 +1,5 @@
+"use strict";
+
 var Defaults = {
 
   _autoLoad_: function() {
@@ -67,12 +69,12 @@ var Defaults = {
     ]
     var firstBusOk = true;
     var secondBusOk = true;
-    for (prop in firstBusProps) {
+    for (var prop in firstBusProps) {
       if (typeof firstBusProps[prop] == 'undefined') {
         firstBusOk = false;
       }
     }
-    for (prop in secondBusProps) {
+    for (var prop in secondBusProps) {
       if (typeof secondBusProps[prop] == 'undefined') {
         secondBusOk = false;
       }

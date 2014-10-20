@@ -1,10 +1,12 @@
+"use strict";
+
 var ls = localStorage;
 var iteration = 0;
 var intervalId = null;
 
 var newsLimit = 8; // The most news you can cram into Infoscreen, if other features are disabled
 
-mainLoop = function(force) {
+var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
@@ -45,7 +47,7 @@ mainLoop = function(force) {
     iteration++;
 }
 
-updateOffice = function(debugStatus) {
+var updateOffice = function(debugStatus) {
   console.lolg('updateOffice');
   Office.get(function(status, message) {
     if (DEBUG && debugStatus) {
@@ -88,14 +90,14 @@ updateOffice = function(debugStatus) {
   });
 }
 
-updateServant = function() {
+var updateServant = function() {
   console.lolg('updateServant');
   Servant.get(function(servant) {
     $('#todays #schedule #servant').html('- '+servant);
   });
 }
 
-updateMeetings = function() {
+var updateMeetings = function() {
   console.lolg('updateMeetings');
   Meetings.get(function(meetings) {
     meetings = meetings.replace(/\n/g, '<br />');
@@ -110,7 +112,7 @@ updateMeetings = function() {
   });
 }
 
-updateCoffee = function() {
+var updateCoffee = function() {
   console.lolg('updateCoffee');
   Coffee.get(true, function(pots, age) {
     $('#todays #coffee #pots').html('- '+pots);
@@ -118,10 +120,10 @@ updateCoffee = function() {
   });
 }
 
-updateCantinas = function(first) {
+var updateCantinas = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
-  update = function(shortname, menu, selector) {
+  var update = function(shortname, menu, selector) {
     var name = Cantina.names[shortname];
     $('#cantinas #'+selector+' .title').html(name);
     $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
@@ -133,7 +135,7 @@ updateCantinas = function(first) {
   update(ls.rightCantina, menu2, 'right');
 }
 
-listDinners = function(menu) {
+var listDinners = function(menu) {
   var dinnerlist = '';
   // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if (typeof menu === 'string') {
@@ -142,8 +144,8 @@ listDinners = function(menu) {
   }
   else {
     ls.noDinnerInfo = 'false'
-    for (index in menu) {
-      var dinner = menu[index];
+    for (var i in menu) {
+      var dinner = menu[i];
       if (dinner.price != null) {
         dinner.price = dinner.price + ',-';
         dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>';
@@ -156,7 +158,7 @@ listDinners = function(menu) {
   return dinnerlist;
 }
 
-clickDinnerLink = function(cssSelector, cantina) {
+var clickDinnerLink = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
     Analytics.trackEvent('clickDinner', $(this).text());
     ls.clickedCantina = cantina;
@@ -165,10 +167,10 @@ clickDinnerLink = function(cssSelector, cantina) {
   });
 }
 
-updateHours = function(first) {
+var updateHours = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateHours');
-  update = function(shortname, hours, selector) {
+  var update = function(shortname, hours, selector) {
     $('#cantinas #'+selector+' .hours').html(hours);
     clickHours('#cantinas #'+selector+' .hours', shortname);
   }
@@ -176,7 +178,7 @@ updateHours = function(first) {
   update(ls.rightCantina, ls.rightCantinaHours, 'right');
 }
 
-clickHours = function(cssSelector, cantina) {
+var clickHours = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
     Analytics.trackEvent('clickHours', $(this).text());
     ls.clickedHours = Hours.cantinas[cantina];
@@ -185,14 +187,14 @@ clickHours = function(cssSelector, cantina) {
   });
 }
 
-updateBus = function() {
+var updateBus = function() {
   console.lolg('updateBus');
   if (!navigator.onLine) {
     // Reset
     var stops = ['firstBus', 'secondBus'];
     var spans = ['first', 'second', 'third', 'fourth'];
-    for (i in stops) {
-      for (j in spans) {
+    for (var i in stops) {
+      for (var j in spans) {
         $('#bus #'+stops[i]+' .'+spans[j]+' .line').html('');
         $('#bus #'+stops[i]+' .'+spans[j]+' .time').html('');
       }
@@ -210,7 +212,7 @@ updateBus = function() {
   }
 }
 
-createBusDataRequest = function(bus, cssIdentificator) {
+var createBusDataRequest = function(bus, cssIdentificator) {
   var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
   // Parse self (was stored as array)
   activeLines = JSON.parse(activeLines);
@@ -220,14 +222,14 @@ createBusDataRequest = function(bus, cssIdentificator) {
   });
 }
 
-insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
+var insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
   var busStop = '#bus ' + cssIdentificator;
   var spans = ['first', 'second', 'third', 'fourth'];
 
   $(busStop+' .name').html(stopName + ' ' + direction);
 
   // Reset spans
-  for (i in spans) {
+  for (var i in spans) {
     $(busStop+' .'+spans[i]+' .line').html('');
     $(busStop+' .'+spans[i]+' .time').html('');
   }
@@ -244,7 +246,7 @@ insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
     }
     else {
       // Display line for line with according times
-      for (i in spans) {
+      for (var i in spans) {
         // Add the current line
         $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
         // Calculate urgency
@@ -256,7 +258,7 @@ insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
   }
 }
 
-updateAffiliationNews = function(number) {
+var updateAffiliationNews = function(number) {
   console.lolg('updateAffiliationNews'+number);
   // Displaying the news feed (prefetched by the background page)
   var feedItems = ls['affiliationFeedItems'+number];
@@ -286,7 +288,7 @@ updateAffiliationNews = function(number) {
   }
 }
 
-displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
+var displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
   // Empty the news column
   $('#news '+column+' .post').remove();
   // Get feedkey
@@ -302,7 +304,7 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
   viewedList = [];
 
   // Prepare the list of images with salt, pepper and some vinegar
-  storedImages = JSON.parse(ls.storedImages);
+  var storedImages = JSON.parse(ls.storedImages);
 
   // Add feed items
   $.each(items, function (index, item) {
@@ -406,8 +408,8 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
 
   // Update images some times after news are loaded in case of late image updates
   // which are common when the browser has just started Notifier
-  times = [100, 500, 1000, 2000, 3000, 5000, 10000];
-  for (i in times) {
+  var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
+  for (var i in times) {
     setTimeout(function() {
       updateNewsImages();
     }, times[i]);
@@ -415,17 +417,17 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
 }
 
 // Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = function(newsList, viewedList) {
+var findUpdatedPosts = function(newsList, viewedList) {
   var updatedList = [];
   // Compare lists, keep your mind straight here:
   // Updated news are:
   // - saved in the newsList before the first identical item in the viewedList
   // - saved in the viewedList after the first identical item in the newsList
-  for (i in newsList) {
+  for (var i in newsList) {
     if (newsList[i] === viewedList[0]) {
       break;
     }
-    for (j in viewedList) {
+    for (var j in viewedList) {
       if (j === 0) {
         continue;
       }
@@ -437,7 +439,7 @@ findUpdatedPosts = function(newsList, viewedList) {
   return updatedList;
 }
 
-updateNewsImages = function() {
+var updateNewsImages = function() {
   console.lolg('updateNewsImages');
   // The background process looks for images, and sometimes that process
   // isn't finished before the popup loads, that's why we have to check
@@ -451,7 +453,7 @@ updateNewsImages = function() {
   });
 }
 
-officeFontRotate = function(font) {
+var officeFontRotate = function(font) {
   var fonts = ['cardo','fondamento','oleoscript','sourcesans'];
   var chosenFont = null;
   if (fonts.indexOf(font) > -1) {
@@ -465,14 +467,14 @@ officeFontRotate = function(font) {
     $('#office #subtext').html(ls.infoscreenOfficeStatusMessage + '<br />' + chosenFont);
 }
 
-changeCreatorName = function(name) {
+var changeCreatorName = function(name) {
   // Stop previous changeCreatorName instance, if any
   clearTimeout(ls.changeCreatorNameTimeoutId);
   // Animate creator name change in the pageflip
   animateCreatorName(name);
 }
 
-animateCreatorName = function(name, build) {
+var animateCreatorName = function(name, build) {
   // Animate it
   var text = $('#pagefliptyping').text();
   if (text.length === 0) {
@@ -647,7 +649,7 @@ $(document).ready(function() {
   }, 86400000);
 
   // Enter main loop, keeping everything up-to-date
-  stayUpdated = function(now) {
+  var stayUpdated = function(now) {
     console.lolg(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP);
     // Schedule for repetition

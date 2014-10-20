@@ -1,3 +1,5 @@
+"use strict";
+
 // Recieve all requests from parts of the extension that cannot access
 // localStorage or the rest of the codebase. Example: A content script.
 

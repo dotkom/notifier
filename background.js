@@ -1,3 +1,5 @@
+"use strict";
+
 var ls = localStorage;
 var iteration = 0;
 var intervalId = null;
@@ -36,7 +38,7 @@ var mainLoop = function(force) {
     iteration++;
 }
 
-updateOfficeAndMeetings = function(force, callback) {
+var updateOfficeAndMeetings = function(force, callback) {
   console.lolg('updateOfficeAndMeetings');
   Office.get(function(status, message) {
     var title = '';
@@ -84,7 +86,7 @@ updateOfficeAndMeetings = function(force, callback) {
   });
 }
 
-updateCoffeeSubscription = function(callback) {
+var updateCoffeeSubscription = function(callback) {
   console.lolg('updateCoffeeSubscription');
   Coffee.get(false, function(pots, age) {
     // Error messages will be NaN here
@@ -108,7 +110,7 @@ updateCoffeeSubscription = function(callback) {
   });
 }
 
-updateCantinas = function(callback) {
+var updateCantinas = function(callback) {
   console.lolg('updateCantinas');
   Cantina.get(ls.leftCantina, function(menu) {
     ls.leftCantinaMenu = JSON.stringify(menu);
@@ -120,7 +122,7 @@ updateCantinas = function(callback) {
   });
 }
 
-updateHours = function(callback) {
+var updateHours = function(callback) {
   console.lolg('updateHours');
   Hours.get(ls.leftCantina, function(hours) {
     ls.leftCantinaHours = hours;
@@ -132,7 +134,7 @@ updateHours = function(callback) {
   });
 }
 
-updateAffiliationNews = function(number, callback) {
+var updateAffiliationNews = function(number, callback) {
   console.lolg('updateAffiliationNews'+number);
   // Get affiliation object
   var affiliationKey = ls['affiliationKey'+number];
@@ -164,7 +166,7 @@ updateAffiliationNews = function(number, callback) {
   }
 }
 
-saveAndCountNews = function(items, number) {
+var saveAndCountNews = function(items, number) {
   var feedItems = 'affiliationFeedItems' + number;
   var newsList = 'affiliationNewsList' + number;
   var unreadCount = 'affiliationUnreadCount' + number;
@@ -176,18 +178,18 @@ saveAndCountNews = function(items, number) {
   ls[newsList] = News.refreshNewsList(items);
 }
 
-updateUnreadCount = function(count1, count2) {
+var updateUnreadCount = function(count1, count2) {
   var unreadCount = (Number(ls.affiliationUnreadCount1)) + (Number(ls.affiliationUnreadCount2));
   Browser.setBadgeText(String(unreadCount));
 }
 
-fetchAndStoreImageLinks = function(number) {
+var fetchAndStoreImageLinks = function(number) {
   var key = ls['affiliationKey'+number];
   var newsList = JSON.parse(ls['affiliationNewsList'+number]);
   // If the organization has it's own getImage function, use it
   if (Affiliation.org[key].getImage !== undefined) {
-    for (index in newsList) {
-      link = newsList[index];
+    for (var i in newsList) {
+      var link = newsList[i];
       // It's important to get the link from the callback within the function below,
       // not the above code, - because of race conditions mixing up the news posts, async ftw.
       Affiliation.org[key].getImage(link, function(link, image) {
@@ -203,9 +205,9 @@ fetchAndStoreImageLinks = function(number) {
   if (Affiliation.org[key].getImages !== undefined) {
     Affiliation.org[key].getImages(newsList, function(links, images) {
       var storedImages = JSON.parse(ls.storedImages);
-      for (index in links) {
-        if (null !== images[index]) {
-          storedImages[links[index]] = images[index];
+      for (var i in links) {
+        if (null !== images[i]) {
+          storedImages[links[i]] = images[i];
         }
       }
       ls.storedImages = JSON.stringify(storedImages);
@@ -213,13 +215,13 @@ fetchAndStoreImageLinks = function(number) {
   }
 }
 
-loadAffiliationIcon = function() {
-  key = ls.affiliationKey1;
+var loadAffiliationIcon = function() {
+  var key = ls.affiliationKey1;
   // Set badge icon
-  icon = Affiliation.org[key].icon;
+  var icon = Affiliation.org[key].icon;
   Browser.setIcon(icon);
   // Set badge title
-  name = Affiliation.org[key].name;
+  var name = Affiliation.org[key].name;
   Browser.setTitle(name + ' Notifier');
 }
 

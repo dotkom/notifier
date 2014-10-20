@@ -1,10 +1,12 @@
+"use strict";
+
 var ls = localStorage;
 var iteration = 0;
 var intervalId = null;
 
 var newsLimit = 4; // The best amount of news for the popup, IMO
 
-mainLoop = function(force) {
+var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
@@ -43,14 +45,14 @@ mainLoop = function(force) {
     iteration++;
 }
 
-updateServant = function() {
+var updateServant = function() {
   console.lolg('updateServant');
   Servant.get(function(servant) {
     $('#todays #schedule #servant').html('- '+servant);
   });
 }
 
-updateMeetings = function() {
+var updateMeetings = function() {
   console.lolg('updateMeetings');
   Meetings.get(function(meetings) {
     meetings = meetings.replace(/\n/g, '<br />');
@@ -69,7 +71,7 @@ updateMeetings = function() {
   });
 }
 
-updateCoffee = function() {
+var updateCoffee = function() {
   console.lolg('updateCoffee');
   Coffee.get(true, function(pots, age) {
     $('#todays #coffee #pots').html('- ' + pots);
@@ -77,7 +79,7 @@ updateCoffee = function() {
   });
 }
 
-updateCantinas = function() {
+var updateCantinas = function() {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
   var update = function(shortname, menu, selector) {
@@ -92,7 +94,7 @@ updateCantinas = function() {
   update(ls.rightCantina, menu2, 'right');
 }
 
-listDinners = function(menu) {
+var listDinners = function(menu) {
   var dinnerlist = '';
   // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if (typeof menu === 'string') {
@@ -101,7 +103,7 @@ listDinners = function(menu) {
   }
   else {
     ls.noDinnerInfo = 'false';
-    for (i in menu) {
+    for (var i in menu) {
       var dinner = menu[i];
       if (dinner.price !== null) {
         dinner.price = dinner.price + ',-';
@@ -115,7 +117,7 @@ listDinners = function(menu) {
   return dinnerlist;
 }
 
-clickDinnerLink = function(cssSelector, cantina) {
+var clickDinnerLink = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
     Analytics.trackEvent('clickDinner', $(this).text());
     ls.clickedCantina = cantina;
@@ -124,10 +126,10 @@ clickDinnerLink = function(cssSelector, cantina) {
   });
 }
 
-updateHours = function(first) {
+var updateHours = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateHours');
-  update = function(shortname, hours, selector) {
+  var update = function(shortname, hours, selector) {
     $('#cantinas #'+selector+' .hours').html(hours);
     clickHours('#cantinas #'+selector+' .hours', shortname);
   };
@@ -135,7 +137,7 @@ updateHours = function(first) {
   update(ls.rightCantina, ls.rightCantinaHours, 'right');
 }
 
-clickHours = function(cssSelector, cantina) {
+var clickHours = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
     Analytics.trackEvent('clickHours', $(this).text());
     ls.clickedHours = Hours.cantinas[cantina];
@@ -144,14 +146,14 @@ clickHours = function(cssSelector, cantina) {
   });
 }
 
-updateBus = function() {
+var updateBus = function() {
   console.lolg('updateBus');
   if (!navigator.onLine) {
     // Reset
     var stops = ['firstBus', 'secondBus'];
     var spans = ['first', 'second', 'third'];
-    for (i in stops) {
-      for (j in spans) {
+    for (var i in stops) {
+      for (var j in spans) {
         $('#bus #'+stops[i]+' .'+spans[j]+' .line').html('');
         $('#bus #'+stops[i]+' .'+spans[j]+' .time').html('');
       }
@@ -169,7 +171,7 @@ updateBus = function() {
   }
 }
 
-createBusDataRequest = function(bus, cssIdentificator) {
+var createBusDataRequest = function(bus, cssIdentificator) {
   var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
   // Parse self (was stored as array)
   activeLines = JSON.parse(activeLines);
@@ -179,14 +181,14 @@ createBusDataRequest = function(bus, cssIdentificator) {
   });
 }
 
-insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
+var insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
   var busStop = '#bus ' + cssIdentificator;
   var spans = ['first', 'second', 'third'];
 
   $(busStop+' .name').html(stopName + ' ' + direction);
 
   // Reset spans
-  for (i in spans) {
+  for (var i in spans) {
     $(busStop+' .'+spans[i]+' .line').html('');
     $(busStop+' .'+spans[i]+' .time').html('');
   }
@@ -209,7 +211,7 @@ insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
     }
     else {
       // Display line for line with according times
-      for (i in spans) {
+      for (var i in spans) {
         // Add the current line
         $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
         // Calculate urgency
@@ -221,7 +223,7 @@ insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
   }
 }
 
-bindOracle = function() {
+var bindOracle = function() {
   // Suggest prediction
   if (Oracle.predict() !== null) {
     $('#oracle #question').attr('placeholder', Oracle.predict() + Oracle.msgPredictPostfix);
@@ -264,7 +266,7 @@ bindOracle = function() {
   });
 }
 
-changeOracleAnswer = function(answer) {
+var changeOracleAnswer = function(answer) {
   console.lolg('changeOracleAnswer to "' + answer + '"');
   // Stop previous changeOracleAnswer instance, if any
   clearTimeout(Number(ls.animateOracleAnswerTimeoutId));
@@ -288,10 +290,10 @@ changeOracleAnswer = function(answer) {
     var func = function(answer) {
       var pieces = answer.split('@');
       // Insert piece placeholders
-      for (i in pieces) {
+      for (var i in pieces) {
         $('#oracle #answer').append('<div class="piece"></div>');
       }
-      for (i in pieces) {
+      for (var i in pieces) {
         animateOracleAnswer(pieces[i], i);
       }
     }
@@ -309,7 +311,7 @@ changeOracleAnswer = function(answer) {
   }
 }
 
-animateOracleAnswer = function(line, index, callback, build) {
+var animateOracleAnswer = function(line, index, callback, build) {
   // Animate it
   var text = $('#oracle #answer .piece').eq(index).text();
   if (text.length === 0) {
@@ -343,7 +345,7 @@ animateOracleAnswer = function(line, index, callback, build) {
   }
 }
 
-oraclePrediction = function() {
+var oraclePrediction = function() {
   var question = Oracle.predict();
   if (question !== null) {
     // Add question
@@ -364,14 +366,14 @@ oraclePrediction = function() {
   }
 }
 
-changeOracleQuestion = function(question) {
+var changeOracleQuestion = function(question) {
   // Stop previous changeOracleAnswer instance, if any
   clearTimeout(Number(ls.animateOracleQuestionTimeoutId));
   // Animate oracle question name change
   animateOracleQuestion(question);
 }
 
-animateOracleQuestion = function(line) {
+var animateOracleQuestion = function(line) {
   // Animate it
   var text = $('#oracle #question').val();
   if (text.length === 0) {
@@ -391,7 +393,7 @@ animateOracleQuestion = function(line) {
   }
 }
 
-updateAffiliationNews = function(number) {
+var updateAffiliationNews = function(number) {
   console.lolg('updateAffiliationNews'+number);
   // Displaying the news feed (prefetched by the background page)
   var feedItems = ls['affiliationFeedItems'+number];
@@ -421,7 +423,7 @@ updateAffiliationNews = function(number) {
   }
 }
 
-displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
+var displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
   // Empty the news column
   $('#news '+column+' .post').remove();
   // Get feedkey
@@ -437,7 +439,7 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
   viewedList = [];
 
   // Prepare the list of images with salt, pepper and some vinegar
-  storedImages = JSON.parse(ls.storedImages);
+  var storedImages = JSON.parse(ls.storedImages);
 
   // Add feed items
   $.each(items, function (index, item) {
@@ -541,8 +543,8 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
 
   // Update images some times after news are loaded in case of late image updates
   // which are common when the browser has just started Notifier
-  times = [100, 500, 1000, 2000, 3000, 5000, 10000];
-  for (i in times) {
+  var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
+  for (var i in times) {
     setTimeout(function() {
       updateNewsImages();
     }, times[i]);
@@ -550,17 +552,17 @@ displayItems = function(items, column, newsListName, viewedListName, unreadCount
 }
 
 // Checks the most recent list of news against the most recently viewed list of news
-findUpdatedPosts = function(newsList, viewedList) {
+var findUpdatedPosts = function(newsList, viewedList) {
   var updatedList = [];
   // Compare lists, keep your mind straight here:
   // Updated news are:
   // - saved in the newsList before the first identical item in the viewedList
   // - saved in the viewedList after the first identical item in the newsList
-  for (i in newsList) {
+  for (var i in newsList) {
     if (newsList[i] === viewedList[0]) {
       break;
     }
-    for (j in viewedList) {
+    for (var j in viewedList) {
       if (j === 0) {
         continue;
       }
@@ -572,7 +574,7 @@ findUpdatedPosts = function(newsList, viewedList) {
   return updatedList;
 }
 
-updateNewsImages = function() {
+var updateNewsImages = function() {
   console.lolg('updateNewsImages');
   // The background process looks for images, and sometimes that process
   // isn't finished before the popup loads, that's why we have to check
@@ -586,21 +588,21 @@ updateNewsImages = function() {
   });
 }
 
-optionsText = function(show) {
+var optionsText = function(show) {
   fadeButtonText(show, 'Innstillinger');
 }
 
-tipsText = function(show) {
+var tipsText = function(show) {
   fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++');
 }
 
-chatterText = function(show) {
+var chatterText = function(show) {
   var irc = Affiliation.org[ls.affiliationKey1].irc;
   var text = 'Join ' + irc.channel + ' :)';
   fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ' + text); // lol i know ^^
 }
 
-fadeButtonText = function(show, msg) {
+var fadeButtonText = function(show, msg) {
   var fadeInSpeed = 150;
   var fadeOutSpeed = 50;
   if (show) {
@@ -752,7 +754,7 @@ $(document).ready(function() {
   }
   // Register click event for all lines
   var busLanes = ['.first', '.second', '.third'];
-  for (i in busLanes) {
+  for (var i in busLanes) {
     $('#bus #firstBus '+busLanes[i]).click(clickBus);
     $('#bus #secondBus '+busLanes[i]).click(clickBus);
   }

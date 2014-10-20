@@ -1,3 +1,5 @@
+"use strict";
+
 // This is a injected script.
 
 // That means the script is called when any page is loaded. This script does

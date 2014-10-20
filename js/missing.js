@@ -1,3 +1,4 @@
+"use strict";
 
 // Small function library for Online Notifier
 

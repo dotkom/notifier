@@ -1,3 +1,5 @@
+"use strict";
+
 var Images = {
   debug: 0,
 
@@ -83,7 +85,7 @@ var Images = {
         // A place to store all the image links
         var images = [];
 
-        for (i in links) {
+        for (var i in links) {
 
           //
           // Find the news container which contains the news image, using our selector
@@ -231,7 +233,7 @@ var Images = {
     ];
 
     // Look for keys and return false if any are found
-    for (i in keys) {
+    for (var i in keys) {
       var str = keys[i];
       if (imageUrl.indexOf(str) !== -1) {
         if (this.debug) console.log('Images: Image url was bad, contained "'+str+'"\n');

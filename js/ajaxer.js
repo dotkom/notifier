@@ -1,4 +1,6 @@
-Ajaxer = {
+"use strict";
+
+var Ajaxer = {
   debug: 0,
 
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file

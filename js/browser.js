@@ -1,3 +1,5 @@
+"use strict";
+
 var Browser = {
   debug: 0,
   msgCallbackMissing: 'ERROR: Callback is missing',

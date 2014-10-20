@@ -1,3 +1,5 @@
+"use strict";
+
 var Bus = {
   debug: 0,
   api: 'http://bybussen.api.tmn.io/rt/',
@@ -66,14 +68,16 @@ var Bus = {
     var count = 0;
     var nLines = (favoriteLines.length === 0 ? 10 : 100);
 
-    for (i in departures) {
+    for (var i in departures) {
 
       var line = departures[i].l;
 
       // Usually controlled by favorite lines
-      if (favoriteLines.length != 0)
-        if (favoriteLines.indexOf(Number(line)) === -1)
+      if (favoriteLines.length != 0) {
+        if (favoriteLines.indexOf(Number(line)) === -1) {
           continue;
+        }
+      }
       // Otherwise controlled with counter
       else if (count++ >= nLines) break;
 

@@ -1,3 +1,5 @@
+"use strict";
+
 // Tracking Basics (Asynchronous Syntax)
 // https://developers.google.com/analytics/devguides/collection/gajs/
 // Event Tracking - Web Tracking (ga.js):
@@ -35,7 +37,7 @@ else {
   }, timeout);
 }
 
-Analytics = {
+var Analytics = {
 
   trackEvent: function(action, label, value) {
     var category = window.location.pathname; // chrome-extension://dohbapaojpimhoikcihglgkicjolfajj/options.html

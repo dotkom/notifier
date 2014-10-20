@@ -1,3 +1,5 @@
+"use strict";
+
 var Events = {
   debug: 0,
   api: 'https://online.ntnu.no/events/events.ics',

@@ -1,8 +1,11 @@
+"use strict";
+
 var DEBUG = 1;
 
 // Production detection
-if (Browser.inProduction())
+if (Browser.inProduction()) {
 	DEBUG = 0;
+}
 
 // Logging setup
 console.lolg = function() {

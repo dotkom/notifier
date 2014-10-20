@@ -1,3 +1,5 @@
+"use strict";
+
 var Oracle = {
   debug: 0,
   api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
@@ -115,7 +117,7 @@ var Oracle = {
 //         var pieces = answer.split('\n');
 
 //         // House keeping
-//         for (i in pieces) {
+//         for (var i in pieces) {
 //           if (pieces[i].trim() === '') {
 //             console.log('got an empty one!', pieces[i])
 //             pieces[i] = null;
@@ -135,7 +137,7 @@ var Oracle = {
 
 //         // Clean out null-values
 //         var cleaned = [];
-//         for (i in pieces) {
+//         for (var i in pieces) {
 //           if (pieces[i] !== null) {
 //             cleaned.push(pieces[i]);
 //           }
@@ -144,7 +146,7 @@ var Oracle = {
 
 //         console.log('cleaned', pieces);
 
-//         for (i in pieces) {
+//         for (var i in pieces) {
 
 //         }
 
@@ -314,7 +316,7 @@ var Oracle = {
         if (this.debug) console.log('Oracle considered question to be valuable');
 
         // Check if the same timeslot is free on other days, and insert answer there too
-        for (i in oracleBrain) {
+        for (var i in oracleBrain) {
           if (oracleBrain[i][timeslot.hour] == '') {
             oracleBrain[i][timeslot.hour] = question;
             if (this.debug) console.log('Oracle used question for day', i, 'as well (monday=0)');
@@ -401,7 +403,7 @@ var Oracle = {
     } while (timePiece !== null);
 
     // Change each time string individually
-    for (i in timePieces) {
+    for (var i in timePieces) {
       var t = timePieces[i];
       var hours = Number(t.match(/^(\d+):/)[1]);
       var ampm = t.match(/\s(.*)$/)[1].toLowerCase();
@@ -413,7 +415,7 @@ var Oracle = {
     }
 
     // Load answer with new time strings
-    for (i in timePieces) {
+    for (var i in timePieces) {
       answer = answer.replace(/§/, timePieces[i]);
     }
     if (this.debug) console.log('AFTER 12to24\n' + answer);
@@ -564,7 +566,7 @@ var Oracle = {
   //     }
   //     var cityIndex = -1;
   //     // Find the city terminal in the array with all stops for this line
-  //     for (i in allStops) {
+  //     for (var i in allStops) {
   //       if (allStops[i].match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/gi) !== null) {
   //         cityIndex = i;
   //         break;
