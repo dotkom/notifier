@@ -161,7 +161,7 @@ var Coffee = {
       var image = memes[random - 1]; // the list is zero-indexed
 
       // Create the notification
-      item = {
+      var item = {
         title: Affiliation.org[key].name + ' Notifier',
         description: this.msgNotification,
         image: image,

@@ -94,7 +94,7 @@ var Servant = {
     // If the name is quite long...
     if (name.length >= 25) {
       if (name.split(" ").length >= 3) {
-        names = name.split(" ");
+        var names = name.split(" ");
         // ...we'll shorten all middle names to one letter
         for (var i = names.length - 2; i >= 1; i--) {
           names[i] = names[i].charAt(0).toUpperCase()+'.';
