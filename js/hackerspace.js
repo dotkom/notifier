@@ -1,3 +1,5 @@
+"use strict";
+
 var Hackerspace = {
   debug: 0,
 

@@ -1,3 +1,5 @@
+"use strict";
+
 Ajaxer = {
   debug: 0,
 

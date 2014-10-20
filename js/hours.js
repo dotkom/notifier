@@ -1,3 +1,5 @@
+"use strict";
+
 var Hours = {
   
   // This file contains Opening Hours for the SiT cantinas.

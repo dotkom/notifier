@@ -1,3 +1,4 @@
+"use strict";
 
 // HOTFIXING FLASHY NEWS
 // enforcing flashy news for all users

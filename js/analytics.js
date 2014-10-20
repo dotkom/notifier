@@ -1,3 +1,5 @@
+"use strict";
+
 // Tracking Basics (Asynchronous Syntax)
 // https://developers.google.com/analytics/devguides/collection/gajs/
 // Event Tracking - Web Tracking (ga.js):

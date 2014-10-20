@@ -1,3 +1,5 @@
+"use strict";
+
 var pushExtra = 0;
 
 var updateTime = function() {

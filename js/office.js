@@ -1,3 +1,5 @@
+"use strict";
+
 var Office = {
   debug: 0,
   debugStatus: {enabled: 0, string: 'coffee\nDebugging office status'},
@@ -69,6 +71,8 @@ var Office = {
 
         var status = data.split('\n',2)[0]; // 'meeting'
         var message = data.split('\n',2)[1]; // 'Arbeidskveld med arrKom'
+
+        console.log('LOOOL', message)
 
         if (self.debug) console.log('status is "'+status+'" and message is "'+message+'"');
 

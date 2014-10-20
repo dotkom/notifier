@@ -1,3 +1,5 @@
+"use strict";
+
 var Affiliation = {
   debug: 0,
   
@@ -477,7 +479,7 @@ var Affiliation = {
 
             if (articles) {
               // Add each article from the API...
-              for (i in articles) {
+              for (var i in articles) {
                 var article = articles[i];
                 // ...as long as there is more room for posts
                 if (count < posts.length) {

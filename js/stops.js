@@ -1,3 +1,5 @@
+"use strict";
+
 var Stops = {
   api: 'http://bybussen.api.tmn.io/stops',
   msgDisconnected: 'Frakoblet fra bybussen.api.tmn.io',
@@ -110,14 +112,14 @@ var Stops = {
 
       // The list with both stopIds and stopNames
       var tempList = {};
-      for (i in busStops) {
+      for (var i in busStops) {
         // Important: Use locationId, not busStopId
         tempList[busStops[i].locationId] = busStops[i].name;
       }
       this.list = tempList;
       // From this.list, create list with just stopNames
       var tempNames = [];
-      for (i in this.list) {
+      for (var i in this.list) {
         tempNames.push(this.list[i]);
       }
       this.names = tempNames;
@@ -163,7 +165,7 @@ var Stops = {
     // Using all lowercase, just in case the user has been inconsistent with casing.
     stopName = stopName.trim().toLowerCase();
     var foundStops = [];
-    for (id in this.list) {
+    for (var id in this.list) {
       var currentStop = this.list[id].toLowerCase();
       if (currentStop == stopName) {
         foundStops.push(id);
@@ -181,7 +183,7 @@ var Stops = {
     var foundStops = this.nameToIds(stopName);
     var toTown = false;
     var fromTown = false;
-    for (i in foundStops) {
+    for (var i in foundStops) {
       var currentId = foundStops[i] + '';
       if (currentId.charAt(4) == '1')
         toTown = true;
@@ -208,7 +210,7 @@ var Stops = {
     // Get possible IDs with stopName and find the right one by filtering with direction
     var checkTheseStops = this.nameToIds(stopName);
     if (direction == 'til byen') {
-      for (i in checkTheseStops) {
+      for (var i in checkTheseStops) {
         var currentId = checkTheseStops[i] + '';
         if (currentId.charAt(4) == '1') {
           return currentId;
@@ -216,7 +218,7 @@ var Stops = {
       }
     }
     else if (direction == 'fra byen') {
-      for (i in checkTheseStops) {
+      for (var i in checkTheseStops) {
         var currentId = checkTheseStops[i] + '';
         if (currentId.charAt(4) == '0') {
           return currentId;
@@ -239,7 +241,7 @@ var Stops = {
     var foundStops = [];
     var i = 0;
     // Find stops which start with nameStart
-    for (id in this.names) {
+    for (var id in this.names) {
       var currentName = this.names[id];
       if (currentName.toLowerCase().indexOf(nameStart) === 0) {
         // If not already added, add newfound name

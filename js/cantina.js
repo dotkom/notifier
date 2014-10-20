@@ -1,3 +1,5 @@
+"use strict";
+
 var Cantina = {
 
   url: 'https://www.sit.no/middag',
@@ -117,7 +119,7 @@ var Cantina = {
       var dinnerForEachDay = fullWeekDinnerInfo.split('<b>');
       var todaysMenu = self.msgClosed;
       var mondaysCantinaMenu = '';
-      for (dinnerDay in dinnerForEachDay) {
+      for (var dinnerDay in dinnerForEachDay) {
         // Find todays dinner menu
         if (dinnerForEachDay[dinnerDay].lastIndexOf(today, 0) === 0)
           todaysMenu = dinnerForEachDay[dinnerDay];
@@ -342,10 +344,11 @@ var Cantina = {
 
   removePartsAfter: function(keys, text) {
     var self = this;
-    for (key in keys) {
-      if (self.debugText) console.log(keys[key] + (keys[key].length<4?'\t\t':'\t') + ':: ' + text);
-      if (text.indexOf(keys[key]) !== -1)
-        text = text.split(keys[key])[0];
+    for (var i in keys) {
+      if (self.debugText) console.log(keys[i] + (keys[i].length<4?'\t\t':'\t') + ':: ' + text);
+      if (text.indexOf(keys[i]) !== -1) {
+        text = text.split(keys[i])[0];
+      }
     }
     return text;
   },
@@ -355,9 +358,9 @@ var Cantina = {
     // We'll do this twice in case some keywords are laid out after eachother.
     // Example: "Raspeballer med frisk salat", where "med" and "frisk" are keywords.
     for (var i=0; i<2; i++) {
-      for (key in keys) {
-        if (self.debugText) console.log(keys[key] + (keys[key].length<4?'\t\t':'\t') + ':: ' + text);
-        var spacedKey = ' '+keys[key];
+      for (var i in keys) {
+        if (self.debugText) console.log(keys[i] + (keys[i].length<4?'\t\t':'\t') + ':: ' + text);
+        var spacedKey = ' '+keys[i];
         if (self.endsWith(spacedKey, text)) {
           var pieces = text.split(' ');
           text = pieces.splice(0,pieces.length-1).join(' ');

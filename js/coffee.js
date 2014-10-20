@@ -1,3 +1,5 @@
+"use strict";
+
 var Coffee = {
   debug: 0,
   debugString: "200\n1. March 14:28:371",

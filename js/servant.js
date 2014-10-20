@@ -1,3 +1,5 @@
+"use strict";
+
 var Servant = {
   debug: 0,
   debugString: '11:00-12:00 Steinar Hagen\n12:00-13:00 Espen Skarsbø Kristoffersen Olsen\n13:00-14:00 Aina Elisabeth Thunestveit',
@@ -98,7 +100,7 @@ var Servant = {
           names[i] = names[i].charAt(0).toUpperCase()+'.';
         }
         name = '';
-        for (i in names) {
+        for (var i in names) {
           name += names[i] + " ";
         }
       }
