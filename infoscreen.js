@@ -240,13 +240,17 @@ var insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
     $(busStop+' .error').html(lines);
   }
   else {
-    // No lines to display, busstop is sleeping
+    // No lines to display, bus stop is sleeping
     if (lines['departures'].length === 0) {
       $(busStop+' .error').html('....zzzZZZzzz....');
     }
     else {
       // Display line for line with according times
       for (var i in spans) {
+        // If there aren't any more lines left: break
+        if (!lines['destination'][i] && !lines['departures'][i]) {
+          break;
+        }
         // Add the current line
         $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
         // Calculate urgency
