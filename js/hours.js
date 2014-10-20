@@ -63,7 +63,7 @@ var Hours = {
         if (self.debug) console.log('Untreated JSON:', json);
 
         // Strip away JSON and HTML
-        allHours = self.stripJsonAndHtml(json);
+        var allHours = self.stripJsonAndHtml(json);
         if (self.debug) console.log('Entire string:', allHours);
 
         // Find todays hours

@@ -204,31 +204,34 @@ var Stops = {
     if (this.debug) console.log('nameAndDirectionToId', stopName, direction);
     if (typeof stopName != 'string')
       return console.log('ERROR: stopName must be a string');
-    if (typeof direction != 'string')
-      return console.log('ERROR: direction must be a string');
 
     // Get possible IDs with stopName and find the right one by filtering with direction
     var checkTheseStops = this.nameToIds(stopName);
-    if (direction == 'til byen') {
+    if (direction === 'til byen') {
       for (var i in checkTheseStops) {
         var currentId = checkTheseStops[i] + '';
-        if (currentId.charAt(4) == '1') {
+        if (currentId.charAt(4) === '1') {
           return currentId;
         }
       }
     }
-    else if (direction == 'fra byen') {
+    else if (direction === 'fra byen') {
       for (var i in checkTheseStops) {
         var currentId = checkTheseStops[i] + '';
-        if (currentId.charAt(4) == '0') {
+        if (currentId.charAt(4) === '0') {
           return currentId;
         }
       }
     }
-    else {
-      console.log('ERROR: '+this.msgInvalidDirection);
-      return -1;
+    else if (isEmpty(direction)) {
+      for (var i in checkTheseStops) {
+        var currentId = checkTheseStops[i] + '';
+        // if a stop does not have direction, just 
+        return currentId;
+      }
     }
+    console.log('ERROR: could not find stop ID');
+    return -1;
   },
 
   partialNameToPotentialNames: function(nameStart) {

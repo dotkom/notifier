@@ -585,7 +585,7 @@ var bindSuggestions = function() {
 }
 
 var toggleBigscreen = function(activate, type, force) {
-  run = function() {
+  var run = function() {
     if (activate) {
       // Welcome to callback hell, - be glad it's well commented
       var speed = 400;

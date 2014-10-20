@@ -37,7 +37,7 @@ else {
   }, timeout);
 }
 
-Analytics = {
+var Analytics = {
 
   trackEvent: function(action, label, value) {
     var category = window.location.pathname; // chrome-extension://dohbapaojpimhoikcihglgkicjolfajj/options.html

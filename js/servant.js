@@ -30,8 +30,8 @@ var Servant = {
           servant = self.debugString;
         }
 
-        servantList = servant.split("\n");
-        currentServant = servantList[0];
+        var servantList = servant.split("\n");
+        var currentServant = servantList[0];
 
         // If it's an actual servant with a time slot like this:
         // 12:00-13:00: Michael Johansen
