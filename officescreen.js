@@ -176,7 +176,7 @@ createBusDataRequest = function(bus, cssIdentificator) {
   });
 }
 
-insertBusInfo = function(lines, stopName, cssIdentificator) {
+insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
   var busStop = '#bus '+cssIdentificator;
   var spans = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
 
