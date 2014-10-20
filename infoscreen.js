@@ -614,18 +614,6 @@ $(document).ready(function() {
     officeFontRotate();
   }, 1800000);
 
-  // Start the clock in #bus, from: alessioatzeni.com/blog/css3-digital-clock-with-jquery/
-  setInterval(function() {
-    var _d = new Date();
-    var minutes = _d.getMinutes();
-    var hours = _d.getHours();
-    // Pad the number with a zero if less than 10
-    if (minutes < 10)  minutes = '0' + minutes;
-    if (hours < 10)    hours = '0' + hours;
-    $("#bus #clock #minutes").html(minutes);
-    $("#bus #clock #hours").html(hours);
-  }, 1000);
-
   // Prevent image burn-in by fading to black every half hour
   var linebreaks = function() {
     var random = Math.ceil(Math.random() * 25);
