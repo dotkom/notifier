@@ -200,10 +200,10 @@ var updateBus = function() {
       }
     }
     // Error message
-    $('#bus #firstBus .name').html(ls.firstBusName + ' ' + ls.firstBusDirection);
-    $('#bus #secondBus .name').html(ls.secondBusName + ' ' + ls.secondBusDirection);
+    $('#bus #firstBus .name').html(ls.firstBusName + (ls.firstBusDirection !== 'null' ? ' ' + ls.firstBusDirection : ''));
+    $('#bus #secondBus .name').html(ls.secondBusName + (ls.secondBusDirection !== 'null' ? ' ' + ls.secondBusDirection : ''));
     $('#bus #firstBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
-    $('#bus #secondBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');     
+    $('#bus #secondBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
   }
   else {
     // All good, go ahead!
@@ -226,7 +226,7 @@ var insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
   var busStop = '#bus ' + cssIdentificator;
   var spans = ['first', 'second', 'third', 'fourth'];
 
-  $(busStop+' .name').html(stopName + ' ' + direction);
+  $(busStop+' .name').html(stopName + (direction !== 'null' ? ' ' + direction : ''));
 
   // Reset spans
   for (var i in spans) {
