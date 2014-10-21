@@ -91,7 +91,7 @@ var updateCoffeeSubscription = function(callback) {
   Coffee.get(false, function(pots, age) {
     // Error messages will be NaN here
     if (!isNaN(pots) && !isNaN(age)) {
-      storedPots = Number(ls.coffeePots);
+      var storedPots = Number(ls.coffeePots);
       // New pot number?
       if (storedPots < pots) {
         // Not a meeting? Or DEBUG mode.
