@@ -380,9 +380,6 @@ var changeOracleQuestion = function(question) {
 var animateOracleQuestion = function(line) {
   // Animate it
   var text = $('#oracle #question').val();
-  if (text.length === 0) {
-    build = true;
-  }
   var random = Math.floor(100 * Math.random() + 10);
   if (text.length !== line.length) {
     if (text.length === 0) {
