@@ -124,13 +124,14 @@ var Coffee = {
     var showIt = true;
     try {
       var then = JSON.parse(localStorage.lastSubscriptionTime);
-      if (this.minuteDiff(then) <= 4) {
+      if (this.minuteDiff(then) < 5) {
         showIt = false;
       }
     }
     catch (err) {
       if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
     }
+    
     if (showIt || demo) {
 
       // Save timestamp if this was a real coffee notification
@@ -168,11 +169,13 @@ var Coffee = {
         link: 'options.html',
         feedKey: key,
       }
-      if (!demo)
+      if (!demo) {
         Browser.createNotification(item);
-      else
+      }
+      else {
         // Need to run it by the background process because the event listeners are there
         Browser.getBackgroundProcess().Browser.createNotification(item);
+      }
     }
     else {
       if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
