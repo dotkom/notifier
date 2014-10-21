@@ -208,10 +208,10 @@ var Browser = {
 
     var self = this;
     if (this.name == 'Chrome') {
-      // Check if browser is active, not "idle" or "locked"
+      // Check if browser is "active" or "idle", not "locked"
       if (chrome.idle) {
         chrome.idle.queryState(30, function (state) {
-          if (state == 'active') {
+          if (state === 'active' || state === 'idle') {
 
             // Load affiliation icon if symbol is not provided
             if (!item.symbol)
