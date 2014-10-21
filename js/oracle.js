@@ -8,6 +8,8 @@ var Oracle = {
   msgPredictPostfix: ' [tab]',
   msg503: 'Orakelet har for mye å gjøre, vent littegrann er du grei',
   msgPaywall: 'Du har ikke logget på WiFien, åpne en hvilken som helst nettside for å få opp påloggingssiden, for eksempel denne: <a href="http://dusken.no">dusken.no</a>',
+  msgYouBrokeIt1: 'Oi, du ødela Orakelet. Disse feilene er spesielt sjeldne! Kan du være en engel og <a href="mailto:busstuc@idi.ntnu.no?subject=Bug report&amp;body=Hei, jeg ødela bussorakelet litt med dette spørsmålet: «',
+  msgYouBrokeIt2: '»">trykke her for å sende feilrapport til busstuc@idi.ntnu.no</a>? (A)',
 
   _autoLoad_: function() {
     if (localStorage.oracleBrain == undefined) {
@@ -46,6 +48,12 @@ var Oracle = {
             callback(self.msgDisconnected);
             return;
           }
+        }
+
+        // Handle oracle error
+        if (answer.match(/whereq|do_phrase|adverbial/gi) !== null) {
+          callback(self.msgYouBrokeIt1 + question + self.msgYouBrokeIt2);
+          return;
         }
 
         // Handle paywall
