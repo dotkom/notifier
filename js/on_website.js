@@ -154,13 +154,12 @@ if (typeof chrome != 'undefined') {
           }
 
           else if (answer.blob) {
-            var blob = JSON.parse(answer.blob)
-            ls = localStorage
-            ls.name = blob.name
-            ls.icon = blob.icon
-            ls.logo = blob.logo
-            ls.placeholder = blob.placeholder
-            ls.web = blob.web
+            var blob = JSON.parse(answer.blob);
+            localStorage.name = blob.name;
+            localStorage.icon = blob.icon;
+            localStorage.logo = blob.logo;
+            localStorage.placeholder = blob.placeholder;
+            localStorage.web = blob.web;
             setTimeout(loadAffiliation, 200);
             setTimeout(loadAffiliation, 2000);
           }
