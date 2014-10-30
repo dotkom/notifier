@@ -201,8 +201,8 @@ var Browser = {
     if (!item.link) console.log('ERROR: item.link is required');
 
     // Do not show any notifications within the first half minute after install
-    if ((new Date().getTime() - Number(localStorage.installTime)) < 30000) {
-      if (this.debug) console.log('No notifications within the first half minute ('+item.feedKey+')');
+    if (!DEBUG && (new Date().getTime() - Number(localStorage.installTime)) < 30000) {
+      if (this.debug) console.log('No notifications within the first half minute after install (sent from affiliation "'+item.feedKey+'")');
       return;
     }
 
