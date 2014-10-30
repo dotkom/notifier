@@ -33,8 +33,9 @@ var Images = {
     // };
 
     // Create empty object to avoid crashes when looking up undefined props of undefined object
-    if (options == undefined)
+    if (options == undefined) {
       options = {};
+    }
 
     // Single link?
     var url = affiliation.web;
@@ -46,18 +47,12 @@ var Images = {
       isSingleLink = true;
     }
 
-    // Array of possible news containers sorted by estimated probabilty
-    var containers = [
-      'div.entry',
-      'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
-      'article', // leave <article> at the bottom of the preferred list, it's a bit misused
-    ];
-
     var self = this;
     Ajaxer.getCleanHtml({
       url: url,
       success: function(html) {
       try {
+        // IMPORTANT:
         // jQuery tries to preload images found in the string, that is why the
         // html has had all <img> replaced by <pic> by Ajaxer.getCleanHTML
         var doc = $(html);
@@ -187,28 +182,31 @@ var Images = {
           // If image does not start with http://, https:// or at least //
           // NOTE: Must be checked after adding "http" and domainUrl
           else if (image !== null && image.match(/^(http)?s?:?\/\//) == null) {
-            if (self.debug) console.log('Images: No good image exists for link "'+link+'", all we have is "'+image+'"');
+            if (self.debug) console.log('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
             image = null;
+          }
+          // If null
+          else if (image === null) {
+            if (self.debug) console.log('Images: Did not find a good image');
           }
           // If all is good
           else {
             if (self.debug) console.log('Images: Found a good image at "'+image+'"');
           }
 
-          if (self.debug) console.log('');
-
+          if (self.debug) console.log('Images: All done, pushing', image);
           // Store it
           images.push(image);
         }
         callback(links, images);
       }
       catch (e) {
-        if (self.debug) console.log('ERROR: failed at parsing "'+affiliation.name+'" website');
+        if (self.debug) console.log('ERROR: failed at parsing "'+affiliation.name+'" website:', e);
           callback(links, []);
         }
       },
       error: function(e) {
-        if (self.debug) console.log('ERROR: could not fetch "'+affiliation.name+'" website');
+        if (self.debug) console.log('ERROR: could not fetch "'+affiliation.name+'" website:', e);
           callback(links, []);
         },
     });
@@ -224,6 +222,9 @@ var Images = {
       return false;
     }
 
+    imageUrl = imageUrl.toLowerCase();
+
+    // Look for bad keys and return false if any are found
     var keys = [
       '.gif',             // Exclude gifs since they're most likely smilies and the likes
       'data:image/gif',   // Another way to show gifs
@@ -231,17 +232,22 @@ var Images = {
       '/static/',         // Exclude static content, most likely icons
       '/comments/',       // Exclude comments, most likely text in image as "Add comment here"
     ];
-
-    // Look for keys and return false if any are found
     for (var i in keys) {
       var str = keys[i];
       if (imageUrl.indexOf(str) !== -1) {
-        if (this.debug) console.log('Images: Image url was bad, contained "'+str+'"\n');
+        if (this.debug) console.log('Images: Image url was bad, contained "'+str);
         return false;
       }
     }
 
-    if (this.debug) console.log('Images: Image url deemed OK\n');
+    // Look for proper formats and return false if none are used
+    var formats = new RegExp('(png|jpe?g|bmp|svg)$', 'gi');
+    if (imageUrl.match(formats) === null) {
+      if (this.debug) console.log('Images: Image url was bad, was not a proper format');
+      return false;
+    }
+
+    if (this.debug) console.log('Images: Image url deemed OK');
     // Control out
     return true;
   },
