@@ -17,7 +17,7 @@ var Ajaxer = {
   //     // Do something wth data
   //   },
   //   error: function(jqXHR, text, err) {
-  //     // console.lolg "something, something, error"
+  //     // console.log "something, something, error"
   //   },
   // }
 
