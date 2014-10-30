@@ -29,7 +29,9 @@ var Bus = {
   },
 
   calculateUrgency: function(timeString) {
-    var urgencyColors = ['#df0101', '#ff0000', '#fe2e2e', '#ff5555', '#ff8686', '#ffadad', '#ffd1d1', '#f8e0e0', '#f0e2e2', '#eeeeee', '#cccccc', '#bbbbbb'];
+    var urgencyColors = ['#ad0000', '#c80909', '#d91a1a', '#eb3131', '#fd4242', '#e56565', '#d97575', '#ce7f7f', '#c58e8e', '#b68f8e', '#a99291', '#9c9595'];
+    // var urgencyColors = ['#950000', '#a10f0f', '#b12222', '#b53535', '#b74b4b', '#b46161', '#a16767', '#906868', '#7e6969', '#6d6363', '#636262', '#4f4f4f'];
+    // var urgencyColors = ['#df0101', '#ff0000', '#fe2e2e', '#ff5555', '#ff8686', '#ffadad', '#ffd1d1', '#f8e0e0', '#f0e2e2', '#eeeeee', '#cccccc', '#bbbbbb'];
     timeString = timeString.replace('ca ', '');
     timeString = timeString.replace(' min', '');
     if (timeString === 'nå') {
