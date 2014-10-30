@@ -81,7 +81,7 @@ var Affiliation = {
         },
       },
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {newsSelector:'div.col-xs-12', domainUrl:'dusken.no'});
       },
     },
 
@@ -567,6 +567,11 @@ var Affiliation = {
           open: './org/solan/icon-open.png',
           closed: './org/solan/icon-closed.png',
           meeting: './org/solan/icon-meeting.png',
+        },
+        statusMessages: {
+          open: 'Lyset er på ved kaffemaskinen :)',
+          closed: 'Det er mørkt ved kaffemaskinen :(',
+          meeting: 'Møterommet er opptatt',
         },
         memePath: './org/solan/meme/',
       },
@@ -1175,7 +1180,7 @@ var Affiliation = {
       palette: 'grey',
       // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {newsSelector:'div.col-xs-12', domainUrl:'dusken.no'});
       },
     },
 
