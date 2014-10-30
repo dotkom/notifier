@@ -544,6 +544,21 @@ var Affiliation = {
       },
     },
 
+    'placebo': {
+      name: 'MF Placebo',
+      key: 'placebo',
+      web: 'http://mfplacebo.no/',
+      feed: 'http://mfplacebo.no/feed/',
+      logo: './org/placebo/logo.png',
+      icon: './org/placebo/icon.png',
+      symbol: './org/placebo/symbol.png',
+      placeholder: './org/placebo/placeholder.png',
+      palette: 'red',
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'article'});
+      },
+    },
+
     'solan': {
       name: 'Solan',
       key: 'solan',
