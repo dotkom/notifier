@@ -820,6 +820,9 @@ $(document).ready(function() {
 
   restoreChecksToBoxes();
 
+  // Set focus to affiliation 1 selector
+  $('#affiliationKey1').focus();
+
   // If useBigscreen is on, slide away the rest of the options and switch the logo subtext
   if (ls.useBigscreen === 'true') {
     setTimeout(function() {
