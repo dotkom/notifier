@@ -147,8 +147,7 @@ var Coffee = {
       // Add regular memes
       var amount = MEME_AMOUNT; // Number of memes, in regular human numbers, not zero-indexed
       for (var i = 1; i <= amount; i++) {
-        memes.push('./meme/'+i+'.jpg');
-        // memes.push('./meme/'+i+'.png');
+        memes.push('./meme/'+i+'.png');
       }
 
       // Add affiliation memes
@@ -156,8 +155,7 @@ var Coffee = {
         var amount = Affiliation.getMemeCount(key);
         var path = Affiliation.org[key].hw.memePath;
         for (var i = 1; i <= amount; i++) {
-          memes.push(path+i+'.jpg');
-          // memes.push(path+i+'.png');
+          memes.push(path+i+'.png');
         }
       }
 

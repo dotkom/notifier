@@ -48,7 +48,7 @@ var urlExists = function(url) {
 }
 var MEME_AMOUNT = 0;
 var __counter__ = 1;
-while (urlExists('meme/'+__counter__+'.jpg')) {
+while (urlExists('meme/'+__counter__+'.png')) {
 	MEME_AMOUNT++;
 	__counter__++;
 }
