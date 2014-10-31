@@ -3,6 +3,13 @@
 var Images = {
   debug: 0,
 
+  // Array of possible news containers sorted by estimated probabilty
+  containers: [
+    'div.entry',
+    'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
+    'article', // leave <article> at the bottom of the preferred list, it's a bit misused out there in the wild
+  ],
+
   get: function(affiliation, links, callback, options) {
     if (affiliation == undefined) {
       console.log('ERROR: Images.get needs the affiliation parameter');
@@ -67,8 +74,8 @@ var Images = {
           if (self.debug) console.log('Images: Using selector "'+newsSelector+'" for news at "'+url+'"');
         }
         else {
-          for (var i=0; i<containers.length; i++) {
-            var current = containers[i];
+          for (var i=0; i<self.containers.length; i++) {
+            var current = self.containers[i];
             if (doc.find(current).length != 0) {
               newsSelector = current;
               if (self.debug) console.log('Images: Using selector "'+current+'" for news at "'+url+'"');
