@@ -86,7 +86,7 @@ var Bus = {
       var time = departures[i].t;
       var isRealtime = departures[i].r;
       var destination = departures[i].d.trim();
-      destination = this.prettifyDestination(destination);
+      // destination = this.prettifyDestination(destination);
 
       // Add destination
       lines.destination.push(line + ' ' + destination);
@@ -136,12 +136,10 @@ var Bus = {
     return calculatedTime;
   },
 
-  prettifyDestination: function(destination) {
-    if (destination.match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/) !== null)
-      destination = "Sentrum";
-    if (destination.match(/Dragvoll\/Lohove/) !== null)
-      destination = "Lohove";
-    return destination;
-  },
+  // prettifyDestination: function(destination) {
+  //   if (destination.match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/) !== null)
+  //     destination = "Sentrum";
+  //   return destination;
+  // },
 
 };
