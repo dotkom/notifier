@@ -84,7 +84,7 @@ var Bus = {
       else if (count++ >= nLines) break;
 
       var time = departures[i].t;
-      var isRealtime = departures[i].r;
+      var isRealtime = departures[i].rt;
       var destination = departures[i].d.trim();
       // destination = this.prettifyDestination(destination);
 
