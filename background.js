@@ -1,3 +1,5 @@
+"use strict";
+
 var ls = localStorage;
 var iteration = 0;
 var intervalId = null;
@@ -36,7 +38,7 @@ var mainLoop = function(force) {
     iteration++;
 }
 
-updateOfficeAndMeetings = function(force) {
+var updateOfficeAndMeetings = function(force, callback) {
   console.lolg('updateOfficeAndMeetings');
   Office.get(function(status, message) {
     var title = '';
@@ -75,21 +77,25 @@ updateOfficeAndMeetings = function(force) {
       Meetings.get(function(meetings) {
         var today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
         Browser.setTitle(today);
+        if (typeof callback === 'function') callback();
       });
+    }
+    else {
+      if (typeof callback === 'function') callback();
     }
   });
 }
 
-updateCoffeeSubscription = function() {
+var updateCoffeeSubscription = function(callback) {
   console.lolg('updateCoffeeSubscription');
   Coffee.get(false, function(pots, age) {
     // Error messages will be NaN here
     if (!isNaN(pots) && !isNaN(age)) {
-      storedPots = Number(ls.coffeePots);
+      var storedPots = Number(ls.coffeePots);
       // New pot number?
       if (storedPots < pots) {
-        // Not a meeting?
-        if (ls.officeStatus !== 'meeting') {
+        // Not a meeting? Or DEBUG mode.
+        if (ls.officeStatus !== 'meeting' || DEBUG) {
           // Made less than 10 minutes ago?
           if (age < 10) {
             // Notify everyone with a coffee subscription :D
@@ -100,30 +106,35 @@ updateCoffeeSubscription = function() {
       // And remember to update localStorage
       ls.coffeePots = pots;
     }
+    if (typeof callback === 'function') callback();
   });
 }
 
-updateCantinas = function() {
+var updateCantinas = function(callback) {
   console.lolg('updateCantinas');
   Cantina.get(ls.leftCantina, function(menu) {
     ls.leftCantinaMenu = JSON.stringify(menu);
+    if (typeof callback === 'function') callback();
   });
   Cantina.get(ls.rightCantina, function(menu) {
     ls.rightCantinaMenu = JSON.stringify(menu);
+    if (typeof callback === 'function') callback();
   });
 }
 
-updateHours = function() {
+var updateHours = function(callback) {
   console.lolg('updateHours');
   Hours.get(ls.leftCantina, function(hours) {
     ls.leftCantinaHours = hours;
+    if (typeof callback === 'function') callback();
   });
   Hours.get(ls.rightCantina, function(hours) {
     ls.rightCantinaHours = hours;
+    if (typeof callback === 'function') callback();
   });
 }
 
-updateAffiliationNews = function(number) {
+var updateAffiliationNews = function(number, callback) {
   console.lolg('updateAffiliationNews'+number);
   // Get affiliation object
   var affiliationKey = ls['affiliationKey'+number];
@@ -146,14 +157,16 @@ updateAffiliationNews = function(number) {
         updateUnreadCount();
         fetchAndStoreImageLinks(number);
       }
+      if (typeof callback === 'function') callback();
     });
   }
   else {
     console.lolg('ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known');
+    if (typeof callback === 'function') callback();
   }
 }
 
-saveAndCountNews = function(items, number) {
+var saveAndCountNews = function(items, number) {
   var feedItems = 'affiliationFeedItems' + number;
   var newsList = 'affiliationNewsList' + number;
   var unreadCount = 'affiliationUnreadCount' + number;
@@ -165,18 +178,18 @@ saveAndCountNews = function(items, number) {
   ls[newsList] = News.refreshNewsList(items);
 }
 
-updateUnreadCount = function(count1, count2) {
+var updateUnreadCount = function(count1, count2) {
   var unreadCount = (Number(ls.affiliationUnreadCount1)) + (Number(ls.affiliationUnreadCount2));
   Browser.setBadgeText(String(unreadCount));
 }
 
-fetchAndStoreImageLinks = function(number) {
+var fetchAndStoreImageLinks = function(number) {
   var key = ls['affiliationKey'+number];
   var newsList = JSON.parse(ls['affiliationNewsList'+number]);
   // If the organization has it's own getImage function, use it
   if (Affiliation.org[key].getImage !== undefined) {
-    for (index in newsList) {
-      link = newsList[index];
+    for (var i in newsList) {
+      var link = newsList[i];
       // It's important to get the link from the callback within the function below,
       // not the above code, - because of race conditions mixing up the news posts, async ftw.
       Affiliation.org[key].getImage(link, function(link, image) {
@@ -192,9 +205,9 @@ fetchAndStoreImageLinks = function(number) {
   if (Affiliation.org[key].getImages !== undefined) {
     Affiliation.org[key].getImages(newsList, function(links, images) {
       var storedImages = JSON.parse(ls.storedImages);
-      for (index in links) {
-        if (null !== images[index]) {
-          storedImages[links[index]] = images[index];
+      for (var i in links) {
+        if (null !== images[i]) {
+          storedImages[links[i]] = images[i];
         }
       }
       ls.storedImages = JSON.stringify(storedImages);
@@ -202,13 +215,13 @@ fetchAndStoreImageLinks = function(number) {
   }
 }
 
-loadAffiliationIcon = function() {
-  key = ls.affiliationKey1;
+var loadAffiliationIcon = function() {
+  var key = ls.affiliationKey1;
   // Set badge icon
-  icon = Affiliation.org[key].icon;
+  var icon = Affiliation.org[key].icon;
   Browser.setIcon(icon);
   // Set badge title
-  name = Affiliation.org[key].name;
+  var name = Affiliation.org[key].name;
   Browser.setTitle(name + ' Notifier');
 }
 
@@ -244,7 +257,7 @@ $(document).ready( function() {
 
   loadAffiliationIcon();
 
-  Browser.bindCommandHotkeys(Affiliation.org[ls.affiliationKey1].web);
+  Browser.bindCommandHotkeys();
   Browser.registerNotificationListeners();
   Browser.bindOmniboxToOracle();
 

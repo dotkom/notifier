@@ -1,7 +1,9 @@
+"use strict";
+
 var ls = localStorage;
 var iteration = 0;
 
-mainLoop = function(force) {
+var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
@@ -36,7 +38,7 @@ mainLoop = function(force) {
     iteration++;
 }
 
-updateOffice = function(debugStatus) {
+var updateOffice = function(debugStatus) {
   console.lolg('updateOffice');
   Office.get(function(status, message) {
     if (DEBUG && debugStatus) {
@@ -61,14 +63,14 @@ updateOffice = function(debugStatus) {
   });
 }
 
-updateServant = function() {
+var updateServant = function() {
   console.lolg('updateServant');
   Servant.get(function(servant) {
     $('#todays #schedule #servant').html('- '+servant);
   });
 }
 
-updateMeetings = function() {
+var updateMeetings = function() {
   console.lolg('updateMeetings');
   Meetings.get(function(meetings) {
     // Add span to time
@@ -86,7 +88,7 @@ updateMeetings = function() {
   });
 }
 
-updateCoffee = function() {
+var updateCoffee = function() {
   console.lolg('updateCoffee');
   Coffee.get(true, function(pots, age) {
     $('#todays #coffee #pots').html('- '+pots);
@@ -94,10 +96,10 @@ updateCoffee = function() {
   });
 }
 
-updateCantinas = function(first) {
+var updateCantinas = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
-  update = function(shortname, menu, selector) {
+  var update = function(shortname, menu, selector) {
     var name = Cantina.names[shortname];
     $('#cantinas #'+selector+' .title').html(name);
     $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
@@ -108,7 +110,7 @@ updateCantinas = function(first) {
   update(ls.rightCantina, menu2, 'right');
 }
 
-listDinners = function(menu) {
+var listDinners = function(menu) {
   var dinnerlist = '';
   // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if (typeof menu === 'string') {
@@ -117,8 +119,8 @@ listDinners = function(menu) {
   }
   else {
     ls.noDinnerInfo = 'false'
-    for (index in menu) {
-      var dinner = menu[index];
+    for (var i in menu) {
+      var dinner = menu[i];
       if (dinner.price != null) {
         dinner.price = dinner.price + ',-';
         dinnerlist += '<li id="' + dinner.index + '"><span>' + dinner.price + '</span> ' + dinner.text + '</li>'
@@ -131,31 +133,31 @@ listDinners = function(menu) {
   return dinnerlist;
 }
 
-updateHours = function(first) {
+var updateHours = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateHours');
-  update = function(shortname, hours, selector) {
+  var update = function(shortname, hours, selector) {
     $('#cantinas #'+selector+' .hours').html(hours);
   }
   update(ls.leftCantina, ls.leftCantinaHours, 'left');
   update(ls.rightCantina, ls.rightCantinaHours, 'right');
 }
 
-updateBus = function() {
+var updateBus = function() {
   console.lolg('updateBus');
   if (!navigator.onLine) {
     // Reset
     var stops = ['firstBus', 'secondBus'];
     var spans = ['first', 'second', 'third', 'fourth'];
-    for (i in stops) {
-      for (j in spans) {
+    for (var i in stops) {
+      for (var j in spans) {
         $('#bus #'+stops[i]+' .'+spans[j]+' .line').html('');
         $('#bus #'+stops[i]+' .'+spans[j]+' .time').html('');
       }
     }
     // Error message
-    $('#bus #firstBus .name').html(ls.firstBusName);
-    $('#bus #secondBus .name').html(ls.secondBusName);
+    $('#bus #firstBus .name').html(ls.firstBusName + (ls.firstBusDirection !== 'null' ? ' ' + ls.firstBusDirection : ''));
+    $('#bus #secondBus .name').html(ls.secondBusName + (ls.secondBusDirection !== 'null' ? ' ' + ls.secondBusDirection : ''));
     $('#bus #firstBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
     $('#bus #secondBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
   }
@@ -166,23 +168,24 @@ updateBus = function() {
   }
 }
 
-createBusDataRequest = function(bus, cssIdentificator) {
+var createBusDataRequest = function(bus, cssIdentificator) {
   var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
-  var activeLines = JSON.parse(activeLines);
+  // Parse self (was stored as array)
+  activeLines = JSON.parse(activeLines);
   // Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
   Bus.get(ls[bus], activeLines, function(lines) {
-    insertBusInfo(lines, ls[bus+'Name'], cssIdentificator);
+    insertBusInfo(lines, ls[bus+'Name'], ls[bus+'Direction'], cssIdentificator);
   });
 }
 
-insertBusInfo = function(lines, stopName, cssIdentificator) {
-  var busStop = '#bus '+cssIdentificator;
+var insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
+  var busStop = '#bus ' + cssIdentificator;
   var spans = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
 
-  $(busStop+' .name').html(stopName);
+  $(busStop+' .name').html(stopName + (direction !== 'null' ? ' ' + direction : ''));
 
   // Reset spans
-  for (i in spans) {
+  for (var i in spans) {
     $(busStop+' .'+spans[i]+' .line').html('');
     $(busStop+' .'+spans[i]+' .time').html('');
   }
@@ -193,17 +196,21 @@ insertBusInfo = function(lines, stopName, cssIdentificator) {
     $(busStop+' .error').html(lines);
   }
   else {
-    // No lines to display, busstop is sleeping
+    // No lines to display, bus stop is sleeping
     if (lines['departures'].length === 0) {
       $(busStop+' .error').html('....zzzZZZzzz....');
     }
     else {
       // Display line for line with according times
-      for (i in spans) {
+      for (var i in spans) {
+        // If there aren't any more lines left: break
+        if (!lines['destination'][i] && !lines['departures'][i]) {
+          break;
+        }
         // Add the current line
         $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
         // Calculate urgency
-        var urgency = calculateUrgency(lines['departures'][i]);
+        var urgency = Bus.calculateUrgency(lines['departures'][i]);
         var departString = '<span style="color: ' + urgency + ';">' + lines['departures'][i] + '</span>';
         $(busStop+' .'+spans[i]+' .time').append(departString);
       }
@@ -211,33 +218,14 @@ insertBusInfo = function(lines, stopName, cssIdentificator) {
   }
 }
 
-calculateUrgency = function(timeString) {
-  var urgencyColors = ['#DF0101', '#FF0000', '#FE2E2E', '#FA5858', '#F78181', '#F5A9A9', '#F6CECE', '#F8E0E0', '#FBEFEF', '#FFFFFF', '#DDDDDD', '#BBBBBB'];
-  timeString = timeString.replace('ca ', '');
-  timeString = timeString.replace(' min', '');
-  if (timeString === 'nå') {
-    return urgencyColors[0];
-  }
-  else if (timeString.match(/[0-9]{2}:[0-9]{2}/g)) {
-    return urgencyColors[11];
-  }
-  else {
-    time = Number(timeString);
-    if (time < 22) {
-      return urgencyColors[Math.floor(time / 2)];
-    }
-  }
-  return urgencyColors[11];
-}
-
-changeCreatorName = function(name) {
+var changeCreatorName = function(name) {
   // Stop previous changeCreatorName instance, if any
   clearTimeout(ls.changeCreatorNameTimeoutId);
   // Animate creator name change in the pageflip
   animateCreatorName(name);
 }
 
-animateCreatorName = function(name, build) {
+var animateCreatorName = function(name, build) {
   // Animate it
   var text = $('#pagefliptyping').text();
   if (text.length === 0) {
@@ -374,11 +362,11 @@ $(document).ready(function() {
   }, 86400000);
 
   // Enter main loop, keeping everything up-to-date
-  stayUpdated = function(now) {
+  var stayUpdated = function(now) {
     console.lolg(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP);
     // Schedule for repetition
-    intervalId = setInterval(function() {
+    window.intervalId = setInterval(function() {
       mainLoop();
     }, loopTimeout);
     // Run once right now (just wait 2 secs to avoid network-change errors)
@@ -391,7 +379,7 @@ $(document).ready(function() {
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
     console.lolg(OFFLINE_MESSAGE);
-    clearInterval(intervalId);
+    clearInterval(window.intervalId);
     updateBus();
   });
   // Go

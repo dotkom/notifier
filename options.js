@@ -1,6 +1,8 @@
+"use strict";
+
 var ls = localStorage;
 
-resizeBackgroundImage = function() {
+var resizeBackgroundImage = function() {
   if (1550 < $(window).width()) {
     $('#background').attr("style", "background:url('img/background-large.png') center center no-repeat;");
   }
@@ -12,14 +14,14 @@ resizeBackgroundImage = function() {
   }
 }
 
-showSavedNotification = function() {
+var showSavedNotification = function() {
   $("#notification").fadeIn(200);
   setTimeout(function() {
     $("#notification").fadeOut(200);
   }, 800);
 }
 
-pageFlipCursorBlinking = function() {
+var pageFlipCursorBlinking = function() {
   setInterval(function() {
     $(".pageflipcursor").animate({opacity: 0}, "fast", "swing", function() {
       $(this).animate({opacity: 1}, "fast", "swing");
@@ -27,15 +29,15 @@ pageFlipCursorBlinking = function() {
   }, 600);
 }
 
-testDesktopNotification = function() {
+var testDesktopNotification = function() {
   News.showNotification();
 }
 
-testCoffeeSubscription = function() {
+var testCoffeeSubscription = function() {
   Coffee.showNotification();
 }
 
-bindAffiliationSelector = function(number, isPrimaryAffiliation) {
+var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
   var id = 'affiliationKey'+number;
   var affiliationKey = ls[id];
   // Default values, set only the chosen affiliation as selected, because it is the Chosen One
@@ -134,13 +136,13 @@ bindAffiliationSelector = function(number, isPrimaryAffiliation) {
   });
 }
 
-bindPaletteSelector = function() {
+var bindPaletteSelector = function() {
   // Default values
   $('#affiliationPalette').val(ls.affiliationPalette);
   // React to change
   $('#affiliationPalette').change(function() {
     // Get newly set value
-    palette = $(this).val();
+    var palette = $(this).val();
     // Save it
     ls.affiliationPalette = palette;
     // Applying palette to options page
@@ -153,7 +155,7 @@ bindPaletteSelector = function() {
   });
 }
 
-disableHardwareFeatures = function(quick) {
+var disableHardwareFeatures = function(quick) {
   ls.showOffice = 'false';
   ls.coffeeSubscription = 'false';
   if (quick) {
@@ -175,7 +177,7 @@ disableHardwareFeatures = function(quick) {
   }
 }
 
-enableHardwareFeatures = function(quick) {
+var enableHardwareFeatures = function(quick) {
   ls.showOffice = 'true';
   ls.coffeeSubscription = 'true';
   restoreChecksToBoxes();
@@ -200,7 +202,7 @@ enableHardwareFeatures = function(quick) {
   }
 }
 
-changeOfficeStatusIcons = function() {
+var changeOfficeStatusIcons = function() {
   if (Affiliation.org[ls.affiliationKey1].hw) {
     var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
     $('img.icon.open').attr('src', statusIcons.open);
@@ -210,7 +212,7 @@ changeOfficeStatusIcons = function() {
   }
 }
 
-bindCantinaSelector = function(selector) {
+var bindCantinaSelector = function(selector) {
   // Default values
   $('#' + selector).val(ls[selector]);
   // React to change
@@ -223,7 +225,7 @@ bindCantinaSelector = function(selector) {
   });
 }
 
-bindBusFields = function(busField) {
+var bindBusFields = function(busField) {
   var cssSelector = '#' + busField;
   // console.lolg('Binding bus fields for ' + cssSelector);
   var fadeTime = 50;
@@ -327,7 +329,7 @@ bindBusFields = function(busField) {
         // Suggestions
         var suggestions = Stops.partialNameToPotentialNames(nameStart);
         $('#busSuggestions').html('');
-        for (i in suggestions) {
+        for (var i in suggestions) {
           var _text = suggestions[i];
           var suggestion = $('<div class="suggestion">' + _text + '</div>').hide();
 
@@ -375,7 +377,7 @@ bindBusFields = function(busField) {
   bindFavoriteBusLines(busField);
 }
 
-bindFavoriteBusLines = function(busField) {
+var bindFavoriteBusLines = function(busField) {
   var cssSelector = '#' + busField;
   // Switch status on click
   $(cssSelector + ' .lines .line').click(function() {
@@ -393,20 +395,20 @@ bindFavoriteBusLines = function(busField) {
   });
 }
 
-getDirections = function(busField, correctStop) {
+var getDirections = function(busField, correctStop) {
   var cssSelector = '#' + busField;
   var stopName = $(cssSelector + ' input');
   var directionField = $(cssSelector + ' select');
   // Get and inject possible directions for correct stop
   var allDirections = Stops.nameToDirections(correctStop);
   $(directionField).html('');
-  for (index in allDirections) {
-    var direction = allDirections[index];
+  for (var i in allDirections) {
+    var direction = allDirections[i];
     $(directionField).append('<option>' + direction + '</option>');
   }
 }
 
-getFavoriteLines = function(busField) {
+var getFavoriteLines = function(busField) {
   var cssSelector = '#' + busField;
 
   // Show it
@@ -429,8 +431,8 @@ getFavoriteLines = function(busField) {
     // Add lines to bus stop
     $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
     var counter = 0;
-    for (index in lines) {
-      var line = lines[index];
+    for (var i in lines) {
+      var line = lines[i];
       if (counter % 4 === 0) {
         $(cssSelector + ' .lines table').append('</tr><tr>');
       }
@@ -454,7 +456,7 @@ getFavoriteLines = function(busField) {
   }, 2500);
 }
 
-saveBus = function(busField) {
+var saveBus = function(busField) {
   var cssSelector = '#' + busField;
   // Get stopname, direction, stopid
   var stopName = $(cssSelector + ' input').val();
@@ -482,7 +484,7 @@ saveBus = function(busField) {
   // Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 }
 
-loadBus = function(busField) {
+var loadBus = function(busField) {
   var cssSelector = '#' + busField;
   var stopName = ls[busField + 'Name'];
   var direction = ls[busField + 'Direction'];
@@ -508,18 +510,18 @@ loadBus = function(busField) {
       // Collect active and inactive lines to a single dict
       // with boolean values showing active or inactive
       var lines = {};
-      for (index in activeLines) {
-        var line = activeLines[index]
+      for (var i in activeLines) {
+        var line = activeLines[i]
         lines[line] = true;
       }
-      for (index in inactiveLines) {
-        var line = inactiveLines[index]
+      for (var i in inactiveLines) {
+        var line = inactiveLines[i]
         lines[line] = false;
       }
       // Sort the dict by keys (bus line numbers sorted in ascending order)
       var keys = [];
-      for (index in lines) {
-        keys.push(index);
+      for (var i in lines) {
+        keys.push(i);
       }
       keys = keys.sort(function(a,b) {
         return a - b;
@@ -527,8 +529,8 @@ loadBus = function(busField) {
       // Add lines to bus stop as a generated table
       $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
       var counter = 0;
-      for (index in keys) {
-        var i = keys[index];
+      for (var i in keys) {
+        var i = keys[i];
         if (counter % 4 == 0) {
           $(cssSelector + ' .lines table').append('</tr><tr>');
         }
@@ -541,7 +543,7 @@ loadBus = function(busField) {
   }
 }
 
-slideFavoriteBusLines = function() {
+var slideFavoriteBusLines = function() {
   // Hide the favorite bus line spans from the start
   setTimeout(function() {
     if (!$('#busBox').hasClass('hover')) {
@@ -567,10 +569,10 @@ slideFavoriteBusLines = function() {
   });
 }
 
-bindSuggestions = function() {
+var bindSuggestions = function() {
   $('.suggestion').click(function() {
     if (typeof ls.busInFocus !== 'undefined') {
-      text = $(this).text();
+      var text = $(this).text();
       $('#' + ls.busInFocus + ' input').val(text);
       getDirections(ls.busInFocus, text);
       getFavoriteLines(ls.busInFocus);
@@ -582,8 +584,8 @@ bindSuggestions = function() {
   });
 }
 
-toggleBigscreen = function(activate, type, force) {
-  run = function() {
+var toggleBigscreen = function(activate, type, force) {
+  var run = function() {
     if (activate) {
       // Welcome to callback hell, - be glad it's well commented
       var speed = 400;
@@ -646,7 +648,7 @@ toggleBigscreen = function(activate, type, force) {
   setTimeout(run, 500);
 }
 
-switchBigScreen = function(type) {
+var switchBigScreen = function(type) {
   if (type !== 'infoscreen' && type !== 'officescreen') {
     console.lolg('ERROR: Unsupported mode');
     return;
@@ -683,7 +685,7 @@ switchBigScreen = function(type) {
   setTimeout(run, 500);
 }
 
-revertBigscreen = function() {
+var revertBigscreen = function() {
   // Wait till after the modal is properly closed
   var run = function() {
     var speed = 300;
@@ -715,7 +717,7 @@ revertBigscreen = function() {
   setTimeout(run, 500);
 }
 
-restoreChecksToBoxes = function() {
+var restoreChecksToBoxes = function() {
   // Restore checks to boxes from localStorage
   $('input:checkbox').each(function(index, element) {
     if (ls[element.id] === 'true') {
@@ -724,14 +726,14 @@ restoreChecksToBoxes = function() {
   });
 }
 
-changeCreatorName = function(name) {
+var changeCreatorName = function(name) {
   // Stop previous changeCreatorName instance, if any
   clearTimeout(Number(ls.animateCreatorNameTimeoutId));
   // Animate creator name change in the pageflip
   animateCreatorName(name + " with <3");
 }
 
-animateCreatorName = function(line, build) {
+var animateCreatorName = function(line, build) {
   // Animate it
   var text = $('#pagefliptyping').text();
   if (text.length === 0) {
@@ -759,7 +761,7 @@ animateCreatorName = function(line, build) {
   }
 }
 
-popupHere = function(time) {
+var popupHere = function(time) {
   if (typeof time === 'undefined') {
     time = 7000;
   }
@@ -818,6 +820,9 @@ $(document).ready(function() {
 
   restoreChecksToBoxes();
 
+  // Set focus to affiliation 1 selector
+  $('#affiliationKey1').focus();
+
   // If useBigscreen is on, slide away the rest of the options and switch the logo subtext
   if (ls.useBigscreen === 'true') {
     setTimeout(function() {
@@ -859,6 +864,7 @@ $(document).ready(function() {
   bindPaletteSelector();
   if (ls.showAffiliation2 !== 'true') {
     $('#affiliationKey2').attr('disabled', 'disabled');
+    $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
   }
 
   // Allow user to select cantinas
@@ -982,9 +988,11 @@ $(document).ready(function() {
 
       if (this.id === 'showAffiliation2' && this.checked === false) {
         $('#affiliationKey2').attr('disabled', 'disabled');
+        $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
       }
       if (this.id === 'showAffiliation2' && this.checked === true) {
         $('#affiliationKey2').removeAttr('disabled');
+        $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(0%)');
       }
       
       if (this.id === 'showOffice' && this.checked === true) {

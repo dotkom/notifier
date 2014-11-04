@@ -1,3 +1,5 @@
+"use strict";
+
 // Recieve all requests from parts of the extension that cannot access
 // localStorage or the rest of the codebase. Example: A content script.
 
@@ -15,7 +17,7 @@ function onMessage(request, sender, callback) {
   }
   // which cantina did the user just click in the popup?
   // the content script wants to switch to that specific cantina
-  if (request.action == 'getClickedHours') {
+  else if (request.action == 'getClickedHours') {
     console.lolg('onMessage: getClickedHours');
     var clickedHours = localStorage.clickedHours;
     if (typeof clickedHours != 'undefined') {
@@ -23,7 +25,7 @@ function onMessage(request, sender, callback) {
       callback(clickedHours);
     }
   }
-  else console.lolg('ERROR: unrecognized request');
+  else console.lolg('ERROR: unrecognized request:', request);
 }
 
 // onConnect for conversations

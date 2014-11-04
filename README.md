@@ -222,4 +222,5 @@ Issues submitted to Chromium/Opera
 - Regex word boundary and ÆØÅ: https://code.google.com/p/chromium/issues/detail?id=223360
 - Desktop Notification logging: https://code.google.com/p/chromium/issues/detail?id=225212
 - Rich Notifications Don't Timeout at Midnight: https://code.google.com/p/chromium/issues/detail?id=284018&thanks=284018&ts=1378160265
+- Transparent borders not playing well with inset box shadow: https://code.google.com/p/chromium/issues/detail?id=423881
 - Opera 16.0 stable crashes instantly when selecting private key file (during extension packaging): DNA-12164@bugs.opera.com

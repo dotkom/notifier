@@ -1,3 +1,5 @@
+"use strict";
+
 var Defaults = {
 
   _autoLoad_: function() {
@@ -11,10 +13,8 @@ var Defaults = {
     
     // Set default choices if undefined, in the same order as on the options page
 
-    if (ls.extensionName == undefined)
-      ls.extensionName = 'Online Notifier';
-    if (ls.extensionCreator == undefined)
-      ls.extensionCreator = 'appKom'; // Max 8 letters because of styling
+    ls.extensionName = 'Online Notifier';
+    ls.extensionCreator = 'appKom'; // Max 8 letters because of styling
     if (ls.installTime == undefined)
       ls.installTime = new Date().getTime();
 
@@ -22,7 +22,7 @@ var Defaults = {
     if (ls.showAffiliation1 == undefined)
       ls.showAffiliation1 = 'true';
     if (ls.affiliationKey1 == undefined)
-      ls.affiliationKey1 = 'online';
+      ls.affiliationKey1 = (DEBUG ? 'DEBUG' : 'online');
     if (ls.affiliationUnreadCount1 == undefined)
       ls.affiliationUnreadCount1 = 0;
     if (ls.affiliationNewsList1 == undefined)
@@ -67,12 +67,12 @@ var Defaults = {
     ]
     var firstBusOk = true;
     var secondBusOk = true;
-    for (prop in firstBusProps) {
+    for (var prop in firstBusProps) {
       if (typeof firstBusProps[prop] == 'undefined') {
         firstBusOk = false;
       }
     }
-    for (prop in secondBusProps) {
+    for (var prop in secondBusProps) {
       if (typeof secondBusProps[prop] == 'undefined') {
         secondBusOk = false;
       }

@@ -1,3 +1,5 @@
+"use strict";
+
 var Bus = {
   debug: 0,
   api: 'http://bybussen.api.tmn.io/rt/',
@@ -5,6 +7,8 @@ var Bus = {
   msgConnectionError: 'Tilkoblingsfeil',
   msgInvalidDirection: 'Ugyldig retning',
   msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
+
+  // Public functions
 
   get: function(stopId, favoriteLines, callback) {
     if (callback === undefined) {
@@ -22,6 +26,27 @@ var Bus = {
         callback(self.msgDisconnected);
       },
     });
+  },
+
+  calculateUrgency: function(timeString) {
+    var urgencyColors = ['#ad0000', '#c80909', '#d91a1a', '#eb3131', '#fd4242', '#e56565', '#d97575', '#ce7f7f', '#c58e8e', '#b68f8e', '#a99291', '#9c9595'];
+    // var urgencyColors = ['#950000', '#a10f0f', '#b12222', '#b53535', '#b74b4b', '#b46161', '#a16767', '#906868', '#7e6969', '#6d6363', '#636262', '#4f4f4f'];
+    // var urgencyColors = ['#df0101', '#ff0000', '#fe2e2e', '#ff5555', '#ff8686', '#ffadad', '#ffd1d1', '#f8e0e0', '#f0e2e2', '#eeeeee', '#cccccc', '#bbbbbb'];
+    timeString = timeString.replace('ca ', '');
+    timeString = timeString.replace(' min', '');
+    if (timeString === 'nå') {
+      return urgencyColors[0];
+    }
+    else if (timeString.match(/[0-9]{2}:[0-9]{2}/g)) {
+      return urgencyColors[11];
+    }
+    else {
+      var time = Number(timeString);
+      if (time < 22) {
+        return urgencyColors[Math.floor(time / 2)];
+      }
+    }
+    return urgencyColors[11];
   },
 
   // Private functions, do not use externally
@@ -45,21 +70,23 @@ var Bus = {
     var count = 0;
     var nLines = (favoriteLines.length === 0 ? 10 : 100);
 
-    for (i in departures) {
+    for (var i in departures) {
 
       var line = departures[i].l;
 
       // Usually controlled by favorite lines
-      if (favoriteLines.length != 0)
-        if (favoriteLines.indexOf(Number(line)) === -1)
+      if (favoriteLines.length != 0) {
+        if (favoriteLines.indexOf(Number(line)) === -1) {
           continue;
+        }
+      }
       // Otherwise controlled with counter
       else if (count++ >= nLines) break;
 
       var time = departures[i].t;
-      var isRealtime = departures[i].r;
+      var isRealtime = departures[i].rt;
       var destination = departures[i].d.trim();
-      destination = this.prettifyDestination(destination);
+      // destination = this.prettifyDestination(destination);
 
       // Add destination
       lines.destination.push(line + ' ' + destination);
@@ -109,12 +136,10 @@ var Bus = {
     return calculatedTime;
   },
 
-  prettifyDestination: function(destination) {
-    if (destination.match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/) !== null)
-      destination = "Sentrum";
-    if (destination.match(/Dragvoll\/Lohove/) !== null)
-      destination = "Lohove";
-    return destination;
-  },
+  // prettifyDestination: function(destination) {
+  //   if (destination.match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/) !== null)
+  //     destination = "Sentrum";
+  //   return destination;
+  // },
 
 };

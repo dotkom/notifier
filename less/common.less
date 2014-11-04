@@ -1,16 +1,25 @@
 
 // COMMON FILE FOR popup.html, infoscreen.html
 
-// Variables
+// DEBUG variables, set to colors instead of transparents for debug borders around everything
 
-@debug: 0px; // 0px is off, use 1px for popup, 3px for infoscreen
+/*
+@debugRed: red;
+@debugCyan: cyan;
+@debugLime: lime;
+@debugYellow: yellow;
+*/
+@debugRed: transparent;
+@debugCyan: transparent;
+@debugLime: transparent;
+@debugYellow: transparent;
 
 // Debugging, use bright colors that stand out
 
-.debugContainer {border: @debug solid cyan;} // Outer containers
-.debugBox {border: @debug solid red;} // Inner containers
-.debugText {border: @debug solid yellow;} // Text elements
-.debugElement {border: @debug solid lime;} // Other elements
+.debugContainer {border: 1px solid @debugCyan;} // Outer containers
+.debugBox {border: 1px solid @debugRed;} // Inner containers
+.debugText {border: 1px solid @debugYellow;} // Text elements
+.debugElement {border: 1px solid @debugLime;} // Other elements
 
 // Mixins
 
@@ -84,7 +93,7 @@ body {
     #schedule {
       .debugBox;
       float: left;
-      width: 48%;
+      width: 47.5%;
       #servant {
         .emphasized;
       }
@@ -92,7 +101,7 @@ body {
     #coffee {
       .debugBox;
       float: right;
-      width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+      width: 47.5%;
       #pots {
         .emphasized;
       }
@@ -110,13 +119,13 @@ body {
       .debugBox;
       position: relative;
       float: left;
-      width: 48%;
+      width: 47.5%;
     }
     #right {
       .debugBox;
       position: relative;
       float: right;
-      width: 50%; /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+      width: 47.5%;
     }
     #dinnerbox {
       .debugElement;
@@ -138,11 +147,11 @@ body {
     
     position: relative;
     background-color: #111;
+    border: 0; /* overrides debug borders, otherwise it will look strange with grey palette due to a webkit error */
     width: 110%;
     margin-left: -5%;
 
     .name {
-      margin-bottom: 5px;
       font-weight: bold;
       white-space: nowrap;
       overflow: hidden;
@@ -153,16 +162,14 @@ body {
       position: relative;
       float: left;
       text-align: right;
-      padding-top: 13px;
-      width: 40%;
+      padding-top: 14px;
     }
     #secondBus {
       .debugBox;
       position: relative;
       float: left;
       text-align: left;
-      padding-top: 13px;
-      width: 40%;
+      padding-top: 14px;
     }
     .loadingLeft {
       position: relative;
@@ -181,7 +188,7 @@ body {
       text-overflow: ellipsis;
     }
     .time {
-      font-weight: bold;
+      /* nothing here yet */
     }
     .error {
       font-style: italic;
@@ -200,6 +207,9 @@ body {
     
     /* #full for using a single column */
     #full {
+      >.title {
+        display: none; /* no need for affiliation title when only one is in use */
+      }
       position: relative;
       width: 100%;
       float: left;
@@ -216,12 +226,12 @@ body {
     /* #left and #right for using double columns */
     #left {
       position: relative;
-      width: 47%;
+      width: 47.5%;
       float: left;
     }
     #right {
       position: relative;
-      width: 48%;
+      width: 47.5%;
       float: right;
       .title.regular {
         color: LightGrey;
@@ -295,7 +305,7 @@ body {
         }
         img.flashy {
           float: left;
-          width: 96%;
+          width: 97%;
           margin: 0;
         }
       }

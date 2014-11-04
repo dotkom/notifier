@@ -1,3 +1,5 @@
+"use strict";
+
 var Timetables = {
   debug: 0,
   api: 'https://www.atb.no/rutetider/',

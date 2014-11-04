@@ -142,33 +142,46 @@ body {
   margin-left: 12px;
   color: #cff;
 }
-#container #now #clockbox {
+#container #now #clock {
   height: 100px;
   float: right;
-  margin-right: 3%;
+  margin-top: 30px;
+  margin-right: 30px;
   font-family: 'Digi';
-  font-size: 80px;
-  color: #eee;
   text-shadow: 0 0 5px #ddd,
         0 0 10px #ccc,
         0 0 15px #bbb;
 }
-#container #now #clockbox #clock {
-  margin-top: 30px;
+#container #now #clock li {
+  display: inline-block;
+  font-family: Digi;
+  font-size: 70px;
+  list-style: none;
 }
-#container #now #clockbox #clock #hh,
-#container #now #clockbox #clock #mm,
-#container #now #clockbox #clock #ss,
-#container #now #clockbox #clock .sep {
-  float: left;
+#container #now #clock #hours {
+  position: relative;
+  left: 10px;
 }
-#container #now #clockbox #clock #hh .digit,
-#container #now #clockbox #clock #mm .digit,
-#container #now #clockbox #clock #ss .digit,
-#container #now #clockbox #clock .sep .digit {
-  float: left;
-  width: 40px;
-  text-align: right;
+#container #now #clock #minutes {
+  position: relative;
+  left: -10px;
+}
+#container #now #clock #point {
+  position: relative;
+  -moz-animation: mymove 1s ease infinite;
+  -webkit-animation: mymove 1s ease infinite;
+}
+@-webkit-keyframes mymove {
+  0% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0;
+    text-shadow: none;
+  }
+  100% {
+    opacity: 1.0;
+  }
 }
 #container #todays {
   clear: both;
@@ -179,7 +192,7 @@ body {
 }
 #container #todays #schedule {
   float: left;
-  width: 48%;
+  width: 47.5%;
 }
 #container #todays #schedule #servant {
   font-style: italic;
@@ -192,7 +205,7 @@ body {
 }
 #container #todays #coffee {
   float: right;
-  width: 50%;
+  width: 47.5%;
 }
 #container #todays #coffee #pots {
   font-style: italic;
@@ -292,138 +305,6 @@ body {
 #container #bus #firstBus .tenth,
 #container #bus #secondBus .tenth {
   clear: both;
-}
-#container #bus #firstBus .first .urg0,
-#container #bus #secondBus .first .urg0,
-#container #bus #firstBus .second .urg0,
-#container #bus #secondBus .second .urg0,
-#container #bus #firstBus .third .urg0,
-#container #bus #secondBus .third .urg0,
-#container #bus #firstBus .fourth .urg0,
-#container #bus #secondBus .fourth .urg0,
-#container #bus #firstBus .fifth .urg0,
-#container #bus #secondBus .fifth .urg0,
-#container #bus #firstBus .sixth .urg0,
-#container #bus #secondBus .sixth .urg0,
-#container #bus #firstBus .seventh .urg0,
-#container #bus #secondBus .seventh .urg0,
-#container #bus #firstBus .eighth .urg0,
-#container #bus #secondBus .eighth .urg0,
-#container #bus #firstBus .ninth .urg0,
-#container #bus #secondBus .ninth .urg0,
-#container #bus #firstBus .tenth .urg0,
-#container #bus #secondBus .tenth .urg0 {
-  color: #ccc;
-}
-#container #bus #firstBus .first .urg1,
-#container #bus #secondBus .first .urg1,
-#container #bus #firstBus .second .urg1,
-#container #bus #secondBus .second .urg1,
-#container #bus #firstBus .third .urg1,
-#container #bus #secondBus .third .urg1,
-#container #bus #firstBus .fourth .urg1,
-#container #bus #secondBus .fourth .urg1,
-#container #bus #firstBus .fifth .urg1,
-#container #bus #secondBus .fifth .urg1,
-#container #bus #firstBus .sixth .urg1,
-#container #bus #secondBus .sixth .urg1,
-#container #bus #firstBus .seventh .urg1,
-#container #bus #secondBus .seventh .urg1,
-#container #bus #firstBus .eighth .urg1,
-#container #bus #secondBus .eighth .urg1,
-#container #bus #firstBus .ninth .urg1,
-#container #bus #secondBus .ninth .urg1,
-#container #bus #firstBus .tenth .urg1,
-#container #bus #secondBus .tenth .urg1 {
-  color: #fcc;
-}
-#container #bus #firstBus .first .urg2,
-#container #bus #secondBus .first .urg2,
-#container #bus #firstBus .second .urg2,
-#container #bus #secondBus .second .urg2,
-#container #bus #firstBus .third .urg2,
-#container #bus #secondBus .third .urg2,
-#container #bus #firstBus .fourth .urg2,
-#container #bus #secondBus .fourth .urg2,
-#container #bus #firstBus .fifth .urg2,
-#container #bus #secondBus .fifth .urg2,
-#container #bus #firstBus .sixth .urg2,
-#container #bus #secondBus .sixth .urg2,
-#container #bus #firstBus .seventh .urg2,
-#container #bus #secondBus .seventh .urg2,
-#container #bus #firstBus .eighth .urg2,
-#container #bus #secondBus .eighth .urg2,
-#container #bus #firstBus .ninth .urg2,
-#container #bus #secondBus .ninth .urg2,
-#container #bus #firstBus .tenth .urg2,
-#container #bus #secondBus .tenth .urg2 {
-  color: #ffb2b2;
-}
-#container #bus #firstBus .first .urg3,
-#container #bus #secondBus .first .urg3,
-#container #bus #firstBus .second .urg3,
-#container #bus #secondBus .second .urg3,
-#container #bus #firstBus .third .urg3,
-#container #bus #secondBus .third .urg3,
-#container #bus #firstBus .fourth .urg3,
-#container #bus #secondBus .fourth .urg3,
-#container #bus #firstBus .fifth .urg3,
-#container #bus #secondBus .fifth .urg3,
-#container #bus #firstBus .sixth .urg3,
-#container #bus #secondBus .sixth .urg3,
-#container #bus #firstBus .seventh .urg3,
-#container #bus #secondBus .seventh .urg3,
-#container #bus #firstBus .eighth .urg3,
-#container #bus #secondBus .eighth .urg3,
-#container #bus #firstBus .ninth .urg3,
-#container #bus #secondBus .ninth .urg3,
-#container #bus #firstBus .tenth .urg3,
-#container #bus #secondBus .tenth .urg3 {
-  color: #f66;
-}
-#container #bus #firstBus .first .urg4,
-#container #bus #secondBus .first .urg4,
-#container #bus #firstBus .second .urg4,
-#container #bus #secondBus .second .urg4,
-#container #bus #firstBus .third .urg4,
-#container #bus #secondBus .third .urg4,
-#container #bus #firstBus .fourth .urg4,
-#container #bus #secondBus .fourth .urg4,
-#container #bus #firstBus .fifth .urg4,
-#container #bus #secondBus .fifth .urg4,
-#container #bus #firstBus .sixth .urg4,
-#container #bus #secondBus .sixth .urg4,
-#container #bus #firstBus .seventh .urg4,
-#container #bus #secondBus .seventh .urg4,
-#container #bus #firstBus .eighth .urg4,
-#container #bus #secondBus .eighth .urg4,
-#container #bus #firstBus .ninth .urg4,
-#container #bus #secondBus .ninth .urg4,
-#container #bus #firstBus .tenth .urg4,
-#container #bus #secondBus .tenth .urg4 {
-  color: #f33;
-}
-#container #bus #firstBus .first .urg5,
-#container #bus #secondBus .first .urg5,
-#container #bus #firstBus .second .urg5,
-#container #bus #secondBus .second .urg5,
-#container #bus #firstBus .third .urg5,
-#container #bus #secondBus .third .urg5,
-#container #bus #firstBus .fourth .urg5,
-#container #bus #secondBus .fourth .urg5,
-#container #bus #firstBus .fifth .urg5,
-#container #bus #secondBus .fifth .urg5,
-#container #bus #firstBus .sixth .urg5,
-#container #bus #secondBus .sixth .urg5,
-#container #bus #firstBus .seventh .urg5,
-#container #bus #secondBus .seventh .urg5,
-#container #bus #firstBus .eighth .urg5,
-#container #bus #secondBus .eighth .urg5,
-#container #bus #firstBus .ninth .urg5,
-#container #bus #secondBus .ninth .urg5,
-#container #bus #firstBus .tenth .urg5,
-#container #bus #secondBus .tenth .urg5 {
-  color: #c00;
 }
 #container #bus #firstBus {
   width: 45%;

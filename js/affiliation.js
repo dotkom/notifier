@@ -1,3 +1,5 @@
+"use strict";
+
 var Affiliation = {
   debug: 0,
   
@@ -79,7 +81,7 @@ var Affiliation = {
         },
       },
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {newsSelector:'div.col-xs-12', domainUrl:'dusken.no'});
       },
     },
 
@@ -477,7 +479,7 @@ var Affiliation = {
 
             if (articles) {
               // Add each article from the API...
-              for (i in articles) {
+              for (var i in articles) {
                 var article = articles[i];
                 // ...as long as there is more room for posts
                 if (count < posts.length) {
@@ -532,11 +534,28 @@ var Affiliation = {
         },
         statusMessages: {
           open: 'Velkommen inn!',
+          closed: 'Finn et komitemedlem for å åpne kontoret',
+          meeting: 'Det er møte på møterommet',
         },
         memePath: './org/nabla/meme/',
       },
       getImage: function(link, callback) {
         Images.get(this, link, callback, {newsSelector:'div.row div.col-md-8', domainUrl:'nabla.no'});
+      },
+    },
+
+    'placebo': {
+      name: 'MF Placebo',
+      key: 'placebo',
+      web: 'http://mfplacebo.no/',
+      feed: 'http://mfplacebo.no/feed/',
+      logo: './org/placebo/logo.png',
+      icon: './org/placebo/icon.png',
+      symbol: './org/placebo/symbol.png',
+      placeholder: './org/placebo/placeholder.png',
+      palette: 'red',
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'article'});
       },
     },
 
@@ -563,6 +582,11 @@ var Affiliation = {
           open: './org/solan/icon-open.png',
           closed: './org/solan/icon-closed.png',
           meeting: './org/solan/icon-meeting.png',
+        },
+        statusMessages: {
+          open: 'Lyset er på ved kaffemaskinen :)',
+          closed: 'Det er mørkt ved kaffemaskinen :(',
+          meeting: 'Møterommet er opptatt',
         },
         memePath: './org/solan/meme/',
       },
@@ -1171,7 +1195,7 @@ var Affiliation = {
       palette: 'grey',
       // Using getImage instead because Dusken posts the article to the RSS feed before the frontpage.
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {newsSelector:'div.col-xs-12', domainUrl:'dusken.no'});
       },
     },
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var Oracle = {
   debug: 0,
   api: 'http://m.atb.no/xmlhttprequest.php?service=routeplannerOracle.getOracleAnswer&question=',
@@ -6,6 +8,8 @@ var Oracle = {
   msgPredictPostfix: ' [tab]',
   msg503: 'Orakelet har for mye å gjøre, vent littegrann er du grei',
   msgPaywall: 'Du har ikke logget på WiFien, åpne en hvilken som helst nettside for å få opp påloggingssiden, for eksempel denne: <a href="http://dusken.no">dusken.no</a>',
+  msgYouBrokeIt1: 'Oi, du ødela Orakelet. Disse feilene er spesielt sjeldne! Kan du være en engel og <a href="mailto:busstuc@idi.ntnu.no?subject=Bug report&amp;body=Hei, jeg ødela bussorakelet litt med dette spørsmålet: «',
+  msgYouBrokeIt2: '»">trykke her for å sende feilrapport til busstuc@idi.ntnu.no</a>? (A)',
 
   _autoLoad_: function() {
     if (localStorage.oracleBrain == undefined) {
@@ -44,6 +48,12 @@ var Oracle = {
             callback(self.msgDisconnected);
             return;
           }
+        }
+
+        // Handle oracle error
+        if (answer.match(/whereq|do_phrase|adverbial/gi) !== null) {
+          callback(self.msgYouBrokeIt1 + question + self.msgYouBrokeIt2);
+          return;
         }
 
         // Handle paywall
@@ -86,6 +96,92 @@ var Oracle = {
     });
   },
 
+//   askAsApi: function(question, callback) {
+//     if (callback == undefined) {
+//       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+//       return;
+//     }
+//     if (isEmpty(question)) {
+//       console.log('ERROR: question is empty');
+//       return;
+//     }
+
+//     // Encode URL component.... as it says below :D
+//     var encodedQuestion = encodeURIComponent(question);
+
+//     var self = this;
+//     Ajaxer.getPlainText({
+//       url: self.api + encodedQuestion,
+//       success: function(answer) {
+
+//         // Handle errors
+//         if (answer.match(/error/gi) !== null ||
+//             answer.match(/503/gi) !== null ||
+//             answer.match(/\<.*\>/gi) !== null
+//         ) {
+//           callback('error');
+//         }
+
+//         var pieces = answer.split('\n');
+
+//         // House keeping
+//         for (var i in pieces) {
+//           if (pieces[i].trim() === '') {
+//             console.log('got an empty one!', pieces[i])
+//             pieces[i] = null;
+//           }
+//           else if (pieces[i].match(/^(og|and)/) !== null) {
+//             console.log('got a long one!', pieces[i-1], pieces[i])
+//             pieces[i-1] += pieces[i];
+//             pieces[i] = null;
+//           }
+//           else if (pieces[i].match(/^(Tidene angir|The hours)/) !== null) {
+//             console.log('got a nasty one', pieces[i])
+//             pieces[i] = null;
+//           }
+//         }
+
+//         console.log('pieces', pieces)
+
+//         // Clean out null-values
+//         var cleaned = [];
+//         for (var i in pieces) {
+//           if (pieces[i] !== null) {
+//             cleaned.push(pieces[i]);
+//           }
+//         }
+//         pieces = cleaned;
+
+//         console.log('cleaned', pieces);
+
+//         for (var i in pieces) {
+
+//         }
+
+
+
+// /*
+//         Buss 5 passerer Kongens gate K2 kl. 2345 og kl. 0005 
+// og kommer til Gløshaugen Nord, 7 minutter senere.
+// Buss 22 passerer Munkegata M2 kl. 0005 
+// og kommer til Gløshaugen Nord, 7 minutter senere.
+
+// Tidene angir tidligste passeringer av holdeplassene. 
+// */
+//         console.log(answer);
+
+//         // Provide API-like answer
+//         // answer = self.handleAsApi(answer);
+
+//         // Call it back
+//         callback(answer);
+//       },
+//       error: function(jqXHR, text, err) {
+//         callback('error');
+//       },
+//     });
+//   },
+
   greet: function() {
     var greetings = [
       // Spørsmål
@@ -118,6 +214,7 @@ var Oracle = {
       'STOP! Hammertime.',
       'Aaaaaaaaa Sevenyaaaaaaaa!',
       'I\'m blue, da bee dee da be daa',
+      'Badger, badger, badger, badger, mushroom, muuushhrooooooom!',
       'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.',
 
       // Funfacts
@@ -146,7 +243,7 @@ var Oracle = {
       'Det finnes mange bussapper.',
       'AtB sitt API er laget av italienere.',
       'AtB sitt API har italienske metodenavn.',
-      'ByBussen er den mest oppdaterte bussappen.',
+      'AtB Sanntid er den mest oppdaterte bussappen.',
       'Bussene sjekker inn med GPS på hvert stopp, cirka.',
       'Bussene som må kjøre langt mellom hvert stopp har upresis sanntid.',
       '<a href="http://busskartet.no">busskartet.no</a> er ganske morsomt.',
@@ -227,7 +324,7 @@ var Oracle = {
         if (this.debug) console.log('Oracle considered question to be valuable');
 
         // Check if the same timeslot is free on other days, and insert answer there too
-        for (i in oracleBrain) {
+        for (var i in oracleBrain) {
           if (oracleBrain[i][timeslot.hour] == '') {
             oracleBrain[i][timeslot.hour] = question;
             if (this.debug) console.log('Oracle used question for day', i, 'as well (monday=0)');
@@ -314,7 +411,7 @@ var Oracle = {
     } while (timePiece !== null);
 
     // Change each time string individually
-    for (i in timePieces) {
+    for (var i in timePieces) {
       var t = timePieces[i];
       var hours = Number(t.match(/^(\d+):/)[1]);
       var ampm = t.match(/\s(.*)$/)[1].toLowerCase();
@@ -326,7 +423,7 @@ var Oracle = {
     }
 
     // Load answer with new time strings
-    for (i in timePieces) {
+    for (var i in timePieces) {
       answer = answer.replace(/§/, timePieces[i]);
     }
     if (this.debug) console.log('AFTER 12to24\n' + answer);
@@ -395,9 +492,9 @@ var Oracle = {
 
     // Put an @ where you want a linebreak
 
-    // Replace "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd." with just "Holdeplass: Gløshaugen Syd"
-    answer = answer.replace(/Holdeplassen nærmest .*? er (.*?)\. /gi, '@Holdeplass: $1 ');
-    answer = answer.replace(/The station nearest to .*? is (.*?)\. /gi, '@Station: $1 ');
+    // Replace "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd." with just: Valgte "Gløshaugen Syd" for "Gløshaugen"
+    answer = answer.replace(/Holdeplassen nærmest (.*?) er (.*?)\. /gi, '@Valgte "$2" for "$1"@');
+    answer = answer.replace(/The station nearest to .*? is (.*?)\. /gi, '@Chose "$2" for "$1"@');
     // Replace "Buss 66 passerer NTNU Dragvoll kl." with just "Buss 66:"
     answer = answer.replace(/(Buss \d+) passerer .*? kl\. /gi, '@$1 går ');
     answer = answer.replace(/(Bus \d+) passes by .*? at /gi, '@$1 leaves ');
@@ -423,5 +520,83 @@ var Oracle = {
     if (this.debug) console.log('\nAFTER prettify\n' + answer);
     return answer;
   },
+
+  // getEndStop: function(line, fromStop, callback) {
+  //   if (typeof callback === 'undefined') {
+  //     console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+  //     return;
+  //   }
+  //   if (typeof line !== 'number') {
+  //     console.log('ERROR: line must be a number');
+  //     return;
+  //   }
+
+  //   var question = 'hvor stopper ' + line;
+
+  //   // Encode URL component.... as it says below :D
+  //   var encodedQuestion = encodeURIComponent(question);
+
+  //   var self = this;
+  //   Ajaxer.getPlainText({
+  //     url: self.api + encodedQuestion,
+  //     success: function(answer) {
+
+  //       // Handle errors
+  //       if (answer.match(/error/gi) !== null ||
+  //           answer.match(/503/gi) !== null ||
+  //           answer.match(/\<.*\>/gi) !== null
+  //       ) {
+  //         if (this.debug) console.log('ERROR: error occured while asking oracle');
+  //         callback('error');
+  //       }
+  //       // Split into stops
+  //       answer = answer.trim();
+  //       answer = answer.replace(/(^Buss \d+ går til holdeplassene )|(\.$)|(\n)/g, '');
+  //       var stops = answer.split(', ');
+
+  //       // Find the end stop based on the stop we have
+  //       var endStop = findEndStopFromStops(fromStop, stops);
+
+  //       // Call it back
+  //       callback(endStop);
+  //     },
+  //     error: function(jqXHR, text, err) {
+  //       if (this.debug) console.log('ERROR: failed to ask oracle for stops');
+  //       callback('error');
+  //     },
+  //   });
+
+  //   var findEndStopFromStops = function(fromStop, allStops) {
+  //     // Check that the fromStop exists in the list at all
+  //     if (allStops.indexOf(fromStop) === -1) {
+  //       if (this.debug) console.log('ERROR: fromStop must be in the allStops array');
+  //       return;
+  //     }
+  //     var cityIndex = -1;
+  //     // Find the city terminal in the array with all stops for this line
+  //     for (var i in allStops) {
+  //       if (allStops[i].match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/gi) !== null) {
+  //         cityIndex = i;
+  //         break;
+  //       }
+  //     }
+  //     if (cityIndex === -1) {
+  //       if (this.debug) console.log('ERROR: this line of stops does not pass through the city');
+  //       return;
+  //     }
+  //     // fromStop-index before cityIndex gives endStop at 0
+  //     // fromStop-index after cityIndex gives endStop at n-1
+  //     else if (fromStop < cityIndex) {
+  //       return allStops[0];
+  //     }
+  //     else if (fromStop === cityIndex) {
+  //       if (this.debug) console.log('ERROR: cannot understand which direction the bus is going')
+  //       return;
+  //     }
+  //     else if (fromStop > cityIndex) {
+  //       return allStops[allStops.length - 1];
+  //     }
+  //   };
+  // },
 
 }

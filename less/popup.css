@@ -1,24 +1,30 @@
+/*
+@debugRed: red;
+@debugCyan: cyan;
+@debugLime: lime;
+@debugYellow: yellow;
+*/
 .debugContainer {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
 }
 .debugBox {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
 }
 .debugText {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
 }
 .debugElement {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
 }
 .fullbox {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 .title {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   color: NavajoWhite;
   display: block;
   font-weight: bold;
@@ -27,7 +33,7 @@
   color: white;
 }
 .emphasized {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
 }
 body {
@@ -53,7 +59,7 @@ body {
 }
 /* This container keeps the content centered */
 #container {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   position: absolute;
   top: 0;
   right: 0;
@@ -63,71 +69,69 @@ body {
   z-index: 10;
 }
 #container #office {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #todays #schedule {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   float: left;
-  width: 48%;
+  width: 47.5%;
 }
 #container #todays #schedule #servant {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 4px;
 }
 #container #todays #coffee {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   float: right;
-  width: 50%;
-  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+  width: 47.5%;
 }
 #container #todays #coffee #pots {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 4px;
 }
 #container #cantinas {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 #container #cantinas .hours {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 4px;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
 #container #cantinas #left {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
-  width: 48%;
+  width: 47.5%;
 }
 #container #cantinas #right {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: right;
-  width: 50%;
-  /* when the right floating box is half the width it'll appear they're both aligned to 50% */
+  width: 47.5%;
 }
 #container #cantinas #dinnerbox {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
 }
 #container #cantinas li {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   position: relative;
   width: 95%;
   list-style-type: none;
@@ -137,38 +141,37 @@ body {
   /*font-style: italic;*/
 }
 #container #bus {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
   width: 100%;
   position: relative;
   background-color: #111;
+  border: 0;
+  /* overrides debug borders, otherwise it will look strange with grey palette due to a webkit error */
   width: 110%;
   margin-left: -5%;
 }
 #container #bus .name {
-  margin-bottom: 5px;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 #container #bus #firstBus {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: right;
-  padding-top: 13px;
-  width: 40%;
+  padding-top: 14px;
 }
 #container #bus #secondBus {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: left;
-  padding-top: 13px;
-  width: 40%;
+  padding-top: 14px;
 }
 #container #bus .loadingLeft {
   position: relative;
@@ -189,27 +192,27 @@ body {
 #container #bus .eighth,
 #container #bus .nineth,
 #container #bus .tenth {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 #container #bus .time {
-  font-weight: bold;
+  /* nothing here yet */
 }
 #container #bus .error {
   font-style: italic;
 }
 #container #bus #middle {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   float: left;
   text-align: center;
   height: 100%;
 }
 #container #news {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
@@ -223,30 +226,34 @@ body {
   width: 100%;
   float: left;
 }
+#container #news #full > .title {
+  display: none;
+  /* no need for affiliation title when only one is in use */
+}
 #container #news #full .post .item img.regular {
   float: left;
   width: 33%;
 }
 #container #news #left {
   position: relative;
-  width: 47%;
+  width: 47.5%;
   float: left;
 }
 #container #news #right {
   position: relative;
-  width: 48%;
+  width: 47.5%;
   float: right;
 }
 #container #news #right .title.regular {
   color: LightGrey;
 }
 #container #news .post {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   position: relative;
   clear: both;
 }
 #container #news .post .item {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -288,7 +295,7 @@ body {
 }
 #container #news .post .item img.flashy {
   float: left;
-  width: 96%;
+  width: 97%;
   margin: 0;
 }
 #container #news .unread {
@@ -328,13 +335,13 @@ body {
   box-shadow: 0 0 20px black;
 }
 #tips .text {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   color: black;
   font-size: 12px;
   line-height: 16px;
 }
 #tips .text .clicktoclose {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   color: #aaa;
   text-align: right;
   font-style: italic;
@@ -363,7 +370,7 @@ body {
   padding: 20px;
 }
 #container #header {
-  border: 0px solid #00ffff;
+  border: 1px solid transparent;
   clear: both;
   margin: 0;
   padding: 0;
@@ -372,7 +379,7 @@ body {
   padding-bottom: 5px;
 }
 #container #header #buttons {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   width: 220px;
   float: left;
 }
@@ -392,14 +399,14 @@ body {
   pointer-events: none;
   position: absolute;
   cursor: pointer;
-  left: 122px;
-  top: 26px;
+  left: 123px;
+  top: 28px;
   z-index: 50;
   width: 16px;
   height: 16px;
 }
 #container #header #buttontext {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   display: none;
   position: relative;
   float: left;
@@ -410,14 +417,14 @@ body {
         0 0 27px white;
 }
 #container #header #logo {
-  border: 0px solid #00ff00;
+  border: 1px solid transparent;
   float: right;
   cursor: pointer;
   max-width: 187px;
   max-height: 67px;
 }
 #container #todays #schedule #servant {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 4px;
 }
@@ -432,12 +439,12 @@ body {
   text-decoration: underline;
 }
 #container #todays #coffee #pots {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 4px;
 }
 #container #cantinas .hours {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 4px;
   cursor: pointer;
@@ -455,12 +462,12 @@ body {
   box-shadow: 0 0 15px #aaa;
   top: 16px;
   margin-bottom: 20px;
-  padding-bottom: 9px;
+  padding-bottom: 10px;
 }
 #container #bus #realtime {
-  border: 0px solid #ff0000;
-  line-height: 15px;
-  height: 87px;
+  border: 1px solid transparent;
+  line-height: 13px;
+  height: 90px;
 }
 #container #bus #realtime .first,
 #container #bus #realtime .second,
@@ -475,7 +482,7 @@ body {
   text-decoration: underline;
 }
 #container #bus #realtime .name {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 #container #bus #realtime .loadingLeft {
   width: 80px;
@@ -485,8 +492,14 @@ body {
   width: 80px;
   bottom: 4px;
 }
+#container #bus #realtime #firstBus {
+  width: 41%;
+}
+#container #bus #realtime #secondBus {
+  width: 41%;
+}
 #container #bus #realtime #middle {
-  width: 18%;
+  width: 16%;
 }
 #container #bus #realtime #middle #atbLogo {
   position: relative;
@@ -498,7 +511,7 @@ body {
   border-top-left-radius: 16px;
 }
 #container #bus #oracle {
-  border: 0px solid #ff0000;
+  border: 1px solid transparent;
   margin-left: 4.5%;
   width: 90%;
   position: relative;
@@ -508,7 +521,7 @@ body {
   margin-right: 7px;
 }
 #container #bus #oracle #question {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
   width: 87%;
   background-color: rgba(115, 115, 115, 0.2);
   border-radius: 4px;
@@ -519,7 +532,9 @@ body {
   outline: none;
 }
 #container #bus #oracle #answer {
-  border: 0px solid #ffff00;
+  border: 1px solid transparent;
+  position: relative;
+  left: -2px;
   padding: 0 1px;
 }
 #container #bus #oracle #answer a {
@@ -532,6 +547,10 @@ body {
   min-height: 80px;
   max-height: 200px;
   margin: 0 7px 0 0;
+}
+#container #news #left > .title,
+#container #news #right > .title {
+  margin-bottom: -5px;
 }
 #container #news .post {
   margin-top: 13px;
@@ -564,7 +583,6 @@ body {
   min-height: 20px;
   max-height: 250px;
   padding: 4px;
-  box-shadow: 0 0 13px #bbb;
 }
 #container #news .post .item img.regular {
   margin: 2px 0 0 4px;

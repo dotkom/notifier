@@ -1,3 +1,5 @@
+"use strict";
+
 var Meetings = {
   debug: 0,
   debugApi: 0,

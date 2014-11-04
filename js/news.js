@@ -1,3 +1,5 @@
+"use strict";
+
 var News = {
   debug: 0,
   newsMinLimit: 1,
@@ -69,7 +71,7 @@ var News = {
             newPosts.splice(i, 1);
         
         // Postprocessing of newPosts
-        for (i in newPosts)
+        for (var i in newPosts)
           newPosts[i] = self.postProcess(newPosts[i], affiliationObject);
 
         callback(newPosts);

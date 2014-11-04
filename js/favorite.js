@@ -1,3 +1,5 @@
+"use strict";
+
 var Favorite = {
   debug: 0,
   api: 'https://www.atb.no/holdeplassoversikt/',

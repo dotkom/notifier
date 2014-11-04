@@ -23,14 +23,10 @@
         <div id="info">Henter info...</div>
       </div>
 
-      <div id="clockbox">
-        <div id="clock">
-          <div id="hh"><div class="digit">0</div><div class="digit">0</div></div>
-          <div class="sep">:</div>
-          <div id="mm"><div class="digit">0</div><div class="digit">0</div></div>
-          <div class="sep">:</div>
-          <div id="ss"><div class="digit">0</div><div class="digit">0</div></div>
-        </div>
+      <div id="clock">
+        <li id="hours">00</li>
+        <li id="point">:</li>
+        <li id="minutes">00</li>
       </div>
     </div>
 
@@ -64,7 +60,7 @@
       </div>
     </div>
 
-    <div id="bus">
+    <div id="bus" class="largeBus">
       <div id="firstBus">
         <div class="name">
           <!-- br's are hackish -->
@@ -164,14 +160,14 @@
   </div>
   <!-- affiliation logo (will switch to sponsor logo automatically if available -->
   <img id="logo" src="img/blank.png" />
-  <!-- "from dotKom with <3" -->
+  <!-- "from appKom with <3" -->
   <div id="pageflip">
     <div id="pfBackground"></div>
     <div id="pfText">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
     <div id="pfFlip"></div>
     <div id="pfLink">
       <br />
-      <a href="http://github.com/dotkom/online-notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pagefliptyping"></span><span class="pageflipcursor">_</span></a>
+      <a href="http://github.com/appkom/notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pagefliptyping"></span><span class="pageflipcursor">_</span></a>
     </div>
   </div>
 
@@ -193,6 +189,7 @@
   <!-- JS Services -->
   <script src="js/bus.js"></script>
   <script src="js/cantina.js"></script>
+  <script src="js/clock.js"></script>
   <script src="js/coffee.js"></script>
   <script src="js/hackerspace.js"></script>
   <script src="js/hours.js"></script>
@@ -202,9 +199,6 @@
 
   <!-- Document ready sript -->
   <script src="officescreen.js"></script>
-
-  <!-- Digital Clock -->
-  <script src="js/digital_clock.js"></script>
 
 </body>
 </html>

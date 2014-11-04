@@ -1,3 +1,5 @@
+"use strict";
+
 var Browser = {
   debug: 0,
   msgCallbackMissing: 'ERROR: Callback is missing',
@@ -163,14 +165,12 @@ var Browser = {
     return false; // assume dev mode
   },
 
-  bindCommandHotkeys: function(affiliationWeb) {
+  bindCommandHotkeys: function() {
     if (this.name == 'Chrome') {
       chrome.commands.onCommand.addListener(function(command) {
         if (command == 'open_instabart') {
+          Analytics.trackEvent('usedHotkey', 'open_instabart');
           Browser.openTab('http://instabart.no');
-        }
-        else if (command == 'open_affiliation') {
-          Browser.openTab(affiliationWeb);
         }
         else {
           console.log('ERROR: Unrecognized browser command');
@@ -201,17 +201,17 @@ var Browser = {
     if (!item.link) console.log('ERROR: item.link is required');
 
     // Do not show any notifications within the first half minute after install
-    if ((new Date().getTime() - Number(localStorage.installTime)) < 30000) {
-      if (this.debug) console.log('No notifications within the first half minute ('+item.feedKey+')');
+    if (!DEBUG && (new Date().getTime() - Number(localStorage.installTime)) < 30000) {
+      if (this.debug) console.log('No notifications within the first half minute after install (sent from affiliation "'+item.feedKey+'")');
       return;
     }
 
     var self = this;
     if (this.name == 'Chrome') {
-      // Check if browser is active, not "idle" or "locked"
+      // Check if browser is "active" or "idle", not "locked"
       if (chrome.idle) {
         chrome.idle.queryState(30, function (state) {
-          if (state == 'active') {
+          if (state === 'active' || state === 'idle') {
 
             // Load affiliation icon if symbol is not provided
             if (!item.symbol)

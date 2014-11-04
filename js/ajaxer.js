@@ -1,9 +1,11 @@
-Ajaxer = {
+"use strict";
+
+var Ajaxer = {
   debug: 0,
 
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
   ajaxSetup: {
-    timeout: 12000, // 10s+, the sole reason for this is Gemini's ridiculously slow and large news feed
+    timeout: 6000, // anything longer is too long
     cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
   },
 
@@ -15,7 +17,7 @@ Ajaxer = {
   //     // Do something wth data
   //   },
   //   error: function(jqXHR, text, err) {
-  //     // console.lolg "something, something, error"
+  //     // console.log "something, something, error"
   //   },
   // }
 

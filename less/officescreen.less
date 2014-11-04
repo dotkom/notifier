@@ -7,7 +7,7 @@
 
 @showFadeOut: inherit;
 
-// Fonts
+// Font for the clock
 
 @font-face {
   font-family: 'Digi';
@@ -135,28 +135,44 @@ body {
       }
     }
 
-    #clockbox {
+    #clock {
       height: 100px;
       float: right;
-      margin-right: 3%;
+      margin-top: 30px;
+      margin-right: 30px;
       font-family: 'Digi';
-      font-size: 80px;
-      color: #eee;
       text-shadow:
         0 0 5px #ddd,
         0 0 10px #ccc,
         0 0 15px #bbb;
-
-      #clock {
-        margin-top: 30px;
-
-        #hh, #mm, #ss, .sep {
-          float: left;
-
-          .digit {
-            float: left;
-            width: 40px;
-            text-align: right;
+      li {
+        display: inline-block;
+        font-family: Digi;
+        font-size: 70px;
+        list-style: none;
+      }
+      #hours {
+        position: relative;
+        left: 10px;
+      }
+      #minutes {
+        position: relative;
+        left: -10px;
+      }
+      #point {
+        position: relative;
+        -moz-animation: mymove 1s ease infinite;
+        -webkit-animation: mymove 1s ease infinite;
+        @-webkit-keyframes mymove {
+          0% {
+            opacity:1.0;
+          }
+          50% {
+            opacity:0;
+            text-shadow: none;
+          }
+          100% {
+            opacity:1.0;
           }
         }
       }
@@ -169,7 +185,7 @@ body {
 
     #schedule {
       float: left;
-      width: 48%;
+      width: 47.5%;
       #servant {
         .emphasized;
       }
@@ -179,7 +195,7 @@ body {
     }
     #coffee {
       float: right;
-      width: 50%;
+      width: 47.5%;
       #pots {
         .emphasized;
       }
@@ -254,25 +270,6 @@ body {
 
       .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .ninth, .tenth {
         clear: both;
-
-        .urg0 {
-          color: #ccc;
-        }
-        .urg1 {
-          color: #fcc;
-        }
-        .urg2 {
-          color: #ffb2b2;
-        }
-        .urg3 {
-          color: #f66;
-        }
-        .urg4 {
-          color: #f33;
-        }
-        .urg5 {
-          color: #c00;
-        }
       }
     }
 

@@ -1,6 +1,9 @@
+"use strict";
+
 var Coffee = {
   debug: 0,
-  debugString: "200\n1. March 14:28:371",
+  debugString: 0,
+  debugThisString: "200\n30. October 14:28:371",
 
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
@@ -24,8 +27,8 @@ var Coffee = {
       success: function(data) {
 
         // If coffee debugging is enabled
-        if (self.debug) {
-          data = self.debugString;
+        if (self.debug && self.debugString) {
+          data = self.debugThisString;
         }
 
         try {
@@ -120,15 +123,18 @@ var Coffee = {
     // allowing two consecutive notifications within 4 minutes
     // of each other.
     var showIt = true;
-    try {
-      var then = JSON.parse(localStorage.lastSubscriptionTime);
-      if (this.minuteDiff(then) <= 4) {
-        showIt = false;
+    if (typeof localStorage.lastSubscriptionTime !== 'undefined') {
+      try {
+        var then = JSON.parse(localStorage.lastSubscriptionTime);
+        if (this.minuteDiff(then) < 5) {
+          showIt = false;
+        }
+      }
+      catch (err) {
+        if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
       }
     }
-    catch (err) {
-      if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
-    }
+    
     if (showIt || demo) {
 
       // Save timestamp if this was a real coffee notification
@@ -141,7 +147,7 @@ var Coffee = {
       // Add regular memes
       var amount = MEME_AMOUNT; // Number of memes, in regular human numbers, not zero-indexed
       for (var i = 1; i <= amount; i++) {
-        memes.push('./meme/'+i+'.jpg');
+        memes.push('./meme/'+i+'.png');
       }
 
       // Add affiliation memes
@@ -149,7 +155,7 @@ var Coffee = {
         var amount = Affiliation.getMemeCount(key);
         var path = Affiliation.org[key].hw.memePath;
         for (var i = 1; i <= amount; i++) {
-          memes.push(path+i+'.jpg');
+          memes.push(path+i+'.png');
         }
       }
 
@@ -159,18 +165,20 @@ var Coffee = {
       var image = memes[random - 1]; // the list is zero-indexed
 
       // Create the notification
-      item = {
+      var item = {
         title: Affiliation.org[key].name + ' Notifier',
         description: this.msgNotification,
         image: image,
         link: 'options.html',
         feedKey: key,
       }
-      if (!demo)
+      if (!demo) {
         Browser.createNotification(item);
-      else
+      }
+      else {
         // Need to run it by the background process because the event listeners are there
         Browser.getBackgroundProcess().Browser.createNotification(item);
+      }
     }
     else {
       if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
