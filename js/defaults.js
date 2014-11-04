@@ -14,7 +14,7 @@ var Defaults = {
     // Clear errors from previous versions: undefined objects that
     // may have been saved to localStorage, it did happen once.
     // Thanks to Kristoffer Iversen for finding it.
-    for (i in ls) {
+    for (var i in ls) {
       // It's all strings, but in case browsers allow other
       // datatypes in the future, we'll check for string
       if (typeof ls[i] === 'string') {
