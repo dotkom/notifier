@@ -10,44 +10,58 @@ var Defaults = {
     if (DEBUG) ls.clear();
     ls.removeItem('officeStatus');
     ls.removeItem('officeStatusMessage');
+
+    // Clear errors from previous versions: undefined objects that
+    // may have been saved to localStorage, it did happen once.
+    // Thanks to Kristoffer Iversen for finding it.
+    for (i in ls) {
+      // It's all strings, but in case browsers allow other
+      // datatypes in the future, we'll check for string
+      if (typeof ls[i] === 'string') {
+        if (ls[i] === 'undefined') {
+          // Remove the "undefined"-string
+          ls.removeItem(i);
+        }
+      }
+    }
     
     // Set default choices if undefined, in the same order as on the options page
 
     ls.extensionName = 'Online Notifier';
     ls.extensionCreator = 'appKom'; // Max 8 letters because of styling
-    if (ls.installTime == undefined)
+    if (ls.installTime === undefined)
       ls.installTime = new Date().getTime();
 
     // Primary affiliation
-    if (ls.showAffiliation1 == undefined)
+    if (ls.showAffiliation1 === undefined)
       ls.showAffiliation1 = 'true';
-    if (ls.affiliationKey1 == undefined)
+    if (ls.affiliationKey1 === undefined)
       ls.affiliationKey1 = (DEBUG ? 'DEBUG' : 'online');
-    if (ls.affiliationUnreadCount1 == undefined)
+    if (ls.affiliationUnreadCount1 === undefined)
       ls.affiliationUnreadCount1 = 0;
-    if (ls.affiliationNewsList1 == undefined)
+    if (ls.affiliationNewsList1 === undefined)
       ls.affiliationNewsList1 = JSON.stringify([]);
-    if (ls.affiliationViewedList1 == undefined)
+    if (ls.affiliationViewedList1 === undefined)
       ls.affiliationViewedList1 = JSON.stringify([]);
     
-    if (ls.affiliationPalette == undefined)
+    if (ls.affiliationPalette === undefined)
       ls.affiliationPalette = 'online';
-    if (ls.storedImages == undefined)
+    if (ls.storedImages === undefined)
       ls.storedImages = JSON.stringify({});
 
     // Secondary affiliation
-    if (ls.showAffiliation2 == undefined)
+    if (ls.showAffiliation2 === undefined)
       ls.showAffiliation2 = 'true';
-    if (ls.affiliationKey2 == undefined)
+    if (ls.affiliationKey2 === undefined)
       ls.affiliationKey2 = 'dusken';
-    if (ls.affiliationUnreadCount2 == undefined)
+    if (ls.affiliationUnreadCount2 === undefined)
       ls.affiliationUnreadCount2 = 0;
-    if (ls.affiliationNewsList2 == undefined)
+    if (ls.affiliationNewsList2 === undefined)
       ls.affiliationNewsList2 = JSON.stringify([]);
-    if (ls.affiliationViewedList2 == undefined)
+    if (ls.affiliationViewedList2 === undefined)
       ls.affiliationViewedList2 = JSON.stringify([]);
 
-    if (ls.showBus == undefined)
+    if (ls.showBus === undefined)
       ls.showBus = 'true';
     
     // Bus - If any of these properties are undefined we'll reset all of them
@@ -68,12 +82,12 @@ var Defaults = {
     var firstBusOk = true;
     var secondBusOk = true;
     for (var prop in firstBusProps) {
-      if (typeof firstBusProps[prop] == 'undefined') {
+      if (firstBusProps[prop] === undefined) {
         firstBusOk = false;
       }
     }
     for (var prop in secondBusProps) {
-      if (typeof secondBusProps[prop] == 'undefined') {
+      if (secondBusProps[prop] === undefined) {
         secondBusOk = false;
       }
     }
@@ -93,43 +107,43 @@ var Defaults = {
     }
     
     // Office
-    if (ls.showOffice == undefined)
+    if (ls.showOffice === undefined)
       ls.showOffice = 'true';
-    if (ls.activelySetOffice == undefined) {
+    if (ls.activelySetOffice === undefined) {
       ls.activelySetOffice = 'true';
       ls.showOffice = 'true';
     }
     
     // Cantina
-    if (ls.showCantina == undefined)
+    if (ls.showCantina === undefined)
       ls.showCantina = 'true';
-    if (ls.leftCantina == undefined)
+    if (ls.leftCantina === undefined)
       ls.leftCantina = 'hangaren';
-    if (ls.rightCantina == undefined)
+    if (ls.rightCantina === undefined)
       ls.rightCantina = 'realfag';
     
     // Notifications
-    if (ls.showNotifications == undefined)
+    if (ls.showNotifications === undefined)
       ls.showNotifications = 'true';
     
     // Subscription
-    if (ls.coffeeSubscription == undefined)
+    if (ls.coffeeSubscription === undefined)
       ls.coffeeSubscription = 'true';
-    if (ls.coffeePots == undefined)
+    if (ls.coffeePots === undefined)
       ls.coffeePots = 0;
-    if (ls.activelySetCoffee == undefined) {
+    if (ls.activelySetCoffee === undefined) {
       ls.activelySetCoffee = 'true';
       ls.coffeeSubscription = 'true';
     }
     
     // Bigscreen
-    if (ls.useBigscreen == undefined)
+    if (ls.useBigscreen === undefined)
       ls.useBigscreen = 'false';
-    if (ls.whichScreen == undefined)
+    if (ls.whichScreen === undefined)
       ls.whichScreen = 'notifier';
     
     // General
-    if (ls.everOpenedOptions == undefined)
+    if (ls.everOpenedOptions === undefined)
       ls.everOpenedOptions = 'false';
   }(),
 
