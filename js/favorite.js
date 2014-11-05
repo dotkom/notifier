@@ -19,7 +19,7 @@ var Favorite = {
 
   // Private functions
 
-  load: function() {
+  _load_: function() {
 
     // Nonexisting list of stops and lines?
     if (localStorage.stopsAndLines == undefined || localStorage.stopsAndLinesAge == undefined) {
@@ -78,4 +78,4 @@ var Favorite = {
 }
 
 // Favorite self-loading
-Favorite.load();
+Favorite._load_();

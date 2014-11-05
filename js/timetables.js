@@ -4,14 +4,14 @@ var Timetables = {
   debug: 0,
   api: 'https://www.atb.no/rutetider/',
 
-  initStorage: function() {
+  _initStorage_: function() {
     if (localStorage.busTimetables == undefined)
       localStorage.busTimetables = JSON.stringify({});
     if (localStorage.busTimetablesAge == undefined)
       localStorage.busTimetablesAge = 0;
   },
 
-  load: function() {
+  _load_: function() {
     // Old list of PDFs?
     var then = Number(localStorage.busTimetablesAge);
     var now = new Date().getTime();
@@ -60,5 +60,5 @@ var Timetables = {
 }
 
 // Timetables self-loading
-Timetables.initStorage();
-Timetables.load();
+Timetables._initStorage_();
+Timetables._load_();

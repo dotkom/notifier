@@ -38,7 +38,6 @@ else {
 }
 
 var Analytics = {
-
   debug: 0,
 
   trackEvent: function(action, label, value) {

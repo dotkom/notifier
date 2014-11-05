@@ -8,23 +8,25 @@ var Browser = {
   name: 'Unknown', // Changed automatically at the end of this file with Browser.detect()
   version: 0,
 
-  detect: function() {
+  _detect_: function() {
     if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1) {
       var verOffset = navigator.userAgent.indexOf("Chrome/");
       if (verOffset !== -1) {
         this.version = parseInt(navigator.userAgent.substring(verOffset + 7));
       }
-      return 'Chrome';
+      this.name = 'Chrome';
     }
-    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1) {
+    else if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1) {
       var verOffset = navigator.userAgent.indexOf("OPR/");
       if (verOffset !== -1) {
         this.version = parseInt(navigator.userAgent.substring(verOffset + 4));
       }
-      return 'Opera';
+      this.name = 'Opera';
     }
-    console.log(this.msgUnsupported);
-    return 'Unknown';
+    else {
+      console.log(this.msgUnsupported);
+      this.name = 'Unknown';
+    }
   },
 
   onMac: function() {
@@ -378,5 +380,5 @@ var Browser = {
 
 }
 
-// Detect and set name
-Browser.name = Browser.detect();
+// Detect name and version
+Browser._detect_();
