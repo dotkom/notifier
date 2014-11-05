@@ -39,6 +39,8 @@ else {
 
 var Analytics = {
 
+  debug: 0,
+
   trackEvent: function(action, label, value) {
     var category = window.location.pathname; // chrome-extension://dohbapaojpimhoikcihglgkicjolfajj/options.html
     category = category.split('/').pop(); // options.html
@@ -61,6 +63,7 @@ var Analytics = {
 
     // If just debugging, empty the array once in a while
     if (DEBUG) {
+      if (this.debug) console.log("Analytics:", category, action, label, value);
       if (_gaq.length > 1000) {
         _gaq = [];
       }
