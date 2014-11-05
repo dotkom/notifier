@@ -87,7 +87,7 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
         // Applying chosen palette
         $('#palette').attr('href', Palettes.get(palette));
       }
-      
+
       // Extension icon
       var icon = Affiliation.org[affiliationKey].icon;
       Browser.setIcon(icon);
@@ -118,7 +118,7 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
         changeCreatorName(ls.extensionCreator);
       }
     }
-    
+
     // Throw out old news
     ls.removeItem('affiliationFeedItems'+number);
 
@@ -126,7 +126,7 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
       // Update to new feed
       Browser.getBackgroundProcess().updateAffiliationNews(number);
     }
-    
+
     // Display Saved<3
     showSavedNotification();
     // Analytics
@@ -245,7 +245,7 @@ var bindBusFields = function(busField) {
   });
 
   $(stop).focusout(function() {
-    
+
     // Lost focus, suggestions on busstops?
     var partialStop = $(stop).val();
     var suggestions = Stops.partialNameToPotentialNames(partialStop);
@@ -422,7 +422,7 @@ var getFavoriteLines = function(busField) {
   var busStopId = Stops.nameAndDirectionToId(stopName, direction);
   // Load lines for that bus stop
   var lines = Favorite.getLinesForStop(busStopId);
-  
+
   // Error message? (string)
   if (typeof lines === 'string') {
     $(cssSelector + ' .lines').html('<span class="error">'+lines+'</span>');
@@ -497,7 +497,7 @@ var loadBus = function(busField) {
     $(cssSelector + ' select').val(direction);
     // console.lolg('loaded "' + stopName + '" to "' + busField + '"');
   }
-  
+
   // Add active and inactive lines to busfields
   if (typeof activeLines !== 'undefined' && typeof inactiveLines !== 'undefined') {
     // If the page just opened and there are no favorite lines then get some
@@ -834,7 +834,7 @@ $(document).ready(function() {
   // Bind the windows resize function
   $(window).bind('resize', resizeBackgroundImage);
   resizeBackgroundImage(); // Run once in case the window is quite big
-  
+
   // Minor esthetical adjustments for OS
   if (Browser.onWindows()) {
     $('#pfText').attr("style", "bottom:9px;");
@@ -882,7 +882,7 @@ $(document).ready(function() {
   Stops.load();
 
   // If Opera, disable and redesign features related to desktop notifications
-  if (Browser.name === 'Opera') {
+  if (Browser.name === 'Opera' && Browser.version < 25) {
     // The actual features doesn't need to be turned off, they aren't working
     // anyway, so just uncheck the option to make the user understand it too
     // Turn off showNotifications feature
@@ -970,7 +970,7 @@ $(document).ready(function() {
   $('input:checkbox').click(function() {
     var _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
     Analytics.trackEvent('click'+_capitalized, this.checked);
-    
+
     // Special case for 'useBigscreen'
     if (this.id === 'useBigscreen') {
       // Remove the check/no-check, it will be corrected after the user's coice
@@ -994,7 +994,7 @@ $(document).ready(function() {
         $('#affiliationKey2').removeAttr('disabled');
         $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(0%)');
       }
-      
+
       if (this.id === 'showOffice' && this.checked === true) {
         ls.activelySetOffice = 'true';
         Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
@@ -1004,11 +1004,11 @@ $(document).ready(function() {
         Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
         Browser.setTitle(ls.extensionName);
       }
-      
+
       if (this.id === 'showNotifications' && this.checked === true) {
         testDesktopNotification();
       }
-      
+
       if (this.id === 'coffeeSubscription' && this.checked === true) {
         ls.activelySetCoffee = 'true';
         testCoffeeSubscription();

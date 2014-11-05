@@ -6,12 +6,21 @@ var Browser = {
   msgUnsupported: 'ERROR: Unsupported browser',
 
   name: 'Unknown', // Changed automatically at the end of this file with Browser.detect()
+  version: 0,
 
   detect: function() {
     if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1)
       return 'Chrome';
-    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1)
+    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1) {
+
+      var verOffset = navigator.userAgent.indexOf("OPR/");
+      if (verOffset != -1) {
+        this.version = parseInt(navigator.userAgent.substring(verOffset + 4));
+      }
+
       return 'Opera';
+    }
+
     console.log(this.msgUnsupported);
     return 'Unknown';
   },
@@ -23,7 +32,7 @@ var Browser = {
   onLinux: function() {
     return navigator.platform.toLowerCase().indexOf('linux')!==-1;
   },
-  
+
   onWindows: function() {
     return navigator.platform.toLowerCase().indexOf('win')!==-1;
   },
@@ -207,7 +216,7 @@ var Browser = {
     }
 
     var self = this;
-    if (this.name == 'Chrome') {
+    if (this.name == 'Chrome' || (this.name == 'Opera' && this.version >= 25)) {
       // Check if browser is "active" or "idle", not "locked"
       if (chrome.idle) {
         chrome.idle.queryState(30, function (state) {
@@ -248,7 +257,7 @@ var Browser = {
                 notification.expandedMessage = item.description.substring(0, expandedMaxLength) + '...';
               }
             }
-            
+
             // Generate random ID
             var id = String(Math.round(Math.random()*100000));
 
@@ -287,7 +296,7 @@ var Browser = {
     }
     else if (this.name == 'Opera') {
       // Desktop Notifications not yet available
-      if (self.debug) console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
+      if (self.debug) console.log('BROWSER.JS: createNotification only supported in Opera 25 and greater. Please upgrade your browser.');
     }
     else {
       console.log(this.msgUnsupported);
@@ -311,7 +320,7 @@ var Browser = {
       console.log(this.msgUnsupported);
     }
   },
-  
+
   notificationClosed: function(notID, byUser) {
     if (byUser) {
       Analytics.trackEvent('closeNotification', 'byUser');
