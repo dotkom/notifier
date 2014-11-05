@@ -38,7 +38,7 @@ var Palettes = {
     return this.palettes['blue'];
   },
 
-  load: function(elementId) {
+  _load_: function(elementId) {
     // Guess an element with id="palette"
     if (typeof elementId === 'undefined')
       var elementId = 'palette';
@@ -59,4 +59,4 @@ var Palettes = {
 }
 
 // Palette self-loading
-Palettes.load();
+Palettes._load_();
