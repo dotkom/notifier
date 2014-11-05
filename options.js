@@ -889,13 +889,13 @@ $(document).ready(function() {
     $('input#showNotifications').prop("disabled", "disabled");
     $('input#showNotifications').prop("checked", "false");
     var text = 'Varsle om nyheter';
-    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Vent på ny Opera</b>');
+    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Oppgrader til Opera 25!</b>');
     // Turn off coffeeSubscription feature
     $('input#coffeeSubscription').prop("disabled", "disabled");
     $('input#coffeeSubscription').prop("checked", "false");
     text = $('label[for=coffeeSubscription] span').text();
     text = text.trim();
-    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Vent på ny Opera</b>');
+    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Oppgrader til Opera 25!</b>');
   }
 
   // Adding a hover class to #busBox whenever the mouse is hovering over it
