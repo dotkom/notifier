@@ -9,18 +9,20 @@ var Browser = {
   version: 0,
 
   detect: function() {
-    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1)
+    if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') === -1) {
+      var verOffset = navigator.userAgent.indexOf("Chrome/");
+      if (verOffset !== -1) {
+        this.version = parseInt(navigator.userAgent.substring(verOffset + 7));
+      }
       return 'Chrome';
+    }
     if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('OPR') !== -1) {
-
       var verOffset = navigator.userAgent.indexOf("OPR/");
-      if (verOffset != -1) {
+      if (verOffset !== -1) {
         this.version = parseInt(navigator.userAgent.substring(verOffset + 4));
       }
-
       return 'Opera';
     }
-
     console.log(this.msgUnsupported);
     return 'Unknown';
   },
