@@ -296,7 +296,7 @@ var Browser = {
     }
     else if (this.name == 'Opera') {
       // Desktop Notifications not yet available
-      if (self.debug) console.log('BROWSER.JS: createNotification, not yet avaliable in Opera');
+      if (self.debug) console.log('BROWSER.JS: createNotification only supported in Opera 25 and greater. Please upgrade your browser.');
     }
     else {
       console.log(this.msgUnsupported);
