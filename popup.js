@@ -816,7 +816,7 @@ $(document).ready(function() {
       $('#background').attr('style', '-webkit-filter: none');
 
       // A list of the vids available. Add more vids here if you want more
-      var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', '0KltdN7TKDw', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
+      var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
 
       // Gets a random number, builds the html and displays the vid
       var konamiNum = Math.floor(Math.random() * links.length);
