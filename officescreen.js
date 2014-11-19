@@ -145,77 +145,60 @@ var updateHours = function(first) {
 
 var updateBus = function() {
   console.lolg('updateBus');
-  if (!navigator.onLine) {
-    // Reset
-    var stops = ['firstBus', 'secondBus'];
-    var spans = ['first', 'second', 'third', 'fourth'];
-    for (var i in stops) {
-      for (var j in spans) {
-        $('#bus #'+stops[i]+' .'+spans[j]+' .line').html('');
-        $('#bus #'+stops[i]+' .'+spans[j]+' .time').html('');
-      }
+
+  var createBusDataRequest = function(bus, cssIdentificator) {
+    var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
+    // Parse self (was stored as array)
+    activeLines = JSON.parse(activeLines);
+    // Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
+    Bus.get(ls[bus], activeLines, function(lines) {
+      insertBusInfo(lines, ls[bus+'Name'], ls[bus+'Direction'], cssIdentificator);
+    });
+  };
+
+  var insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
+    var busStop = '#bus ' + cssIdentificator;
+    var spans = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
+
+    $(busStop+' .name').html(stopName + (direction !== 'null' ? ' ' + direction : ''));
+
+    // Reset spans
+    for (var i in spans) {
+      $(busStop+' .'+spans[i]+' .line').html('');
+      $(busStop+' .'+spans[i]+' .time').html('');
     }
-    // Error message
-    $('#bus #firstBus .name').html(ls.firstBusName + (ls.firstBusDirection !== 'null' ? ' ' + ls.firstBusDirection : ''));
-    $('#bus #secondBus .name').html(ls.secondBusName + (ls.secondBusDirection !== 'null' ? ' ' + ls.secondBusDirection : ''));
-    $('#bus #firstBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
-    $('#bus #secondBus .error').html('<div class="error">' + Bus.msgDisconnected + '</div>');
-  }
-  else {
-    // All good, go ahead!
-    createBusDataRequest('firstBus', '#firstBus');
-    createBusDataRequest('secondBus', '#secondBus');
-  }
-}
-
-var createBusDataRequest = function(bus, cssIdentificator) {
-  var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
-  // Parse self (was stored as array)
-  activeLines = JSON.parse(activeLines);
-  // Get bus data, if activeLines is an empty array we'll get all lines, no problemo :D
-  Bus.get(ls[bus], activeLines, function(lines) {
-    insertBusInfo(lines, ls[bus+'Name'], ls[bus+'Direction'], cssIdentificator);
-  });
-}
-
-var insertBusInfo = function(lines, stopName, direction, cssIdentificator) {
-  var busStop = '#bus ' + cssIdentificator;
-  var spans = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
-
-  $(busStop+' .name').html(stopName + (direction !== 'null' ? ' ' + direction : ''));
-
-  // Reset spans
-  for (var i in spans) {
-    $(busStop+' .'+spans[i]+' .line').html('');
-    $(busStop+' .'+spans[i]+' .time').html('');
-  }
-  $(busStop+' .error').html('');
-  
-  // if lines is an error message
-  if (typeof lines === 'string') {
-    $(busStop+' .error').html(lines);
-  }
-  else {
-    // No lines to display, bus stop is sleeping
-    if (lines['departures'].length === 0) {
-      $(busStop+' .error').html('....zzzZZZzzz....');
+    $(busStop+' .error').html('');
+    
+    // if lines is an error message
+    if (typeof lines === 'string') {
+      $(busStop+' .error').html(lines);
     }
     else {
-      // Display line for line with according times
-      for (var i in spans) {
-        // If there aren't any more lines left: break
-        if (!lines['destination'][i] && !lines['departures'][i]) {
-          break;
+      // No lines to display, bus stop is sleeping
+      if (lines['departures'].length === 0) {
+        $(busStop+' .error').html('....zzzZZZzzz....');
+      }
+      else {
+        // Display line for line with according times
+        for (var i in spans) {
+          // If there aren't any more lines left: break
+          if (!lines['destination'][i] && !lines['departures'][i]) {
+            break;
+          }
+          // Add the current line
+          $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
+          // Calculate urgency
+          var urgency = Bus.calculateUrgency(lines['departures'][i]);
+          var departString = '<span style="color: ' + urgency + ';">' + lines['departures'][i] + '</span>';
+          $(busStop+' .'+spans[i]+' .time').append(departString);
         }
-        // Add the current line
-        $(busStop+' .'+spans[i]+' .line').append(lines['destination'][i]);
-        // Calculate urgency
-        var urgency = Bus.calculateUrgency(lines['departures'][i]);
-        var departString = '<span style="color: ' + urgency + ';">' + lines['departures'][i] + '</span>';
-        $(busStop+' .'+spans[i]+' .time').append(departString);
       }
     }
-  }
+  };
+
+  // Inner functions are ready, go!
+  createBusDataRequest('firstBus', '#firstBus');
+  createBusDataRequest('secondBus', '#secondBus');
 }
 
 var changeCreatorName = function(name) {
