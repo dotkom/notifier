@@ -3,7 +3,7 @@
 @debugCyan: cyan;
 @debugLime: lime;
 @debugYellow: yellow;
-*/
+/*/
 .debugContainer {
   border: 1px solid transparent;
 }
@@ -148,8 +148,8 @@ body {
   width: 100%;
   position: relative;
   background-color: #111;
-  border: 0;
-  /* overrides debug borders, otherwise it will look strange with grey palette due to a webkit error */
+  background-clip: padding-box;
+  /* makes the background color only show on the inside of the border */
   width: 110%;
   margin-left: -5%;
 }
