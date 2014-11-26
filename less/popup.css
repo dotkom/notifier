@@ -580,7 +580,7 @@ body {
   left: 8px;
 }
 #container #news .post .item img {
-  min-height: 20px;
+  min-height: 80px;
   max-height: 250px;
   padding: 4px;
 }
