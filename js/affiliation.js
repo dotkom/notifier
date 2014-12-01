@@ -1203,7 +1203,7 @@ var Affiliation = {
       name: 'Universitetsavisa',
       key: 'universitetsavisa',
       web: 'http://www.universitetsavisa.no/',
-      feed: 'http://www.universitetsavisa.no/?service=rss',
+      feed: 'http://www.universitetsavisa.no/?widgetName=polarisFeeds&widgetId=40853&getXmlFeed=true',
       logo: './org/universitetsavisa/logo.png',
       icon: './org/universitetsavisa/icon.png',
       symbol: './org/universitetsavisa/symbol.png',
