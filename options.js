@@ -29,6 +29,17 @@ var pageFlipCursorBlinking = function() {
   }, 600);
 }
 
+var loopCreatorName = function() {
+  setInterval(function() {
+    var namesAsRegex = new RegExp(ls.extensionOwner + '|' + ls.extensionCreator, 'gi');
+    var currentName = $('#pagefliptyping').text().match(namesAsRegex)[0];
+    if (currentName === ls.extensionOwner)
+      changeCreatorName(ls.extensionCreator);
+    else
+      changeCreatorName(ls.extensionOwner);
+  }, 60000);
+}
+
 var testDesktopNotification = function() {
   News.showNotification();
 }
@@ -109,14 +120,7 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
       Browser.setTitle(name + ' Notifier');
       ls.extensionName = name + ' Notifier';
       // Extension creator name
-      if (oldAffiliation === 'online') {
-        ls.extensionCreator = 'Online';
-        changeCreatorName(ls.extensionCreator);
-      }
-      else if (affiliationKey === 'online') {
-        ls.extensionCreator = 'appKom';
-        changeCreatorName(ls.extensionCreator);
-      }
+      changeCreatorName(ls.extensionOwner);
     }
 
     // Throw out old news
@@ -850,10 +854,11 @@ $(document).ready(function() {
   });
   // Adding creator name to pageflip
   setTimeout(function() {
-    changeCreatorName(ls.extensionCreator);
+    changeCreatorName(ls.extensionOwner);
   }, 2500);
   // Blinking cursor at pageflip
   pageFlipCursorBlinking();
+  loopCreatorName();
 
   // Show the "popup here"-bubble in the top right corner
   popupHere();

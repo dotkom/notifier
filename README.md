@@ -224,3 +224,4 @@ Issues submitted to Chromium/Opera
 - Rich Notifications Don't Timeout at Midnight: https://code.google.com/p/chromium/issues/detail?id=284018&thanks=284018&ts=1378160265
 - Transparent borders not playing well with inset box shadow: https://code.google.com/p/chromium/issues/detail?id=423881
 - Opera 16.0 stable crashes instantly when selecting private key file (during extension packaging): DNA-12164@bugs.opera.com
+- Multi-screen fullscreen on OSX not playing well with desktop notifications: https://code.google.com/p/chromium/issues/detail?id=430728

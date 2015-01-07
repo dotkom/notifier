@@ -204,6 +204,7 @@ var News = {
       var enclosure = $(item).find('enclosure').filter(':first');
       if (enclosure.length != 0) {
         post.image = enclosure['0'].attributes.url.textContent;
+        post.image += '?isimage=.jpg'; // Help image-URLs without file extension pass through Images.control()
       }
       // Gemini uses this rather blunt hack to put images in their feed
       var bilde = $(item).find('bilde');
