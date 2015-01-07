@@ -28,7 +28,11 @@ var Defaults = {
     // Set default choices if undefined, in the same order as on the options page
 
     ls.extensionName = 'Online Notifier';
-    ls.extensionCreator = 'appKom'; // Max 8 letters because of styling
+    // These two names will be shown in a loop, both can be max 8 letters because of styling
+    ls.extensionOwner = 'Online';
+    ls.extensionCreator = 'appKom';
+
+    // Note install time for future reference
     if (ls.installTime === undefined)
       ls.installTime = new Date().getTime();
 

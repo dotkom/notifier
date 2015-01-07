@@ -490,6 +490,17 @@ var animateCreatorName = function(name, build) {
   }
 }
 
+var loopCreatorName = function() {
+  setInterval(function() {
+    var namesAsRegex = new RegExp(ls.extensionOwner + '|' + ls.extensionCreator, 'gi');
+    var currentName = $('#pagefliptyping').text().match(namesAsRegex)[0];
+    if (currentName === ls.extensionOwner)
+      changeCreatorName(ls.extensionCreator);
+    else
+      changeCreatorName(ls.extensionOwner);
+  }, 3600000);
+}
+
 // Document ready, go!
 $(document).ready(function() {
 
@@ -581,8 +592,9 @@ $(document).ready(function() {
     }
   }
   
-  // Adding creator name to pageflip
-  changeCreatorName(ls.extensionCreator);
+  // Adding creator name to pageflip and looping it periodically
+  changeCreatorName(ls.extensionOwner);
+  loopCreatorName();
   // Blinking cursor at pageflip
   setInterval(function() {
     $(".pageflipcursor").animate({opacity: 0}, "fast", "swing", function() {
