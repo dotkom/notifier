@@ -119,8 +119,6 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
       var name = Affiliation.org[affiliationKey].name;
       Browser.setTitle(name + ' Notifier');
       ls.extensionName = name + ' Notifier';
-      // Extension creator name
-      changeCreatorName(ls.extensionOwner);
     }
 
     // Throw out old news
