@@ -493,6 +493,7 @@ var Affiliation = {
                   posts[count++] = post;
                   // Postprocess description to remove markdown stuff (crude method)
                   post.description = post.description.replace(/(####|###|\*\*)/gi, '');
+                  post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
                 }
               }
             }
