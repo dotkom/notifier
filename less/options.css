@@ -563,8 +563,9 @@ optgroup.debugAffiliation {
 #debugLinks {
   display: none;
   position: fixed;
-  top: 100px;
+  top: 13px;
   right: 13px;
+  opacity: .05;
   text-align: right;
   -webkit-transition: all 0.1s ease-out;
 }
@@ -594,7 +595,7 @@ optgroup.debugAffiliation {
 }
 #pageflip #pfText {
   left: 5px;
-  bottom: 5px;
+  bottom: 0px;
   width: 170px;
   height: 36px;
 }
@@ -607,7 +608,7 @@ optgroup.debugAffiliation {
 }
 #pageflip #pfLink {
   left: 5px;
-  bottom: 5px;
+  bottom: 0px;
   width: 170px;
   height: 36px;
 }
