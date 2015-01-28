@@ -280,6 +280,11 @@ var Affiliation = {
           closed: './org/hc/icon-closed.png',
           meeting: './org/hc/icon-meeting.png',
         },
+        statusMessages: {
+          open: 'Velkommen inn!',
+          closed: 'Finn et komitemedlem for å åpne',
+          meeting: 'Kontoret er opptatt',
+        },
         memePath: './org/hc/meme/',
       },
       // images extracted from feed content
