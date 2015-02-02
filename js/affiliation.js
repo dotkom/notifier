@@ -753,21 +753,6 @@ var Affiliation = {
       },
     },
 
-    'ludimus': {
-      name: 'Ludimus',
-      key: 'ludimus',
-      web: 'http://ludimus.org/',
-      feed: 'http://ludimus.org/feed/',
-      logo: './org/ludimus/logo.png',
-      icon: './org/ludimus/icon.png',
-      symbol: './org/ludimus/symbol.png',
-      placeholder: './org/ludimus/placeholder.png',
-      palette: 'red',
-      getImages: function(links, callback) {
-        Images.get(this, links, callback);
-      },
-    },
-
     'paideia': {
       name: 'Paideia',
       key: 'paideia',
