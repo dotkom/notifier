@@ -474,7 +474,7 @@ header #notification .saved {
   z-index: 2;
   /* paint behind other stuff */
   left: -180px;
-  top: 39px;
+  top: 41px;
 }
 .item #busBox #arrowDown img {
   width: 12px;
