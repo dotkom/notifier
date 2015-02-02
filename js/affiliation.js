@@ -1260,9 +1260,7 @@ var Affiliation = {
       symbol: './org/samfundet/symbol.png',
       placeholder: './org/samfundet/placeholder.png',
       palette: 'red',
-      getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div#banner'});
-      },
+      // getImages unnecessary, Samfundet uses <link>-tag for images
     },
 
     // Studentdemokrati

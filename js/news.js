@@ -93,6 +93,7 @@ var News = {
   // - category
   // - dc:creator - author name or username
   // - enclosure - may contain an image as an XML attribute: url="news_post_image.jpg"
+  // - link - may contain an image as an XML attribute: href="news_post_image.jpg"
   // - source
   // In Atom feeds, these are the usual fields:
   // - id - a useless ID
@@ -200,16 +201,22 @@ var News = {
       if (encodedContent != '') {
         post.image = this.checkDescriptionForImageLink(post.image, encodedContent, affiliationObject.web);
       }
+      // Samfundet uses this little trick to get images in their feed
+      var linkEnclosure = $(item).find('link[rel="enclosure"]').filter(':first');
+      if (linkEnclosure.length != 0) {
+        post.image = linkEnclosure['0'].attributes.href.value;
+        post.image = post.image.split('?')[0];
+      }
       // Universitetsavisa/Adressa does this little trick to get images in their feed
       var enclosure = $(item).find('enclosure').filter(':first');
       if (enclosure.length != 0) {
-        post.image = enclosure['0'].attributes.url.textContent;
+        post.image = enclosure['0'].attributes.url.value;
         post.image += '?isimage=.jpg'; // Help image-URLs without file extension pass through Images.control()
       }
       // Gemini uses this rather blunt hack to put images in their feed
       var bilde = $(item).find('bilde');
       if (bilde.length != 0) {
-        post.image = bilde['0'].textContent;
+        post.image = bilde['0'].value;
       }
     }
     catch (err) {
