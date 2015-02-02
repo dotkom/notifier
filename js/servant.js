@@ -55,7 +55,6 @@ var Servant = {
           end.setMinutes(endTime[1]);
           
           if (start <= now && now <= end) {
-            servantName = self.shortenServantNames(servantName);
             callback(servantName);
           }
           else {
@@ -72,7 +71,6 @@ var Servant = {
           var servantName = pieces[2];
 
           // Assume we are within the correct dates
-          servantName = self.shortenServantNames(servantName);
           callback(servantName);
         }
         else {
@@ -85,43 +83,5 @@ var Servant = {
         callback(self.msgError);
       },
     });
-  },
-
-  // Recursive function that shortens long names for servants
-  shortenServantNames: function(names) {
-    var self = this;
-    // Check for prefix, keep it out of the equation
-    var prefix = '';
-    if (names.match(/:+/)) {
-      var pieces = names.split(/:+/);
-      prefix = pieces[0] + ': ';
-      names = pieces[1];
-    }
-    // If there are multiple names, shorten each
-    if (names.match(/, /i)) {
-      var namePieces = names.split(/, /i);
-      for (i in namePieces) {
-        namePieces[i] = namePieces[i].trim();
-        namePieces[i] = self.shortenServantNames(namePieces[i]);
-      }
-      names = namePieces.join(', ');
-      return prefix + names;
-    }
-    // If the name is quite long...
-    else if (names.length >= 25) {
-      if (names.split(" ").length >= 3) {
-        var namePieces = names.split(" ");
-        // ...we'll shorten all middle names to one letter
-        for (var i = namePieces.length - 2; i >= 1; i--) {
-          namePieces[i] = namePieces[i].charAt(0).toUpperCase()+'.';
-        }
-        names = '';
-        for (var i in namePieces) {
-          names += namePieces[i] + " ";
-        }
-      }
-      names = names.trim();
-    }
-    return prefix + names;
   },
 }
