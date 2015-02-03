@@ -223,7 +223,8 @@ var Cantina = {
       // If no dinner info is found at all, check for unique message at monday
       if (dinnerObjects.length === 0) {
         if (self.debug) console.log('WARNING: no dinner menu found today, checking monday');
-        if (mondaysCantinaMenu !== null) {
+        var today = self.whichDayIsIt();
+        if (mondaysCantinaMenu !== null && today !== 'Lørdag' && today !== 'Søndag') {
           // WARNING: recursion is divine!
           self.parseTodaysMenu(mondaysCantinaMenu, null, callback);
         }

@@ -59,8 +59,8 @@ var Meetings = {
 
   prettifyTodaysMeetings: function(meetings) {
     meetings = meetings.trim();
-    // Change 00:00 to 24
-    meetings = meetings.replace(/00:00/g, '24');
+    // Change 00: to 24:
+    meetings = meetings.replace(/00:/g, '24:');
     if (this.debug) console.log('24\t::', meetings);
     // Remove unnecessarily specific time info 10:00 -> 10, including the academic fifteen minutes
     meetings = meetings.replace(/:(00|15)/g, '');
@@ -78,6 +78,9 @@ var Meetings = {
     meetings = meetings.replace(/22:(30|59)/g, '23');
     meetings = meetings.replace(/23:(30|59)/g, '24');
     if (this.debug) console.log(':30\t::', meetings);
+    // Change times like 0, 00, 0:12, 00:12 to just 24
+    meetings = meetings.replace(/0?0:[012][0-9]/g, '24');
+    if (this.debug) console.log('00\t::', meetings);
     return meetings;
   },
 

@@ -280,6 +280,11 @@ var Affiliation = {
           closed: './org/hc/icon-closed.png',
           meeting: './org/hc/icon-meeting.png',
         },
+        statusMessages: {
+          open: 'Velkommen inn!',
+          closed: 'Finn et komitemedlem for å åpne',
+          meeting: 'Kontoret er opptatt',
+        },
         memePath: './org/hc/meme/',
       },
       // images extracted from feed content
@@ -493,6 +498,7 @@ var Affiliation = {
                   posts[count++] = post;
                   // Postprocess description to remove markdown stuff (crude method)
                   post.description = post.description.replace(/(####|###|\*\*)/gi, '');
+                  post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
                 }
               }
             }
@@ -742,21 +748,6 @@ var Affiliation = {
       symbol: './org/jump cut/symbol.png',
       placeholder: './org/jump cut/placeholder.png',
       palette: 'grey',
-      getImages: function(links, callback) {
-        Images.get(this, links, callback);
-      },
-    },
-
-    'ludimus': {
-      name: 'Ludimus',
-      key: 'ludimus',
-      web: 'http://ludimus.org/',
-      feed: 'http://ludimus.org/feed/',
-      logo: './org/ludimus/logo.png',
-      icon: './org/ludimus/icon.png',
-      symbol: './org/ludimus/symbol.png',
-      placeholder: './org/ludimus/placeholder.png',
-      palette: 'red',
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
@@ -1254,9 +1245,7 @@ var Affiliation = {
       symbol: './org/samfundet/symbol.png',
       placeholder: './org/samfundet/placeholder.png',
       palette: 'red',
-      getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div#banner'});
-      },
+      // getImages unnecessary, Samfundet uses <link>-tag for images
     },
 
     // Studentdemokrati

@@ -5,9 +5,9 @@ var Timetables = {
   api: 'https://www.atb.no/rutetider/',
 
   _initStorage_: function() {
-    if (localStorage.busTimetables == undefined)
+    if (localStorage.busTimetables === undefined)
       localStorage.busTimetables = JSON.stringify({});
-    if (localStorage.busTimetablesAge == undefined)
+    if (localStorage.busTimetablesAge === undefined)
       localStorage.busTimetablesAge = 0;
   },
 
