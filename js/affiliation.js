@@ -681,8 +681,8 @@ var Affiliation = {
     'erudio': {
       name: 'Erudio',
       key: 'erudio',
-      web: 'http://www.erudiontnu.org/',
-      feed: 'http://www.erudiontnu.org/?feed=rss2',
+      web: 'http://erudiontnu.blogspot.com/',
+      feed: 'http://erudiontnu.blogspot.com/feeds/posts/default?alt=rss',
       logo: './org/erudio/logo.png',
       icon: './org/erudio/icon.png',
       symbol: './org/erudio/symbol.png',
