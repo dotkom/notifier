@@ -7,6 +7,11 @@ var Ajaxer = {
   ajaxSetup: {
     timeout: 6000, // anything longer is too long
     cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
+    beforeSend: function (request, fields) {
+        if (fields.type === 'GET')
+            request.setRequestHeader('From', 'https://github.com/appKom/notifier');
+        return true;
+    },
   },
 
   // Format of params:
