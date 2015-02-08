@@ -91,7 +91,7 @@ var Ajaxer = {
   // IMPORTANT: This function replaces all <img> tags with <pic>
   cleanHtml: function(html, type) {
     var size = html.length;
-    
+
     // Remove head, links, metas, scripts, iframes, frames, framesets
     html = html.replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '');
     html = html.replace(/<link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link>/gi, '');
@@ -125,8 +125,18 @@ var Ajaxer = {
     // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
     html = html.trim();
 
-    if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
-    return html;
+    // If no more tags were stripped by cleaning one more time.
+    if (cleanHtml(html) === html) {
+        if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
+
+        return html;
+
+    // More tags were found, most likely nested html (malicious). 
+    } else {
+        if (Ajaxer.debug) console.log('Ajaxer detected malicious html.');
+
+        return '';
+    }
   },
 }
 
