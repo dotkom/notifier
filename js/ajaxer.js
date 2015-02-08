@@ -1,7 +1,7 @@
 "use strict";
 
 var Ajaxer = {
-  debug: 1,
+  debug: 0,
 
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
   ajaxSetup: {
@@ -86,7 +86,7 @@ var Ajaxer = {
   // IMPORTANT: This function replaces all <img> tags with <pic>
   cleanHtml: function(html, type) {
     var size = html.length;
-        
+
     // Remove head, links, metas, scripts, iframes, frames, framesets
     html = html.replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '');
     html = html.replace(/<link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link>/gi, '');
