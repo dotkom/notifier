@@ -856,7 +856,7 @@ $(document).ready(function() {
 var getTitleWidth = function (title) {
   var width = $('#titleMeasure').text(title).width();
   $('#titleMeasure').text('');
-  return width + 35; // With buffer
+  return width * 1.1 + 30; // With buffer
 };
 
 // Cantina
