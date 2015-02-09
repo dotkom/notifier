@@ -308,6 +308,17 @@ body {
   margin-top: 13px;
   margin-bottom: 4px;
 }
+.titleDropdown {
+  position: relative;
+  left: -8px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  outline: none;
+}
+.titleDropdown:hover {
+  background-color: black;
+  border: 1px solid navajowhite;
+}
 .emphasized {
   margin-bottom: 4px;
 }
@@ -590,18 +601,7 @@ body {
 #container #news .unread {
   font-size: 11px;
 }
-select.titleDropdown {
-  position: relative;
-  left: -8px;
-  background-color: transparent;
-  border: 1px solid transparent;
-  outline: none;
-}
-select.titleDropdown:hover {
-  background-color: black;
-  border: 1px solid navajowhite;
-}
-#titleMeasure {
+#container #titleMeasure {
   font-weight: bold;
   color: transparent;
   /* not to be seen, only used for measurement of title widths */

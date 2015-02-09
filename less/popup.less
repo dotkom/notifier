@@ -15,6 +15,19 @@
   margin-bottom: 4px;
 }
 
+.titleDropdown {
+  position: relative;
+  left: -8px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  outline: none;
+
+  &:hover {
+    background-color: black;
+    border: 1px solid navajowhite;
+  }
+}
+
 .emphasized {
   margin-bottom: 4px;
 }
@@ -329,31 +342,15 @@ body {
     }
   }
 
-}
-
-
-
-select.titleDropdown {
-  position: relative;
-  left: -8px;
-  background-color: transparent;
-  border: 1px solid transparent;
-  outline: none;
-
-  &:hover {
-    background-color: black;
-    border: 1px solid navajowhite;
+  #titleMeasure {
+    font-weight: bold;
+    color: transparent;
+    /* not to be seen, only used for measurement of title widths */
+    position: absolute;
+    visibility: hidden;
+    width: auto;
+    height: auto;
+    white-space: nowrap;
   }
-}
 
-#titleMeasure {
-  font-weight: bold;
-  color: transparent;
-  /* not to be seen, only used for measurement of title widths */
-  position: absolute;
-  visibility: hidden;
-  width: auto;
-  height: auto;
-  white-space: nowrap;
 }
-

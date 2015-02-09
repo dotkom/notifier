@@ -849,9 +849,9 @@ $(document).ready(function() {
     mainLoop();
 });
 
-
-
-
+//
+// Title dropdowns and change handlers
+//
 
 var getTitleWidth = function (title) {
   var width = $('#titleMeasure').text(title).width();
@@ -859,20 +859,22 @@ var getTitleWidth = function (title) {
   return width + 35; // With buffer
 };
 
+// Cantina
+
 var adjustCantinaTitleWidth = function(title, element) {
   var cantinaName = Cantina.names[title];
   var width = getTitleWidth(cantinaName);
   $(element).width(width);
 };
+adjustCantinaTitleWidth(ls.leftCantina, '#cantinas #left .titleDropdown');
+adjustCantinaTitleWidth(ls.rightCantina, '#cantinas #right .titleDropdown');
 
-adjustCantinaTitleWidth(ls.leftCantina, $('#cantinas #left .titleDropdown'));
-
-var cantinaChangeHandler = function(cantinaTitle) {
+var cantinaChangeHandler = function(cantinaTitle, cantina) {
   $(cantinaTitle).change(function () {
     // Save
-    ls.leftCantina = this.value;
+    ls[cantina] = this.value;
     // Measure
-    adjustCantinaTitleWidth(ls.leftCantina, this);
+    adjustCantinaTitleWidth(ls[cantina], this);
     // Apply
     Browser.getBackgroundProcess().updateHours(function () {
       Browser.getBackgroundProcess().updateCantinas(function () {
@@ -882,5 +884,5 @@ var cantinaChangeHandler = function(cantinaTitle) {
     });
   });
 };
-cantinaChangeHandler('#cantinas #left .titleDropdown');
-
+cantinaChangeHandler('#cantinas #left .titleDropdown', 'leftCantina');
+cantinaChangeHandler('#cantinas #right .titleDropdown', 'rightCantina');
