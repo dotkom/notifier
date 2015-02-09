@@ -37,7 +37,7 @@ var mainLoop = function(force) {
   if (ls.showBus === 'true')
     if (force || iteration % UPDATE_BUS_INTERVAL === 0)
       updateBus();
-  
+
   // No reason to count to infinity
   if (10000 < iteration)
     iteration = 0;
@@ -66,7 +66,7 @@ var updateMeetings = function() {
           Browser.openTab(Hackerspace.web);
           window.close();
         });
-      }); 
+      });
     }
   });
 }
@@ -84,7 +84,16 @@ var updateCantinas = function() {
   console.lolg('updateCantinas');
   var update = function(shortname, menu, selector) {
     var name = Cantina.names[shortname];
-    $('#cantinas #'+selector+' .title').html(name);
+    // $('#cantinas #'+selector+' .title').html(name);
+
+
+
+    $('#cantinas #'+selector+' .titleDropdown option').filter(function() {
+      return shortname === $(this).val();
+    }).attr('selected', true);
+
+
+
     $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
     clickDinnerLink('#cantinas #'+selector+' #dinnerbox li', shortname);
   };
@@ -171,7 +180,7 @@ var updateBus = function() {
       $(busStop+' .'+spans[i]+' .time').html('');
     }
     $(busStop+' .error').html('');
-    
+
     // if lines is an error message
     if (typeof lines === 'string') {
       // if online, recommend oracle
@@ -427,10 +436,10 @@ var displayItems = function(items, column, newsListName, viewedListName, unreadC
 
   // Add feed items
   $.each(items, function (index, item) {
-    
+
     if (index < newsLimit) {
       viewedList.push(item.link);
-      
+
       var unreadCount = Number(ls[unreadCountName]);
       var readUnread = '';
       // if (!isFlashy) {
@@ -500,7 +509,7 @@ var displayItems = function(items, column, newsListName, viewedListName, unreadC
       $('#news '+column).append(htmlItem);
     }
   });
-  
+
   // Store list of last viewed items
   ls[viewedListName] = JSON.stringify(viewedList);
 
@@ -673,7 +682,7 @@ $(document).ready(function() {
       $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
     }
   }
-  
+
   // Track popularity of the chosen palette, the palette
   // itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent('loadPalette', ls.affiliationPalette);
@@ -839,3 +848,39 @@ $(document).ready(function() {
   else
     mainLoop();
 });
+
+
+
+
+
+var getTitleWidth = function (title) {
+  var width = $('#titleMeasure').text(title).width();
+  $('#titleMeasure').text('');
+  return width + 35; // With buffer
+};
+
+var adjustCantinaTitleWidth = function(title, element) {
+  var cantinaName = Cantina.names[title];
+  var width = getTitleWidth(cantinaName);
+  $(element).width(width);
+};
+
+adjustCantinaTitleWidth(ls.leftCantina, $('#cantinas #left .titleDropdown'));
+
+var cantinaChangeHandler = function(cantinaTitle) {
+  $(cantinaTitle).change(function () {
+    // Save
+    ls.leftCantina = this.value;
+    // Measure
+    adjustCantinaTitleWidth(ls.leftCantina, this);
+    // Apply
+    Browser.getBackgroundProcess().updateHours(function () {
+      Browser.getBackgroundProcess().updateCantinas(function () {
+        updateHours();
+        updateCantinas();
+      });
+    });
+  });
+};
+cantinaChangeHandler('#cantinas #left .titleDropdown');
+

@@ -162,9 +162,34 @@
     
     <div id="cantinas">
       <div id="left">
-        <div class="title">
+
+        <select class="title titleDropdown">
+          <option value="dmmh">DMMH</option>
+          <option value="dragvoll">Dragvoll</option>
+          <option value="elektro">Elektro</option>
+          <option value="hangaren">Hangaren</option>
+          <option value="kalvskinnet">Kalvskinnet</option>
+          <option value="kjel">Kjelhuset</option>
+          <option value="moholt">Moholt</option>
+          <option value="mtfs">MTFS</option>
+          <option value="ranheimsveien">Ranheimsveien</option>
+          <option value="realfag">Realfag</option>
+          <option value="rotvoll">Rotvoll</option>
+          <option value="tyholt">Tyholt</option>
+          <option value="oya">Øya</option>
+          <option value="storkiosk dragvoll">Storkiosk Dragvoll</option>
+          <option value="storkiosk gloshaugen">Storkiosk Gløshaugen</option>
+          <option value="storkiosk oya">Storkiosk Øya</option>
+          <option value="idretts. dragvoll">Idretts. Dragvoll</option>
+          <option value="sito dragvoll">Sito Dragvoll</option>
+          <option value="sito realfag">Sito Realfag</option>
+          <option value="sito stripa">Sito Stripa</option>
+        </select>
+        
+        <!--<div class="title">
           Laster...
-        </div>
+        </div>-->
+
         <div class="hours">Laster...</div>
         <div id="dinnerbox"></div>
       </div>
@@ -309,6 +334,9 @@
     </div>
     
   </div>
+
+  <!-- This is just a helper for measuring the length of <select>-fields shown as titles -->
+  <span id="titleMeasure"></span>
 
   <!-- JS No Dependencies -->
   <script src="libs/jquery-2.1.0.min.js"></script>
