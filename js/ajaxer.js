@@ -6,10 +6,11 @@ var Ajaxer = {
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
   ajaxSetup: {
     timeout: 6000, // anything longer is too long
-    cache: false, // this little sentence killed a lot of little bugs that was actually one big bug
+    cache: false, // don't accept cached results, we want the freshest data
     beforeSend: function (request, fields) {
-        if (fields.type === 'GET')
-            request.setRequestHeader('From', 'https://github.com/appKom/notifier');
+        if (fields.type === 'GET') {
+          request.setRequestHeader('From', 'https://github.com/appKom/notifier');
+        }
         return true;
     },
   },
@@ -88,9 +89,25 @@ var Ajaxer = {
     });
   },
 
-  // IMPORTANT: This function replaces all <img> tags with <pic>
   cleanHtml: function(html, type) {
     var size = html.length;
+
+    html = Ajaxer.cleaner(html);
+
+    // If no more tags were stripped by cleaning one more time.
+    if (Ajaxer.cleaner(html) === html) {
+      if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
+      return html;
+    }
+    // More tags were found, most likely nested html (malicious).
+    else {
+      if (Ajaxer.debug) console.log('Ajaxer detected malicious html.');
+      return '';
+    }
+  },
+
+  // IMPORTANT: This function replaces all <img> tags with <pic>
+  cleaner: function(html) {
 
     // Remove head, links, metas, scripts, iframes, frames, framesets
     html = html.replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '');
@@ -100,7 +117,7 @@ var Ajaxer = {
     html = html.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
     html = html.replace(/<frame\b[^<]*(?:(?!<\/frame>)<[^<]*)*<\/frame>/gi, '');
     html = html.replace(/<frameset\b[^<]*(?:(?!<\/frameset>)<[^<]*)*<\/frameset>/gi, '');
-    
+
     // Remove audio, video, object, canvas, applet, embed
     html = html.replace(/<audio\b[^<]*(?:(?!<\/audio>)<[^<]*)*<\/audio>/gi, '');
     html = html.replace(/<video\b[^<]*(?:(?!<\/video>)<[^<]*)*<\/video>/gi, '');
@@ -108,12 +125,12 @@ var Ajaxer = {
     html = html.replace(/<canvas\b[^<]*(?:(?!<\/canvas>)<[^<]*)*<\/canvas>/gi, '');
     html = html.replace(/<applet\b[^<]*(?:(?!<\/applet>)<[^<]*)*<\/applet>/gi, '');
     html = html.replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
-    
+
     // Remove inline scripts
     html = html.replace(/on\w+\s*?=\s*?("[^"]*"|'[^']*')/gi, '');
     // If any inline scripts didn't use enclosing quotes, turn them into harmless titles
     html = html.replace(/on\w+\s*?=/gi, 'title='); // Note: a bit greedy, but won't cause anything but lulz
-    
+
     // Rename <img> tags to <pic> tags to prevent jQuery from trying to fetch all images.
     // jQuerys behavior is not too problematic, but has some security concerns, also it
     // will most definitely slow down any slow computer running Notifier, like most
@@ -125,20 +142,9 @@ var Ajaxer = {
     // jQuery 1.9+ does not consider pages starting with a newline as HTML, first char should be "<"
     html = html.trim();
 
-    // If no more tags were stripped by cleaning one more time.
-    if (cleanHtml(html) === html) {
-        if (Ajaxer.debug) console.log('Ajaxer cleaned HTML, from', size, 'to', html.length);
-
-        return html;
-
-    // More tags were found, most likely nested html (malicious). 
-    } else {
-        if (Ajaxer.debug) console.log('Ajaxer detected malicious html.');
-
-        return '';
-    }
+    return html;
   },
-}
+};
 
 // Applying Ajax setup
 $.ajaxSetup(Ajaxer.ajaxSetup);
