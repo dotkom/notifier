@@ -582,17 +582,21 @@ var updateNewsImages = function() {
 }
 
 var optionsText = function(show) {
-  fadeButtonText(show, 'Innstillinger');
+  fadeButtonText(show, 'Endre innstillinger');
 }
 
 var tipsText = function(show) {
-  fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tips++');
+  fadeButtonText(show, 'Om Notifier, tips, linker, ++');
 }
 
 var chatterText = function(show) {
   var irc = Affiliation.org[ls.affiliationKey1].irc;
   var text = 'Join ' + irc.channel + ' :)';
-  fadeButtonText(show, '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ' + text); // lol i know ^^
+  fadeButtonText(show, text);
+}
+
+var colorText = function(show) {
+  fadeButtonText(show, 'Endre fargepalett');
 }
 
 var fadeButtonText = function(show, msg) {
@@ -731,6 +735,36 @@ $(document).ready(function() {
     window.close();
   });
 
+  $('#colorButton').click(function() {
+    // Clear timeout that might be waiting to fade out button text
+    if (isNumber(ls.colorTimeout))
+      clearTimeout(parseInt(ls.colorTimeout));
+    // Get all palettes
+    var colors = Object.keys(Palettes.palettes);
+    // And any special affiliation palette as well
+    var affPalette = Affiliation.org[ls.affiliationKey1].palette;
+    if (colors.indexOf(affPalette) === -1) {
+      colors.push(affPalette);
+    }
+    // Find current palette
+    var currentPalette = $('#palette').attr('href').match(/\w+\/\w+\/(\w+)\.\w+/)[1];
+    var index = colors.indexOf(currentPalette);
+    // Goto next palette
+    index++;
+    if (!colors[index])
+      index = 0;
+    ls.affiliationPalette = colors[index];
+    Palettes.load();
+    // Text feedback, fade out after timeout
+    fadeButtonText(true, 'Fargepalett satt til "' + colors[index].capitalize() + '"');
+    clearTimeout()
+    ls.colorTimeout = setTimeout(function() {
+      fadeButtonText(false, '')
+    }, 2000);
+    // And track it
+    Analytics.trackEvent('clickColor');
+  });
+
   // Bind realtimebus lines to their timetables
   var timetables = JSON.parse(localStorage.busTimetables);
   var clickBus = function() {
@@ -795,6 +829,13 @@ $(document).ready(function() {
   });
   $('#chatterIcon').mouseleave(function() {
     chatterText(false);
+  });
+
+  $('#colorButton').mouseenter(function() {
+    colorText(true);
+  });
+  $('#colorButton').mouseleave(function() {
+    colorText(false);
   });
 
   // React to Konami code
