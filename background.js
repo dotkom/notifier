@@ -95,13 +95,20 @@ var updateCoffeeSubscription = function(callback) {
       // New pot number?
       if (storedPots < pots) {
         // Not a meeting? Or DEBUG mode.
-        if (ls.officeStatus !== 'meeting' || DEBUG) {
+        if (ls.officeStatus !== 'meeting') {
           // Made less than 10 minutes ago?
           if (age < 10) {
-            // Notify everyone with a coffee subscription :D
-            Coffee.showNotification(pots, age);
+            // And no meme was served within the last 10 minutes?
+            if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
+              // Notify everyone with a coffee subscription :D
+              Coffee.showNotification(pots, age);
+              ls.coffeeMemeTime = Date.now();
+            }
+            else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
           }
+          else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
         }
+        else {console.lolg('Nope to coffee, there is a meeting going on')}
       }
       // And remember to update localStorage
       ls.coffeePots = pots;
