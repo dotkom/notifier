@@ -135,6 +135,8 @@ var Defaults = {
       ls.coffeeSubscription = 'true';
     if (ls.coffeePots === undefined)
       ls.coffeePots = 0;
+    if (ls.coffeeMemeTime === undefined)
+      ls.coffeeMemeTime = 0;
     if (ls.activelySetCoffee === undefined) {
       ls.activelySetCoffee = 'true';
       ls.coffeeSubscription = 'true';

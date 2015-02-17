@@ -10,11 +10,11 @@ var Servant = {
 
   get: function(callback) {
     if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
     if (!Affiliation.org[localStorage.affiliationKey1].hw) {
-      if (this.debug) console.log('ERROR: affiliation without hw-features tried checking for servants');
+      if (this.debug) console.error('affiliation without hw-features tried checking for servants');
       return;
     }
 
@@ -79,7 +79,7 @@ var Servant = {
         }
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR: Failed to get current servant.');
+        if (self.debug) console.error('Failed to get current servant.');
         callback(self.msgError);
       },
     });

@@ -56,7 +56,7 @@ var Stops = {
           callback(this.msgParsingCompleted);
       }
       catch (err) {
-        console.log('ERROR: '+this.msgMalformedLocalStops);
+        console.error(''+this.msgMalformedLocalStops);
         this.reset(callback);
       }
     }
@@ -93,7 +93,7 @@ var Stops = {
     // API response will contain 'unauthorized' when key is invalid or arguments are missing
     if (typeof json === 'string') {
         if (json.indexOf('unauthorized') !== -1) {
-        console.log('ERROR: ' + this.msgKeyExpired);
+        console.error('' + this.msgKeyExpired);
         if (callback !== undefined)
           callback(this.msgKeyExpired);
         return;
@@ -106,7 +106,7 @@ var Stops = {
       if (busStops === undefined) {
         if (callback !== undefined)
           callback(this.msgMalformedExternalStops);
-        console.log('ERROR: ' + this.msgMalformedExternalStops);
+        console.error('' + this.msgMalformedExternalStops);
         return;
       }
 
@@ -138,7 +138,7 @@ var Stops = {
       }
     }
     catch (err) {
-      console.log('ERROR: ' + this.msgParsingStopsFailed + ': ' + err);
+      console.error('' + this.msgParsingStopsFailed + ': ' + err);
       if (callback !== undefined)
         callback(this.msgParsingStopsFailed);
     }
@@ -159,7 +159,7 @@ var Stops = {
   nameToIds: function(stopName) {
     if (this.debug) console.log('nameToIds', stopName);
     if (typeof stopName != 'string')
-      return console.log('ERROR: stopName must be a string');
+      return console.error('stopName must be a string');
 
     // Remember: One stop name can have two IDs, one 'til byen' and one 'fra byen'.
     // Using all lowercase, just in case the user has been inconsistent with casing.
@@ -177,7 +177,7 @@ var Stops = {
   nameToDirections: function(stopName) {
     if (this.debug) console.log('nameToDirections', stopName);
     if (typeof stopName != 'string')
-      return console.log('ERROR: stopName must be a string');
+      return console.error('stopName must be a string');
 
     // The fourth character of a stop ID tells us which direction a bus is going
     var foundStops = this.nameToIds(stopName);
@@ -203,7 +203,7 @@ var Stops = {
   nameAndDirectionToId: function(stopName, direction) {
     if (this.debug) console.log('nameAndDirectionToId', stopName, direction);
     if (typeof stopName != 'string')
-      return console.log('ERROR: stopName must be a string');
+      return console.error('stopName must be a string');
 
     // Get possible IDs with stopName and find the right one by filtering with direction
     var checkTheseStops = this.nameToIds(stopName);
@@ -230,14 +230,14 @@ var Stops = {
         return currentId;
       }
     }
-    console.log('ERROR: could not find stop ID');
+    console.error('could not find stop ID');
     return -1;
   },
 
   partialNameToPotentialNames: function(nameStart) {
     if (this.debug) console.log('partialNameToPotentialNames', nameStart);
     if (typeof nameStart != 'string')
-      return console.log('ERROR: nameStart must be a string');
+      return console.error('nameStart must be a string');
 
     // Using lowercase all the way to allow user case insensitivity
     nameStart = nameStart.toLowerCase();

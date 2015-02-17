@@ -48,7 +48,7 @@ var Timetables = {
           localStorage.busTimetablesAge = String(new Date().getTime());
         },
         error: function(err) {
-          if (self.debug) console.log('ERROR: Could not fetch AtB\'s timetables:', err);
+          if (self.debug) console.error('Could not fetch AtB\'s timetables:', err);
         },
       });
     }

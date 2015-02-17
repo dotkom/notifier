@@ -22,11 +22,11 @@ var Oracle = {
 
   ask: function(question, callback) {
     if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
     if (isEmpty(question)) {
-      console.log('ERROR: question is empty');
+      console.error('question is empty');
       return;
     }
 
@@ -98,11 +98,11 @@ var Oracle = {
 
 //   askAsApi: function(question, callback) {
 //     if (callback == undefined) {
-//       console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+//       console.error('Callback is required. In the callback you should insert the results into the DOM.');
 //       return;
 //     }
 //     if (isEmpty(question)) {
-//       console.log('ERROR: question is empty');
+//       console.error('question is empty');
 //       return;
 //     }
 
@@ -523,11 +523,11 @@ var Oracle = {
 
   // getEndStop: function(line, fromStop, callback) {
   //   if (typeof callback === 'undefined') {
-  //     console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+  //     console.error('Callback is required. In the callback you should insert the results into the DOM.');
   //     return;
   //   }
   //   if (typeof line !== 'number') {
-  //     console.log('ERROR: line must be a number');
+  //     console.error('line must be a number');
   //     return;
   //   }
 
@@ -546,7 +546,7 @@ var Oracle = {
   //           answer.match(/503/gi) !== null ||
   //           answer.match(/\<.*\>/gi) !== null
   //       ) {
-  //         if (this.debug) console.log('ERROR: error occured while asking oracle');
+  //         if (this.debug) console.error('error occured while asking oracle');
   //         callback('error');
   //       }
   //       // Split into stops
@@ -561,7 +561,7 @@ var Oracle = {
   //       callback(endStop);
   //     },
   //     error: function(jqXHR, text, err) {
-  //       if (this.debug) console.log('ERROR: failed to ask oracle for stops');
+  //       if (this.debug) console.error('failed to ask oracle for stops');
   //       callback('error');
   //     },
   //   });
@@ -569,7 +569,7 @@ var Oracle = {
   //   var findEndStopFromStops = function(fromStop, allStops) {
   //     // Check that the fromStop exists in the list at all
   //     if (allStops.indexOf(fromStop) === -1) {
-  //       if (this.debug) console.log('ERROR: fromStop must be in the allStops array');
+  //       if (this.debug) console.error('fromStop must be in the allStops array');
   //       return;
   //     }
   //     var cityIndex = -1;
@@ -581,7 +581,7 @@ var Oracle = {
   //       }
   //     }
   //     if (cityIndex === -1) {
-  //       if (this.debug) console.log('ERROR: this line of stops does not pass through the city');
+  //       if (this.debug) console.error('this line of stops does not pass through the city');
   //       return;
   //     }
   //     // fromStop-index before cityIndex gives endStop at 0
@@ -590,7 +590,7 @@ var Oracle = {
   //       return allStops[0];
   //     }
   //     else if (fromStop === cityIndex) {
-  //       if (this.debug) console.log('ERROR: cannot understand which direction the bus is going')
+  //       if (this.debug) console.error('cannot understand which direction the bus is going')
   //       return;
   //     }
   //     else if (fromStop > cityIndex) {

@@ -6,12 +6,11 @@ var Palettes = {
   palettes: {
     // Standard palettes
     'blue': 'less/palettes/blue.css',
+    'red': 'less/palettes/red.css',
     'cyan': 'less/palettes/cyan.css',
     'green': 'less/palettes/green.css',
-    'grey': 'less/palettes/grey.css',
-    'pink': 'less/palettes/pink.css',
     'purple': 'less/palettes/purple.css',
-    'red': 'less/palettes/red.css',
+    'grey': 'less/palettes/grey.css',
     'yellow': 'less/palettes/yellow.css',
   },
 
@@ -29,19 +28,21 @@ var Palettes = {
         return path;
       }
       else {
-        if (this.debug) console.log('ERROR: a special palette has not yet been created for the affiliation', palette);
+        if (this.debug) console.error('a special palette has not yet been created for the affiliation', palette);
         return this.palettes['blue'];
       }
     }
 
-    if (this.debug) console.log('ERROR: unsupported palette', palette);
+    if (this.debug) console.error('unsupported palette', palette);
     return this.palettes['blue'];
   },
 
-  _load_: function(elementId) {
+  load: function(elementId) {
     // Guess an element with id="palette"
     if (typeof elementId === 'undefined')
       var elementId = 'palette';
+    else
+      console.warn('Palettes.load: No #palette element? Why did you bring me here?');
     // For speed and esthetical reasons this script runs
     // before jQuery is loaded so don't use jQuery here.
     var paletteLink = document.getElementById(elementId);
@@ -59,4 +60,4 @@ var Palettes = {
 }
 
 // Palette self-loading
-Palettes._load_();
+Palettes.load();

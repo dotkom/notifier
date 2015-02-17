@@ -70,7 +70,7 @@ var Favorite = {
         localStorage.stopsAndLinesAge = String(new Date().getTime());
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR: Could not fetch busstops and their respective lines');
+        if (self.debug) console.error('Could not fetch busstops and their respective lines');
       },
     });
   },

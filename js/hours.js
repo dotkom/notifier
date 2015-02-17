@@ -24,15 +24,16 @@ var Hours = {
     'dmmh': 2534,
     'dragvoll': 1593,
     'elektro': 2518,
+    'elgeseter': 3080,
     'hangaren': 2519,
     'kalvskinnet': 2529,
     'kjel': 2520,
     'moholt': 2530,
     'mtfs': 2526,
-    'ranheimsveien': 2531,
     'realfag': 2521,
     'rotvoll': 2532,
     'tunga': 2533,
+    'tungasletta': 2531,
     'tyholt': 2525,
     'oya': 2527,
     'storkiosk dragvoll': 2393,
@@ -46,7 +47,7 @@ var Hours = {
 
   get: function (cantina, callback) {
     if (callback === undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 

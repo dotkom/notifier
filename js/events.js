@@ -6,7 +6,7 @@ var Events = {
 
   get: function(callback) {
     if (callback == undefined) {
-      if (this.debug) console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      if (this.debug) console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 
@@ -18,7 +18,7 @@ var Events = {
       }
     }
     catch (err) {
-      if (this.debug) console.log('ERROR: Fetching events failed', err);
+      if (this.debug) console.error('Fetching events failed', err);
     }
   },
 

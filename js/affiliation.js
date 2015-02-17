@@ -121,7 +121,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.log('ERROR: callback is required');
+          console.error('callback is required');
           return;
         }
         var self = this;
@@ -154,12 +154,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.log('ERROR: No articles found at', self.web);
+              if (self.debug) console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+            if (self.debug) console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -333,7 +333,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.log('ERROR: callback is required');
+          console.error('callback is required');
           return;
         }
         var self = this;
@@ -366,12 +366,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.log('ERROR: No articles found at', self.web);
+              if (self.debug) console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+            if (self.debug) console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -390,7 +390,7 @@ var Affiliation = {
       // images also fetched when fetching news
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.log('ERROR: callback is required');
+          console.error('callback is required');
           return;
         }
         var self = this;
@@ -426,12 +426,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.log('ERROR: No articles found at', self.web);
+              if (self.debug) console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+            if (self.debug) console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -472,7 +472,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.log('ERROR: callback is required');
+          console.error('callback is required');
           return;
         }
         var self = this;
@@ -503,12 +503,12 @@ var Affiliation = {
               }
             }
             else {
-              if (self.debug) console.log('ERROR: No articles found at', self.web);
+              if (self.debug) console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+            if (self.debug) console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -839,7 +839,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.log('ERROR: callback is required');
+          console.error('callback is required');
           return;
         }
         var self = this;
@@ -869,12 +869,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.log('ERROR: No articles found at', self.web);
+              if (self.debug) console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.log('ERROR: could not fetch '+self.name+' website');
+            if (self.debug) console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -986,6 +986,19 @@ var Affiliation = {
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
+    },
+
+    'sftoh': {
+      name: 'STØH',
+      key: 'sftoh',
+      web: 'http://www.sftoh.no/',
+      feed: 'http://www.sftoh.no/?feed=rss2',
+      logo: './org/sftoh/logo.png',
+      icon: './org/sftoh/icon.png',
+      symbol: './org/sftoh/symbol.png',
+      placeholder: './org/sftoh/placeholder.png',
+      palette: 'blue',
+      // Images fetched from newsfeed
     },
 
     'tihlde': {
@@ -1414,7 +1427,7 @@ var Affiliation = {
       return counter - 1; // because we initialize to 1, not 0
     }
     else {
-      console.log('ERROR: affiliation', affiliation, 'does not have a memepath');
+      console.error('affiliation', affiliation, 'does not have a memepath');
       return 0;
     }
   },
