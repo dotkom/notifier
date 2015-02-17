@@ -2,19 +2,22 @@
 Alle viktige endringer i Notifier dokumenteres i denne filen.
 Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 
-## Versjonshistorie
-
-### Planlagt for fremtidige versjoner
+## Fremtidsplaner
 - Options direkte i popupen, i stedet for den separate Options-siden
 - Trekke ut infoskjermene som en egen Chrome extension
 - Events fra kalenderne til linjeforeningene
 - 1024-integrasjon
 
-### Versjon 4.4
-- Valg for kantine direkte i popupen
-- La til denne changeloggen
+## Versjonshistorie
+
+### Versjon 4.5
+- La til 1 ny linjeforening: STØH
 - La til 2 nye kantiner: Elgeseter, Tungasletta
 - Fjernet 1 kantine: Ranheimsveien
+- La til denne changeloggen
+
+### Versjon 4.4
+- Valg for kantine direkte i popupen
 
 ### Versjon 4.3
 - Retina-kaffememes
