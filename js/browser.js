@@ -210,8 +210,9 @@ var Browser = {
     if (!item) console.error('function takes one object, {feedKey, title, description, link, *image, *symbol, *longStory, *stay} (* == optional)');
     if (!item.feedKey) console.error('item.feedKey is required');
     if (!item.title) console.error('item.title is required');
-    if (!item.description) console.error('item.description is required');
     if (!item.link) console.error('item.link is required');
+    // Check recommended params
+    if (!item.description) console.warn('item.description is recommended');
 
     // Do not show any notifications within the first half minute after install
     if (!DEBUG && (new Date().getTime() - Number(localStorage.installTime)) < 30000) {
