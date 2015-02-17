@@ -186,7 +186,7 @@ var Browser = {
           Browser.openTab('http://instabart.no');
         }
         else {
-          console.log('ERROR: Unrecognized browser command');
+          console.error('Unrecognized browser command');
         }
       });
     }
@@ -207,11 +207,11 @@ var Browser = {
   // - stay: true
   createNotification: function(item) {
     // Check required params
-    if (!item) console.log('ERROR: function takes one object, {feedKey, title, description, link, *image, *symbol, *longStory, *stay} (* == optional)');
-    if (!item.feedKey) console.log('ERROR: item.feedKey is required');
-    if (!item.title) console.log('ERROR: item.title is required');
-    if (!item.description) console.log('ERROR: item.description is required');
-    if (!item.link) console.log('ERROR: item.link is required');
+    if (!item) console.error('function takes one object, {feedKey, title, description, link, *image, *symbol, *longStory, *stay} (* == optional)');
+    if (!item.feedKey) console.error('item.feedKey is required');
+    if (!item.title) console.error('item.title is required');
+    if (!item.description) console.error('item.description is required');
+    if (!item.link) console.error('item.link is required');
 
     // Do not show any notifications within the first half minute after install
     if (!DEBUG && (new Date().getTime() - Number(localStorage.installTime)) < 30000) {
@@ -295,7 +295,7 @@ var Browser = {
         });
       }
       else {
-        if (self.debug) console.log('ERROR: This version of Chrome does not support chrome.idle');
+        if (self.debug) console.error('This version of Chrome does not support chrome.idle');
       }
     }
     else if (this.name == 'Opera') {

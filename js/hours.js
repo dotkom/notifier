@@ -47,7 +47,7 @@ var Hours = {
 
   get: function (cantina, callback) {
     if (callback === undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 

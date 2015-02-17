@@ -25,11 +25,11 @@ var Office = {
 
   get: function(callback) {
     if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
     if (!Affiliation.org[localStorage.affiliationKey1].hw) {
-      if (this.debug) console.log('ERROR: affiliation without hw-features tried checking office status');
+      if (this.debug) console.error('affiliation without hw-features tried checking office status');
       return;
     }
 
@@ -50,7 +50,7 @@ var Office = {
 
   getEventData: function(callback) {
     if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 
@@ -125,7 +125,7 @@ var Office = {
 
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR: Failed to get event data.');
+        if (self.debug) console.error('Failed to get event data.');
         callback('error', self.statuses['error'].message);
       },
     });
@@ -133,7 +133,7 @@ var Office = {
 
   getLightData: function(callback) {
     if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 
@@ -168,7 +168,7 @@ var Office = {
         }
       },
       error: function(jqXHR, err) {
-        if (self.debug) console.log('ERROR: Failed to get light data.');
+        if (self.debug) console.error('Failed to get light data.');
         callback('error', self.statuses['error'].message);
       },
     });

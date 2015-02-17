@@ -127,7 +127,7 @@ var News = {
       });
     }
     else {
-      if (this.debug) console.log('ERROR: Unknown feed type, neither RSS nor Atom');
+      if (this.debug) console.error('Unknown feed type, neither RSS nor Atom');
     }
     callback(posts);
   },
@@ -397,7 +397,7 @@ var News = {
       if (this.debug) console.log('no items to count!');
     }
     else {
-      if (this.debug) console.log('ERROR: something went wrong trying to count these items:', items);
+      if (this.debug) console.error('something went wrong trying to count these items:', items);
     }
     return 0;
   },
@@ -455,7 +455,7 @@ var News = {
           }
         }
         else {
-          if (this.debug) console.log('ERROR: notification item was undefined');
+          if (this.debug) console.error('notification item was undefined');
         }
       }
       // Make sure notifications are sent with at least 10 seconds inbetween
@@ -541,7 +541,7 @@ var News = {
       }
     }
     else {
-      if (this.debug) console.log('ERROR: checking for alternative link in undefined var post.description');
+      if (this.debug) console.error('checking for alternative link in undefined var post.description');
     }
     return null;
   },
@@ -564,7 +564,7 @@ var News = {
       }
     }
     else {
-      if (this.debug) console.log('ERROR: cannot abbreviate an undefined name');
+      if (this.debug) console.error('cannot abbreviate an undefined name');
     }
     return oldName;
   },

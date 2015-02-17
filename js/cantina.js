@@ -96,11 +96,11 @@ var Cantina = {
 
   get: function (cantina, callback) {
     if (callback === undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
     if (this.feeds[cantina] === undefined) {
-      if (this.debug) console.log('ERROR: '+this.msgUnsupportedCantina);
+      if (this.debug) console.error(''+this.msgUnsupportedCantina);
       callback('');
       return;
     }
@@ -115,7 +115,7 @@ var Cantina = {
         self.parseXml(xml, callback);
       },
       error: function(jqXHR, text, err) {
-        console.log('ERROR: '+self.msgConnectionError);
+        console.error(''+self.msgConnectionError);
         callback(self.msgConnectionError);
       },
     })
@@ -163,7 +163,7 @@ var Cantina = {
       self.parseTodaysMenu(todaysMenu, mondaysCantinaMenu, callback);
     }
     catch (err) {
-      console.log('ERROR: problems during parsing of dinner xml');
+      console.error('problems during parsing of dinner xml');
       callback(self.msgMalformedMenu + ': ' + err);
     }
   },
@@ -206,7 +206,7 @@ var Cantina = {
           }
         }
         else {
-          console.log('ERROR: problems during initial parsing of todays dinner');
+          console.error('problems during initial parsing of todays dinner');
           callback(self.msgMalformedMenu);
           return;
         }
@@ -332,7 +332,7 @@ var Cantina = {
       callback(dinnerObjects);
     }
     catch (err) {
-      console.log('ERROR: problems during deep parsing of todays dinners');
+      console.error('problems during deep parsing of todays dinners');
       callback(self.msgMalformedMenu);
     }
   },

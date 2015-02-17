@@ -12,15 +12,15 @@ var Images = {
 
   get: function(affiliation, links, callback, options) {
     if (affiliation == undefined) {
-      console.log('ERROR: Images.get needs the affiliation parameter');
+      console.error('Images.get needs the affiliation parameter');
       return;
     }
     if (links == undefined) {
-      console.log('ERROR: Images.get needs the links parameter');
+      console.error('Images.get needs the links parameter');
       return;
     }
     if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 
@@ -208,12 +208,12 @@ var Images = {
         callback(links, images);
       }
       catch (e) {
-        if (self.debug) console.log('ERROR: failed at parsing "'+affiliation.name+'" website:', e);
+        if (self.debug) console.error('failed at parsing "'+affiliation.name+'" website:', e);
           callback(links, []);
         }
       },
       error: function(e) {
-        if (self.debug) console.log('ERROR: could not fetch "'+affiliation.name+'" website:', e);
+        if (self.debug) console.error('could not fetch "'+affiliation.name+'" website:', e);
           callback(links, []);
         },
     });
@@ -225,7 +225,7 @@ var Images = {
     // This function is primarily used by news.js for controlling the goodness
     // of image URLs found in items that contain HTML descriptions (in RSS feeds)
     if (isEmpty(imageUrl)) {
-      if (this.debug) console.log('ERROR: Images.control() received empty imageUrl');
+      if (this.debug) console.error('Images.control() received empty imageUrl');
       return false;
     }
 

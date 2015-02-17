@@ -14,7 +14,7 @@ var Coffee = {
 
   get: function(pretty, callback) {
     if (callback == undefined) {
-      console.log('ERROR: Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback is required. In the callback you should insert the results into the DOM.');
       return;
     }
 
@@ -65,12 +65,12 @@ var Coffee = {
             }
           }
         } catch (err) {
-          if (self.debug) console.log('ERROR: Coffee format is wrong:', err);
+          if (self.debug) console.error('Coffee format is wrong:', err);
           callback(self.msgFormatError, self.msgComforting);
         }
       },
       error: function(jqXHR, text, err) {
-        if (self.debug) console.log('ERROR: Failed to get coffee pot status.');
+        if (self.debug) console.error('Failed to get coffee pot status.');
         callback(self.msgConnectionError, self.msgComforting);
       },
     });
@@ -131,7 +131,7 @@ var Coffee = {
         }
       }
       catch (err) {
-        if (this.debug) console.log('ERROR: failed to calculate coffee subscription time difference');
+        if (this.debug) console.error('failed to calculate coffee subscription time difference');
       }
     }
     
@@ -181,7 +181,7 @@ var Coffee = {
       }
     }
     else {
-      if (this.debug) console.log('ERROR: coffee notification displayed less than four minutes ago');
+      if (this.debug) console.error('coffee notification displayed less than four minutes ago');
     }
   },
 

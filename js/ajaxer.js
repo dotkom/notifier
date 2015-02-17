@@ -51,23 +51,23 @@ var Ajaxer = {
 
   get: function(params) {
     if (params == undefined) {
-      console.log('ERROR: Params is required. Check ajaxer.js to see format of params.');
+      console.error('Params is required. Check ajaxer.js to see format of params.');
       return;
     }
     if (params.url == undefined) {
-      console.log('ERROR: URL missing from params.');
+      console.error('URL missing from params.');
       return;
     }
     if (params.dataType == undefined) {
-      console.log('ERROR: Do not use Ajaxer.get() directly, use getXml, getJson or one of the others instead.');
+      console.error('Do not use Ajaxer.get() directly, use getXml, getJson or one of the others instead.');
       return;
     }
     if (params.success == undefined) {
-     console.log('ERROR: Params is missing success function. The success function should use the results for something useful.');
+     console.error('Params is missing success function. The success function should use the results for something useful.');
       return;
     }
     if (params.error == undefined) {
-     console.log('ERROR: Params is missing error function. Error handling must be in place.');
+     console.error('Params is missing error function. Error handling must be in place.');
       return;
     }
 
