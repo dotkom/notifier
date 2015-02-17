@@ -988,6 +988,19 @@ var Affiliation = {
       },
     },
 
+    'sftoh': {
+      name: 'STØH',
+      key: 'sftoh',
+      web: 'http://www.sftoh.no/',
+      feed: 'http://www.sftoh.no/?feed=rss2',
+      logo: './org/sftoh/logo.png',
+      icon: './org/sftoh/icon.png',
+      symbol: './org/sftoh/symbol.png',
+      placeholder: './org/sftoh/placeholder.png',
+      palette: 'blue',
+      // Images fetched from newsfeed
+    },
+
     'tihlde': {
       name: 'TIHLDE',
       key: 'tihlde',
