@@ -1,8 +1,10 @@
 "use strict";
 
-// HOTFIXING FLASHY NEWS
-// enforcing flashy news for all users
-// REMOVE AFTER NOVEMBER 2014
+// HOTFIXING CANTINA MENU
+// a cantina was removed
+// REMOVE AFTER MAY 2015
 
-localStorage.removeItem('affiliationFlashy1');
-localStorage.removeItem('affiliationFlashy2');
+if (localStorage.leftCantina === 'ranheimsveien')
+	localStorage.leftCantina = 'tungasletta';
+if (localStorage.rightCantina === 'ranheimsveien')
+	localStorage.rightCantina = 'tungasletta';

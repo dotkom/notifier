@@ -17,36 +17,63 @@ var Cantina = {
   // Expected format of debugThisText: "Seirett med ris (G): 8 kroner" -> "food: price"
   // Note1: Set the price of debugThisText low to show it first cuz the list is sorted by price
 
+  // Documentation of SiT's RSS feeds for foodz
+  // https://www.sit.no/rss.ap?thisId=1457 SiT Kafé Dragvoll - EMPTY
+  // https://www.sit.no/rss.ap?thisId=1476 Matbaren Idrettssenteret - EMPTY
+  // https://www.sit.no/rss.ap?thisId=31661 Gløshaugen
+  // https://www.sit.no/rss.ap?thisId=31862 SiT Storkiosk Dragvoll - EMPTY
+  // https://www.sit.no/rss.ap?thisId=36441 Dragvoll
+  // https://www.sit.no/rss.ap?thisId=36444 Hangaren
+  // https://www.sit.no/rss.ap?thisId=36447 Realfag
+  // https://www.sit.no/rss.ap?thisId=36450 Tyholt
+  // https://www.sit.no/rss.ap?thisId=36453 Kalvskinnet
+  // https://www.sit.no/rss.ap?thisId=36456 Moholt - EMPTY
+  // https://www.sit.no/rss.ap?thisId=37228 Øya
+  // https://www.sit.no/rss.ap?thisId=38753 Tungasletta
+  // https://www.sit.no/rss.ap?thisId=38798 DMMH - EMPTY
+  // https://www.sit.no/rss.ap?thisId=38910 Rotvoll - EMPTY
+  // https://www.sit.no/rss.ap?thisId=40227 Elektro - EMPTY
+  // https://www.sit.no/rss.ap?thisId=41886 Elgeseter
+  // https://www.sit.no/rss.ap?thisId=42015 MTFS - EMPTY
+  // https://www.sit.no/rss.ap?thisId=42222 lunch - MTFS - EMPTY
+  // https://www.sit.no/rss.ap?thisId=42276 lunch - Elgeseter
+  // https://www.sit.no/rss.ap?thisId=42330 lunch - Dragvoll
+  // https://www.sit.no/rss.ap?thisId=42654 lunch - Kalvskinnet - EMPTY
+  // https://www.sit.no/rss.ap?thisId=42816 lunch - Øya
+  // https://www.sit.no/rss.ap?thisId=42924 lunch - Tungasletta
+
   // Feeds
   // To single out days use 'https://www.sit.no/rss.ap?thisId=36441&ma=on' - gives 'mandag' alone
   feeds: {
-    'dmmh': 'https://www.sit.no/rss.ap?thisId=38798',
-    'dragvoll': 'https://www.sit.no/rss.ap?thisId=36441',
-    'elektro': 'https://www.sit.no/rss.ap?thisId=40227',
-    'hangaren': 'https://www.sit.no/rss.ap?thisId=36444',
-    'kalvskinnet': 'https://www.sit.no/rss.ap?thisId=36453',
-    // 'kjel': 'https://www.sit.no/rss.ap?thisId=31681', // Har aldri innhold
-    'moholt': 'https://www.sit.no/rss.ap?thisId=36456',
-    // 'mtfs': '...', // Mangler
-    'ranheimsveien': 'https://www.sit.no/rss.ap?thisId=38753',
-    'realfag': 'https://www.sit.no/rss.ap?thisId=36447',
-    'rotvoll': 'https://www.sit.no/rss.ap?thisId=38910',
-    'tyholt': 'https://www.sit.no/rss.ap?thisId=36450',
-    // 'oya': '...', // Mangler
+    'dmmh':           'https://www.sit.no/rss.ap?thisId=38798',
+    'dragvoll':       'https://www.sit.no/rss.ap?thisId=36441',
+    'elektro':        'https://www.sit.no/rss.ap?thisId=40227', // EMPTY
+    'elgeseter':      'https://www.sit.no/rss.ap?thisId=42276', // Using lunch menu because dinner is EMPTY
+    'hangaren':       'https://www.sit.no/rss.ap?thisId=36444',
+    'kalvskinnet':    'https://www.sit.no/rss.ap?thisId=36453',
+    'kjel':           'https://www.sit.no/rss.ap?thisId=31681', // EMPTY
+    'moholt':         'https://www.sit.no/rss.ap?thisId=36456',
+    'mtfs':           'https://www.sit.no/rss.ap?thisId=42015', // EMPTY
+    'realfag':        'https://www.sit.no/rss.ap?thisId=36447',
+    'rotvoll':        'https://www.sit.no/rss.ap?thisId=38910',
+    'tungasletta':    'https://www.sit.no/rss.ap?thisId=38753',
+    'tyholt':         'https://www.sit.no/rss.ap?thisId=36450',
+    'oya':            'https://www.sit.no/rss.ap?thisId=37228', // EMPTY
   },
 
   names: {
     'dmmh': 'DMMH',
     'dragvoll': 'Dragvoll',
     'elektro': 'Elektro',
+    'elgeseter': 'Elgeseter',
     'hangaren': 'Hangaren',
     'kalvskinnet': 'Kalvskinnet',
     'kjel': 'Kjelhuset',
     'moholt': 'Moholt',
     'mtfs': 'MTFS',
-    'ranheimsveien': 'Ranheimsveien',
     'realfag': 'Realfag',
     'rotvoll': 'Rotvoll',
+    'tungasletta': 'Tungasletta',
     'tyholt': 'Tyholt',
     'oya': 'Øya',
     'storkiosk dragvoll': 'Storkiosk Dragvoll',
