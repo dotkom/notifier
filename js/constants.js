@@ -1,6 +1,6 @@
 "use strict";
 
-var DEBUG = 0;
+var DEBUG = 1;
 
 // Production detection
 if (Browser.inProduction()) {
