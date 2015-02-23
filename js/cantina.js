@@ -3,7 +3,8 @@
 var Cantina = {
 
   api: 'http://passoa.online.ntnu.no/api/cantina/',
-  web: 'https://www.sit.no/middag',
+  webHours: 'https://www.sit.no/mat',
+  webDinner: 'https://www.sit.no/middag',
   msgClosed: 'Ingen publisert meny i dag',
   msgConnectionError: 'Frakoblet fra API',
   msgUnsupportedCantina: 'Kantinen støttes ikke',
