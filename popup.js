@@ -84,16 +84,11 @@ var updateCantinas = function() {
   console.lolg('updateCantinas');
   var update = function(shortname, menu, selector) {
     var name = Cantina.names[shortname];
-    // $('#cantinas #'+selector+' .title').html(name);
-
-
-
+    // Set current cantina as selected in the title dropdown
     $('#cantinas #'+selector+' .titleDropdown option').filter(function() {
       return shortname === $(this).val();
     }).attr('selected', true);
-
-
-
+    // List dinners
     $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
     clickDinnerLink('#cantinas #'+selector+' #dinnerbox li', shortname);
   };
