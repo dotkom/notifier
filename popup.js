@@ -611,8 +611,48 @@ var fadeButtonText = function(show, msg) {
     $('#buttontext').html('');
   }
 }
+//
+// Title dropdowns and change handlers
+//
 
-// Document ready, go!
+var getTitleWidth = function (title) {
+  var width = $('#titleMeasure').text(title).width();
+  $('#titleMeasure').text('');
+  return width * 1.1 + 30; // With buffer
+};
+
+// Cantina
+
+var adjustCantinaTitleWidth = function(title, element) {
+  var cantinaName = Cantina.names[title];
+  var width = getTitleWidth(cantinaName);
+  $(element).width(width);
+};
+adjustCantinaTitleWidth(ls.leftCantina, '#cantinas #left .titleDropdown');
+adjustCantinaTitleWidth(ls.rightCantina, '#cantinas #right .titleDropdown');
+
+var cantinaChangeHandler = function(cantinaTitle, cantina) {
+  $(cantinaTitle).change(function () {
+    // Save
+    ls[cantina] = this.value;
+    // Measure
+    adjustCantinaTitleWidth(ls[cantina], this);
+    // Apply
+    Browser.getBackgroundProcess().updateHours(function () {
+      Browser.getBackgroundProcess().updateCantinas(function () {
+        updateHours();
+        updateCantinas();
+      });
+    });
+  });
+};
+cantinaChangeHandler('#cantinas #left .titleDropdown', 'leftCantina');
+cantinaChangeHandler('#cantinas #right .titleDropdown', 'rightCantina');
+
+//
+// Document ready function
+//
+
 $(document).ready(function() {
   // If Bigscreen mode is enabled we'll open the bigscreen when the icon is clicked
   if (ls.useBigscreen === 'true') {
@@ -861,6 +901,8 @@ $(document).ready(function() {
   // Set the cursor to focus on the question field
   // (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
   $('#oracle #question').focus();
+  // Repeat for good measure (the browser may sometimes blur the question-field)
+  setTimeout(function() {$('#oracle #question').focus();}, 400);
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
@@ -889,41 +931,3 @@ $(document).ready(function() {
   else
     mainLoop();
 });
-
-//
-// Title dropdowns and change handlers
-//
-
-var getTitleWidth = function (title) {
-  var width = $('#titleMeasure').text(title).width();
-  $('#titleMeasure').text('');
-  return width * 1.1 + 30; // With buffer
-};
-
-// Cantina
-
-var adjustCantinaTitleWidth = function(title, element) {
-  var cantinaName = Cantina.names[title];
-  var width = getTitleWidth(cantinaName);
-  $(element).width(width);
-};
-adjustCantinaTitleWidth(ls.leftCantina, '#cantinas #left .titleDropdown');
-adjustCantinaTitleWidth(ls.rightCantina, '#cantinas #right .titleDropdown');
-
-var cantinaChangeHandler = function(cantinaTitle, cantina) {
-  $(cantinaTitle).change(function () {
-    // Save
-    ls[cantina] = this.value;
-    // Measure
-    adjustCantinaTitleWidth(ls[cantina], this);
-    // Apply
-    Browser.getBackgroundProcess().updateHours(function () {
-      Browser.getBackgroundProcess().updateCantinas(function () {
-        updateHours();
-        updateCantinas();
-      });
-    });
-  });
-};
-cantinaChangeHandler('#cantinas #left .titleDropdown', 'leftCantina');
-cantinaChangeHandler('#cantinas #right .titleDropdown', 'rightCantina');
