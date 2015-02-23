@@ -222,7 +222,6 @@ var bindCantinaSelector = function(selector) {
     var cantina = $(this).prop('value');
     ls[selector] = cantina;
     Analytics.trackEvent('clickCantina', cantina);
-    Browser.getBackgroundProcess().updateHours();
     Browser.getBackgroundProcess().updateCantinas();
   });
 }

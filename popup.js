@@ -10,9 +10,6 @@ var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
-    if (force || iteration % UPDATE_HOURS_INTERVAL === 0)
-      updateHours();
-  if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
   if (ls.showAffiliation1 === 'true')
@@ -82,20 +79,25 @@ var updateCoffee = function() {
 var updateCantinas = function() {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
-  var update = function(shortname, menu, selector) {
+  var update = function(shortname, data, selector) {
     var name = Cantina.names[shortname];
     // Set current cantina as selected in the title dropdown
     $('#cantinas '+selector+' .titleDropdown option').filter(function() {
       return shortname === $(this).val();
     }).attr('selected', true);
-    // List dinners
+    // Set hours
+    var hours = data.hours;
+    $('#cantinas '+selector+' .hours').html(hours);
+    clickHours('#cantinas '+selector+' .hours', shortname);
+    // Set dinners
+    var menu = data.menu;
     $('#cantinas '+selector+' #dinnerbox').html(listDinners(menu));
     clickDinnerLink('#cantinas '+selector+' #dinnerbox li', shortname);
   };
-  var menu1 = JSON.parse(ls.cantina1Menu).menu;
-  var menu2 = JSON.parse(ls.cantina2Menu).menu;
-  update(ls.cantina1, menu1, '.first');
-  update(ls.cantina2, menu2, '.second');
+  var cantina1Data = JSON.parse(ls.cantina1Data);
+  var cantina2Data = JSON.parse(ls.cantina2Data);
+  update(ls.cantina1, cantina1Data, '.first');
+  update(ls.cantina2, cantina2Data, '.second');
 }
 
 var listDinners = function(menu) {
@@ -121,31 +123,18 @@ var listDinners = function(menu) {
   return dinnerlist;
 }
 
-var clickDinnerLink = function(cssSelector, cantina) {
+var clickHours = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
-    Analytics.trackEvent('clickDinner', $(this).text());
-    ls.clickedCantina = cantina;
-    Browser.openTab(Cantina.web);
+    Analytics.trackEvent('clickHours', $(this).text());
+    Browser.openTab(Cantina.webHours);
     window.close();
   });
 }
 
-var updateHours = function(first) {
-  // This function just fetches from localstorage (updates in background)
-  console.lolg('updateHours');
-  var update = function(shortname, hours, selector) {
-    $('#cantinas '+selector+' .hours').html(hours);
-    clickHours('#cantinas '+selector+' .hours', shortname);
-  };
-  update(ls.cantina1, ls.cantina1Hours, '.first');
-  update(ls.cantina2, ls.cantina2Hours, '.second');
-}
-
-var clickHours = function(cssSelector, cantina) {
+var clickDinnerLink = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
-    Analytics.trackEvent('clickHours', $(this).text());
-    ls.clickedHours = Hours.cantinas[cantina];
-    Browser.openTab(Hours.web);
+    Analytics.trackEvent('clickDinner', $(this).text());
+    Browser.openTab(Cantina.webDinner);
     window.close();
   });
 }

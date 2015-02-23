@@ -8,9 +8,6 @@ var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
-    if (force || iteration % UPDATE_HOURS_INTERVAL === 0)
-      updateHours();
-  if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
   if (ls.showAffiliation1 === 'true')
@@ -119,24 +116,12 @@ var updateCoffeeSubscription = function(callback) {
 
 var updateCantinas = function(callback) {
   console.lolg('updateCantinas');
-  Cantina.get(ls.cantina1, function(menu) {
-    ls.cantina1Menu = JSON.stringify(menu);
+  Cantina.get(ls.cantina1, function(result) {
+    ls.cantina1Data = JSON.stringify(result);
     if (typeof callback === 'function') callback();
   });
-  Cantina.get(ls.cantina2, function(menu) {
-    ls.cantina2Menu = JSON.stringify(menu);
-    if (typeof callback === 'function') callback();
-  });
-}
-
-var updateHours = function(callback) {
-  console.lolg('updateHours');
-  Hours.get(ls.cantina1, function(hours) {
-    ls.cantina1Hours = hours;
-    if (typeof callback === 'function') callback();
-  });
-  Hours.get(ls.cantina2, function(hours) {
-    ls.cantina2Hours = hours;
+  Cantina.get(ls.cantina2, function(result) {
+    ls.cantina2Data = JSON.stringify(result);
     if (typeof callback === 'function') callback();
   });
 }
