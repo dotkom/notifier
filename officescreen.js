@@ -117,11 +117,9 @@ var listDinners = function(menu) {
   var dinnerlist = '';
   // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
   if (typeof menu === 'string') {
-    ls.noDinnerInfo = 'true';
     dinnerlist += '<li>' + menu + '</li>';
   }
   else {
-    ls.noDinnerInfo = 'false'
     for (var i in menu) {
       var dinner = menu[i];
       if (dinner.price != null) {
