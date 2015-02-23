@@ -6,8 +6,8 @@ var Hours = {
   // SiTs new format for ajaxing hours is a POST api:
   // curl --data "diner=2532" https://www.sit.no/ajaxdiner/get
 
-  url: 'https://www.sit.no/mat',
   api: 'https://www.sit.no/ajaxdiner/get',
+  web: 'https://www.sit.no/mat',
   msgClosed: '- Det er nok stengt',
   msgConnectionError: '- Frakoblet fra sit.no/ajax',
   msgMalformedHours: '- Galt format på åpningstider',
@@ -20,6 +20,7 @@ var Hours = {
   // debugThisText is expected to be pre-stripped of JSON and HTML, otherwise intact
 
   cantinas: {
+    // Cantinas
     'administrasjon': 2379,
     'dmmh': 2534,
     'dragvoll': 1593,
@@ -36,18 +37,20 @@ var Hours = {
     'tungasletta': 2531,
     'tyholt': 2525,
     'oya': 2527,
+    // Kiosks
     'storkiosk dragvoll': 2393,
     'storkiosk gloshaugen': 2524,
     'storkiosk oya': 2528,
+    'idretts. dragvoll': 2517,
+    // Cafés
     'sito dragvoll': 2602,
     'sito realfag': 2522,
     'sito stripa': 2523,
-    'idretts. dragvoll': 2517,
   },
 
   get: function (cantina, callback) {
     if (callback === undefined) {
-      console.error('Callback is required. In the callback you should insert the results into the DOM.');
+      console.error('Callback required');
       return;
     }
 
