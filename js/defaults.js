@@ -118,14 +118,6 @@ var Defaults = {
       ls.showOffice = 'true';
     }
     
-    // Cantina
-    if (ls.showCantina === undefined)
-      ls.showCantina = 'true';
-    if (ls.leftCantina === undefined)
-      ls.leftCantina = 'hangaren';
-    if (ls.rightCantina === undefined)
-      ls.rightCantina = 'realfag';
-    
     // Notifications
     if (ls.showNotifications === undefined)
       ls.showNotifications = 'true';
