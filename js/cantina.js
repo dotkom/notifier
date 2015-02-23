@@ -386,9 +386,9 @@ var Cantina = {
     // We'll do this twice in case some keywords are laid out after eachother.
     // Example: "Raspeballer med frisk salat", where "med" and "frisk" are keywords.
     for (var i=0; i<2; i++) {
-      for (var i in keys) {
-        if (self.debugText) console.log(keys[i] + (keys[i].length<4?'\t\t':'\t') + ':: ' + text);
-        var spacedKey = ' '+keys[i];
+      for (var j in keys) {
+        if (self.debugText) console.log(keys[j] + (keys[j].length<4?'\t\t':'\t') + ':: ' + text);
+        var spacedKey = ' '+keys[j];
         if (self.endsWith(spacedKey, text)) {
           var pieces = text.split(' ');
           text = pieces.splice(0,pieces.length-1).join(' ');
