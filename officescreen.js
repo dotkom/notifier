@@ -101,13 +101,13 @@ var updateCantinas = function(first) {
   console.lolg('updateCantinas');
   var update = function(shortname, menu, selector) {
     var name = Cantina.names[shortname];
-    $('#cantinas #'+selector+' .title').html(name);
-    $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
+    $('#cantinas '+selector+' .title').html(name);
+    $('#cantinas '+selector+' #dinnerbox').html(listDinners(menu));
   };
-  var menu1 = JSON.parse(ls.leftCantinaMenu);
-  var menu2 = JSON.parse(ls.rightCantinaMenu);
-  update(ls.leftCantina, menu1, 'left');
-  update(ls.rightCantina, menu2, 'right');
+  var menu1 = JSON.parse(ls.cantina1Menu).menu;
+  var menu2 = JSON.parse(ls.cantina2Menu).menu;
+  update(ls.cantina1, menu1, '.first');
+  update(ls.cantina2, menu2, '.second');
 }
 
 var listDinners = function(menu) {
@@ -137,10 +137,10 @@ var updateHours = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateHours');
   var update = function(shortname, hours, selector) {
-    $('#cantinas #'+selector+' .hours').html(hours);
+    $('#cantinas '+selector+' .hours').html(hours);
   }
-  update(ls.leftCantina, ls.leftCantinaHours, 'left');
-  update(ls.rightCantina, ls.rightCantinaHours, 'right');
+  update(ls.cantina1, ls.cantina1Hours, '.first');
+  update(ls.cantina2, ls.cantina2Hours, '.second');
 }
 
 var updateBus = function() {

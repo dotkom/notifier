@@ -125,14 +125,14 @@ var updateCantinas = function(first) {
   console.lolg('updateCantinas');
   var update = function(shortname, menu, selector) {
     var name = Cantina.names[shortname];
-    $('#cantinas #'+selector+' .title').html(name);
-    $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
-    clickDinnerLink('#cantinas #'+selector+' #dinnerbox li', shortname);
+    $('#cantinas '+selector+' .title').html(name);
+    $('#cantinas '+selector+' #dinnerbox').html(listDinners(menu));
+    clickDinnerLink('#cantinas '+selector+' #dinnerbox li', shortname);
   };
-  var menu1 = JSON.parse(ls.leftCantinaMenu);
-  var menu2 = JSON.parse(ls.rightCantinaMenu);
-  update(ls.leftCantina, menu1, 'left');
-  update(ls.rightCantina, menu2, 'right');
+  var menu1 = JSON.parse(ls.cantina1Menu).menu;
+  var menu2 = JSON.parse(ls.cantina2Menu).menu;
+  update(ls.cantina1, menu1, '.first');
+  update(ls.cantina2, menu2, '.second');
 }
 
 var listDinners = function(menu) {
@@ -162,7 +162,7 @@ var clickDinnerLink = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
     Analytics.trackEvent('clickDinner', $(this).text());
     ls.clickedCantina = cantina;
-    Browser.openTab(Cantina.url);
+    Browser.openTab(Cantina.web);
     window.close();
   });
 }
@@ -171,18 +171,18 @@ var updateHours = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateHours');
   var update = function(shortname, hours, selector) {
-    $('#cantinas #'+selector+' .hours').html(hours);
-    clickHours('#cantinas #'+selector+' .hours', shortname);
+    $('#cantinas '+selector+' .hours').html(hours);
+    clickHours('#cantinas '+selector+' .hours', shortname);
   }
-  update(ls.leftCantina, ls.leftCantinaHours, 'left');
-  update(ls.rightCantina, ls.rightCantinaHours, 'right');
+  update(ls.cantina1, ls.cantina1Hours, '.first');
+  update(ls.cantina2, ls.cantina2Hours, '.second');
 }
 
 var clickHours = function(cssSelector, cantina) {
   $(cssSelector).click(function() {
     Analytics.trackEvent('clickHours', $(this).text());
     ls.clickedHours = Hours.cantinas[cantina];
-    Browser.openTab(Hours.url);
+    Browser.openTab(Hours.web);
     window.close();
   });
 }

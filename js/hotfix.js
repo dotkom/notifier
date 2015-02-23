@@ -16,3 +16,11 @@ if (localStorage.rightCantina === 'ranheimsveien')
 if (localStorage.affiliationPalette === 'pink')
 	localStorage.affiliationPalette = 'purple';
 
+// RENAMING LOCALSTORAGE VARS
+// it was an awful naming convention, numbering is better
+// REMOVE AFTER MAY 2015
+
+if (localStorage.leftCantina)
+	localStorage.cantina1 = localStorage.leftCantina;
+if (localStorage.rightCantina)
+	localStorage.cantina2 = localStorage.rightCantina;

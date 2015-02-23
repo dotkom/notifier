@@ -119,24 +119,24 @@ var updateCoffeeSubscription = function(callback) {
 
 var updateCantinas = function(callback) {
   console.lolg('updateCantinas');
-  Cantina.get(ls.leftCantina, function(menu) {
-    ls.leftCantinaMenu = JSON.stringify(menu);
+  Cantina.get(ls.cantina1, function(menu) {
+    ls.cantina1Menu = JSON.stringify(menu);
     if (typeof callback === 'function') callback();
   });
-  Cantina.get(ls.rightCantina, function(menu) {
-    ls.rightCantinaMenu = JSON.stringify(menu);
+  Cantina.get(ls.cantina2, function(menu) {
+    ls.cantina2Menu = JSON.stringify(menu);
     if (typeof callback === 'function') callback();
   });
 }
 
 var updateHours = function(callback) {
   console.lolg('updateHours');
-  Hours.get(ls.leftCantina, function(hours) {
-    ls.leftCantinaHours = hours;
+  Hours.get(ls.cantina1, function(hours) {
+    ls.cantina1Hours = hours;
     if (typeof callback === 'function') callback();
   });
-  Hours.get(ls.rightCantina, function(hours) {
-    ls.rightCantinaHours = hours;
+  Hours.get(ls.cantina2, function(hours) {
+    ls.cantina2Hours = hours;
     if (typeof callback === 'function') callback();
   });
 }

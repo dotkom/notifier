@@ -871,8 +871,8 @@ $(document).ready(function() {
   }
 
   // Allow user to select cantinas
-  bindCantinaSelector('leftCantina');
-  bindCantinaSelector('rightCantina');
+  bindCantinaSelector('cantina1');
+  bindCantinaSelector('cantina2');
 
   // Give user suggestions for autocomplete of bus stops
   bindBusFields('firstBus');

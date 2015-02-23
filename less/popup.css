@@ -115,13 +115,13 @@ body {
   margin-bottom: 4px;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
-#container #cantinas #left {
+#container #cantinas .first {
   border: 1px solid transparent;
   position: relative;
   float: left;
   width: 47.5%;
 }
-#container #cantinas #right {
+#container #cantinas .second {
   border: 1px solid transparent;
   position: relative;
   float: right;
