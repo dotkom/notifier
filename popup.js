@@ -622,11 +622,8 @@ var cantinaChangeHandler = function(cantinaTitle, cantina) {
     // Measure
     adjustCantinaTitleWidth(ls[cantina], this);
     // Apply
-    Browser.getBackgroundProcess().updateHours(function () {
-      Browser.getBackgroundProcess().updateCantinas(function () {
-        updateHours();
-        updateCantinas();
-      });
+    Browser.getBackgroundProcess().updateCantinas(function () {
+      updateCantinas();
     });
   });
 };
