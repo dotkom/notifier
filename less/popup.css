@@ -408,6 +408,10 @@ body {
           0 0 20px #bbb,
           0 0 27px #bbb;
 }
+#container #header #buttons #chatterButton,
+#container #header #buttons #chatterIcon {
+  display: none;
+}
 #container #header #buttons #chatterIcon {
   pointer-events: none;
   position: absolute;

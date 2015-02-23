@@ -675,9 +675,9 @@ $(document).ready(function() {
   $('#chatterIcon').prop('src', icon);
 
   // Hide Chatter button if not applicable
-  if (!Affiliation.org[ls.affiliationKey1].irc) {
-    $('#chatterButton').hide();
-    $('#chatterIcon').hide();
+  if (Affiliation.org[ls.affiliationKey1].irc) {
+    $('#chatterButton').show();
+    $('#chatterIcon').show();
   }
 
   // Apply the affiliation's own name for it's office
