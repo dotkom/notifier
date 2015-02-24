@@ -76,66 +76,78 @@ var updateCoffee = function() {
   });
 }
 
+//
+// Cantina
+//
+
 var updateCantinas = function() {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
+  
   var update = function(shortname, data, selector) {
     var name = Cantina.names[shortname];
+    var hours = '#cantinas '+selector+' .hours';
+    var dinners = '#cantinas '+selector+' #dinnerbox';
+    
     // Set current cantina as selected in the title dropdown
     $('#cantinas '+selector+' .titleDropdown option').filter(function() {
       return shortname === $(this).val();
     }).attr('selected', true);
-    // Set hours
-    var hours = data.hours;
-    $('#cantinas '+selector+' .hours').html(hours);
-    clickHours('#cantinas '+selector+' .hours', shortname);
-    // Set dinners
-    var menu = data.menu;
-    $('#cantinas '+selector+' #dinnerbox').html(listDinners(menu));
-    clickDinnerLink('#cantinas '+selector+' #dinnerbox li', shortname);
+
+    // If data is just a message
+    if (typeof data === 'string') {
+      $(hours).html(data);
+      $(dinners).html('');
+    }
+    // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
+    else {
+      // Set hours
+      $(hours).html('');
+      if (data.hours) {
+        $(hours).html(data.hours);
+        clickHours(hours, shortname);
+      }
+      // Set dinners
+      $(dinners).html('');
+      if (data.menu) {
+        for (var i in data.menu) {
+          var dinner = data.menu[i];
+          if (dinner.price !== null) {
+            $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
+          }
+          else {
+            $(dinners).append('<li class="message">"' + dinner.text + '"</li>');
+          }
+        }
+        clickDinners(dinners + ' li', shortname);
+      }
+      // Log error messages
+      if (data.error) console.error(data.error);
+    }
   };
+
+  var clickHours = function(cssSelector, cantina) {
+    $(cssSelector).click(function() {
+      Analytics.trackEvent('clickHours', $(this).text());
+      Browser.openTab(Cantina.webHours);
+      window.close();
+    });
+  }
+
+  var clickDinners = function(cssSelector, cantina) {
+    $(cssSelector).click(function() {
+      Analytics.trackEvent('clickDinner', $(this).text());
+      Browser.openTab(Cantina.webDinner);
+      window.close();
+    });
+  }
+
+  // Load data from cantinas
   var cantina1Data = JSON.parse(ls.cantina1Data);
   var cantina2Data = JSON.parse(ls.cantina2Data);
   update(ls.cantina1, cantina1Data, '.first');
   update(ls.cantina2, cantina2Data, '.second');
-}
-
-var listDinners = function(menu) {
-  var dinnerlist = '';
-  // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
-  if (typeof menu === 'string') {
-    dinnerlist += '<li>' + menu + '</li>';
-  }
-  else {
-    for (var i in menu) {
-      var dinner = menu[i];
-      if (dinner.price !== null) {
-        dinner.price = dinner.price + ',-';
-        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>';
-      }
-      else {
-        dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
-      }
-    }
-  }
-  return dinnerlist;
-}
-
-var clickHours = function(cssSelector, cantina) {
-  $(cssSelector).click(function() {
-    Analytics.trackEvent('clickHours', $(this).text());
-    Browser.openTab(Cantina.webHours);
-    window.close();
-  });
-}
-
-var clickDinnerLink = function(cssSelector, cantina) {
-  $(cssSelector).click(function() {
-    Analytics.trackEvent('clickDinner', $(this).text());
-    Browser.openTab(Cantina.webDinner);
-    window.close();
-  });
-}
+};
 
 var updateBus = function() {
   console.lolg('updateBus');
