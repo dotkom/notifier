@@ -56,17 +56,28 @@ var Cantina = {
       return;
     }
 
-    var apiUrl = this.api + cantina;
     var self = this;
 
     Ajaxer.getJson({
-      url: apiUrl,
-      success: function(json) {
-        callback(json);
-      },
+      url: this.api + cantina,
+      success: callback,
       error: function(jqXHR, text, err) {
         console.error(self.msgConnectionError);
-        callback(self.msgConnectionError);
+        // Temporary hack to work around a 400 Bad Request that really isn't
+        if (jqXHR.responseText.indexOf('name') !== -1) {
+          var json = jqXHR.responseText;
+          try{
+            json = JSON.parse(json);
+            console.warn('Had to work around an error, found this:', json);
+            callback(json);
+          }
+          catch(e) {
+            callback(self.msgConnectionError);
+          }
+        }
+        else {
+          callback(self.msgConnectionError);
+        }
       },
     })
   },
