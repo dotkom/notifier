@@ -139,7 +139,7 @@ var updateCantinas = function(first) {
 
 var listDinners = function(menu) {
   var dinnerlist = '';
-  // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
+  // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity)
   if (typeof menu === 'string') {
     dinnerlist += '<li>' + menu + '</li>';
   }
@@ -148,10 +148,10 @@ var listDinners = function(menu) {
       var dinner = menu[i];
       if (dinner.price != null) {
         dinner.price = dinner.price + ',-';
-        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>';
+        dinnerlist += '<li>' + dinner.price + ' ' + dinner.text + '</li>';
       }
       else {
-        dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>';
+        dinnerlist += '<li class="message">"' + dinner.text + '"</li>';
       }
     }
   }
