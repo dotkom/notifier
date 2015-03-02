@@ -250,8 +250,15 @@ var bindOracle = function() {
     // Clicked tab: Predict question
     if (e.which === 9) {
       e.preventDefault();
-      oraclePrediction();
-      Analytics.trackEvent('oraclePrediction');
+      // Prevent spam
+      if (window.lastClickedTabInOracle && (Date.now() - window.lastClickedTabInOracle) < 1500) {
+        console.warn('Do not hold down tab, the Oracle is very old and does not enjoy spam.');
+      }
+      else {
+        oraclePrediction();
+        Analytics.trackEvent('oraclePrediction');
+      }
+      window.lastClickedTabInOracle = Date.now();
     }
   });
 }
