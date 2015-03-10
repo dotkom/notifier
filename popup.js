@@ -172,12 +172,15 @@ var updateCantinas = function() {
 };
 
 var adjustCantinaTitleWidth = function(title, element) {
+  var wrapper = element + ' .dropdownWrapper';
+  var dropdown = element + ' .dropdownWrapper .titleDropdown';
   var cantinaName = Cantina.names[title];
   var width = getTitleWidth(cantinaName);
-  $(element).width(width);
+  $(wrapper).width(width);
+  $(dropdown).width(width - 28);
 };
-adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first .titleDropdown');
-adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second .titleDropdown');
+adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first');
+adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second');
 
 var cantinaChangeHandler = function(which, cantina) {
   var titleDropdown = '#cantinas ' + which + ' .titleDropdown';
@@ -187,7 +190,7 @@ var cantinaChangeHandler = function(which, cantina) {
     // Save
     ls[cantina] = this.value;
     // Measure
-    adjustCantinaTitleWidth(ls[cantina], this);
+    adjustCantinaTitleWidth(ls[cantina], '#cantinas ' + which);
     // Add loading bar
     $(hoursBox).html('');
     $(dinnerBox).html('<img class="loadingLeft" src="img/loading.gif" />');
