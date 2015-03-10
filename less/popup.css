@@ -475,6 +475,10 @@ body {
 #container #cantinas li:hover {
   text-decoration: underline;
 }
+#container #cantinas .loadingLeft {
+  width: 80px;
+  bottom: 4px;
+}
 #container #bus {
   box-shadow: 0 0 15px #aaa;
   top: 16px;
