@@ -42,12 +42,30 @@ var mainLoop = function(force) {
     iteration++;
 }
 
+//
+// Text measuring for title dropdowns and change handlers
+//
+
+var getTitleWidth = function (title) {
+  var width = $('#titleMeasure').text(title).width();
+  $('#titleMeasure').text('');
+  return width * 1.1 + 30; // With buffer
+};
+
+//
+// Update functions: Servant
+//
+
 var updateServant = function() {
   console.lolg('updateServant');
   Servant.get(function(servant) {
     $('#todays #schedule #servant').html('- '+servant);
   });
 }
+
+//
+// Update functions: Meetings
+//
 
 var updateMeetings = function() {
   console.lolg('updateMeetings');
@@ -68,6 +86,10 @@ var updateMeetings = function() {
   });
 }
 
+//
+// Update functions: Coffee
+//
+
 var updateCoffee = function() {
   console.lolg('updateCoffee');
   Coffee.get(true, function(pots, age) {
@@ -77,18 +99,18 @@ var updateCoffee = function() {
 }
 
 //
-// Cantina
+// Update functions: Cantina
 //
 
 var updateCantinas = function() {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
-  
+
   var update = function(shortname, data, selector) {
     var name = Cantina.names[shortname];
     var hours = '#cantinas '+selector+' .hours';
     var dinners = '#cantinas '+selector+' #dinnerbox';
-    
+
     // Set current cantina as selected in the title dropdown
     $('#cantinas '+selector+' .titleDropdown option').filter(function() {
       return shortname === $(this).val();
@@ -148,6 +170,44 @@ var updateCantinas = function() {
   update(ls.cantina1, cantina1Data, '.first');
   update(ls.cantina2, cantina2Data, '.second');
 };
+
+var adjustCantinaTitleWidth = function(title, element) {
+  var cantinaName = Cantina.names[title];
+  var width = getTitleWidth(cantinaName);
+  $(element).width(width);
+};
+adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first .titleDropdown');
+adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second .titleDropdown');
+
+var cantinaChangeHandler = function(which, cantina) {
+  var titleDropdown = '#cantinas ' + which + ' .titleDropdown';
+  var hoursBox = '#cantinas ' + which + ' .hours';
+  var dinnerBox = '#cantinas ' + which + ' #dinnerbox';
+  $(titleDropdown).change(function () {
+    // Save
+    ls[cantina] = this.value;
+    // Measure
+    adjustCantinaTitleWidth(ls[cantina], this);
+    // Add loading bar
+    $(hoursBox).html('');
+    $(dinnerBox).html('<img class="loadingLeft" src="img/loading.gif" />');
+    window.cantinaTimeout = setTimeout(function() {
+      $(hoursBox).html('');
+      $(dinnerBox).html(Cantina.msgConnectionError);
+    }, 6000);
+    // Apply
+    Browser.getBackgroundProcess().updateCantinas(function () {
+      clearTimeout(window.cantinaTimeout);
+      updateCantinas();
+    });
+  });
+};
+cantinaChangeHandler('.first', 'cantina1');
+cantinaChangeHandler('.second', 'cantina2');
+
+//
+// Update functions: Bus
+//
 
 var updateBus = function() {
   console.lolg('updateBus');
@@ -212,6 +272,10 @@ var updateBus = function() {
   createBusDataRequest('firstBus', '#firstBus');
   createBusDataRequest('secondBus', '#secondBus');
 }
+
+//
+// Oracle: Binding, reaction, animation, prediction and more
+//
 
 var bindOracle = function() {
   // Suggest prediction
@@ -386,6 +450,10 @@ var animateOracleQuestion = function(line) {
     }, random);
   }
 }
+
+//
+// Update functions: Affiliation News
+//
 
 var updateAffiliationNews = function(number) {
   console.lolg('updateAffiliationNews'+number);
@@ -568,6 +636,10 @@ var findUpdatedPosts = function(newsList, viewedList) {
   return updatedList;
 }
 
+//
+// Update functions: Images for Affiliation News
+//
+
 var updateNewsImages = function() {
   console.lolg('updateNewsImages');
   // The background process looks for images, and sometimes that process
@@ -581,6 +653,10 @@ var updateNewsImages = function() {
     }
   });
 }
+
+//
+// Buttons
+//
 
 var optionsText = function(show) {
   fadeButtonText(show, 'Endre innstillinger');
@@ -612,40 +688,6 @@ var fadeButtonText = function(show, msg) {
     $('#buttontext').html('');
   }
 }
-//
-// Title dropdowns and change handlers
-//
-
-var getTitleWidth = function (title) {
-  var width = $('#titleMeasure').text(title).width();
-  $('#titleMeasure').text('');
-  return width * 1.1 + 30; // With buffer
-};
-
-// Cantina
-
-var adjustCantinaTitleWidth = function(title, element) {
-  var cantinaName = Cantina.names[title];
-  var width = getTitleWidth(cantinaName);
-  $(element).width(width);
-};
-adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first .titleDropdown');
-adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second .titleDropdown');
-
-var cantinaChangeHandler = function(cantinaTitle, cantina) {
-  $(cantinaTitle).change(function () {
-    // Save
-    ls[cantina] = this.value;
-    // Measure
-    adjustCantinaTitleWidth(ls[cantina], this);
-    // Apply
-    Browser.getBackgroundProcess().updateCantinas(function () {
-      updateCantinas();
-    });
-  });
-};
-cantinaChangeHandler('#cantinas .first .titleDropdown', 'cantina1');
-cantinaChangeHandler('#cantinas .second .titleDropdown', 'cantina2');
 
 //
 // Document ready function
