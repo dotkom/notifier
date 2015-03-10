@@ -11,7 +11,7 @@ var Oracle = {
   msgYouBrokeIt1: 'Oi, du ødela Orakelet. Disse feilene er spesielt sjeldne! Kan du være en engel og <a href="mailto:busstuc@idi.ntnu.no?subject=Bug report&amp;body=Hei, jeg ødela bussorakelet litt med dette spørsmålet: «',
   msgYouBrokeIt2: '»">trykke her for å sende feilrapport til busstuc@idi.ntnu.no</a>? (A)',
 
-  _autoLoad_: function() {
+  _autoLoadDefaults_: function() {
     if (localStorage.oracleBrain == undefined) {
       var oracleBrain = {};
       for (var i=0; i<=6; i++)

@@ -222,7 +222,6 @@ var bindCantinaSelector = function(selector) {
     var cantina = $(this).prop('value');
     ls[selector] = cantina;
     Analytics.trackEvent('clickCantina', cantina);
-    Browser.getBackgroundProcess().updateHours();
     Browser.getBackgroundProcess().updateCantinas();
   });
 }
@@ -871,8 +870,8 @@ $(document).ready(function() {
   }
 
   // Allow user to select cantinas
-  bindCantinaSelector('leftCantina');
-  bindCantinaSelector('rightCantina');
+  bindCantinaSelector('cantina1');
+  bindCantinaSelector('cantina2');
 
   // Give user suggestions for autocomplete of bus stops
   bindBusFields('firstBus');

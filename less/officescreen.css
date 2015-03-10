@@ -220,49 +220,49 @@ body {
   clear: both;
   display: inline-block;
 }
-#container #cantinas #left,
-#container #cantinas #right {
+#container #cantinas .first,
+#container #cantinas .second {
   width: 100%;
   float: left;
 }
-#container #cantinas #left #head,
-#container #cantinas #right #head {
+#container #cantinas .first #head,
+#container #cantinas .second #head {
   margin-top: 44px;
   width: 100%;
   display: inline-block;
   clear: both;
 }
-#container #cantinas #left #head .title,
-#container #cantinas #right #head .title {
+#container #cantinas .first #head .title,
+#container #cantinas .second #head .title {
   display: inline;
   margin-top: 0;
 }
-#container #cantinas #left #head .hours,
-#container #cantinas #right #head .hours {
+#container #cantinas .first #head .hours,
+#container #cantinas .second #head .hours {
   display: inline;
   margin-left: 20px;
   color: #aaa;
 }
-#container #cantinas #left #dinnerbox,
-#container #cantinas #right #dinnerbox {
+#container #cantinas .first #dinnerbox,
+#container #cantinas .second #dinnerbox {
   font-size: 52px;
   line-height: 55px;
   margin-top: 8px;
   width: 100%;
 }
-#container #cantinas #left #dinnerbox li,
-#container #cantinas #right #dinnerbox li {
+#container #cantinas .first #dinnerbox li,
+#container #cantinas .second #dinnerbox li {
   position: relative;
   width: 95%;
   list-style-type: none;
   -webkit-transition: text-shadow 0.15s ease-out 0s;
 }
-#container #cantinas #left #dinnerbox li span,
-#container #cantinas #right #dinnerbox li span {
+#container #cantinas .first #dinnerbox li span,
+#container #cantinas .second #dinnerbox li span {
   color: #bbb;
 }
-#container #cantinas #left #dinnerbox li.message,
-#container #cantinas #right #dinnerbox li.message {
+#container #cantinas .first #dinnerbox li.message,
+#container #cantinas .second #dinnerbox li.message {
   /*font-style: italic;*/
 }
 #container #bus {

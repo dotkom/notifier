@@ -5,28 +5,9 @@
 
 // onMessage for single messages
 function onMessage(request, sender, callback) {
-  // which cantina did the user just click in the popup?
-  // the content script wants to switch to that specific cantina
-  if (request.action == 'getClickedCantina') {
-    console.lolg('onMessage: getClickedCantina');
-    var clickedCantina = localStorage.clickedCantina;
-    if (typeof clickedCantina != 'undefined') {
-      localStorage.removeItem('clickedCantina');
-      callback(clickedCantina);
-    }
-  }
-  // which cantina did the user just click in the popup?
-  // the content script wants to switch to that specific cantina
-  else if (request.action == 'getClickedHours') {
-    console.lolg('onMessage: getClickedHours');
-    var clickedHours = localStorage.clickedHours;
-    if (typeof clickedHours != 'undefined') {
-      localStorage.removeItem('clickedHours');
-      callback(clickedHours);
-    }
-  }
-  else console.lolg('ERROR: unrecognized request:', request);
-}
+  // No longer in use
+  console.lolg('ERROR: unrecognized request:', request);
+};
 
 // onConnect for conversations
 function onConnect(port) {
@@ -90,7 +71,7 @@ function onConnect(port) {
     });
   }
   else console.lolg('WARNING: something tried to connect on port', port.name);
-}
+};
 
 // wire up the message- and connect-listener functions
 if (Browser.name == 'Chrome' || Browser.name == 'Opera') {
@@ -99,4 +80,4 @@ if (Browser.name == 'Chrome' || Browser.name == 'Opera') {
     chrome.runtime.onConnect.addListener(onConnect);
   }
   else console.lolg('ERROR: old version of (chrom(e|ium)|opera), messaging API not supported');
-}
+};

@@ -10,9 +10,6 @@ var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
-    if (force || iteration % UPDATE_HOURS_INTERVAL === 0)
-      updateHours();
-  if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
   if (ls.showAffiliation1 === 'true')
@@ -45,12 +42,30 @@ var mainLoop = function(force) {
     iteration++;
 }
 
+//
+// Text measuring for title dropdowns and change handlers
+//
+
+var getTitleWidth = function (title) {
+  var width = $('#titleMeasure').text(title).width();
+  $('#titleMeasure').text('');
+  return width * 1.1 + 30; // With buffer
+};
+
+//
+// Update functions: Servant
+//
+
 var updateServant = function() {
   console.lolg('updateServant');
   Servant.get(function(servant) {
     $('#todays #schedule #servant').html('- '+servant);
   });
 }
+
+//
+// Update functions: Meetings
+//
 
 var updateMeetings = function() {
   console.lolg('updateMeetings');
@@ -71,6 +86,10 @@ var updateMeetings = function() {
   });
 }
 
+//
+// Update functions: Coffee
+//
+
 var updateCoffee = function() {
   console.lolg('updateCoffee');
   Coffee.get(true, function(pots, age) {
@@ -79,81 +98,119 @@ var updateCoffee = function() {
   });
 }
 
+//
+// Update functions: Cantina
+//
+
 var updateCantinas = function() {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
-  var update = function(shortname, menu, selector) {
+
+  var update = function(shortname, data, selector) {
     var name = Cantina.names[shortname];
-    // $('#cantinas #'+selector+' .title').html(name);
+    var hours = '#cantinas '+selector+' .hours';
+    var dinners = '#cantinas '+selector+' #dinnerbox';
 
-
-
-    $('#cantinas #'+selector+' .titleDropdown option').filter(function() {
+    // Set current cantina as selected in the title dropdown
+    $('#cantinas '+selector+' .titleDropdown option').filter(function() {
       return shortname === $(this).val();
     }).attr('selected', true);
 
-
-
-    $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
-    clickDinnerLink('#cantinas #'+selector+' #dinnerbox li', shortname);
-  };
-  var menu1 = JSON.parse(ls.leftCantinaMenu);
-  var menu2 = JSON.parse(ls.rightCantinaMenu);
-  update(ls.leftCantina, menu1, 'left');
-  update(ls.rightCantina, menu2, 'right');
-}
-
-var listDinners = function(menu) {
-  var dinnerlist = '';
-  // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
-  if (typeof menu === 'string') {
-    ls.noDinnerInfo = 'true';
-    dinnerlist += '<li>' + menu + '</li>';
-  }
-  else {
-    ls.noDinnerInfo = 'false';
-    for (var i in menu) {
-      var dinner = menu[i];
-      if (dinner.price !== null) {
-        dinner.price = dinner.price + ',-';
-        dinnerlist += '<li id="' + dinner.index + '">' + dinner.price + ' ' + dinner.text + '</li>';
-      }
-      else {
-        dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>'
-      }
+    // If data is just a message
+    if (typeof data === 'string') {
+      $(hours).html(data);
+      $(dinners).html('');
     }
-  }
-  return dinnerlist;
-}
-
-var clickDinnerLink = function(cssSelector, cantina) {
-  $(cssSelector).click(function() {
-    Analytics.trackEvent('clickDinner', $(this).text());
-    ls.clickedCantina = cantina;
-    Browser.openTab(Cantina.url);
-    window.close();
-  });
-}
-
-var updateHours = function(first) {
-  // This function just fetches from localstorage (updates in background)
-  console.lolg('updateHours');
-  var update = function(shortname, hours, selector) {
-    $('#cantinas #'+selector+' .hours').html(hours);
-    clickHours('#cantinas #'+selector+' .hours', shortname);
+    // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
+    else {
+      // Set hours
+      $(hours).html('');
+      if (data.hours) {
+        $(hours).html(data.hours);
+        clickHours(hours, shortname);
+      }
+      // Set dinners
+      $(dinners).html('');
+      if (data.menu) {
+        for (var i in data.menu) {
+          var dinner = data.menu[i];
+          if (dinner.price !== null) {
+            $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
+          }
+          else {
+            $(dinners).append('<li class="message">"' + dinner.text + '"</li>');
+          }
+        }
+        clickDinners(dinners + ' li', shortname);
+      }
+      // Log error messages
+      if (data.error) console.error(data.error);
+    }
   };
-  update(ls.leftCantina, ls.leftCantinaHours, 'left');
-  update(ls.rightCantina, ls.rightCantinaHours, 'right');
-}
 
-var clickHours = function(cssSelector, cantina) {
-  $(cssSelector).click(function() {
-    Analytics.trackEvent('clickHours', $(this).text());
-    ls.clickedHours = Hours.cantinas[cantina];
-    Browser.openTab(Hours.url);
-    window.close();
+  var clickHours = function(cssSelector, cantina) {
+    $(cssSelector).click(function() {
+      Analytics.trackEvent('clickHours', $(this).text());
+      Browser.openTab(Cantina.webHours);
+      window.close();
+    });
+  }
+
+  var clickDinners = function(cssSelector, cantina) {
+    $(cssSelector).click(function() {
+      Analytics.trackEvent('clickDinner', $(this).text());
+      Browser.openTab(Cantina.webDinner);
+      window.close();
+    });
+  }
+
+  // Load data from cantinas
+  var cantina1Data = JSON.parse(ls.cantina1Data);
+  var cantina2Data = JSON.parse(ls.cantina2Data);
+  update(ls.cantina1, cantina1Data, '.first');
+  update(ls.cantina2, cantina2Data, '.second');
+};
+
+var adjustCantinaTitleWidth = function(title, element) {
+  var wrapper = element + ' .dropdownWrapper';
+  var dropdown = element + ' .dropdownWrapper .titleDropdown';
+  var cantinaName = Cantina.names[title];
+  var width = getTitleWidth(cantinaName);
+  $(wrapper).width(width);
+  $(dropdown).width(width - 28);
+};
+adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first');
+adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second');
+
+var cantinaChangeHandler = function(which, cantina) {
+  var titleDropdown = '#cantinas ' + which + ' .titleDropdown';
+  var hoursBox = '#cantinas ' + which + ' .hours';
+  var dinnerBox = '#cantinas ' + which + ' #dinnerbox';
+  $(titleDropdown).change(function () {
+    // Save
+    ls[cantina] = this.value;
+    // Measure
+    adjustCantinaTitleWidth(ls[cantina], '#cantinas ' + which);
+    // Add loading bar
+    $(hoursBox).html('');
+    $(dinnerBox).html('<img class="loadingLeft" src="img/loading.gif" />');
+    window.cantinaTimeout = setTimeout(function() {
+      $(hoursBox).html('');
+      $(dinnerBox).html(Cantina.msgConnectionError);
+    }, 6000);
+    // Apply
+    Browser.getBackgroundProcess().updateCantinas(function () {
+      clearTimeout(window.cantinaTimeout);
+      updateCantinas();
+    });
   });
-}
+};
+cantinaChangeHandler('.first', 'cantina1');
+cantinaChangeHandler('.second', 'cantina2');
+
+//
+// Update functions: Bus
+//
 
 var updateBus = function() {
   console.lolg('updateBus');
@@ -219,6 +276,10 @@ var updateBus = function() {
   createBusDataRequest('secondBus', '#secondBus');
 }
 
+//
+// Oracle: Binding, reaction, animation, prediction and more
+//
+
 var bindOracle = function() {
   // Suggest prediction
   if (Oracle.predict() !== null) {
@@ -256,8 +317,15 @@ var bindOracle = function() {
     // Clicked tab: Predict question
     if (e.which === 9) {
       e.preventDefault();
-      oraclePrediction();
-      Analytics.trackEvent('oraclePrediction');
+      // Prevent spam
+      if (window.lastClickedTabInOracle && (Date.now() - window.lastClickedTabInOracle) < 1500) {
+        console.warn('Do not hold down tab, the Oracle is very old and does not enjoy spam.');
+      }
+      else {
+        oraclePrediction();
+        Analytics.trackEvent('oraclePrediction');
+      }
+      window.lastClickedTabInOracle = Date.now();
     }
   });
 }
@@ -385,6 +453,10 @@ var animateOracleQuestion = function(line) {
     }, random);
   }
 }
+
+//
+// Update functions: Affiliation News
+//
 
 var updateAffiliationNews = function(number) {
   console.lolg('updateAffiliationNews'+number);
@@ -567,6 +639,10 @@ var findUpdatedPosts = function(newsList, viewedList) {
   return updatedList;
 }
 
+//
+// Update functions: Images for Affiliation News
+//
+
 var updateNewsImages = function() {
   console.lolg('updateNewsImages');
   // The background process looks for images, and sometimes that process
@@ -580,6 +656,10 @@ var updateNewsImages = function() {
     }
   });
 }
+
+//
+// Buttons
+//
 
 var optionsText = function(show) {
   fadeButtonText(show, 'Endre innstillinger');
@@ -612,7 +692,10 @@ var fadeButtonText = function(show, msg) {
   }
 }
 
-// Document ready, go!
+//
+// Document ready function
+//
+
 $(document).ready(function() {
   // If Bigscreen mode is enabled we'll open the bigscreen when the icon is clicked
   if (ls.useBigscreen === 'true') {
@@ -675,9 +758,9 @@ $(document).ready(function() {
   $('#chatterIcon').prop('src', icon);
 
   // Hide Chatter button if not applicable
-  if (!Affiliation.org[ls.affiliationKey1].irc) {
-    $('#chatterButton').hide();
-    $('#chatterIcon').hide();
+  if (Affiliation.org[ls.affiliationKey1].irc) {
+    $('#chatterButton').show();
+    $('#chatterIcon').show();
   }
 
   // Apply the affiliation's own name for it's office
@@ -861,6 +944,8 @@ $(document).ready(function() {
   // Set the cursor to focus on the question field
   // (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
   $('#oracle #question').focus();
+  // Repeat for good measure (the browser may sometimes blur the question-field)
+  setTimeout(function() {$('#oracle #question').focus();}, 400);
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
@@ -889,41 +974,3 @@ $(document).ready(function() {
   else
     mainLoop();
 });
-
-//
-// Title dropdowns and change handlers
-//
-
-var getTitleWidth = function (title) {
-  var width = $('#titleMeasure').text(title).width();
-  $('#titleMeasure').text('');
-  return width * 1.1 + 30; // With buffer
-};
-
-// Cantina
-
-var adjustCantinaTitleWidth = function(title, element) {
-  var cantinaName = Cantina.names[title];
-  var width = getTitleWidth(cantinaName);
-  $(element).width(width);
-};
-adjustCantinaTitleWidth(ls.leftCantina, '#cantinas #left .titleDropdown');
-adjustCantinaTitleWidth(ls.rightCantina, '#cantinas #right .titleDropdown');
-
-var cantinaChangeHandler = function(cantinaTitle, cantina) {
-  $(cantinaTitle).change(function () {
-    // Save
-    ls[cantina] = this.value;
-    // Measure
-    adjustCantinaTitleWidth(ls[cantina], this);
-    // Apply
-    Browser.getBackgroundProcess().updateHours(function () {
-      Browser.getBackgroundProcess().updateCantinas(function () {
-        updateHours();
-        updateCantinas();
-      });
-    });
-  });
-};
-cantinaChangeHandler('#cantinas #left .titleDropdown', 'leftCantina');
-cantinaChangeHandler('#cantinas #right .titleDropdown', 'rightCantina');

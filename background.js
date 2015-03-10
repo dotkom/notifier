@@ -8,9 +8,6 @@ var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
-    if (force || iteration % UPDATE_HOURS_INTERVAL === 0)
-      updateHours();
-  if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
   if (ls.showAffiliation1 === 'true')
@@ -30,7 +27,7 @@ var mainLoop = function(force) {
           updateCoffeeSubscription();
     }
   }
-  
+
   // No reason to count to infinity
   if (10000 < iteration)
     iteration = 0;
@@ -119,25 +116,12 @@ var updateCoffeeSubscription = function(callback) {
 
 var updateCantinas = function(callback) {
   console.lolg('updateCantinas');
-  Cantina.get(ls.leftCantina, function(menu) {
-    ls.leftCantinaMenu = JSON.stringify(menu);
-    if (typeof callback === 'function') callback();
-  });
-  Cantina.get(ls.rightCantina, function(menu) {
-    ls.rightCantinaMenu = JSON.stringify(menu);
-    if (typeof callback === 'function') callback();
-  });
-}
-
-var updateHours = function(callback) {
-  console.lolg('updateHours');
-  Hours.get(ls.leftCantina, function(hours) {
-    ls.leftCantinaHours = hours;
-    if (typeof callback === 'function') callback();
-  });
-  Hours.get(ls.rightCantina, function(hours) {
-    ls.rightCantinaHours = hours;
-    if (typeof callback === 'function') callback();
+  Cantina.get(ls.cantina1, function(result1) {
+    Cantina.get(ls.cantina2, function(result2) {
+      ls.cantina1Data = JSON.stringify(result1);
+      ls.cantina2Data = JSON.stringify(result2);
+      if (typeof callback === 'function') callback();
+    });
   });
 }
 

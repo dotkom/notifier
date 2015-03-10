@@ -23,57 +23,6 @@ if (typeof chrome != 'undefined') {
     $('#install_notifier').hide();
   }
 
-  // sit.no
-
-  if (host.indexOf('www.sit.no') != -1) {
-
-    // Switch Dinner Menus
-
-    var cantinaCallback = function(clickedCantina) {
-      // Kick out SiTs own change function, which doesn't play
-      // well with our more updated version of jQuery
-      $('#displayWeek').unbind('change');
-      // Rebind the cantina selector with SiT's own function
-      $('#displayWeek').change( function() {
-        var selectedDiner = $(this).val();
-        $.ajax({
-          url: 'ajaxdinner/get',
-          type: 'POST',
-          data: { diner: selectedDiner, trigger: 'week' },
-          success: function(menu){
-            $('#dinner-output').html(menu.html);
-          }
-        });
-      });
-      // Change cantina and trigger the change
-      $('#displayWeek').val(clickedCantina).trigger('change');
-    };
-    chrome.extension.sendMessage({'action':'getClickedCantina'}, cantinaCallback);
-
-    // Switch Opening Hours
-
-    var hoursCallback = function(clickedCantina) {
-      // Kick out SiTs own change function, which doesn't play
-      // well with our more updated version of jQuery
-      $('#diner-info-select').unbind('change');
-      // Rebind the cantina selector with SiT's own function
-      $('#diner-info-select').change( function() {
-        var selectedDiner = $(this).val();
-        $.ajax({
-          url: 'ajaxdiner/get',
-          type: 'POST',
-          data: { diner: selectedDiner },
-          success: function(menu){
-            $('.diner-info-view').html(menu.html);
-          }
-        });
-      });
-      // Change cantina and trigger the change
-      $('#diner-info-select').val(clickedCantina).trigger('change');
-    }
-    chrome.extension.sendMessage({'action':'getClickedHours'}, hoursCallback);
-  }
-
   // all affiliations
 
   var resetCounter = function(affiliationNumber) {

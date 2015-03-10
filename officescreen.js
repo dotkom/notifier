@@ -7,9 +7,6 @@ var mainLoop = function(force) {
   console.lolg("\n#" + iteration);
 
   if (ls.showCantina === 'true')
-    if (force || iteration % UPDATE_HOURS_INTERVAL === 0)
-      updateHours();
-  if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
   // Only if hardware
@@ -99,48 +96,42 @@ var updateCoffee = function() {
 var updateCantinas = function(first) {
   // This function just fetches from localstorage (updates in background)
   console.lolg('updateCantinas');
-  var update = function(shortname, menu, selector) {
+  var update = function(shortname, data, selector) {
+    // Set name
     var name = Cantina.names[shortname];
-    $('#cantinas #'+selector+' .title').html(name);
-    $('#cantinas #'+selector+' #dinnerbox').html(listDinners(menu));
+    $('#cantinas '+selector+' .title').html(name);
+    // Set hours
+    var hours = data.hours;
+    $('#cantinas '+selector+' .hours').html(hours);
+    // Set dinners
+    var menu = data.menu;
+    $('#cantinas '+selector+' #dinnerbox').html(listDinners(menu));
   };
-  var menu1 = JSON.parse(ls.leftCantinaMenu);
-  var menu2 = JSON.parse(ls.rightCantinaMenu);
-  update(ls.leftCantina, menu1, 'left');
-  update(ls.rightCantina, menu2, 'right');
+  var cantina1Data = JSON.parse(ls.cantina1Data);
+  var cantina2Data = JSON.parse(ls.cantina2Data);
+  update(ls.cantina1, cantina1Data, '.first');
+  update(ls.cantina2, cantina2Data, '.second');
 }
 
 var listDinners = function(menu) {
   var dinnerlist = '';
-  // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity in the cantina script)
+  // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity)
   if (typeof menu === 'string') {
-    ls.noDinnerInfo = 'true';
     dinnerlist += '<li>' + menu + '</li>';
   }
   else {
-    ls.noDinnerInfo = 'false'
     for (var i in menu) {
       var dinner = menu[i];
       if (dinner.price != null) {
         dinner.price = dinner.price + ',-';
-        dinnerlist += '<li id="' + dinner.index + '"><span>' + dinner.price + '</span> ' + dinner.text + '</li>'
+        dinnerlist += '<li><span>' + dinner.price + '</span> ' + dinner.text + '</li>'
       }
       else {
-        dinnerlist += '<li class="message" id="' + dinner.index + '">"' + dinner.text + '"</li>';
+        dinnerlist += '<li class="message">"' + dinner.text + '"</li>';
       }
     }
   }
   return dinnerlist;
-}
-
-var updateHours = function(first) {
-  // This function just fetches from localstorage (updates in background)
-  console.lolg('updateHours');
-  var update = function(shortname, hours, selector) {
-    $('#cantinas #'+selector+' .hours').html(hours);
-  }
-  update(ls.leftCantina, ls.leftCantinaHours, 'left');
-  update(ls.rightCantina, ls.rightCantinaHours, 'right');
 }
 
 var updateBus = function() {

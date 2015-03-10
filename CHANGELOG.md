@@ -1,9 +1,12 @@
 # Changelog
+Denne changeloggen er på norsk fordi den skal vises i popupen.
 Alle viktige endringer i Notifier dokumenteres i denne filen.
 Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 
 ## Fremtidsplaner
 - Options direkte i popupen, i stedet for den separate Options-siden
+- Lunsjmeny for de forskjellige kantinene
+- Vise endringer fra forrige versjon
 - Trekke ut infoskjermene som en egen Chrome extension
 - Events fra kalenderne til linjeforeningene
 - 1024-integrasjon

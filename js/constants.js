@@ -1,6 +1,6 @@
 "use strict";
 
-var DEBUG = 0;
+var DEBUG = 1;
 
 // Production detection
 if (Browser.inProduction()) {
@@ -32,7 +32,6 @@ var UPDATE_OFFICE_INTERVAL = 1; // recommended: 1
 var UPDATE_SERVANT_INTERVAL = 20; // recommended: 20
 var UPDATE_MEETINGS_INTERVAL = 20; // recommended: 20
 var UPDATE_COFFEE_INTERVAL = 1; // recommended: 1
-var UPDATE_HOURS_INTERVAL = 60; // recommended: 60
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
 var UPDATE_BUS_INTERVAL = 2; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
