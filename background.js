@@ -27,7 +27,7 @@ var mainLoop = function(force) {
           updateCoffeeSubscription();
     }
   }
-  
+
   // No reason to count to infinity
   if (10000 < iteration)
     iteration = 0;
@@ -116,13 +116,12 @@ var updateCoffeeSubscription = function(callback) {
 
 var updateCantinas = function(callback) {
   console.lolg('updateCantinas');
-  Cantina.get(ls.cantina1, function(result) {
-    ls.cantina1Data = JSON.stringify(result);
-    if (typeof callback === 'function') callback();
-  });
-  Cantina.get(ls.cantina2, function(result) {
-    ls.cantina2Data = JSON.stringify(result);
-    if (typeof callback === 'function') callback();
+  Cantina.get(ls.cantina1, function(result1) {
+    Cantina.get(ls.cantina2, function(result2) {
+      ls.cantina1Data = JSON.stringify(result1);
+      ls.cantina2Data = JSON.stringify(result2);
+      if (typeof callback === 'function') callback();
+    });
   });
 }
 
