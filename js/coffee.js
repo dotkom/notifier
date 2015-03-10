@@ -134,13 +134,13 @@ var Coffee = {
         if (this.debug) console.error('failed to calculate coffee subscription time difference');
       }
     }
-    
+
     if (showIt || demo) {
 
       // Save timestamp if this was a real coffee notification
       if (!demo)
         localStorage.lastSubscriptionTime = JSON.stringify(new Date());
-      
+
       var key = localStorage.affiliationKey1;
       var memes = [];
 
@@ -163,6 +163,8 @@ var Coffee = {
       var random = 1 + (Math.floor(Math.random() * memes.length));
       if (this.debug) console.log('memes['+(random-1)+'] of '+0+'-'+(memes.length-1)+' is "'+memes[random-1]+'"');
       var image = memes[random - 1]; // the list is zero-indexed
+
+      if (this.debug) console.log('memes', random - 1, '/', memes.length, image);
 
       // Create the notification
       var item = {
