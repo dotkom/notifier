@@ -81,7 +81,7 @@ var Affiliation = {
         },
       },
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.col-xs-12', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {newsSelector:'div#main-col', domainUrl:'dusken.no'});
       },
     },
 
