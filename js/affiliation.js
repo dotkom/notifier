@@ -38,7 +38,7 @@ var Affiliation = {
   //     closed: 'Få tilgang av kontorsjef',
   //     meeting: 'Kontoret er helt opptatt!',
   //   },
-  //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.jpg
+  //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.png
   // },
   // irc: {                                     // OPTIONAL: add IRC button to the popup
   //   server: 'irc.freenode.net',
@@ -113,6 +113,7 @@ var Affiliation = {
           meeting: './org/abakus/icon.png', //'./org/abakus/icon-meeting.png',
         },
         memePath: './org/abakus/meme/',
+        memeCount: 3,
       },
       irc: {
         server: 'irc.efnet.org',
@@ -235,6 +236,7 @@ var Affiliation = {
           meeting: './org/delta/icon-meeting.png',
         },
         memePath: './org/delta/meme/',
+        memeCount: 1,
       },
       getImages: function(links, callback) {
         Images.get(this, links, callback);
@@ -286,6 +288,7 @@ var Affiliation = {
           meeting: 'Kontoret er opptatt',
         },
         memePath: './org/hc/meme/',
+        memeCount: 2,
       },
       // images extracted from feed content
     },
@@ -464,6 +467,7 @@ var Affiliation = {
           meeting: './org/online/icon-meeting.png',
         },
         memePath: './org/online/meme/',
+        memeCount: 5,
       },
       irc: {
         server: 'irc.freenode.net',
@@ -1418,16 +1422,11 @@ var Affiliation = {
   // Functions below
 
   getMemeCount: function(affiliation) {
-    if (Affiliation.org[affiliation].hw.memePath) {
-      var counter = 1;
-      var path = Affiliation.org[affiliation].hw.memePath;
-      while (urlExists(path+counter+'.jpg')) {
-        counter++;
-      }
-      return counter - 1; // because we initialize to 1, not 0
+    if (Affiliation.org[affiliation].hw.memePath && Affiliation.org[affiliation].hw.memeCount) {
+      return Affiliation.org[affiliation].hw.memeCount;
     }
     else {
-      console.error('affiliation', affiliation, 'does not have a memepath');
+      console.warn('Affiliation', affiliation, 'have not made their own coffee memes yet');
       return 0;
     }
   },
