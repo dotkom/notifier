@@ -71,11 +71,18 @@ var Ajaxer = {
       return;
     }
 
+    // TODO: Temporary edit. Notiwire uses Varnish with proper caching functions.
+    var caching = false;
+    if (params.url.indexOf('passoa.online.ntnu.no/api/') !== -1) {
+      caching = true;
+    }
+
     var self = this;
     return $.ajax({
       type: (params.data ? 'POST' : 'GET'),
       data: (params.data ? params.data : ''),
       url: params.url,
+      cache: caching,
       dataFilter: params.dataFilter,
       dataType: params.dataType,
       success: params.success,
