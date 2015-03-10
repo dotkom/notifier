@@ -6,7 +6,7 @@ var Cantina = {
   webHours: 'https://www.sit.no/mat',
   webDinner: 'https://www.sit.no/middag',
   msgClosed: 'Ingen publisert meny i dag',
-  msgConnectionError: 'Frakoblet fra API',
+  msgConnectionError: 'Frakoblet fra Notiwire',
   msgUnsupportedCantina: 'Kantinen støttes ikke',
   msgMalformedMenu: 'Galt format på meny',
   names: {
@@ -61,23 +61,9 @@ var Cantina = {
     Ajaxer.getJson({
       url: this.api + cantina,
       success: callback,
-      error: function(jqXHR, text, err) {
+      error: function() {
         console.error(self.msgConnectionError);
-        // Temporary hack to work around a 400 Bad Request that really isn't
-        if (jqXHR.responseText.indexOf('name') !== -1) {
-          var json = jqXHR.responseText;
-          try{
-            json = JSON.parse(json);
-            console.warn('Had to work around an error, found this:', json);
-            callback(json);
-          }
-          catch(e) {
-            callback(self.msgConnectionError);
-          }
-        }
-        else {
-          callback(self.msgConnectionError);
-        }
+        callback(self.msgConnectionError);
       },
     })
   },
