@@ -15,17 +15,38 @@
   margin-bottom: 4px;
 }
 
-.titleDropdown {
+.dropdownWrapper {
   position: relative;
   left: -8px;
-  background-color: transparent;
-  border: 1px solid transparent;
-  outline: none;
+  margin-top: 13px;
+  margin-bottom: 4px;
+  /* New, trying out some tweaks on the dropdowns */
+  width: 172px;
+  height: 20px;
+  overflow: hidden;
+  background: url('../img/popup-dropdown-arrows.png') no-repeat right rgba(0,0,0,0);
+}
 
-  &:hover {
+.titleDropdown {
+  /*background-color: rgba(0,0,0,0);*/
+  /*border: 1px solid transparent;*/
+  font-size: 12px;
+  font-weight: bold;
+  outline: none;
+  /* New, trying out some tweaks on the dropdowns */
+  background: rgba(0,0,0,0);
+  width: 200px; /* default 28px wider than wrapper */
+  padding-left: 8px;
+  border: 0;
+  border-radius: 0;
+  height: 20px;
+  -webkit-appearance: none;
+
+  /* Old, trying out some tweaks on the dropdowns */
+  /*&:hover {
     background-color: black;
     border: 1px solid navajowhite;
-  }
+  }*/
 }
 
 .emphasized {

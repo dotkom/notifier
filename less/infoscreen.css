@@ -23,13 +23,15 @@
   padding: 0;
   width: 100%;
 }
-.title {
+.title,
+.titleDropdown {
   border: 1px solid transparent;
   color: NavajoWhite;
   display: block;
   font-weight: bold;
 }
-.title .unread {
+.title .unread,
+.titleDropdown .unread {
   color: white;
 }
 .emphasized {
