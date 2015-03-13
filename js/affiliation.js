@@ -1,7 +1,13 @@
 "use strict";
 
 var Affiliation = {
-  debug: 0,
+
+  // URLs
+  api: 'http://passoa.online.ntnu.no/api/affiliation/',
+  // Messages
+  msgConnectionError: 'Frakoblet fra Notiwire',
+  msgMalformedMenu: 'Galt format på kantinedata',
+  msgUnsupportedAffiliation: 'Tilhørigheten støttes ikke',
   
   // IMPORTANT: Keep the same order of affiliations here as in options.html
 
@@ -1420,6 +1426,40 @@ var Affiliation = {
 
   // Affiliations above
   // Functions below
+
+  _autoLoadDefaults_: function() {
+    var ls = localStorage;
+    if (ls.showAffiliation1 === undefined)
+      ls.showAffiliation1 = 'true';
+    if (ls.affiliationKey1 === undefined)
+      ls.affiliationKey1 = (DEBUG ? 'DEBUG' : 'online');
+    if (ls.showAffiliation2 === undefined)
+      ls.showAffiliation2 = 'true';
+    if (ls.affiliationKey2 === undefined)
+      ls.affiliationKey2 = 'dusken';
+  }(),
+
+  get: function(affiliation, callback) {
+    if (callback === undefined) {
+      console.error('Callback required');
+      return;
+    }
+    if (this.org[affiliation] === undefined) {
+      console.error(this.msgUnsupportedAffiliation);
+      return;
+    }
+
+    var self = this;
+
+    Ajaxer.getJson({
+      url: this.api + affiliation,
+      success: callback,
+      error: function() {
+        console.error(self.msgConnectionError);
+        callback(self.msgConnectionError);
+      },
+    });
+  },
 
   getMemeCount: function(affiliation) {
     if (Affiliation.org[affiliation].hw.memePath && Affiliation.org[affiliation].hw.memeCount) {
