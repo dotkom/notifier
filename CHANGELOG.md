@@ -13,8 +13,13 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 
 ## Versjonshistorie
 
+### Versjon 4.6 (planlagt)
+- Ekstreme ytelsesforbedringer (opptil 50%(?) raskere)
+- Kuttet mange tusen linjer kode (opptil 50%(?) kortere)
+- Masse data hentes nå ferdiglaget fra Notiwire (API) i stedet for å lages i Notifier
+
 ### Versjon 4.5
-- La til 1 ny linjeforening: STØH
+- La til 2 ny linjeforeninger: STØH, A/F Smørekoppen
 - La til 2 nye kantiner: Elgeseter, Tungasletta
 - Fjernet 1 kantine: Ranheimsveien
 - La til denne changeloggen
