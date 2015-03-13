@@ -2,13 +2,14 @@
 
 var Cantina = {
 
+  // URLs
   api: 'http://passoa.online.ntnu.no/api/cantina/',
   webHours: 'https://www.sit.no/mat',
   webDinner: 'https://www.sit.no/middag',
+  // Messages
   msgClosed: 'Ingen publisert meny i dag',
   msgConnectionError: 'Frakoblet fra Notiwire',
   msgUnsupportedCantina: 'Kantinen støttes ikke',
-  msgMalformedMenu: 'Galt format på meny',
   names: {
     // Cantinas
     'dmmh': 'DMMH',
@@ -65,7 +66,7 @@ var Cantina = {
         console.error(self.msgConnectionError);
         callback(self.msgConnectionError);
       },
-    })
+    });
   },
 
 };
