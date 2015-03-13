@@ -58,9 +58,21 @@ var getTitleWidth = function (title) {
 
 var updateServant = function() {
   console.lolg('updateServant');
-  Servant.get(function(servant) {
+  // Get
+  // Hope for the best
+  try {
+    var data = JSON.parse(ls.affiliation1Data);
+    var servant = data.servant.message;
     $('#todays #schedule #servant').html('- '+servant);
-  });
+  }
+  catch (e) {
+    console.error(e);
+    $('#todays #schedule #servant').html('- '+Servant.msgError);
+  }
+  // // OLD
+  // Servant.get(function(servant) {
+  //   $('#todays #schedule #servant').html('- '+servant);
+  // });
 }
 
 //
@@ -69,22 +81,56 @@ var updateServant = function() {
 
 var updateMeetings = function() {
   console.lolg('updateMeetings');
-  Meetings.get(function(meetings) {
-    meetings = meetings.replace(/\n/g, '<br />');
-    if (ls.affiliationKey1.match(/online|abakus/g) === null) {
-      $('#todays #schedule #meetings').html(meetings);
+  // Get
+  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  // Extract relevant information
+  try {
+    var meetings = '';
+    for (var i in affiliation1Data.meeting.meetings) {
+      meetings += (i!=="0"?"\n":"") + affiliation1Data.meeting.meetings[i].message;
     }
-    else {
+
+    // OLD CODE
+    meetings = meetings.replace(/\n/g, '<br />');
+    // Online and Abakus gets the Hackerspace info as well as meetings
+    if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').html(meetings + '<br /><div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings').html(meetings + '<div id="hackerspace">' + hackerspace + '</div>');
         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
           Browser.openTab(Hackerspace.web);
           window.close();
         });
       });
     }
-  });
+    else {
+      $('#todays #schedule #meetings').html(meetings);
+    }
+  }
+  catch (e) {
+    console.error(e);
+    $('#todays #schedule #meetings').html(Meetings.msgError);
+  }
 }
+// // OLD
+// var updateMeetings = function() {
+//   console.lolg('updateMeetings');
+//   Meetings.get(function(meetings) {
+//     meetings = meetings.replace(/\n/g, '<br />');
+//     // Online and Abakus gets the Hackerspace info as well as meetings
+//     if (ls.affiliationKey1.match(/online|abakus/g)) {
+//       Hackerspace.get(function(hackerspace) {
+//         $('#todays #schedule #meetings').html(meetings + '<br /><div id="hackerspace">' + hackerspace + '</div>');
+//         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
+//           Browser.openTab(Hackerspace.web);
+//           window.close();
+//         });
+//       });
+//     }
+//     else {
+//       $('#todays #schedule #meetings').html(meetings);
+//     }
+//   });
+// }
 
 //
 // Update functions: Coffee
@@ -92,10 +138,38 @@ var updateMeetings = function() {
 
 var updateCoffee = function() {
   console.lolg('updateCoffee');
-  Coffee.get(true, function(pots, age) {
-    $('#todays #coffee #pots').html('- ' + pots);
-    $('#todays #coffee #age').html(age);
-  });
+  // New
+  // Get
+  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  // Hope for the best
+  try {
+    // console.warn('Coffee data is', affiliation1Data.coffee);
+    var date = affiliation1Data.coffee.date;
+    var pots = affiliation1Data.coffee.pots;
+    // Parse that date
+    date = new Date(date);
+    var age = Coffee.minuteDiff(date);
+
+    // We have pots and age, now get pretty versions
+    var prettyPots = Coffee.prettyPotsString(pots);
+    var hours = date.getHours(); hours = (hours < 10 ? '0' + hours : hours);
+    var minutes = date.getMinutes(); minutes = (minutes < 10 ? '0' + minutes : minutes);
+    var prettyAge = Coffee.prettyAgeString(age, [hours, minutes])
+
+    $('#todays #coffee #pots').html('- ' + prettyPots);
+    $('#todays #coffee #age').html(prettyAge);
+  }
+  catch (e) {
+    console.error(e);
+    $('#todays #coffee #pots').html('- ' + Coffee.msgConnectionError);
+    $('#todays #coffee #age').html(Coffee.msgComforting);
+  }
+
+  // // Old
+  // Coffee.get(true, function(pots, age) {
+  //   $('#todays #coffee #pots').html('- ' + pots);
+  //   $('#todays #coffee #age').html(age);
+  // });
 }
 
 //

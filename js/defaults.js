@@ -37,10 +37,6 @@ var Defaults = {
       ls.installTime = new Date().getTime();
 
     // Primary affiliation
-    if (ls.showAffiliation1 === undefined)
-      ls.showAffiliation1 = 'true';
-    if (ls.affiliationKey1 === undefined)
-      ls.affiliationKey1 = (DEBUG ? 'DEBUG' : 'online');
     if (ls.affiliationUnreadCount1 === undefined)
       ls.affiliationUnreadCount1 = 0;
     if (ls.affiliationNewsList1 === undefined)
@@ -54,10 +50,6 @@ var Defaults = {
       ls.storedImages = JSON.stringify({});
 
     // Secondary affiliation
-    if (ls.showAffiliation2 === undefined)
-      ls.showAffiliation2 = 'true';
-    if (ls.affiliationKey2 === undefined)
-      ls.affiliationKey2 = 'dusken';
     if (ls.affiliationUnreadCount2 === undefined)
       ls.affiliationUnreadCount2 = 0;
     if (ls.affiliationNewsList2 === undefined)
