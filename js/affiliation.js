@@ -575,6 +575,80 @@ var Affiliation = {
       },
     },
 
+    'smorekoppen': {
+      name: 'A/F Smørekoppen',
+      key: 'smorekoppen',
+      web: 'http://www.smorekoppen.no/',
+      // feed not available, use getNews instead
+      logo: './org/smorekoppen/logo.png',
+      icon: './org/smorekoppen/icon.png',
+      symbol: './org/smorekoppen/symbol.png',
+      placeholder: './org/smorekoppen/placeholder.png',
+      palette: 'red',
+      getImage: function(link, callback) {
+        Images.get(this, link, callback, {newsSelector:'div#main', domainUrl:'smorekoppen.no/'});
+      },
+      getNews: function(posts, callback) {
+        console.warn('YELLOW')
+        if (typeof callback == 'undefined') {
+          console.error('callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+
+            console.warn('YES HELLOW', $(html).find('li[id^="article-"]').length)
+            
+            // Add each item from news tags
+            if ($(html).find('li[id^="article-"]').length != 0) {
+                console.warn(1, $(html).find('li[id^="article_"]'))
+              $(html).find('li[id^="article-"]').each( function() {
+                console.warn(2)
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find('h2 a').text();
+                  post.link = $(this).find('h2 a').attr('href');
+                  post.description = $(this).eq(0).find('p.subline').text().trim().replace(/\s+/g, ' ');
+                  post.author = $(this).next().find('p.subline').text().trim();
+                  post.image = $(this).find('pic').attr('src');
+
+                  // Author fixing
+                  post.author = post.author.match(/[a-zæøå\-'_]+ [a-zæøå\-'_]+/i);
+                  if (post.author !== null)
+                    post.author = post.author[0];
+                  else
+                    post.author = 'A/F Smørekoppen';
+
+                  // Image fixing
+                  if (typeof post.image === 'undefined')
+                    post.image = self.placeholder;
+                  else
+                    post.image = self.web + post.image;
+
+                  posts[count++] = post;
+
+                  console.log('dis post', post)
+                }
+              });
+            }
+            else {
+              if (self.debug) console.error('No articles found at', self.web);
+            }
+            console.warn('Postprocess,', posts)
+            callback(posts);
+          },
+          error: function(e) {
+            if (self.debug) console.error('could not fetch '+self.name+' website');
+          },
+        });
+      },
+    },
+
     'solan': {
       name: 'Solan',
       key: 'solan',
@@ -1344,7 +1418,7 @@ var Affiliation = {
           Images.get(this, link, callback, {newsSelector:'figure', domainUrl:'www.dn.no'});
         }
         else if (link.indexOf('dusken.no') !== -1) {
-          Images.get(this, link, callback, {newsSelector:'div.span10', domainUrl:'dusken.no'});
+          Images.get(this, link, callback, {newsSelector:'div#main-col', domainUrl:'dusken.no'});
         }
         else if (link.indexOf('forskningsradet.no') !== -1) {
           Images.get(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
