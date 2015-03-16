@@ -1516,6 +1516,12 @@ var Affiliation = {
       ls.showAffiliation2 = 'true';
     if (ls.affiliationKey2 === undefined)
       ls.affiliationKey2 = 'dusken';
+    // Clear values that should be empty
+    // OLD /////////////////////////////////////////////////
+    ls.removeItem('officeStatus');
+    ls.removeItem('officeStatusMessage');
+    // NEW /////////////////////////////////////////////////
+    ls.removeItem('meeting');
   }(),
 
   get: function(affiliation, callback) {

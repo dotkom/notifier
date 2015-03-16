@@ -8,8 +8,6 @@ var Defaults = {
 
     // Clear previous thoughts
     if (DEBUG) ls.clear();
-    ls.removeItem('officeStatus');
-    ls.removeItem('officeStatusMessage');
 
     // Clear errors from previous versions: undefined objects that
     // may have been saved to localStorage, it did happen once.
