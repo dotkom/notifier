@@ -1516,13 +1516,16 @@ var Affiliation = {
       ls.showAffiliation2 = 'true';
     if (ls.affiliationKey2 === undefined)
       ls.affiliationKey2 = 'dusken';
+  },
+
+  _onProgramStartup_: function() {
     // Clear values that should be empty
     // OLD /////////////////////////////////////////////////
     ls.removeItem('officeStatus');
     ls.removeItem('officeStatusMessage');
     // NEW /////////////////////////////////////////////////
     ls.removeItem('meeting');
-  }(),
+  },
 
   get: function(affiliation, callback) {
     if (callback === undefined) {
@@ -1641,3 +1644,6 @@ var Affiliation = {
   },
 
 }
+
+// Auto-load self
+Affiliation._autoLoadDefaults_();

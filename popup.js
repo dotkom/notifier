@@ -81,37 +81,47 @@ var updateServant = function() {
 
 var updateMeeting = function() {
   console.lolg('updateMeeting');
-  // Get
-  var meeting = JSON.parse(ls.meeting);
-  // Extract relevant information
-  try {
-    var htmlMeetings = '';
-    for (var i in meeting.meetings) {
-      htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
-    }
-    htmlMeetings = htmlMeetings.replace(/\n/g, '<br />');
 
-    // Online and Abakus gets the Hackerspace info as well as meetings
-    if (ls.affiliationKey1.match(/online|abakus/g)) {
-      Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').html(htmlMeetings + '<div id="hackerspace">' + hackerspace + '</div>');
-        $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
-          Browser.openTab(Hackerspace.web);
-          window.close();
-        });
-      });
-    }
-    else {
-      $('#todays #schedule #meetings').html(htmlMeetings);
-    }
+  if (!ls.meeting) {
+    $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
   }
-  catch (e) {
-    console.error(e.message);
-    if (meeting.error) {
-      $('#todays #schedule #meetings').html(meeting.error);
+  else {
+    var meeting = JSON.parse(ls.meeting);
+    // Extract relevant information
+    try {
+      var htmlMeetings = '';
+      if (meeting.meetings) {
+        for (var i in meeting.meetings) {
+          htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
+        }
+      }
+      else {
+        htmlMeetings = meeting.message;
+      }
+      htmlMeetings = htmlMeetings.replace(/\n/g, '<br />');
+
+      // Online and Abakus gets the Hackerspace info as well as meetings
+      if (ls.affiliationKey1.match(/online|abakus/g)) {
+        Hackerspace.get(function(hackerspace) {
+          $('#todays #schedule #meetings').html(htmlMeetings + '<div id="hackerspace">' + hackerspace + '</div>');
+          $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
+            Browser.openTab(Hackerspace.web);
+            window.close();
+          });
+        });
+      }
+      else {
+        $('#todays #schedule #meetings').html(htmlMeetings);
+      }
     }
-    else {
-      $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
+    catch (e) {
+      console.error(e.message);
+      if (meeting.error) {
+        $('#todays #schedule #meetings').html(meeting.error);
+      }
+      else {
+        $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
+      }
     }
   }
 }

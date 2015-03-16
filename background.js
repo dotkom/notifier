@@ -394,6 +394,9 @@ var loadAffiliationIcon = function() {
 
 // Document ready, go!
 $(document).ready( function() {
+  // Clear values that should start undefined
+  Affiliation._onProgramStartup_();
+
   // Check if both current affiliations still exist, reset if not
   var keys = Object.keys(Affiliation.org);
   Defaults.resetAffiliationsIfNotExist(ls.affiliationKey1, ls.affiliationKey2, keys);
