@@ -182,37 +182,25 @@ var updateServant = function() {
 
 var updateMeeting = function() {
   console.lolg('updateMeeting');
-  // Get
-  var meeting = JSON.parse(ls.meeting);
-  // Extract relevant information
-  try {
-    var htmlMeetings = '';
-    for (var i in meeting.meetings) {
-      htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
-    }
-    htmlMeetings = htmlMeetings.replace(/\n/g, '<br />');
+
+  if (!ls.meetingString) {
+    $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
+  }
+  else {
+    var meetingString = ls.meetingString;
+    var htmlMeetings = meetingString.replace(/\n/g, '<br />');
+
+    $('#todays #schedule #meetings').html(htmlMeetings);
 
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').html(htmlMeetings + '<div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings').append('<div id="hackerspace">' + hackerspace + '</div>');
         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
           Browser.openTab(Hackerspace.web);
           window.close();
         });
       });
-    }
-    else {
-      $('#todays #schedule #meetings').html(htmlMeetings);
-    }
-  }
-  catch (e) {
-    console.error(e.message);
-    if (meeting.error) {
-      $('#todays #schedule #meetings').html(meeting.error);
-    }
-    else {
-      $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
     }
   }
 }

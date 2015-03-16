@@ -82,46 +82,24 @@ var updateServant = function() {
 var updateMeeting = function() {
   console.lolg('updateMeeting');
 
-  if (!ls.meeting) {
+  if (!ls.meetingString) {
     $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
   }
   else {
-    var meeting = JSON.parse(ls.meeting);
-    // Extract relevant information
-    try {
-      var htmlMeetings = '';
-      if (meeting.meetings) {
-        for (var i in meeting.meetings) {
-          htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
-        }
-      }
-      else {
-        htmlMeetings = meeting.message;
-      }
-      htmlMeetings = htmlMeetings.replace(/\n/g, '<br />');
+    var meetingString = ls.meetingString;
+    var htmlMeetings = meetingString.replace(/\n/g, '<br />');
 
-      // Online and Abakus gets the Hackerspace info as well as meetings
-      if (ls.affiliationKey1.match(/online|abakus/g)) {
-        Hackerspace.get(function(hackerspace) {
-          $('#todays #schedule #meetings').html(htmlMeetings + '<div id="hackerspace">' + hackerspace + '</div>');
-          $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
-            Browser.openTab(Hackerspace.web);
-            window.close();
-          });
+    $('#todays #schedule #meetings').html(htmlMeetings);
+
+    // Online and Abakus gets the Hackerspace info as well as meetings
+    if (ls.affiliationKey1.match(/online|abakus/g)) {
+      Hackerspace.get(function(hackerspace) {
+        $('#todays #schedule #meetings').append('<div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
+          Browser.openTab(Hackerspace.web);
+          window.close();
         });
-      }
-      else {
-        $('#todays #schedule #meetings').html(htmlMeetings);
-      }
-    }
-    catch (e) {
-      console.error(e.message);
-      if (meeting.error) {
-        $('#todays #schedule #meetings').html(meeting.error);
-      }
-      else {
-        $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
-      }
+      });
     }
   }
 }

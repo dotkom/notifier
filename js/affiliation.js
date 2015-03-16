@@ -1525,6 +1525,7 @@ var Affiliation = {
     ls.removeItem('officeStatusMessage');
     // NEW /////////////////////////////////////////////////
     ls.removeItem('meeting');
+    ls.removeItem('meetingString');
   },
 
   get: function(affiliation, callback) {
@@ -1546,11 +1547,12 @@ var Affiliation = {
       },
       error: function() {
         console.error(self.msgConnectionError);
+        // Create error messages as the expected json object, this allows each item-parser to handle errors individually
         var errors = {
-          meeting: {error: self.msgError.meeting},
-          servant: {error: self.msgError.servant},
-          coffee: {error: self.msgError.coffee},
-          status: {error: self.msgError.status},
+          meeting: {error: self.msgConnectionError},
+          servant: {error: self.msgConnectionError},
+          coffee: {error: self.msgConnectionError},
+          status: {error: self.msgConnectionError},
         };
         self.parse(errors, callback);
       },
@@ -1586,9 +1588,27 @@ var Affiliation = {
 
   parseMeeting: function(meeting) {
     console.warn('parseMeeting got', meeting);
-
-    // Nothing to parse, save it
+    // Save object
     ls.meeting = JSON.stringify(meeting);
+    // Save stringified version from A), B) or C)
+    if (meeting.error) {
+      // A) It's an error message
+      ls.meetingString = meeting.error;
+    }
+    else {
+      // B) It's meetings objects
+      if (meeting.meetings) {
+        var htmlMeetings = '';
+        for (var i in meeting.meetings) {
+          htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
+        }
+        ls.meetingString = htmlMeetings;
+      }
+      // C) It's just a message
+      else {
+        ls.meetingString = meeting.message;
+      }
+    }
   },
 
   parseServant: function(servant) {
