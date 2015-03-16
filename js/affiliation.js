@@ -5,9 +5,14 @@ var Affiliation = {
   // URLs
   api: 'http://passoa.online.ntnu.no/api/affiliation/',
   // Messages
-  msgConnectionError: 'Frakoblet fra Notiwire',
-  msgMalformedMenu: 'Galt format på kantinedata',
   msgUnsupportedAffiliation: 'Tilhørigheten støttes ikke',
+  msgConnectionError: 'Frakoblet fra Notiwire',
+  msgError: {
+    'meeting': 'Feil i møtedata',
+    'servant': 'Feil i kontorvaktdata',
+    'coffee': 'Feil i kaffedata',
+    'status': 'Feil i kontorstatusdata',
+  },
   
   // IMPORTANT: Keep the same order of affiliations here as in options.html
 
@@ -1527,12 +1532,91 @@ var Affiliation = {
 
     Ajaxer.getJson({
       url: this.api + affiliation,
-      success: callback,
+      success: function(json) {
+        self.parse(json, callback);
+      },
       error: function() {
+        //////////////// HANDLE 404 / 503 ETC.
         console.error(self.msgConnectionError);
         callback(self.msgConnectionError);
       },
     });
+  },
+
+  parse: function(json, callback) {
+    // First, run a data check and add error messages where necessary
+    for (var i = 0; i < json.length; i++) {
+      // Looping through items in the json
+      var item = json[i];
+      // New item?
+      if (Object.keys(this.msgError).indexOf(item) === -1) {
+        console.warn('There is new data in town:', item);
+      }
+      // Missing item?
+      if (!json[item]) {
+        // Add error message to the json, this allows each item-parser to handle errors individually
+        json[item] = {error: this.msgError[item]};
+      }
+    }
+
+    // Parse each item individually
+    this.parseMeeting(json.meeting);
+    this.parseServant(json.servant);
+    this.parseCoffee(json.coffee);
+    this.parseStatus(json.status);
+
+    // Call it back
+    console.warn('HOLY CRAPCAKES, CALLING IT BACK');
+    callback(json); ////////////// TEMPORARY
+  },
+
+  parseMeeting: function(meeting) {
+    console.warn('parseMeeting got', meeting);
+
+    // Nothing to parse, save it
+    ls.meeting = JSON.stringify(meeting);
+  },
+
+  parseServant: function(servant) {
+    console.warn('parseServant got', servant);
+
+    ls.servantData = servant;
+    // Check for local error
+    // if (servant.error) {
+    //   console.error(this.msgServantError);
+    //   callback(this.msgServantError);
+    // }
+    // else {
+    //   // Do parsing and save the result in localstorage
+    // }
+  },
+
+  parseCoffee: function(coffee) {
+    console.warn('parseCoffee got', coffee);
+
+    ls.coffeeData = coffee;
+    // Check for local error
+    // if (coffee.error) {
+    //   console.error(this.msgCoffeeError);
+    //   callback(this.msgCoffeeError);
+    // }
+    // else {
+    //   // Do parsing and save the result in localstorage
+    // }
+  },
+
+  parseStatus: function(status) {
+    console.warn('parseStatus got', status);
+
+    ls.statusData = status;
+    // Check for local error
+    // if (status.error) {
+    //   console.error(this.msgStatusError);
+    //   callback(this.msgStatusError);
+    // }
+    // else {
+    //   // Do parsing and save the result in localstorage
+    // }
   },
 
   getMemeCount: function(affiliation) {
