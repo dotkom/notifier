@@ -1536,9 +1536,14 @@ var Affiliation = {
         self.parse(json, callback);
       },
       error: function() {
-        //////////////// HANDLE 404 / 503 ETC.
         console.error(self.msgConnectionError);
-        callback(self.msgConnectionError);
+        var errors = {
+          meeting: {error: self.msgError.meeting},
+          servant: {error: self.msgError.servant},
+          coffee: {error: self.msgError.coffee},
+          status: {error: self.msgError.status},
+        };
+        self.parse(errors, callback);
       },
     });
   },
