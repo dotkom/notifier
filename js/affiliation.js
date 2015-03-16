@@ -1580,16 +1580,12 @@ var Affiliation = {
     this.parseServant(json.servant);
     this.parseCoffee(json.coffee);
     this.parseStatus(json.status);
-
-    // Call it back
-    console.warn('HOLY CRAPCAKES, CALLING IT BACK');
-    callback(json); ////////////// TEMPORARY
   },
 
   parseMeeting: function(meeting) {
     console.warn('parseMeeting got', meeting);
     // Save object
-    ls.meeting = JSON.stringify(meeting);
+    ls.meetingData = JSON.stringify(meeting);
     // Save stringified version from A), B) or C)
     if (meeting.error) {
       // A) It's an error message

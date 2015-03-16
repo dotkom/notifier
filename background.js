@@ -41,9 +41,7 @@ var mainLoop = function(force) {
 var updateAffiliation = function(callback) {
   console.lolg('updateAffiliation');
   // Fetch
-  Affiliation.get(ls.affiliationKey1, function(result) {
-    // Save
-    ls.affiliation1Data = JSON.stringify(result);
+  Affiliation.get(ls.affiliationKey1, function() {
     // Run relevant background updates
     if (ls.useBigscreen !== 'true') {
       if (Affiliation.org[ls.affiliationKey1].hw) {
@@ -69,7 +67,8 @@ var updateOfficeAndMeetings = function(force, callback) {
   console.lolg('updateOfficeAndMeetings');
   
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var meetingData = JSON.parse(ls.meetingData);
+  var statusData = JSON.parse(ls.statusData);
   
   // Presume the worst
   var status = 'error';
@@ -79,8 +78,6 @@ var updateOfficeAndMeetings = function(force, callback) {
 
   try {
     // Extract relevant objects
-    var meetingData = affiliation1Data.meeting;
-    var statusData = affiliation1Data.status;
 
     // Extract meeting data
     if (meetingData.error) {
@@ -210,12 +207,11 @@ var updateOfficeAndMeetings = function(force, callback) {
 var updateCoffeeSubscription = function(callback) {
   console.lolg('updateCoffeeSubscription');
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var coffeeData = JSON.parse(ls.coffeeData);
   // Hope for the best
   try {
-    // console.lolg('Coffee data is', affiliation1Data.coffee);
-    var date = affiliation1Data.coffee.date;
-    var pots = affiliation1Data.coffee.pots;
+    var date = coffeeData.date;
+    var pots = coffeeData.pots;
     // Parse that date
     date = new Date(date);
     var age = Coffee.minuteDiff(date);

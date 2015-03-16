@@ -60,7 +60,8 @@ var updateOffice = function(debugStatus) {
   console.lolg('updateOffice');
     
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var meetingData = JSON.parse(ls.meetingData);
+  var statusData = JSON.parse(ls.statusData);
   
   // Presume the worst
   var status = 'error';
@@ -69,10 +70,6 @@ var updateOffice = function(debugStatus) {
   var meetings = 'En feil oppstod.';
 
   try {
-    // Extract relevant objects
-    var meetingData = affiliation1Data.meeting;
-    var statusData = affiliation1Data.status;
-
     // Extract meeting data
     if (meetingData.error) {
       meetings = meeting.error;
@@ -156,8 +153,8 @@ var updateServant = function() {
   // Get
   // Hope for the best
   try {
-    var data = JSON.parse(ls.affiliation1Data);
-    var servant = data.servant.message;
+    var servantData = JSON.parse(ls.servantData);
+    var servant = servantData.message;
     $('#todays #schedule #servant').html('- '+servant);
   }
   catch (e) {
@@ -209,12 +206,11 @@ var updateCoffee = function() {
   console.lolg('updateCoffee');
   // New
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var coffeeData = JSON.parse(ls.coffeeData);
   // Hope for the best
   try {
-    // console.warn('Coffee data is', affiliation1Data.coffee);
-    var date = affiliation1Data.coffee.date;
-    var pots = affiliation1Data.coffee.pots;
+    var date = coffeeData.date;
+    var pots = coffeeData.pots;
     // Parse that date
     date = new Date(date);
     var age = Coffee.minuteDiff(date);
