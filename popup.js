@@ -82,20 +82,21 @@ var updateServant = function() {
 var updateMeetings = function() {
   console.lolg('updateMeetings');
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var meeting = JSON.parse(ls.meeting);
+  // var affiliation1Data = JSON.parse(ls.affiliation1Data);
   // Extract relevant information
   try {
-    var meetings = '';
-    for (var i in affiliation1Data.meeting.meetings) {
-      meetings += (i!=="0"?"\n":"") + affiliation1Data.meeting.meetings[i].message;
+    var htmlMeetings = '';
+    for (var i in meeting.meetings) {
+      htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
     }
 
     // OLD CODE
-    meetings = meetings.replace(/\n/g, '<br />');
+    htmlMeetings = htmlMeetings.replace(/\n/g, '<br />');
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').html(meetings + '<div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings').html(htmlMeetings + '<div id="hackerspace">' + hackerspace + '</div>');
         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
           Browser.openTab(Hackerspace.web);
           window.close();
@@ -103,11 +104,11 @@ var updateMeetings = function() {
       });
     }
     else {
-      $('#todays #schedule #meetings').html(meetings);
+      $('#todays #schedule #meetings').html(htmlMeetings);
     }
   }
   catch (e) {
-    console.error(e);
+    console.error(e.message);
     $('#todays #schedule #meetings').html(Meetings.msgError);
   }
 }
