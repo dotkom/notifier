@@ -25,7 +25,7 @@ var mainLoop = function(force) {
         updateServant();
     if (ls.showOffice === 'true')
       if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0)
-        updateMeetings();
+        updateMeeting();
     if (ls.showOffice === 'true')
       if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
         updateCoffee();
@@ -79,20 +79,18 @@ var updateServant = function() {
 // Update functions: Meetings
 //
 
-var updateMeetings = function() {
-  console.lolg('updateMeetings');
+var updateMeeting = function() {
+  console.lolg('updateMeeting');
   // Get
   var meeting = JSON.parse(ls.meeting);
-  // var affiliation1Data = JSON.parse(ls.affiliation1Data);
   // Extract relevant information
   try {
     var htmlMeetings = '';
     for (var i in meeting.meetings) {
       htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
     }
-
-    // OLD CODE
     htmlMeetings = htmlMeetings.replace(/\n/g, '<br />');
+
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
@@ -109,29 +107,14 @@ var updateMeetings = function() {
   }
   catch (e) {
     console.error(e.message);
-    $('#todays #schedule #meetings').html(Meetings.msgError);
+    if (meeting.error) {
+      $('#todays #schedule #meetings').html(meeting.error);
+    }
+    else {
+      $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
+    }
   }
 }
-// // OLD
-// var updateMeetings = function() {
-//   console.lolg('updateMeetings');
-//   Meetings.get(function(meetings) {
-//     meetings = meetings.replace(/\n/g, '<br />');
-//     // Online and Abakus gets the Hackerspace info as well as meetings
-//     if (ls.affiliationKey1.match(/online|abakus/g)) {
-//       Hackerspace.get(function(hackerspace) {
-//         $('#todays #schedule #meetings').html(meetings + '<br /><div id="hackerspace">' + hackerspace + '</div>');
-//         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
-//           Browser.openTab(Hackerspace.web);
-//           window.close();
-//         });
-//       });
-//     }
-//     else {
-//       $('#todays #schedule #meetings').html(meetings);
-//     }
-//   });
-// }
 
 //
 // Update functions: Coffee
