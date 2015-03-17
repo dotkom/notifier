@@ -724,6 +724,64 @@ var Affiliation = {
       },
     },
 
+    'timini': {
+      name: 'Timini',
+      key: 'timini',
+      web: 'https://www.timini.no/',
+      // no feed, use getNews
+      logo: './org/timini/logo.png',
+      icon: './org/timini/icon.png',
+      symbol: './org/timini/symbol.png',
+      placeholder: './org/timini/placeholder.png',
+      palette: 'cyan',
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(posts, callback) {
+        if (typeof callback == 'undefined') {
+          console.error('Callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+            // Add each item from news tags
+            if ($(html).find('article').length != 0) {
+              $(html).find('article').each( function() {
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find("h1").filter(':first').text();
+                  post.link = $(this).find("h1 a").attr('href');
+                  post.description = $(this).find("div.news-content").filter(':first').text();
+                  post.image = $(this).find("pic").filter(':first').attr('src');
+
+                  // Author field
+                  post.creator = $(this).find("div.frontpage-metadata").filter(':first').text();
+                  try {
+                    var creator = $(this).find("div.frontpage-metadata").filter(':first').text();
+                    post.creator = creator.match(/Publisert av (.*?) i /)[1].replace(/  /g, " ");
+                  } catch (e) {
+                    post.creator = "Timini";
+                  }
+                  
+                  posts[count++] = post;
+                }
+              });
+            }
+            else {
+              console.error('No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            console.error('Could not fetch '+self.name+' website');
+          },
+        });
+      },
+    },
+
     'volvox': {
       name: 'Volvox & Alkymisten',
       key: 'volvox',
