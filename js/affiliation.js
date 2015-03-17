@@ -1583,7 +1583,6 @@ var Affiliation = {
   },
 
   parseMeeting: function(meeting) {
-    console.warn('parseMeeting got', meeting);
     // Save object
     ls.meetingData = JSON.stringify(meeting);
     // Save stringified version from A), B) or C)
@@ -1594,11 +1593,11 @@ var Affiliation = {
     else {
       // B) It's meetings objects
       if (meeting.meetings) {
-        var htmlMeetings = '';
+        var htmlMeeting = '';
         for (var i in meeting.meetings) {
-          htmlMeetings += (i!=="0"?"\n":"") + meeting.meetings[i].message;
+          htmlMeeting += (i!=="0"?"\n":"") + meeting.meetings[i].message;
         }
-        ls.meetingString = htmlMeetings;
+        ls.meetingString = htmlMeeting;
       }
       // C) It's just a message
       else {
@@ -1608,17 +1607,17 @@ var Affiliation = {
   },
 
   parseServant: function(servant) {
-    console.warn('parseServant got', servant);
-
-    ls.servantData = servant;
-    // Check for local error
-    // if (servant.error) {
-    //   console.error(this.msgServantError);
-    //   callback(this.msgServantError);
-    // }
-    // else {
-    //   // Do parsing and save the result in localstorage
-    // }
+    // Save object
+    ls.servantData = JSON.stringify(servant);
+    // Save stringified version from A), or B)
+    if (servant.error) {
+      // A) It's an error message
+      ls.servantString = servant.error;
+    }
+    else {
+      // B) It's a servant or a message
+      ls.servantString = servant.message;
+    }
   },
 
   parseCoffee: function(coffee) {

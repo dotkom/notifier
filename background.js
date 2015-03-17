@@ -232,7 +232,7 @@ var updateCoffeeSubscription = function(callback) {
           if (age < 10) {
             // And no meme was served within the last 10 minutes?
             if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
-              // Notify everyone with a coffee subscription :D
+              // Send meme to everyone who has a coffee subscription :D
               Coffee.showNotification(pots, age);
               ls.coffeeMemeTime = Date.now();
             }

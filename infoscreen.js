@@ -148,30 +148,21 @@ var updateOffice = function(debugStatus) {
   }
 }
 
+//
+// Update functions: Servant
+//
+
 var updateServant = function() {
   console.lolg('updateServant');
-  // Get
-  // Hope for the best
-  try {
-    var servantData = JSON.parse(ls.servantData);
-    var servant = servantData.message;
-    $('#todays #schedule #servant').html('- '+servant);
+
+  if (!ls.servantString) {
+    $('#todays #schedule #servant').html('- '+Affiliation.msgConnectionError);
   }
-  catch (e) {
-    console.error(e);
-    $('#todays #schedule #servant').html('- '+Servant.msgError);
+  else {
+    var servantString = ls.servantString;
+    $('#todays #schedule #servant').html('- '+servantString);
   }
-  // // OLD
-  // Servant.get(function(servant) {
-  //   $('#todays #schedule #servant').html('- '+servant);
-  // });
 }
-// var updateServant = function() {
-//   console.lolg('updateServant');
-//   Servant.get(function(servant) {
-//     $('#todays #schedule #servant').html('- '+servant);
-//   });
-// }
 
 //
 // Update functions: Meetings
@@ -185,9 +176,9 @@ var updateMeeting = function() {
   }
   else {
     var meetingString = ls.meetingString;
-    var htmlMeetings = meetingString.replace(/\n/g, '<br />');
+    var htmlMeeting = meetingString.replace(/\n/g, '<br />');
 
-    $('#todays #schedule #meetings').html(htmlMeetings);
+    $('#todays #schedule #meetings').html(htmlMeeting);
 
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
