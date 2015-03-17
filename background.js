@@ -58,10 +58,10 @@ var updateStatusAndMeetings = function(force, callback) {
   var statusMessage = strings.statusMessage;
 
   // Update the icon and icon hover text if data is new
-  if (force || ls.statusCodeString !== statusCode || ls.statusMessageString !== statusMessage) {
+  if (force || ls.backgroundLastStatusCode !== statusCode || ls.backgroundLastStatusMessage !== statusMessage) {
     // Save them
-    ls.statusCodeString = statusCode;
-    ls.statusMessageString = statusMessage;
+    ls.backgroundLastStatusCode = statusCode;
+    ls.backgroundLastStatusMessage = statusMessage;
     // Food status
     if (Object.keys(Affiliation.foods).indexOf(statusCode) > -1) {
       statusTitle = Affiliation.foods[status].title;
@@ -108,7 +108,7 @@ var updateCoffeeSubscription = function(callback) {
         // New pot number?
         if (storedPots < pots) {
           // Not a meeting? Or DEBUG mode.
-          if (ls.statusCodeString !== 'meeting') {
+          if (ls.backgroundLastStatusCode !== 'meeting') {
             // Made less than 10 minutes ago?
             if (age < 10) {
               // And no meme was served within the last 10 minutes?

@@ -1499,9 +1499,13 @@ var Affiliation = {
     // Status
     ls.removeItem('statusData');
     ls.removeItem('statusStrings');
-    
-    ls.removeItem('statusCodeString');
-    ls.removeItem('statusMessageString');
+    // Remove statuses held by background.js, infoscreen.js, officescreen.js
+    ls.removeItem('backgroundLastStatusCode');
+    ls.removeItem('backgroundLastStatusMessage');
+    ls.removeItem('infoscreenLastStatusCode');
+    ls.removeItem('infoscreenLastMessage');
+    ls.removeItem('officescreenLastStatusCode');
+    ls.removeItem('officescreenLastMessage');
   },
 
   get: function(affiliation, callback) {
