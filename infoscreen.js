@@ -45,55 +45,21 @@ var mainLoop = function(force) {
 
 var updateStatus = function(debugStatus) {
   console.lolg('updateStatus');
-    
-  // Get
-  var meetingData = JSON.parse(ls.meetingData);
-  var statusData = JSON.parse(ls.statusData);
   
-  // Presume the worst
-  var statusCode = 'error';
-  var statusTitle = Affiliation.statuses['error'].title;
-  var statusMessage = Affiliation.statuses['error'].title;
-  var meeting = Affiliation.msgError['meeting'];
+  // Get meeting data
+  var meeting = ls.meetingString;
 
-  // Set variables with the data we have
-  if (statusData.error) {
-    statusMessage = statusData.error;
-  }
-  else {
-    // Decide current status code
-    if (typeof meetingData.free === 'boolean') {
-      statusCode = meetingData.free ? 'open' : 'meeting';
-    }
-    if (statusCode === 'error' || statusCode === 'open') {
-      statusCode = (statusData.status ? 'open' : 'closed');
-    }
-
-    // Set current status title
-    statusTitle = Affiliation.statuses[statusCode].title;
-
-    // Set status message
-    statusMessage = Affiliation.statuses[statusCode].message;
-    // Override with affiliation specific status message
-    if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
-      statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
-    }
-    // Override with meeting title if meeting is currently on
-    if (meetingData.free === false) {
-      statusMessage = meetingData.message;
-    }
-
-    // Get meeting data
-    if (ls.meetingString) {
-      meeting = ls.meetingString;
-    }
-  }
+  // Get status data
+  var strings = JSON.parse(ls.statusStrings);
+  var statusCode = strings.statusCode;
+  var statusTitle = strings.statusTitle;
+  var statusMessage = strings.statusMessage;
 
   if (DEBUG && debugStatus) {
     statusCode = debugStatus;
     statusMessage = 'debugging';
   }
-  if (ls.infoscreenStatusCodeString !== statusCode || ls.infoscreenStatusMessageString !== statusMessage) {
+  if (ls.infoscreenLastStatusCode !== statusCode || ls.infoscreenLastMessage !== statusMessage) {
     if (Object.keys(Affiliation.foods).indexOf(statusCode) > -1) {
       if (typeof Affiliation.foods[statusCode].image !== 'undefined') {
         // Food status with image
@@ -117,8 +83,8 @@ var updateStatus = function(debugStatus) {
       $('#office #status #text').show();
     }
     // Save them
-    ls.infoscreenStatusCodeString = statusCode;
-    ls.infoscreenStatusMessageString = statusMessage;
+    ls.infoscreenLastStatusCode = statusCode;
+    ls.infoscreenLastMessage = statusMessage;
     // Check for Affiliation specific status message
     var msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
     if (msgs)
@@ -501,7 +467,7 @@ var officeFontRotate = function(font) {
   }
   $('#office #status #text').prop('class', chosenFont);
   if (DEBUG)
-    $('#office #subtext').html(ls.infoscreenStatusMessageString + '<br />' + chosenFont);
+    $('#office #subtext').html(ls.infoscreenLastMessage + '<br />' + chosenFont);
 }
 
 var changeCreatorName = function(name) {
@@ -570,7 +536,7 @@ $(document).ready(function() {
       // <space> loops through statuses
       if (e.which === 32) {
         e.preventDefault();
-        switch (ls.infoscreenStatusCodeString) {
+        switch (ls.infoscreenLastStatusCode) {
           case 'waffle': updateStatus('error'); break;
           case 'error': updateStatus('open'); break;
           case 'open': updateStatus('closed'); break;
@@ -587,9 +553,8 @@ $(document).ready(function() {
     });
   }
   
-  // Clear all previous thoughts
-  ls.removeItem('infoscreenStatusCodeString');
-  ls.removeItem('infoscreenStatusMessageString');
+  // Clear values that should start empty
+  Affiliation.clearAffiliationData();
 
   // Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent('loadPalette', ls.affiliationPalette);

@@ -162,12 +162,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -362,12 +362,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -422,12 +422,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -498,12 +498,12 @@ var Affiliation = {
               }
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -567,9 +567,8 @@ var Affiliation = {
         Images.get(this, link, callback, {newsSelector:'div#main', domainUrl:'smorekoppen.no/'});
       },
       getNews: function(posts, callback) {
-        console.warn('YELLOW')
         if (typeof callback == 'undefined') {
-          console.error('callback is required');
+          console.error('Callback is required');
           return;
         }
         var self = this;
@@ -578,13 +577,9 @@ var Affiliation = {
           success: function(html) {
             var count = 0;
 
-            console.warn('YES HELLOW', $(html).find('li[id^="article-"]').length)
-            
             // Add each item from news tags
             if ($(html).find('li[id^="article-"]').length != 0) {
-                console.warn(1, $(html).find('li[id^="article_"]'))
               $(html).find('li[id^="article-"]').each( function() {
-                console.warn(2)
                 if (count < posts.length) {
                   var post = posts[count];
                   
@@ -609,19 +604,16 @@ var Affiliation = {
                     post.image = self.web + post.image;
 
                   posts[count++] = post;
-
-                  console.log('dis post', post)
                 }
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
-            console.warn('Postprocess,', posts)
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -924,12 +916,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -1498,8 +1490,14 @@ var Affiliation = {
     ls.removeItem('coffeeDateString');
     // Status
     ls.removeItem('statusData');
-    ls.removeItem('statusCodeString');
-    ls.removeItem('statusMessageString');
+    ls.removeItem('statusStrings');
+    // Remove statuses held by background.js, infoscreen.js, officescreen.js
+    ls.removeItem('backgroundLastStatusCode');
+    ls.removeItem('backgroundLastStatusMessage');
+    ls.removeItem('infoscreenLastStatusCode');
+    ls.removeItem('infoscreenLastMessage');
+    ls.removeItem('officescreenLastStatusCode');
+    ls.removeItem('officescreenLastMessage');
   },
 
   get: function(affiliation, callback) {
@@ -1553,7 +1551,7 @@ var Affiliation = {
     this.parseMeeting(json.meeting);
     this.parseServant(json.servant);
     this.parseCoffee(json.coffee);
-    this.parseStatus(json.status);
+    this.parseStatus(json.meeting, json.status); // Needs the meeting data as well
 
     // Call it back
     callback();
@@ -1636,25 +1634,85 @@ var Affiliation = {
     }
   },
 
-  parseStatus: function(statusData) {
+  parseStatus: function(meetingData, statusData) {
     // Save object
     ls.statusData = JSON.stringify(statusData);
-    // Save stringified version from A) or B)
-    if (statusData.error) {
-      // A) It's an error message
+
+    // Calculate (smash together) the following:
+    // [statusCode, statusTitle, statusMessage, meeting]
+
+    // Presume the worst
+    var statusCode = 'error';
+    var statusTitle = Affiliation.statuses['error'].title;
+    var statusMessage = Affiliation.statuses['error'].message;
+    var meeting = Affiliation.msgError['meeting'];
+
+    // Prepare affiliation status messages
+    var affiliationMessages = null;
+    var affiliationHw = Affiliation.org[ls.affiliationKey1].hw;
+    if (affiliationHw && affiliationHw.statusMessages) {
+      affiliationMessages = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
     }
-    else {
-      // B) It's status and update-date
+
+    // status: meeting || food
+    if (meetingData.free === false) {
+      statusCode = 'meeting'; // TODO: FOOD
+      statusTitle = Affiliation.statuses[statusCode].title;
       
+      // Get specific meeting message
+      if (meetingData.meetings) {
+        statusMessage = meetingData.meetings[0].summary;
+      }
+      // Or less specific affiliation status message
+      else if (affiliationMessages) {
+        statusMessage = affiliationMessages[statusCode];
+      }
+      // Or even less specific generic message
+      else if (meetingData.message) {
+        statusMessage = meetingData.message;
+      }
+      // Least specific, entirely generic message stored here
+      else {
+        statusMessage = Affiliation.statuses[statusCode].message;
+        console.warn("Least specific message was used, poor data, meetingData:", meetingData);
+      }
+    }
+    // status: open || closed || error
+    else {
+      if (statusData.error) {
+        // statusCode and statusTitle is already error, just get the message
+        statusMessage = statusData.error;
+      }
+      else {
+        if (statusData.status === true) {
+          // No meeting, office is open
+          statusCode = 'open';
+        }
+        else if (statusData.status === false) {
+          // No meeting, but office is closed
+          statusCode = 'closed';
+        }
+        else if (statusData.status === null) {
+          // Notipi is offline, all variables default to error
+        }
+        else {
+          console.error("Malformed data from API, statusData:", statusData);
+        }
+        statusTitle = Affiliation.statuses[statusCode].title;
+        statusMessage = Affiliation.statuses[statusCode].message;
+        if (affiliationMessages && affiliationMessages[statusCode]) {
+          statusMessage = affiliationMessages[statusCode];
+        }
+      }
     }
 
-    // Note to self: Do not set statusCodeString, statusCodeMessage here, if you do
-    // that then background.js, infoscreen.js and officescreen.js won't be able to
-    // check if the value has changed since last time.
-    // ls.statusCodeString = ?
-    // ls.statusCodeMessage = ?
-
-    ls.statusData = JSON.stringify(statusData);
+    // Save as strings
+    ls.statusStrings = JSON.stringify({
+      statusCode: statusCode,
+      statusTitle: statusTitle,
+      statusMessage: statusMessage,
+      meeting: meeting,
+    });
   },
 
   getMemeCount: function(affiliation) {
