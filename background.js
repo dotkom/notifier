@@ -36,7 +36,7 @@ var updateAffiliation = function(callback) {
     // Run relevant background updates
     if (ls.useBigscreen !== 'true') {
       if (Affiliation.org[ls.affiliationKey1].hw) {
-        updateOfficeAndMeetings();
+        updateStatusAndMeetings();
         updateCoffeeSubscription();
       }
     }
@@ -45,146 +45,80 @@ var updateAffiliation = function(callback) {
   });
 };
 
-var updateOfficeAndMeetings = function(force, callback) {
-  console.lolg('updateOfficeAndMeetings');
+var updateStatusAndMeetings = function(force, callback) {
+  console.lolg('updateStatusAndMeetings');
   
   // Get
   var meetingData = JSON.parse(ls.meetingData);
   var statusData = JSON.parse(ls.statusData);
   
   // Presume the worst
-  var status = 'error';
-  var title = Office.statuses['error'].title;
-  var message = Office.statuses['error'].title;
-  var meetings = 'En feil oppstod.';
+  var statusCode = 'error';
+  var statusTitle = Office.statuses['error'].title;
+  var statusMessage = Office.statuses['error'].title;
+  var meeting = Affiliation.msgError['meeting'];
 
-  try {
-    // Extract relevant objects
-
-    // Extract meeting data
-    if (meetingData.error) {
-      meetings = meeting.error;
+  // Set variables with the data we have
+  if (statusData.error) {
+    statusMessage = statusData.error;
+  }
+  else {
+    // Decide current status code
+    if (typeof meetingData.free === 'boolean') {
+      statusCode = meetingData.free ? 'open' : 'meeting';
     }
-    else {
-      status = meetingData.free ? 'open' : 'meeting';
-      message = meetingData.message;
-      if (meetingData.meetings) {
-        meetings = '';
-        for (var i in meetingData.meetings) {
-          meetings += meetingData.meetings[i].message + (i !== "0" ? '\n' : '');
-        }
-      }
+    if (statusCode === 'error' || statusCode === 'open') {
+      statusCode = (statusData.status ? 'open' : 'closed');
     }
 
-    // Extract status data
-    if (statusData.error) {
-      message = statusData.error;
+    // Set current status title
+    statusTitle = Office.statuses[statusCode].title;
+
+    // Set status message
+    statusMessage = Office.statuses[statusCode].message;
+    // Override with affiliation specific status message
+    if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
+      statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
     }
-    else {
-      if (status === 'error' || status === 'open') {
-        status = (statusData.status ? 'open' : 'closed');
-      } // else leave status unchanged, it's a meeting
-      if (meetingData.error) {
-        // Set a message manually
-        message = Office.statuses[status].message;
-      }
+    // Override with meeting title if meeting is currently on
+    if (meetingData.free === false) {
+      statusMessage = meetingData.message;
+    }
+
+    // Get meeting data
+    if (ls.meetingString) {
+      meeting = ls.meetingString;
     }
   }
-  catch (e) {
-    console.error(e);
-  }
 
-  // console.lolg('well, we got:\nstatus:',status,'\nmessage',message,'\nmeetings',meetings);
-
-  //
-  // Run the old script, expects [status, message, meetings]
-  //
-
-  if (force || ls.statusCodeString !== status || ls.statusMessageString !== message) {
+  // Update the icon and icon hover text if data is new
+  if (force || ls.statusCodeString !== statusCode || ls.statusMessageString !== statusMessage) {
     // Save them
-    ls.statusCodeString = status;
-    ls.statusMessageString = message;
+    ls.statusCodeString = statusCode;
+    ls.statusMessageString = statusMessage;
     // Food status
-    if (Object.keys(Office.foods).indexOf(status) > -1) {
-      title = Office.foods[status].title;
-      Browser.setIcon(Office.foods[status].icon);
+    if (Object.keys(Office.foods).indexOf(statusCode) > -1) {
+      statusTitle = Office.foods[status].title;
+      Browser.setIcon(Office.foods[statusCode].icon);
     }
     // Regular status
     else {
-      // Set title
-      title = Office.statuses[status].title;
       // Set icon
       var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
-      var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
-      if (status === 'error' || typeof(statusIcon) === 'undefined') {
+      var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[statusCode];
+      if (statusCode === 'error' || typeof(statusIcon) === 'undefined') {
         Browser.setIcon(errorIcon);
       }
       else {
         Browser.setIcon(statusIcon);
       }
     }
-    // Check for Affiliation specific status message
-    try {
-      var msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
-      var message = msgs[status];
-    }
-    catch (e) {
-      // Just trying
-    }
     // Extension title (hovering mouse over icon shows the title text)
-    var today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
+    var today = '### Nå\n' + statusTitle + ": " + statusMessage + "\n### Resten av dagen\n" + meeting;
     Browser.setTitle(today);
   }
   if (typeof callback === 'function') callback();
 }
-
-// var updateOfficeAndMeetings = function(force, callback) {
-//   console.lolg('updateOfficeAndMeetings');
-//   Office.get(function(status, message) {
-//     var title = '';
-//     if (force || ls.statusCodeString !== status || ls.statusMessageString !== message) {
-//       // Save them
-//       ls.statusCodeString = status;
-//       ls.statusMessageString = message;
-//       // Food status
-//       if (Object.keys(Office.foods).indexOf(status) > -1) {
-//         title = Office.foods[status].title;
-//         Browser.setIcon(Office.foods[status].icon);
-//       }
-//       // Regular status
-//       else {
-//         // Set title
-//         title = Office.statuses[status].title;
-//         // Set icon
-//         var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
-//         var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
-//         if (status === 'error' || typeof(statusIcon) === 'undefined') {
-//           Browser.setIcon(errorIcon);
-//         }
-//         else {
-//           Browser.setIcon(statusIcon);
-//         }
-//       }
-//       // Check for Affiliation specific status message
-//       try {
-//         var msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
-//         var message = msgs[status];
-//       }
-//       catch (e) {
-//         // at least we tried
-//       }
-//       // Extension title (hovering mouse over icon shows the title text)
-//       Meetings.get(function(meetings) {
-//         var today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
-//         Browser.setTitle(today);
-//         if (typeof callback === 'function') callback();
-//       });
-//     }
-//     else {
-//       if (typeof callback === 'function') callback();
-//     }
-//   });
-// }
 
 var updateCoffeeSubscription = function(callback) {
   console.lolg('updateCoffeeSubscription');

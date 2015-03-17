@@ -20,13 +20,13 @@ var mainLoop = function(force) {
       updateAffiliationNews('2');
   // Only if hardware
   if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (ls.showOffice === 'true')
+    if (ls.showStatus === 'true')
       if (force || iteration % UPDATE_SERVANT_INTERVAL === 0)
         updateServant();
-    if (ls.showOffice === 'true')
+    if (ls.showStatus === 'true')
       if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0)
         updateMeeting();
-    if (ls.showOffice === 'true')
+    if (ls.showStatus === 'true')
       if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
         updateCoffee();
   }
@@ -761,7 +761,7 @@ $(document).ready(function() {
   }
 
   // Hide stuff the user can't or doesn't want to see
-  if (ls.showOffice !== 'true') $('#todays').hide();
+  if (ls.showStatus !== 'true') $('#todays').hide();
   if (ls.showCantina !== 'true') $('#cantinas').hide();
   if (ls.showBus !== 'true') $('#bus').hide();
 

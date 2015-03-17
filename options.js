@@ -157,10 +157,10 @@ var bindPaletteSelector = function() {
 }
 
 var disableHardwareFeatures = function(quick) {
-  ls.showOffice = 'false';
+  ls.showStatus = 'false';
   ls.coffeeSubscription = 'false';
   if (quick) {
-    $('label[for="showOffice"]').slideUp({duration:0});
+    $('label[for="showStatus"]').slideUp({duration:0});
     $('label[for="coffeeSubscription"]').slideUp({duration:0});
     $('#container').css('top', '60%');
     $('header').css('top', '60%');
@@ -168,7 +168,7 @@ var disableHardwareFeatures = function(quick) {
   }
   else {
     // Hide office status option
-    $('label[for="showOffice"]').slideUp('slow');
+    $('label[for="showStatus"]').slideUp('slow');
     // Hide coffee subscription option
     $('label[for="coffeeSubscription"]').slideUp('slow', function() {
       // Move all content back down
@@ -179,11 +179,11 @@ var disableHardwareFeatures = function(quick) {
 }
 
 var enableHardwareFeatures = function(quick) {
-  ls.showOffice = 'true';
+  ls.showStatus = 'true';
   ls.coffeeSubscription = 'true';
   restoreChecksToBoxes();
   if (quick) {
-    $('label[for="showOffice"]').slideDown({duration:0});
+    $('label[for="showStatus"]').slideDown({duration:0});
     $('label[for="coffeeSubscription"]').slideDown({duration:0});
     $('#container').css('top', '50%');
     $('header').css('top', '50%');
@@ -191,12 +191,12 @@ var enableHardwareFeatures = function(quick) {
   }
   else {
     // Update office status
-    Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+    Browser.getBackgroundProcess().updateStatusAndMeetings(true);
     // Move all content back up
     $('#container').animate({'top':'50%'}, 300);
     $('header').animate({'top':'50%'}, 300, function() {
       // Show office status option
-      $('label[for="showOffice"]').slideDown('slow');
+      $('label[for="showStatus"]').slideDown('slow');
       // Show coffee subscription option
       $('label[for="coffeeSubscription"]').slideDown('slow');
     });
@@ -634,7 +634,7 @@ var toggleBigscreen = function(activate, type, force) {
     else {
       // Refresh office status
       if (Affiliation.org[ls.affiliationKey1].hw) {
-        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+        Browser.getBackgroundProcess().updateStatusAndMeetings(true);
       }
       else {
         Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
@@ -996,11 +996,11 @@ $(document).ready(function() {
         $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(0%)');
       }
 
-      if (this.id === 'showOffice' && this.checked === true) {
+      if (this.id === 'showStatus' && this.checked === true) {
         ls.activelySetOffice = 'true';
-        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+        Browser.getBackgroundProcess().updateStatusAndMeetings(true);
       }
-      if (this.id === 'showOffice' && this.checked === false) {
+      if (this.id === 'showStatus' && this.checked === false) {
         ls.activelySetOffice = 'false';
         Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
         Browser.setTitle(ls.extensionName);

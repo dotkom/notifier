@@ -11,12 +11,12 @@ var mainLoop = function(force) {
       updateCantinas();
   // Only if hardware
   if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (ls.showOffice === 'true') {
+    if (ls.showStatus === 'true') {
       if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
         Browser.getBackgroundProcess().updateAffiliation(function() {
-          updateOffice();
+          updateStatus();
           updateServant();
-          updateMeetings();
+          updateMeeting();
           updateCoffee();
         });
       }
@@ -34,78 +34,70 @@ var mainLoop = function(force) {
     iteration++;
 }
 
-var updateOffice = function(debugStatus) {
-  console.lolg('updateOffice');
-  
+var updateStatus = function(debugStatus) {
+  console.lolg('updateStatus');
   
   // Get
   var meetingData = JSON.parse(ls.meetingData);
   var statusData = JSON.parse(ls.statusData);
   
   // Presume the worst
-  var status = 'error';
-  var title = Office.statuses['error'].title;
-  var message = Office.statuses['error'].title;
-  var meetings = 'En feil oppstod.';
+  var statusCode = 'error';
+  var statusTitle = Office.statuses['error'].title;
+  var statusMessage = Office.statuses['error'].title;
+  var meeting = Affiliation.msgError['meeting'];
 
-  try {
-    // Extract meeting data
-    if (meetingData.error) {
-      meetings = meeting.error;
+  // Set variables with the data we have
+  if (statusData.error) {
+    statusMessage = statusData.error;
+  }
+  else {
+    // Decide current status code
+    if (typeof meetingData.free === 'boolean') {
+      statusCode = meetingData.free ? 'open' : 'meeting';
     }
-    else {
-      status = meetingData.free ? 'open' : 'meeting';
-      message = meetingData.message;
-      if (meetingData.meetings) {
-        meetings = '';
-        for (var i in meetingData.meetings) {
-          meetings += meetingData.meetings[i].message + (i !== "0" ? '\n' : '');
-        }
-      }
+    if (statusCode === 'error' || statusCode === 'open') {
+      statusCode = (statusData.status ? 'open' : 'closed');
     }
 
-    // Extract status data
-    if (statusData.error) {
-      message = statusData.error;
+    // Set current status title
+    statusTitle = Office.statuses[statusCode].title;
+
+    // Set status message
+    statusMessage = Office.statuses[statusCode].message;
+    // Override with affiliation specific status message
+    if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
+      statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
     }
-    else {
-      if (status === 'error' || status === 'open') {
-        status = (statusData.status ? 'open' : 'closed');
-      } // else leave status unchanged, it's a meeting
-      if (meetingData.error) {
-        // Set a message manually
-        message = Office.statuses[status].message;
-      }
+    // Override with meeting title if meeting is currently on
+    if (meetingData.free === false) {
+      statusMessage = meetingData.message;
+    }
+
+    // Get meeting data
+    if (ls.meetingString) {
+      meeting = ls.meetingString;
     }
   }
-  catch (e) {
-    console.error(e);
-  }
 
-  // console.lolg('well, we got:\nstatus:',status,'\nmessage',message,'\nmeetings',meetings);
-
-  //
-  // Run the old script, expects [status, message, meetings]
-  //
-  
   if (DEBUG && debugStatus) {
-    status = debugStatus;
-    message = 'debugging';
+    statusCode = debugStatus;
+    statusMessage = 'debugging';
   }
-  if (ls.officescreenStatusCodeString !== status || ls.officescreenStatusMessageString !== message) {
-    if (Object.keys(Office.foods).indexOf(status) > -1 ) {
+  if (ls.officescreenStatusCodeString !== statusCode || ls.officescreenStatusMessageString !== statusMessage) {
+    if (Object.keys(Office.foods).indexOf(statusCode) > -1 ) {
       // Food status with just title
-      $('#now #text #status').text(Office.foods[status].title);
-      $('#now #text #status').css('color', Office.foods[status].color);
+      $('#now #text #status').text(Office.foods[statusCode].title);
+      $('#now #text #status').css('color', Office.foods[statusCode].color);
     }
     else {
       // Regular status
-      $('#now #text #status').html(Office.statuses[status].title);
-      $('#now #text #status').css('color', Office.statuses[status].color);
+      $('#now #text #status').html(Office.statuses[statusCode].title);
+      $('#now #text #status').css('color', Office.statuses[statusCode].color);
     }
-    $('#now #text #info').html(message);
-    ls.officescreenStatusCodeString = status;
-    ls.officescreenStatusMessageString = message;
+    $('#now #text #info').html(statusMessage);
+    ls.officescreenStatusCodeString = statusCode;
+    ls.officescreenStatusMessageString = statusMessage;
   }
 }
 
@@ -366,9 +358,9 @@ $(document).ready(function() {
   }
 
   // Hide stuff that the user has disabled in options
-  if (ls.showOffice !== 'true')
+  if (ls.showStatus !== 'true')
     $('#office').hide();
-  if (ls.showOffice !== 'true')
+  if (ls.showStatus !== 'true')
     $('#todays').hide();
   if (ls.showCantina !== 'true')
     $('#cantinas').hide();

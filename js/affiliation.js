@@ -1588,6 +1588,9 @@ var Affiliation = {
     this.parseServant(json.servant);
     this.parseCoffee(json.coffee);
     this.parseStatus(json.status);
+
+    // Call it back
+    callback();
   },
 
   parseMeeting: function(meetingData) {
@@ -1667,8 +1670,7 @@ var Affiliation = {
     }
   },
 
-  parseStatus: function(status) {
-    console.warn('parseStatus got', status);
+  parseStatus: function(statusData) {
     // Save object
     ls.statusData = JSON.stringify(statusData);
     // Save stringified version from A) or B)
@@ -1676,20 +1678,17 @@ var Affiliation = {
       // A) It's an error message
     }
     else {
-      // B) It's pots and a date //////////////////////////////////
+      // B) It's status and update-date
+      
     }
 
+    // Note to self: Do not set statusCodeString, statusCodeMessage here, if you do
+    // that then background.js, infoscreen.js and officescreen.js won't be able to
+    // check if the value has changed since last time.
+    // ls.statusCodeString = ?
+    // ls.statusCodeMessage = ?
 
-
-    ls.statusData = status;
-    // Check for local error
-    // if (status.error) {
-    //   console.error(this.msgStatusError);
-    //   callback(this.msgStatusError);
-    // }
-    // else {
-    //   // Do parsing and save the result in localstorage
-    // }
+    ls.statusData = JSON.stringify(statusData);
   },
 
   getMemeCount: function(affiliation) {
