@@ -48,9 +48,86 @@ var updateAffiliation = function(callback) {
 var updateStatusAndMeetings = function(force, callback) {
   console.lolg('updateStatusAndMeetings');
   
-  // Get
-  var meetingData = JSON.parse(ls.meetingData);
-  var statusData = JSON.parse(ls.statusData);
+  // // Get
+  // var meetingData = JSON.parse(ls.meetingData);
+  // var statusData = JSON.parse(ls.statusData);
+  
+  // // Presume the worst
+  // var statusCode = 'error';
+  // var statusTitle = Affiliation.statuses['error'].title;
+  // var statusMessage = Affiliation.statuses['error'].message;
+  // var meeting = Affiliation.msgError['meeting'];
+
+  // // Prepare affiliation status messages
+  // var affiliationMessages = null;
+  // var affiliationHw = Affiliation.org[ls.affiliationKey1].hw;
+  // if (affiliationHw && affiliationHw.statusMessages) {
+  //   affiliationMessages = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
+  // }
+
+  // // status: meeting || food
+  // if (meetingData.free === false) {
+  //   statusCode = 'meeting'; // TODO: FOOD
+  //   statusTitle = Affiliation.statuses[statusCode].title;
+    
+  //   // Get specific meeting message
+  //   if (meetingData.meetings) {
+  //     statusMessage = meetingData.meetings[0].summary;
+  //   }
+  //   // Or less specific affiliation status message
+  //   else if (affiliationMessages) {
+  //     statusMessage = affiliationMessages[statusCode];
+  //   }
+  //   // Or even less specific generic message
+  //   else if (meetingData.message) {
+  //     statusMessage = meetingData.message;
+  //   }
+  //   // Least specific, entirely generic message stored here
+  //   else {
+  //     statusMessage = Affiliation.statuses[statusCode].message;
+  //     console.warn("Least specific message was used, poor data, meetingData:", meetingData);
+  //   }
+  // }
+  // // status: open || closed || error
+  // else {
+  //   if (statusData.error) {
+  //     // statusCode and statusTitle is already error, just get the message
+  //     statusMessage = statusData.error;
+  //   }
+  //   else {
+  //     if (statusData.status === true) {
+  //       // No meeting, office is open
+  //       statusCode = 'open';
+  //     }
+  //     else if (statusData.status === false) {
+  //       // No meeting, but office is closed
+  //       statusCode = 'closed';
+  //     }
+  //     else if (statusData.status === null) {
+  //       // Notipi is offline, all variables default to error
+  //     }
+  //     else {
+  //       console.error("Malformed data from API, statusData:", statusData);
+  //     }
+  //     statusTitle = Affiliation.statuses[statusCode].title;
+  //     statusMessage = Affiliation.statuses[statusCode].message;
+  //     if (affiliationMessages && affiliationMessages[statusCode]) {
+  //       statusMessage = affiliationMessages[statusCode];
+  //     }
+  //   }
+  // }
+
+  // // Get meeting data
+  // if (ls.meetingString) {
+  //   meeting = ls.meetingString;
+  // }
+
+  // ls.statusStrings = JSON.stringify({
+  //   statusCode: statusCode,
+  //   statusTitle: statusTitle,
+  //   statusMessage: statusMessage,
+  //   meeting: meeting,
+  // });
   
   // Presume the worst
   var statusCode = 'error';
@@ -58,73 +135,18 @@ var updateStatusAndMeetings = function(force, callback) {
   var statusMessage = Affiliation.statuses['error'].message;
   var meeting = Affiliation.msgError['meeting'];
 
-  // Prepare affiliation status messages
-  var affiliationMessages = null;
-  var affiliationHw = Affiliation.org[ls.affiliationKey1].hw;
-  if (affiliationHw && affiliationHw.statusMessages) {
-    affiliationMessages = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
-  }
-
-  // status: meeting || food
-  if (meetingData.free === false) {
-    statusCode = 'meeting'; // TODO: FOOD
-    statusTitle = Affiliation.statuses[statusCode].title;
-    
-    // Get specific meeting message
-    if (meetingData.meetings) {
-      statusMessage = meetingData.meetings[0].summary;
-    }
-    // Or less specific affiliation status message
-    else if (affiliationMessages) {
-      statusMessage = affiliationMessages[statusCode];
-    }
-    // Or even less specific generic message
-    else if (meetingData.message) {
-      statusMessage = meetingData.message;
-    }
-    // Least specific, entirely generic message stored here
-    else {
-      statusMessage = Affiliation.statuses[statusCode].message;
-      console.warn("Least specific message was used, poor data, meetingData:", meetingData);
-    }
-  }
-  // status: open || closed || error
-  else {
-    if (statusData.error) {
-      // statusCode and statusTitle is already error, just get the message
-      statusMessage = statusData.error;
-    }
-    else {
-      if (statusData.status === true) {
-        // No meeting, office is open
-        statusCode = 'open';
-      }
-      else if (statusData.status === false) {
-        // No meeting, but office is closed
-        statusCode = 'closed';
-      }
-      else if (statusData.status === null) {
-        // Notipi is offline, all variables default to error
-      }
-      else {
-        console.error("Malformed data from API, statusData:", statusData);
-      }
-      statusTitle = Affiliation.statuses[statusCode].title;
-      statusMessage = Affiliation.statuses[statusCode].message;
-      if (affiliationMessages && affiliationMessages[statusCode]) {
-        statusMessage = affiliationMessages[statusCode];
-      }
-    }
-  }
-
   // Get meeting data
   if (ls.meetingString) {
     meeting = ls.meetingString;
   }
 
-
-
-
+  // Get status data
+  if (ls.statusStrings) {
+    var strings = JSON.parse(ls.statusStrings);
+    statusCode = strings.statusCode;
+    statusTitle = strings.statusTitle;
+    statusMessage = strings.statusMessage;
+  }
 
   // Update the icon and icon hover text if data is new
   if (force || ls.statusCodeString !== statusCode || ls.statusMessageString !== statusMessage) {
