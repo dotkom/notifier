@@ -129,7 +129,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.error('callback is required');
+          console.error('Callback is required');
           return;
         }
         var self = this;
@@ -167,7 +167,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -301,6 +301,67 @@ var Affiliation = {
       },
     },
 
+    'janus': {
+      name: 'Janus',
+      key: 'janus',
+      web: 'http://www.januslinjeforening.no/',
+      // no feed, use getNews
+      logo: './org/janus/logo.png',
+      icon: './org/janus/icon.png',
+      symbol: './org/janus/symbol.png',
+      placeholder: './org/janus/placeholder.png',
+      palette: 'blue',
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(posts, callback) {
+        if (typeof callback == 'undefined') {
+          console.error('Callback is required');
+          return;
+        }
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+            // Add each item from news tags
+            if ($(html).find('div.feature').length != 0) {
+              $(html).find('div.feature').each( function() {
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find("h6").filter(':first').text();
+                  post.link = $(this).find("a").attr('href');
+                  post.description = "";
+                  post.image = $(this).find("pic").filter(':first').attr('src');
+
+                  // Author field
+                  post.creator = $(this).find("em").filter(':first').text();
+                  post.creator = post.creator.split(",")[0];
+
+                  // Link fixing
+                  post.link = 'http://www.januslinjeforening.no' + post.link;
+                  // Image fixing
+                  if (typeof post.image != 'undefined')
+                    post.image = 'http://www.januslinjeforening.no' + post.image;
+                  else
+                    post.image = self.placeholder;
+
+                  posts[count++] = post;
+                }
+              });
+            }
+            else {
+              console.error('No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            console.error('Could not fetch '+self.name+' website');
+          },
+        });
+      },
+    },
+
     'leonardo': {
       name: 'Leonardo',
       key: 'leonardo',
@@ -320,7 +381,7 @@ var Affiliation = {
       name: 'Mannhullet',
       key: 'mannhullet',
       web: 'http://mannhullet.no/',
-      // feed: 'http://mannhullet.no/index.php?format=feed&type=rss',
+      // no feed, use getNews
       logo: './org/mannhullet/logo.png',
       icon: './org/mannhullet/icon.png',
       symbol: './org/mannhullet/symbol.png',
@@ -329,7 +390,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.error('callback is required');
+          console.error('Callback is required');
           return;
         }
         var self = this;
@@ -367,7 +428,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -386,7 +447,7 @@ var Affiliation = {
       // images also fetched when fetching news
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.error('callback is required');
+          console.error('Callback is required');
           return;
         }
         var self = this;
@@ -427,7 +488,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -467,7 +528,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.error('callback is required');
+          console.error('Callback is required');
           return;
         }
         var self = this;
@@ -503,7 +564,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -613,7 +674,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -886,7 +947,7 @@ var Affiliation = {
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
-          console.error('callback is required');
+          console.error('Callback is required');
           return;
         }
         var self = this;
@@ -921,7 +982,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
