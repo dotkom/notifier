@@ -54,8 +54,8 @@ var updateStatusAndMeetings = function(force, callback) {
   
   // Presume the worst
   var statusCode = 'error';
-  var statusTitle = Office.statuses['error'].title;
-  var statusMessage = Office.statuses['error'].title;
+  var statusTitle = Affiliation.statuses['error'].title;
+  var statusMessage = Affiliation.statuses['error'].title;
   var meeting = Affiliation.msgError['meeting'];
 
   // Set variables with the data we have
@@ -72,10 +72,10 @@ var updateStatusAndMeetings = function(force, callback) {
     }
 
     // Set current status title
-    statusTitle = Office.statuses[statusCode].title;
+    statusTitle = Affiliation.statuses[statusCode].title;
 
     // Set status message
-    statusMessage = Office.statuses[statusCode].message;
+    statusMessage = Affiliation.statuses[statusCode].message;
     // Override with affiliation specific status message
     if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
       statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
@@ -97,9 +97,9 @@ var updateStatusAndMeetings = function(force, callback) {
     ls.statusCodeString = statusCode;
     ls.statusMessageString = statusMessage;
     // Food status
-    if (Object.keys(Office.foods).indexOf(statusCode) > -1) {
-      statusTitle = Office.foods[status].title;
-      Browser.setIcon(Office.foods[statusCode].icon);
+    if (Object.keys(Affiliation.foods).indexOf(statusCode) > -1) {
+      statusTitle = Affiliation.foods[status].title;
+      Browser.setIcon(Affiliation.foods[statusCode].icon);
     }
     // Regular status
     else {

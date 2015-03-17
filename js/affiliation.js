@@ -13,6 +13,23 @@ var Affiliation = {
     'coffee': 'Feil i kaffedata',
     'status': 'Feil i kontorstatusdata',
   },
+
+  // Basic statuses have titles and messages (icons are fetched from affiliation)
+  statuses: {
+    'error': {title: 'Oops', color: 'LightGray', message: 'Klarte ikke hente kontorstatus'},
+    'open': {title: 'Åpent', color: 'LimeGreen', message: 'Velkommen inn!'},
+    'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem'},
+    'meeting': {title: 'Møte', color: 'red', message: 'Kontoret er opptatt'}, // meetings usually get message from calendar entries
+  },
+  // Food statuses have titles and icons (messages exist as calendar titles)
+  foods: {
+    'bun': {title: 'Boller', color: 'NavajoWhite', icon: './img/icon-bun.png', image: './img/image-bun.png'},
+    'cake': {title: 'Kake', color: 'NavajoWhite', icon: './img/icon-cake.png', image: './img/image-cake.png'},
+    'coffee': {title: 'Kaffekos', color: 'NavajoWhite', icon: './img/icon-coffee.png'},
+    'pizza': {title: 'Pizza', color: 'NavajoWhite', icon: './img/icon-pizza.png', image: './img/image-pizza.png'},
+    'taco': {title: 'Taco', color: 'NavajoWhite', icon: './img/icon-taco.png', image: './img/image-taco.png'},
+    'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png', image: './img/image-waffle.png'},
+  },
   
   // IMPORTANT: Keep the same order of affiliations here as in options.html
 
@@ -32,13 +49,6 @@ var Affiliation = {
   // useAltLink: true,                          // OPTIONAL: Search each news post for alternative link to use?
   // hw: {                                      // OPTIONAL: Has hardwarefeatures?
   //   office: "orgxkontoret",                  // OPTIONAL: Friendly name for the affiliation office
-  //   apis: {
-  //     coffee: 'http://orgx.no/coffee',       // Coffee data
-  //     light: 'http://orgx.no/lys',           // Light data
-  //     event: 'http://orgx.no/status',        // Current meeting status
-  //     servant: 'http://orgx.no/servant',     // Todays servant list
-  //     meetings: 'http://orgx.no/meetings',   // Todays meetings
-  //   },
   //   statusIcons: {
   //     open: './org/orgx/icon.png',
   //     closed: './org/orgx/icon.png',
@@ -78,13 +88,6 @@ var Affiliation = {
       palette: 'grey',
       hw: {
         office: 'DEBUG-kontoret',
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/DEBUG/coffee',
-          light: 'http://passoa.online.ntnu.no/notifier/DEBUG/light',
-          event: 'http://passoa.online.ntnu.no/notifier/DEBUG/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/DEBUG/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/DEBUG/meetings',
-        },
         statusIcons: {
           open: './org/DEBUG/icon-open.png',
           closed: './org/DEBUG/icon-closed.png',
@@ -110,13 +113,6 @@ var Affiliation = {
       palette: 'red',
       hw: {
         office: "Abakuskontoret",
-        apis: {
-          coffee: 'http://kaffe.abakus.no/coffee.txt',
-          light: 'http://informatikk.org/abakus/lys.txt',
-          event: 'http://passoa.online.ntnu.no/notifier/abakus/office',
-          servant: 'http://informatikk.org/abakus/servant_list.txt', // TODO
-          meetings: 'http://passoa.online.ntnu.no/notifier/abakus/meetings',
-        },
         statusIcons: {
           // TODO: update when Abakus gets office status feature
           open: './org/abakus/icon.png', //'./org/abakus/icon-open.png',
@@ -234,13 +230,6 @@ var Affiliation = {
       palette: 'green',
       hw: {
         office: 'Deltakontoret',
-        apis: {
-          coffee: 'http://pi.deltahouse.no/coffee.txt',
-          light: 'http://pi.deltahouse.no/office.txt',
-          event: 'http://passoa.online.ntnu.no/notifier/delta/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/delta/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/delta/meetings',
-        },
         statusIcons: {
           open: './org/delta/icon-open.png',
           closed: './org/delta/icon-closed.png',
@@ -281,13 +270,6 @@ var Affiliation = {
       palette: 'yellow',
       hw: {
         office: 'HC-kontoret',
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/hc/coffee',
-          light: 'http://passoa.online.ntnu.no/notifier/hc/light',
-          event: 'http://passoa.online.ntnu.no/notifier/hc/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/hc/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/hc/meetings',
-        },
         statusIcons: {
           open: './org/hc/icon-open.png',
           closed: './org/hc/icon-closed.png',
@@ -465,17 +447,15 @@ var Affiliation = {
       useAltLink: true,
       hw: {
         office: 'Onlinekontoret',
-        apis: {
-          coffee: 'http://draug.online.ntnu.no/coffee.txt',
-          light: 'http://draug.online.ntnu.no/lys.txt',
-          event: 'http://passoa.online.ntnu.no/notifier/online/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/online/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/online/meetings',
-        },
         statusIcons: {
           open: './org/online/icon-open.png',
           closed: './org/online/icon-closed.png',
           meeting: './org/online/icon-meeting.png',
+        },
+        statusMessages: {
+          open: 'Gratis kaffe og te til alle!',
+          closed: 'Finn et komitemedlem',
+          meeting: 'Kontoret er opptatt',
         },
         memePath: './org/online/meme/',
         memeCount: 5,
@@ -541,13 +521,6 @@ var Affiliation = {
       palette: 'red',
       hw: {
         office: 'Nablakontoret',
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/nabla/coffee',
-          event: 'http://passoa.online.ntnu.no/notifier/nabla/office',
-          light: 'http://passoa.online.ntnu.no/notifier/nabla/light',
-          meetings: 'http://passoa.online.ntnu.no/notifier/nabla/meetings',
-          servant: 'http://passoa.online.ntnu.no/notifier/nabla/servant',
-        },
         statusIcons: {
           open: './org/nabla/icon-open.png',
           closed: './org/nabla/icon-closed.png',
@@ -666,13 +639,6 @@ var Affiliation = {
       palette: 'blue',
       hw: {
         office: "Solanstua",
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/solan/coffee',
-          event: 'http://passoa.online.ntnu.no/notifier/solan/office',
-          light: 'http://passoa.online.ntnu.no/notifier/solan/light',
-          meetings: 'http://passoa.online.ntnu.no/notifier/solan/meetings',
-          servant: 'http://passoa.online.ntnu.no/notifier/solan/servant',
-        },
         statusIcons: {
           open: './org/solan/icon-open.png',
           closed: './org/solan/icon-closed.png',

@@ -52,8 +52,8 @@ var updateStatus = function(debugStatus) {
   
   // Presume the worst
   var statusCode = 'error';
-  var statusTitle = Office.statuses['error'].title;
-  var statusMessage = Office.statuses['error'].title;
+  var statusTitle = Affiliation.statuses['error'].title;
+  var statusMessage = Affiliation.statuses['error'].title;
   var meeting = Affiliation.msgError['meeting'];
 
   // Set variables with the data we have
@@ -70,10 +70,10 @@ var updateStatus = function(debugStatus) {
     }
 
     // Set current status title
-    statusTitle = Office.statuses[statusCode].title;
+    statusTitle = Affiliation.statuses[statusCode].title;
 
     // Set status message
-    statusMessage = Office.statuses[statusCode].message;
+    statusMessage = Affiliation.statuses[statusCode].message;
     // Override with affiliation specific status message
     if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
       statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
@@ -94,25 +94,25 @@ var updateStatus = function(debugStatus) {
     statusMessage = 'debugging';
   }
   if (ls.infoscreenStatusCodeString !== statusCode || ls.infoscreenStatusMessageString !== statusMessage) {
-    if (Object.keys(Office.foods).indexOf(statusCode) > -1) {
-      if (typeof Office.foods[statusCode].image !== 'undefined') {
+    if (Object.keys(Affiliation.foods).indexOf(statusCode) > -1) {
+      if (typeof Affiliation.foods[statusCode].image !== 'undefined') {
         // Food status with image
-        $('#office #status img').attr('src', Office.foods[statusCode].image);
+        $('#office #status img').attr('src', Affiliation.foods[statusCode].image);
         $('#office #status #text').hide();
         $('#office #status img').show();
       }
       else {
         // Food status with just title
-        $('#office #status #text').text(Office.foods[statusCode].title);
-        $('#office #status #text').css('color', Office.foods[statusCode].color);
+        $('#office #status #text').text(Affiliation.foods[statusCode].title);
+        $('#office #status #text').css('color', Affiliation.foods[statusCode].color);
         $('#office #status img').hide();
         $('#office #status #text').show();
       }
     }
     else {
       // Regular status
-      $('#office #status #text').html(Office.statuses[statusCode].title);
-      $('#office #status #text').css('color', Office.statuses[statusCode].color);
+      $('#office #status #text').html(Affiliation.statuses[statusCode].title);
+      $('#office #status #text').css('color', Affiliation.statuses[statusCode].color);
       $('#office #status img').hide();
       $('#office #status #text').show();
     }

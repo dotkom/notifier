@@ -43,8 +43,8 @@ var updateStatus = function(debugStatus) {
   
   // Presume the worst
   var statusCode = 'error';
-  var statusTitle = Office.statuses['error'].title;
-  var statusMessage = Office.statuses['error'].title;
+  var statusTitle = Affiliation.statuses['error'].title;
+  var statusMessage = Affiliation.statuses['error'].title;
   var meeting = Affiliation.msgError['meeting'];
 
   // Set variables with the data we have
@@ -61,10 +61,10 @@ var updateStatus = function(debugStatus) {
     }
 
     // Set current status title
-    statusTitle = Office.statuses[statusCode].title;
+    statusTitle = Affiliation.statuses[statusCode].title;
 
     // Set status message
-    statusMessage = Office.statuses[statusCode].message;
+    statusMessage = Affiliation.statuses[statusCode].message;
     // Override with affiliation specific status message
     if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
       statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
@@ -85,15 +85,15 @@ var updateStatus = function(debugStatus) {
     statusMessage = 'debugging';
   }
   if (ls.officescreenStatusCodeString !== statusCode || ls.officescreenStatusMessageString !== statusMessage) {
-    if (Object.keys(Office.foods).indexOf(statusCode) > -1 ) {
+    if (Object.keys(Affiliation.foods).indexOf(statusCode) > -1 ) {
       // Food status with just title
-      $('#now #text #status').text(Office.foods[statusCode].title);
-      $('#now #text #status').css('color', Office.foods[statusCode].color);
+      $('#now #text #status').text(Affiliation.foods[statusCode].title);
+      $('#now #text #status').css('color', Affiliation.foods[statusCode].color);
     }
     else {
       // Regular status
-      $('#now #text #status').html(Office.statuses[statusCode].title);
-      $('#now #text #status').css('color', Office.statuses[statusCode].color);
+      $('#now #text #status').html(Affiliation.statuses[statusCode].title);
+      $('#now #text #status').css('color', Affiliation.statuses[statusCode].color);
     }
     $('#now #text #info').html(statusMessage);
     ls.officescreenStatusCodeString = statusCode;
