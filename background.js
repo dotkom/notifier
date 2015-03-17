@@ -17,19 +17,10 @@ var mainLoop = function(force) {
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
   // Only if hardware and not infoscreen
-  if (ls.useBigscreen !== 'true') {
-    if (Affiliation.org[ls.affiliationKey1].hw) {
-      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0) {
+  if (ls.useBigscreen !== 'true')
+    if (Affiliation.org[ls.affiliationKey1].hw)
+      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
         updateAffiliation();
-      }
-      // if (ls.showOffice === 'true')
-      //   if (force || iteration % UPDATE_OFFICE_INTERVAL === 0)
-      //     updateOfficeAndMeetings();
-      // if (ls.coffeeSubscription === 'true')
-      //   if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
-      //     updateCoffeeSubscription();
-    }
-  }
 
   // No reason to count to infinity
   if (10000 < iteration)
@@ -53,15 +44,6 @@ var updateAffiliation = function(callback) {
     if (typeof callback === 'function') callback();
   });
 };
-
-/*
-[ ] Meeting og servant returnerer alle events for den gjeldende dagen
-[ ] Men hvis en event pågår får man i tillegg litt ekstra info
-[ ] Da vil message og free/responsible bli satt
-[ ] Gjorde om prettier til message
-[ ] Light er siste 24 timer || null (ikke noe i dag)
-[ ] Coffee er siste 24 timer || null (ikke noe i dag)
-*/
 
 var updateOfficeAndMeetings = function(force, callback) {
   console.lolg('updateOfficeAndMeetings');
@@ -251,37 +233,6 @@ var updateCoffeeSubscription = function(callback) {
     console.error(e);
   }
 }
-
-// var updateCoffeeSubscription = function(callback) {
-//   console.lolg('updateCoffeeSubscription');
-//   Coffee.get(false, function(pots, age) {
-//     // Error messages will be NaN here
-//     if (!isNaN(pots) && !isNaN(age)) {
-//       var storedPots = Number(ls.coffeePots);
-//       // New pot number?
-//       if (storedPots < pots) {
-//         // Not a meeting? Or DEBUG mode.
-//         if (ls.officeStatus !== 'meeting') {
-//           // Made less than 10 minutes ago?
-//           if (age < 10) {
-//             // And no meme was served within the last 10 minutes?
-//             if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
-//               // Notify everyone with a coffee subscription :D
-//               Coffee.showNotification(pots, age);
-//               ls.coffeeMemeTime = Date.now();
-//             }
-//             else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
-//           }
-//           else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
-//         }
-//         else {console.lolg('Nope to coffee, there is a meeting going on')}
-//       }
-//       // And remember to update localStorage
-//       ls.coffeePots = pots;
-//     }
-//     if (typeof callback === 'function') callback();
-//   });
-// }
 
 var updateCantinas = function(callback) {
   console.lolg('updateCantinas');

@@ -31,19 +31,6 @@ var mainLoop = function(force) {
       }
     }
   }
-  // if (Affiliation.org[ls.affiliationKey1].hw)
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_OFFICE_INTERVAL === 0)
-  //       updateOffice();
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_SERVANT_INTERVAL === 0)
-  //       updateServant();
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0)
-  //       updateMeetings();
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
-  //       updateCoffee();
   // Always update, tell when offline
   if (ls.showBus === 'true')
     if (force || iteration % UPDATE_BUS_INTERVAL === 0)
