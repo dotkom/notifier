@@ -1,93 +1,12 @@
 "use strict";
 
 var Coffee = {
-  debug: 0,
-  debugString: 0,
-  debugThisString: "200\n30. October 14:28:371",
 
   msgNoPots: 'Ingen kanner i dag',
   msgNoCoffee: 'Kaffen har ikke blitt satt på',
-  msgFormatError: 'Feil i kaffeformat',
   msgConnectionError: 'Frakoblet fra kaffekanna',
   msgComforting: 'Så så, det er sikkert kaffe :)',
   msgNotification: 'Kaffen er satt på, straks klar :)',
-
-  get: function(pretty, callback) {
-    if (callback == undefined) {
-      console.error('Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
-
-    var api = Affiliation.org[localStorage.affiliationKey1].hw.apis.coffee;
-
-    // Receives the status for the coffee pot
-    var self = this;
-    Ajaxer.getPlainText({
-      url: api,
-      success: function(data) {
-
-        // If coffee debugging is enabled
-        if (self.debug && self.debugString) {
-          data = self.debugThisString;
-        }
-
-        try {
-          // Split into pot number and age of last pot
-          var pieces = data.split("\n");
-          var pots = Number(pieces[0]);
-          var ageString = pieces[1];
-
-          // Coffee made today?
-          if (self.isMadeToday(ageString)) {
-
-            // Calculate minute difference from right now
-            var now = new Date();
-            var coffeeTime = String(ageString.match(/\d+:\d+:\d+/)).split(':');
-            var then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), coffeeTime[0], coffeeTime[1]);
-            var age = self.minuteDiff(then);
-
-            // If pretty strings are requested
-            if (pretty) {
-              age = self.prettyAgeString(age, coffeeTime);
-              pots = self.prettyPotsString(pots);
-            }
-
-            // Call it back
-            callback(pots, age);
-          }
-          else {
-            // Coffee was not made today
-            if (pretty) {
-              callback(self.msgNoPots, self.msgNoCoffee);
-            }
-            else {
-              callback(0, 0);
-            }
-          }
-        } catch (err) {
-          if (self.debug) console.error('Coffee format is wrong:', err);
-          callback(self.msgFormatError, self.msgComforting);
-        }
-      },
-      error: function(jqXHR, text, err) {
-        if (self.debug) console.error('Failed to get coffee pot status.');
-        callback(self.msgConnectionError, self.msgComforting);
-      },
-    });
-  },
-
-  isMadeToday: function(ageString) {
-    // Get now
-    var now = new Date();
-    // Figure out which date the coffee was made
-    var dateObject = ageString.match(/\d+\. [a-zA-Z]+/);
-    var dateString = String(dateObject);
-    dateString = dateString.replace('.', ''); // Remove period
-    dateString = dateString + ', ' + now.getFullYear();
-    var coffeeDate = new Date(dateString);
-    // Check if the coffee pots were made today
-    return coffeeDate.getDate() == now.getDate();
-  },
 
   minuteDiff: function(then) {
     // Get now
