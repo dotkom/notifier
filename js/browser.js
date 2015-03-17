@@ -179,7 +179,7 @@ var Browser = {
   },
 
   bindCommandHotkeys: function() {
-    if (this.name == 'Chrome') {
+    if (this.name === 'Chrome' || this.name === 'Opera') {
       chrome.commands.onCommand.addListener(function(command) {
         if (command == 'open_instabart') {
           Analytics.trackEvent('usedHotkey', 'open_instabart');
@@ -311,15 +311,12 @@ var Browser = {
   // Event handlers for the various notification events
 
   registerNotificationListeners: function() {
-    if (this.name == 'Chrome') {
+    if (this.name === 'Chrome' || this.name === 'Opera') {
       window.addEventListener("load", function() {
         chrome.notifications.onClosed.addListener(Browser.notificationClosed);
         chrome.notifications.onClicked.addListener(Browser.notificationClicked);
         chrome.notifications.onButtonClicked.addListener(Browser.notificationBtnClick);
       });
-    }
-    else if (this.name == 'Opera') {
-      console.log(this.msgUnsupported);
     }
     else {
       console.log(this.msgUnsupported);
@@ -346,7 +343,7 @@ var Browser = {
   },
 
   bindOmniboxToOracle: function() {
-    if (this.name == 'Chrome' || this.name == 'Opera') {
+    if (this.name === 'Chrome' || this.name === 'Opera') {
       // This event is fired each time the user updates the text in the omnibox,
       // as long as the extension's keyword mode is still active.
       // chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
