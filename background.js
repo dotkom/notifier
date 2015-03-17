@@ -212,38 +212,38 @@ var updateCoffeeSubscription = function(callback) {
   try {
     var date = coffeeData.date;
     var pots = coffeeData.pots;
-    // Parse that date
-    date = new Date(date);
-    var age = Coffee.minuteDiff(date);
-    // console.info('The coffee is', age, 'minutes old');
 
-    //
-    // Run the old script, expects [pots, age]
-    //
+    // No coffee yields pots=0 and date=null
+    if (pots && date) {
 
-    // Error messages will be NaN here
-    if (!isNaN(pots) && !isNaN(age)) {
-      var storedPots = Number(ls.coffeePots);
-      // New pot number?
-      if (storedPots < pots) {
-        // Not a meeting? Or DEBUG mode.
-        if (ls.officeStatus !== 'meeting') {
-          // Made less than 10 minutes ago?
-          if (age < 10) {
-            // And no meme was served within the last 10 minutes?
-            if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
-              // Send meme to everyone who has a coffee subscription :D
-              Coffee.showNotification(pots, age);
-              ls.coffeeMemeTime = Date.now();
+      // Parse that date
+      date = new Date(date);
+      var age = Coffee.minuteDiff(date);
+
+      // Check for NaN here
+      if (!isNaN(pots) && !isNaN(age)) {
+        var storedPots = Number(ls.coffeePots);
+        // New pot number?
+        if (storedPots < pots) {
+          // Not a meeting? Or DEBUG mode.
+          if (ls.officeStatus !== 'meeting') {
+            // Made less than 10 minutes ago?
+            if (age < 10) {
+              // And no meme was served within the last 10 minutes?
+              if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
+                // Send meme to everyone who has a coffee subscription :D
+                Coffee.showNotification(pots, age);
+                ls.coffeeMemeTime = Date.now();
+              }
+              else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
             }
-            else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
+            else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
           }
-          else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
+          else {console.lolg('Nope to coffee, there is a meeting going on')}
         }
-        else {console.lolg('Nope to coffee, there is a meeting going on')}
+        // And remember to update localStorage
+        ls.coffeePots = pots;
       }
-      // And remember to update localStorage
-      ls.coffeePots = pots;
     }
     if (typeof callback === 'function') callback();
   }

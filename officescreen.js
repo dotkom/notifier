@@ -167,47 +167,28 @@ var updateMeeting = function() {
   }
 }
 
+//
+// Update functions: Coffee
+//
+
 var updateCoffee = function() {
   console.lolg('updateCoffee');
-  // New
-  // Get
-  var coffeeData = JSON.parse(ls.coffeeData);
-  // Hope for the best
-  try {
-    var date = coffeeData.date;
-    var pots = coffeeData.pots;
-    // Parse that date
-    date = new Date(date);
-    var age = Coffee.minuteDiff(date);
 
-    // We have pots and age, now get pretty versions
-    var prettyPots = Coffee.prettyPotsString(pots);
-    var hours = date.getHours(); hours = (hours < 10 ? '0' + hours : hours);
-    var minutes = date.getMinutes(); minutes = (minutes < 10 ? '0' + minutes : minutes);
-    var prettyAge = Coffee.prettyAgeString(age, [hours, minutes])
-
-    $('#todays #coffee #pots').html('- ' + prettyPots);
-    $('#todays #coffee #age').html(prettyAge);
-  }
-  catch (e) {
-    console.error(e);
+  if (!ls.coffeePotsString || !ls.coffeeDateString) {
     $('#todays #coffee #pots').html('- ' + Coffee.msgConnectionError);
     $('#todays #coffee #age').html(Coffee.msgComforting);
   }
-
-  // // Old
-  // Coffee.get(true, function(pots, age) {
-  //   $('#todays #coffee #pots').html('- ' + pots);
-  //   $('#todays #coffee #age').html(age);
-  // });
+  else {
+    var coffeePotsString = ls.coffeePotsString;
+    var coffeeDateString = ls.coffeeDateString;
+    $('#todays #coffee #pots').html('- ' + coffeePotsString);
+    $('#todays #coffee #age').html(coffeeDateString);
+  }
 }
-// var updateCoffee = function() {
-//   console.lolg('updateCoffee');
-//   Coffee.get(true, function(pots, age) {
-//     $('#todays #coffee #pots').html('- '+pots);
-//     $('#todays #coffee #age').html(age);
-//   });
-// }
+
+//
+// Update functions: Cantina
+//
 
 var updateCantinas = function(first) {
   // This function just fetches from localstorage (updates in background)

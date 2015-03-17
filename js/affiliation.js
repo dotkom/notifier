@@ -1520,12 +1520,21 @@ var Affiliation = {
 
   _onProgramStartup_: function() {
     // Clear values that should be empty
+    // Meeting
+    ls.removeItem('meetingData');
+    ls.removeItem('meetingString');
+    // Servant
+    ls.removeItem('servantData');
+    ls.removeItem('servantString');
+    // Coffee
+    ls.removeItem('coffeeData');
+    ls.removeItem('coffeePotsString');
+    ls.removeItem('coffeeDateString');
+    // Status
+    //////////// TODO //////////////
     // OLD /////////////////////////////////////////////////
     ls.removeItem('officeStatus');
     ls.removeItem('officeStatusMessage');
-    // NEW /////////////////////////////////////////////////
-    ls.removeItem('meeting');
-    ls.removeItem('meetingString');
   },
 
   get: function(affiliation, callback) {
@@ -1582,56 +1591,81 @@ var Affiliation = {
     this.parseStatus(json.status);
   },
 
-  parseMeeting: function(meeting) {
+  parseMeeting: function(meetingData) {
     // Save object
-    ls.meetingData = JSON.stringify(meeting);
+    ls.meetingData = JSON.stringify(meetingData);
     // Save stringified version from A), B) or C)
-    if (meeting.error) {
+    if (meetingData.error) {
       // A) It's an error message
-      ls.meetingString = meeting.error;
+      ls.meetingString = meetingData.error;
     }
     else {
       // B) It's meetings objects
-      if (meeting.meetings) {
+      if (meetingData.meetings) {
         var htmlMeeting = '';
-        for (var i in meeting.meetings) {
-          htmlMeeting += (i!=="0"?"\n":"") + meeting.meetings[i].message;
+        for (var i in meetingData.meetings) {
+          htmlMeeting += (i!=="0"?"\n":"") + meetingData.meetings[i].message;
         }
         ls.meetingString = htmlMeeting;
       }
       // C) It's just a message
       else {
-        ls.meetingString = meeting.message;
+        ls.meetingString = meetingData.message;
       }
     }
   },
 
-  parseServant: function(servant) {
+  parseServant: function(servantData) {
     // Save object
-    ls.servantData = JSON.stringify(servant);
+    ls.servantData = JSON.stringify(servantData);
     // Save stringified version from A), or B)
-    if (servant.error) {
+    if (servantData.error) {
       // A) It's an error message
-      ls.servantString = servant.error;
+      ls.servantString = servantData.error;
     }
     else {
       // B) It's a servant or a message
-      ls.servantString = servant.message;
+      ls.servantString = servantData.message;
     }
   },
 
-  parseCoffee: function(coffee) {
-    console.warn('parseCoffee got', coffee);
+  parseCoffee: function(coffeeData) {
+    // Save object
+    ls.coffeeData = JSON.stringify(coffeeData);
+    // Save stringified version from A) or B)
+    if (coffeeData.error) {
+      // A) It's an error message
+      ls.coffeePotsString = coffeeData.error;
+      ls.coffeeDateString = Coffee.msgComforting;
+    }
+    else {
+      // B) It's pots and a date
+      var coffeePotsString = '';
+      var coffeeDateString = '';
 
-    ls.coffeeData = coffee;
-    // Check for local error
-    // if (coffee.error) {
-    //   console.error(this.msgCoffeeError);
-    //   callback(this.msgCoffeeError);
-    // }
-    // else {
-    //   // Do parsing and save the result in localstorage
-    // }
+      var pots = coffeeData.pots;
+      var date = coffeeData.date;
+      if (pots === 0 || date === null) {
+        coffeePotsString = Coffee.msgNoPots;
+        coffeeDateString = Coffee.msgNoCoffee;
+      }
+      else {
+        // Parse that date
+        var d = new Date(date);
+        date = Coffee.minuteDiff(d);
+
+        // We have pots and age, now get pretty versions
+        var prettyPots = Coffee.prettyPotsString(pots);
+        var hours = d.getHours(); hours = (hours < 10 ? '0' + hours : hours);
+        var minutes = d.getMinutes(); minutes = (minutes < 10 ? '0' + minutes : minutes);
+        var prettyAge = Coffee.prettyAgeString(date, [hours, minutes])
+
+        coffeePotsString = prettyPots;
+        coffeeDateString = prettyAge;
+      }
+      ls.coffeePotsString = coffeePotsString;
+      ls.coffeeDateString = coffeeDateString;
+    }
   },
 
   parseStatus: function(status) {
