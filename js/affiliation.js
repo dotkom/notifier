@@ -162,12 +162,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -362,12 +362,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -422,12 +422,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -498,12 +498,12 @@ var Affiliation = {
               }
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -567,9 +567,8 @@ var Affiliation = {
         Images.get(this, link, callback, {newsSelector:'div#main', domainUrl:'smorekoppen.no/'});
       },
       getNews: function(posts, callback) {
-        console.warn('YELLOW')
         if (typeof callback == 'undefined') {
-          console.error('callback is required');
+          console.error('Callback is required');
           return;
         }
         var self = this;
@@ -578,13 +577,9 @@ var Affiliation = {
           success: function(html) {
             var count = 0;
 
-            console.warn('YES HELLOW', $(html).find('li[id^="article-"]').length)
-            
             // Add each item from news tags
             if ($(html).find('li[id^="article-"]').length != 0) {
-                console.warn(1, $(html).find('li[id^="article_"]'))
               $(html).find('li[id^="article-"]').each( function() {
-                console.warn(2)
                 if (count < posts.length) {
                   var post = posts[count];
                   
@@ -609,19 +604,16 @@ var Affiliation = {
                     post.image = self.web + post.image;
 
                   posts[count++] = post;
-
-                  console.log('dis post', post)
                 }
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
-            console.warn('Postprocess,', posts)
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -924,12 +916,12 @@ var Affiliation = {
               });
             }
             else {
-              if (self.debug) console.error('No articles found at', self.web);
+              console.error('No articles found at', self.web);
             }
             callback(posts);
           },
           error: function(e) {
-            if (self.debug) console.error('could not fetch '+self.name+' website');
+            console.error('could not fetch '+self.name+' website');
           },
         });
       },
@@ -1713,8 +1705,6 @@ var Affiliation = {
         }
       }
     }
-
-    
 
     // Save as strings
     ls.statusStrings = JSON.stringify({
