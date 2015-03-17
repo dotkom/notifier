@@ -157,7 +157,7 @@ header #notification .saved {
   /* the affiliation option in particular */
   /* the cantina option in particular */
   /* the bus option in particular */
-  /* the showoffice option in particular */
+  /* the showStatus option in particular */
   /* the bigscreen option in particular */
   /* the coffee subscription option in particular*/
 }
@@ -170,7 +170,7 @@ header #notification .saved {
   -webkit-filter: drop-shadow(0 0 4px #000000);
   filter: drop-shadow(0 0 4px #000000);
 }
-.item #officeStatusOverlay {
+.item #statusOverlay {
   pointer-events: none;
   position: relative;
   width: 20px;
@@ -479,7 +479,7 @@ header #notification .saved {
 .item #busBox #arrowDown img {
   width: 12px;
 }
-.item img#showOfficeImage {
+.item img#showStatusImage {
   width: 251px;
   height: 103px;
 }

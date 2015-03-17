@@ -20,13 +20,13 @@ var mainLoop = function(force) {
       updateAffiliationNews('2');
   // Only if hardware
   if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (ls.showOffice === 'true')
+    if (ls.showStatus === 'true')
       if (force || iteration % UPDATE_SERVANT_INTERVAL === 0)
         updateServant();
-    if (ls.showOffice === 'true')
+    if (ls.showStatus === 'true')
       if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0)
-        updateMeetings();
-    if (ls.showOffice === 'true')
+        updateMeeting();
+    if (ls.showStatus === 'true')
       if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
         updateCoffee();
   }
@@ -58,79 +58,44 @@ var getTitleWidth = function (title) {
 
 var updateServant = function() {
   console.lolg('updateServant');
-  // Get
-  // Hope for the best
-  try {
-    var data = JSON.parse(ls.affiliation1Data);
-    var servant = data.servant.message;
-    $('#todays #schedule #servant').html('- '+servant);
+
+  if (!ls.servantString) {
+    $('#todays #schedule #servant').html('- '+Affiliation.msgConnectionError);
   }
-  catch (e) {
-    console.error(e);
-    $('#todays #schedule #servant').html('- '+Servant.msgError);
+  else {
+    var servantString = ls.servantString;
+    $('#todays #schedule #servant').html('- '+servantString);
   }
-  // // OLD
-  // Servant.get(function(servant) {
-  //   $('#todays #schedule #servant').html('- '+servant);
-  // });
 }
 
 //
 // Update functions: Meetings
 //
 
-var updateMeetings = function() {
-  console.lolg('updateMeetings');
-  // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
-  // Extract relevant information
-  try {
-    var meetings = '';
-    for (var i in affiliation1Data.meeting.meetings) {
-      meetings += (i!=="0"?"\n":"") + affiliation1Data.meeting.meetings[i].message;
-    }
+var updateMeeting = function() {
+  console.lolg('updateMeeting');
 
-    // OLD CODE
-    meetings = meetings.replace(/\n/g, '<br />');
+  if (!ls.meetingString) {
+    $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
+  }
+  else {
+    var meetingString = ls.meetingString;
+    var htmlMeeting = meetingString.replace(/\n/g, '<br />');
+
+    $('#todays #schedule #meetings').html(htmlMeeting);
+
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').html(meetings + '<div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings').append('<div id="hackerspace">' + hackerspace + '</div>');
         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
           Browser.openTab(Hackerspace.web);
           window.close();
         });
       });
     }
-    else {
-      $('#todays #schedule #meetings').html(meetings);
-    }
-  }
-  catch (e) {
-    console.error(e);
-    $('#todays #schedule #meetings').html(Meetings.msgError);
   }
 }
-// // OLD
-// var updateMeetings = function() {
-//   console.lolg('updateMeetings');
-//   Meetings.get(function(meetings) {
-//     meetings = meetings.replace(/\n/g, '<br />');
-//     // Online and Abakus gets the Hackerspace info as well as meetings
-//     if (ls.affiliationKey1.match(/online|abakus/g)) {
-//       Hackerspace.get(function(hackerspace) {
-//         $('#todays #schedule #meetings').html(meetings + '<br /><div id="hackerspace">' + hackerspace + '</div>');
-//         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
-//           Browser.openTab(Hackerspace.web);
-//           window.close();
-//         });
-//       });
-//     }
-//     else {
-//       $('#todays #schedule #meetings').html(meetings);
-//     }
-//   });
-// }
 
 //
 // Update functions: Coffee
@@ -138,38 +103,17 @@ var updateMeetings = function() {
 
 var updateCoffee = function() {
   console.lolg('updateCoffee');
-  // New
-  // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
-  // Hope for the best
-  try {
-    // console.warn('Coffee data is', affiliation1Data.coffee);
-    var date = affiliation1Data.coffee.date;
-    var pots = affiliation1Data.coffee.pots;
-    // Parse that date
-    date = new Date(date);
-    var age = Coffee.minuteDiff(date);
 
-    // We have pots and age, now get pretty versions
-    var prettyPots = Coffee.prettyPotsString(pots);
-    var hours = date.getHours(); hours = (hours < 10 ? '0' + hours : hours);
-    var minutes = date.getMinutes(); minutes = (minutes < 10 ? '0' + minutes : minutes);
-    var prettyAge = Coffee.prettyAgeString(age, [hours, minutes])
-
-    $('#todays #coffee #pots').html('- ' + prettyPots);
-    $('#todays #coffee #age').html(prettyAge);
-  }
-  catch (e) {
-    console.error(e);
+  if (!ls.coffeePotsString || !ls.coffeeDateString) {
     $('#todays #coffee #pots').html('- ' + Coffee.msgConnectionError);
     $('#todays #coffee #age').html(Coffee.msgComforting);
   }
-
-  // // Old
-  // Coffee.get(true, function(pots, age) {
-  //   $('#todays #coffee #pots').html('- ' + pots);
-  //   $('#todays #coffee #age').html(age);
-  // });
+  else {
+    var coffeePotsString = ls.coffeePotsString;
+    var coffeeDateString = ls.coffeeDateString;
+    $('#todays #coffee #pots').html('- ' + coffeePotsString);
+    $('#todays #coffee #age').html(coffeeDateString);
+  }
 }
 
 //
@@ -817,7 +761,7 @@ $(document).ready(function() {
   }
 
   // Hide stuff the user can't or doesn't want to see
-  if (ls.showOffice !== 'true') $('#todays').hide();
+  if (ls.showStatus !== 'true') $('#todays').hide();
   if (ls.showCantina !== 'true') $('#cantinas').hide();
   if (ls.showBus !== 'true') $('#bus').hide();
 
@@ -1006,7 +950,7 @@ $(document).ready(function() {
       $('#background').attr('style', '-webkit-filter: none');
 
       // A list of the vids available. Add more vids here if you want more
-      var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
+      var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', 'asnZjyWDFlQ', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
 
       // Gets a random number, builds the html and displays the vid
       var konamiNum = Math.floor(Math.random() * links.length);

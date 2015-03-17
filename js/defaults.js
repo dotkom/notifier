@@ -8,8 +8,6 @@ var Defaults = {
 
     // Clear previous thoughts
     if (DEBUG) ls.clear();
-    ls.removeItem('officeStatus');
-    ls.removeItem('officeStatusMessage');
 
     // Clear errors from previous versions: undefined objects that
     // may have been saved to localStorage, it did happen once.
@@ -103,11 +101,11 @@ var Defaults = {
     }
     
     // Office
-    if (ls.showOffice === undefined)
-      ls.showOffice = 'true';
+    if (ls.showStatus === undefined)
+      ls.showStatus = 'true';
     if (ls.activelySetOffice === undefined) {
       ls.activelySetOffice = 'true';
-      ls.showOffice = 'true';
+      ls.showStatus = 'true';
     }
     
     // Notifications
@@ -172,9 +170,9 @@ var Defaults = {
     if (isAvailable) {
       // office
       if (ls.activelySetOffice == 'false')
-        ls.showOffice = 'false';
+        ls.showStatus = 'false';
       else
-        ls.showOffice = 'true';
+        ls.showStatus = 'true';
       // coffee
       if (ls.activelySetCoffee == 'false')
         ls.coffeeSubscription = 'false';
@@ -182,7 +180,7 @@ var Defaults = {
         ls.coffeeSubscription = 'true';
     }
     else if (!isAvailable) {
-      ls.showOffice = 'false';
+      ls.showStatus = 'false';
       ls.coffeeSubscription = 'false';
     }
   },

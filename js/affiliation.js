@@ -5,9 +5,31 @@ var Affiliation = {
   // URLs
   api: 'http://passoa.online.ntnu.no/api/affiliation/',
   // Messages
-  msgConnectionError: 'Frakoblet fra Notiwire',
-  msgMalformedMenu: 'Galt format på kantinedata',
   msgUnsupportedAffiliation: 'Tilhørigheten støttes ikke',
+  msgConnectionError: 'Frakoblet fra Notiwire',
+  msgError: {
+    'meeting': 'Feil i møtedata',
+    'servant': 'Feil i kontorvaktdata',
+    'coffee': 'Feil i kaffedata',
+    'status': 'Feil i kontorstatusdata',
+  },
+
+  // Basic statuses have titles and messages (icons are fetched from affiliation)
+  statuses: {
+    'error': {title: 'Oops', color: 'LightGray', message: 'Klarte ikke hente kontorstatus'},
+    'open': {title: 'Åpent', color: 'LimeGreen', message: 'Velkommen inn!'},
+    'closed': {title: 'Lukket', color: 'yellow', message: 'Finn et komitemedlem'},
+    'meeting': {title: 'Møte', color: 'red', message: 'Kontoret er opptatt'}, // meetings usually get message from calendar entries
+  },
+  // Food statuses have titles and icons (messages exist as calendar titles)
+  foods: {
+    'bun': {title: 'Boller', color: 'NavajoWhite', icon: './img/icon-bun.png', image: './img/image-bun.png'},
+    'cake': {title: 'Kake', color: 'NavajoWhite', icon: './img/icon-cake.png', image: './img/image-cake.png'},
+    'coffee': {title: 'Kaffekos', color: 'NavajoWhite', icon: './img/icon-coffee.png'},
+    'pizza': {title: 'Pizza', color: 'NavajoWhite', icon: './img/icon-pizza.png', image: './img/image-pizza.png'},
+    'taco': {title: 'Taco', color: 'NavajoWhite', icon: './img/icon-taco.png', image: './img/image-taco.png'},
+    'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png', image: './img/image-waffle.png'},
+  },
   
   // IMPORTANT: Keep the same order of affiliations here as in options.html
 
@@ -27,13 +49,6 @@ var Affiliation = {
   // useAltLink: true,                          // OPTIONAL: Search each news post for alternative link to use?
   // hw: {                                      // OPTIONAL: Has hardwarefeatures?
   //   office: "orgxkontoret",                  // OPTIONAL: Friendly name for the affiliation office
-  //   apis: {
-  //     coffee: 'http://orgx.no/coffee',       // Coffee data
-  //     light: 'http://orgx.no/lys',           // Light data
-  //     event: 'http://orgx.no/status',        // Current meeting status
-  //     servant: 'http://orgx.no/servant',     // Todays servant list
-  //     meetings: 'http://orgx.no/meetings',   // Todays meetings
-  //   },
   //   statusIcons: {
   //     open: './org/orgx/icon.png',
   //     closed: './org/orgx/icon.png',
@@ -73,13 +88,6 @@ var Affiliation = {
       palette: 'grey',
       hw: {
         office: 'DEBUG-kontoret',
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/DEBUG/coffee',
-          light: 'http://passoa.online.ntnu.no/notifier/DEBUG/light',
-          event: 'http://passoa.online.ntnu.no/notifier/DEBUG/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/DEBUG/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/DEBUG/meetings',
-        },
         statusIcons: {
           open: './org/DEBUG/icon-open.png',
           closed: './org/DEBUG/icon-closed.png',
@@ -105,13 +113,6 @@ var Affiliation = {
       palette: 'red',
       hw: {
         office: "Abakuskontoret",
-        apis: {
-          coffee: 'http://kaffe.abakus.no/coffee.txt',
-          light: 'http://informatikk.org/abakus/lys.txt',
-          event: 'http://passoa.online.ntnu.no/notifier/abakus/office',
-          servant: 'http://informatikk.org/abakus/servant_list.txt', // TODO
-          meetings: 'http://passoa.online.ntnu.no/notifier/abakus/meetings',
-        },
         statusIcons: {
           // TODO: update when Abakus gets office status feature
           open: './org/abakus/icon.png', //'./org/abakus/icon-open.png',
@@ -229,13 +230,6 @@ var Affiliation = {
       palette: 'green',
       hw: {
         office: 'Deltakontoret',
-        apis: {
-          coffee: 'http://pi.deltahouse.no/coffee.txt',
-          light: 'http://pi.deltahouse.no/office.txt',
-          event: 'http://passoa.online.ntnu.no/notifier/delta/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/delta/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/delta/meetings',
-        },
         statusIcons: {
           open: './org/delta/icon-open.png',
           closed: './org/delta/icon-closed.png',
@@ -276,13 +270,6 @@ var Affiliation = {
       palette: 'yellow',
       hw: {
         office: 'HC-kontoret',
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/hc/coffee',
-          light: 'http://passoa.online.ntnu.no/notifier/hc/light',
-          event: 'http://passoa.online.ntnu.no/notifier/hc/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/hc/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/hc/meetings',
-        },
         statusIcons: {
           open: './org/hc/icon-open.png',
           closed: './org/hc/icon-closed.png',
@@ -460,17 +447,15 @@ var Affiliation = {
       useAltLink: true,
       hw: {
         office: 'Onlinekontoret',
-        apis: {
-          coffee: 'http://draug.online.ntnu.no/coffee.txt',
-          light: 'http://draug.online.ntnu.no/lys.txt',
-          event: 'http://passoa.online.ntnu.no/notifier/online/office',
-          servant: 'http://passoa.online.ntnu.no/notifier/online/servant',
-          meetings: 'http://passoa.online.ntnu.no/notifier/online/meetings',
-        },
         statusIcons: {
           open: './org/online/icon-open.png',
           closed: './org/online/icon-closed.png',
           meeting: './org/online/icon-meeting.png',
+        },
+        statusMessages: {
+          open: 'Gratis kaffe og te til alle!',
+          closed: 'Finn et komitemedlem',
+          meeting: 'Kontoret er opptatt',
         },
         memePath: './org/online/meme/',
         memeCount: 5,
@@ -536,13 +521,6 @@ var Affiliation = {
       palette: 'red',
       hw: {
         office: 'Nablakontoret',
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/nabla/coffee',
-          event: 'http://passoa.online.ntnu.no/notifier/nabla/office',
-          light: 'http://passoa.online.ntnu.no/notifier/nabla/light',
-          meetings: 'http://passoa.online.ntnu.no/notifier/nabla/meetings',
-          servant: 'http://passoa.online.ntnu.no/notifier/nabla/servant',
-        },
         statusIcons: {
           open: './org/nabla/icon-open.png',
           closed: './org/nabla/icon-closed.png',
@@ -661,13 +639,6 @@ var Affiliation = {
       palette: 'blue',
       hw: {
         office: "Solanstua",
-        apis: {
-          coffee: 'http://passoa.online.ntnu.no/notifier/solan/coffee',
-          event: 'http://passoa.online.ntnu.no/notifier/solan/office',
-          light: 'http://passoa.online.ntnu.no/notifier/solan/light',
-          meetings: 'http://passoa.online.ntnu.no/notifier/solan/meetings',
-          servant: 'http://passoa.online.ntnu.no/notifier/solan/servant',
-        },
         statusIcons: {
           open: './org/solan/icon-open.png',
           closed: './org/solan/icon-closed.png',
@@ -1511,7 +1482,25 @@ var Affiliation = {
       ls.showAffiliation2 = 'true';
     if (ls.affiliationKey2 === undefined)
       ls.affiliationKey2 = 'dusken';
-  }(),
+  },
+
+  clearAffiliationData: function() {
+    // Clear values that should be empty
+    // Meeting
+    ls.removeItem('meetingData');
+    ls.removeItem('meetingString');
+    // Servant
+    ls.removeItem('servantData');
+    ls.removeItem('servantString');
+    // Coffee
+    ls.removeItem('coffeeData');
+    ls.removeItem('coffeePotsString');
+    ls.removeItem('coffeeDateString');
+    // Status
+    ls.removeItem('statusData');
+    ls.removeItem('statusCodeString');
+    ls.removeItem('statusMessageString');
+  },
 
   get: function(affiliation, callback) {
     if (callback === undefined) {
@@ -1527,12 +1516,145 @@ var Affiliation = {
 
     Ajaxer.getJson({
       url: this.api + affiliation,
-      success: callback,
+      success: function(json) {
+        self.parse(json, callback);
+      },
       error: function() {
         console.error(self.msgConnectionError);
-        callback(self.msgConnectionError);
+        // Create error messages as the expected json object, this allows each item-parser to handle errors individually
+        var errors = {
+          meeting: {error: self.msgConnectionError},
+          servant: {error: self.msgConnectionError},
+          coffee: {error: self.msgConnectionError},
+          status: {error: self.msgConnectionError},
+        };
+        self.parse(errors, callback);
       },
     });
+  },
+
+  parse: function(json, callback) {
+    // First, run a data check and add error messages where necessary
+    for (var i = 0; i < json.length; i++) {
+      // Looping through items in the json
+      var item = json[i];
+      // New item?
+      if (Object.keys(this.msgError).indexOf(item) === -1) {
+        console.warn('There is new data in town:', item);
+      }
+      // Missing item?
+      if (!json[item]) {
+        // Add error message to the json, this allows each item-parser to handle errors individually
+        json[item] = {error: this.msgError[item]};
+      }
+    }
+
+    // Parse each item individually
+    this.parseMeeting(json.meeting);
+    this.parseServant(json.servant);
+    this.parseCoffee(json.coffee);
+    this.parseStatus(json.status);
+
+    // Call it back
+    callback();
+  },
+
+  parseMeeting: function(meetingData) {
+    // Save object
+    ls.meetingData = JSON.stringify(meetingData);
+    // Save stringified version from A), B) or C)
+    if (meetingData.error) {
+      // A) It's an error message
+      ls.meetingString = meetingData.error;
+    }
+    else {
+      // B) It's meetings objects
+      if (meetingData.meetings) {
+        var htmlMeeting = '';
+        for (var i in meetingData.meetings) {
+          htmlMeeting += (i!=="0"?"\n":"") + meetingData.meetings[i].message;
+        }
+        ls.meetingString = htmlMeeting;
+      }
+      // C) It's just a message
+      else {
+        ls.meetingString = meetingData.message;
+      }
+    }
+  },
+
+  parseServant: function(servantData) {
+    // Save object
+    ls.servantData = JSON.stringify(servantData);
+    // Save stringified version from A), or B)
+    if (servantData.error) {
+      // A) It's an error message
+      ls.servantString = servantData.error;
+    }
+    else {
+      // B) It's a servant or a message
+      ls.servantString = servantData.message;
+    }
+  },
+
+  parseCoffee: function(coffeeData) {
+    // Save object
+    ls.coffeeData = JSON.stringify(coffeeData);
+    // Save stringified version from A) or B)
+    if (coffeeData.error) {
+      // A) It's an error message
+      ls.coffeePotsString = coffeeData.error;
+      ls.coffeeDateString = Coffee.msgComforting;
+    }
+    else {
+      // B) It's pots and a date
+      var coffeePotsString = '';
+      var coffeeDateString = '';
+
+      var pots = coffeeData.pots;
+      var date = coffeeData.date;
+      if (pots === 0 || date === null) {
+        coffeePotsString = Coffee.msgNoPots;
+        coffeeDateString = Coffee.msgNoCoffee;
+      }
+      else {
+        // Parse that date
+        var d = new Date(date);
+        date = Coffee.minuteDiff(d);
+
+        // We have pots and age, now get pretty versions
+        var prettyPots = Coffee.prettyPotsString(pots);
+        var hours = d.getHours(); hours = (hours < 10 ? '0' + hours : hours);
+        var minutes = d.getMinutes(); minutes = (minutes < 10 ? '0' + minutes : minutes);
+        var prettyAge = Coffee.prettyAgeString(date, [hours, minutes])
+
+        coffeePotsString = prettyPots;
+        coffeeDateString = prettyAge;
+      }
+      ls.coffeePotsString = coffeePotsString;
+      ls.coffeeDateString = coffeeDateString;
+    }
+  },
+
+  parseStatus: function(statusData) {
+    // Save object
+    ls.statusData = JSON.stringify(statusData);
+    // Save stringified version from A) or B)
+    if (statusData.error) {
+      // A) It's an error message
+    }
+    else {
+      // B) It's status and update-date
+      
+    }
+
+    // Note to self: Do not set statusCodeString, statusCodeMessage here, if you do
+    // that then background.js, infoscreen.js and officescreen.js won't be able to
+    // check if the value has changed since last time.
+    // ls.statusCodeString = ?
+    // ls.statusCodeMessage = ?
+
+    ls.statusData = JSON.stringify(statusData);
   },
 
   getMemeCount: function(affiliation) {
@@ -1546,3 +1668,6 @@ var Affiliation = {
   },
 
 }
+
+// Auto-load self
+Affiliation._autoLoadDefaults_();

@@ -17,19 +17,10 @@ var mainLoop = function(force) {
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
   // Only if hardware and not infoscreen
-  if (ls.useBigscreen !== 'true') {
-    if (Affiliation.org[ls.affiliationKey1].hw) {
-      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0) {
+  if (ls.useBigscreen !== 'true')
+    if (Affiliation.org[ls.affiliationKey1].hw)
+      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
         updateAffiliation();
-      }
-      // if (ls.showOffice === 'true')
-      //   if (force || iteration % UPDATE_OFFICE_INTERVAL === 0)
-      //     updateOfficeAndMeetings();
-      // if (ls.coffeeSubscription === 'true')
-      //   if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
-      //     updateCoffeeSubscription();
-    }
-  }
 
   // No reason to count to infinity
   if (10000 < iteration)
@@ -41,13 +32,11 @@ var mainLoop = function(force) {
 var updateAffiliation = function(callback) {
   console.lolg('updateAffiliation');
   // Fetch
-  Affiliation.get(ls.affiliationKey1, function(result) {
-    // Save
-    ls.affiliation1Data = JSON.stringify(result);
+  Affiliation.get(ls.affiliationKey1, function() {
     // Run relevant background updates
     if (ls.useBigscreen !== 'true') {
       if (Affiliation.org[ls.affiliationKey1].hw) {
-        updateOfficeAndMeetings();
+        updateStatusAndMeetings();
         updateCoffeeSubscription();
       }
     }
@@ -56,198 +45,121 @@ var updateAffiliation = function(callback) {
   });
 };
 
-/*
-[ ] Meeting og servant returnerer alle events for den gjeldende dagen
-[ ] Men hvis en event pågår får man i tillegg litt ekstra info
-[ ] Da vil message og free/responsible bli satt
-[ ] Gjorde om prettier til message
-[ ] Light er siste 24 timer || null (ikke noe i dag)
-[ ] Coffee er siste 24 timer || null (ikke noe i dag)
-*/
-
-var updateOfficeAndMeetings = function(force, callback) {
-  console.lolg('updateOfficeAndMeetings');
+var updateStatusAndMeetings = function(force, callback) {
+  console.lolg('updateStatusAndMeetings');
   
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var meetingData = JSON.parse(ls.meetingData);
+  var statusData = JSON.parse(ls.statusData);
   
   // Presume the worst
-  var status = 'error';
-  var title = Office.statuses['error'].title;
-  var message = Office.statuses['error'].title;
-  var meetings = 'En feil oppstod.';
+  var statusCode = 'error';
+  var statusTitle = Affiliation.statuses['error'].title;
+  var statusMessage = Affiliation.statuses['error'].title;
+  var meeting = Affiliation.msgError['meeting'];
 
-  try {
-    // Extract relevant objects
-    var meetingData = affiliation1Data.meeting;
-    var statusData = affiliation1Data.status;
-
-    // Extract meeting data
-    if (meetingData.error) {
-      meetings = meeting.error;
+  // Set variables with the data we have
+  if (statusData.error) {
+    statusMessage = statusData.error;
+  }
+  else {
+    // Decide current status code
+    if (typeof meetingData.free === 'boolean') {
+      statusCode = meetingData.free ? 'open' : 'meeting';
     }
-    else {
-      status = meetingData.free ? 'open' : 'meeting';
-      message = meetingData.message;
-      if (meetingData.meetings) {
-        meetings = '';
-        for (var i in meetingData.meetings) {
-          meetings += meetingData.meetings[i].message + (i !== "0" ? '\n' : '');
-        }
-      }
+    if (statusCode === 'error' || statusCode === 'open') {
+      statusCode = (statusData.status ? 'open' : 'closed');
     }
 
-    // Extract status data
-    if (statusData.error) {
-      message = statusData.error;
+    // Set current status title
+    statusTitle = Affiliation.statuses[statusCode].title;
+
+    // Set status message
+    statusMessage = Affiliation.statuses[statusCode].message;
+    // Override with affiliation specific status message
+    if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
+      statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
     }
-    else {
-      if (status === 'error' || status === 'open') {
-        status = (statusData.status ? 'open' : 'closed');
-      } // else leave status unchanged, it's a meeting
-      if (meetingData.error) {
-        // Set a message manually
-        message = Office.statuses[status].message;
-      }
+    // Override with meeting title if meeting is currently on
+    if (meetingData.free === false) {
+      statusMessage = meetingData.message;
+    }
+
+    // Get meeting data
+    if (ls.meetingString) {
+      meeting = ls.meetingString;
     }
   }
-  catch (e) {
-    console.error(e);
-  }
 
-  // console.lolg('well, we got:\nstatus:',status,'\nmessage',message,'\nmeetings',meetings);
-
-  //
-  // Run the old script, expects [status, message, meetings]
-  //
-
-  if (force || ls.officeStatus !== status || ls.officeStatusMessage !== message) {
+  // Update the icon and icon hover text if data is new
+  if (force || ls.statusCodeString !== statusCode || ls.statusMessageString !== statusMessage) {
     // Save them
-    ls.officeStatus = status;
-    ls.officeStatusMessage = message;
+    ls.statusCodeString = statusCode;
+    ls.statusMessageString = statusMessage;
     // Food status
-    if (Object.keys(Office.foods).indexOf(status) > -1) {
-      title = Office.foods[status].title;
-      Browser.setIcon(Office.foods[status].icon);
+    if (Object.keys(Affiliation.foods).indexOf(statusCode) > -1) {
+      statusTitle = Affiliation.foods[status].title;
+      Browser.setIcon(Affiliation.foods[statusCode].icon);
     }
     // Regular status
     else {
-      // Set title
-      title = Office.statuses[status].title;
       // Set icon
       var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
-      var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
-      if (status === 'error' || typeof(statusIcon) === 'undefined') {
+      var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[statusCode];
+      if (statusCode === 'error' || typeof(statusIcon) === 'undefined') {
         Browser.setIcon(errorIcon);
       }
       else {
         Browser.setIcon(statusIcon);
       }
     }
-    // Check for Affiliation specific status message
-    try {
-      var msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
-      var message = msgs[status];
-    }
-    catch (e) {
-      // Just trying
-    }
     // Extension title (hovering mouse over icon shows the title text)
-    var today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
+    var today = '### Nå\n' + statusTitle + ": " + statusMessage + "\n### Resten av dagen\n" + meeting;
     Browser.setTitle(today);
   }
   if (typeof callback === 'function') callback();
 }
 
-// var updateOfficeAndMeetings = function(force, callback) {
-//   console.lolg('updateOfficeAndMeetings');
-//   Office.get(function(status, message) {
-//     var title = '';
-//     if (force || ls.officeStatus !== status || ls.officeStatusMessage !== message) {
-//       // Save them
-//       ls.officeStatus = status;
-//       ls.officeStatusMessage = message;
-//       // Food status
-//       if (Object.keys(Office.foods).indexOf(status) > -1) {
-//         title = Office.foods[status].title;
-//         Browser.setIcon(Office.foods[status].icon);
-//       }
-//       // Regular status
-//       else {
-//         // Set title
-//         title = Office.statuses[status].title;
-//         // Set icon
-//         var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
-//         var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[status];
-//         if (status === 'error' || typeof(statusIcon) === 'undefined') {
-//           Browser.setIcon(errorIcon);
-//         }
-//         else {
-//           Browser.setIcon(statusIcon);
-//         }
-//       }
-//       // Check for Affiliation specific status message
-//       try {
-//         var msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
-//         var message = msgs[status];
-//       }
-//       catch (e) {
-//         // at least we tried
-//       }
-//       // Extension title (hovering mouse over icon shows the title text)
-//       Meetings.get(function(meetings) {
-//         var today = '### Nå\n' + title + ": " + message + "\n### Resten av dagen\n" + meetings;
-//         Browser.setTitle(today);
-//         if (typeof callback === 'function') callback();
-//       });
-//     }
-//     else {
-//       if (typeof callback === 'function') callback();
-//     }
-//   });
-// }
-
 var updateCoffeeSubscription = function(callback) {
   console.lolg('updateCoffeeSubscription');
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var coffeeData = JSON.parse(ls.coffeeData);
   // Hope for the best
   try {
-    // console.lolg('Coffee data is', affiliation1Data.coffee);
-    var date = affiliation1Data.coffee.date;
-    var pots = affiliation1Data.coffee.pots;
-    // Parse that date
-    date = new Date(date);
-    var age = Coffee.minuteDiff(date);
-    // console.info('The coffee is', age, 'minutes old');
+    var date = coffeeData.date;
+    var pots = coffeeData.pots;
 
-    //
-    // Run the old script, expects [pots, age]
-    //
+    // No coffee yields pots=0 and date=null
+    if (pots && date) {
 
-    // Error messages will be NaN here
-    if (!isNaN(pots) && !isNaN(age)) {
-      var storedPots = Number(ls.coffeePots);
-      // New pot number?
-      if (storedPots < pots) {
-        // Not a meeting? Or DEBUG mode.
-        if (ls.officeStatus !== 'meeting') {
-          // Made less than 10 minutes ago?
-          if (age < 10) {
-            // And no meme was served within the last 10 minutes?
-            if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
-              // Notify everyone with a coffee subscription :D
-              Coffee.showNotification(pots, age);
-              ls.coffeeMemeTime = Date.now();
+      // Parse that date
+      date = new Date(date);
+      var age = Coffee.minuteDiff(date);
+
+      // Check for NaN here
+      if (!isNaN(pots) && !isNaN(age)) {
+        var storedPots = Number(ls.coffeePots);
+        // New pot number?
+        if (storedPots < pots) {
+          // Not a meeting? Or DEBUG mode.
+          if (ls.statusCodeString !== 'meeting') {
+            // Made less than 10 minutes ago?
+            if (age < 10) {
+              // And no meme was served within the last 10 minutes?
+              if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
+                // Send meme to everyone who has a coffee subscription :D
+                Coffee.showNotification(pots, age);
+                ls.coffeeMemeTime = Date.now();
+              }
+              else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
             }
-            else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
+            else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
           }
-          else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
+          else {console.lolg('Nope to coffee, there is a meeting going on')}
         }
-        else {console.lolg('Nope to coffee, there is a meeting going on')}
+        // And remember to update localStorage
+        ls.coffeePots = pots;
       }
-      // And remember to update localStorage
-      ls.coffeePots = pots;
     }
     if (typeof callback === 'function') callback();
   }
@@ -255,37 +167,6 @@ var updateCoffeeSubscription = function(callback) {
     console.error(e);
   }
 }
-
-// var updateCoffeeSubscription = function(callback) {
-//   console.lolg('updateCoffeeSubscription');
-//   Coffee.get(false, function(pots, age) {
-//     // Error messages will be NaN here
-//     if (!isNaN(pots) && !isNaN(age)) {
-//       var storedPots = Number(ls.coffeePots);
-//       // New pot number?
-//       if (storedPots < pots) {
-//         // Not a meeting? Or DEBUG mode.
-//         if (ls.officeStatus !== 'meeting') {
-//           // Made less than 10 minutes ago?
-//           if (age < 10) {
-//             // And no meme was served within the last 10 minutes?
-//             if ((Date.now() - Number(ls.coffeeMemeTime)) > 600000) {
-//               // Notify everyone with a coffee subscription :D
-//               Coffee.showNotification(pots, age);
-//               ls.coffeeMemeTime = Date.now();
-//             }
-//             else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
-//           }
-//           else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
-//         }
-//         else {console.lolg('Nope to coffee, there is a meeting going on')}
-//       }
-//       // And remember to update localStorage
-//       ls.coffeePots = pots;
-//     }
-//     if (typeof callback === 'function') callback();
-//   });
-// }
 
 var updateCantinas = function(callback) {
   console.lolg('updateCantinas');
@@ -394,6 +275,9 @@ var loadAffiliationIcon = function() {
 
 // Document ready, go!
 $(document).ready( function() {
+  // Clear values that should start empty
+  Affiliation.clearAffiliationData();
+
   // Check if both current affiliations still exist, reset if not
   var keys = Object.keys(Affiliation.org);
   Defaults.resetAffiliationsIfNotExist(ls.affiliationKey1, ls.affiliationKey2, keys);

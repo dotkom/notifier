@@ -11,30 +11,17 @@ var mainLoop = function(force) {
       updateCantinas();
   // Only if hardware
   if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (ls.showOffice === 'true') {
+    if (ls.showStatus === 'true') {
       if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
         Browser.getBackgroundProcess().updateAffiliation(function() {
-          updateOffice();
+          updateStatus();
           updateServant();
-          updateMeetings();
+          updateMeeting();
           updateCoffee();
         });
       }
     }
   }
-  // if (Affiliation.org[ls.affiliationKey1].hw)
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_OFFICE_INTERVAL === 0)
-  //       updateOffice();
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_SERVANT_INTERVAL === 0)
-  //       updateServant();
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0)
-  //       updateMeetings();
-  //   if (ls.showOffice === 'true')
-  //     if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
-  //       updateCoffee();
   // Always update, tell when offline
   if (ls.showBus === 'true')
     if (force || iteration % UPDATE_BUS_INTERVAL === 0)
@@ -47,201 +34,140 @@ var mainLoop = function(force) {
     iteration++;
 }
 
-var updateOffice = function(debugStatus) {
-  console.lolg('updateOffice');
-  
+var updateStatus = function(debugStatus) {
+  console.lolg('updateStatus');
   
   // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
+  var meetingData = JSON.parse(ls.meetingData);
+  var statusData = JSON.parse(ls.statusData);
   
   // Presume the worst
-  var status = 'error';
-  var title = Office.statuses['error'].title;
-  var message = Office.statuses['error'].title;
-  var meetings = 'En feil oppstod.';
+  var statusCode = 'error';
+  var statusTitle = Affiliation.statuses['error'].title;
+  var statusMessage = Affiliation.statuses['error'].title;
+  var meeting = Affiliation.msgError['meeting'];
 
-  try {
-    // Extract relevant objects
-    var meetingData = affiliation1Data.meeting;
-    var statusData = affiliation1Data.status;
-
-    // Extract meeting data
-    if (meetingData.error) {
-      meetings = meeting.error;
+  // Set variables with the data we have
+  if (statusData.error) {
+    statusMessage = statusData.error;
+  }
+  else {
+    // Decide current status code
+    if (typeof meetingData.free === 'boolean') {
+      statusCode = meetingData.free ? 'open' : 'meeting';
     }
-    else {
-      status = meetingData.free ? 'open' : 'meeting';
-      message = meetingData.message;
-      if (meetingData.meetings) {
-        meetings = '';
-        for (var i in meetingData.meetings) {
-          meetings += meetingData.meetings[i].message + (i !== "0" ? '\n' : '');
-        }
-      }
+    if (statusCode === 'error' || statusCode === 'open') {
+      statusCode = (statusData.status ? 'open' : 'closed');
     }
 
-    // Extract status data
-    if (statusData.error) {
-      message = statusData.error;
+    // Set current status title
+    statusTitle = Affiliation.statuses[statusCode].title;
+
+    // Set status message
+    statusMessage = Affiliation.statuses[statusCode].message;
+    // Override with affiliation specific status message
+    if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
+      statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
     }
-    else {
-      if (status === 'error' || status === 'open') {
-        status = (statusData.status ? 'open' : 'closed');
-      } // else leave status unchanged, it's a meeting
-      if (meetingData.error) {
-        // Set a message manually
-        message = Office.statuses[status].message;
-      }
+    // Override with meeting title if meeting is currently on
+    if (meetingData.free === false) {
+      statusMessage = meetingData.message;
+    }
+
+    // Get meeting data
+    if (ls.meetingString) {
+      meeting = ls.meetingString;
     }
   }
-  catch (e) {
-    console.error(e);
-  }
 
-  // console.lolg('well, we got:\nstatus:',status,'\nmessage',message,'\nmeetings',meetings);
-
-  //
-  // Run the old script, expects [status, message, meetings]
-  //
-  
   if (DEBUG && debugStatus) {
-    status = debugStatus;
-    message = 'debugging';
+    statusCode = debugStatus;
+    statusMessage = 'debugging';
   }
-  if (ls.officescreenOfficeStatus !== status || ls.officescreenOfficeStatusMessage !== message) {
-    if (Object.keys(Office.foods).indexOf(status) > -1 ) {
+  if (ls.officescreenStatusCodeString !== statusCode || ls.officescreenStatusMessageString !== statusMessage) {
+    if (Object.keys(Affiliation.foods).indexOf(statusCode) > -1 ) {
       // Food status with just title
-      $('#now #text #status').text(Office.foods[status].title);
-      $('#now #text #status').css('color', Office.foods[status].color);
+      $('#now #text #status').text(Affiliation.foods[statusCode].title);
+      $('#now #text #status').css('color', Affiliation.foods[statusCode].color);
     }
     else {
       // Regular status
-      $('#now #text #status').html(Office.statuses[status].title);
-      $('#now #text #status').css('color', Office.statuses[status].color);
+      $('#now #text #status').html(Affiliation.statuses[statusCode].title);
+      $('#now #text #status').css('color', Affiliation.statuses[statusCode].color);
     }
-    $('#now #text #info').html(message);
-    ls.officescreenOfficeStatus = status;
-    ls.officescreenOfficeStatusMessage = message;
+    $('#now #text #info').html(statusMessage);
+    ls.officescreenStatusCodeString = statusCode;
+    ls.officescreenStatusMessageString = statusMessage;
   }
 }
+
+//
+// Update functions: Servant
+//
 
 var updateServant = function() {
   console.lolg('updateServant');
-  // Get
-  // Hope for the best
-  try {
-    var data = JSON.parse(ls.affiliation1Data);
-    var servant = data.servant.message;
-    $('#todays #schedule #servant').html('- '+servant);
+
+  if (!ls.servantString) {
+    $('#todays #schedule #servant').html('- '+Affiliation.msgConnectionError);
   }
-  catch (e) {
-    console.error(e);
-    $('#todays #schedule #servant').html('- '+Servant.msgError);
+  else {
+    var servantString = ls.servantString;
+    $('#todays #schedule #servant').html('- '+servantString);
   }
-  // // OLD
-  // Servant.get(function(servant) {
-  //   $('#todays #schedule #servant').html('- '+servant);
-  // });
 }
-// var updateServant = function() {
-//   console.lolg('updateServant');
-//   Servant.get(function(servant) {
-//     $('#todays #schedule #servant').html('- '+servant);
-//   });
-// }
 
-var updateMeetings = function() {
-  console.lolg('updateMeetings');
-  // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
-  // Extract relevant information
-  try {
-    var meetings = '';
-    for (var i in affiliation1Data.meeting.meetings) {
-      meetings += (i!=="0"?"\n":"") + affiliation1Data.meeting.meetings[i].message;
-    }
+//
+// Update functions: Meetings
+//
 
-    // OLD CODE
-    meetings = meetings.replace(/\n/g, '<br />');
+var updateMeeting = function() {
+  console.lolg('updateMeeting');
+
+  if (!ls.meetingString) {
+    $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
+  }
+  else {
+    var meetingString = ls.meetingString;
+    var htmlMeeting = meetingString.replace(/\n/g, '<br />');
+
+    $('#todays #schedule #meetings').html(htmlMeeting);
+
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').html(meetings + '<div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings').append('<div id="hackerspace">' + hackerspace + '</div>');
         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
           Browser.openTab(Hackerspace.web);
           window.close();
         });
       });
     }
-    else {
-      $('#todays #schedule #meetings').html(meetings);
-    }
-  }
-  catch (e) {
-    console.error(e);
-    $('#todays #schedule #meetings').html(Meetings.msgError);
   }
 }
-// var updateMeetings = function() {
-//   console.lolg('updateMeetings');
-//   Meetings.get(function(meetings) {
-//     // Add span to time
-//     meetings = '<span>'+meetings;
-//     meetings = meetings.replace(/\n/g, '<br /><span>');
-//     meetings = meetings.replace(/:/g, ':</span>');
-//     if (ls.affiliationKey1.match(/online|abakus/g) === null) {
-//       $('#todays #schedule #meetings').html(meetings);
-//     }
-//     else {
-//       Hackerspace.get(function(hackerspace) {
-//         $('#todays #schedule #meetings').html(meetings + '<br />' + hackerspace);
-//       }); 
-//     }
-//   });
-// }
+
+//
+// Update functions: Coffee
+//
 
 var updateCoffee = function() {
   console.lolg('updateCoffee');
-  // New
-  // Get
-  var affiliation1Data = JSON.parse(ls.affiliation1Data);
-  // Hope for the best
-  try {
-    // console.warn('Coffee data is', affiliation1Data.coffee);
-    var date = affiliation1Data.coffee.date;
-    var pots = affiliation1Data.coffee.pots;
-    // Parse that date
-    date = new Date(date);
-    var age = Coffee.minuteDiff(date);
 
-    // We have pots and age, now get pretty versions
-    var prettyPots = Coffee.prettyPotsString(pots);
-    var hours = date.getHours(); hours = (hours < 10 ? '0' + hours : hours);
-    var minutes = date.getMinutes(); minutes = (minutes < 10 ? '0' + minutes : minutes);
-    var prettyAge = Coffee.prettyAgeString(age, [hours, minutes])
-
-    $('#todays #coffee #pots').html('- ' + prettyPots);
-    $('#todays #coffee #age').html(prettyAge);
-  }
-  catch (e) {
-    console.error(e);
+  if (!ls.coffeePotsString || !ls.coffeeDateString) {
     $('#todays #coffee #pots').html('- ' + Coffee.msgConnectionError);
     $('#todays #coffee #age').html(Coffee.msgComforting);
   }
-
-  // // Old
-  // Coffee.get(true, function(pots, age) {
-  //   $('#todays #coffee #pots').html('- ' + pots);
-  //   $('#todays #coffee #age').html(age);
-  // });
+  else {
+    var coffeePotsString = ls.coffeePotsString;
+    var coffeeDateString = ls.coffeeDateString;
+    $('#todays #coffee #pots').html('- ' + coffeePotsString);
+    $('#todays #coffee #age').html(coffeeDateString);
+  }
 }
-// var updateCoffee = function() {
-//   console.lolg('updateCoffee');
-//   Coffee.get(true, function(pots, age) {
-//     $('#todays #coffee #pots').html('- '+pots);
-//     $('#todays #coffee #age').html(age);
-//   });
-// }
+
+//
+// Update functions: Cantina
+//
 
 var updateCantinas = function(first) {
   // This function just fetches from localstorage (updates in background)
@@ -409,8 +335,8 @@ $(document).ready(function() {
   }
   
   // Clear all previous thoughts
-  ls.removeItem('officescreenOfficeStatus');
-  ls.removeItem('officescreenOfficeStatusMessage');
+  ls.removeItem('officescreenStatusCodeString');
+  ls.removeItem('officescreenStatusMessageString');
 
   // Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent('loadPalette', ls.affiliationPalette);
@@ -432,9 +358,9 @@ $(document).ready(function() {
   }
 
   // Hide stuff that the user has disabled in options
-  if (ls.showOffice !== 'true')
+  if (ls.showStatus !== 'true')
     $('#office').hide();
-  if (ls.showOffice !== 'true')
+  if (ls.showStatus !== 'true')
     $('#todays').hide();
   if (ls.showCantina !== 'true')
     $('#cantinas').hide();
