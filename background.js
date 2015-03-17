@@ -55,41 +55,76 @@ var updateStatusAndMeetings = function(force, callback) {
   // Presume the worst
   var statusCode = 'error';
   var statusTitle = Affiliation.statuses['error'].title;
-  var statusMessage = Affiliation.statuses['error'].title;
+  var statusMessage = Affiliation.statuses['error'].message;
   var meeting = Affiliation.msgError['meeting'];
 
-  // Set variables with the data we have
-  if (statusData.error) {
-    statusMessage = statusData.error;
+  // Prepare affiliation status messages
+  var affiliationMessages = null;
+  var affiliationHw = Affiliation.org[ls.affiliationKey1].hw;
+  if (affiliationHw && affiliationHw.statusMessages) {
+    affiliationMessages = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
   }
-  else {
-    // Decide current status code
-    if (typeof meetingData.free === 'boolean') {
-      statusCode = meetingData.free ? 'open' : 'meeting';
-    }
-    if (statusCode === 'error' || statusCode === 'open') {
-      statusCode = (statusData.status ? 'open' : 'closed');
-    }
 
-    // Set current status title
+  // status: meeting || food
+  if (meetingData.free === false) {
+    statusCode = 'meeting'; // TODO: FOOD
     statusTitle = Affiliation.statuses[statusCode].title;
-
-    // Set status message
-    statusMessage = Affiliation.statuses[statusCode].message;
-    // Override with affiliation specific status message
-    if (Affiliation.org[ls.affiliationKey1].hw.statusMessages) {
-      statusMessage = Affiliation.org[ls.affiliationKey1].hw.statusMessages[statusCode];
+    
+    // Get specific meeting message
+    if (meetingData.meetings) {
+      statusMessage = meetingData.meetings[0].summary;
     }
-    // Override with meeting title if meeting is currently on
-    if (meetingData.free === false) {
+    // Or less specific affiliation status message
+    else if (affiliationMessages) {
+      statusMessage = affiliationMessages[statusCode];
+    }
+    // Or even less specific generic message
+    else if (meetingData.message) {
       statusMessage = meetingData.message;
     }
-
-    // Get meeting data
-    if (ls.meetingString) {
-      meeting = ls.meetingString;
+    // Least specific, entirely generic message stored here
+    else {
+      statusMessage = Affiliation.statuses[statusCode].message;
+      console.warn("Least specific message was used, poor data, meetingData:", meetingData);
     }
   }
+  // status: open || closed || error
+  else {
+    if (statusData.error) {
+      // statusCode and statusTitle is already error, just get the message
+      statusMessage = statusData.error;
+    }
+    else {
+      if (statusData.status === true) {
+        // No meeting, office is open
+        statusCode = 'open';
+      }
+      else if (statusData.status === false) {
+        // No meeting, but office is closed
+        statusCode = 'closed';
+      }
+      else if (statusData.status === null) {
+        // Notipi is offline, all variables default to error
+      }
+      else {
+        console.error("Malformed data from API, statusData:", statusData);
+      }
+      statusTitle = Affiliation.statuses[statusCode].title;
+      statusMessage = Affiliation.statuses[statusCode].message;
+      if (affiliationMessages && affiliationMessages[statusCode]) {
+        statusMessage = affiliationMessages[statusCode];
+      }
+    }
+  }
+
+  // Get meeting data
+  if (ls.meetingString) {
+    meeting = ls.meetingString;
+  }
+
+
+
+
 
   // Update the icon and icon hover text if data is new
   if (force || ls.statusCodeString !== statusCode || ls.statusMessageString !== statusMessage) {
