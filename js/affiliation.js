@@ -1518,7 +1518,7 @@ var Affiliation = {
       ls.affiliationKey2 = 'dusken';
   },
 
-  _onProgramStartup_: function() {
+  clearAffiliationData: function() {
     // Clear values that should be empty
     // Meeting
     ls.removeItem('meetingData');
@@ -1531,10 +1531,9 @@ var Affiliation = {
     ls.removeItem('coffeePotsString');
     ls.removeItem('coffeeDateString');
     // Status
-    //////////// TODO //////////////
-    // OLD /////////////////////////////////////////////////
-    ls.removeItem('officeStatus');
-    ls.removeItem('officeStatusMessage');
+    ls.removeItem('statusData');
+    ls.removeItem('statusCodeString');
+    ls.removeItem('statusMessageString');
   },
 
   get: function(affiliation, callback) {
@@ -1670,6 +1669,17 @@ var Affiliation = {
 
   parseStatus: function(status) {
     console.warn('parseStatus got', status);
+    // Save object
+    ls.statusData = JSON.stringify(statusData);
+    // Save stringified version from A) or B)
+    if (statusData.error) {
+      // A) It's an error message
+    }
+    else {
+      // B) It's pots and a date //////////////////////////////////
+    }
+
+
 
     ls.statusData = status;
     // Check for local error

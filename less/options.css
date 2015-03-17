@@ -170,7 +170,7 @@ header #notification .saved {
   -webkit-filter: drop-shadow(0 0 4px #000000);
   filter: drop-shadow(0 0 4px #000000);
 }
-.item #officeStatusOverlay {
+.item #statusOverlay {
   pointer-events: none;
   position: relative;
   width: 20px;

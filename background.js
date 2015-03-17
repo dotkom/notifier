@@ -100,10 +100,10 @@ var updateOfficeAndMeetings = function(force, callback) {
   // Run the old script, expects [status, message, meetings]
   //
 
-  if (force || ls.officeStatus !== status || ls.officeStatusMessage !== message) {
+  if (force || ls.statusCodeString !== status || ls.statusMessageString !== message) {
     // Save them
-    ls.officeStatus = status;
-    ls.officeStatusMessage = message;
+    ls.statusCodeString = status;
+    ls.statusMessageString = message;
     // Food status
     if (Object.keys(Office.foods).indexOf(status) > -1) {
       title = Office.foods[status].title;
@@ -142,10 +142,10 @@ var updateOfficeAndMeetings = function(force, callback) {
 //   console.lolg('updateOfficeAndMeetings');
 //   Office.get(function(status, message) {
 //     var title = '';
-//     if (force || ls.officeStatus !== status || ls.officeStatusMessage !== message) {
+//     if (force || ls.statusCodeString !== status || ls.statusMessageString !== message) {
 //       // Save them
-//       ls.officeStatus = status;
-//       ls.officeStatusMessage = message;
+//       ls.statusCodeString = status;
+//       ls.statusMessageString = message;
 //       // Food status
 //       if (Object.keys(Office.foods).indexOf(status) > -1) {
 //         title = Office.foods[status].title;
@@ -208,7 +208,7 @@ var updateCoffeeSubscription = function(callback) {
         // New pot number?
         if (storedPots < pots) {
           // Not a meeting? Or DEBUG mode.
-          if (ls.officeStatus !== 'meeting') {
+          if (ls.statusCodeString !== 'meeting') {
             // Made less than 10 minutes ago?
             if (age < 10) {
               // And no meme was served within the last 10 minutes?
@@ -341,8 +341,8 @@ var loadAffiliationIcon = function() {
 
 // Document ready, go!
 $(document).ready( function() {
-  // Clear values that should start undefined
-  Affiliation._onProgramStartup_();
+  // Clear values that should start empty
+  Affiliation.clearAffiliationData();
 
   // Check if both current affiliations still exist, reset if not
   var keys = Object.keys(Affiliation.org);

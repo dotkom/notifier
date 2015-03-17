@@ -83,11 +83,10 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
       }
       // either way, change the icons shown in the office status feature
       if (new_has_hardware) {
-        changeOfficeStatusIcons();
-        // Update office status
-        ls.removeItem('officeStatus');
-        ls.removeItem('officeStatusMessage');
-        Browser.getBackgroundProcess().updateOfficeAndMeetings(true);
+        changeStatusIcons();
+        // Clear and update affiliation data
+        Affiliation.clearAffiliationData();
+        Browser.getBackgroundProcess().updateAffiliation();
       }
 
       // Palette
@@ -204,13 +203,13 @@ var enableHardwareFeatures = function(quick) {
   }
 }
 
-var changeOfficeStatusIcons = function() {
+var changeStatusIcons = function() {
   if (Affiliation.org[ls.affiliationKey1].hw) {
     var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
     $('img.icon.open').attr('src', statusIcons.open);
     $('img.icon.closed').attr('src', statusIcons.closed);
     $('img.icon.meeting').attr('src', statusIcons.meeting);
-    $('#officeStatusOverlay').attr('src', statusIcons.open);
+    $('#statusOverlay').attr('src', statusIcons.open);
   }
 }
 
@@ -815,7 +814,7 @@ $(document).ready(function() {
   // palette
   $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
   // icons
-  changeOfficeStatusIcons();
+  changeStatusIcons();
   // popup-here bubble
   $('#popupHere img.icon').attr('src', symbol1);
 

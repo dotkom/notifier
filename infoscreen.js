@@ -100,7 +100,7 @@ var updateOffice = function(debugStatus) {
     status = debugStatus;
     message = 'debugging';
   }
-  if (ls.infoscreenOfficeStatus !== status || ls.infoscreenOfficeStatusMessage !== message) {
+  if (ls.infoscreenStatusCodeString !== status || ls.infoscreenStatusMessageString !== message) {
     if (Object.keys(Office.foods).indexOf(status) > -1) {
       if (typeof Office.foods[status].image !== 'undefined') {
         // Food status with image
@@ -124,8 +124,8 @@ var updateOffice = function(debugStatus) {
       $('#office #status #text').show();
     }
     // Save them
-    ls.infoscreenOfficeStatus = status;
-    ls.infoscreenOfficeStatusMessage = message;
+    ls.infoscreenStatusCodeString = status;
+    ls.infoscreenStatusMessageString = message;
     // Check for Affiliation specific status message
     var msgs = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
     if (msgs)
@@ -508,7 +508,7 @@ var officeFontRotate = function(font) {
   }
   $('#office #status #text').prop('class', chosenFont);
   if (DEBUG)
-    $('#office #subtext').html(ls.infoscreenOfficeStatusMessage + '<br />' + chosenFont);
+    $('#office #subtext').html(ls.infoscreenStatusMessageString + '<br />' + chosenFont);
 }
 
 var changeCreatorName = function(name) {
@@ -577,7 +577,7 @@ $(document).ready(function() {
       // <space> loops through statuses
       if (e.which === 32) {
         e.preventDefault();
-        switch (ls.infoscreenOfficeStatus) {
+        switch (ls.infoscreenStatusCodeString) {
           case 'waffle': updateOffice('error'); break;
           case 'error': updateOffice('open'); break;
           case 'open': updateOffice('closed'); break;
@@ -595,8 +595,8 @@ $(document).ready(function() {
   }
   
   // Clear all previous thoughts
-  ls.removeItem('infoscreenOfficeStatus');
-  ls.removeItem('infoscreenOfficeStatusMessage');
+  ls.removeItem('infoscreenStatusCodeString');
+  ls.removeItem('infoscreenStatusMessageString');
 
   // Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent('loadPalette', ls.affiliationPalette);

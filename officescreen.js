@@ -92,7 +92,7 @@ var updateOffice = function(debugStatus) {
     status = debugStatus;
     message = 'debugging';
   }
-  if (ls.officescreenOfficeStatus !== status || ls.officescreenOfficeStatusMessage !== message) {
+  if (ls.officescreenStatusCodeString !== status || ls.officescreenStatusMessageString !== message) {
     if (Object.keys(Office.foods).indexOf(status) > -1 ) {
       // Food status with just title
       $('#now #text #status').text(Office.foods[status].title);
@@ -104,8 +104,8 @@ var updateOffice = function(debugStatus) {
       $('#now #text #status').css('color', Office.statuses[status].color);
     }
     $('#now #text #info').html(message);
-    ls.officescreenOfficeStatus = status;
-    ls.officescreenOfficeStatusMessage = message;
+    ls.officescreenStatusCodeString = status;
+    ls.officescreenStatusMessageString = message;
   }
 }
 
@@ -343,8 +343,8 @@ $(document).ready(function() {
   }
   
   // Clear all previous thoughts
-  ls.removeItem('officescreenOfficeStatus');
-  ls.removeItem('officescreenOfficeStatusMessage');
+  ls.removeItem('officescreenStatusCodeString');
+  ls.removeItem('officescreenStatusMessageString');
 
   // Track popularity of the chosen palette, the palette itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent('loadPalette', ls.affiliationPalette);
