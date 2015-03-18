@@ -17,10 +17,11 @@ var mainLoop = function(force) {
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
   // Only if hardware and not infoscreen
-  if (ls.useBigscreen !== 'true')
-    if (Affiliation.org[ls.affiliationKey1].hw)
-      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
-        updateAffiliation();
+  if (ls.showStatus === 'true')
+    if (ls.useBigscreen !== 'true')
+      if (Affiliation.org[ls.affiliationKey1].hw)
+        if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
+          updateAffiliation();
 
   // No reason to count to infinity
   if (10000 < iteration)
@@ -309,17 +310,20 @@ $(document).ready( function() {
       mainLoop(true);
     }, timeout);
   };
-  // When offline mainloop is stopped to decrease power consumption
+  // When offline, mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
     console.lolg(OFFLINE_MESSAGE);
     clearInterval(intervalId);
   });
-  // Go
+
   if (navigator.onLine) {
+    // If Online, go ahead and start the stayUpdated-function
     stayUpdated(true);
   }
   else {
+    // If offline, run mainloop once, it fetches error messages
+    // Keep in mind: this here is at program startup, we have to get something to display
     mainLoop();
   }
 });
