@@ -82,6 +82,9 @@ var Ajaxer = {
     if (params.url.indexOf('passoa.online.ntnu.no/api/') !== -1) {
       caching = true;
     }
+    if (params.url.indexOf('dusken.no/') !== -1) {
+      caching = true;
+    }
 
     var self = this;
     return $.ajax({
