@@ -14,10 +14,10 @@ var mainLoop = function(force) {
     if (ls.showStatus === 'true') {
       if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
         Browser.getBackgroundProcess().updateAffiliation(function() {
-          updateStatus();
-          updateServant();
           updateMeeting();
+          updateServant();
           updateCoffee();
+          updateStatus();
         });
       }
     }
