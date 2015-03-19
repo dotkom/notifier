@@ -20,15 +20,16 @@ var mainLoop = function(force) {
       updateAffiliationNews('2');
   // Only if hardware
   if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (ls.showStatus === 'true')
-      if (force || iteration % UPDATE_SERVANT_INTERVAL === 0)
-        updateServant();
-    if (ls.showStatus === 'true')
-      if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0)
-        updateMeeting();
-    if (ls.showStatus === 'true')
-      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
-        updateCoffee();
+    if (ls.showStatus === 'true') {
+      if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
+        Browser.getBackgroundProcess().updateAffiliation(function() {
+          updateMeeting();
+          updateServant();
+          updateCoffee();
+          // updateStatus(); // TODO: No status info in popup yet
+        });
+      }
+    }
   }
   // Always update, tell when offline
   if (ls.showBus === 'true')
@@ -983,7 +984,7 @@ $(document).ready(function() {
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
     console.lolg(OFFLINE_MESSAGE);
-    clearInterval(intervalId)
+    clearInterval(intervalId);
     updateBus();
   });
   // Go

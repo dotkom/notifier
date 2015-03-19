@@ -21,7 +21,7 @@ var mainLoop = function(force) {
   // Only if hardware
   if (Affiliation.org[ls.affiliationKey1].hw) {
     if (ls.showStatus === 'true') {
-      if (force || iteration % UPDATE_OFFICE_INTERVAL === 0) {
+      if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
         Browser.getBackgroundProcess().updateAffiliation(function() {
           updateMeeting();
           updateServant();

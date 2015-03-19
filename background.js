@@ -20,7 +20,7 @@ var mainLoop = function(force) {
   if (ls.showStatus === 'true')
     if (ls.useBigscreen !== 'true')
       if (Affiliation.org[ls.affiliationKey1].hw)
-        if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
+        if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
           updateAffiliation();
 
   // No reason to count to infinity
