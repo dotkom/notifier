@@ -1023,8 +1023,6 @@ $(document).ready(function() {
   });
 
   if (ls.everOpenedOptions !== 'true') {
-    // Highlight the primary affiliation field
-    $('select#affiliationKey1').css('background-color', 'yellow');
     // Note the options page as opened so that it won't be opened automatically again
     ls.everOpenedOptions = 'true'; // Will never be false again
   }
