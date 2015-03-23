@@ -196,7 +196,7 @@ var adjustCantinaTitleWidth = function(title, element) {
   var cantinaName = Cantina.names[title];
   var width = getTitleWidth(cantinaName);
   $(wrapper).width(width);
-  $(dropdown).width(width - 28);
+  $(dropdown).width(width - 23);
 };
 adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first');
 adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second');
