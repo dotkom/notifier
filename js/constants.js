@@ -24,11 +24,11 @@ var PAGE_LOOP_DEBUG = 5000; // 5s
 var ONLINE_MESSAGE = '\nNow online, run mainloop\n';
 var OFFLINE_MESSAGE = '\nNow offline, stop execution\n';
 
-// Hard totals
-var MEME_AMOUNT = 30;
-
 // Update stuff at every X intervals
 var UPDATE_AFFILIATION_INTERVAL = 1; // recommended: 1
 var UPDATE_CANTINAS_INTERVAL = 60; // recommended: 60
 var UPDATE_BUS_INTERVAL = 2; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
+
+// Hard totals
+var MEME_AMOUNT = 30;
