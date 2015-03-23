@@ -83,17 +83,18 @@ var updateMeeting = function() {
     var meetingString = ls.meetingString;
     var htmlMeeting = meetingString.replace(/\n/g, '<br />');
 
-    $('#todays #schedule #meetings').html(htmlMeeting);
-
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').append('<div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings').html(htmlMeeting + '<div id="hackerspace">' + hackerspace + '</div>');
         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
           Browser.openTab(Hackerspace.web);
           window.close();
         });
       });
+    }
+    else {
+      $('#todays #schedule #meetings').html(htmlMeeting);
     }
   }
 }
