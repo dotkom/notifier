@@ -138,7 +138,7 @@ var updateCantinas = function() {
 
     // If data is just a message
     if (typeof data === 'string') {
-      $(hours).html(data);
+      $(hours).html('- ' + data);
       $(dinners).html('');
     }
     // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
@@ -146,7 +146,7 @@ var updateCantinas = function() {
       // Set hours
       $(hours).html('');
       if (data.hours) {
-        $(hours).html(data.hours);
+        $(hours).html('- ' + data.hours);
         clickHours(hours, shortname);
       }
       // Set dinners

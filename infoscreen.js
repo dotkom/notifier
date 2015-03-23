@@ -172,7 +172,7 @@ var updateCantinas = function(first) {
     $('#cantinas '+selector+' .title').html(name);
     // Set hours
     var hours = data.hours;
-    $('#cantinas '+selector+' .hours').html(hours);
+    $('#cantinas '+selector+' .hours').html('- ' + hours);
     // Set dinners
     var menu = data.menu;
     $('#cantinas '+selector+' #dinnerbox').html(listDinners(menu));
