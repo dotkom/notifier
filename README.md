@@ -169,7 +169,6 @@ Injected script
 
 - Automatically switches to the correct clicked cantina from the popup
 - Detects when user is visiting the affiliation website, nullifying the counter badge
-- Injects affiliation logo when opening the affiliation specific IRC channel via kiwiirc.com
 
 Analytics
 

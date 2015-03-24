@@ -20,15 +20,16 @@ var mainLoop = function(force) {
       updateAffiliationNews('2');
   // Only if hardware
   if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (ls.showStatus === 'true')
-      if (force || iteration % UPDATE_SERVANT_INTERVAL === 0)
-        updateServant();
-    if (ls.showStatus === 'true')
-      if (force || iteration % UPDATE_MEETINGS_INTERVAL === 0)
-        updateMeeting();
-    if (ls.showStatus === 'true')
-      if (force || iteration % UPDATE_COFFEE_INTERVAL === 0)
-        updateCoffee();
+    if (ls.showStatus === 'true') {
+      if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
+        Browser.getBackgroundProcess().updateAffiliation(function() {
+          updateMeeting();
+          updateServant();
+          updateCoffee();
+          // updateStatus(); // TODO: No status info in popup yet
+        });
+      }
+    }
   }
   // Always update, tell when offline
   if (ls.showBus === 'true')
@@ -40,6 +41,11 @@ var mainLoop = function(force) {
     iteration = 0;
   else
     iteration++;
+
+  if (DEBUG) {
+    console.info('spent', Date.now() - window.timeHeisenbug, 'ms on main loop #'+iteration+' in popup.js');
+    window.timeHeisenbug = Date.now();
+  }
 }
 
 //
@@ -82,17 +88,18 @@ var updateMeeting = function() {
     var meetingString = ls.meetingString;
     var htmlMeeting = meetingString.replace(/\n/g, '<br />');
 
-    $('#todays #schedule #meetings').html(htmlMeeting);
-
     // Online and Abakus gets the Hackerspace info as well as meetings
     if (ls.affiliationKey1.match(/online|abakus/g)) {
       Hackerspace.get(function(hackerspace) {
-        $('#todays #schedule #meetings').append('<div id="hackerspace">' + hackerspace + '</div>');
+        $('#todays #schedule #meetings').html(htmlMeeting + '<div id="hackerspace">' + hackerspace + '</div>');
         $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
           Browser.openTab(Hackerspace.web);
           window.close();
         });
       });
+    }
+    else {
+      $('#todays #schedule #meetings').html(htmlMeeting);
     }
   }
 }
@@ -136,7 +143,7 @@ var updateCantinas = function() {
 
     // If data is just a message
     if (typeof data === 'string') {
-      $(hours).html(data);
+      $(hours).html('- ' + data);
       $(dinners).html('');
     }
     // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
@@ -144,7 +151,7 @@ var updateCantinas = function() {
       // Set hours
       $(hours).html('');
       if (data.hours) {
-        $(hours).html(data.hours);
+        $(hours).html('- ' + data.hours);
         clickHours(hours, shortname);
       }
       // Set dinners
@@ -195,7 +202,7 @@ var adjustCantinaTitleWidth = function(title, element) {
   var cantinaName = Cantina.names[title];
   var width = getTitleWidth(cantinaName);
   $(wrapper).width(width);
-  $(dropdown).width(width - 28);
+  $(dropdown).width(width - 23);
 };
 adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first');
 adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second');
@@ -688,8 +695,8 @@ var tipsText = function(show) {
 }
 
 var chatterText = function(show) {
-  var irc = Affiliation.org[ls.affiliationKey1].irc;
-  var text = 'Join ' + irc.channel + ' :)';
+  var slack = Affiliation.org[ls.affiliationKey1].slack;
+  var text = 'Join us @ ' + slack.match(/https?:\/\/(.*?)\//)[1];
   fadeButtonText(show, text);
 }
 
@@ -776,7 +783,7 @@ $(document).ready(function() {
   $('#chatterIcon').prop('src', icon);
 
   // Hide Chatter button if not applicable
-  if (Affiliation.org[ls.affiliationKey1].irc) {
+  if (Affiliation.org[ls.affiliationKey1].slack) {
     $('#chatterButton').show();
     $('#chatterIcon').show();
   }
@@ -827,11 +834,8 @@ $(document).ready(function() {
   });
 
   $('#chatterButton').click(function() {
-    var irc = Affiliation.org[ls.affiliationKey1].irc;
-    var server = irc.server;
-    var channel = irc.channel;
-    var noNick = irc.noNick;
-    Browser.openTab('https://kiwiirc.com/client/' + server + '/' + channel);
+    var slack = Affiliation.org[ls.affiliationKey1].slack;
+    Browser.openTab(slack);
     Analytics.trackEvent('clickChatter', ls.affiliationKey1);
     window.close();
   });
@@ -983,7 +987,7 @@ $(document).ready(function() {
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
     console.lolg(OFFLINE_MESSAGE);
-    clearInterval(intervalId)
+    clearInterval(intervalId);
     updateBus();
   });
   // Go
@@ -991,4 +995,14 @@ $(document).ready(function() {
     stayUpdated(true);
   else
     mainLoop();
+
+  if (DEBUG) {
+    console.info('spent', Date.now() - window.timeHeisenbug, 'ms running document ready function in popup.js');
+    window.timeHeisenbug = Date.now();
+  }
 });
+
+if (DEBUG) {
+  console.info('spent', Date.now() - window.timeHeisenbug, 'ms loading popup.js');
+  window.timeHeisenbug = Date.now();
+}

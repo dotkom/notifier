@@ -13,11 +13,7 @@ var Hackerspace = {
   msgClosed: 'Stengt',
   
   get: function(callback) {
-    if (callback == undefined) {
-      console.error('Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
-
+    
     // Valid affiliation?
     var key = localStorage.affiliationKey1;
     if (key !== 'online' && key !== 'abakus') {

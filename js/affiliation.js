@@ -61,10 +61,7 @@ var Affiliation = {
   //   },
   //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.png
   // },
-  // irc: {                                     // OPTIONAL: add IRC button to the popup
-  //   server: 'irc.freenode.net',
-  //   channel: '#orgx',
-  // }
+  // slack: 'https://orgx.slack.com/signup',    // OPTIONAL: add Slack button to the popup
   // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
   // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
   // getNews: function(limit, callback) {},     // OPTIONAL: getNews may override standard RSS/Atom fetching, use either 'feed' or 'getNews', not both
@@ -122,16 +119,9 @@ var Affiliation = {
         memePath: './org/abakus/meme/',
         memeCount: 3,
       },
-      irc: {
-        server: 'irc.efnet.org',
-        channel: '#abakus',
-      },
+      slack: 'https://abakus-ntnu.slack.com/signup',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -167,7 +157,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -301,6 +291,63 @@ var Affiliation = {
       },
     },
 
+    'janus': {
+      name: 'Janus',
+      key: 'janus',
+      web: 'http://www.januslinjeforening.no/',
+      // no feed, use getNews
+      logo: './org/janus/logo.png',
+      icon: './org/janus/icon.png',
+      symbol: './org/janus/symbol.png',
+      placeholder: './org/janus/placeholder.png',
+      palette: 'blue',
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(posts, callback) {
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+            // Add each item from news tags
+            if ($(html).find('div.feature').length != 0) {
+              $(html).find('div.feature').each( function() {
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find("h6").filter(':first').text();
+                  post.link = $(this).find("a").attr('href');
+                  post.description = "";
+                  post.image = $(this).find("pic").filter(':first').attr('src');
+
+                  // Author field
+                  post.creator = $(this).find("em").filter(':first').text();
+                  post.creator = post.creator.split(",")[0];
+
+                  // Link fixing
+                  post.link = 'http://www.januslinjeforening.no' + post.link;
+                  // Image fixing
+                  if (typeof post.image != 'undefined')
+                    post.image = 'http://www.januslinjeforening.no' + post.image;
+                  else
+                    post.image = self.placeholder;
+
+                  posts[count++] = post;
+                }
+              });
+            }
+            else {
+              console.error('No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            console.error('Could not fetch '+self.name+' website');
+          },
+        });
+      },
+    },
+
     'leonardo': {
       name: 'Leonardo',
       key: 'leonardo',
@@ -320,7 +367,7 @@ var Affiliation = {
       name: 'Mannhullet',
       key: 'mannhullet',
       web: 'http://mannhullet.no/',
-      // feed: 'http://mannhullet.no/index.php?format=feed&type=rss',
+      // no feed, use getNews
       logo: './org/mannhullet/logo.png',
       icon: './org/mannhullet/icon.png',
       symbol: './org/mannhullet/symbol.png',
@@ -328,10 +375,6 @@ var Affiliation = {
       palette: 'blue',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -367,7 +410,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -385,10 +428,6 @@ var Affiliation = {
       palette: 'grey',
       // images also fetched when fetching news
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -427,7 +466,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -460,16 +499,9 @@ var Affiliation = {
         memePath: './org/online/meme/',
         memeCount: 5,
       },
-      irc: {
-        server: 'irc.freenode.net',
-        channel: '#online',
-      },
+      slack: 'https://onlinentnu.slack.com/signup',
       // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getJson({
           url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
@@ -503,7 +535,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -567,10 +599,6 @@ var Affiliation = {
         Images.get(this, link, callback, {newsSelector:'div#main', domainUrl:'smorekoppen.no/'});
       },
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -613,7 +641,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -660,6 +688,60 @@ var Affiliation = {
       palette: 'green',
       getImages: function(links, callback) {
         Images.get(this, links, callback);
+      },
+    },
+
+    'timini': {
+      name: 'Timini',
+      key: 'timini',
+      web: 'https://www.timini.no/',
+      // no feed, use getNews
+      logo: './org/timini/logo.png',
+      icon: './org/timini/icon.png',
+      symbol: './org/timini/symbol.png',
+      placeholder: './org/timini/placeholder.png',
+      palette: 'cyan',
+      // getImages unnecessary, images are extracted from the source code
+      getNews: function(posts, callback) {
+        var self = this;
+        Ajaxer.getCleanHtml({
+          url: self.web,
+          success: function(html) {
+            var count = 0;
+            // Add each item from news tags
+            if ($(html).find('article').length != 0) {
+              $(html).find('article').each( function() {
+                if (count < posts.length) {
+                  var post = posts[count];
+                  
+                  // The popular fields
+                  post.title = $(this).find("h1").filter(':first').text();
+                  post.link = $(this).find("h1 a").attr('href');
+                  post.description = $(this).find("div.news-content").filter(':first').text();
+                  post.image = $(this).find("pic").filter(':first').attr('src');
+
+                  // Author field
+                  post.creator = $(this).find("div.frontpage-metadata").filter(':first').text();
+                  try {
+                    var creator = $(this).find("div.frontpage-metadata").filter(':first').text();
+                    post.creator = creator.match(/Publisert av (.*?) i /)[1].replace(/  /g, " ");
+                  } catch (e) {
+                    post.creator = "Timini";
+                  }
+                  
+                  posts[count++] = post;
+                }
+              });
+            }
+            else {
+              console.error('No articles found at', self.web);
+            }
+            callback(posts);
+          },
+          error: function(e) {
+            console.error('Could not fetch '+self.name+' website');
+          },
+        });
       },
     },
 
@@ -885,10 +967,6 @@ var Affiliation = {
       palette: 'blue',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -921,7 +999,7 @@ var Affiliation = {
             callback(posts);
           },
           error: function(e) {
-            console.error('could not fetch '+self.name+' website');
+            console.error('Could not fetch '+self.name+' website');
           },
         });
       },
@@ -1058,10 +1136,6 @@ var Affiliation = {
       symbol: './org/tihlde/symbol.png',
       placeholder: './org/tihlde/placeholder.png',
       palette: 'blue',
-      irc: {
-        server: 'irc.freenode.net',
-        channel: '#tihlde',
-      },
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
@@ -1501,10 +1575,6 @@ var Affiliation = {
   },
 
   get: function(affiliation, callback) {
-    if (callback === undefined) {
-      console.error('Callback required');
-      return;
-    }
     if (this.org[affiliation] === undefined) {
       console.error(this.msgUnsupportedAffiliation);
       return;

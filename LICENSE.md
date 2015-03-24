@@ -1,8 +1,8 @@
-The MIT License (MIT)
+# The MIT License (MIT)
 
-Copyright (c) 2012 appKom @ Linjeforeningen Online
-Mail: appkom@online.ntnu.no
-Site: https://online.ntnu.no
+- Copyright (c) 2012 appKom @ Linjeforeningen Online
+- Mail: appkom@online.ntnu.no
+- Site: https://online.ntnu.no
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
