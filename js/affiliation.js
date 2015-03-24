@@ -61,10 +61,7 @@ var Affiliation = {
   //   },
   //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.png
   // },
-  // irc: {                                     // OPTIONAL: add IRC button to the popup
-  //   server: 'irc.freenode.net',
-  //   channel: '#orgx',
-  // }
+  // slack: 'https://orgx.slack.com/signup',    // OPTIONAL: add Slack button to the popup
   // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
   // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
   // getNews: function(limit, callback) {},     // OPTIONAL: getNews may override standard RSS/Atom fetching, use either 'feed' or 'getNews', not both
@@ -122,10 +119,7 @@ var Affiliation = {
         memePath: './org/abakus/meme/',
         memeCount: 3,
       },
-      irc: {
-        server: 'irc.efnet.org',
-        channel: '#abakus',
-      },
+      slack: 'https://abakus-ntnu.slack.com/signup',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
@@ -521,10 +515,7 @@ var Affiliation = {
         memePath: './org/online/meme/',
         memeCount: 5,
       },
-      irc: {
-        server: 'irc.freenode.net',
-        channel: '#online',
-      },
+      slack: 'https://onlinentnu.slack.com/signup',
       // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
         if (typeof callback == 'undefined') {
@@ -1177,10 +1168,6 @@ var Affiliation = {
       symbol: './org/tihlde/symbol.png',
       placeholder: './org/tihlde/placeholder.png',
       palette: 'blue',
-      irc: {
-        server: 'irc.freenode.net',
-        channel: '#tihlde',
-      },
       getImages: function(links, callback) {
         Images.get(this, links, callback);
       },
