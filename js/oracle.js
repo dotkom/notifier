@@ -21,12 +21,8 @@ var Oracle = {
   }(),
 
   ask: function(question, callback) {
-    if (callback == undefined) {
-      console.error('Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
     if (isEmpty(question)) {
-      console.error('question is empty');
+      console.error('Question is empty');
       return;
     }
 
@@ -97,10 +93,6 @@ var Oracle = {
   },
 
 //   askAsApi: function(question, callback) {
-//     if (callback == undefined) {
-//       console.error('Callback is required. In the callback you should insert the results into the DOM.');
-//       return;
-//     }
 //     if (isEmpty(question)) {
 //       console.error('question is empty');
 //       return;

@@ -122,10 +122,6 @@ var Affiliation = {
       slack: 'https://abakus-ntnu.slack.com/signup',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -307,10 +303,6 @@ var Affiliation = {
       palette: 'blue',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -383,10 +375,6 @@ var Affiliation = {
       palette: 'blue',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -440,10 +428,6 @@ var Affiliation = {
       palette: 'grey',
       // images also fetched when fetching news
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -518,10 +502,6 @@ var Affiliation = {
       slack: 'https://onlinentnu.slack.com/signup',
       // getImages unnecessary, images are extracted in getNews
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getJson({
           url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
@@ -619,10 +599,6 @@ var Affiliation = {
         Images.get(this, link, callback, {newsSelector:'div#main', domainUrl:'smorekoppen.no/'});
       },
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -727,10 +703,6 @@ var Affiliation = {
       palette: 'cyan',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -995,10 +967,6 @@ var Affiliation = {
       palette: 'blue',
       // getImages unnecessary, images are extracted from the source code
       getNews: function(posts, callback) {
-        if (typeof callback == 'undefined') {
-          console.error('Callback is required');
-          return;
-        }
         var self = this;
         Ajaxer.getCleanHtml({
           url: self.web,
@@ -1607,10 +1575,6 @@ var Affiliation = {
   },
 
   get: function(affiliation, callback) {
-    if (callback === undefined) {
-      console.error('Callback required');
-      return;
-    }
     if (this.org[affiliation] === undefined) {
       console.error(this.msgUnsupportedAffiliation);
       return;

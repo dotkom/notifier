@@ -11,11 +11,6 @@ var Bus = {
   // Public functions
 
   get: function(stopId, favoriteLines, callback) {
-    if (callback === undefined) {
-      console.error('Callback is required. In the callback you should insert the results into the DOM.');
-      return;
-    }
-
     var self = this;
     Ajaxer.getJson({
       url: self.api + stopId,

@@ -48,10 +48,6 @@ var Cantina = {
   }(),
 
   get: function (cantina, callback) {
-    if (callback === undefined) {
-      console.error('Callback required');
-      return;
-    }
     if (this.names[cantina] === undefined) {
       console.error(this.msgUnsupportedCantina);
       return;
