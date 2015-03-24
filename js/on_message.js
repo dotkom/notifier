@@ -41,35 +41,6 @@ function onConnect(port) {
       }
     });
   }
-  else if (port.name == "chatter") {
-    port.onMessage.addListener(function(question) {
-      // has irc?
-      if (question.hasIrc) {
-        var host = question.hasIrc;
-        var irc = Affiliation.org[localStorage.affiliationKey1].irc;
-        var hasIrc = host.indexOf(irc.server) !== -1 && host.indexOf(irc.channel) !== -1;
-        console.lolg('onConnect: chatter: hasIrc:', hasIrc);
-        port.postMessage({hasIrc: hasIrc});
-      }
-      // deliver blob
-      if (question.getBlob) {
-        var affiliation = Affiliation.org[localStorage.affiliationKey1];
-        // Blob together all the info
-        var blob = {};
-        blob.name = affiliation.name;
-        blob.web = affiliation.web;
-        // Get proper URLs for internal resources
-        blob.icon = Browser.getUrl(affiliation.icon);
-        blob.logo = Browser.getUrl(affiliation.logo);
-        blob.placeholder = Browser.getUrl(affiliation.placeholder);
-        // String the blob up
-        console.lolg('onConnect: chatter: blob:', blob);
-        blob = JSON.stringify(blob);
-        // Pass it to asker
-        port.postMessage({blob: blob});
-      }
-    });
-  }
   else console.lolg('WARNING: something tried to connect on port', port.name);
 };
 
