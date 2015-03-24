@@ -1,0 +1,1 @@
+window.timeHeisenbug = Date.now();

@@ -43,7 +43,7 @@ var mainLoop = function(force) {
     iteration++;
 
   if (DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms after main loop #'+iteration+' in popup.js');
+    console.info('spent', Date.now() - window.timeHeisenbug, 'ms on main loop #'+iteration+' in popup.js');
     window.timeHeisenbug = Date.now();
   }
 }
@@ -997,12 +997,12 @@ $(document).ready(function() {
     mainLoop();
 
   if (DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms after document ready in popup.js');
+    console.info('spent', Date.now() - window.timeHeisenbug, 'ms running document ready function in popup.js');
     window.timeHeisenbug = Date.now();
   }
 });
 
 if (DEBUG) {
-  console.info('spent', Date.now() - window.timeHeisenbug, 'ms after popup.js');
+  console.info('spent', Date.now() - window.timeHeisenbug, 'ms loading popup.js');
   window.timeHeisenbug = Date.now();
 }
