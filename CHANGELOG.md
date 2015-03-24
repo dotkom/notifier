@@ -24,6 +24,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 -- Kantinedata (kantiner, kaféer, kiosker, åpningstider)
 -- Møtekalender, kontorvaktkalender
 -- Kaffestatus, kontorstatus
+- Byttet ut IRC-link med Slack-link for linjeforeninger med aktiv Slack
 
 ### 2015-03-17 Versjon 4.5
 - La til 2 nye linjeforeninger: STØH, A/F Smørekoppen
@@ -59,6 +60,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 - Fjernet Notifier Mobile grunnet planer om ny og bedre app
 - Fjernet foreningen ESN på grunn av død newsfeed
 - Fjernet støtte for IRC for de fleste foreninger grunnet at funksjonen ikke brukes
+- La til enkel link til IRC-kanaler for linjeforeninger med aktive kanaler
 
 ### 2014-02-19 Versjon 3.8
 - Solan fikk hardwarefeatures og den første Notipien fra Omega Verksted

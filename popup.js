@@ -690,8 +690,8 @@ var tipsText = function(show) {
 }
 
 var chatterText = function(show) {
-  var irc = Affiliation.org[ls.affiliationKey1].irc;
-  var text = 'Join ' + irc.channel + ' :)';
+  var slack = Affiliation.org[ls.affiliationKey1].slack;
+  var text = 'Join us @ ' + slack.match(/https?:\/\/(.*?)\//)[1];
   fadeButtonText(show, text);
 }
 
@@ -778,7 +778,7 @@ $(document).ready(function() {
   $('#chatterIcon').prop('src', icon);
 
   // Hide Chatter button if not applicable
-  if (Affiliation.org[ls.affiliationKey1].irc) {
+  if (Affiliation.org[ls.affiliationKey1].slack) {
     $('#chatterButton').show();
     $('#chatterIcon').show();
   }
@@ -829,11 +829,8 @@ $(document).ready(function() {
   });
 
   $('#chatterButton').click(function() {
-    var irc = Affiliation.org[ls.affiliationKey1].irc;
-    var server = irc.server;
-    var channel = irc.channel;
-    var noNick = irc.noNick;
-    Browser.openTab('https://kiwiirc.com/client/' + server + '/' + channel);
+    var slack = Affiliation.org[ls.affiliationKey1].slack;
+    Browser.openTab(slack);
     Analytics.trackEvent('clickChatter', ls.affiliationKey1);
     window.close();
   });
