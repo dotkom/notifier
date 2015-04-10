@@ -3,7 +3,7 @@
 var Affiliation = {
 
   // URLs
-  api: API_SERVER + 'api/affiliation/',
+  api: API_SERVER + 'affiliation/',
   // Messages
   msgUnsupportedAffiliation: 'Tilhørigheten støttes ikke',
   msgConnectionError: 'Frakoblet fra Notiwire',
