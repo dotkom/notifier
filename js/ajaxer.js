@@ -79,8 +79,9 @@ var Ajaxer = {
 
     // TODO: Temporary edit. Notiwire uses Varnish with proper caching functions.
     var caching = false;
-    if (params.url.indexOf('passoa.online.ntnu.no/api/') !== -1) {
+    if (params.url.indexOf('passoa.online.ntnu.no/api/') !== -1 || params.url.indexOf('online.duvholt.net/api/') !== -1) {
       caching = true;
+      console.warn('right here');
     }
     if (params.url.indexOf('dusken.no/') !== -1) {
       caching = true;

@@ -3,7 +3,7 @@
 var Affiliation = {
 
   // URLs
-  api: 'http://passoa.online.ntnu.no/api/affiliation/',
+  api: API_SERVER + 'api/affiliation/',
   // Messages
   msgUnsupportedAffiliation: 'Tilhørigheten støttes ikke',
   msgConnectionError: 'Frakoblet fra Notiwire',

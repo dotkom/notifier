@@ -16,6 +16,9 @@ console.lolg = function() {
 	}
 };
 
+// API server
+var API_SERVER = 'http://online.duvholt.net/';
+
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
 var BACKGROUND_LOOP_DEBUG = 5000; // 5s, respond fairly quickly for us developers
