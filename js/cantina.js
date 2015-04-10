@@ -3,7 +3,7 @@
 var Cantina = {
 
   // URLs
-  api: 'http://passoa.online.ntnu.no/api/cantina/',
+  api: API_SERVER + 'api/cantina/',
   webHours: 'https://www.sit.no/mat',
   webDinner: 'https://www.sit.no/middag',
   // Messages

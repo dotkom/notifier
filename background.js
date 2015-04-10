@@ -80,8 +80,9 @@ var updateStatusAndMeetings = function(force, callback) {
         Browser.setIcon(statusIcon);
       }
     }
-    // Extension title (hovering mouse over icon shows the title text)
-    var today = '### Nå\n' + statusTitle + ": " + statusMessage + "\n### Resten av dagen\n" + meeting;
+    // Extension title (hovering mouse over icon shows the title text).
+    // This string is padded with one newline top and bottom, as well as two spaces on the left and right side of all strings.
+    var today = '\n  ### Nå  \n  ' + statusTitle + ": " + statusMessage + "  \n\n  ### Resten av dagen  \n  " + meeting.replace(/\n/g, "  \n  ") + "\n";
     Browser.setTitle(today);
   }
   if (typeof callback === 'function') callback();
