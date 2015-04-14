@@ -86,8 +86,9 @@ var Ajaxer = {
         success: params.success,
         error: function(err) {
           if (params.url.indexOf(API_SERVER_1) !== -1) {
-            console.warn('Ajaxer: Falling back to secondary API server');
+            if (Ajaxer.debug) console.warn('Ajaxer: Falling back to secondary API server');
             params.url = params.url.replace(API_SERVER_1, API_SERVER_2);
+            params.timeout = 15000; // Assume slow network, be patient
             ajax(params);
           }
           else {
