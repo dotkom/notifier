@@ -6,12 +6,11 @@ var Ajaxer = {
   // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
   ajaxSetup: {
     timeout: 6000, // anything longer is too long
-    cache: false, // don't accept cached results, we want the freshest data
     beforeSend: function (request, fields) {
-        if (fields.type === 'GET') {
-          request.setRequestHeader('From', 'https://github.com/appKom/notifier');
-        }
-        return true;
+      if (fields.type === 'GET') {
+        request.setRequestHeader('From', 'https://github.com/appKom/notifier');
+      }
+      return true;
     },
   },
 
@@ -77,27 +76,28 @@ var Ajaxer = {
       return;
     }
 
-    // TODO: Temporary edit. Notiwire uses Varnish with proper caching functions.
-    var caching = false;
-    if (params.url.indexOf('passoa.online.ntnu.no/api/') !== -1 || params.url.indexOf('online.duvholt.net/api/') !== -1) {
-      caching = true;
-      console.warn('right here');
-    }
-    if (params.url.indexOf('dusken.no/') !== -1) {
-      caching = true;
+    var ajax = function(params) {
+      $.ajax({
+        type: (params.data ? 'POST' : 'GET'),
+        data: (params.data ? params.data : ''),
+        url: params.url,
+        dataFilter: params.dataFilter,
+        dataType: params.dataType,
+        success: params.success,
+        error: function(err) {
+          if (params.url.indexOf(API_SERVER_1) !== -1) {
+            console.warn('Ajaxer: Falling back to secondary API server');
+            params.url = params.url.replace(API_SERVER_1, API_SERVER_2);
+            ajax(params);
+          }
+          else {
+            params.error(err);
+          }
+        },
+      });
     }
 
-    var self = this;
-    return $.ajax({
-      type: (params.data ? 'POST' : 'GET'),
-      data: (params.data ? params.data : ''),
-      url: params.url,
-      cache: caching,
-      dataFilter: params.dataFilter,
-      dataType: params.dataType,
-      success: params.success,
-      error: params.error,
-    });
+    ajax(params);
   },
 
   cleanHtml: function(html, type) {

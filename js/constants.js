@@ -16,8 +16,9 @@ console.lolg = function() {
 	}
 };
 
-// API server
-var API_SERVER = 'http://online.duvholt.net/api/';
+// API servers
+var API_SERVER_1 = 'http://passoa.online.ntnu.no/api/';
+var API_SERVER_2 = 'http://online.duvholt.net/api/';
 
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
