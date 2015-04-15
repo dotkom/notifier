@@ -6,7 +6,7 @@
 // onMessage for single messages
 function onMessage(request, sender, callback) {
   // No longer in use
-  console.lolg('ERROR: unrecognized request:', request);
+  console.error('Unrecognized request: ' + request);
 };
 
 // onConnect for conversations
@@ -15,7 +15,7 @@ function onConnect(port) {
   // when a user visits the site of one of his/her affiliations
   if (port.name == "affiliationCounter") {
     port.onMessage.addListener(function(message) {
-      console.lolg('onConnect: affiliationCounter');
+      console.log('onConnect: affiliationCounter');
       // first contact
       if (message.getAffiliationWeb == '1' || message.getAffiliationWeb == '2') {
         var number = message.getAffiliationWeb;
@@ -26,7 +26,7 @@ function onConnect(port) {
       // second contact
       else if (typeof message.resetAffiliationCounter != 'undefined') {
         var number = message.resetAffiliationCounter;
-        console.lolg('onMessage: resetAffiliationCounter for #' + number);
+        console.log('onMessage: resetAffiliationCounter for #' + number);
         Browser.getBadgeText( function(badgeText) {
           var badgeText = Number(badgeText);
           if (!isNaN(badgeText)) {
@@ -41,7 +41,7 @@ function onConnect(port) {
       }
     });
   }
-  else console.lolg('WARNING: something tried to connect on port', port.name);
+  else console.warn('Something tried to connect on port', port.name);
 };
 
 // wire up the message- and connect-listener functions
@@ -50,5 +50,5 @@ if (Browser.name == 'Chrome' || Browser.name == 'Opera') {
     chrome.extension.onMessage.addListener(onMessage);
     chrome.runtime.onConnect.addListener(onConnect);
   }
-  else console.lolg('ERROR: old version of (chrom(e|ium)|opera), messaging API not supported');
+  else console.error('Old version of (chrom(e|ium)|opera), messaging API not supported');
 };

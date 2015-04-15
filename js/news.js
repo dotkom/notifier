@@ -18,15 +18,15 @@ var News = {
   // without the callback as we already know the amount of unread posts.
   get: function(affiliationObject, limit, callback) {
     if (typeof affiliationObject == 'undefined') {
-      if (this.debug) console.log('ERROR:', this.msgUnsupportedFeed);
+      if (this.debug) console.error(this.msgUnsupportedFeed);
       return;
     }
     if (!isNumber(limit) || (limit < 1 && 20 < limit)) {
-      if (this.debug) console.log('ERROR:', this.msgNewsLimit);
+      if (this.debug) console.error(this.msgNewsLimit);
       return;
     }
     if (typeof callback == 'undefined') {
-      if (this.debug) console.log('ERROR:', this.msgCallbackRequired);
+      if (this.debug) console.error(this.msgCallbackRequired);
       return;
     }
 
@@ -45,7 +45,7 @@ var News = {
             self.parseFeed(xml, affiliationObject, limit, callback);
           }
           else {
-            if (self.debug) console.log('ERROR:', self.msgConnectionError, affiliationObject.name);
+            if (self.debug) console.error(self.msgConnectionError + ": " + affiliationObject.name);
             callback(self.msgConnectionError + affiliationObject.name);
           }
         },
@@ -78,7 +78,7 @@ var News = {
       });
     }
     else {
-      console.log('ERROR:', self.msgNoNewsSource);
+      console.error(self.msgNoNewsSource);
     }
   },
 

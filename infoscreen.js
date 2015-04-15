@@ -7,7 +7,7 @@ var intervalId = null;
 var newsLimit = 8; // The most news you can cram into Infoscreen, if other features are disabled
 
 var mainLoop = function(force) {
-  console.lolg("\n#" + iteration);
+  console.log("\n#" + iteration);
 
   if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
@@ -44,7 +44,7 @@ var mainLoop = function(force) {
 }
 
 var updateStatus = function(debugStatus) {
-  console.lolg('updateStatus');
+  console.log('updateStatus');
   
   // Get meeting data
   var meeting = ls.meetingString;
@@ -99,7 +99,7 @@ var updateStatus = function(debugStatus) {
 //
 
 var updateServant = function() {
-  console.lolg('updateServant');
+  console.log('updateServant');
 
   if (!ls.servantString) {
     $('#todays #schedule #servant').html('- '+Affiliation.msgConnectionError);
@@ -115,7 +115,7 @@ var updateServant = function() {
 //
 
 var updateMeeting = function() {
-  console.lolg('updateMeeting');
+  console.log('updateMeeting');
 
   if (!ls.meetingString) {
     $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
@@ -145,7 +145,7 @@ var updateMeeting = function() {
 //
 
 var updateCoffee = function() {
-  console.lolg('updateCoffee');
+  console.log('updateCoffee');
 
   if (!ls.coffeePotsString || !ls.coffeeDateString) {
     $('#todays #coffee #pots').html('- ' + Coffee.msgConnectionError);
@@ -165,7 +165,7 @@ var updateCoffee = function() {
 
 var updateCantinas = function(first) {
   // This function just fetches from localstorage (updates in background)
-  console.lolg('updateCantinas');
+  console.log('updateCantinas');
   var update = function(shortname, data, selector) {
     // Set name
     var name = Cantina.names[shortname];
@@ -205,7 +205,7 @@ var listDinners = function(menu) {
 }
 
 var updateBus = function() {
-  console.lolg('updateBus');
+  console.log('updateBus');
 
   var createBusDataRequest = function(bus, cssIdentificator) {
     var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
@@ -263,7 +263,7 @@ var updateBus = function() {
 }
 
 var updateAffiliationNews = function(number) {
-  console.lolg('updateAffiliationNews'+number);
+  console.log('updateAffiliationNews'+number);
   // Displaying the news feed (prefetched by the background page)
   var feedItems = ls['affiliationFeedItems'+number];
   // Detect selector
@@ -444,7 +444,7 @@ var findUpdatedPosts = function(newsList, viewedList) {
 }
 
 var updateNewsImages = function() {
-  console.lolg('updateNewsImages');
+  console.log('updateNewsImages');
   // The background process looks for images, and sometimes that process
   // isn't finished before the popup loads, that's why we have to check
   // in with localStorage.storedImages a couple of times.
@@ -653,7 +653,7 @@ $(document).ready(function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
-    console.lolg(ONLINE_MESSAGE);
+    console.log(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP);
     // Schedule for repetition
     intervalId = setInterval(function() {
@@ -668,7 +668,7 @@ $(document).ready(function() {
   // When offline mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
-    console.lolg(OFFLINE_MESSAGE);
+    console.log(OFFLINE_MESSAGE);
     clearInterval(intervalId);
     updateBus();
   });

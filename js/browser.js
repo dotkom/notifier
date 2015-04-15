@@ -2,8 +2,8 @@
 
 var Browser = {
   debug: 0,
-  msgCallbackMissing: 'ERROR: Callback is missing',
-  msgUnsupported: 'ERROR: Unsupported browser',
+  msgCallbackMissing: 'Callback is missing',
+  msgUnsupported: 'Unsupported browser',
 
   name: 'Unknown', // Changed automatically at the end of this file with Browser.detect()
   version: 0,
@@ -24,7 +24,7 @@ var Browser = {
       this.name = 'Opera';
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
       this.name = 'Unknown';
     }
   },
@@ -53,7 +53,7 @@ var Browser = {
       }
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -64,13 +64,13 @@ var Browser = {
       }
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
   getBadgeText: function(callback) {
     if (typeof callback == 'undefined') {
-      console.log(this.msgCallbackMissing);
+      console.error(this.msgCallbackMissing);
     }
     else {
       if (this.name == 'Chrome' || this.name == 'Opera') {
@@ -79,7 +79,7 @@ var Browser = {
         });
       }
       else {
-        console.log(this.msgUnsupported);
+        console.error(this.msgUnsupported);
       }
     }
   },
@@ -95,7 +95,7 @@ var Browser = {
       }
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -106,7 +106,7 @@ var Browser = {
       }
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -117,7 +117,7 @@ var Browser = {
       }
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -127,7 +127,7 @@ var Browser = {
       return chrome.extension.getURL(url);
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -138,7 +138,7 @@ var Browser = {
       }
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -150,7 +150,7 @@ var Browser = {
     } catch (err) {
       // Do nothing
     }
-    console.log(this.msgUnsupported);
+    console.error(this.msgUnsupported);
     return 'Unknown';
   },
 
@@ -174,7 +174,7 @@ var Browser = {
     } catch (err) {
       // Do nothing
     }
-    console.log(this.msgUnsupported);
+    console.error(this.msgUnsupported);
     return false; // assume dev mode
   },
 
@@ -186,12 +186,12 @@ var Browser = {
           Browser.openTab('http://instabart.no');
         }
         else {
-          console.error('Unrecognized browser command');
+          if (Browser.debug) console.error('Unrecognized browser command');
         }
       });
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -304,7 +304,7 @@ var Browser = {
       if (self.debug) console.log('BROWSER.JS: createNotification only supported in Opera 25 and greater. Please upgrade your browser.');
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -319,7 +319,7 @@ var Browser = {
       });
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 
@@ -372,7 +372,7 @@ var Browser = {
       });
     }
     else {
-      console.log(this.msgUnsupported);
+      console.error(this.msgUnsupported);
     }
   },
 

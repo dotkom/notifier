@@ -7,14 +7,14 @@ if (Browser.inProduction()) {
 	DEBUG = 0;
 }
 
-// Logging setup
-console.lolg = function() {
-	// Console logging that only happens in debug mode
-	// The name "lolg" is a tribute to Lorents Odin Lervik Gravås
-	if (DEBUG) {
-		console.log.apply(console, arguments);
-	}
-};
+// Disable logging if in production
+if (!DEBUG) {
+	window.console = {};
+	window.console.log = function(){};
+	window.console.info = function(){};
+	window.console.warn = function(){};
+	window.console.error = function(){};
+}
 
 // API servers
 var API_SERVER_1 = 'http://passoa.online.ntnu.no/api/';

@@ -39,10 +39,12 @@ var Palettes = {
 
   load: function(elementId) {
     // Guess an element with id="palette"
-    if (typeof elementId === 'undefined')
+    if (typeof elementId === 'undefined') {
       var elementId = 'palette';
-    else
-      console.warn('Palettes.load: No #palette element? Why did you bring me here?');
+    }
+    else {
+      console.error('Palettes.load: No #palette element? Why did you bring me here?');
+    }
     // For speed and esthetical reasons this script runs
     // before jQuery is loaded so don't use jQuery here.
     var paletteLink = document.getElementById(elementId);
@@ -53,7 +55,7 @@ var Palettes = {
       paletteLink.href = palette;
     }
     else {
-      console.lolg('ERROR: palette link element with ID "#' + elementId + '" not found');
+      console.error('Palette link element with ID "#' + elementId + '" not found');
     }
   },
 

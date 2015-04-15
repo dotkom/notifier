@@ -69,7 +69,7 @@ var Oracle = {
             return;
           }
           catch (e) {
-            if (self.debug) console.log('ERROR:', e);
+            if (self.debug) console.error(e);
             callback(self.msgPaywall);
             return;
           }
