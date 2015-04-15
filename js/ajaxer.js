@@ -3,9 +3,9 @@
 var Ajaxer = {
   debug: 0,
 
-  // Ajax setup for all requests, this snippet is added to jQuery setup at the end of this file
+  // Ajax setup for all requests, this snippet is added
+  // to jQuery setup at the end of this file
   ajaxSetup: {
-    timeout: 6000, // anything longer is too long
     beforeSend: function (request, fields) {
       if (fields.type === 'GET') {
         request.setRequestHeader('From', 'https://github.com/appKom/notifier');
@@ -55,25 +55,31 @@ var Ajaxer = {
   },
 
   get: function(params) {
-    if (params == undefined) {
-      console.error('Params is required. Check ajaxer.js to see format of params.');
+    if (params === undefined) {
+      if (Ajaxer.debug) console.error('Params is required. Check ajaxer.js to see format of params.');
       return;
     }
-    if (params.url == undefined) {
-      console.error('URL missing from params.');
+    if (params.url === undefined) {
+      if (Ajaxer.debug) console.error('URL missing from params.');
       return;
     }
-    if (params.dataType == undefined) {
-      console.error('Do not use Ajaxer.get() directly, use getXml, getJson or one of the others instead.');
+    if (params.dataType === undefined) {
+      if (Ajaxer.debug) console.error('Do not use Ajaxer.get() directly, use Ajaxer.getXml(), Ajaxer.getJson() or one of the others instead.');
       return;
     }
-    if (params.success == undefined) {
-     console.error('Params is missing success function. The success function should use the results for something useful.');
+    if (params.success === undefined) {
+      if (Ajaxer.debug) console.error('Params is missing success function. The success function should use the results for something useful.');
       return;
     }
-    if (params.error == undefined) {
-     console.error('Params is missing error function. Error handling must be in place.');
+    if (params.error === undefined) {
+      if (Ajaxer.debug) console.error('Params is missing error function. Error handling must be in place.');
       return;
+    }
+
+    if (params.url.indexOf(API_SERVER_1) !== -1) {
+      // Expect fast response from primary API server...
+      // ...to fall back quickly to secondary API server
+      params.timeout = 4000;
     }
 
     var ajax = function(params) {
@@ -81,6 +87,7 @@ var Ajaxer = {
         type: (params.data ? 'POST' : 'GET'),
         data: (params.data ? params.data : ''),
         url: params.url,
+        timeout: params.timeout || 6000,
         dataFilter: params.dataFilter,
         dataType: params.dataType,
         success: params.success,
