@@ -36,9 +36,3 @@ var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
 
 // Hard totals
 var MEME_AMOUNT = 30;
-
-// Support lines to catch a heisenbug
-if (window.DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms on everything before constants.js');
-    window.timeHeisenbug = Date.now();
-}

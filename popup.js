@@ -41,11 +41,6 @@ var mainLoop = function(force) {
     iteration = 0;
   else
     iteration++;
-
-  if (DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms on main loop #'+iteration+' in popup.js');
-    window.timeHeisenbug = Date.now();
-  }
 }
 
 //
@@ -996,13 +991,4 @@ $(document).ready(function() {
   else
     mainLoop();
 
-  if (DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms running document ready function in popup.js');
-    window.timeHeisenbug = Date.now();
-  }
 });
-
-if (DEBUG) {
-  console.info('spent', Date.now() - window.timeHeisenbug, 'ms loading popup.js');
-  window.timeHeisenbug = Date.now();
-}
