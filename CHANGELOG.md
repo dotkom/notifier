@@ -18,7 +18,11 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 - Kuttet mange tusen linjer kode (opptil 50%(?) kortere)
 - Mer data hentes ferdiglaget fra Notiwire (API) i stedet for å lages i Notifier
 
-### YYYY-MM-DD Versjon 4.6
+### 2015-04-16 Versjon 4.7
+- Notiwire (APIet) er installert på en sekundær lokasjon
+- Automatisk fallback fra primær-API til sekundær-API for å forhindre "frakoblet"-meldinger
+
+### 2015-03-23 Versjon 4.6
 - La til 2 nye linjeforeninger: Janus, Timini
 - Følgende data hentes nå ferdiglaget og komprimert fra Notiwire (API) i stedet for å lages i Notifier:
 -- Kantinedata (kantiner, kaféer, kiosker, åpningstider)
