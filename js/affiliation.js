@@ -92,7 +92,7 @@ var Affiliation = {
         },
       },
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div#main-col', domainUrl:'dusken.no'});
+        Images.get(this, link, callback, {directHit:'img#header-img', domainUrl:'dusken.no'});
       },
     },
 
@@ -166,15 +166,15 @@ var Affiliation = {
     'aarhonen': {
       name: 'H.M. Aarhønen',
       key: 'aarhonen',
-      web: 'http://www.aarhonen.ntnu.no/',
-      feed: 'http://www.aarhonen.ntnu.no/?q=rss.xml',
+      web: 'http://aarhonen.no/',
+      feed: 'http://aarhonen.no/feed/',
       logo: './org/aarhonen/logo.png',
       icon: './org/aarhonen/icon.png',
       symbol: './org/aarhonen/symbol.png',
       placeholder: './org/aarhonen/placeholder.png',
       palette: 'purple',
       getImage: function(link, callback) {
-        Images.get(this, link, callback, {newsSelector:'div.content'});
+        Images.get(this, link, callback);
       },
     },
 
