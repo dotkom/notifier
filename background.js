@@ -5,7 +5,7 @@ var iteration = 0;
 var intervalId = null;
 
 var mainLoop = function(force) {
-  console.lolg("\n#" + iteration);
+  console.log("\n#" + iteration);
 
   if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
@@ -31,7 +31,7 @@ var mainLoop = function(force) {
 }
 
 var updateAffiliation = function(callback) {
-  console.lolg('updateAffiliation');
+  console.log('updateAffiliation');
   // Fetch
   Affiliation.get(ls.affiliationKey1, function() {
     // Run relevant background updates
@@ -47,7 +47,7 @@ var updateAffiliation = function(callback) {
 };
 
 var updateStatusAndMeetings = function(force, callback) {
-  console.lolg('updateStatusAndMeetings');
+  console.log('updateStatusAndMeetings');
   
   // Get meeting data
   var meeting = ls.meetingString;
@@ -89,7 +89,7 @@ var updateStatusAndMeetings = function(force, callback) {
 }
 
 var updateCoffeeSubscription = function(callback) {
-  console.lolg('updateCoffeeSubscription');
+  console.log('updateCoffeeSubscription');
   // Get
   var coffeeData = JSON.parse(ls.coffeeData);
   // Hope for the best
@@ -119,11 +119,11 @@ var updateCoffeeSubscription = function(callback) {
                 Coffee.showNotification(pots, age);
                 ls.coffeeMemeTime = Date.now();
               }
-              else {console.lolg('Nope to coffee, last one was less than 10 minutes ago')}
+              else {console.log('Nope to coffee, last one was less than 10 minutes ago')}
             }
-            else {console.lolg('Nope to coffee, not made less than 10 minutes ago')}
+            else {console.log('Nope to coffee, not made less than 10 minutes ago')}
           }
-          else {console.lolg('Nope to coffee, there is a meeting going on')}
+          else {console.log('Nope to coffee, there is a meeting going on')}
         }
         // And remember to update localStorage
         ls.coffeePots = pots;
@@ -137,7 +137,7 @@ var updateCoffeeSubscription = function(callback) {
 }
 
 var updateCantinas = function(callback) {
-  console.lolg('updateCantinas');
+  console.log('updateCantinas');
   // Fetch
   Cantina.get(ls.cantina1, function(result1) {
     Cantina.get(ls.cantina2, function(result2) {
@@ -151,7 +151,7 @@ var updateCantinas = function(callback) {
 }
 
 var updateAffiliationNews = function(number, callback) {
-  console.lolg('updateAffiliationNews'+number);
+  console.log('updateAffiliationNews'+number);
   // Get affiliation object
   var affiliationKey = ls['affiliationKey'+number];
   var affiliationObject = Affiliation.org[affiliationKey];
@@ -161,7 +161,7 @@ var updateAffiliationNews = function(number, callback) {
     News.get(affiliationObject, newsLimit, function(items) {
       // Error message, log it maybe
       if (typeof items === 'string') {
-        console.lolg('ERROR:', items);
+        console.error(items);
       }
       // Empty news items, don't count
       else if (items.length === 0) {
@@ -177,7 +177,7 @@ var updateAffiliationNews = function(number, callback) {
     });
   }
   else {
-    console.lolg('ERROR: chosen affiliation', ls['affiliationKey'+number], 'is not known');
+    console.error('Chosen affiliation "' + ls['affiliationKey'+number] + '" is not known');
     if (typeof callback === 'function') callback();
   }
 }
@@ -270,7 +270,7 @@ $(document).ready( function() {
       Analytics.trackEvent('loadOfficescreen');
     }
     else {
-      console.lolg('ERROR: useBigscreen enabled, but whichScreen was', ls.whichScreen);
+      console.error('useBigscreen enabled, but whichScreen was "' + ls.whichScreen + '"');
     }
   }
 
@@ -299,7 +299,7 @@ $(document).ready( function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
-    console.lolg(ONLINE_MESSAGE);
+    console.log(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? BACKGROUND_LOOP_DEBUG : BACKGROUND_LOOP);
     // Schedule for repetition
     intervalId = setInterval( function() {
@@ -314,7 +314,7 @@ $(document).ready( function() {
   // When offline, mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
-    console.lolg(OFFLINE_MESSAGE);
+    console.log(OFFLINE_MESSAGE);
     clearInterval(intervalId);
   });
 

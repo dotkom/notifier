@@ -147,7 +147,7 @@ var bindPaletteSelector = function() {
     // Save it
     ls.affiliationPalette = palette;
     // Applying palette to options page
-    console.lolg('Applying chosen palette', palette);
+    console.log('Applying chosen palette', palette);
     $('#palette').attr('href', Palettes.get(palette));
     // Display Saved<3
     showSavedNotification();
@@ -227,7 +227,7 @@ var bindCantinaSelector = function(selector) {
 
 var bindBusFields = function(busField) {
   var cssSelector = '#' + busField;
-  // console.lolg('Binding bus fields for ' + cssSelector);
+  // console.log('Binding bus fields for ' + cssSelector);
   var fadeTime = 50;
 
   var stop = $(cssSelector + ' input');
@@ -238,7 +238,7 @@ var bindBusFields = function(busField) {
 
   $(stop).focus(function() {
     // Clear stop field on click
-    console.lolg('focus - clear field and show saved value as placeholder');
+    console.log('focus - clear field and show saved value as placeholder');
     ls.busStopClickedAway = ls[busField+'Name'];
     $(stop).val('');
     $(stop).attr('placeholder', ls.busStopClickedAway);
@@ -252,7 +252,7 @@ var bindBusFields = function(busField) {
 
     // No input, revert to the busstop that was clicked away
     if (partialStop === '' || suggestions.length === 0) {
-      console.lolg('focusout - empty field or invalid input, return to last saved value');
+      console.log('focusout - empty field or invalid input, return to last saved value');
       if (ls.busStopClickedAway !== null) {
         $(stop).val(ls.busStopClickedAway);
       }
@@ -260,7 +260,7 @@ var bindBusFields = function(busField) {
     }
     // 1 suggestion, go for it!
     else if (suggestions.length === 1) {
-      console.lolg('focusout - 1 suggestion, save it');
+      console.log('focusout - 1 suggestion, save it');
       var correctStop = suggestions[0];
       $(stop).val(correctStop);
       $('#busSuggestions').html('');
@@ -270,7 +270,7 @@ var bindBusFields = function(busField) {
     }
     // Several suggestions, allow the user to see them and click them for a short while
     else if (suggestions.length > 1) {
-      console.lolg('focusout - several suggestions, remove them');
+      console.log('focusout - several suggestions, remove them');
       setTimeout(function() {
         $('#busSuggestions .suggestion').fadeOut(function() {
           $('#busSuggestions').html('');
@@ -278,7 +278,7 @@ var bindBusFields = function(busField) {
       }, 5000);
     }
     else {
-      console.lolg('focusout - nothing to do');
+      console.log('focusout - nothing to do');
     }
   });
 
@@ -287,12 +287,12 @@ var bindBusFields = function(busField) {
     // Do nothing if arrow key or function key is pressed
     var k = event.keyCode;
     if ((37 <= k && k <= 40) || (17 <= k && k <= 18) || k === 91) {
-      console.lolg('keyup - arrow key or function key, do nothing');
+      console.log('keyup - arrow key or function key, do nothing');
     }
 
     // If Enter is clicked, check it and save it
     else if (event.keyCode === 13) {
-      console.lolg('keyup - enter, checking input');
+      console.log('keyup - enter, checking input');
       var possibleStop = $(stop).val();
       var suggestions = Stops.nameToIds(possibleStop);
       if (suggestions.length !== 0) {
@@ -319,7 +319,7 @@ var bindBusFields = function(busField) {
 
     // If anything else is clicked, get suggestions
     else {
-      console.lolg('keyup - getting suggestions');
+      console.log('keyup - getting suggestions');
       // Save the id of the bus field in focus
       ls.busInFocus = $(stop).parent().attr('id');
       // Find the partial name
@@ -389,7 +389,7 @@ var bindFavoriteBusLines = function(busField) {
       $(this).attr('class', 'active');
     }
     else {
-      console.lolg('ERROR: favorite bus line <span> with neither .active nor .inactive');
+      console.error('Favorite bus line <span> with neither .active nor .inactive');
     }
     saveBus(busField);
   });
@@ -477,9 +477,9 @@ var saveBus = function(busField) {
   ls[busField + 'Direction'] = direction;
   ls[busField + 'ActiveLines'] = JSON.stringify(activeLines);
   ls[busField + 'InactiveLines'] = JSON.stringify(inactiveLines);
-  console.lolg('saved activeLines for '+busField, '"', activeLines, '"');
-  console.lolg('saved inactiveLines '+busField, '"', inactiveLines, '"');
-  console.lolg('saved for busStopId ' + busStopId);
+  console.log('saved activeLines for '+busField, '"', activeLines, '"');
+  console.log('saved inactiveLines '+busField, '"', inactiveLines, '"');
+  console.log('saved for busStopId ' + busStopId);
   showSavedNotification();
   // Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
 }
@@ -495,7 +495,7 @@ var loadBus = function(busField) {
   if (typeof stopName !== 'undefined' && typeof direction !== 'undefined') {
     $(cssSelector + ' input').val(stopName);
     $(cssSelector + ' select').val(direction);
-    // console.lolg('loaded "' + stopName + '" to "' + busField + '"');
+    // console.log('loaded "' + stopName + '" to "' + busField + '"');
   }
 
   // Add active and inactive lines to busfields
@@ -650,7 +650,7 @@ var toggleBigscreen = function(activate, type, force) {
 
 var switchBigScreen = function(type) {
   if (type !== 'infoscreen' && type !== 'officescreen') {
-    console.lolg('ERROR: Unsupported mode');
+    console.error('Unsupported infoscreen mode: "'+type+'"');
     return;
   }
   // Wait till after the modal is properly closed

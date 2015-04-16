@@ -18,7 +18,7 @@ if (typeof chrome != 'undefined') {
 
   // online.ntnu.no
 
-  if (host.indexOf('online.ntnu.no') != -1) {
+  if (host.indexOf('online.ntnu.no') !== -1) {
     // Hide Notifier install button
     $('#install_notifier').hide();
   }

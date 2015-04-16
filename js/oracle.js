@@ -69,7 +69,7 @@ var Oracle = {
             return;
           }
           catch (e) {
-            if (self.debug) console.log('ERROR:', e);
+            if (self.debug) console.error(e);
             callback(self.msgPaywall);
             return;
           }
@@ -515,7 +515,7 @@ var Oracle = {
 
   // getEndStop: function(line, fromStop, callback) {
   //   if (typeof callback === 'undefined') {
-  //     console.error('Callback is required. In the callback you should insert the results into the DOM.');
+  //     console.error('Callback is required');
   //     return;
   //   }
   //   if (typeof line !== 'number') {

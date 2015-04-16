@@ -22,7 +22,7 @@ var Stops = {
 
   load: function(callback) {
     if (callback === undefined) {
-      if (this.debug) console.log('WARNING: Callback is recommended. The callback contains completion/error message.');
+      if (this.debug) console.warn('Callback is recommended. The callback contains completion/error message.');
     }
 
     // Check if the lists we have are old. They are expensive to fetch

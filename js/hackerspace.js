@@ -4,7 +4,7 @@ var Hackerspace = {
   debug: 0,
 
   web: 'http://hackerspace.idi.ntnu.no/',
-  api: API_SERVER + 'api/hackerspace',
+  api: API_SERVER_1 + 'hackerspace',
   
   msgPrefix: '<span>Hackerspace:</span> ',
   msgDisconnected: 'Frakoblet fra Notiwire',

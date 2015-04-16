@@ -7,7 +7,7 @@ var intervalId = null;
 var newsLimit = 4; // The best amount of news for the popup, IMO
 
 var mainLoop = function(force) {
-  console.lolg("\n#" + iteration);
+  console.log("\n#" + iteration);
 
   if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
@@ -41,11 +41,6 @@ var mainLoop = function(force) {
     iteration = 0;
   else
     iteration++;
-
-  if (DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms on main loop #'+iteration+' in popup.js');
-    window.timeHeisenbug = Date.now();
-  }
 }
 
 //
@@ -63,7 +58,7 @@ var getTitleWidth = function (title) {
 //
 
 var updateServant = function() {
-  console.lolg('updateServant');
+  console.log('updateServant');
 
   if (!ls.servantString) {
     $('#todays #schedule #servant').html('- '+Affiliation.msgConnectionError);
@@ -79,7 +74,7 @@ var updateServant = function() {
 //
 
 var updateMeeting = function() {
-  console.lolg('updateMeeting');
+  console.log('updateMeeting');
 
   if (!ls.meetingString) {
     $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
@@ -109,7 +104,7 @@ var updateMeeting = function() {
 //
 
 var updateCoffee = function() {
-  console.lolg('updateCoffee');
+  console.log('updateCoffee');
 
   if (!ls.coffeePotsString || !ls.coffeeDateString) {
     $('#todays #coffee #pots').html('- ' + Coffee.msgConnectionError);
@@ -129,7 +124,7 @@ var updateCoffee = function() {
 
 var updateCantinas = function() {
   // This function just fetches from localstorage (updates in background)
-  console.lolg('updateCantinas');
+  console.log('updateCantinas');
 
   var update = function(shortname, data, selector) {
     var name = Cantina.names[shortname];
@@ -238,7 +233,7 @@ cantinaChangeHandler('.second', 'cantina2');
 //
 
 var updateBus = function() {
-  console.lolg('updateBus');
+  console.log('updateBus');
 
   var createBusDataRequest = function(bus, cssIdentificator) {
     var activeLines = ls[bus+'ActiveLines']; // array of lines stringified with JSON (hopefully)
@@ -356,7 +351,7 @@ var bindOracle = function() {
 }
 
 var changeOracleAnswer = function(answer) {
-  console.lolg('changeOracleAnswer to "' + answer + '"');
+  console.log('changeOracleAnswer to "' + answer + '"');
   // Stop previous changeOracleAnswer instance, if any
   clearTimeout(Number(ls.animateOracleAnswerTimeoutId));
   // If answer contains HTML, just insert it as HTML
@@ -484,7 +479,7 @@ var animateOracleQuestion = function(line) {
 //
 
 var updateAffiliationNews = function(number) {
-  console.lolg('updateAffiliationNews'+number);
+  console.log('updateAffiliationNews'+number);
   // Displaying the news feed (prefetched by the background page)
   var feedItems = ls['affiliationFeedItems'+number];
   // Detect selector
@@ -669,7 +664,7 @@ var findUpdatedPosts = function(newsList, viewedList) {
 //
 
 var updateNewsImages = function() {
-  console.lolg('updateNewsImages');
+  console.log('updateNewsImages');
   // The background process looks for images, and sometimes that process
   // isn't finished before the popup loads, that's why we have to check
   // in with localStorage.storedImages a couple of times.
@@ -733,7 +728,7 @@ $(document).ready(function() {
       Analytics.trackEvent('toggleOfficescreen');
     }
     else {
-      console.lolg('ERROR: useBigscreen was enabled, but whichScreen was', ls.whichScreen);
+      console.error('useBigscreen was enabled, but whichScreen was "' + ls.whichScreen + '"');
     }
     setTimeout(function() {
       window.close();
@@ -881,7 +876,7 @@ $(document).ready(function() {
       window.close();
     }
     catch (e) {
-      console.lolg('ERROR: Failed at clickBus', e);
+      console.error('Failed at clickBus', e);
     }
   }
   // Register click event for all lines
@@ -971,7 +966,7 @@ $(document).ready(function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
-    console.lolg(ONLINE_MESSAGE);
+    console.log(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP);
     // Schedule for repetition
     intervalId = setInterval( function() {
@@ -986,7 +981,7 @@ $(document).ready(function() {
   // When offline mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
-    console.lolg(OFFLINE_MESSAGE);
+    console.log(OFFLINE_MESSAGE);
     clearInterval(intervalId);
     updateBus();
   });
@@ -996,13 +991,4 @@ $(document).ready(function() {
   else
     mainLoop();
 
-  if (DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms running document ready function in popup.js');
-    window.timeHeisenbug = Date.now();
-  }
 });
-
-if (DEBUG) {
-  console.info('spent', Date.now() - window.timeHeisenbug, 'ms loading popup.js');
-  window.timeHeisenbug = Date.now();
-}

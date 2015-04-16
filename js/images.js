@@ -1,14 +1,106 @@
 "use strict";
 
+// Don't panic.
+// We're either parsing one page with several images (a frontpage),
+// or several pages with one image on each (article pages).
+
+// The whole process explained simply:
+// 1. Find a worthy CSS selector
+// 2. Use selector to find worthy container
+// 3. Use container to find worthy image
+// 4. Scrutinise image, try to kill it
+// 5. Good image? Add domain URL, add HTTP, ++
+
 var Images = {
   debug: 0,
 
-  // Array of possible news containers sorted by estimated probabilty
-  containers: [
-    'div.entry',
-    'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
-    'article', // leave <article> at the bottom of the preferred list, it's a bit misused out there in the wild
-  ],
+  // Possible values in options:
+  // options = {
+  //   directHit: 'img#header', // the exact image tag that needs to be matched
+  //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
+  //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
+  //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
+  //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
+  //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/ // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
+  // };
+  // get: function(affiliation, links, callback, options) {
+
+  //   // TEMP FIX BEFORE REWRITING AFFILIATION.JS
+  //   options = options || {};
+  //   options.affiliation = affiliation || null;
+  //   options.links = links || null;
+  //   options.callback = callback || null;
+  //   // END TEMPLOL
+
+  //   var err = null;
+  //   if (!options)
+  //     err = 'Images: Needs parameter "options"';
+  //   if (!options.affiliation)
+  //     err = 'Images: Needs the affiliation parameter';
+  //   if (!options.links)
+  //     err = 'Images: Needs the links parameter';
+  //   if (!options.callback)
+  //     err = 'Images: Callback is required';
+  //   if (err) {
+  //     console.error('Images:', err);
+  //     return;
+  //   }
+
+  //   // Figure out whether it's singular or plural
+  //   if (typeof options.links === 'string') {
+  //     return this._getImage(options);
+  //   }
+  //   else if (Array.isArray(options.links)) {
+  //     return this._getImages(options);
+  //   }
+  //   else {
+  //     console.error('Images: Must be fed one specific URL or an array or URLs, but not both');
+  //     return null;
+  //   }
+  // },
+
+  // _getImages: function(options) {
+  //   Ajaxer.getCleanHtml({
+  //     url: options.urls,
+  //     success: function(html) {
+  //       var results = [];
+  //       for (var i = 0; i < options.urls.length; i++) {
+  //         options.url = options.urls[i];
+  //         _parseResult(options, html)
+  //         results.push();
+  //       }
+  //       callback(options.urls, results);
+  //     },
+  //     error: function(e) {
+  //       if (this.debug) console.error('Images: Could not fetch "'+affiliation.name+'" website: ' + e);
+  //       callback(options.url, []);
+  //     },
+  //   }).bind(this);
+  // },
+
+  // _getImage: function(options) {
+  //   Ajaxer.getCleanHtml({
+  //     url: options.url,
+  //     success: function(html) {
+  //       var image = _parseResult(html);
+  //       callback(options.url, image);
+  //     },
+  //     error: function(e) {
+  //       if (this.debug) console.error('Images: Could not fetch "'+affiliation.name+'" website: ' + e);
+  //       callback(options.url, []);
+  //     },
+  //   }).bind(this);
+  // },
+
+  // // TODO: Point of improvement: A few sites have differing selectors for
+  // // news articles across different news pages. Like e.g. if one of their
+  // // news pages have a regular header image and another has a slideshow.
+  // // Make sure this function can check for multiple different selectors.
+  // // TODO: Refactor, think of an awesome new way to organize this function.
+  // _parseResult: function() {
+
+
+
 
   get: function(affiliation, links, callback, options) {
     if (affiliation == undefined) {
@@ -32,10 +124,11 @@ var Images = {
 
     // Possible values in options:
     // options = {
-    //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
+    //   directHit: 'img#header', // the exact image tag that needs to be matched
     //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
-    //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
     //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
+    //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
+    //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
     //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/ // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
     // };
 
@@ -59,41 +152,27 @@ var Images = {
       url: url,
       success: function(html) {
         try {
+
           // IMPORTANT:
           // jQuery tries to preload images found in the string, that is why the
           // html has had all <img> replaced by <pic> by Ajaxer.getCleanHTML
           var doc = $(html);
 
-          //
           // Decide which selector to use for identifying news containers
-          //
-
-          var newsSelector = null;
-          if (options.newsSelector) {
-            newsSelector = options.newsSelector;
-            if (self.debug) console.log('Images: Using selector "'+newsSelector+'" for news at "'+url+'"');
-          }
-          else {
-            for (var i=0; i<self.containers.length; i++) {
-              var current = self.containers[i];
-              if (doc.find(current).length != 0) {
-                newsSelector = current;
-                if (self.debug) console.log('Images: Using selector "'+current+'" for news at "'+url+'"');
-                break;
-              }
-            }
-          }
+          var newsSelector = self.findNewsSelector(doc, options);
 
           // A place to store all the image links
           var images = [];
 
           for (var i in links) {
 
+            var link = links[i];
+
             //
             // Find the news container which contains the news image, using our selector
             //
 
-            var link = links[i];
+            var container = null;
 
             if (self.debug) console.log('Images: Checking for '+(isSingleLink? 'single image at' : 'news post with link'), link);
 
@@ -110,12 +189,12 @@ var Images = {
             }
 
             // Look up the first post with the link inside it...
-            var image = doc.find(newsSelector + ' a[href="' + link + '"]');
+            container = doc.find(newsSelector + ' a[href="' + link + '"]');
 
             // ...then find parent 'article' or 'div.post' or the like...
-            if (image.length != 0) {
+            if (container.length != 0) {
               if (self.debug) console.log('Images: Found something with the link, locating parent tag (the news box)');
-              image = image.parents(newsSelector);
+              container = container.parents(newsSelector);
             }
             // ...unless we didn't find anything with the link, in which case we just look for the news selector
             else if (isSingleLink) {
@@ -125,34 +204,32 @@ var Images = {
               // search for the newsSelector instead and assume that the first news container
               // we find contains the image we're looking for (which is highly likely based
               // on experience).
-              image = doc.find(newsSelector);
+              container = doc.find(newsSelector);
             }
 
             //
             // Presumably we've found the news container here, now we need to find the image within it
             //
 
-            if (options.noscriptMatching) {
+            var image = null;
+
+            if (options.directHit) {
+              options.directHit = options.directHit.replace(/^img/, 'pic');
+              image = doc.find(options.directHit).attr('src');
+              if (self.debug) console.log('Images: Direct hit');
+            }
+            else if (options.noscriptMatching) {
               // If a <noscript> tag is used, we'll just find the image URL by matching
               // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
-              image = image.html().match(options.noscriptMatching)[1];
+              image = container.html().match(options.noscriptMatching)[1];
+              if (self.debug) console.log('Images: Ran noscript matching');
             }
             else {
-              // Find all image tags within post
-              image = image.find('pic');
+              // First find all images within container
+              image = container.find('pic');
 
-              // Exclude gifs since they're most likely smilies and the likes
-              image = image.not('pic[src*=".gif"]');
-              image = image.not('pic[src*="data:image/gif"]');
-
-              // Exclude social image icons (only applies for some blogs)
-              image = image.not('pic[src*="sociable"]');
-
-              // Exclude static content, most likely icons
-              image = image.not('pic[src*="static"]');
-
-              // Exclude comments, most likely text in image as "Add comment here"
-              image = image.not('pic[src*="comments"]');
+              // Exclude all unacceptable images
+              image = self.exclude(image);
 
               // Use image at specified index if requested
               if (options.imageIndex)
@@ -182,7 +259,7 @@ var Images = {
               }
             }
 
-            // If images uses optional protocol "//", specify "http://"
+            // If image URL contains the optional protocol operator "//", specify "http://"
             if (image !== null && image.match(/^\/\//) !== null) {
               image = image.replace(/^\/\//, 'http://');
             }
@@ -202,21 +279,57 @@ var Images = {
             }
 
             if (self.debug) console.log('Images: All done, pushing', image);
+
             // Store it
             images.push(image);
           }
           callback(links, images);
         }
         catch (e) {
-          if (self.debug) console.error('failed at parsing "'+affiliation.name+'" website:', e);
+          if (self.debug) console.error('Images: Failed at parsing "'+affiliation.name+'" website:', e);
           callback(links, []);
         }
       },
       error: function(e) {
-        if (self.debug) console.error('could not fetch "'+affiliation.name+'" website:', e);
+        if (self.debug) console.error('Images: Could not fetch "'+affiliation.name+'" website:');
         callback(links, []);
       },
     });
+  },
+
+  findNewsSelector: function(doc, options) {
+    // Array of possible news containers sorted by estimated probabilty
+    var containers = [
+      'div.entry',
+      'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
+      'article', // leave <article> at the bottom of the preferred list, it's a bit misused out there in the wild
+    ];
+    if (options.newsSelector) {
+      if (this.debug) console.log('Images: Using _specified_ selector "' + options.newsSelector + '" for news at "'+options.url+'"');
+      return options.newsSelector;
+    }
+    else {
+      for (var i = 0; i < containers.length; i++) {
+        var newsSelector = containers[i];
+        if (doc.find(newsSelector).length != 0) {
+          if (this.debug) console.log('Images: Using typical selector "' + newsSelector + '" for news at "' + options.url + '"');
+          return newsSelector;
+        }
+      }
+    }
+  },
+
+  exclude: function(images) {
+    // Exclude gifs since they're most likely smilies and the likes
+    images = images.not('pic[src*=".gif"]');
+    images = images.not('pic[src*="data:image/gif"]');
+    // Exclude social image icons on some blogs
+    images = images.not('pic[src*="/sociable/"]');
+    // Exclude static content, most likely icons
+    images = images.not('pic[src*="/static/"]');
+    // Exclude comments, most likely text in images like "Add comment here"
+    images = images.not('pic[src*="/comments/"]');
+    return images;
   },
 
   control: function(imageUrl) {

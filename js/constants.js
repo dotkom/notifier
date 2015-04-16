@@ -7,17 +7,18 @@ if (Browser.inProduction()) {
 	DEBUG = 0;
 }
 
-// Logging setup
-console.lolg = function() {
-	// Console logging that only happens in debug mode
-	// The name "lolg" is a tribute to Lorents Odin Lervik Gravås
-	if (DEBUG) {
-		console.log.apply(console, arguments);
-	}
-};
+// Disable logging if in production
+if (!DEBUG) {
+	window.console = {};
+	window.console.log = function(){};
+	window.console.info = function(){};
+	window.console.warn = function(){};
+	window.console.error = function(){};
+}
 
-// API server
-var API_SERVER = 'http://online.duvholt.net/';
+// API servers
+var API_SERVER_1 = 'http://passoa.online.ntnu.no/api/';
+var API_SERVER_2 = 'http://online.duvholt.net/api/';
 
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s
@@ -35,9 +36,3 @@ var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
 
 // Hard totals
 var MEME_AMOUNT = 30;
-
-// Support lines to catch a heisenbug
-if (window.DEBUG) {
-    console.info('spent', Date.now() - window.timeHeisenbug, 'ms on everything before constants.js');
-    window.timeHeisenbug = Date.now();
-}
