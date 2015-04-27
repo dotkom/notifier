@@ -762,6 +762,8 @@ $(document).ready(function() {
     Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
   }
 
+  // Show stuff that the user hasn't explicitly removed yet
+  if (ls.closedSpecialNews !== $('#specialNews a').attr('href')) $('#specialNews').show();
   // Hide stuff the user can't or doesn't want to see
   if (ls.showStatus !== 'true') $('#todays').hide();
   if (ls.showCantina !== 'true') $('#cantinas').hide();
@@ -795,6 +797,17 @@ $(document).ready(function() {
   Analytics.trackEvent('loadPalette', ls.affiliationPalette);
 
   // Click events
+  $('div#specialNews a').click(function() {
+    Analytics.trackEvent('clickSpecialNews', $('#specialNews').text().trim());
+    Browser.openTab($('#specialNews a').attr('href'));
+    window.close();
+  });
+  $('div#specialNews img').click(function() {
+    Analytics.trackEvent('closeSpecialNews', $('#specialNews').text().trim());
+    localStorage.closedSpecialNews = $('#specialNews a').attr('href');
+    $('#specialNews').slideUp();
+  });
+
   $('#logo').click(function() {
     var name = Affiliation.org[ls.affiliationKey1].name;
     Analytics.trackEvent('clickLogo', name);
