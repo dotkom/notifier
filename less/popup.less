@@ -110,8 +110,31 @@ body {
 }
 
 #background {
-  // This is typically tweaked by palettes, be careful when changing it
+  /* This is typically tweaked by palettes, be careful when changing it */
   background-image: url('/img/background-popup.png');
+}
+
+#specialNews {
+  .fullbox;
+  position: relative;
+  background-color: bisque;
+  color: #444;
+  height: 18px;
+  padding-top: 4px;
+  padding-left: 20px;
+  box-shadow: 0px 4px 10px #444;
+  display: none;
+  a {
+    color: #444;
+  }
+  img#closeSpecialNews {
+    position: relative;
+    top: 1px;
+    right: -18px;
+    width: 10px;
+    height: auto;
+    cursor: pointer;
+  }
 }
 
 /* This container keeps the content centered */

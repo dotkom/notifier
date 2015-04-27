@@ -1,7 +1,9 @@
 
-// COMMON FILE FOR popup.html, infoscreen.html
+/* COMMON FILE FOR popup.html, infoscreen.html */
 
-// DEBUG variables, set to colors instead of transparents for debug borders around everything
+/* DEBUG variables, set to colors instead of
+ * transparents for debug borders around everything
+ */
 
 /*
 @debugRed: red;
@@ -15,14 +17,14 @@
 @debugYellow: transparent;
 //*/
 
-// Debugging, use bright colors that stand out
+/* Debugging, use bright colors that stand out */
 
-.debugContainer {border: 1px solid @debugCyan;} // Outer containers
-.debugBox {border: 1px solid @debugRed;} // Inner containers
-.debugText {border: 1px solid @debugYellow;} // Text elements
-.debugElement {border: 1px solid @debugLime;} // Other elements
+.debugContainer {border: 1px solid @debugCyan;} /* Outer containers */
+.debugBox {border: 1px solid @debugRed;} /* Inner containers */
+.debugText {border: 1px solid @debugYellow;} /* Text elements */
+.debugElement {border: 1px solid @debugLime;} /* Other elements */
 
-// Mixins
+/* Mixins */
 
 .fullbox {
   .debugContainer;
@@ -47,42 +49,35 @@
   font-style: italic;
 }
 
-// Rules
+/* Rules */
 
 body {
   background: black;
   color: white;
   font-family: Helvetica;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   margin: 0;
   padding: 0;
 }
 
 #background {
   /* using a div because the background needs to be resized if
-  the display is really big (1500px-2000px in width or height) */
-  position: absolute;
+   * the display is really big (1500px-2000px in width or height)
+   */
+  position: fixed;
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
 }
 
 /* This container keeps the content centered */
 
 #container {
   .debugContainer;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow-x: hidden;
-  z-index: 10;
+  position: relative;
 
   #office {
     .fullbox;
