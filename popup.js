@@ -686,7 +686,7 @@ var optionsText = function(show) {
 }
 
 var tipsText = function(show) {
-  fadeButtonText(show, 'Om Notifier, tips, linker, ++');
+  fadeButtonText(show, 'Om appKom, tips, linker, ++');
 }
 
 var chatterText = function(show) {
