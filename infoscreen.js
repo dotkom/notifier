@@ -171,11 +171,11 @@ var updateCantinas = function(first) {
     var name = Cantina.names[shortname];
     $('#cantinas '+selector+' .title').html(name);
     // Set hours
-    var hours = data.hours;
-    $('#cantinas '+selector+' .hours').html('- ' + hours);
+    var hoursMsg = data.hours.message;
+    $('#cantinas '+selector+' .hours').html('- ' + hoursMsg);
     // Set dinners
-    var menu = data.menu;
-    $('#cantinas '+selector+' #dinnerbox').html(listDinners(menu));
+    var dinnerMenu = data.dinner;
+    $('#cantinas '+selector+' #dinnerbox').html(listDinners(dinnerMenu));
   };
   var cantina1Data = JSON.parse(ls.cantina1Data);
   var cantina2Data = JSON.parse(ls.cantina2Data);
@@ -183,15 +183,15 @@ var updateCantinas = function(first) {
   update(ls.cantina2, cantina2Data, '.second');
 }
 
-var listDinners = function(menu) {
+var listDinners = function(dinnerMenu) {
   var dinnerlist = '';
   // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity)
-  if (typeof menu === 'string') {
-    dinnerlist += '<li>' + menu + '</li>';
+  if (typeof dinnerMenu === 'string') {
+    dinnerlist += '<li>' + dinnerMenu + '</li>';
   }
   else {
-    for (var i in menu) {
-      var dinner = menu[i];
+    for (var i in dinnerMenu) {
+      var dinner = dinnerMenu[i];
       if (dinner.price != null) {
         dinner.price = dinner.price + ',-';
         dinnerlist += '<li>' + dinner.price + ' ' + dinner.text + '</li>';

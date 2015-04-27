@@ -145,15 +145,15 @@ var updateCantinas = function() {
     else {
       // Set hours
       $(hours).html('');
-      if (data.hours) {
-        $(hours).html('- ' + data.hours);
+      if (data.hours && data.hours.message) {
+        $(hours).html('- ' + data.hours.message);
         clickHours(hours, shortname);
       }
       // Set dinners
       $(dinners).html('');
-      if (data.menu) {
-        for (var i in data.menu) {
-          var dinner = data.menu[i];
+      if (data.dinner) {
+        for (var i in data.dinner) {
+          var dinner = data.dinner[i];
           if (dinner.price !== null) {
             $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
           }
