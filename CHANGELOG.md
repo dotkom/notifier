@@ -21,6 +21,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 ### 2015-04-16 Versjon 4.7
 - Notiwire (APIet) er installert på en sekundær lokasjon
 - Automatisk fallback fra primær-API til sekundær-API for å forhindre "frakoblet"-meldinger
+- Spesielle en-linjers nyheter kan vises i popupen
 
 ### 2015-03-23 Versjon 4.6
 - La til 2 nye linjeforeninger: Janus, Timini

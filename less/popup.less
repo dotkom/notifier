@@ -66,15 +66,13 @@ body {
 #tips {
   position: fixed;
   background-color: Snow;
-  top: 15px;
-  right: 15px;
-  bottom: 15px;
-  left: 15px;
-  border: 1px solid Grey;
-  border-radius: 4px;
-  padding: 27px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  padding: 35px;
   z-index: 100;
-  opacity: .95;
+  opacity: .97;
   display: none;
   overflow-y: auto;
   overflow-x: hidden;
@@ -110,8 +108,31 @@ body {
 }
 
 #background {
-  // This is typically tweaked by palettes, be careful when changing it
+  /* This is typically tweaked by palettes, be careful when changing it */
   background-image: url('/img/background-popup.png');
+}
+
+#specialNews {
+  .fullbox;
+  position: relative;
+  background-color: bisque;
+  color: #444;
+  height: 18px;
+  padding-top: 4px;
+  padding-left: 20px;
+  box-shadow: 0px 4px 10px #444;
+  display: none;
+  a {
+    color: #444;
+  }
+  img#closeSpecialNews {
+    position: relative;
+    top: 1px;
+    right: -18px;
+    width: 10px;
+    height: auto;
+    cursor: pointer;
+  }
 }
 
 /* This container keeps the content centered */

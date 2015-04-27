@@ -1,21 +1,31 @@
+/* COMMON FILE FOR popup.html, infoscreen.html */
+/* DEBUG variables, set to colors instead of
+ * transparents for debug borders around everything
+ */
 /*
 @debugRed: red;
 @debugCyan: cyan;
 @debugLime: lime;
 @debugYellow: yellow;
 /*/
+/* Debugging, use bright colors that stand out */
 .debugContainer {
   border: 1px solid transparent;
 }
+/* Outer containers */
 .debugBox {
   border: 1px solid transparent;
 }
+/* Inner containers */
 .debugText {
   border: 1px solid transparent;
 }
+/* Text elements */
 .debugElement {
   border: 1px solid transparent;
 }
+/* Other elements */
+/* Mixins */
 .fullbox {
   border: 1px solid transparent;
   clear: both;
@@ -38,37 +48,31 @@
   border: 1px solid transparent;
   font-style: italic;
 }
+/* Rules */
 body {
   background: black;
   color: white;
   font-family: Helvetica;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   margin: 0;
   padding: 0;
 }
 #background {
   /* using a div because the background needs to be resized if
-  the display is really big (1500px-2000px in width or height) */
-  position: absolute;
+   * the display is really big (1500px-2000px in width or height)
+   */
+  position: fixed;
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
 }
 /* This container keeps the content centered */
 #container {
   border: 1px solid transparent;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow-x: hidden;
-  z-index: 10;
+  position: relative;
 }
 #container #office {
   border: 1px solid transparent;
@@ -398,10 +402,10 @@ body {
 }
 #fadeOutNews {
   border: 1px solid transparent;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -1px;
   height: 505px;
   z-index: 100;
   background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
@@ -590,7 +594,7 @@ body {
 /* the affiliation logo or sponsor logo */
 #logo {
   border: 1px solid transparent;
-  position: absolute;
+  position: fixed;
   right: 40px;
   bottom: 40px;
   width: 400px;
