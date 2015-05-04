@@ -646,6 +646,68 @@ var Affiliation = {
         });
       },
     },
+    // // TODO: Put Industrivinduet into Smørekoppen as an alternative news source specific to them
+    // 'industrivinduet': {
+    //   name: 'Industrivinduet',
+    //   key: 'industrivinduet',
+    //   web: 'http://www.smorekoppen.no/?subsite=industrivinduet',
+    //   // feed not available, use getNews instead
+    //   logo: './org/industrivinduet/logo.png',
+    //   icon: './org/industrivinduet/icon.png',
+    //   symbol: './org/industrivinduet/symbol.png',
+    //   placeholder: './org/industrivinduet/placeholder.png',
+    //   palette: 'blue',
+    //   getImage: function(link, callback) {
+    //     Images.get(this, link, callback, {newsSelector:'div#main', domainUrl:'smorekoppen.no/'});
+    //   },
+    //   getNews: function(posts, callback) {
+    //     var self = this;
+    //     Ajaxer.getCleanHtml({
+    //       url: self.web,
+    //       success: function(html) {
+    //         var count = 0;
+
+    //         // Add each item from news tags
+    //         if ($(html).find('li[id^="article-"]').length != 0) {
+    //           $(html).find('li[id^="article-"]').each( function() {
+    //             if (count < posts.length) {
+    //               var post = posts[count];
+                  
+    //               // The popular fields
+    //               post.title = $(this).find('h2 a').text();
+    //               post.link = $(this).find('h2 a').attr('href');
+    //               post.description = $(this).eq(0).find('p.subline').text().trim().replace(/\s+/g, ' ');
+    //               post.author = $(this).next().find('p.subline').text().trim();
+    //               post.image = $(this).find('pic').attr('src');
+
+    //               // Author fixing
+    //               post.author = post.author.match(/[a-zæøå\-'_]+ [a-zæøå\-'_]+/i);
+    //               if (post.author !== null)
+    //                 post.author = post.author[0];
+    //               else
+    //                 post.author = 'A/F Smørekoppen';
+
+    //               // Image fixing
+    //               if (typeof post.image === 'undefined')
+    //                 post.image = self.placeholder;
+    //               else
+    //                 post.image = self.web + post.image;
+
+    //               posts[count++] = post;
+    //             }
+    //           });
+    //         }
+    //         else {
+    //           console.error('No articles found at', self.web);
+    //         }
+    //         callback(posts);
+    //       },
+    //       error: function(e) {
+    //         console.error('Could not fetch '+self.name+' website');
+    //       },
+    //     });
+    //   },
+    // },
 
     'solan': {
       name: 'Solan',
