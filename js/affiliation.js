@@ -381,16 +381,16 @@ var Affiliation = {
           success: function(html) {
             var count = 0;
             // Add each item from news tags
-            if ($(html).find('div .post .caption').length != 0) {
-              $(html).find('div .post .caption').each( function() {
+            if ($(html).find('div.post').length != 0) {
+              $(html).find('div.post').each( function() {
                 if (count < posts.length) {
                   var post = posts[count];
                   
                   // The popular fields
-                  post.title = $(this).find("h3 a").filter(':first').text();
-                  post.link = $(this).find("p:last a").attr('href');
-                  post.description = $(this).find(".introtext p").filter(':first').text();
-                  post.image = $(this).find("pic").filter(':first').attr('src');
+                  post.title = $(this).find("h3").text();
+                  post.link = $(this).find("a:first").attr('href');
+                  post.description = $(this).find("p").eq(1).text();
+                  post.image = $(this).find("pic:first").attr('src');
 
                   // Link fixing
                   post.link = 'http://mannhullet.no' + post.link;
