@@ -1254,7 +1254,7 @@ var Affiliation = {
       name: 'DION',
       key: 'dion',
       web: 'http://www.dion.ntnu.no/',
-      feed: 'http://www.dion.ntnu.no/en_US/feeds/news-en_US/',
+      feed: 'http://www.dion.ntnu.no/feed/',
       logo: './org/dion/logo.png',
       icon: './org/dion/icon.png',
       symbol: './org/dion/symbol.png',
