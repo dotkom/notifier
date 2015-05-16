@@ -678,39 +678,108 @@ var updateNewsImages = function() {
 }
 
 //
-// Buttons
+// Header buttons and logo
 //
 
-var optionsText = function(show) {
-  fadeButtonText(show, 'Endre innstillinger');
-}
+var bindHeaderButtonsAndLogo = function() {
 
-var tipsText = function(show) {
-  fadeButtonText(show, 'Om appKom, tips, linker, ++');
-}
+  // Bind buttons to hovertext
 
-var chatterText = function(show) {
+  var fadeButtonText = function(buttons) {
+    for (var selector in buttons) {
+      $(selector).hover(function() {
+        var textToShow = buttons[selector];
+        $('#buttontext').html(textToShow);
+        $('#buttontext').fadeIn(100);
+      },function() {
+        $('#buttontext').fadeOut(50, function() {
+          $('#buttontext').html('');
+        });
+      });
+    };
+  };
   var slack = Affiliation.org[ls.affiliationKey1].slack;
-  var text = 'Join us at ' + slack.match(/https?:\/\/(.*?)\//)[1];
-  fadeButtonText(show, text);
-}
+  var slackText = 'Join us at ' + slack.match(/https?:\/\/(.*?)\//)[1];
+  fadeButtonText({
+    '#optionsButton': 'Endre innstillinger',
+    '#chatterButton': slackText,
+    '#tipsButton': 'Om appKom, tips, linker, ++',
+    '#colorButton': 'Endre fargepalett',
+  });
 
-var colorText = function(show) {
-  fadeButtonText(show, 'Endre fargepalett');
-}
+  // Click events
 
-var fadeButtonText = function(show, msg) {
-  var fadeInSpeed = 150;
-  var fadeOutSpeed = 50;
-  if (show) {
-    $('#buttontext').html(msg);
-    $('#buttontext').fadeIn(fadeInSpeed);
-  }
-  else {
-    $('#buttontext').fadeOut(fadeOutSpeed);
-    $('#buttontext').html('');
-  }
-}
+  $('#logo').click(function() {
+    var name = Affiliation.org[ls.affiliationKey1].name;
+    Analytics.trackEvent('clickLogo', name);
+    var web = Affiliation.org[ls.affiliationKey1].web;
+    Browser.openTab(web);
+    window.close();
+  });
+
+  $('#optionsButton').click(function() {
+    Browser.openTab('options.html');
+    Analytics.trackEvent('clickOptions');
+    window.close();
+  });
+
+  $('#chatterButton').click(function() {
+    var slack = Affiliation.org[ls.affiliationKey1].slack;
+    Browser.openTab(slack);
+    Analytics.trackEvent('clickChatter', ls.affiliationKey1);
+    window.close();
+  });
+
+  $('#tipsButton').click(function() {
+    if ($('#tips').filter(':visible').length === 1) {
+      $('#tips').fadeOut('fast');
+    }
+    else {
+      $('#tips').fadeIn('fast');
+      Analytics.trackEvent('clickTips');
+    }
+  });
+  $('#tips:not(a)').click(function() {
+    $('#tips').fadeOut('fast');
+  });
+  $('#tips a').click(function() {
+    var link = $(this).attr('href');
+    Browser.openTab(link);
+    Analytics.trackEvent('clickTipsLink', link);
+    window.close();
+  });
+
+  $('#colorButton').click(function() {
+    // Clear timeout that might be waiting to fade out button text
+    if (isNumber(ls.colorTimeout))
+      clearTimeout(parseInt(ls.colorTimeout));
+    // Get all palettes
+    var colors = Object.keys(Palettes.palettes);
+    // And any special affiliation palette as well
+    var affPalette = Affiliation.org[ls.affiliationKey1].palette;
+    if (colors.indexOf(affPalette) === -1) {
+      colors.push(affPalette);
+    }
+    // Find current palette
+    var currentPalette = $('#palette').attr('href').match(/\w+\/\w+\/(\w+)\.\w+/)[1];
+    var index = colors.indexOf(currentPalette);
+    // Goto next palette
+    index++;
+    if (!colors[index])
+      index = 0;
+    ls.affiliationPalette = colors[index];
+    Palettes.load();
+    // Text feedback, fade out after timeout
+    fadeButtonText(true, 'Fargepalett satt til "' + colors[index].capitalize() + '"');
+    clearTimeout()
+    ls.colorTimeout = setTimeout(function() {
+      fadeButtonText(false, '')
+    }, 2000);
+    // And track it
+    Analytics.trackEvent('clickColor');
+  });
+
+};
 
 //
 // Document ready function
@@ -777,12 +846,10 @@ $(document).ready(function() {
   $('#logo').prop('src', logo);
   $('link[rel="shortcut icon"]').prop('href', icon);
   $('#news .post img').prop('src', placeholder);
-  $('#chatterIcon').prop('src', icon);
 
   // Hide Chatter button if not applicable
   if (Affiliation.org[ls.affiliationKey1].slack) {
     $('#chatterButton').show();
-    $('#chatterIcon').show();
   }
 
   // Apply the affiliation's own name for it's office
@@ -806,76 +873,6 @@ $(document).ready(function() {
     Analytics.trackEvent('closeSpecialNews', $('#specialNews').text().trim());
     localStorage.closedSpecialNews = $('#specialNews a').attr('href');
     $('#specialNews').slideUp();
-  });
-
-  $('#logo').click(function() {
-    var name = Affiliation.org[ls.affiliationKey1].name;
-    Analytics.trackEvent('clickLogo', name);
-    var web = Affiliation.org[ls.affiliationKey1].web;
-    Browser.openTab(web);
-    window.close();
-  });
-
-  $('#optionsButton').click(function() {
-    Browser.openTab('options.html');
-    Analytics.trackEvent('clickOptions');
-    window.close();
-  });
-
-  $('#tipsButton').click(function() {
-    if ($('#tips').filter(':visible').length === 1) {
-      $('#tips').fadeOut('fast');
-    }
-    else {
-      $('#tips').fadeIn('fast');
-      Analytics.trackEvent('clickTips');
-    }
-  });
-  $('#tips:not(a)').click(function() {
-    $('#tips').fadeOut('fast');
-  });
-  $('#tips a').click(function() {
-    var link = $(this).attr('href');
-    Browser.openTab(link);
-    Analytics.trackEvent('clickTipsLink', link);
-    window.close();
-  });
-
-  $('#chatterButton').click(function() {
-    var slack = Affiliation.org[ls.affiliationKey1].slack;
-    Browser.openTab(slack);
-    Analytics.trackEvent('clickChatter', ls.affiliationKey1);
-    window.close();
-  });
-
-  $('#colorButton').click(function() {
-    // Clear timeout that might be waiting to fade out button text
-    if (isNumber(ls.colorTimeout))
-      clearTimeout(parseInt(ls.colorTimeout));
-    // Get all palettes
-    var colors = Object.keys(Palettes.palettes);
-    // And any special affiliation palette as well
-    var affPalette = Affiliation.org[ls.affiliationKey1].palette;
-    if (colors.indexOf(affPalette) === -1) {
-      colors.push(affPalette);
-    }
-    // Find current palette
-    var currentPalette = $('#palette').attr('href').match(/\w+\/\w+\/(\w+)\.\w+/)[1];
-    var index = colors.indexOf(currentPalette);
-    // Goto next palette
-    index++;
-    if (!colors[index])
-      index = 0;
-    ls.affiliationPalette = colors[index];
-    Palettes.load();
-    // Text feedback, fade out after timeout
-    fadeButtonText(true, 'Fargepalett satt til "' + colors[index].capitalize() + '"');
-    clearTimeout()
-    ls.colorTimeout = setTimeout(function() {
-      fadeButtonText(false, '')
-    }, 2000);
-    // And track it
-    Analytics.trackEvent('clickColor');
   });
 
   // Bind realtimebus lines to their timetables
@@ -913,43 +910,10 @@ $(document).ready(function() {
   };
   $('#bus .error').click(openOracle);
 
+  // Bind header buttons and logo
+  bindHeaderButtonsAndLogo();
   // Bind oracle
   bindOracle();
-
-  // Bind buttons to hovertext
-  $('#optionsButton').mouseenter(function() {
-    optionsText(true);
-  });
-  $('#optionsButton').mouseleave(function() {
-    optionsText(false);
-  });
-
-  $('#tipsButton').mouseenter(function() {
-    tipsText(true);
-  });
-  $('#tipsButton').mouseleave(function() {
-    tipsText(false);
-  });
-
-  $('#chatterButton').mouseenter(function() {
-    chatterText(true);
-  });
-  $('#chatterButton').mouseleave(function() {
-    chatterText(false);
-  });
-  $('#chatterIcon').mouseenter(function() {
-    chatterText(true);
-  });
-  $('#chatterIcon').mouseleave(function() {
-    chatterText(false);
-  });
-
-  $('#colorButton').mouseenter(function() {
-    colorText(true);
-  });
-  $('#colorButton').mouseleave(function() {
-    colorText(false);
-  });
 
   // React to Konami code
   $(document).konami({
