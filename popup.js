@@ -691,7 +691,7 @@ var tipsText = function(show) {
 
 var chatterText = function(show) {
   var slack = Affiliation.org[ls.affiliationKey1].slack;
-  var text = 'Join us @ ' + slack.match(/https?:\/\/(.*?)\//)[1];
+  var text = 'Join us at ' + slack.match(/https?:\/\/(.*?)\//)[1];
   fadeButtonText(show, text);
 }
 

@@ -139,6 +139,7 @@ body {
 
 #container {
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px;
 
   #header {
@@ -156,28 +157,13 @@ body {
         width: auto;
         border-radius: 5px;
         margin-right: 12px;
+        border: 1px solid transparent;
         cursor: pointer;
         -webkit-transition: all .15s ease-out;
       }
       .popupbutton:hover {
-        box-shadow:
-          inset 0 0 7px #777,
-          0 0 13px #bbb,
-          0 0 20px #bbb,
-          0 0 27px #bbb;
-      }
-      #chatterButton, #chatterIcon {
-        display: none;
-      }
-      #chatterIcon {
-        pointer-events: none;
-        position: absolute;
         cursor: pointer;
-        left: 165px;
-        top: 28px;
-        z-index: 50;
-        width: 16px;
-        height: 16px;
+        border: 1px solid white;
       }
     }
 
@@ -188,10 +174,6 @@ body {
       float: left;
       width: 213px;
       font-weight: bold;
-      text-shadow:
-        0 0 13px white,
-        0 0 20px white,
-        0 0 27px white;
     }
     #logo {
       .debugElement;
