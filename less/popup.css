@@ -455,7 +455,6 @@ body {
   margin-right: 12px;
   cursor: pointer;
   border: 1px solid transparent;
-  -webkit-transition: all 0.15s ease-out;
 }
 #container #header #buttons .popupbutton:hover {
   border: 1px solid white;

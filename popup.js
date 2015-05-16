@@ -556,11 +556,7 @@ var bindHeaderButtonsAndLogo = function() {
       $(selector).hover(function() {
         var textToShowInner = $(this).attr('data');
         $('#buttontext').html(textToShowInner);
-        $('#buttontext').fadeIn(100);
-      },function() {
-        $('#buttontext').fadeOut(50, function() {
-          $('#buttontext').html('');
-        });
+        $('#buttontext').toggle();
       });
     };
   };
