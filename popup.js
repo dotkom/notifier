@@ -678,7 +678,52 @@ var updateNewsImages = function() {
 }
 
 //
-// Header buttons and logo
+// Affiliation settings
+//
+
+var applyAffiliationSettings = function() {
+
+  // Applying affiliation graphics
+  var key = ls.affiliationKey1;
+  var logo = Affiliation.org[key].logo;
+  var icon = Affiliation.org[key].icon;
+  var placeholder = Affiliation.org[key].placeholder;
+  $('#logo').prop('src', logo);
+  $('link[rel="shortcut icon"]').prop('href', icon);
+  $('#news .post img').prop('src', placeholder);
+
+  // Hide Chatter button if not applicable
+  if (Affiliation.org[ls.affiliationKey1].slack) {
+    $('#chatterButton').show();
+  }
+
+  // Apply the affiliation's own name for it's office
+  if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hw.office) {
+      $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
+    }
+  }
+}
+
+//
+// Event handlers: Special news
+//
+
+var bindSpecialNews = function() {
+  $('div#specialNews a').click(function() {
+    Analytics.trackEvent('clickSpecialNews', $('#specialNews').text().trim());
+    Browser.openTab($('#specialNews a').attr('href'));
+    window.close();
+  });
+  $('div#specialNews img').click(function() {
+    Analytics.trackEvent('closeSpecialNews', $('#specialNews').text().trim());
+    localStorage.closedSpecialNews = $('#specialNews a').attr('href');
+    $('#specialNews').slideUp();
+  });
+}
+
+//
+// Event handlers: Header buttons and logo
 //
 
 var bindHeaderButtonsAndLogo = function() {
@@ -687,9 +732,11 @@ var bindHeaderButtonsAndLogo = function() {
 
   var fadeButtonText = function(buttons) {
     for (var selector in buttons) {
+      var textToShow = buttons[selector];
+      $(selector).attr('data', textToShow);
       $(selector).hover(function() {
-        var textToShow = buttons[selector];
-        $('#buttontext').html(textToShow);
+        var textToShowInner = $(this).attr('data');
+        $('#buttontext').html(textToShowInner);
         $('#buttontext').fadeIn(100);
       },function() {
         $('#buttontext').fadeOut(50, function() {
@@ -707,7 +754,7 @@ var bindHeaderButtonsAndLogo = function() {
     '#colorButton': 'Endre fargepalett',
   });
 
-  // Click events
+  // Button and logo clicks
 
   $('#logo').click(function() {
     var name = Affiliation.org[ls.affiliationKey1].name;
@@ -778,8 +825,76 @@ var bindHeaderButtonsAndLogo = function() {
     // And track it
     Analytics.trackEvent('clickColor');
   });
-
 };
+
+//
+// Event handlers: Realtime bus
+//
+
+var bindRealtimeBus = function() {
+
+  // Bind realtimebus lines to their timetables
+  var timetables = JSON.parse(localStorage.busTimetables);
+  var clickBus = function() {
+    try {
+      var line = $(this).find('.line').text().trim().split(' ')[0];
+      var link = timetables[line];
+      Browser.openTab(link);
+      Analytics.trackEvent('clickTimetable');
+      window.close();
+    }
+    catch (e) {
+      console.error('Failed at clickBus', e);
+    }
+  }
+
+  // Register click event for all lines
+  var busLanes = ['.first', '.second', '.third'];
+  for (var i in busLanes) {
+    $('#bus #firstBus '+busLanes[i]).click(clickBus);
+    $('#bus #secondBus '+busLanes[i]).click(clickBus);
+  }
+
+  // Bind AtB logo and any realtimebus error messages to atb.no/…
+  var openAtb = function() {
+    Browser.openTab('http://www.atb.no');
+    Analytics.trackEvent('clickAtb');
+    window.close();
+  };
+  $('#bus #atbLogo').click(openAtb);
+  var openOracle = function() {
+    Browser.openTab('http://www.atb.no/bussorakelet');
+    Analytics.trackEvent('clickAtbError');
+    window.close();
+  };
+  $('#bus .error').click(openOracle);
+}
+
+//
+// Event handlers: Konami code
+//
+
+var bindKonami = function() {
+  // React to Konami code
+  $(document).konami({
+    code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
+    callback: function() {
+      Analytics.trackEvent('toggleKonami');
+
+      // Remove #bus background color and any #background filters
+      $('#bus').attr('style', 'background-color:transparent; box-shadow:none;');
+      $('#background').attr('style', '-webkit-filter: none');
+
+      // A list of the vids available. Add more vids here if you want more
+      var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', 'asnZjyWDFlQ', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
+
+      // Gets a random number, builds the html and displays the vid
+      var konamiNum = Math.floor(Math.random() * links.length);
+      var htmlVid = '<iframe style="position:absolute;width:800px;height:660px;left:-145px;top:-30px;" src="http://www.youtube.com/embed/' + links[konamiNum] + '?autoplay=1&loop=1&autohide=1" frameborder="0" allowfullscreen></iframe>'
+      $("#background").html(htmlVid);
+    },
+  });
+}
 
 //
 // Document ready function
@@ -838,102 +953,22 @@ $(document).ready(function() {
   if (ls.showCantina !== 'true') $('#cantinas').hide();
   if (ls.showBus !== 'true') $('#bus').hide();
 
-  // Applying affiliation graphics
-  var key = ls.affiliationKey1;
-  var logo = Affiliation.org[key].logo;
-  var icon = Affiliation.org[key].icon;
-  var placeholder = Affiliation.org[key].placeholder;
-  $('#logo').prop('src', logo);
-  $('link[rel="shortcut icon"]').prop('href', icon);
-  $('#news .post img').prop('src', placeholder);
+  // Apply all affiliation settings
+  applyAffiliationSettings();
 
-  // Hide Chatter button if not applicable
-  if (Affiliation.org[ls.affiliationKey1].slack) {
-    $('#chatterButton').show();
-  }
-
-  // Apply the affiliation's own name for it's office
-  if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (Affiliation.org[ls.affiliationKey1].hw.office) {
-      $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
-    }
-  }
+  // Bind special news
+  bindSpecialNews();
+  // Bind header buttons and logo
+  bindHeaderButtonsAndLogo();
+  // Bind realtime bus and oracle
+  bindRealtimeBus();
+  bindOracle();
+  // Bind konami code
+  bindKonami();
 
   // Track popularity of the chosen palette, the palette
   // itself is loaded a lot earlier for perceived speed
   Analytics.trackEvent('loadPalette', ls.affiliationPalette);
-
-  // Click events
-  $('div#specialNews a').click(function() {
-    Analytics.trackEvent('clickSpecialNews', $('#specialNews').text().trim());
-    Browser.openTab($('#specialNews a').attr('href'));
-    window.close();
-  });
-  $('div#specialNews img').click(function() {
-    Analytics.trackEvent('closeSpecialNews', $('#specialNews').text().trim());
-    localStorage.closedSpecialNews = $('#specialNews a').attr('href');
-    $('#specialNews').slideUp();
-  });
-
-  // Bind realtimebus lines to their timetables
-  var timetables = JSON.parse(localStorage.busTimetables);
-  var clickBus = function() {
-    try {
-      var line = $(this).find('.line').text().trim().split(' ')[0];
-      var link = timetables[line];
-      Browser.openTab(link);
-      Analytics.trackEvent('clickTimetable');
-      window.close();
-    }
-    catch (e) {
-      console.error('Failed at clickBus', e);
-    }
-  }
-  // Register click event for all lines
-  var busLanes = ['.first', '.second', '.third'];
-  for (var i in busLanes) {
-    $('#bus #firstBus '+busLanes[i]).click(clickBus);
-    $('#bus #secondBus '+busLanes[i]).click(clickBus);
-  }
-
-  // Bind AtB logo and any realtimebus error messages to atb.no/…
-  var openAtb = function() {
-    Browser.openTab('http://www.atb.no');
-    Analytics.trackEvent('clickAtb');
-    window.close();
-  };
-  $('#bus #atbLogo').click(openAtb);
-  var openOracle = function() {
-    Browser.openTab('http://www.atb.no/bussorakelet');
-    Analytics.trackEvent('clickAtbError');
-    window.close();
-  };
-  $('#bus .error').click(openOracle);
-
-  // Bind header buttons and logo
-  bindHeaderButtonsAndLogo();
-  // Bind oracle
-  bindOracle();
-
-  // React to Konami code
-  $(document).konami({
-    code: ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'],
-    callback: function() {
-      Analytics.trackEvent('toggleKonami');
-
-      // Remove #bus background color and any #background filters
-      $('#bus').attr('style', 'background-color:transparent; box-shadow:none;');
-      $('#background').attr('style', '-webkit-filter: none');
-
-      // A list of the vids available. Add more vids here if you want more
-      var links = ['eh7lp9umG2I', 'qyXTgqJtoGM', 'z9Uz1icjwrM', 'sTSA_sWGM44', 'asnZjyWDFlQ', 'NL6CDFn2i3I', 'f4l_MxTMq-4'];
-
-      // Gets a random number, builds the html and displays the vid
-      var konamiNum = Math.floor(Math.random() * links.length);
-      var htmlVid = '<iframe style="position:absolute;width:800px;height:660px;left:-145px;top:-30px;" src="http://www.youtube.com/embed/' + links[konamiNum] + '?autoplay=1&loop=1&autohide=1" frameborder="0" allowfullscreen></iframe>'
-      $("#background").html(htmlVid);
-    },
-  });
 
   // Set the cursor to focus on the question field
   // (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)

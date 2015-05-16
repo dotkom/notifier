@@ -453,12 +453,11 @@ body {
   width: auto;
   border-radius: 5px;
   margin-right: 12px;
-  border: 1px solid transparent;
   cursor: pointer;
+  border: 1px solid transparent;
   -webkit-transition: all 0.15s ease-out;
 }
 #container #header #buttons .popupbutton:hover {
-  cursor: pointer;
   border: 1px solid white;
 }
 #container #header #buttontext {
