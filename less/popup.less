@@ -163,6 +163,9 @@ body {
       .popupbutton:hover {
         border: 1px solid white;
       }
+      #chatterButton {
+        display: none;
+      }
     }
 
     #buttontext {
@@ -312,13 +315,11 @@ body {
   #news {
     /* #full for using a single column */
     #full {
-      .post {
-        .item {
-          img.regular {
-            min-height: 80px;
-            max-height: 200px;
-            margin: 0 7px 0 0;
-          }
+      article {
+        img.regular {
+          min-height: 80px;
+          max-height: 200px;
+          margin: 0 7px 0 0;
         }
       }
     }
@@ -329,44 +330,37 @@ body {
       }
     }
 
-    .post {
+    article {
       margin-top: 13px;
-      .item {
-        margin-top: -5px;
-        min-height: 40px;
-        cursor: pointer;
-        margin-left: -7px;
-        margin-right: -7px;
-        padding: 7px;
-        -webkit-transition: box-shadow 0.3s ease-out 0s;
 
-        &:hover {
-          box-shadow:
-            inset 0 0 2px #bbb,
-            0 0 13px white;
-        }
-        
-        .title.flashy {
-          font-size: 15px;
-          line-height: 18px;
-          top: 13px;
-          left: 8px;
-        }
 
-        .author.flashy {
-          font-size: 12px;
-          bottom: 14px;
-          left: 8px;
-        }
+      min-height: 40px;
+      cursor: pointer;
 
-        img {
-          min-height: 80px;
-          max-height: 250px;
-          padding: 4px;
-        }
-        img.regular {
-          margin: 2px 0 0 4px;
-        }
+      &:hover {
+        text-decoration: underline;
+      }
+      
+      .title.flashy {
+        font-size: 15px;
+        line-height: 18px;
+        top: 7px;
+        left: 8px;
+      }
+
+      .author.flashy {
+        font-size: 12px;
+        bottom: 8px;
+        left: 8px;
+      }
+
+      img {
+        min-height: 80px;
+        max-height: 250px;
+        padding: 4px;
+      }
+      img.regular {
+        margin: 2px 0 0 4px;
       }
     }
     .unread {

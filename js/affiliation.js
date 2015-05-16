@@ -91,6 +91,7 @@ var Affiliation = {
           meeting: './org/DEBUG/icon-meeting.png',
         },
       },
+      slack: 'https://onlinentnu.slack.com/signup',
       getImage: function(link, callback) {
         Images.get(this, link, callback, {directHit:'img#header-img', domainUrl:'dusken.no'});
       },

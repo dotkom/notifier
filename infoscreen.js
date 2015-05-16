@@ -274,7 +274,7 @@ var updateBus = function() {
 var updateAffiliationNews = function(number) {
   console.log('updateAffiliationNews'+number);
   // Displaying the news feed (prefetched by the background page)
-  var feedItems = ls['affiliationFeedItems'+number];
+  var news = ls['affiliationNews'+number];
   // Detect selector
   var selector = (number === '1' ? '#left' : '#right');
   if (ls.showAffiliation2 !== 'true') {
@@ -285,9 +285,9 @@ var updateAffiliationNews = function(number) {
   $('#news '+selector+' .title').html(name);
 
   // Display news from storage
-  if (typeof feedItems !== 'undefined') {
-    feedItems = JSON.parse(feedItems);
-    displayItems(feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number);
+  if (typeof news !== 'undefined') {
+    news = JSON.parse(news);
+    displayItems(news, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number);
   }
   else {
     // Offline or unresponsive

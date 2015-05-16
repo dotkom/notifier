@@ -303,9 +303,8 @@ var updateBus = function() {
 var updateAffiliationNews = function(number) {
   console.log('updateAffiliationNews'+number);
 
-  var displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
-    // Empty the news column
-    $('#news '+column+' .post').remove();
+  var displayItems = function(items, selector, newsListName, viewedListName, unreadCountName) {
+
     // Get feedkey
     var feedKey = items[0].feedKey;
 
@@ -320,6 +319,9 @@ var updateAffiliationNews = function(number) {
 
     // Prepare the list of images with salt, pepper and some vinegar
     var storedImages = JSON.parse(ls.storedImages);
+
+    // Prepare a column for our elements
+    var column = $();
 
     // Add feed items
     $.each(items, function (index, item) {
@@ -341,16 +343,13 @@ var updateAffiliationNews = function(number) {
         // }
 
         // EXPLANATION NEEDED:
-        // .item[data] contains the link
-        // .item[name] contains the alternative link, if one exists, otherwise null
-        var date = '';
+        // article[data] contains the link
+        // article[name] contains the alternative link, if one exists, otherwise null
         var altLink = '';
         if (item.altLink !== null) {
           altLink = ' name="' + item.altLink + '"';
         }
-        // NOTE: Removing date from use for now because it's borked
-        // if item.date !== null and ls.showAffiliation2 is 'false'
-        //   date = ' den ' + item.date
+
         var descLimit = 140;
         if (ls.showAffiliation2 === 'true') {
           descLimit = 100;
@@ -363,6 +362,7 @@ var updateAffiliationNews = function(number) {
         if (typeof storedImage !== 'undefined') {
           // Also, check whether there's already a qualified image before replacing it
           if (item.image.indexOf('http') === -1) {
+            console.warn('Unqualified image:', item.image);
             item.image = storedImage;
           }
         }
@@ -371,31 +371,31 @@ var updateAffiliationNews = function(number) {
 
         if (ls.showAffiliation2 === 'true') {
           htmlItem = [
-            '<div class="post">',
-              '<div class="item" data="' + item.link + '"' + altLink + '>',
-                '<img class="flashy" src="' + item.image + '" />',
-                '<div class="title flashy">' + readUnread + item.title + '</div>',
-                '<div class="author flashy">&ndash; Av ' + item.creator + '</div>',
-              '</div>',
-            '</div>',
+            '<article data="' + item.link + '"' + altLink + '>',
+              '<img class="flashy" src="' + item.image + '" />',
+              '<div class="title flashy">' + readUnread + item.title + '</div>',
+              '<div class="author flashy">&ndash; Av ' + item.creator + '</div>',
+            '</article>',
           ].join('\n');
         }
         else {
           htmlItem = [
-            '<div class="post">',
-              '<div class="item" data="' + item.link + '"' + altLink + '>',
-                '<img class="regular" src="' + item.image + '" />',
-                '<div class="title">' + readUnread + item.title + '</div>',
-                item.description,
-                '<div class="author">&ndash; Av ' + item.creator + '</div>',
-              '</div>',
-            '</div>',
+            '<article data="' + item.link + '"' + altLink + '>',
+              '<img class="regular" src="' + item.image + '" />',
+              '<div class="title">' + readUnread + item.title + '</div>',
+              item.description,
+              '<div class="author">&ndash; Av ' + item.creator + '</div>',
+            '</article>',
           ].join('\n');
         }
 
-        $('#news '+column).append(htmlItem);
+        column = column.add(htmlItem);
       }
     });
+
+    // Remove old news, add fresh news
+    $('#news ' + selector + ' article').remove();
+    $('#news ' + selector).append(column);
 
     // Store list of last viewed items
     ls[viewedListName] = JSON.stringify(viewedList);
@@ -405,7 +405,7 @@ var updateAffiliationNews = function(number) {
     ls[unreadCountName] = 0;
 
     // Make news items open extension website while closing popup
-    $('#news '+column+' .item').click(function() {
+    $('#news '+selector+' article').click(function() {
       // The link is embedded as the ID of the element, we don't want to use
       // <a> anchors because it creates an ugly box marking the focus element.
       // Note that altLinks are embedded in the name-property of the element,
@@ -421,7 +421,7 @@ var updateAffiliationNews = function(number) {
       window.close();
     });
 
-    // Update images some times after news are loaded in case of late image updates
+    // Update images some times after news are loaded in case of late image arrivals
     // which are common when the browser has just started Notifier
     var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
     for (var i in times) {
@@ -459,7 +459,7 @@ var updateAffiliationNews = function(number) {
     // The background process looks for images, and sometimes that process
     // isn't finished before the popup loads, that's why we have to check
     // in with localStorage.storedImages a couple of times.
-    $.each($('#news .post .item'), function(i, val) {
+    $.each($('#news article'), function(i, val) {
       var link = $(this).attr('data');
       var image = JSON.parse(localStorage.storedImages)[link];
       if (typeof image !== 'undefined') {
@@ -468,29 +468,32 @@ var updateAffiliationNews = function(number) {
     });
   }
 
-  // Displaying the news feed (prefetched by the background page)
-  var feedItems = ls['affiliationFeedItems'+number];
+  // Get the news feed (prefetched by the background page)
+  var news = ls['affiliationNews'+number];
+  
   // Detect selector
   var selector = (number === '1' ? '#left' : '#right');
   if (ls.showAffiliation2 !== 'true') {
     selector = '#full';
   }
+
   // Set affiliation name
   var name = Affiliation.org[ls['affiliationKey'+number]].name;
   $('#news '+selector+' .title').html(name);
 
-  // Display news from storage
-  if (typeof feedItems !== 'undefined') {
-    feedItems = JSON.parse(feedItems);
-    displayItems(feedItems, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number);
+  // Parse and display news
+  if (typeof news !== 'undefined') {
+    news = JSON.parse(news);
+    displayItems(news, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number);
   }
   else {
     // Offline or unresponsive
     var key = ls['affiliationKey'+number];
     var name = Affiliation.org[key].name;
-    $('#news '+selector+' .post').remove();
-    $('#news '+selector).append('<div class="post"><div class="item">Frakoblet fra nyhetsstrøm</div></div>');
-    $('#news '+selector+' .post').click(function() {
+    $('#news '+selector+' article').remove(); // Remove all existing articles
+    $('#news '+selector).append('<article>Frakoblet fra nyhetsstrøm</article>');
+    $('#news '+selector+' article').click(function() {
+      // Link to affiliation website
       Browser.openTab(Affiliation.org[key].web);
     });
   }
@@ -560,14 +563,17 @@ var bindHeaderButtonsAndLogo = function() {
       });
     };
   };
-  var slack = Affiliation.org[ls.affiliationKey1].slack;
-  var slackText = 'Join us at ' + slack.match(/https?:\/\/(.*?)\//)[1];
-  fadeButtonText({
+  var buttons = {
     '#optionsButton': 'Endre innstillinger',
-    '#chatterButton': slackText,
     '#tipsButton': 'Om appKom, tips, linker, ++',
     '#colorButton': 'Endre fargepalett',
-  });
+  }
+  var slack = Affiliation.org[ls.affiliationKey1].slack;
+  if (slack) {
+    slack = 'Join us at ' + slack.match(/https?:\/\/(.*?)\//)[1];
+    buttons['#chatterButton'] = slack;
+  }
+  fadeButtonText(buttons);
 
   // Button and logo clicks
 

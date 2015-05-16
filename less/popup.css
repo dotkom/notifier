@@ -236,7 +236,7 @@ body {
   display: none;
   /* no need for affiliation title when only one is in use */
 }
-#container #news #full .post .item img.regular {
+#container #news #full article img.regular {
   float: left;
   width: 33%;
 }
@@ -253,22 +253,19 @@ body {
 #container #news #right .title.regular {
   color: LightGrey;
 }
-#container #news .post {
+#container #news article {
   border: 1px solid transparent;
   position: relative;
   clear: both;
-}
-#container #news .post .item {
-  border: 1px solid transparent;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-#container #news .post .item .title {
+#container #news article .title {
   position: relative;
   margin-top: 0;
   /* overrides default value */
 }
-#container #news .post .item .title.flashy {
+#container #news article .title.flashy {
   position: absolute;
   width: 92%;
   color: white;
@@ -277,12 +274,12 @@ body {
   text-transform: none;
   text-shadow: 0 0 5px #333333, 0 0 10px #333333, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
 }
-#container #news .post .item .author {
+#container #news article .author {
   display: inline;
   position: relative;
   font-style: italic;
 }
-#container #news .post .item .author.flashy {
+#container #news article .author.flashy {
   position: absolute;
   width: 92%;
   color: white;
@@ -290,16 +287,16 @@ body {
   font-weight: lighter;
   text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
 }
-#container #news .post .item img {
-  width: auto;
+#container #news article img {
+  width: 100%;
   height: auto;
   background: snow;
 }
-#container #news .post .item img.regular {
+#container #news article img.regular {
   float: right;
   width: 33%;
 }
-#container #news .post .item img.flashy {
+#container #news article img.flashy {
   float: left;
   width: 97%;
   margin: 0;
@@ -459,6 +456,9 @@ body {
 #container #header #buttons .popupbutton:hover {
   border: 1px solid white;
 }
+#container #header #buttons #chatterButton {
+  display: none;
+}
 #container #header #buttontext {
   border: 1px solid transparent;
   display: none;
@@ -598,7 +598,7 @@ body {
 #container #news {
   /* #full for using a single column */
 }
-#container #news #full .post .item img.regular {
+#container #news #full article img.regular {
   min-height: 80px;
   max-height: 200px;
   margin: 0 7px 0 0;
@@ -607,39 +607,31 @@ body {
 #container #news #right > .title {
   margin-bottom: -5px;
 }
-#container #news .post {
+#container #news article {
   margin-top: 13px;
-}
-#container #news .post .item {
-  margin-top: -5px;
   min-height: 40px;
   cursor: pointer;
-  margin-left: -7px;
-  margin-right: -7px;
-  padding: 7px;
-  -webkit-transition: box-shadow 0.3s ease-out 0s;
 }
-#container #news .post .item:hover {
-  box-shadow: inset 0 0 2px #bbb,
-            0 0 13px white;
+#container #news article:hover {
+  text-decoration: underline;
 }
-#container #news .post .item .title.flashy {
+#container #news article .title.flashy {
   font-size: 15px;
   line-height: 18px;
-  top: 13px;
+  top: 7px;
   left: 8px;
 }
-#container #news .post .item .author.flashy {
+#container #news article .author.flashy {
   font-size: 12px;
-  bottom: 14px;
+  bottom: 8px;
   left: 8px;
 }
-#container #news .post .item img {
+#container #news article img {
   min-height: 80px;
   max-height: 250px;
   padding: 4px;
 }
-#container #news .post .item img.regular {
+#container #news article img.regular {
   margin: 2px 0 0 4px;
 }
 #container #news .unread {

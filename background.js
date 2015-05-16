@@ -183,7 +183,7 @@ var updateAffiliationNews = function(number, callback) {
 }
 
 var saveAndCountNews = function(items, number) {
-  var feedItems = 'affiliationFeedItems' + number;
+  var feedItems = 'affiliationNews' + number;
   var newsList = 'affiliationNewsList' + number;
   var unreadCount = 'affiliationUnreadCount' + number;
   var lastNotified = 'affiliationLastNotified' + number;

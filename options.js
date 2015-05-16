@@ -121,7 +121,7 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
     }
 
     // Throw out old news
-    ls.removeItem('affiliationFeedItems'+number);
+    ls.removeItem('affiliationNews'+number);
 
     if (ls['showAffiliation'+number] === 'true') {
       // Update to new feed

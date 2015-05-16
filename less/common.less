@@ -209,12 +209,10 @@ body {
       position: relative;
       width: 100%;
       float: left;
-      .post {
-        .item {
-          img.regular {
-            float: left;
-            width: 33%;
-          }
+      article {
+        img.regular {
+          float: left;
+          width: 33%;
         }
       }
     }
@@ -235,75 +233,73 @@ body {
     }
 
     /* for each news post, and item within */
-    .post {
+    article {
       .debugBox;
       position: relative;
       clear: both;
 
-      .item {
-        .debugElement;
-        text-overflow: ellipsis;
-        overflow: hidden;
 
-        .title {
-          position: relative;
-          margin-top: 0; /* overrides default value */
-        }
-        .title.regular {
-          
-        }
-        .title.flashy {
-          position: absolute;
-          width: 92%;
-          color: white;
-          font-family: Helvetica;
-          font-weight: lighter;
-          text-transform: none;
-          text-shadow:
-            0 0 5px #333,
-            0 0 10px #333,
-            -1px -1px 1px #333,
-            -1px 1px 1px #333,
-            1px -1px 1px #333,
-            1px 1px 1px #333;
-        }
+      text-overflow: ellipsis;
+      overflow: hidden;
 
-        .author {
-          display: inline;
-          position: relative;
-          font-style: italic;
-        }
-        .author.regular {
-          
-        }
-        .author.flashy {
-          position: absolute;
-          width: 92%;
-          color: white;
-          font-family: Helvetica;
-          font-weight: lighter;
-          text-shadow:
-            0 0 5px black,
-            -1px -1px 1px #333,
-            -1px 1px 1px #333,
-            1px -1px 1px #333,
-            1px 1px 1px #333;
-        }
+      .title {
+        position: relative;
+        margin-top: 0; /* overrides default value */
+      }
+      .title.regular {
+        
+      }
+      .title.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        text-transform: none;
+        text-shadow:
+          0 0 5px #333,
+          0 0 10px #333,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+      }
 
-        img {
-          width: auto;
-          height: auto;
-          background: snow;
-        }
-        img.regular {
-          float: right;
-          width: 33%;
-        }
-        img.flashy {
-          float: left;
-          width: 97%;
-          margin: 0;
-        }
+      .author {
+        display: inline;
+        position: relative;
+        font-style: italic;
+      }
+      .author.regular {
+        
+      }
+      .author.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        text-shadow:
+          0 0 5px black,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        background: snow;
+      }
+      img.regular {
+        float: right;
+        width: 33%;
+      }
+      img.flashy {
+        float: left;
+        width: 97%;
+        margin: 0;
       }
     }
     .unread {
