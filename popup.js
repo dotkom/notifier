@@ -154,11 +154,11 @@ var updateCantinas = function() {
       if (data.dinner) {
         for (var i in data.dinner) {
           var dinner = data.dinner[i];
-          if (dinner.price !== null) {
+          if (dinner.price !== undefined) {
             $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
           }
           else {
-            $(dinners).append('<li class="message">"' + dinner.text + '"</li>');
+            $(dinners).append('<li class="message">"' + dinner + '"</li>');
           }
         }
         clickDinners(dinners + ' li', shortname);

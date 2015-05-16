@@ -163,46 +163,55 @@ var updateCoffee = function() {
 // Update functions: Cantina
 //
 
-var updateCantinas = function(first) {
+var updateCantinas = function() {
   // This function just fetches from localstorage (updates in background)
   console.log('updateCantinas');
+
   var update = function(shortname, data, selector) {
-    // Set name
+    var name = Cantina.names[shortname];
+    var hours = '#cantinas '+selector+' .hours';
+    var dinners = '#cantinas '+selector+' #dinnerbox';
+
+    // Set current cantina as selected in the title dropdown
     var name = Cantina.names[shortname];
     $('#cantinas '+selector+' .title').html(name);
-    // Set hours
-    var hoursMsg = data.hours.message;
-    $('#cantinas '+selector+' .hours').html('- ' + hoursMsg);
-    // Set dinners
-    var dinnerMenu = data.dinner;
-    $('#cantinas '+selector+' #dinnerbox').html(listDinners(dinnerMenu));
+
+    // If data is just a message
+    if (typeof data === 'string') {
+      $(hours).html('- ' + data);
+      $(dinners).html('');
+    }
+    // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
+    else {
+      // Set hours
+      $(hours).html('');
+      if (data.hours && data.hours.message) {
+        $(hours).html('- ' + data.hours.message);
+      }
+      // Set dinners
+      $(dinners).html('');
+      if (data.dinner) {
+        for (var i in data.dinner) {
+          var dinner = data.dinner[i];
+          if (dinner.price !== undefined) {
+            $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
+          }
+          else {
+            $(dinners).append('<li class="message">"' + dinner + '"</li>');
+          }
+        }
+      }
+      // Log error messages
+      if (data.error) console.error(data.error);
+    }
   };
+
+  // Load data from cantinas
   var cantina1Data = JSON.parse(ls.cantina1Data);
   var cantina2Data = JSON.parse(ls.cantina2Data);
   update(ls.cantina1, cantina1Data, '.first');
   update(ls.cantina2, cantina2Data, '.second');
-}
-
-var listDinners = function(dinnerMenu) {
-  var dinnerlist = '';
-  // If menu is just a message, not a menu: (yes, a bit hackish, but reduces complexity)
-  if (typeof dinnerMenu === 'string') {
-    dinnerlist += '<li>' + dinnerMenu + '</li>';
-  }
-  else {
-    for (var i in dinnerMenu) {
-      var dinner = dinnerMenu[i];
-      if (dinner.price != null) {
-        dinner.price = dinner.price + ',-';
-        dinnerlist += '<li>' + dinner.price + ' ' + dinner.text + '</li>';
-      }
-      else {
-        dinnerlist += '<li class="message">"' + dinner.text + '"</li>';
-      }
-    }
-  }
-  return dinnerlist;
-}
+};
 
 var updateBus = function() {
   console.log('updateBus');
