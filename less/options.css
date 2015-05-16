@@ -595,7 +595,7 @@ optgroup.debugAffiliation {
 }
 #pageflip #pfText {
   left: 5px;
-  bottom: 0px;
+  bottom: 5px;
   width: 170px;
   height: 36px;
 }
@@ -608,7 +608,7 @@ optgroup.debugAffiliation {
 }
 #pageflip #pfLink {
   left: 5px;
-  bottom: 0px;
+  bottom: 5px;
   width: 170px;
   height: 36px;
 }

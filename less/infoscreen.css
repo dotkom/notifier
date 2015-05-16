@@ -620,7 +620,7 @@ body {
 }
 #pageflip #pfText {
   left: 8px;
-  bottom: 0px;
+  bottom: 4px;
   width: 300px;
   height: 76px;
 }
@@ -633,7 +633,7 @@ body {
 }
 #pageflip #pfLink {
   left: 8px;
-  bottom: 0px;
+  bottom: 4px;
   width: 300px;
   height: 76px;
 }
