@@ -599,16 +599,11 @@ var bindHeaderButtonsAndLogo = function() {
   });
 
   $('#tipsButton').click(function() {
-    if ($('#tips').filter(':visible').length === 1) {
-      $('#tips').fadeOut('fast');
-    }
-    else {
-      $('#tips').fadeIn('fast');
+    $('#tips').toggle();
       Analytics.trackEvent('clickTips');
-    }
   });
   $('#tips:not(a)').click(function() {
-    $('#tips').fadeOut('fast');
+    $(this).toggle();
   });
   $('#tips a').click(function() {
     var link = $(this).attr('href');
