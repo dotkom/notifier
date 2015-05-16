@@ -297,189 +297,177 @@ var updateBus = function() {
 }
 
 //
-// Oracle: Binding, reaction, animation, prediction and more
-//
-
-var bindOracle = function() {
-  // Suggest prediction
-  if (Oracle.predict() !== null) {
-    $('#oracle #question').attr('placeholder', Oracle.predict() + Oracle.msgPredictPostfix);
-    Analytics.trackEvent('oracleSuggest');
-  }
-  // User input
-  $('#oracle').on('keyup', '#question', function(e) {
-    var question = $('#oracle #question').val()
-    // Clicked enter
-    if (e.which === 13) {
-      if (question !== '') {
-        Oracle.ask(question, function(answer) {
-          changeOracleAnswer(answer);
-          Analytics.trackEvent('oracleAnswer');
-          // Update suggested prediction
-          if (Oracle.predict() !== null) {
-            $('#oracle #question').attr('placeholder', Oracle.predict() + Oracle.msgPredictPostfix);
-          }
-        });
-      }
-      else {
-        changeOracleAnswer(Oracle.greet());
-        Analytics.trackEvent('oracleGreet');
-      }
-    }
-    // Cleared field
-    else if (question === '' && e.which !== 9) { // Tab is reserved
-      changeOracleAnswer('');
-      Analytics.trackEvent('oracleClear');
-    }
-  });
-  // Keydown works better with tab
-  $('#oracle').on('keydown', '#question', function(e) {
-    // Clicked tab: Predict question
-    if (e.which === 9) {
-      e.preventDefault();
-      // Prevent spam
-      if (window.lastClickedTabInOracle && (Date.now() - window.lastClickedTabInOracle) < 1500) {
-        console.warn('Do not hold down tab, the Oracle is very old and does not enjoy spam.');
-      }
-      else {
-        oraclePrediction();
-        Analytics.trackEvent('oraclePrediction');
-      }
-      window.lastClickedTabInOracle = Date.now();
-    }
-  });
-}
-
-var changeOracleAnswer = function(answer) {
-  console.log('changeOracleAnswer to "' + answer + '"');
-  // Stop previous changeOracleAnswer instance, if any
-  clearTimeout(Number(ls.animateOracleAnswerTimeoutId));
-  // If answer contains HTML, just insert it as HTML
-  if (answer.match(/<\/?\w+>/g) !== null) {
-    if ($('#oracle #answer .piece').size() === 0) {
-      $('#oracle #answer').append('<div class="piece">' + answer + '</div>');
-      $('#oracle #answer .piece a').attr('target', '_blank');
-    }
-    else {
-      // Remove all preexisting pieces
-      $('#oracle #answer .piece').fadeOut(400, function() {
-        $('#oracle #answer .piece').remove();
-        $('#oracle #answer').append('<div class="piece">' + answer + '</div>');
-        $('#oracle #answer .piece a').attr('target', '_blank');
-      });
-    }
-  }
-  // Animate oracle answer name change
-  else {
-    var func = function(answer) {
-      var pieces = answer.split('@');
-      // Insert piece placeholders
-      for (var i in pieces) {
-        $('#oracle #answer').append('<div class="piece"></div>');
-      }
-      for (var i in pieces) {
-        animateOracleAnswer(pieces[i], i);
-      }
-    }
-    // Check for preexisting pieces
-    if ($('#oracle #answer .piece').size() === 0) {
-      func(answer);
-    }
-    else {
-      // Remove all preexisting pieces
-      $('#oracle #answer .piece').fadeOut(400, function() {
-        $('#oracle #answer .piece').remove();
-        func(answer);
-      });
-    }
-  }
-}
-
-var animateOracleAnswer = function(line, index, callback, build) {
-  // Animate it
-  var text = $('#oracle #answer .piece').eq(index).text();
-  if (text.length === 0) {
-    build = true;
-  }
-  var millisecs = 6;
-  if (!build) {
-    $('#oracle #answer .piece').eq(index).text(text.slice(0, text.length-1));
-    ls.animateOracleAnswerTimeoutId = setTimeout(function() {
-      animateOracleAnswer(line, index, callback);
-    }, millisecs);
-  }
-  else {
-    if (text.length !== line.length) {
-      if (text.length === 0) {
-        $('#oracle #answer .piece').eq(index).text(line.slice(0, 1));
-      }
-      else {
-        $('#oracle #answer .piece').eq(index).text(line.slice(0, text.length+1));
-      }
-      ls.animateOracleAnswerTimeoutId = setTimeout(function() {
-        animateOracleAnswer(line, index, callback, true);
-      }, millisecs);
-    }
-    else {
-      // Animation for this element is complete
-      if (typeof callback != 'undefined') {
-        callback(index);
-      }
-    }
-  }
-}
-
-var oraclePrediction = function() {
-  var question = Oracle.predict();
-  if (question !== null) {
-    // Add question
-    changeOracleQuestion(question);
-    // Add answer
-    Oracle.ask(question, function(answer) {
-      changeOracleAnswer(answer);
-      $('#oracle #question').focus();
-    });
-  }
-  else {
-    // Tell the user to use the oracle more before using predictions
-    $('#oracle #question').focus();
-    // The timeout is...well...the timeout is a hack.
-    setTimeout( function() {
-      changeOracleAnswer(Oracle.msgAboutPredict);
-    }, 200);
-  }
-}
-
-var changeOracleQuestion = function(question) {
-  // Stop previous changeOracleAnswer instance, if any
-  clearTimeout(Number(ls.animateOracleQuestionTimeoutId));
-  // Animate oracle question name change
-  animateOracleQuestion(question);
-}
-
-var animateOracleQuestion = function(line) {
-  // Animate it
-  var text = $('#oracle #question').val();
-  var random = Math.floor(100 * Math.random() + 10);
-  if (text.length !== line.length) {
-    if (text.length === 0) {
-      $('#oracle #question').val(line.slice(0, 1));
-    }
-    else {
-      $('#oracle #question').val(line.slice(0, text.length+1));
-    }
-    ls.animateOracleQuestionTimeoutId = setTimeout(function() {
-      animateOracleQuestion(line);
-    }, random);
-  }
-}
-
-//
 // Update functions: Affiliation News
 //
 
 var updateAffiliationNews = function(number) {
   console.log('updateAffiliationNews'+number);
+
+  var displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
+    // Empty the news column
+    $('#news '+column+' .post').remove();
+    // Get feedkey
+    var feedKey = items[0].feedKey;
+
+    // Get list of last viewed items and check for news that are just
+    // updated rather than being actual news
+    var newsList = JSON.parse(ls[newsListName]);
+    var viewedList = JSON.parse(ls[viewedListName]);
+    var updatedList = findUpdatedPosts(newsList, viewedList);
+
+    // Build list of last viewed for the next time the user views the news
+    viewedList = [];
+
+    // Prepare the list of images with salt, pepper and some vinegar
+    var storedImages = JSON.parse(ls.storedImages);
+
+    // Add feed items
+    $.each(items, function (index, item) {
+
+      if (index < newsLimit) {
+        viewedList.push(item.link);
+
+        var unreadCount = Number(ls[unreadCountName]);
+        var readUnread = '';
+        // if (!isFlashy) {
+        //   if (index < unreadCount) {
+        //     if (updatedList.indexOf(item.link) > -1) {
+        //       readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
+        //     }
+        //     else {
+        //       readUnread += '<span class="unread">NEW <b>::</b> </span>';
+        //     }
+        //   }
+        // }
+
+        // EXPLANATION NEEDED:
+        // .item[data] contains the link
+        // .item[name] contains the alternative link, if one exists, otherwise null
+        var date = '';
+        var altLink = '';
+        if (item.altLink !== null) {
+          altLink = ' name="' + item.altLink + '"';
+        }
+        // NOTE: Removing date from use for now because it's borked
+        // if item.date !== null and ls.showAffiliation2 is 'false'
+        //   date = ' den ' + item.date
+        var descLimit = 140;
+        if (ls.showAffiliation2 === 'true') {
+          descLimit = 100;
+        }
+        if (item.description.length > descLimit) {
+          item.description = item.description.substr(0, descLimit) + '...';
+        }
+        // Use image we've found to accompany the news item
+        var storedImage = storedImages[item.link];
+        if (typeof storedImage !== 'undefined') {
+          // Also, check whether there's already a qualified image before replacing it
+          if (item.image.indexOf('http') === -1) {
+            item.image = storedImage;
+          }
+        }
+
+        var htmlItem = '';
+
+        if (ls.showAffiliation2 === 'true') {
+          htmlItem = [
+            '<div class="post">',
+              '<div class="item" data="' + item.link + '"' + altLink + '>',
+                '<img class="flashy" src="' + item.image + '" />',
+                '<div class="title flashy">' + readUnread + item.title + '</div>',
+                '<div class="author flashy">&ndash; Av ' + item.creator + '</div>',
+              '</div>',
+            '</div>',
+          ].join('\n');
+        }
+        else {
+          htmlItem = [
+            '<div class="post">',
+              '<div class="item" data="' + item.link + '"' + altLink + '>',
+                '<img class="regular" src="' + item.image + '" />',
+                '<div class="title">' + readUnread + item.title + '</div>',
+                item.description,
+                '<div class="author">&ndash; Av ' + item.creator + '</div>',
+              '</div>',
+            '</div>',
+          ].join('\n');
+        }
+
+        $('#news '+column).append(htmlItem);
+      }
+    });
+
+    // Store list of last viewed items
+    ls[viewedListName] = JSON.stringify(viewedList);
+
+    // All items are now considered read
+    Browser.setBadgeText('');
+    ls[unreadCountName] = 0;
+
+    // Make news items open extension website while closing popup
+    $('#news '+column+' .item').click(function() {
+      // The link is embedded as the ID of the element, we don't want to use
+      // <a> anchors because it creates an ugly box marking the focus element.
+      // Note that altLinks are embedded in the name-property of the element,
+      // - if preferred by the organization, we should use that instead.
+      var link = $(this).attr('data');
+      var altLink = $(this).attr('name');
+      var useAltLink = Affiliation.org[feedKey].useAltLink;
+      if (typeof altLink !== 'undefined' && useAltLink === true) {
+        link = $(this).attr('name');
+      }
+      Browser.openTab(link);
+      Analytics.trackEvent('clickNews', link);
+      window.close();
+    });
+
+    // Update images some times after news are loaded in case of late image updates
+    // which are common when the browser has just started Notifier
+    var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
+    for (var i in times) {
+      setTimeout(function() {
+        updateNewsImages();
+      }, times[i]);
+    }
+  }
+
+  // Checks the most recent list of news against the most recently viewed list of news
+  var findUpdatedPosts = function(newsList, viewedList) {
+    var updatedList = [];
+    // Compare lists, keep your mind straight here:
+    // Updated news are:
+    // - saved in the newsList before the first identical item in the viewedList
+    // - saved in the viewedList after the first identical item in the newsList
+    for (var i in newsList) {
+      if (newsList[i] === viewedList[0]) {
+        break;
+      }
+      for (var j in viewedList) {
+        if (j === 0) {
+          continue;
+        }
+        if (newsList[i] === viewedList[j]) {
+          updatedList.push(newsList[i]);
+        }
+      }
+    }
+    return updatedList;
+  }
+
+  var updateNewsImages = function() {
+    console.log('updateNewsImages');
+    // The background process looks for images, and sometimes that process
+    // isn't finished before the popup loads, that's why we have to check
+    // in with localStorage.storedImages a couple of times.
+    $.each($('#news .post .item'), function(i, val) {
+      var link = $(this).attr('data');
+      var image = JSON.parse(localStorage.storedImages)[link];
+      if (typeof image !== 'undefined') {
+        $(this).find('img').attr('src', image);
+      }
+    });
+  }
+
   // Displaying the news feed (prefetched by the background page)
   var feedItems = ls['affiliationFeedItems'+number];
   // Detect selector
@@ -506,175 +494,6 @@ var updateAffiliationNews = function(number) {
       Browser.openTab(Affiliation.org[key].web);
     });
   }
-}
-
-var displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
-  // Empty the news column
-  $('#news '+column+' .post').remove();
-  // Get feedkey
-  var feedKey = items[0].feedKey;
-
-  // Get list of last viewed items and check for news that are just
-  // updated rather than being actual news
-  var newsList = JSON.parse(ls[newsListName]);
-  var viewedList = JSON.parse(ls[viewedListName]);
-  var updatedList = findUpdatedPosts(newsList, viewedList);
-
-  // Build list of last viewed for the next time the user views the news
-  viewedList = [];
-
-  // Prepare the list of images with salt, pepper and some vinegar
-  var storedImages = JSON.parse(ls.storedImages);
-
-  // Add feed items
-  $.each(items, function (index, item) {
-
-    if (index < newsLimit) {
-      viewedList.push(item.link);
-
-      var unreadCount = Number(ls[unreadCountName]);
-      var readUnread = '';
-      // if (!isFlashy) {
-      //   if (index < unreadCount) {
-      //     if (updatedList.indexOf(item.link) > -1) {
-      //       readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
-      //     }
-      //     else {
-      //       readUnread += '<span class="unread">NEW <b>::</b> </span>';
-      //     }
-      //   }
-      // }
-
-      // EXPLANATION NEEDED:
-      // .item[data] contains the link
-      // .item[name] contains the alternative link, if one exists, otherwise null
-      var date = '';
-      var altLink = '';
-      if (item.altLink !== null) {
-        altLink = ' name="' + item.altLink + '"';
-      }
-      // NOTE: Removing date from use for now because it's borked
-      // if item.date !== null and ls.showAffiliation2 is 'false'
-      //   date = ' den ' + item.date
-      var descLimit = 140;
-      if (ls.showAffiliation2 === 'true') {
-        descLimit = 100;
-      }
-      if (item.description.length > descLimit) {
-        item.description = item.description.substr(0, descLimit) + '...';
-      }
-      // Use image we've found to accompany the news item
-      var storedImage = storedImages[item.link];
-      if (typeof storedImage !== 'undefined') {
-        // Also, check whether there's already a qualified image before replacing it
-        if (item.image.indexOf('http') === -1) {
-          item.image = storedImage;
-        }
-      }
-
-      var htmlItem = '';
-
-      if (ls.showAffiliation2 === 'true') {
-        htmlItem = [
-          '<div class="post">',
-            '<div class="item" data="' + item.link + '"' + altLink + '>',
-              '<img class="flashy" src="' + item.image + '" />',
-              '<div class="title flashy">' + readUnread + item.title + '</div>',
-              '<div class="author flashy">&ndash; Av ' + item.creator + '</div>',
-            '</div>',
-          '</div>',
-        ].join('\n');
-      }
-      else {
-        htmlItem = [
-          '<div class="post">',
-            '<div class="item" data="' + item.link + '"' + altLink + '>',
-              '<img class="regular" src="' + item.image + '" />',
-              '<div class="title">' + readUnread + item.title + '</div>',
-              item.description,
-              '<div class="author">&ndash; Av ' + item.creator + '</div>',
-            '</div>',
-          '</div>',
-        ].join('\n');
-      }
-
-      $('#news '+column).append(htmlItem);
-    }
-  });
-
-  // Store list of last viewed items
-  ls[viewedListName] = JSON.stringify(viewedList);
-
-  // All items are now considered read
-  Browser.setBadgeText('');
-  ls[unreadCountName] = 0;
-
-  // Make news items open extension website while closing popup
-  $('#news '+column+' .item').click(function() {
-    // The link is embedded as the ID of the element, we don't want to use
-    // <a> anchors because it creates an ugly box marking the focus element.
-    // Note that altLinks are embedded in the name-property of the element,
-    // - if preferred by the organization, we should use that instead.
-    var link = $(this).attr('data');
-    var altLink = $(this).attr('name');
-    var useAltLink = Affiliation.org[feedKey].useAltLink;
-    if (typeof altLink !== 'undefined' && useAltLink === true) {
-      link = $(this).attr('name');
-    }
-    Browser.openTab(link);
-    Analytics.trackEvent('clickNews', link);
-    window.close();
-  });
-
-  // Update images some times after news are loaded in case of late image updates
-  // which are common when the browser has just started Notifier
-  var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
-  for (var i in times) {
-    setTimeout(function() {
-      updateNewsImages();
-    }, times[i]);
-  }
-}
-
-// Checks the most recent list of news against the most recently viewed list of news
-var findUpdatedPosts = function(newsList, viewedList) {
-  var updatedList = [];
-  // Compare lists, keep your mind straight here:
-  // Updated news are:
-  // - saved in the newsList before the first identical item in the viewedList
-  // - saved in the viewedList after the first identical item in the newsList
-  for (var i in newsList) {
-    if (newsList[i] === viewedList[0]) {
-      break;
-    }
-    for (var j in viewedList) {
-      if (j === 0) {
-        continue;
-      }
-      if (newsList[i] === viewedList[j]) {
-        updatedList.push(newsList[i]);
-      }
-    }
-  }
-  return updatedList;
-}
-
-//
-// Update functions: Images for Affiliation News
-//
-
-var updateNewsImages = function() {
-  console.log('updateNewsImages');
-  // The background process looks for images, and sometimes that process
-  // isn't finished before the popup loads, that's why we have to check
-  // in with localStorage.storedImages a couple of times.
-  $.each($('#news .post .item'), function(i, val) {
-    var link = $(this).attr('data');
-    var image = JSON.parse(localStorage.storedImages)[link];
-    if (typeof image !== 'undefined') {
-      $(this).find('img').attr('src', image);
-    }
-  });
 }
 
 //
@@ -868,6 +687,186 @@ var bindRealtimeBus = function() {
     window.close();
   };
   $('#bus .error').click(openOracle);
+}
+
+//
+// Event handlers: Oracle
+//
+
+var bindOracle = function() {
+
+  var changeOracleAnswer = function(answer) {
+    console.log('changeOracleAnswer to "' + answer + '"');
+    // Stop previous changeOracleAnswer instance, if any
+    clearTimeout(Number(ls.animateOracleAnswerTimeoutId));
+    // If answer contains HTML, just insert it as HTML
+    if (answer.match(/<\/?\w+>/g) !== null) {
+      if ($('#oracle #answer .piece').size() === 0) {
+        $('#oracle #answer').append('<div class="piece">' + answer + '</div>');
+        $('#oracle #answer .piece a').attr('target', '_blank');
+      }
+      else {
+        // Remove all preexisting pieces
+        $('#oracle #answer .piece').fadeOut(400, function() {
+          $('#oracle #answer .piece').remove();
+          $('#oracle #answer').append('<div class="piece">' + answer + '</div>');
+          $('#oracle #answer .piece a').attr('target', '_blank');
+        });
+      }
+    }
+    // Animate oracle answer name change
+    else {
+      var func = function(answer) {
+        var pieces = answer.split('@');
+        // Insert piece placeholders
+        for (var i in pieces) {
+          $('#oracle #answer').append('<div class="piece"></div>');
+        }
+        for (var i in pieces) {
+          animateOracleAnswer(pieces[i], i);
+        }
+      }
+      // Check for preexisting pieces
+      if ($('#oracle #answer .piece').size() === 0) {
+        func(answer);
+      }
+      else {
+        // Remove all preexisting pieces
+        $('#oracle #answer .piece').fadeOut(400, function() {
+          $('#oracle #answer .piece').remove();
+          func(answer);
+        });
+      }
+    }
+  }
+
+  var animateOracleAnswer = function(line, index, callback, build) {
+    // Animate it
+    var text = $('#oracle #answer .piece').eq(index).text();
+    if (text.length === 0) {
+      build = true;
+    }
+    var millisecs = 6;
+    if (!build) {
+      $('#oracle #answer .piece').eq(index).text(text.slice(0, text.length-1));
+      ls.animateOracleAnswerTimeoutId = setTimeout(function() {
+        animateOracleAnswer(line, index, callback);
+      }, millisecs);
+    }
+    else {
+      if (text.length !== line.length) {
+        if (text.length === 0) {
+          $('#oracle #answer .piece').eq(index).text(line.slice(0, 1));
+        }
+        else {
+          $('#oracle #answer .piece').eq(index).text(line.slice(0, text.length+1));
+        }
+        ls.animateOracleAnswerTimeoutId = setTimeout(function() {
+          animateOracleAnswer(line, index, callback, true);
+        }, millisecs);
+      }
+      else {
+        // Animation for this element is complete
+        if (typeof callback != 'undefined') {
+          callback(index);
+        }
+      }
+    }
+  }
+
+  var oraclePrediction = function() {
+    var question = Oracle.predict();
+    if (question !== null) {
+      // Add question
+      changeOracleQuestion(question);
+      // Add answer
+      Oracle.ask(question, function(answer) {
+        changeOracleAnswer(answer);
+        $('#oracle #question').focus();
+      });
+    }
+    else {
+      // Tell the user to use the oracle more before using predictions
+      $('#oracle #question').focus();
+      // The timeout is...well...the timeout is a hack.
+      setTimeout( function() {
+        changeOracleAnswer(Oracle.msgAboutPredict);
+      }, 200);
+    }
+  }
+
+  var changeOracleQuestion = function(question) {
+    // Stop previous changeOracleAnswer instance, if any
+    clearTimeout(Number(ls.animateOracleQuestionTimeoutId));
+    // Animate oracle question name change
+    animateOracleQuestion(question);
+  }
+
+  var animateOracleQuestion = function(line) {
+    // Animate it
+    var text = $('#oracle #question').val();
+    var random = Math.floor(100 * Math.random() + 10);
+    if (text.length !== line.length) {
+      if (text.length === 0) {
+        $('#oracle #question').val(line.slice(0, 1));
+      }
+      else {
+        $('#oracle #question').val(line.slice(0, text.length+1));
+      }
+      ls.animateOracleQuestionTimeoutId = setTimeout(function() {
+        animateOracleQuestion(line);
+      }, random);
+    }
+  }
+
+  // Suggest prediction
+  if (Oracle.predict() !== null) {
+    $('#oracle #question').attr('placeholder', Oracle.predict() + Oracle.msgPredictPostfix);
+    Analytics.trackEvent('oracleSuggest');
+  }
+  // User input
+  $('#oracle').on('keyup', '#question', function(e) {
+    var question = $('#oracle #question').val()
+    // Clicked enter
+    if (e.which === 13) {
+      if (question !== '') {
+        Oracle.ask(question, function(answer) {
+          changeOracleAnswer(answer);
+          Analytics.trackEvent('oracleAnswer');
+          // Update suggested prediction
+          if (Oracle.predict() !== null) {
+            $('#oracle #question').attr('placeholder', Oracle.predict() + Oracle.msgPredictPostfix);
+          }
+        });
+      }
+      else {
+        changeOracleAnswer(Oracle.greet());
+        Analytics.trackEvent('oracleGreet');
+      }
+    }
+    // Cleared field
+    else if (question === '' && e.which !== 9) { // Tab is reserved
+      changeOracleAnswer('');
+      Analytics.trackEvent('oracleClear');
+    }
+  });
+  // Keydown works better with tab
+  $('#oracle').on('keydown', '#question', function(e) {
+    // Clicked tab: Predict question
+    if (e.which === 9) {
+      e.preventDefault();
+      // Prevent spam
+      if (window.lastClickedTabInOracle && (Date.now() - window.lastClickedTabInOracle) < 1500) {
+        console.warn('Do not hold down tab, the Oracle is very old and does not enjoy spam.');
+      }
+      else {
+        oraclePrediction();
+        Analytics.trackEvent('oraclePrediction');
+      }
+      window.lastClickedTabInOracle = Date.now();
+    }
+  });
+
 }
 
 //
