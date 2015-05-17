@@ -566,7 +566,7 @@ var bindHeaderButtonsAndLogo = function() {
   var buttons = {
     '#optionsButton': 'Endre innstillinger',
     '#tipsButton': 'Om appKom, tips, linker, ++',
-    '#colorButton': 'Endre fargepalett',
+    '#colorButton': 'Bytt fargepalett',
   }
   var slack = Affiliation.org[ls.affiliationKey1].slack;
   if (slack) {
@@ -613,9 +613,6 @@ var bindHeaderButtonsAndLogo = function() {
   });
 
   $('#colorButton').click(function() {
-    // Clear timeout that might be waiting to fade out button text
-    if (isNumber(ls.colorTimeout))
-      clearTimeout(parseInt(ls.colorTimeout));
     // Get all palettes
     var colors = Object.keys(Palettes.palettes);
     // And any special affiliation palette as well
@@ -633,11 +630,7 @@ var bindHeaderButtonsAndLogo = function() {
     ls.affiliationPalette = colors[index];
     Palettes.load();
     // Text feedback, fade out after timeout
-    fadeButtonText(true, 'Fargepalett satt til "' + colors[index].capitalize() + '"');
-    clearTimeout()
-    ls.colorTimeout = setTimeout(function() {
-      fadeButtonText(false, '')
-    }, 2000);
+    $('#buttontext').text('Fargepalett satt til "' + colors[index].capitalize() + '"');
     // And track it
     Analytics.trackEvent('clickColor');
   });
