@@ -19,3 +19,7 @@ if (localStorage.affiliationFeedItems2) {
 	localStorage.affiliationNews2 = localStorage.affiliationFeedItems2;
 	localStorage.removeItem('affiliationFeedItems2');
 }
+
+// REMOVING OLD LOCALSTORAGE VAR
+// REMOVE AFTER AUGUST 2015
+localStorage.removeItem('colorTimeout');
