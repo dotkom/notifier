@@ -194,7 +194,12 @@ var updateCantinas = function() {
         for (var i in data.dinner) {
           var dinner = data.dinner[i];
           if (dinner.price !== undefined) {
-            $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
+            if (dinner.price) {
+              $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
+            }
+            else {
+              $(dinners).append('<li class="message">"' + dinner.text + '"</li>');
+            }
           }
           else {
             $(dinners).append('<li class="message">"' + dinner + '"</li>');
