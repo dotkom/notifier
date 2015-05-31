@@ -93,13 +93,11 @@ body {
   display: inherit;
 }
 #background {
-  /* using a div because the background needs to be resized if
-  the display is really big (1500px-2000px in width or height) */
+  /* using a div because the background is color shifted by the palette CSS files */
   background-image: url('/img/background-large-vertical.png');
-  position: absolute;
-  background-position: center center;
+  position: fixed;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-size: cover;
   left: 0;
   top: 0;
   width: 100%;

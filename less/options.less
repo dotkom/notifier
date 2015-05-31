@@ -24,7 +24,6 @@
 // Rules
 
 body {
-  background: black;
   font-family: helvetica;
   color: white;
   margin: 0;
@@ -34,9 +33,10 @@ body {
   min-height: 600px;
 
   #background {
-    /* using a div for bg image because the background needs to be resized
-    if the display is really big (1500px-2000px in width or height) */
-    background: url('/img/background-medium.png') center center no-repeat;
+    /* using a div because the background is color shifted by the palette CSS files */
+    background-image: url('/img/background-large-vertical.png');
+    background-repeat: no-repeat;
+    background-size: cover;
     position: fixed;
     left: 0;
     top: 0;

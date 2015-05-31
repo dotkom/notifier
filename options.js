@@ -2,18 +2,6 @@
 
 var ls = localStorage;
 
-var resizeBackgroundImage = function() {
-  if (1550 < $(window).width()) {
-    $('#background').attr("style", "background:url('img/background-large.png') center center no-repeat;");
-  }
-  else if (1200 < $(window).height()) {
-    $('#background').attr("style", "background:url('img/background-large-vertical.png') center center no-repeat;");
-  }
-  else {
-    $('#background').attr("style", "background:url('img/background-medium.png') center center no-repeat;");
-  }
-}
-
 var showSavedNotification = function() {
   $("#notification").fadeIn(200);
   setTimeout(function() {
@@ -830,10 +818,6 @@ $(document).ready(function() {
       toggleBigscreen(true, type, true);
     }, 300);
   }
-
-  // Bind the windows resize function
-  $(window).bind('resize', resizeBackgroundImage);
-  resizeBackgroundImage(); // Run once in case the window is quite big
 
   // Minor esthetical adjustments for OS
   if (Browser.onWindows()) {
