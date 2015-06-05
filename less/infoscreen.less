@@ -1,6 +1,357 @@
 
-@import "common.less";
-@import "pageflip.less";
+/* COMMON FILE FOR popup.html, infoscreen.html */
+
+/* DEBUG variables, set to colors instead of
+ * transparents for debug borders around everything
+ */
+
+/*
+@debugRed: red;
+@debugCyan: cyan;
+@debugLime: lime;
+@debugYellow: yellow;
+/*/
+@debugRed: transparent;
+@debugCyan: transparent;
+@debugLime: transparent;
+@debugYellow: transparent;
+//*/
+
+/* Debugging, use bright colors that stand out */
+
+.debugContainer {border: 1px solid @debugCyan;} /* Outer containers */
+.debugBox {border: 1px solid @debugRed;} /* Inner containers */
+.debugText {border: 1px solid @debugYellow;} /* Text elements */
+.debugElement {border: 1px solid @debugLime;} /* Other elements */
+
+/* Mixins */
+
+.fullbox {
+  .debugContainer;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.title, .titleDropdown {
+  .debugText;
+  color: NavajoWhite;
+  display: block;
+  font-weight: bold;
+  .unread {
+    color: white;
+  }
+}
+
+.emphasized {
+  .debugText;
+  font-style: italic;
+}
+
+/* Rules */
+
+body {
+  color: white;
+  font-family: Helvetica;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+
+#background {
+  /* using a div because the background is color shifted by the palette CSS files */
+  position: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* This container keeps the content centered */
+
+#container {
+  .debugContainer;
+  position: relative;
+
+  #office {
+    .fullbox;
+  }
+
+  #todays {
+    .fullbox;
+
+    #schedule {
+      .debugBox;
+      float: left;
+      width: 47.5%;
+      #servant {
+        .emphasized;
+      }
+    }
+    #coffee {
+      .debugBox;
+      float: right;
+      width: 47.5%;
+      #pots {
+        .emphasized;
+      }
+    }
+  }
+
+  #cantinas {
+    .fullbox;
+
+    .hours {
+      .emphasized;
+      -webkit-transition: text-shadow 0.15s ease-out 0s;
+    }
+    .first {
+      .debugBox;
+      position: relative;
+      float: left;
+      width: 47.5%;
+    }
+    .second {
+      .debugBox;
+      position: relative;
+      float: right;
+      width: 47.5%;
+    }
+    #dinnerbox {
+      .debugElement;
+    }
+    li {
+      .debugText;
+      position: relative;
+      width: 95%;
+      list-style-type: none;
+      -webkit-transition: text-shadow 0.15s ease-out 0s;
+    }
+    li.message {
+      /*font-style: italic;*/
+    }
+  }
+
+  #bus {
+    .fullbox;
+    
+    position: relative;
+    background-color: #111;
+    background-clip: padding-box; /* makes the background color only show on the inside of the border */
+    width: 110%;
+    margin-left: -5%;
+
+    .name {
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #firstBus {
+      .debugBox;
+      position: relative;
+      float: left;
+      text-align: right;
+      padding-top: 14px;
+    }
+    #secondBus {
+      .debugBox;
+      position: relative;
+      float: left;
+      text-align: left;
+      padding-top: 14px;
+    }
+    .loadingLeft {
+      position: relative;
+      z-index: 100;
+      -webkit-transform: scaleX(-1);
+    }
+    .loadingRight {
+      position: relative;
+      z-index: 100;
+    }
+    .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
+      .debugText;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .time {
+      /* nothing here yet */
+    }
+    .error {
+      font-style: italic;
+    }
+    #middle {
+      .debugBox;
+      position: relative;
+      float: left;
+      text-align: center;
+      height: 100%;
+    }
+  }
+
+  #news {
+    .fullbox;
+    
+    /* #full for using a single column */
+    #full {
+      >.title {
+        display: none; /* no need for affiliation title when only one is in use */
+      }
+      position: relative;
+      width: 100%;
+      float: left;
+      article {
+        img.regular {
+          float: left;
+          width: 33%;
+        }
+      }
+    }
+    
+    /* #left and #right for using double columns */
+    #left {
+      position: relative;
+      width: 47.5%;
+      float: left;
+    }
+    #right {
+      position: relative;
+      width: 47.5%;
+      float: right;
+      .title.regular {
+        color: LightGrey;
+      }
+    }
+
+    /* for each news post, and item within */
+    article {
+      .debugBox;
+      position: relative;
+      clear: both;
+
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      .title {
+        position: relative;
+        margin-top: 0; /* overrides default value */
+      }
+      .title.regular {
+        
+      }
+      .title.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        text-transform: none;
+        text-shadow:
+          0 0 5px #333,
+          0 0 10px #333,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+      }
+
+      .author {
+        display: inline;
+        position: relative;
+        font-style: italic;
+      }
+      .author.regular {
+        
+      }
+      .author.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        text-shadow:
+          0 0 5px black,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        background: snow;
+      }
+      img.regular {
+        float: right;
+        width: 33%;
+      }
+      img.flashy {
+        float: left;
+        width: 97%;
+        margin: 0;
+      }
+    }
+    .unread {
+      text-shadow:
+        0 0 5px black,
+        -1px -1px 1px #333,
+        -1px 1px 1px #333,
+        1px -1px 1px #333,
+        1px 1px 1px #333;
+    }
+  }
+
+}
+
+/**********************************************************/
+
+// COMMON FILE FOR options.html, infoscreen.html
+
+/* The pageflip at the bottom of some pages */
+
+#pageflip {
+  // This is typically tweaked by palettes, be careful when changing it
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  bottom: 0;
+  color: #ccf2cc;
+
+  #pfBackground {
+    // This is typically tweaked by palettes, be careful when changing it
+    position: fixed;
+    z-index: 201;
+  }
+  #pfText {
+    position: fixed;
+    z-index: 202;
+  }
+  #pfFlip {
+    position: fixed;
+    z-index: 203;
+  }
+  #pfLink {
+    position: fixed;
+    z-index: 204;
+
+    a {
+      text-decoration: none;
+      color: #ccf2cc;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/**********************************************************/
 
 /* This file contains infoscreen-additions to common.less */
 
