@@ -123,18 +123,20 @@ body {
   bottom: -1px;
   height: 505px;
   z-index: 100;
-  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
+  background-image: url('/img/background-infoscreen-news-cutoff.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 #background {
   /* using a div because the background is color shifted by the palette CSS files */
+  /* also - using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
   position: fixed;
+  background-image: url('/img/background-large-vertical.png');
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
   height: 100%;
-  /* also - using a div because the background needs to be resized if
-  the display is really big (1500px-2000px in width or height) */
-  background-image: url('/img/background-large-vertical.png');
 }
 /* This container keeps the content centered */
 #container {

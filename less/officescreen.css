@@ -58,7 +58,9 @@ body {
   bottom: 0;
   height: 505px;
   z-index: 100;
-  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
+  background-image: url('/img/background-infoscreen-news-cutoff.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   display: inherit;
 }
 #background {
