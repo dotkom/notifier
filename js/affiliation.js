@@ -749,9 +749,7 @@ var Affiliation = {
       symbol: './org/spanskroeret/symbol.png',
       placeholder: './org/spanskroeret/placeholder.png',
       palette: 'green',
-      getImages: function(links, callback) {
-        Images.get(this, links, callback);
-      },
+      // Images parsed from feed
     },
 
     'timini': {
