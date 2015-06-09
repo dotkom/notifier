@@ -276,20 +276,175 @@ var updateBus = function() {
   createBusDataRequest('secondBus', '#secondBus');
 }
 
+//
+// Update functions: Affiliation News
+//
+
 var updateAffiliationNews = function(number) {
   console.log('updateAffiliationNews'+number);
-  // Displaying the news feed (prefetched by the background page)
+
+  var displayItems = function(items, selector, newsListName, viewedListName, unreadCountName) {
+
+    // Get feedkey
+    var feedKey = items[0].feedKey;
+
+    // Get list of last viewed items and check for news that are just
+    // updated rather than being actual news
+    var newsList = JSON.parse(ls[newsListName]);
+    var viewedList = JSON.parse(ls[viewedListName]);
+    var updatedList = findUpdatedPosts(newsList, viewedList);
+
+    // Build list of last viewed for the next time the user views the news
+    viewedList = [];
+
+    // Prepare the list of images with salt, pepper and some vinegar
+    var storedImages = JSON.parse(ls.storedImages);
+
+    // Prepare a column for our elements
+    var column = $();
+
+    // Add feed items
+    $.each(items, function (index, item) {
+
+      if (index < newsLimit) {
+        viewedList.push(item.link);
+
+        var unreadCount = Number(ls[unreadCountName]);
+        var readUnread = '';
+        // if (!isFlashy) {
+        //   if (index < unreadCount) {
+        //     if (updatedList.indexOf(item.link) > -1) {
+        //       readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
+        //     }
+        //     else {
+        //       readUnread += '<span class="unread">NEW <b>::</b> </span>';
+        //     }
+        //   }
+        // }
+
+        // EXPLANATION NEEDED:
+        // article[data] contains the link
+        // article[name] contains the alternative link, if one exists, otherwise null
+        var altLink = '';
+        if (item.altLink !== null) {
+          altLink = ' name="' + item.altLink + '"';
+        }
+
+        var descLimit = 140;
+        if (ls.showAffiliation2 === 'true') {
+          descLimit = 100;
+        }
+        if (item.description.length > descLimit) {
+          item.description = item.description.substr(0, descLimit) + '...';
+        }
+        // Use image we've found to accompany the news item
+        var storedImage = storedImages[item.link];
+        if (typeof storedImage !== 'undefined') {
+          // Also, check whether there's already a qualified image before replacing it
+          if (item.image.indexOf('http') === -1) {
+            console.warn('Unqualified image:', item.image);
+            item.image = storedImage;
+          }
+        }
+
+        var htmlItem = '';
+
+        if (ls.showAffiliation2 === 'true') {
+          htmlItem = [
+            '<article data="' + item.link + '"' + altLink + '>',
+              '<img class="flashy" src="' + item.image + '" />',
+              '<div class="title flashy">' + readUnread + item.title + '</div>',
+              '<div class="author flashy">&ndash; Av ' + item.creator + '</div>',
+            '</article>',
+          ].join('\n');
+        }
+        else {
+          htmlItem = [
+            '<article data="' + item.link + '"' + altLink + '>',
+              '<img class="regular" src="' + item.image + '" />',
+              '<div class="title">' + readUnread + item.title + '</div>',
+              item.description,
+              '<div class="author">&ndash; Av ' + item.creator + '</div>',
+            '</article>',
+          ].join('\n');
+        }
+
+        column = column.add(htmlItem);
+      }
+    });
+
+    // Remove old news, add fresh news
+    $('#news ' + selector + ' article').remove();
+    $('#news ' + selector).append(column);
+
+    // Store list of last viewed items
+    ls[viewedListName] = JSON.stringify(viewedList);
+
+    // All items are now considered read
+    Browser.setBadgeText('');
+    ls[unreadCountName] = 0;
+
+    // Update images some times after news are loaded in case of late image arrivals
+    // which are common when the browser has just started Notifier
+    var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
+    for (var i in times) {
+      setTimeout(function() {
+        updateNewsImages();
+      }, times[i]);
+    }
+  }
+
+  // Checks the most recent list of news against the most recently viewed list of news
+  var findUpdatedPosts = function(newsList, viewedList) {
+    var updatedList = [];
+    // Compare lists, keep your mind straight here:
+    // Updated news are:
+    // - saved in the newsList before the first identical item in the viewedList
+    // - saved in the viewedList after the first identical item in the newsList
+    for (var i in newsList) {
+      if (newsList[i] === viewedList[0]) {
+        break;
+      }
+      for (var j in viewedList) {
+        if (j === 0) {
+          continue;
+        }
+        if (newsList[i] === viewedList[j]) {
+          updatedList.push(newsList[i]);
+        }
+      }
+    }
+    return updatedList;
+  }
+
+  var updateNewsImages = function() {
+    console.log('updateNewsImages');
+    // The background process looks for images, and sometimes that process
+    // isn't finished before the popup loads, that's why we have to check
+    // in with localStorage.storedImages a couple of times.
+    $.each($('#news article'), function(i, val) {
+      var link = $(this).attr('data');
+      var image = JSON.parse(localStorage.storedImages)[link];
+      if (typeof image !== 'undefined') {
+        $(this).find('img').attr('src', image);
+      }
+    });
+  }
+
+  // Get the news feed (prefetched by the background page)
   var news = ls['affiliationNews'+number];
+  
   // Detect selector
   var selector = (number === '1' ? '#left' : '#right');
   if (ls.showAffiliation2 !== 'true') {
     selector = '#full';
   }
+
   // Set affiliation name
   var name = Affiliation.org[ls['affiliationKey'+number]].name;
   $('#news '+selector+' .title').html(name);
 
-  // Display news from storage
+  // Parse and display news
   if (typeof news !== 'undefined') {
     news = JSON.parse(news);
     displayItems(news, selector, 'affiliationNewsList'+number, 'affiliationViewedList'+number, 'affiliationUnreadCount'+number);
@@ -298,177 +453,13 @@ var updateAffiliationNews = function(number) {
     // Offline or unresponsive
     var key = ls['affiliationKey'+number];
     var name = Affiliation.org[key].name;
-    $('#news '+selector+' .post').remove();
-    $('#news '+selector).append('<div class="post"><div class="item">Frakoblet fra nyhetsstrøm</div></div>');
-    $('#news '+selector+' .post').click(function() {
+    $('#news '+selector+' article').remove(); // Remove all existing articles
+    $('#news '+selector).append('<article>Frakoblet fra nyhetsstrøm</article>');
+    $('#news '+selector+' article').click(function() {
+      // Link to affiliation website
       Browser.openTab(Affiliation.org[key].web);
     });
   }
-}
-
-var displayItems = function(items, column, newsListName, viewedListName, unreadCountName) {
-  // Empty the news column
-  $('#news '+column+' .post').remove();
-  // Get feedkey
-  var feedKey = items[0].feedKey;
-
-  // Get list of last viewed items and check for news that are just
-  // updated rather than being actual news
-  var newsList = JSON.parse(ls[newsListName]);
-  var viewedList = JSON.parse(ls[viewedListName]);
-  var updatedList = findUpdatedPosts(newsList, viewedList);
-
-  // Build list of last viewed for the next time the user views the news
-  viewedList = [];
-
-  // Prepare the list of images with salt, pepper and some vinegar
-  var storedImages = JSON.parse(ls.storedImages);
-
-  // Add feed items
-  $.each(items, function (index, item) {
-    
-    if (index < newsLimit) {
-      viewedList.push(item.link);
-      
-      var unreadCount = Number(ls[unreadCountName]);
-      var readUnread = '';
-      // if (!isFlashy) {
-      //   if (index < unreadCount) {
-      //     if (updatedList.indexOf(item.link) > -1) {
-      //       readUnread += '<span class="unread">UPDATED <b>::</b> </span>';
-      //     }
-      //     else {
-      //       readUnread += '<span class="unread">NEW <b>::</b> </span>';
-      //     }
-      //   }
-      // }
-
-      // EXPLANATION NEEDED:
-      // .item[data] contains the link
-      // .item[name] contains the alternative link, if one exists, otherwise null
-      var date = '';
-      var altLink = '';
-      if (item.altLink !== null) {
-        altLink = ' name="' + item.altLink + '"';
-      }
-      // NOTE: Removing date from use for now because it's borked
-      // if item.date !== null and ls.showAffiliation2 is 'false'
-      //   date = ' den ' + item.date
-      var descLimit = 140;
-      if (ls.showAffiliation2 === 'true') {
-        descLimit = 100;
-      }
-      if (item.description.length > descLimit) {
-        item.description = item.description.substr(0, descLimit) + '...';
-      }
-      // Use image we've found to accompany the news item
-      var storedImage = storedImages[item.link];
-      if (typeof storedImage !== 'undefined') {
-        // Also, check whether there's already a qualified image before replacing it
-        if (item.image.indexOf('http') === -1) {
-          item.image = storedImage;
-        }
-      }
-
-      var htmlItem = '';
-
-      if (ls.showAffiliation2 === 'true') {
-        htmlItem = [
-          '<div class="post">',
-            '<div class="item" data="' + item.link + '"' + altLink + '>',
-              '<img class="flashy" src="' + item.image + '" />',
-              '<div class="title flashy">' + readUnread + item.title + '</div>',
-              '<div class="author flashy">&ndash; Av ' + item.creator + '</div>',
-            '</div>',
-          '</div>',
-        ].join('\n');
-      }
-      else {
-        htmlItem = [
-          '<div class="post">',
-            '<div class="item" data="' + item.link + '"' + altLink + '>',
-              '<img class="regular" src="' + item.image + '" />',
-              '<div class="title">' + readUnread + item.title + '</div>',
-              item.description,
-              '<div class="author">&ndash; Av ' + item.creator + '</div>',
-            '</div>',
-          '</div>',
-        ].join('\n');
-      }
-
-      $('#news '+column).append(htmlItem);
-    }
-  });
-  
-  // Store list of last viewed items
-  ls[viewedListName] = JSON.stringify(viewedList);
-
-  // All items are now considered read
-  Browser.setBadgeText('');
-  ls[unreadCountName] = 0;
-
-  // Make news items open extension website while closing popup
-  $('#news '+column+' .item').click(function() {
-    // The link is embedded as the ID of the element, we don't want to use
-    // <a> anchors because it creates an ugly box marking the focus element.
-    // Note that altLinks are embedded in the name-property of the element,
-    // - if preferred by the organization, we should use that instead.
-    var link = $(this).attr('data');
-    var altLink = $(this).attr('name');
-    var useAltLink = Affiliation.org[feedKey].useAltLink;
-    if (typeof altLink !== 'undefined' && useAltLink === true) {
-      link = $(this).attr('name');
-    }
-    Browser.openTab(link);
-    Analytics.trackEvent('clickNews', link);
-    window.close();
-  });
-
-  // Update images some times after news are loaded in case of late image updates
-  // which are common when the browser has just started Notifier
-  var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
-  for (var i in times) {
-    setTimeout(function() {
-      updateNewsImages();
-    }, times[i]);
-  }
-}
-
-// Checks the most recent list of news against the most recently viewed list of news
-var findUpdatedPosts = function(newsList, viewedList) {
-  var updatedList = [];
-  // Compare lists, keep your mind straight here:
-  // Updated news are:
-  // - saved in the newsList before the first identical item in the viewedList
-  // - saved in the viewedList after the first identical item in the newsList
-  for (var i in newsList) {
-    if (newsList[i] === viewedList[0]) {
-      break;
-    }
-    for (var j in viewedList) {
-      if (j === 0) {
-        continue;
-      }
-      if (newsList[i] === viewedList[j]) {
-        updatedList.push(newsList[i]);
-      }
-    }
-  }
-  return updatedList;
-}
-
-var updateNewsImages = function() {
-  console.log('updateNewsImages');
-  // The background process looks for images, and sometimes that process
-  // isn't finished before the popup loads, that's why we have to check
-  // in with localStorage.storedImages a couple of times.
-  $.each($('#news .post .item'), function(i, val) {
-    var link = $(this).attr('data');
-    var image = JSON.parse(localStorage.storedImages)[link];
-    if (typeof image !== 'undefined') {
-      $(this).find('img').attr('src', image);
-    }
-  });
 }
 
 var officeFontRotate = function(font) {
@@ -484,6 +475,8 @@ var officeFontRotate = function(font) {
   if (DEBUG)
     $('#office #subtext').html(ls.infoscreenLastMessage + '<br />' + chosenFont);
 }
+
+// Pageflip
 
 var changeCreatorName = function(name) {
   // Stop previous changeCreatorName instance, if any
@@ -540,6 +533,7 @@ $(document).ready(function() {
     // (allows DOM inspection with the mouse)
     $('html').css('cursor', 'auto');
     $('#container').css('overflow-y', 'auto');
+    $('#container').css('overflow-x', 'hidden');
     $('body').on('keypress', function(e) {
       // <enter> removes the overlay
       if (e.which === 13) {
