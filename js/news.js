@@ -25,14 +25,14 @@ var News = {
       if (this.debug) console.error(this.msgNewsLimit);
       return;
     }
-    if (typeof callback == 'undefined') {
+    if (typeof callback === 'undefined') {
       if (this.debug) console.error(this.msgCallbackRequired);
       return;
     }
 
     var self = this;
     // Get news the regular way (RSS or Atom feeds)
-    if (typeof affiliationObject.feed != 'undefined') {
+    if (typeof affiliationObject.feed !== 'undefined') {
       Ajaxer.getXml({
         url: affiliationObject.feed,
         success: function(xml) {
@@ -146,11 +146,11 @@ var News = {
     // Link field
 
     post.link = $(item).find("link").filter(':first').text();
-    if (post.link.trim() == '') {
+    if (post.link.trim() === '') {
       // If link field is broken by jQuery (dammit moon moon)
       // then check GUID field for a link instead (e.g. Adressa)
       var guid = $(item).find('guid').filter(':first').text();
-      if (guid.indexOf('http') != -1) {
+      if (guid.indexOf('http') !== -1) {
         post.link = guid;
       }
     }
@@ -159,25 +159,39 @@ var News = {
 
     // First, try to get HTML, if not working try getting text
     post.description = $(item).find("description").filter(':first').html();
-    if (typeof post.description == 'undefined')
+    if (typeof post.description === 'undefined') {
       post.description = $(item).find("description").filter(':first').text();
+    }
+    try {
+      // Some feeds have better news descriptions in the "content:encoded" rather
+      // than in the "description" field, e.g. HC's feed
+      var encodedContent = $(item).find("content\\:encoded").filter(':first').text();
+      if (encodedContent === '') {
+        // In case browser does not grok tags with colons, stupid browser
+        encodedContent = $(item).find("encoded").filter(':first').text();
+      }
+      post.description = encodedContent;
+    }
+    catch (err) {
+      // Do nothing, we were just checking, move along quitely
+    }
     post.description = this.stripCdata(item, 'description', post.description);
 
     // Creator field
 
     post.creator = $(item).find("dc\\:creator").filter(':first').text();
-    if (post.creator == '') {
+    if (post.creator === '') {
       // In case browser does not grok tags with colons, stupid browser
       post.creator = $(item).find("creator").filter(':first').text();
     }
-    if (post.creator == '') {
+    if (post.creator === '') {
       // Check for author in rarely used <author> field
       // - Universitetsavisa and Adressa uses this
       var author = $(item).find("author").filter(':first').text();
-      if (author != '') {
+      if (author !== '') {
         author = author.trim();
         var pieces = author.match(/[a-zA-Z0-9æøåÆØÅ\.\- ]+/g);
-        if (pieces != null) {
+        if (pieces !== null) {
           post.creator = pieces[pieces.length-1];
         }
       }
@@ -194,28 +208,28 @@ var News = {
     try {
       // Some feeds use encoded content, which often contains an image src
       var encodedContent = $(item).find("content\\:encoded").filter(':first').text();
-      if (encodedContent == '') {
+      if (encodedContent === '') {
         // In case browser does not grok tags with colons, stupid browser
         encodedContent = $(item).find("encoded").filter(':first').text();
       }
-      if (encodedContent != '') {
+      if (encodedContent !== '') {
         post.image = this.checkDescriptionForImageLink(post.image, encodedContent, affiliationObject.web);
       }
       // Samfundet uses this little trick to get images in their feed
       var linkEnclosure = $(item).find('link[rel="enclosure"]').filter(':first');
-      if (linkEnclosure.length != 0) {
+      if (linkEnclosure.length !== 0) {
         post.image = linkEnclosure['0'].attributes.href.value;
         post.image = post.image.split('?')[0];
       }
       // Universitetsavisa/Adressa does this little trick to get images in their feed
       var enclosure = $(item).find('enclosure').filter(':first');
-      if (enclosure.length != 0) {
+      if (enclosure.length !== 0) {
         post.image = enclosure['0'].attributes.url.value;
         post.image += '?isimage=.jpg'; // Help image-URLs without file extension pass through Images.control()
       }
       // Gemini uses this rather blunt hack to put images in their feed
       var bilde = $(item).find('bilde');
-      if (bilde.length != 0) {
+      if (bilde.length !== 0) {
         post.image = bilde['0'].value;
       }
     }
