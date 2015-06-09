@@ -389,7 +389,7 @@ var updateAffiliationNews = function(number) {
               '<img class="regular" src="' + item.image + '" />',
               '<div class="title">' + readUnread + item.title + '</div>',
               item.description,
-              '<div class="author">&ndash; Av ' + item.creator + '</div>',
+              '<br /><div class="author">&ndash; Av ' + item.creator + '</div>',
             '</article>',
           ].join('\n');
         }
