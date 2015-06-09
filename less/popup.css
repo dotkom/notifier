@@ -509,9 +509,11 @@ body {
   margin-top: 13px;
   min-height: 40px;
   cursor: pointer;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 #container #news article:hover {
-  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 #container #news article .title {
   position: relative;
@@ -553,7 +555,8 @@ body {
   background: snow;
   min-height: 80px;
   max-height: 250px;
-  padding: 4px;
+  padding: 3px;
+  border-radius: 3px;
 }
 #container #news article img.regular {
   float: right;

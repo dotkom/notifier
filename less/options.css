@@ -1,35 +1,4 @@
-/* The pageflip at the bottom of some pages */
-#pageflip {
-  position: fixed;
-  z-index: 200;
-  left: 0;
-  bottom: 0;
-  color: #ccf2cc;
-}
-#pageflip #pfBackground {
-  position: fixed;
-  z-index: 201;
-}
-#pageflip #pfText {
-  position: fixed;
-  z-index: 202;
-}
-#pageflip #pfFlip {
-  position: fixed;
-  z-index: 203;
-}
-#pageflip #pfLink {
-  position: fixed;
-  z-index: 204;
-}
-#pageflip #pfLink a {
-  text-decoration: none;
-  color: #ccf2cc;
-}
-#pageflip #pfLink a:hover {
-  text-decoration: underline;
-}
-/********************************************************/
+/* Debugging */
 .debugred {
   border: 0 solid #ff0000;
 }
@@ -39,6 +8,8 @@
 .debuglime {
   border: 0 solid #00ff00;
 }
+/* Variables */
+/* Rules */
 body {
   font-family: helvetica;
   color: white;
@@ -60,7 +31,7 @@ body #background {
   height: 100%;
   z-index: -100;
 }
-/* the logo, subtext and saved notifcation */
+/* The logo, subtext and saved notifcation */
 header {
   border: 0 solid #ff0000;
   position: fixed;
@@ -580,6 +551,11 @@ optgroup.debugAffiliation {
 }
 /* The pageflip at the bottom */
 #pageflip {
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  bottom: 0;
+  color: #ccf2cc;
   width: 185px;
   height: 98px;
   font: bold 11px monospace;
@@ -590,6 +566,8 @@ optgroup.debugAffiliation {
     0 0 30px #183e1a;
 }
 #pageflip #pfBackground {
+  position: fixed;
+  z-index: 201;
   left: 0;
   bottom: 0;
   width: 185px;
@@ -597,12 +575,16 @@ optgroup.debugAffiliation {
   background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
 }
 #pageflip #pfText {
+  position: fixed;
+  z-index: 202;
   left: 5px;
   bottom: 5px;
   width: 170px;
   height: 36px;
 }
 #pageflip #pfFlip {
+  position: fixed;
+  z-index: 203;
   left: 0;
   bottom: 0;
   width: 185px;
@@ -610,10 +592,19 @@ optgroup.debugAffiliation {
   background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
 }
 #pageflip #pfLink {
+  position: fixed;
+  z-index: 204;
   left: 5px;
   bottom: 5px;
   width: 170px;
   height: 36px;
+}
+#pageflip #pfLink a {
+  text-decoration: none;
+  color: #ccf2cc;
+}
+#pageflip #pfLink a:hover {
+  text-decoration: underline;
 }
 /* "Popup is here"-bubble */
 #popupHere {
