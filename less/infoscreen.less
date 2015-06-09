@@ -1,6 +1,3 @@
-
-/* COMMON FILE FOR popup.html, infoscreen.html */
-
 /* DEBUG variables, set to colors instead of
  * transparents for debug borders around everything
  */
@@ -24,6 +21,55 @@
 .debugText {border: 1px solid @debugYellow;} /* Text elements */
 .debugElement {border: 1px solid @debugLime;} /* Other elements */
 
+
+
+
+
+
+
+
+
+/* Fonts */
+
+@font-face {
+  font-family: 'Fondamento';
+  src: url('/fonts/fondamento/fondamento.ttf');
+}
+.fondamento {
+  font-family: 'Fondamento';
+}
+
+@font-face {
+  font-family: 'Cardo';
+  src: url('/fonts/cardo/cardo.ttf');
+}
+.cardo {
+  font-family: 'Cardo';
+}
+
+@font-face {
+  font-family: 'Oleoscript';
+  src: url('/fonts/oleoscript/oleoscript.ttf');
+}
+.oleoscript {
+  font-family: 'Oleoscript';
+}
+
+@font-face {
+  font-family: 'Sourcesans';
+  src: url('/fonts/sourcesans/sourcesans.ttf');
+}
+.sourcesans {
+  font-family: 'Sourcesans';
+}
+
+/* Font for the clock */
+
+@font-face {
+  font-family: 'Digi';
+  src: url('../fonts/digi/digi.ttf') format('truetype');
+}
+
 /* Mixins */
 
 .fullbox {
@@ -44,12 +90,23 @@
   }
 }
 
+.title {
+  font-size: 32px;
+  margin-top: 33px;
+  margin-bottom: 11px;
+}
+
 .emphasized {
   .debugText;
   font-style: italic;
+  margin-bottom: 11px;
 }
 
 /* Rules */
+
+html {
+  cursor: none;
+}
 
 body {
   color: white;
@@ -58,6 +115,35 @@ body {
   overflow-y: auto;
   margin: 0;
   padding: 0;
+  font-size: 26px;
+  line-height: 29px;
+}
+
+#overlay {
+  /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
+  /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
+  /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: black;
+  text-align: center;
+  opacity: 0;
+}
+
+#fadeOutNews {
+  // This is typically tweaked by palettes, be careful when changing it
+  .debugElement;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 505px;
+  z-index: 100;
+  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
 }
 
 #background {
@@ -67,6 +153,9 @@ body {
   background-size: cover;
   width: 100%;
   height: 100%;
+  /* also - using a div because the background needs to be resized if
+  the display is really big (1500px-2000px in width or height) */
+  background-image: url('/img/background-large-vertical.png');
 }
 
 /* This container keeps the content centered */
@@ -74,14 +163,42 @@ body {
 #container {
   .debugContainer;
   position: relative;
+  overflow-y: hidden;
+  padding: 40px;
 
   #office {
     .fullbox;
+    text-align: center;
+
+    #status {
+      .debugBox;
+
+      #text {
+        .debugText;
+        font-size: 250px;
+        line-height: 250px;
+        text-shadow: 0 0 20px black;
+        padding: 27px 0 13px 0;
+      }
+      img {
+        .debugElement;
+        width: 90%;
+        display: none; // shown when needed
+      }
+    }
+    #subtext {
+      .debugText;
+      font-size: 42px;
+      line-height: 42px;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0 0 20px black, 0 0 25px black;
+      padding-bottom: 13px;
+    }
   }
 
   #todays {
     .fullbox;
-
     #schedule {
       .debugBox;
       float: left;
@@ -136,41 +253,41 @@ body {
 
   #bus {
     .fullbox;
-    
     position: relative;
     background-color: #111;
     background-clip: padding-box; /* makes the background color only show on the inside of the border */
     width: 110%;
     margin-left: -5%;
+    top: 47px;
+    font-size: 24px;
+    line-height: 30px;
+    height: 200px;
+    margin-bottom: 60px;
+    padding: 0 3%;
+
+    // This is typically tweaked by palettes, be careful when changing it
+    box-shadow: 0 0 25px #aaa;
 
     .name {
       font-weight: bold;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-    #firstBus {
-      .debugBox;
-      position: relative;
-      float: left;
-      text-align: right;
-      padding-top: 14px;
-    }
-    #secondBus {
-      .debugBox;
-      position: relative;
-      float: left;
-      text-align: left;
-      padding-top: 14px;
+      margin-bottom: 5px;
+      line-height: 36px;
     }
     .loadingLeft {
       position: relative;
       z-index: 100;
       -webkit-transform: scaleX(-1);
+      width: 213px;
+      bottom: 22px;
     }
     .loadingRight {
       position: relative;
       z-index: 100;
+      width: 213px;
+      bottom: 22px;
     }
     .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
       .debugText;
@@ -185,357 +302,28 @@ body {
     .error {
       font-style: italic;
     }
+    #firstBus {
+      .debugBox;
+      position: relative;
+      float: left;
+      text-align: right;
+      padding-top: 14px;
+      width: 42%;
+    }
+    #secondBus {
+      .debugBox;
+      position: relative;
+      float: left;
+      text-align: left;
+      padding-top: 14px;
+      width: 42%;
+    }
     #middle {
       .debugBox;
       position: relative;
       float: left;
       text-align: center;
       height: 100%;
-    }
-  }
-
-  #news {
-    .fullbox;
-    
-    /* #full for using a single column */
-    #full {
-      >.title {
-        display: none; /* no need for affiliation title when only one is in use */
-      }
-      position: relative;
-      width: 100%;
-      float: left;
-      article {
-        img.regular {
-          float: left;
-          width: 33%;
-        }
-      }
-    }
-    
-    /* #left and #right for using double columns */
-    #left {
-      position: relative;
-      width: 47.5%;
-      float: left;
-    }
-    #right {
-      position: relative;
-      width: 47.5%;
-      float: right;
-      .title.regular {
-        color: LightGrey;
-      }
-    }
-
-    /* for each news post, and item within */
-    article {
-      .debugBox;
-      position: relative;
-      clear: both;
-
-
-      text-overflow: ellipsis;
-      overflow: hidden;
-
-      .title {
-        position: relative;
-        margin-top: 0; /* overrides default value */
-      }
-      .title.regular {
-        
-      }
-      .title.flashy {
-        position: absolute;
-        width: 92%;
-        color: white;
-        font-family: Helvetica;
-        font-weight: lighter;
-        text-transform: none;
-        text-shadow:
-          0 0 5px #333,
-          0 0 10px #333,
-          -1px -1px 1px #333,
-          -1px 1px 1px #333,
-          1px -1px 1px #333,
-          1px 1px 1px #333;
-      }
-
-      .author {
-        display: inline;
-        position: relative;
-        font-style: italic;
-      }
-      .author.regular {
-        
-      }
-      .author.flashy {
-        position: absolute;
-        width: 92%;
-        color: white;
-        font-family: Helvetica;
-        font-weight: lighter;
-        text-shadow:
-          0 0 5px black,
-          -1px -1px 1px #333,
-          -1px 1px 1px #333,
-          1px -1px 1px #333,
-          1px 1px 1px #333;
-      }
-
-      img {
-        width: 100%;
-        height: auto;
-        background: snow;
-      }
-      img.regular {
-        float: right;
-        width: 33%;
-      }
-      img.flashy {
-        float: left;
-        width: 97%;
-        margin: 0;
-      }
-    }
-    .unread {
-      text-shadow:
-        0 0 5px black,
-        -1px -1px 1px #333,
-        -1px 1px 1px #333,
-        1px -1px 1px #333,
-        1px 1px 1px #333;
-    }
-  }
-
-}
-
-/**********************************************************/
-
-// COMMON FILE FOR options.html, infoscreen.html
-
-/* The pageflip at the bottom of some pages */
-
-#pageflip {
-  // This is typically tweaked by palettes, be careful when changing it
-  position: fixed;
-  z-index: 200;
-  left: 0;
-  bottom: 0;
-  color: #ccf2cc;
-
-  #pfBackground {
-    // This is typically tweaked by palettes, be careful when changing it
-    position: fixed;
-    z-index: 201;
-  }
-  #pfText {
-    position: fixed;
-    z-index: 202;
-  }
-  #pfFlip {
-    position: fixed;
-    z-index: 203;
-  }
-  #pfLink {
-    position: fixed;
-    z-index: 204;
-
-    a {
-      text-decoration: none;
-      color: #ccf2cc;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-}
-
-/**********************************************************/
-
-/* This file contains infoscreen-additions to common.less */
-
-// Fonts
-
-@font-face {
-  font-family: 'Fondamento';
-  src: url('/fonts/fondamento/fondamento.ttf');
-}
-.fondamento {
-  font-family: 'Fondamento';
-}
-
-@font-face {
-  font-family: 'Cardo';
-  src: url('/fonts/cardo/cardo.ttf');
-}
-.cardo {
-  font-family: 'Cardo';
-}
-
-@font-face {
-  font-family: 'Oleoscript';
-  src: url('/fonts/oleoscript/oleoscript.ttf');
-}
-.oleoscript {
-  font-family: 'Oleoscript';
-}
-
-@font-face {
-  font-family: 'Sourcesans';
-  src: url('/fonts/sourcesans/sourcesans.ttf');
-}
-.sourcesans {
-  font-family: 'Sourcesans';
-}
-
-// Font for the clock
-
-@font-face {
-  font-family: 'Digi';
-  src: url('../fonts/digi/digi.ttf') format('truetype');
-}
-
-// Mixins
-
-.title {
-  font-size: 32px;
-  margin-top: 33px;
-  margin-bottom: 11px;
-}
-
-.emphasized {
-  margin-bottom: 11px;
-}
-
-// Rules
-
-html {
-  cursor: none;
-}
-
-body {
-  font-size: 26px;
-  line-height: 29px;
-}
-
-#overlay {
-  /* note1: the overlay is hidden when debugging, to be able to select/click stuff */
-  /* note2: the overlay fades to black every hour or so to refresh the screen pixels, */
-  /* yes, even LCD-screens can have burn-in, it just takes a LOT longer than with plasmas */
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-  background-color: black;
-  text-align: center;
-  opacity: 0;
-}
-
-#fadeOutNews {
-  // This is typically tweaked by palettes, be careful when changing it
-  .debugElement;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 505px;
-  z-index: 100;
-  background: url('/img/background-infoscreen-news-cutoff.png') center bottom repeat-x;
-}
-
-#background {
-  /* using a div because the background needs to be resized if
-  the display is really big (1500px-2000px in width or height) */
-  background-image: url('/img/background-large-vertical.png');
-}
-
-/* This container keeps the content centered */
-
-#container {
-  overflow-y: hidden;
-  padding: 40px;
-
-  #office {
-    text-align: center;
-
-    #status {
-      .debugBox;
-
-      #text {
-        .debugText;
-        font-size: 250px;
-        line-height: 250px;
-        text-shadow: 0 0 20px black;
-        padding: 27px 0 13px 0;
-      }
-      img {
-        .debugElement;
-        width: 90%;
-        display: none; // shown when needed
-      }
-    }
-    #subtext {
-      .debugText;
-      font-size: 42px;
-      line-height: 42px;
-      font-weight: bold;
-      text-align: center;
-      text-shadow: 0 0 20px black, 0 0 25px black;
-      padding-bottom: 13px;
-    }
-  }
-
-  #todays {
-    #schedule {
-      #servant {
-        .emphasized;
-      }
-    }
-    #coffee {
-      #pots {
-        .emphasized;
-      }
-    }
-  }
-
-  #cantinas {
-    .hours {
-      .emphasized;
-    }
-  }
-
-  #bus {
-    // This is typically tweaked by palettes, be careful when changing it
-    box-shadow: 0 0 25px #aaa;
-    top: 47px;
-    font-size: 24px;
-    line-height: 30px;
-    height: 200px;
-    margin-bottom: 60px;
-    padding: 0 3%;
-
-    .name {
-      margin-bottom: 5px;
-      line-height: 36px;
-    }
-    .loadingLeft {
-      width: 213px;
-      bottom: 22px;
-    }
-    .loadingRight {
-      width: 213px;
-      bottom: 22px;
-    }
-    #firstBus {
-      width: 42%;
-    }
-    #secondBus {
-      width: 42%;
-    }
-    #middle {
       width: 14%;
       #atbLogo {
         .debugElement;
@@ -591,67 +379,136 @@ body {
   }
 
   #news {
+    .fullbox;
+
     /* #full for using a single column */
     #full {
-      .post {
-        .item {
-          img.regular {
-            min-height: 180px;
-            max-height: 400px;
-            margin: 0 15px 0 0;
-          }
-        }
+      position: relative;
+      width: 100%;
+      float: left;
+
+      >.title {
+        display: none; /* no need for affiliation title when only one is in use */
       }
+      article {
+        img.regular {
+          float: left;
+          width: 33%;
+          min-height: 180px;
+          max-height: 400px;
+          margin: 0 15px 0 0;
+        }
+      }      
     }
 
     #left, #right {
+      position: relative;
+      width: 47.5%;
       >.title {
         margin-bottom: -10px;
       }
+      .title.regular {
+        color: LightGrey;
+      }
+    }
+    
+    /* #left and #right for using double columns */
+    #left {
+      float: left;
+    }
+    #right {
+      float: right;
     }
 
-    .post {
+    /* for each news article */
+    article {
+      .debugBox;
+      position: relative;
+      clear: both;
+      text-overflow: ellipsis;
+      overflow: hidden;
       margin-top: 33px;
-      .item {
-        margin-top: -6px;
-        min-height: 53px;
-        cursor: pointer;
-        margin-left: -6px;
-        margin-right: -6px;
-        padding: 7px;
-        -webkit-transition: box-shadow 0.3s ease-out 0s;
+      min-height: 53px;
 
-        &:hover {
-          box-shadow:
-            inset 0 0 3px #bbb,
-            0 0 13px white;
-        }
+      .title {
+        position: relative;
+        margin-top: 0; /* overrides default value */
+      }
+      .title.regular {
+        
+      }
+      .title.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        text-transform: none;
+        text-shadow:
+          0 0 5px #333,
+          0 0 10px #333,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+        font-size: 35px;
+        line-height: 38px;
+        top: 23px;
+        left: 18px;
+      }
 
-        .title.flashy {
-          font-size: 35px;
-          line-height: 38px;
-          top: 23px;
-          left: 18px;
-        }
+      .author {
+        display: inline;
+        position: relative;
+        font-style: italic;
+      }
+      .author.regular {
+        
+      }
+      .author.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        font-size: 32px;
+        bottom: 24px;
+        left: 18px;
+        text-shadow:
+          0 0 5px black,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+      }
 
-        .author.flashy {
-          font-size: 32px;
-          bottom: 24px;
-          left: 18px;
-        }
-
-        img {
-          min-height: 180px;
-          max-height: 400px;
-          padding: 8px;
-        }
-        img.regular {
-          margin: 4px 0 0 6px;
-        }
+      img {
+        width: 100%;
+        height: auto;
+        background: snow;
+        min-height: 180px;
+        max-height: 400px;
+        padding: 8px;
+      }
+      img.regular {
+        float: right;
+        width: 33%;
+        margin: 4px 0 0 6px;
+      }
+      img.flashy {
+        float: left;
+        width: 97%;
+        margin: 0;
       }
     }
     .unread {
       font-size: 32px;
+      text-shadow:
+        0 0 5px black,
+        -1px -1px 1px #333,
+        -1px 1px 1px #333,
+        1px -1px 1px #333,
+        1px 1px 1px #333;
     }
   }
 
@@ -671,6 +528,12 @@ body {
 /* the pageflip at the bottom */
 
 #pageflip {
+  // This is typically tweaked by palettes, be careful when changing it
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  bottom: 0;
+  color: #ccf2cc;
   width: 356px;
   height: 181px;
   font: bold 22px monospace;
@@ -682,6 +545,9 @@ body {
     0 0 30px #183e1a;
 
   #pfBackground {
+    // This is typically tweaked by palettes, be careful when changing it
+    position: fixed;
+    z-index: 201;
     left: 0;
     bottom: 0;
     width: 356px;
@@ -689,12 +555,16 @@ body {
     background: transparent url('/img/pageflip-big-background.png') no-repeat left bottom;
   }
   #pfText {
+    position: fixed;
+    z-index: 202;
     left: 8px;
     bottom: 4px;
     width: 300px;
     height: 76px;
   }
   #pfFlip {
+    position: fixed;
+    z-index: 203;
     left: 0;
     bottom: 0;
     width: 356px;
@@ -702,10 +572,19 @@ body {
     background: transparent url('/img/pageflip-big.png') no-repeat left bottom;
   }
   #pfLink {
+    position: fixed;
+    z-index: 204;
     left: 8px;
     bottom: 4px;
     width: 300px;
     height: 76px;
+    a {
+      text-decoration: none;
+      color: #ccf2cc;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 

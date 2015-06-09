@@ -1,46 +1,4 @@
-
-// COMMON FILE FOR options.html, infoscreen.html
-
-/* The pageflip at the bottom of some pages */
-
-#pageflip {
-  // This is typically tweaked by palettes, be careful when changing it
-  position: fixed;
-  z-index: 200;
-  left: 0;
-  bottom: 0;
-  color: #ccf2cc;
-
-  #pfBackground {
-    // This is typically tweaked by palettes, be careful when changing it
-    position: fixed;
-    z-index: 201;
-  }
-  #pfText {
-    position: fixed;
-    z-index: 202;
-  }
-  #pfFlip {
-    position: fixed;
-    z-index: 203;
-  }
-  #pfLink {
-    position: fixed;
-    z-index: 204;
-
-    a {
-      text-decoration: none;
-      color: #ccf2cc;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-}
-
-/********************************************************/
-
-// Debugging
+/* Debugging */
 
 @debug: 0;
 .debugred {
@@ -53,14 +11,14 @@
   border: @debug solid lime;
 }
 
-// Variables
+/* Variables */
 
 @header-height: 67px;
 @header-padding: 13px;
 @content-width: 800px;
 @content-height: 413px;
 
-// Rules
+/* Rules */
 
 body {
   font-family: helvetica;
@@ -85,7 +43,7 @@ body {
   }
 }
 
-/* the logo, subtext and saved notifcation */
+/* The logo, subtext and saved notifcation */
 
 header {
   .debugred;
@@ -648,6 +606,12 @@ optgroup.debugAffiliation {
 /* The pageflip at the bottom */
 
 #pageflip {
+  // This is typically tweaked by palettes, be careful when changing it
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  bottom: 0;
+  color: #ccf2cc;
   width: 185px;
   height: 98px;
   font: bold 11px monospace;
@@ -659,6 +623,9 @@ optgroup.debugAffiliation {
     0 0 30px #183e1a;
 
   #pfBackground {
+    // This is typically tweaked by palettes, be careful when changing it
+    position: fixed;
+    z-index: 201;
     left: 0;
     bottom: 0;
     width: 185px;
@@ -666,12 +633,16 @@ optgroup.debugAffiliation {
     background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
   }
   #pfText {
+    position: fixed;
+    z-index: 202;
     left: 5px;
     bottom: 5px;
     width: 170px;
     height: 36px;
   }
   #pfFlip {
+    position: fixed;
+    z-index: 203;
     left: 0;
     bottom: 0;
     width: 185px;
@@ -679,10 +650,19 @@ optgroup.debugAffiliation {
     background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
   }
   #pfLink {
+    position: fixed;
+    z-index: 204;
     left: 5px;
     bottom: 5px;
     width: 170px;
     height: 36px;
+    a {
+      text-decoration: none;
+      color: #ccf2cc;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 
