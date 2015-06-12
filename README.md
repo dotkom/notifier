@@ -13,44 +13,6 @@ Installation of Notifier
 * Install for Chrome: https://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf
 * Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
 
-Installation of Infoscreen
---------------------------
-
-Use a spare computer, one you don't need for anything else.
-
-1. Install the latest version of [Ubuntu](http://www.ubuntu.com/desktop)
-  * Write down the username and password from the installation!
-  * Turn on Autologin when asked about it
-1. Open “System Settings”
-  * Displays -> Set rotation to clockwise
-  * Brightness & Lock -> Never turn screen off
-  * Appearance -> Behavior -> Auto-hide the launcher
-1. Open “Update Manager”
-  * Settings -> Never automatically check updates (unless it's really important to you)
-  * Settings -> Never notify me of a new Ubuntu version
-1. Open “Software Updater”
-  * Install updates this once
-1. Open a terminal
-  * `sudo apt-get install openssh-server unclutter chromium-browser`
-1. Open Chrome
-  * Settings -> Set Chrome as default browser
-  * Settings -> Do not offer to save passwords
-  * Settings -> On startup, open the new tab page (this is important for kiosk mode to work properly)
-  * Install Notifier from the [Chrome Web Store](https://chrome.google.com/webstore/detail/online-notifier/hfgffimlnajpbenfpaofmmffcdmgkllf)
-  * Online Notifier Options -> Enable Infoscreen
-1. The launcher
-  * Lock the Chrome icon to the launcher
-  * Other apps you might want to lock to the launcher
-    * System Settings, Startup Applications, Software Updater, Terminal
-  * Remove unnecessary icons, yes, Firefox as well
-1. Open “Startup Applications”
-  * Add `chromium-browser --kiosk --disable-translate`
-  * Add `unclutter`
-1. `sudo reboot`
-1. Enter the BIOS on startup (typically by clicking F2, F9, F10 or Del like a maniac)
-  * Find the option for what happens on power-loss, set it to turn power back on
-  * This feature is very important for the infoscreen to survive power outages, which are frequent at NTNU due to construction work
-
 Technology stack
 ----------------
 
@@ -70,7 +32,6 @@ For all the included affiliations
 - Displays todays dinner menu and opening hours from SiT cantinas, cafés and kiosks
 - Displays bus data from AtB in realtime and through the Oracle
 - All pages in the extension are live, they stay updated while open
-- Can be used as an infoscreen (full HD vertical screen) for continous use
 
 Additional features for affiliations who have a [NotiPi](https://github.com/appKom/notipi)
 
@@ -85,7 +46,6 @@ General
 
 - Only HTML5, CSS3 and JavaScript
 - Libraries used: jQuery, LESS
-- Opens options page on first run
 - All pages keep themselves updated while running
 - Separate scripts containing constants and defaults, for changeability
 - Runs Google Analytics on all pages, tracking both pages and events anonymously
@@ -96,7 +56,7 @@ General
 Student organizations
 
 - Affiliations
-  - Tons of different organizations and institutions are supported
+  - Tons of different organizations and institutions are supported (all of Gløshaugen is included)
   - Each organization has it's own logos and symbols
   - Each organizations' news feed is fetched and parsed
   - Each organization has a recommended color palette
@@ -110,9 +70,9 @@ Student organizations
   - Serves HTML5 desktop notifications on news / updates
 - Palettes
   - Stored as plain, short CSS stylesheets
-  - Override common CSS selectors in options, popup and the infoscreen
+  - Override common CSS selectors in the popup
   - Primarily changing style of the background image via CSS3 hue-rotation and such
-  - Palettes may also change colors of titles, pageflip and other details
+  - Palettes may also change colors of titles and other details
 
 SiT
 
@@ -132,7 +92,7 @@ AtB
   - Fetches realtime bus data from a third-party API at bybussen.api.tmn.io
   - Frequently updated in order to always show correct information
   - Support for favorite bus lines, simplifying finding a particular bus at a busy stop
-  - Smart selection of bus stops at the options page, quickly determining which stop the user wants
+  - Smart selection of bus stops, quickly determining which stop the user wants
   - The complete list of bus stops is fetched and parsed every now and then
 - Oracle
   - Allows the user access to SiTs bus oracle
@@ -159,15 +119,8 @@ Hardware Features (requires [NotiPi](https://github.com/appKom/notipi))
   - Users get a HTML desktop notification with a random coffee meme when the coffee button is clicked
   - Overview shows how fresh the last pot of coffee is and how many pots of coffee has been made today
 
-Options page
-
-- All options react to changes immediately
-- Github link to the open source repository
-- Google +1 button for Onlines website when affiliation is Online
-
 Injected script
 
-- Automatically switches to the correct clicked cantina from the popup
 - Detects when user is visiting the affiliation website, nullifying the counter badge
 
 Analytics

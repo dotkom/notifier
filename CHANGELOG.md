@@ -4,19 +4,19 @@ Alle viktige endringer i Notifier dokumenteres i denne filen.
 Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 
 ## Fremtidsplaner
-- Options direkte i popupen, i stedet for den separate Options-siden
+- Mer data hentes ferdiglaget fra Notiwire (API) i stedet for å lages i Notifier
 - Lunsjmeny for de forskjellige kantinene
 - Vise endringer fra forrige versjon
-- Trekke ut infoskjermene som en egen Chrome extension
 - Events fra kalenderne til linjeforeningene
 - 1024-integrasjon
 
 ## Versjonshistorie
 
-### YYYY-MM-DD Versjon 5.0 (planlagt)
-- Ekstreme ytelsesforbedringer (opptil 50%(?) raskere)
-- Kuttet mange tusen linjer kode (opptil 50%(?) kortere)
-- Mer data hentes ferdiglaget fra Notiwire (API) i stedet for å lages i Notifier
+### YYYY-MM-DD Versjon 5.0
+- Back to basics: Notifier er nå kun popupen
+- Infoscreen er nå splittet ut til en ny Chrome extension som heter Online Notiwall
+- Options er nå direkte i popupen, i stedet for den separate Options-siden
+- Mange tusen linjer kode er kuttet (ANTALL?)
 
 ### 2015-04-16 Versjon 4.7
 - Notiwire (APIet) er installert på en sekundær lokasjon
