@@ -1,12 +1,12 @@
 /* Debugging */
 .debugred {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
 }
 .debugyellow {
-  border: 0 solid #ffff00;
+  border: 0 solid yellow;
 }
 .debuglime {
-  border: 0 solid #00ff00;
+  border: 0 solid lime;
 }
 /* Variables */
 /* Rules */
@@ -33,7 +33,7 @@ body #background {
 }
 /* The logo, subtext and saved notifcation */
 header {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -47,7 +47,7 @@ header {
   z-index: 1;
 }
 header #headerText {
-  border: 0 solid #ffff00;
+  border: 0 solid yellow;
   width: 100%;
   text-align: center;
   margin-top: 1px;
@@ -90,7 +90,7 @@ header #notification .saved {
 }
 /* all the options, main content */
 #container {
-  border: 0 solid #00ff00;
+  border: 0 solid lime;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -108,19 +108,19 @@ header #notification .saved {
   white-space: nowrap;
 }
 #container #left {
-  border: 0 solid #ffff00;
+  border: 0 solid yellow;
   width: 54%;
   padding-top: 7px;
 }
 #container #right {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   width: 42%;
   /*padding-top: 12px;*/
   padding-top: 7px;
 }
 /* an option item */
 .item {
-  border: 0 solid #00ff00;
+  border: 0 solid lime;
   z-index: 2;
   padding-bottom: 15px;
   clear: both;
@@ -132,7 +132,6 @@ header #notification .saved {
   /* the cantina option in particular */
   /* the bus option in particular */
   /* the showStatus option in particular */
-  /* the bigscreen option in particular */
   /* the coffee subscription option in particular*/
 }
 .item .icon {
@@ -141,8 +140,8 @@ header #notification .saved {
   position: relative;
   margin: 0;
   top: 4px;
-  -webkit-filter: drop-shadow(0 0 4px #000000);
-  filter: drop-shadow(0 0 4px #000000);
+  -webkit-filter: drop-shadow(0 0 4px black);
+  filter: drop-shadow(0 0 4px black);
 }
 .item #statusOverlay {
   pointer-events: none;
@@ -197,7 +196,7 @@ header #notification .saved {
   word-wrap: break-word;
 }
 .item #affiliationBox .symbol {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   white-space: nowrap;
   cursor: pointer;
   width: 59px;
@@ -216,7 +215,7 @@ header #notification .saved {
   border-left: 1px solid #aaa;
 }
 .item #affiliationBox .box {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: relative;
   padding: 5px 6px 6px 6px;
 }
@@ -317,7 +316,7 @@ header #notification .saved {
   word-wrap: break-word;
 }
 .item #cantinaBox select {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   float: left;
   border: 1px solid #8d8d8d;
   position: relative;
@@ -326,7 +325,7 @@ header #notification .saved {
   width: 106px;
 }
 .item #cantinaBox #cantinaLogo {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   float: left;
   white-space: nowrap;
   width: 116px;
@@ -386,13 +385,13 @@ header #notification .saved {
   /* resets inhertied value from parent element */
 }
 .item #busBox .busStop .lines table {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   width: 100%;
   table-layout: fixed;
   text-align: center;
 }
 .item #busBox .busStop .lines table td {
-  border: 0 solid #ffff00;
+  border: 0 solid yellow;
   padding: 1px 0;
 }
 .item #busBox .busStop .lines .active {
@@ -432,7 +431,7 @@ header #notification .saved {
   width: 80px;
 }
 .item #busBox #busLogo {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: relative;
   /* allows the down-arrow to be painted behind this */
   z-index: 10;
@@ -457,27 +456,13 @@ header #notification .saved {
   width: 251px;
   height: 103px;
 }
-.item img#useBigscreen {
-  width: 304px;
-  height: 68px;
-}
-.item #bigscreenPreview {
-  display: none;
-  overflow: hidden;
-  margin-left: 93px;
-  height: 6400px;
-  width: 4700px;
-  zoom: 0.25;
-  -webkit-transform: scale(0.25);
-  -webkit-transform-origin: 0 0;
-}
 .item img#coffeeSubscriptionImage {
   width: 304px;
   height: auto;
 }
 /* Suggestions for bus stops */
 #busSuggestions {
-  border: 0 solid #00ff00;
+  border: 0 solid lime;
   position: fixed;
   width: 200px;
   overflow: hidden;
@@ -519,16 +504,6 @@ header #notification .saved {
       0 0 40px #011b36,
       0 0 40px #011b36;
 }
-/* logo with link in the top right corner */
-/*#logolink {
-  position: fixed;
-  top: 13px;
-  right: 13px;
-  #logo {
-    .debugyellow;
-    width: 160px;
-  }
-}*/
 /* Debug affiliation in the top of the affiliation selection lists */
 optgroup.debugAffiliation {
   display: none;
@@ -549,66 +524,9 @@ optgroup.debugAffiliation {
 #debugLinks:hover {
   opacity: 1;
 }
-/* The pageflip at the bottom */
-#pageflip {
-  position: fixed;
-  z-index: 200;
-  left: 0;
-  bottom: 0;
-  color: #ccf2cc;
-  width: 185px;
-  height: 98px;
-  font: bold 11px monospace;
-  text-shadow: 0 0 5px #68bf70,
-    0 0 10px #60b95e,
-    0 0 15px #368f2c,
-    0 0 20px #25892e,
-    0 0 30px #183e1a;
-}
-#pageflip #pfBackground {
-  position: fixed;
-  z-index: 201;
-  left: 0;
-  bottom: 0;
-  width: 185px;
-  height: 98px;
-  background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
-}
-#pageflip #pfText {
-  position: fixed;
-  z-index: 202;
-  left: 5px;
-  bottom: 5px;
-  width: 170px;
-  height: 36px;
-}
-#pageflip #pfFlip {
-  position: fixed;
-  z-index: 203;
-  left: 0;
-  bottom: 0;
-  width: 185px;
-  height: 98px;
-  background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
-}
-#pageflip #pfLink {
-  position: fixed;
-  z-index: 204;
-  left: 5px;
-  bottom: 5px;
-  width: 170px;
-  height: 36px;
-}
-#pageflip #pfLink a {
-  text-decoration: none;
-  color: #ccf2cc;
-}
-#pageflip #pfLink a:hover {
-  text-decoration: underline;
-}
 /* "Popup is here"-bubble */
 #popupHere {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: absolute;
   display: none;
   top: 0;
@@ -627,7 +545,7 @@ optgroup.debugAffiliation {
   z-index: 1000;
 }
 #popupHere .icon {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: relative;
   display: inline;
   float: left;
@@ -636,7 +554,7 @@ optgroup.debugAffiliation {
   margin-right: 4px;
 }
 #popupHere .arrow {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: relative;
   display: inline;
   float: right;
@@ -646,7 +564,7 @@ optgroup.debugAffiliation {
   left: -15px;
 }
 #popupHere .text {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: relative;
   display: inline;
   float: left;
@@ -654,19 +572,9 @@ optgroup.debugAffiliation {
   top: 3px;
 }
 #popupHere .subtext {
-  border: 0 solid #ff0000;
+  border: 0 solid red;
   position: relative;
   display: inline;
   float: left;
   font-size: 12px;
-}
-/* Modal bigscreen dialog */
-.modal {
-  color: black;
-}
-.modal button {
-  font-size: 12px;
-}
-.modal #modalNotifier {
-  font-weight: bold;
 }

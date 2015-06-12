@@ -488,26 +488,6 @@ header {
     height: 103px;
   }
 
-  /* the bigscreen option in particular */
-
-  img#useBigscreen {
-    width: 304px;
-    height: 68px;
-  }
-
-  #bigscreenPreview {
-    display: none;
-    overflow: hidden;
-    margin-left: 93px;
-    // The page needs to be a lot larger...
-    height: 6400px;
-    width: 4700px;
-    // ...because in reality it's scaled down
-    zoom: 0.25;
-    -webkit-transform: scale(0.25);
-    -webkit-transform-origin: 0 0;
-  }
-
   /* the coffee subscription option in particular*/
 
   img#coffeeSubscriptionImage {
@@ -567,18 +547,6 @@ header {
   }
 }
 
-/* logo with link in the top right corner */
-
-/*#logolink {
-  position: fixed;
-  top: 13px;
-  right: 13px;
-  #logo {
-    .debugyellow;
-    width: 160px;
-  }
-}*/
-
 /* Debug affiliation in the top of the affiliation selection lists */
 
 optgroup.debugAffiliation {
@@ -600,69 +568,6 @@ optgroup.debugAffiliation {
   }
   &:hover {
     opacity: 1;
-  }
-}
-
-/* The pageflip at the bottom */
-
-#pageflip {
-  // This is typically tweaked by palettes, be careful when changing it
-  position: fixed;
-  z-index: 200;
-  left: 0;
-  bottom: 0;
-  color: #ccf2cc;
-  width: 185px;
-  height: 98px;
-  font: bold 11px monospace;
-  text-shadow:
-    0 0 5px #68bf70,
-    0 0 10px #60b95e,
-    0 0 15px #368f2c,
-    0 0 20px #25892e,
-    0 0 30px #183e1a;
-
-  #pfBackground {
-    // This is typically tweaked by palettes, be careful when changing it
-    position: fixed;
-    z-index: 201;
-    left: 0;
-    bottom: 0;
-    width: 185px;
-    height: 98px;
-    background: transparent url('/img/pageflip-medium-background.png') no-repeat left bottom;
-  }
-  #pfText {
-    position: fixed;
-    z-index: 202;
-    left: 5px;
-    bottom: 5px;
-    width: 170px;
-    height: 36px;
-  }
-  #pfFlip {
-    position: fixed;
-    z-index: 203;
-    left: 0;
-    bottom: 0;
-    width: 185px;
-    height: 98px;
-    background: transparent url('/img/pageflip-medium.png') no-repeat left bottom;
-  }
-  #pfLink {
-    position: fixed;
-    z-index: 204;
-    left: 5px;
-    bottom: 5px;
-    width: 170px;
-    height: 36px;
-    a {
-      text-decoration: none;
-      color: #ccf2cc;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 }
 
@@ -720,18 +625,5 @@ optgroup.debugAffiliation {
     display: inline;
     float: left;
     font-size: 12px;
-  }
-}
-
-/* Modal bigscreen dialog */
-
-.modal {
-  color: black;
-  
-  button {
-    font-size: 12px;
-  }
-  #modalNotifier {
-    font-weight: bold;
   }
 }

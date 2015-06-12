@@ -9,25 +9,6 @@ var showSavedNotification = function() {
   }, 800);
 }
 
-var pageFlipCursorBlinking = function() {
-  setInterval(function() {
-    $(".pageflipcursor").animate({opacity: 0}, "fast", "swing", function() {
-      $(this).animate({opacity: 1}, "fast", "swing");
-    });
-  }, 600);
-}
-
-var loopCreatorName = function() {
-  setInterval(function() {
-    var namesAsRegex = new RegExp(ls.extensionOwner + '|' + ls.extensionCreator, 'gi');
-    var currentName = $('#pagefliptyping').text().match(namesAsRegex)[0];
-    if (currentName === ls.extensionOwner)
-      changeCreatorName(ls.extensionCreator);
-    else
-      changeCreatorName(ls.extensionOwner);
-  }, 60000);
-}
-
 var testDesktopNotification = function() {
   News.showNotification();
 }
@@ -152,7 +133,6 @@ var disableHardwareFeatures = function(quick) {
     $('label[for="coffeeSubscription"]').slideUp({duration:0});
     $('#container').css('top', '60%');
     $('header').css('top', '60%');
-    // No need to change creator name in pageflip when quick-disabling
   }
   else {
     // Hide office status option
@@ -175,7 +155,6 @@ var enableHardwareFeatures = function(quick) {
     $('label[for="coffeeSubscription"]').slideDown({duration:0});
     $('#container').css('top', '50%');
     $('header').css('top', '50%');
-    // No need to change creator name in pageflip when quick-enabling
   }
   else {
     // Update office status
@@ -644,25 +623,9 @@ $(document).ready(function() {
   $('#affiliationKey1').focus();
 
   // Minor esthetical adjustments for OS
-  if (Browser.onWindows()) {
-    $('#pfText').attr("style", "bottom:9px;");
-    $('#pfLink').attr("style", "bottom:9px;");
-  }
   if (Browser.onMac()) {
     $('#popupHere .subtext b').text('Cmd+Shift+A');
   }
-
-  // Google Analytics
-  $('#pfLink').click(function() {
-    Analytics.trackEvent('clickPageflip');
-  });
-  // Adding creator name to pageflip
-  setTimeout(function() {
-    changeCreatorName(ls.extensionOwner);
-  }, 2500);
-  // Blinking cursor at pageflip
-  pageFlipCursorBlinking();
-  loopCreatorName();
 
   // Show the "popup here"-bubble in the top right corner
   popupHere();

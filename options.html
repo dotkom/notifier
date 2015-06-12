@@ -9,9 +9,6 @@
   <link rel="stylesheet" type="text/css" href="less/options.css" />
   <link rel="stylesheet" type="text/css" href="less/palettes/blue.css" id="palette" />
 
-  <!-- CSS jQuery Modal -->
-  <link rel="stylesheet" type="text/css" href="libs/modal/jquery.modal.css" />
-
 </head>
 
 <body>
@@ -369,41 +366,26 @@
     <div id="right" class="side">
 
       <div class="item">
-        <label for="useBigscreen">
-          <input type="checkbox" name="useBigscreen" value="useBigscreen" id="useBigscreen" />
+        <label for="showNotifications">
+          <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" />
           <span>
-            Bruk <b>Bigscreen</b> i stedet for <b>Notifier</b>
+            Vis varsel når nyheter publiseres / oppdateres
           </span><br />
-          <img id="useBigscreen" class="image" src="/img/options-infoscreen.png" />
+          <img class="image" src="/img/options-desktop-notification.png" />
         </label>
-        <iframe id="bigscreenPreview" class="image" src="about:blank"></iframe>
       </div>
 
-      <div id="bigscreenSlider">
-
-        <div class="item">
-          <label for="showNotifications">
-            <input type="checkbox" name="showNotifications" value="showNotifications" id="showNotifications" />
-            <span>
-              Vis varsel når nyheter publiseres / oppdateres
-            </span><br />
-            <img class="image" src="/img/options-desktop-notification.png" />
-          </label>
-        </div>
-
-        <div class="item">
-          <label for="coffeeSubscription">
-            <input type="checkbox" name="coffeeSubscription" value="coffeeSubscription" id="coffeeSubscription" />
-            <span>
-              Abonner på nytraktet kaffe
-            </span><br />
-            <img id="coffeeSubscriptionImage" class="image" src="/img/options-coffee-subscription.png" />
-          </label>
-        </div>
-
+      <div class="item">
+        <label for="coffeeSubscription">
+          <input type="checkbox" name="coffeeSubscription" value="coffeeSubscription" id="coffeeSubscription" />
+          <span>
+            Abonner på nytraktet kaffe
+          </span><br />
+          <img id="coffeeSubscriptionImage" class="image" src="/img/options-coffee-subscription.png" />
+        </label>
       </div>
 
-    </div> <!-- the slideup div, slides away all other options if useBigscreen is checked -->
+    </div>
   </div>
 
   <!-- Suggestions for bus stops -->
@@ -412,8 +394,6 @@
   <!-- DEBUG: Links to the other pages in the app -->
   <div id="debugLinks">
     pages<br />
-    <button type="button" class="debug" data="infoscreen.html">infoscreen.html</button><br />
-    <button type="button" class="debug" data="officescreen.html">officescreen.html</button><br />
     <button type="button" class="debug" data="popup.html">popup.html</button><br />
     <br />cantina feeds<br />
     <button type="button" class="debug" data="https://www.sit.no/rss.ap?thisId=38798">dmmh-feed</button><br />
@@ -429,39 +409,12 @@
     <button type="button" class="debug" data="https://www.sit.no/rss.ap?thisId=36450">tyholt-feed</button><br />
   </div>
 
-  <!-- "from appKom with <3" -->
-  <div id="pageflip">
-    <div id="pfBackground"></div>
-    <div id="pfText">~$ ps -ef<br />~$ from \\<br />&nbsp;</div>
-    <div id="pfFlip"></div>
-    <div id="pfLink">
-      <br />
-      <a href="https://github.com/appkom/notifier/" target="_blank"><span id="pageflipspaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br /><span id="pagefliptyping"></span><span class="pageflipcursor">_</span></a>
-    </div>
-  </div>
-
   <!-- "Popup is up here"-bubble -->
   <div id="popupHere">
     <img class="icon" src="/org/online/symbol.png" />
     <img class="arrow" src="/img/options-bubble-arrow.png" />
     <div class="text">Notifier is up here</div>
     <div class="subtext"><b>Ctrl+Shift+A</b> opens the popup</div>
-  </div>
-
-  <!-- Bigscreen modal -->
-  <div class="modal">
-    Hva vil du ha? Bigscreen eller Notifier?<br />
-    <br />
-    Bigscreen kommer i to typer: <b>Infoscreen</b> brukes utenfor kontoret. <b>Officescreen</b> brukes inne på kontoret. For begge typer gjelder følgende:
-    <ul>
-      <li>Krever en stor skjerm på høykant (f.eks. 24")</li>
-      <li>Popup-knappen vil åpne Bigscreen i stedet</li>
-      <li>Bigscreen skjuler musepekeren</li>
-      <li>Bigscreen åpnes når nettleseren startes</li>
-    </ul>
-    <button type="button" id="modalNotifier">Tilbake til Notifier</button>
-    <button type="button" id="modalInfoscreen">Bruk Infoscreen</button>
-    <button type="button" id="modalOfficescreen">Bruk Officescreen</button>
   </div>
 
   <!-- JS No Dependencies -->
@@ -485,9 +438,6 @@
   <script src="js/favorite.js"></script>
   <script src="js/news.js"></script>
   <script src="js/stops.js"></script>
-
-  <!-- JS jQuery Modal -->
-  <script src="libs/modal/jquery.modal.min.js"></script>
 
   <!-- Document ready sript -->
   <script src="options.js"></script>
