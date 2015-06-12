@@ -16,12 +16,11 @@ var mainLoop = function(force) {
   if (ls.showAffiliation2 === 'true')
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
-  // Only if hardware and not infoscreen
+  // Only if hardware
   if (ls.showStatus === 'true')
-    if (ls.useBigscreen !== 'true')
-      if (Affiliation.org[ls.affiliationKey1].hw)
-        if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
-          updateAffiliation();
+    if (Affiliation.org[ls.affiliationKey1].hw)
+      if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
+        updateAffiliation();
 
   // No reason to count to infinity
   if (10000 < iteration)
@@ -35,11 +34,9 @@ var updateAffiliation = function(callback) {
   // Fetch
   Affiliation.get(ls.affiliationKey1, function() {
     // Run relevant background updates
-    if (ls.useBigscreen !== 'true') {
-      if (Affiliation.org[ls.affiliationKey1].hw) {
-        updateStatusAndMeetings();
-        updateCoffeeSubscription();
-      }
+    if (Affiliation.org[ls.affiliationKey1].hw) {
+      updateStatusAndMeetings();
+      updateCoffeeSubscription();
     }
     // Callback
     if (typeof callback === 'function') callback();
@@ -258,20 +255,6 @@ $(document).ready( function() {
   if (ls.everOpenedOptions === 'false' && !DEBUG) {
     Browser.openTab('options.html');
     Analytics.trackEvent('loadOptions (fresh install)');
-  }
-  // Open Bigscreen if the option is set
-  if (ls.useBigscreen === 'true') {
-    if (ls.whichScreen === 'infoscreen') {
-      Browser.openTab('infoscreen.html');
-      Analytics.trackEvent('loadInfoscreen');
-    }
-    else if (ls.whichScreen === 'officescreen') {
-      Browser.openTab('officescreen.html');
-      Analytics.trackEvent('loadOfficescreen');
-    }
-    else {
-      console.error('useBigscreen enabled, but whichScreen was "' + ls.whichScreen + '"');
-    }
   }
 
   loadAffiliationIcon();

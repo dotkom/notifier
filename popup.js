@@ -895,23 +895,6 @@ var bindKonami = function() {
 //
 
 $(document).ready(function() {
-  // If Bigscreen mode is enabled we'll open the bigscreen when the icon is clicked
-  if (ls.useBigscreen === 'true') {
-    if (ls.whichScreen === 'infoscreen') {
-      Browser.openTab('infoscreen.html');
-      Analytics.trackEvent('toggleInfoscreen');
-    }
-    else if (ls.whichScreen === 'officescreen') {
-      Browser.openTab('officescreen.html');
-      Analytics.trackEvent('toggleOfficescreen');
-    }
-    else {
-      console.error('useBigscreen was enabled, but whichScreen was "' + ls.whichScreen + '"');
-    }
-    setTimeout(function() {
-      window.close();
-    }, 250);
-  }
 
   // If this is a tiny computer screen, reduce popup height
   if (window.screen.availHeight < 700) {

@@ -572,139 +572,6 @@ var bindSuggestions = function() {
   });
 }
 
-var toggleBigscreen = function(activate, type, force) {
-  var run = function() {
-    if (activate) {
-      // Welcome to callback hell, - be glad it's well commented
-      var speed = 400;
-      var url = type + '.html';
-      // Load bigscreen preview
-      $('#bigscreenPreview').attr('src', url);
-      // Remove subtext
-      $('#headerText').fadeOut();
-      // No hw-features? Move content higher up on the page
-      if (!Affiliation.org[ls.affiliationKey1].hw) {
-        $('#container').animate({'top':'50%'}, speed);
-        $('header').animate({'top':'50%'}, speed);
-      }
-      // Animate away options for news notifications and coffee subscription
-      $('#bigscreenSlider').slideUp(speed, function() {
-        // Animate the useBigscreen image
-        $('img#useBigscreen').slideUp(speed, function() {
-          // Animate in the bigscreen preview
-          $('#bigscreenPreview').slideDown(speed, function() {
-            // New logo subtext
-            if (type === 'infoscreen') {
-              $('#headerText').html('<b>Infoscreen</b> Options');
-            }
-            else if (type === 'officescreen') {
-              $('#headerText').html('<b>Officescreen</b> Options');
-            }
-            $('#headerText').fadeIn(function() {
-              var name = Affiliation.org[ls.affiliationKey1].name
-              if (type === 'infoscreen') {
-                name = name + ' Infoscreen';
-              }
-              else if (type === 'officescreen') {
-                name = name + ' Officescreen';
-              }
-              // Reset icon, icon title and icon badge
-              Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-              Browser.setTitle(name);
-              Browser.setBadgeText('');
-              // Create Bigscreen in a new tab
-              Browser.openBackgroundTab(url);
-            });
-          });
-        });
-      });
-    }
-    else {
-      // Refresh office status
-      if (Affiliation.org[ls.affiliationKey1].hw) {
-        Browser.getBackgroundProcess().updateStatusAndMeetings(true);
-      }
-      else {
-        Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-        Browser.setTitle(Affiliation.org[ls.affiliationKey1].name + ' Notifier');
-      }
-      // Animations
-      revertBigscreen();
-    }
-  }
-  // Wait till after the modal is properly closed
-  setTimeout(run, 500);
-}
-
-var switchBigScreen = function(type) {
-  if (type !== 'infoscreen' && type !== 'officescreen') {
-    console.error('Unsupported infoscreen mode: "'+type+'"');
-    return;
-  }
-  // Wait till after the modal is properly closed
-  var run = function() {
-    var speed = 600;
-    // Slide away the bigscreen preview
-    $('#bigscreenPreview').slideUp(speed, function() {
-      // Switch bigscreen preview
-      var url = type + '.html';
-      $('#bigscreenPreview').attr('src', url);
-      // Fade out header
-      $('#headerText').fadeOut(function() {
-        // Change header
-        if (type === 'infoscreen') {
-          $('#headerText').html('<b>Infoscreen</b> Options');
-        }
-        else if (type === 'officescreen') {
-          $('#headerText').html('<b>Officescreen</b> Options');
-        }
-        // Fade header back in
-        $('#headerText').fadeIn(function() {
-          // Wait for loading (looks better when the bigscreen is properly loaded)
-          setTimeout(function() {
-            // Slide bigscreen preview back down
-            $('#bigscreenPreview').slideDown(speed);
-          }, 500);
-        });
-      });
-    });
-  }
-  // Wait till after the modal is properly closed
-  setTimeout(run, 500);
-}
-
-var revertBigscreen = function() {
-  // Wait till after the modal is properly closed
-  var run = function() {
-    var speed = 300;
-    // Remove subtext
-    $('#headerText').fadeOut(speed, function() {
-      // No hw-features? Move content further down the page
-      if (!Affiliation.org[ls.affiliationKey1].hw) {
-        $('#container').animate({'top':'60%'}, speed);
-        $('header').animate({'top':'60%'}, speed);
-      }
-      // Animate in the bigscreen preview
-      $('#bigscreenPreview').slideUp(speed, function() {
-        // Animate the useBigscreen image
-        $('img#useBigscreen').slideDown(speed, function() {
-          // Slide more options back open
-          $('#bigscreenSlider').slideDown(speed, function() {
-            // Back to old logo subtext
-            $('#headerText').html('<b>Notifier</b> Options');
-            $('#headerText').fadeIn(function() {
-              // Finally, unload bigscreen preview (resource heavy)
-              $('#bigscreenPreview').attr('src', 'about:blank');
-            });
-          });
-        });
-      });
-    });
-  }
-  // Wait till after the modal is properly closed
-  setTimeout(run, 500);
-}
-
 var restoreChecksToBoxes = function() {
   // Restore checks to boxes from localStorage
   $('input:checkbox').each(function(index, element) {
@@ -712,41 +579,6 @@ var restoreChecksToBoxes = function() {
       element.checked = true;
     }
   });
-}
-
-var changeCreatorName = function(name) {
-  // Stop previous changeCreatorName instance, if any
-  clearTimeout(Number(ls.animateCreatorNameTimeoutId));
-  // Animate creator name change in the pageflip
-  animateCreatorName(name + " with <3");
-}
-
-var animateCreatorName = function(line, build) {
-  // Animate it
-  var text = $('#pagefliptyping').text();
-  if (text.length === 0) {
-    build = true;
-  }
-  var random = Math.floor(350 * Math.random() + 50);
-  if (!build) {
-    $('#pagefliptyping').text(text.slice(0, text.length-1));
-    ls.animateCreatorNameTimeoutId = setTimeout(function() {
-      animateCreatorName(line);
-    }, random);
-  }
-  else {
-    if (text.length !== line.length) {
-      if (text.length === 0) {
-        $('#pagefliptyping').text(line.slice(0, 1));
-      }
-      else {
-        $('#pagefliptyping').text(line.slice(0, text.length+1));
-      }
-      ls.animateCreatorNameTimeoutId = setTimeout(function() {
-        animateCreatorName(line, true);
-      }, random);
-    }
-  }
 }
 
 var popupHere = function(time) {
@@ -810,14 +642,6 @@ $(document).ready(function() {
 
   // Set focus to affiliation 1 selector
   $('#affiliationKey1').focus();
-
-  // If useBigscreen is on, slide away the rest of the options and switch the logo subtext
-  if (ls.useBigscreen === 'true') {
-    setTimeout(function() {
-      var type = ls.whichScreen;
-      toggleBigscreen(true, type, true);
-    }, 300);
-  }
 
   // Minor esthetical adjustments for OS
   if (Browser.onWindows()) {
@@ -897,113 +721,45 @@ $(document).ready(function() {
     $(this).removeClass('hover');
   });
 
-  // Adding handling of buttons in the modal with infoscreen and officescreen
-  $('#modalNotifier').click(function() {
-    $.modal.close();
-    // Check the box
-    $('#useBigscreen').attr('checked', false);
-    // Is there change?
-    if (ls.whichScreen !== 'notifier') {
-      toggleBigscreen(false);
-      // Store it
-      ls.useBigscreen = 'false';
-      ls.whichScreen = 'notifier';
-    }
-  });
-
-  $('#modalInfoscreen').click(function() {
-    $.modal.close();
-    // Check the box
-    $('#useBigscreen').prop('checked', true);
-    // Is there change?
-    if (ls.whichScreen !== 'infoscreen') {
-      // Is it a bigscreen switch?
-      if (ls.whichScreen === 'officescreen') {
-        switchBigScreen('infoscreen');
-      }
-      // From Notifier mode
-      else {
-        toggleBigscreen(true, 'infoscreen');
-      }
-      // Store it
-      ls.useBigscreen = 'true';
-      ls.whichScreen = 'infoscreen';
-    }
-  });
-
-  $('#modalOfficescreen').click(function() {
-    $.modal.close();
-    // Check the box
-    $('#useBigscreen').prop('checked', true);
-    // Is there change?
-    if (ls.whichScreen !== 'officescreen') {
-      // Is it a bigscreen switch?
-      if (ls.whichScreen === 'infoscreen') {
-        switchBigScreen('officescreen');
-      }
-      // From Notifier mode
-      else {
-        toggleBigscreen(true, 'officescreen');
-      }
-      // Store it
-      ls.useBigscreen = 'true';
-      ls.whichScreen = 'officescreen';
-    }
-  });
-
   // Catch new clicks
   $('input:checkbox').click(function() {
     var _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
     Analytics.trackEvent('click'+_capitalized, this.checked);
 
-    // Special case for 'useBigscreen'
-    if (this.id === 'useBigscreen') {
-      // Remove the check/no-check, it will be corrected after the user's coice
-      $('#useBigscreen').prop('checked', !this.checked);
-      // Present the user with a choice between notifier and bigscreen
-      $('.modal').modal({
-        zIndex: 1000,
-        fadeDuration: 250,
-      });
+    ls[this.id] = this.checked;
+
+    if (this.id === 'showAffiliation2' && this.checked === false) {
+      $('#affiliationKey2').attr('disabled', 'disabled');
+      $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
+    }
+    if (this.id === 'showAffiliation2' && this.checked === true) {
+      $('#affiliationKey2').removeAttr('disabled');
+      $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(0%)');
     }
 
-    // All the other checkboxes (not Infoscreen)
-    else {
-      ls[this.id] = this.checked;
-
-      if (this.id === 'showAffiliation2' && this.checked === false) {
-        $('#affiliationKey2').attr('disabled', 'disabled');
-        $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
-      }
-      if (this.id === 'showAffiliation2' && this.checked === true) {
-        $('#affiliationKey2').removeAttr('disabled');
-        $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(0%)');
-      }
-
-      if (this.id === 'showStatus' && this.checked === true) {
-        ls.activelySetOffice = 'true';
-        Browser.getBackgroundProcess().updateStatusAndMeetings(true);
-      }
-      if (this.id === 'showStatus' && this.checked === false) {
-        ls.activelySetOffice = 'false';
-        Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-        Browser.setTitle(ls.extensionName);
-      }
-
-      if (this.id === 'showNotifications' && this.checked === true) {
-        testDesktopNotification();
-      }
-
-      if (this.id === 'coffeeSubscription' && this.checked === true) {
-        ls.activelySetCoffee = 'true';
-        testCoffeeSubscription();
-      }
-      if (this.id === 'coffeeSubscription' && this.checked === false) {
-        ls.activelySetCoffee = 'false';
-      }
-
-      showSavedNotification();
+    if (this.id === 'showStatus' && this.checked === true) {
+      ls.activelySetOffice = 'true';
+      Browser.getBackgroundProcess().updateStatusAndMeetings(true);
     }
+    if (this.id === 'showStatus' && this.checked === false) {
+      ls.activelySetOffice = 'false';
+      Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
+      Browser.setTitle(ls.extensionName);
+    }
+
+    if (this.id === 'showNotifications' && this.checked === true) {
+      testDesktopNotification();
+    }
+
+    if (this.id === 'coffeeSubscription' && this.checked === true) {
+      ls.activelySetCoffee = 'true';
+      testCoffeeSubscription();
+    }
+    if (this.id === 'coffeeSubscription' && this.checked === false) {
+      ls.activelySetCoffee = 'false';
+    }
+
+    showSavedNotification();
   });
 
   if (ls.everOpenedOptions !== 'true') {
