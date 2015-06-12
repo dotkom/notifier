@@ -570,7 +570,7 @@ body {
 }
 #container #news .unread {
   font-size: 11px;
-  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+  text-shadow: 0 0 5px black, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
 }
 #container #titleMeasure {
   font-weight: bold;
