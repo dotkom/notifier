@@ -29,7 +29,11 @@ localStorage.removeItem('useBigscreen');
 localStorage.removeItem('whichScreen');
 
 // RENAMING LOCALSTORAGE VARS
-// deprecating old naming scheme
+// deprecating old naming schemes
 // REMOVE AFTER SEPTEMBER 2015
 
 localStorage.removeItem('showOffice');
+localStorage.removeItem('infoscreenLastStatusCode');
+localStorage.removeItem('infoscreenLastMessage');
+localStorage.removeItem('officescreenLastStatusCode');
+localStorage.removeItem('officescreenLastMessage');

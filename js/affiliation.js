@@ -1626,13 +1626,9 @@ var Affiliation = {
     // Status
     ls.removeItem('statusData');
     ls.removeItem('statusStrings');
-    // Remove statuses held by background.js, infoscreen.js, officescreen.js
+    // Remove statuses held by background.js (this is a bit of a hack, should perhaps not be dealt with here)
     ls.removeItem('backgroundLastStatusCode');
     ls.removeItem('backgroundLastStatusMessage');
-    ls.removeItem('infoscreenLastStatusCode');
-    ls.removeItem('infoscreenLastMessage');
-    ls.removeItem('officescreenLastStatusCode');
-    ls.removeItem('officescreenLastMessage');
   },
 
   get: function(affiliation, callback) {
