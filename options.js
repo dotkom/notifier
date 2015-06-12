@@ -690,23 +690,6 @@ $(document).ready(function() {
   // Load lists of bus stops
   Stops.load();
 
-  // If Opera, disable and redesign features related to desktop notifications
-  if (Browser.name === 'Opera' && Browser.version < 25) {
-    // The actual features doesn't need to be turned off, they aren't working
-    // anyway, so just uncheck the option to make the user understand it too
-    // Turn off showNotifications feature
-    $('input#showNotifications').prop("disabled", "disabled");
-    $('input#showNotifications').prop("checked", "false");
-    var text = 'Varsle om nyheter';
-    $('label[for=showNotifications] span').html('<del>'+text+'</del> <b>Oppgrader til Opera 25!</b>');
-    // Turn off coffeeSubscription feature
-    $('input#coffeeSubscription').prop("disabled", "disabled");
-    $('input#coffeeSubscription').prop("checked", "false");
-    text = $('label[for=coffeeSubscription] span').text();
-    text = text.trim();
-    $('label[for=coffeeSubscription] span').html('<del>'+text+'</del> <b>Oppgrader til Opera 25!</b>');
-  }
-
   // Adding a hover class to #busBox whenever the mouse is hovering over it
   $('#busBox').hover(function() {
     $(this).addClass('hover');
