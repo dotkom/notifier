@@ -26,9 +26,6 @@ var Defaults = {
     // Set default choices if undefined, in the same order as on the options page
 
     ls.extensionName = 'Online Notifier';
-    // These two names will be shown in a loop, both can be max 8 letters because of styling
-    ls.extensionOwner = 'Online';
-    ls.extensionCreator = 'appKom';
 
     // Note install time for future reference
     if (ls.installTime === undefined)
@@ -123,12 +120,6 @@ var Defaults = {
       ls.activelySetCoffee = 'true';
       ls.coffeeSubscription = 'true';
     }
-    
-    // Bigscreen
-    if (ls.useBigscreen === undefined)
-      ls.useBigscreen = 'false';
-    if (ls.whichScreen === undefined)
-      ls.whichScreen = 'notifier';
     
     // General
     if (ls.everOpenedOptions === undefined)
