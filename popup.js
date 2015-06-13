@@ -1,35 +1,34 @@
 "use strict";
 
-var iteration = 0;
-var intervalId = null;
+//
+// Mainloop
+//
 
 var mainLoop = function(options) {
-  console.log("\n#" + iteration);
+  console.log("\n#" + mainLoop.iteration);
 
   // Force update all
   if (options && options.forceUpdate === true) {
-    console.info('FORCED')
     popup.update.all();
   }
   // Regular update intervals
   else {
-    console.info('Regular')
     if (ls.showCantina === 'true')
-      if (iteration % UPDATE_CANTINAS_INTERVAL === 0)
+      if (mainLoop.iteration % UPDATE_CANTINAS_INTERVAL === 0)
         popup.update.cantinas();
     if (ls.showBus === 'true')
-      if (iteration % UPDATE_BUS_INTERVAL === 0)
+      if (mainLoop.iteration % UPDATE_BUS_INTERVAL === 0)
         popup.update.bus();
     if (ls.showAffiliation1 === 'true')
-      if (iteration % UPDATE_NEWS_INTERVAL === 0)
+      if (mainLoop.iteration % UPDATE_NEWS_INTERVAL === 0)
         popup.update.affiliationNews(1);
     if (ls.showAffiliation2 === 'true')
-      if (iteration % UPDATE_NEWS_INTERVAL === 0)
+      if (mainLoop.iteration % UPDATE_NEWS_INTERVAL === 0)
         popup.update.affiliationNews(2);
     // Only if hardware
     if (Affiliation.org[ls.affiliationKey1].hw) {
       if (ls.showStatus === 'true') {
-        if (iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
+        if (mainLoop.iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
           Browser.getBackgroundProcess().updateAffiliation(function() {
             popup.update.meeting();
             popup.update.servant();
@@ -42,59 +41,61 @@ var mainLoop = function(options) {
   }
 
   // No reason to count to infinity
-  if (10000 < iteration)
-    iteration = 0;
+  if (10000 < mainLoop.iteration)
+    mainLoop.iteration = 0;
   else
-    iteration++;
+    mainLoop.iteration++;
 }
+mainLoop.iteration = 0;
+mainLoop.intervalId = null;
 
 //
-// Text measuring for title dropdowns and change handlers
+// Netbook or MacBook Air? 800x600 won't do.
 //
 
-var getTitleWidth = function (title) {
-  var width = $('#titleMeasure').text(title).width();
-  $('#titleMeasure').text('');
-  return width * 1.1 + 30; // With buffer
-};
+var tinyScreenCheck = function() {
+  // If this is a tiny computer screen, reduce popup height
+  if (window.screen.availHeight < 700) {
+    var shorter = window.screen.availHeight - 100;
+    // shorter is available screenspace minus the height
+    // of the browser taskbar, rounded up well to be sure
+    $('body').css('height', shorter + 'px');
+  }
+}(); // Self executing
 
+//
+// Show or hide stuff the user doesn't want to see, or can't see
+//
 
-var adjustCantinaTitleWidth = function(title, element) {
-  var wrapper = element + ' .dropdownWrapper';
-  var dropdown = element + ' .dropdownWrapper .titleDropdown';
-  var cantinaName = Cantina.names[title];
-  var width = getTitleWidth(cantinaName);
-  $(wrapper).width(width);
-  $(dropdown).width(width - 23);
-};
-adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first');
-adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second');
+var showAndHideElements = function() {
 
-var cantinaChangeHandler = function(which, cantina) {
-  var titleDropdown = '#cantinas ' + which + ' .titleDropdown';
-  var hoursBox = '#cantinas ' + which + ' .hours';
-  var dinnerBox = '#cantinas ' + which + ' #dinnerbox';
-  $(titleDropdown).change(function () {
-    // Save
-    ls[cantina] = this.value;
-    // Measure
-    adjustCantinaTitleWidth(ls[cantina], '#cantinas ' + which);
-    // Add loading bar
-    $(hoursBox).html('');
-    $(dinnerBox).html('<img class="loadingLeft" src="img/loading.gif" />');
-    window.cantinaTimeout = setTimeout(function() {
-      $(hoursBox).html('');
-      $(dinnerBox).html(Cantina.msgConnectionError);
-    }, 6000);
-    // Apply
-    Browser.getBackgroundProcess().popup.update.cantinas(function () {
-      clearTimeout(window.cantinaTimeout);
-      popup.update.cantinas();
-    });
-  });
-};
-cantinaChangeHandler('.first', 'cantina1');
-cantinaChangeHandler('.second', 'cantina2');
+  // Show stuff that the user hasn't explicitly removed yet
+  if (ls.closedSpecialNews !== $('#specialNews a').attr('href')) $('#specialNews').show();
+  // Hide stuff the user can't or doesn't want to see
+  if (ls.showStatus !== 'true') $('#todays').hide();
+  if (ls.showCantina !== 'true') $('#cantinas').hide();
+  if (ls.showBus !== 'true') $('#bus').hide();
+
+  // If only one affiliation is to be shown remove the second news column
+  // Also, some serious statistics
+  if (ls.showAffiliation2 !== 'true') {
+    $('#news #right').hide();
+    $('#news #left').attr('id', 'full');
+    // Who uses single affiliations?
+    Analytics.trackEvent('loadSingleAffiliation', ls.affiliationKey1);
+    // What is the prefered primary affiliation?
+    Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
+  }
+  else {
+    // What kind of double affiliations are used?
+    Analytics.trackEvent('loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2);
+    // What is the prefered primary affiliation?
+    Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
+    // What is the prefered secondary affiliation?
+    Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
+  }
+
+}(); // Self executing
 
 //
 // Affiliation settings
@@ -122,9 +123,12 @@ var applyAffiliationSettings = function() {
       $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
     }
   }
-}
+}(); // Self executing
 
+//
 // Add CHANGELOG.md to div#tips
+//
+
 var addChangeLog = function() {
   Ajaxer.getPlainText({
     url: "CHANGELOG.md",
@@ -141,49 +145,58 @@ var addChangeLog = function() {
   });
 }(); // Self executing
 
+//
+// Text measuring for title dropdowns and change handlers
+//
+
+var getTitleWidth = function (title) {
+  var width = $('#titleMeasure').text(title).width();
+  $('#titleMeasure').text('');
+  return width * 1.1 + 30; // With buffer
+}
+
+var adjustCantinaTitleWidth = function(title, element) {
+  var wrapper = element + ' .dropdownWrapper';
+  var dropdown = element + ' .dropdownWrapper .titleDropdown';
+  var cantinaName = Cantina.names[title];
+  var width = getTitleWidth(cantinaName);
+  $(wrapper).width(width);
+  $(dropdown).width(width - 23);
+}
+adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first');
+adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second');
+
+var cantinaChangeHandler = function(which, cantina) {
+  var titleDropdown = '#cantinas ' + which + ' .titleDropdown';
+  var hoursBox = '#cantinas ' + which + ' .hours';
+  var dinnerBox = '#cantinas ' + which + ' #dinnerbox';
+  $(titleDropdown).change(function () {
+    // Save
+    ls[cantina] = this.value;
+    // Measure
+    adjustCantinaTitleWidth(ls[cantina], '#cantinas ' + which);
+    // Add loading bar
+    $(hoursBox).html('');
+    $(dinnerBox).html('<img class="loadingLeft" src="img/loading.gif" />');
+    window.cantinaTimeout = setTimeout(function() {
+      $(hoursBox).html('');
+      $(dinnerBox).html(Cantina.msgConnectionError);
+    }, 6000);
+    // Apply
+    Browser.getBackgroundProcess().popup.update.cantinas(function () {
+      clearTimeout(window.cantinaTimeout);
+      popup.update.cantinas();
+    });
+  });
+}
+cantinaChangeHandler('.first', 'cantina1');
+cantinaChangeHandler('.second', 'cantina2');
 
 //
 // Document ready function
 //
 
 $(document).ready(function() {
-
-  // If this is a tiny computer screen, reduce popup height
-  if (window.screen.availHeight < 700) {
-    var shorter = window.screen.availHeight - 100;
-    // shorter is available screenspace minus the height
-    // of the browser taskbar, rounded up well to be sure
-    $('body').css('height', shorter + 'px');
-  }
-
-  // If only one affiliation is to be shown remove the second news column
-  // Also, some serious statistics
-  if (ls.showAffiliation2 !== 'true') {
-    $('#news #right').hide();
-    $('#news #left').attr('id', 'full');
-    // Who uses single affiliations?
-    Analytics.trackEvent('loadSingleAffiliation', ls.affiliationKey1);
-    // What is the prefered primary affiliation?
-    Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
-  }
-  else {
-    // What kind of double affiliations are used?
-    Analytics.trackEvent('loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2);
-    // What is the prefered primary affiliation?
-    Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
-    // What is the prefered secondary affiliation?
-    Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
-  }
-
-  // Show stuff that the user hasn't explicitly removed yet
-  if (ls.closedSpecialNews !== $('#specialNews a').attr('href')) $('#specialNews').show();
-  // Hide stuff the user can't or doesn't want to see
-  if (ls.showStatus !== 'true') $('#todays').hide();
-  if (ls.showCantina !== 'true') $('#cantinas').hide();
-  if (ls.showBus !== 'true') $('#bus').hide();
-
-  // Apply all affiliation settings
-  applyAffiliationSettings();
 
   // Hook up all event handlers
   popup.event.bindAll();
@@ -203,7 +216,7 @@ $(document).ready(function() {
     console.info(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP);
     // Schedule for repetition
-    intervalId = setInterval( function() {
+    mainLoop.intervalId = setInterval( function() {
       mainLoop();
     }, loopTimeout);
     // Run once right now (just wait 2 secs to avoid network-change errors)
@@ -216,7 +229,7 @@ $(document).ready(function() {
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
     console.warn(OFFLINE_MESSAGE);
-    clearInterval(intervalId);
+    clearInterval(mainLoop.intervalId);
     popup.update.bus();
   });
   // Go
