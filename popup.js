@@ -610,12 +610,6 @@ var bindHeaderButtonsAndLogo = function() {
   $('#tips:not(a)').click(function() {
     $(this).toggle();
   });
-  $('#tips a').click(function() {
-    var link = $(this).attr('href');
-    Browser.openTab(link);
-    Analytics.trackEvent('clickTipsLink', link);
-    window.close();
-  });
 
   $('#colorButton').click(function() {
     // Get all palettes
@@ -640,6 +634,19 @@ var bindHeaderButtonsAndLogo = function() {
     Analytics.trackEvent('clickColor');
   });
 };
+
+//
+// Links in tips box
+//
+
+var bindTipsLinks = function() {
+  $('#tips a').click(function() {
+    var link = $(this).attr('href');
+    Browser.openTab(link);
+    Analytics.trackEvent('clickTipsLink', link);
+    window.close();
+  });
+}(); // Self executing
 
 //
 // Event handlers: Realtime bus
@@ -889,6 +896,26 @@ var bindKonami = function() {
     },
   });
 }
+
+//
+// Add changelog
+//
+
+var addChangeLog = function() {
+  Ajaxer.getPlainText({
+    url: "CHANGELOG.md",
+    success: function(data) {
+      var converter = new Markdown.Converter();
+      var html = converter.makeHtml(data);
+      $("div#changelog").html(html);
+      // Rebind tips links
+      bindTipsLinks();
+    },
+    error: function(e) {
+      console.error('Could not include CHANGELOG.md because:', e);
+    },
+  });
+}(); // Self executing
 
 //
 // Document ready function

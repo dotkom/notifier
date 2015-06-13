@@ -103,7 +103,7 @@ body {
   font-size: 12px;
   line-height: 14px;
 }
-#tips {
+div#tips {
   position: fixed;
   background-color: Snow;
   top: 0px;
@@ -118,29 +118,40 @@ body {
   overflow-x: hidden;
   box-shadow: 0 0 20px black;
 }
-#tips .text {
+div#tips .text {
   border: 1px solid transparent;
   color: black;
   font-size: 12px;
   line-height: 16px;
 }
-#tips .text .clicktoclose {
+div#tips .text .clicktoclose {
   border: 1px solid transparent;
   color: #aaa;
   text-align: right;
   font-style: italic;
   margin-top: -20px;
 }
-#tips .text .big {
-  font-size: 17px;
-  padding-top: 5px;
+div#tips .text h1 {
+  font-size: 24px;
+  font-weight: 200;
+  padding-top: 10px;
 }
-#tips .text .url {
+div#tips .text h2 {
+  font-size: 17px;
+  font-weight: 200;
+}
+div#tips .text h3,
+div#tips .text h4,
+div#tips .text h5,
+div#tips .text h6 {
+  font-weight: 600;
+}
+div#tips .text .url {
   display: inline;
   color: grey;
   font-style: italic;
 }
-#tips .text a {
+div#tips .text a {
   outline: none;
   text-decoration: underline;
   color: DarkBlue;
