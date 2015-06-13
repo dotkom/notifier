@@ -59,8 +59,8 @@ popup.event = {
       };
     };
     var buttons = {
-      '#optionsButton': 'Endre innstillinger',
-      '#tipsButton': 'Om appKom, tips, linker, ++',
+      '#editButton': 'Endre innstillinger',
+      '#tipsButton': 'Om appKom, changelog, ++',
       '#colorButton': 'Bytt fargepalett',
     }
     var slack = Affiliation.org[ls.affiliationKey1].slack;
@@ -94,11 +94,13 @@ popup.event = {
     });
 
     $('#tipsButton').click(function() {
-      $('#tips').toggle();
-        Analytics.trackEvent('clickTips');
+      $('div#tips').toggle();
+      $('body').css('overflow-y', 'hidden');
+      Analytics.trackEvent('clickTips');
     });
-    $('#tips:not(a)').click(function() {
+    $('div#tips:not(a)').click(function() {
       $(this).toggle();
+      $('body').css('overflow-y', '');
     });
 
     $('#colorButton').click(function() {
