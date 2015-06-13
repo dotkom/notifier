@@ -397,7 +397,7 @@ popup.update = {
 
     // Get the news feed (prefetched by the background page)
     var news = ls['affiliationNews'+number];
-    
+
     // Detect selector
     var selector = (number === '1' ? '#left' : '#right');
     if (ls.showAffiliation2 !== 'true') {

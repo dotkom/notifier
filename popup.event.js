@@ -8,7 +8,7 @@ popup.event = {
     this.bindOracle();
     this.bindKonami();
   },
-  
+
   //
   // Event handler: Special news
   //
