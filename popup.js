@@ -50,10 +50,11 @@ mainLoop.iteration = 0;
 mainLoop.intervalId = null;
 
 //
-// Netbook or MacBook Air? 800x600 won't do.
+// Tiny Screen Check
 //
 
-var tinyScreenCheck = function() {
+(function tinyScreenCheck() {
+  // Netbook or MacBook Air? 800x600 won't do.
   // If this is a tiny computer screen, reduce popup height
   if (window.screen.availHeight < 700) {
     var shorter = window.screen.availHeight - 100;
@@ -61,14 +62,13 @@ var tinyScreenCheck = function() {
     // of the browser taskbar, rounded up well to be sure
     $('body').css('height', shorter + 'px');
   }
-}(); // Self executing
+}()); // Self executing
 
 //
-// Show or hide stuff the user doesn't want to see, or can't see
+// Show And Hide Elements
 //
 
-var showAndHideElements = function() {
-
+(function showAndHideElements() {
   // Show stuff that the user hasn't explicitly removed yet
   if (ls.closedSpecialNews !== $('#specialNews a').attr('href')) $('#specialNews').show();
   // Hide stuff the user can't or doesn't want to see
@@ -94,14 +94,13 @@ var showAndHideElements = function() {
     // What is the prefered secondary affiliation?
     Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
   }
-
-}(); // Self executing
+}()); // Self executing
 
 //
-// Affiliation settings
+// Apply Affiliation Settings
 //
 
-var applyAffiliationSettings = function() {
+(function applyAffiliationSettings() {
 
   // Applying affiliation graphics
   var key = ls.affiliationKey1;
@@ -123,13 +122,13 @@ var applyAffiliationSettings = function() {
       $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
     }
   }
-}(); // Self executing
+}()); // Self executing
 
 //
 // Add CHANGELOG.md to div#tips
 //
 
-var addChangeLog = function() {
+(function addChangeLog() {
   Ajaxer.getPlainText({
     url: "CHANGELOG.md",
     success: function(data) {
@@ -143,7 +142,7 @@ var addChangeLog = function() {
       console.error('Could not include CHANGELOG.md because:', e);
     },
   });
-}(); // Self executing
+}()); // Self executing
 
 //
 // Text measuring for title dropdowns and change handlers
@@ -215,11 +214,11 @@ $(document).ready(function() {
   var stayUpdated = function(now) {
     console.info(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP);
-    // Schedule for repetition
+    // Schedule for repetition ...
     mainLoop.intervalId = setInterval( function() {
       mainLoop();
     }, loopTimeout);
-    // Run once right now (just wait 2 secs to avoid network-change errors)
+    // ... and run once right now (just wait 2 secs to avoid network-change errors)
     var timeout = (now ? 0 : 2000);
     setTimeout( function() {
       mainLoop({forceUpdate: true});
