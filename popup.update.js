@@ -1,5 +1,16 @@
 popup.update = {
 
+  all: function() {
+    this.servant();
+    this.meeting();
+    this.coffee();
+    this.cantinas();
+    this.bus();
+    this.affiliationNews(1);
+    if (ls.showAffiliation2 === 'true')
+      this.affiliationNews(2);
+  },
+
   //
   // Update Servant
   //
@@ -217,6 +228,7 @@ popup.update = {
 
   affiliationNews: function(number) {
     console.log('updateAffiliationNews'+number);
+    number = ''+number; // stringify
 
     var displayItems = function(items, selector, newsListName, viewedListName, unreadCountName) {
 

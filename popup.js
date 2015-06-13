@@ -3,35 +3,43 @@
 var iteration = 0;
 var intervalId = null;
 
-var mainLoop = function(force) {
+var mainLoop = function(options) {
   console.log("\n#" + iteration);
 
-  if (ls.showCantina === 'true')
-    if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
-      popup.update.cantinas();
-  if (ls.showAffiliation1 === 'true')
-    if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
-      popup.update.affiliationNews('1');
-  if (ls.showAffiliation2 === 'true')
-    if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
-      popup.update.affiliationNews('2');
-  // Only if hardware
-  if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (ls.showStatus === 'true') {
-      if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
-        Browser.getBackgroundProcess().updateAffiliation(function() {
-          popup.update.meeting();
-          popup.update.servant();
-          popup.update.coffee();
-          // popup.update.status(); // TODO: No status info in popup yet
-        });
+  // Force update all
+  if (options && options.forceUpdate === true) {
+    console.info('FORCED')
+    popup.update.all();
+  }
+  // Regular update intervals
+  else {
+    console.info('Regular')
+    if (ls.showCantina === 'true')
+      if (iteration % UPDATE_CANTINAS_INTERVAL === 0)
+        popup.update.cantinas();
+    if (ls.showBus === 'true')
+      if (iteration % UPDATE_BUS_INTERVAL === 0)
+        popup.update.bus();
+    if (ls.showAffiliation1 === 'true')
+      if (iteration % UPDATE_NEWS_INTERVAL === 0)
+        popup.update.affiliationNews(1);
+    if (ls.showAffiliation2 === 'true')
+      if (iteration % UPDATE_NEWS_INTERVAL === 0)
+        popup.update.affiliationNews(2);
+    // Only if hardware
+    if (Affiliation.org[ls.affiliationKey1].hw) {
+      if (ls.showStatus === 'true') {
+        if (iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
+          Browser.getBackgroundProcess().updateAffiliation(function() {
+            popup.update.meeting();
+            popup.update.servant();
+            popup.update.coffee();
+            // popup.update.status(); // TODO: No status info in popup yet
+          });
+        }
       }
     }
   }
-  // Always update, tell when offline
-  if (ls.showBus === 'true')
-    if (force || iteration % UPDATE_BUS_INTERVAL === 0)
-      popup.update.bus();
 
   // No reason to count to infinity
   if (10000 < iteration)
@@ -192,7 +200,7 @@ $(document).ready(function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
-    console.log(ONLINE_MESSAGE);
+    console.info(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? PAGE_LOOP_DEBUG : PAGE_LOOP);
     // Schedule for repetition
     intervalId = setInterval( function() {
@@ -201,19 +209,19 @@ $(document).ready(function() {
     // Run once right now (just wait 2 secs to avoid network-change errors)
     var timeout = (now ? 0 : 2000);
     setTimeout( function() {
-      mainLoop(true);
+      mainLoop({forceUpdate: true});
     }, timeout);
   }
   // When offline mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
-    console.log(OFFLINE_MESSAGE);
+    console.warn(OFFLINE_MESSAGE);
     clearInterval(intervalId);
     popup.update.bus();
   });
   // Go
   if (navigator.onLine)
-    stayUpdated(true);
+    stayUpdated({forceUpdate: true});
   else
     mainLoop();
 

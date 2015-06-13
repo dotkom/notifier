@@ -282,7 +282,7 @@ $(document).ready( function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
-    console.log(ONLINE_MESSAGE);
+    console.info(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? BACKGROUND_LOOP_DEBUG : BACKGROUND_LOOP);
     // Schedule for repetition
     intervalId = setInterval( function() {
@@ -297,7 +297,7 @@ $(document).ready( function() {
   // When offline, mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
-    console.log(OFFLINE_MESSAGE);
+    console.warn(OFFLINE_MESSAGE);
     clearInterval(intervalId);
   });
 
