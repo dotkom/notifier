@@ -46,6 +46,19 @@
 .title .unread {
   color: white;
 }
+.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+}
+.options label {
+  /* Text to go with a checkbox / radio button */
+  font-weight: bold;
+}
+.options div {
+  /* Description of this option */
+  padding-top: 5px;
+  font-style: italic;
+}
 .dropdownWrapper {
   position: relative;
   left: -8px;
@@ -220,11 +233,17 @@ div#tips .text a {
   margin-right: 12px;
   cursor: pointer;
   border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.2s ease-out;
 }
 #container #header #buttons .popupbutton:hover {
   border: 1px solid white;
 }
+#container #header #buttons .popupbutton.glow {
+  /* Edit button glows while toggled */
+  box-shadow: 0px 0px 5px white, 0px 0px 15px snow, 0px 0px 25px goldenrod;
+}
 #container #header #buttons #chatterButton {
+  /* Hiding Slack button by default */
   display: none;
 }
 #container #header #buttontext {

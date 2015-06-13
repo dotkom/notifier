@@ -48,6 +48,19 @@
   }
 }
 
+.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+
+  label { /* Text to go with a checkbox / radio button */
+    font-weight: bold;
+  }
+  div { /* Description of this option */
+    padding-top: 5px;
+    font-style: italic;
+  }
+}
+
 .dropdownWrapper {
   position: relative;
   left: -8px;
@@ -221,11 +234,17 @@ div#tips {
         margin-right: 12px;
         cursor: pointer;
         border: 1px solid transparent;
+        -webkit-transition: box-shadow .2s ease-out;
       }
       .popupbutton:hover {
         border: 1px solid white;
       }
+      .popupbutton.glow {
+        /* Edit button glows while toggled */
+        box-shadow: 0px 0px 5px white, 0px 0px 15px snow, 0px 0px 25px goldenrod;
+      }
       #chatterButton {
+        /* Hiding Slack button by default */
         display: none;
       }
     }

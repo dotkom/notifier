@@ -72,18 +72,34 @@ popup.event = {
 
     // Button and logo clicks
 
-    $('#logo').click(function() {
-      var name = Affiliation.org[ls.affiliationKey1].name;
-      Analytics.trackEvent('clickLogo', name);
-      var web = Affiliation.org[ls.affiliationKey1].web;
-      Browser.openTab(web);
-      window.close();
-    });
-
-    $('#optionsButton').click(function() {
-      Browser.openTab('options.html');
-      Analytics.trackEvent('clickOptions');
-      window.close();
+    $('#editButton').click(function() {
+      var toggled = ('img/popup-edit-done.png' === $(this).attr('src'));
+      if (!toggled) {
+        // Switch image and fade out other buttons
+        $(this).attr('src', 'img/popup-edit-done.png').addClass('glow');
+        $("img.popupbutton").not(this).each(function(index, value) {
+          $(this).fadeOut();
+        });
+        // Slide in all options
+        $("div.content").slideUp(function() {
+          $("div.options").slideDown();
+        });
+        // Analytics
+        Analytics.trackEvent('clickEdit');
+      }
+      else {
+        // Switch image and fade in other buttons
+        $(this).attr('src', 'img/popup-edit.png').removeClass('glow');
+        $("img.popupbutton").not(this).each(function(index, value) {
+          $(this).fadeIn();
+        });
+        // Slide away all options
+        $("div.options").slideUp(function() {
+          $("div.content").slideDown();
+        });
+        // Analytics
+        Analytics.trackEvent('clickEditDone');
+      }
     });
 
     $('#chatterButton').click(function() {
@@ -124,6 +140,14 @@ popup.event = {
       $('#buttontext').text('Fargepalett satt til "' + colors[index].capitalize() + '"');
       // And track it
       Analytics.trackEvent('clickColor');
+    });
+
+    $('#logo').click(function() {
+      var name = Affiliation.org[ls.affiliationKey1].name;
+      Analytics.trackEvent('clickLogo', name);
+      var web = Affiliation.org[ls.affiliationKey1].web;
+      Browser.openTab(web);
+      window.close();
     });
   },
 
