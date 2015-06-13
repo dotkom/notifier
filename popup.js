@@ -51,6 +51,7 @@ mainLoop.intervalId = null;
 
 //
 // Tiny Screen Check
+// (self executing)
 //
 
 (function tinyScreenCheck() {
@@ -62,10 +63,11 @@ mainLoop.intervalId = null;
     // of the browser taskbar, rounded up well to be sure
     $('body').css('height', shorter + 'px');
   }
-}()); // Self executing
+}());
 
 //
 // Show And Hide Elements
+// (self executing)
 //
 
 (function showAndHideElements() {
@@ -94,10 +96,11 @@ mainLoop.intervalId = null;
     // What is the prefered secondary affiliation?
     Analytics.trackEvent('loadAffiliation2', ls.affiliationKey2);
   }
-}()); // Self executing
+}());
 
 //
 // Apply Affiliation Settings
+// (self executing)
 //
 
 (function applyAffiliationSettings() {
@@ -122,10 +125,11 @@ mainLoop.intervalId = null;
       $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
     }
   }
-}()); // Self executing
+}());
 
 //
 // Add CHANGELOG.md to div#tips
+// (self executing)
 //
 
 (function addChangeLog() {
@@ -142,7 +146,7 @@ mainLoop.intervalId = null;
       console.error('Could not include CHANGELOG.md because:', e);
     },
   });
-}()); // Self executing
+}());
 
 //
 // Text measuring for title dropdowns and change handlers
