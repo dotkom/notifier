@@ -81,9 +81,14 @@ popup.event = {
           $(this).fadeOut();
         });
         // Slide in all options
-        $("div.content").slideUp(function() {
-          $("div.options").slideDown();
-        });
+        $("div.content").slideUp();
+        $("div.options").slideDown();
+        $("img#logo").css('opacity', '0.4');
+        $("img#atbLogo").css('opacity', '0.4');
+        $("div.title").css('opacity', '0.4');
+        // $("div.content").slideUp(function() {
+        //   $("div.options").slideDown();
+        // });
         // Analytics
         Analytics.trackEvent('clickEdit');
       }
@@ -94,9 +99,14 @@ popup.event = {
           $(this).fadeIn();
         });
         // Slide away all options
-        $("div.options").slideUp(function() {
-          $("div.content").slideDown();
-        });
+        $("div.options").slideUp();
+        $("div.content").slideDown();
+        $("img#logo").css('opacity', '');
+        $("img#atbLogo").css('opacity', '');
+        $("div.title").css('opacity', '');
+        // $("div.options").slideUp(function() {
+        //   $("div.content").slideDown();
+        // });
         // Analytics
         Analytics.trackEvent('clickEditDone');
       }
