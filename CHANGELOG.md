@@ -15,8 +15,8 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 
 ### YYYY-MM-DD Versjon 5.0
 * Back to basics: Popupen er nå hele Notifier
-* Infoscreen splittet ut til ny Chrome extension ved navn Online Notiwall
-* Options i popupen fremfor separat Options-side
+	* Infoscreen splittet ut til ny Chrome extension ved navn Online Notiwall
+	* Options er i popupen fremfor separat Options-side
 * Kuttet mange tusen linjer kode (ANTALL?)
 * Viser changelog i popupen
 

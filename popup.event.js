@@ -84,14 +84,13 @@ popup.event = {
         $('#editButton').unbind('mouseenter mouseleave');
         $('#buttontext').text('Ferdig?');
         // Slide in all options
-        $("div.content").slideUp();
         $("div.options").slideDown();
+        $("div.content").slideUp();
         $("img#logo").css('opacity', '0.4');
         $("img#atbLogo").css('opacity', '0.4');
+        $("div#oracle").css('opacity', '0.4');
+        $("div#news img").css('opacity', '0.4');
         $("div.title").css('opacity', '0.4');
-        // $("div.content").slideUp(function() {
-        //   $("div.options").slideDown();
-        // });
         // Analytics
         Analytics.trackEvent('clickEdit');
       }
@@ -102,17 +101,16 @@ popup.event = {
           $(this).fadeIn();
         });
         // Switch back to regular hover texts for buttons
-        $('#buttontext').html('<span style="background-color:LightGoldenRodYellow;color:magenta;font-weight:bold;line-height:14px;">&nbsp;Sweet! <3&nbsp;</span>');
+        $('#buttontext').html('Sweet! <3');
         toggleButtonText({'#editButton': 'Endre innstillinger'});
         // Slide away all options
         $("div.options").slideUp();
         $("div.content").slideDown();
         $("img#logo").css('opacity', '');
         $("img#atbLogo").css('opacity', '');
+        $("div#oracle").css('opacity', '');
+        $("div#news img").css('opacity', '');
         $("div.title").css('opacity', '');
-        // $("div.options").slideUp(function() {
-        //   $("div.content").slideDown();
-        // });
         // Analytics
         Analytics.trackEvent('clickEditDone');
       }
