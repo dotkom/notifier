@@ -80,6 +80,9 @@ popup.event = {
         $("img.popupbutton").not(this).each(function(index, value) {
           $(this).fadeOut();
         });
+        // Show Done?-question in buttontext, leave it there until done
+        $('#editButton').unbind('mouseenter mouseleave');
+        $('#buttontext').text('Ferdig?');
         // Slide in all options
         $("div.content").slideUp();
         $("div.options").slideDown();
@@ -98,6 +101,9 @@ popup.event = {
         $("img.popupbutton").not(this).each(function(index, value) {
           $(this).fadeIn();
         });
+        // Switch back to regular hover texts for buttons
+        $('#buttontext').html('<span style="background-color:LightGoldenRodYellow;color:magenta;font-weight:bold;line-height:14px;">&nbsp;Sweet! <3&nbsp;</span>');
+        toggleButtonText({'#editButton': 'Endre innstillinger'});
         // Slide away all options
         $("div.options").slideUp();
         $("div.content").slideDown();
@@ -146,7 +152,7 @@ popup.event = {
         index = 0;
       ls.affiliationPalette = colors[index];
       Palettes.load();
-      // Text feedback, fade out after timeout
+      // Text feedback, fades out after timeout
       $('#buttontext').text('Fargepalett satt til "' + colors[index].capitalize() + '"');
       // And track it
       Analytics.trackEvent('clickColor');
