@@ -50,14 +50,22 @@
   /* All options are hidden by default, they slide into view when they are needed */
   display: none;
 }
+.options input,
+.options label,
+.options select,
+.options div {
+  margin-top: 5px;
+}
 .options label {
   /* Text to go with a checkbox / radio button */
   font-weight: bold;
 }
 .options div {
   /* Description of this option */
-  padding-top: 5px;
   font-style: italic;
+}
+div#firstBus div.options {
+  text-align: right;
 }
 .emphasized {
   border: 1px solid transparent;

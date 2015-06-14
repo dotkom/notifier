@@ -52,13 +52,19 @@
   /* All options are hidden by default, they slide into view when they are needed */
   display: none;
 
+  input, label, select, div {
+    margin-top: 5px;
+  }
   label { /* Text to go with a checkbox / radio button */
     font-weight: bold;
   }
   div { /* Description of this option */
-    padding-top: 5px;
     font-style: italic;
   }
+}
+
+div#firstBus div.options {
+  text-align: right;
 }
 
 .emphasized {

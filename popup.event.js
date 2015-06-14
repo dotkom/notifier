@@ -82,7 +82,7 @@ popup.event = {
         });
         // Show Done?-question in buttontext, leave it there until done
         $('#editButton').unbind('mouseenter mouseleave');
-        $('#buttontext').text('Ferdig?');
+        $('#buttontext').text('Trykk på knappen når du er ferdig');
         // Slide in all options
         $("div.options").slideDown();
         $("div.content").slideUp();
