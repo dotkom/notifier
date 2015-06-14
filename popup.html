@@ -134,11 +134,11 @@
 
     <div id="todays">
       <div id="schedule">
-        <div class="title">Kontoret</div>
+        <div class="title">_OFFICE_NAME_</div>
         <div class="options">
           <input type="checkbox" name="STATUSTHING" value="STATUSTHING"></input>
-          <label for="STATUSTHING">Kontorstatus?</label>
-          <div>Er det åpent på _KONTORET_? Hvem har ansvar? Er det flere møter i dag?</div>
+          <label for="STATUSTHING">Se kontorstatus</label>
+          <div>Hvem har ansvar på _OFFICE_NAME_?<br />Er det flere møter i dag?<br />Er det åpent på _OFFICE_NAME_?<br />_ICON_OPEN_ _ICON_CLOSED_ _ICON_MEETING_ _ICON_WAFFLE_</div>
         </div>
         <div class="content">
           <div id="servant">- Laster ansvarlige...</div>
@@ -149,8 +149,8 @@
         <div class="title">Kaffe</div>
         <div class="options">
           <input type="checkbox" name="COFFEESUB" value="COFFEESUB"></input>
-          <label for="COFFEESUB">Kaffevarsel?</label>
-          <div>Få kaffememe når noen koker en ny kanne kaffe på _KONTORET_?</div>
+          <label for="COFFEESUB">Få kaffevarsel</label>
+          <div>Få kaffememe når noen koker en ny kanne kaffe på _OFFICE_NAME_?</div>
         </div>
         <div class="content">
           <div id="pots">- Laster antall kanner...</div>
@@ -161,8 +161,9 @@
     
     <div id="cantinas">
       <div class="first">
-        <div class="dropdownWrapper">
-          <select class="titleDropdown">
+        <div class="title">_CANTINA_1_</div>
+        <div class="options">
+          <select>
             <option value="dmmh">DMMH</option>
             <option value="dragvoll">Dragvoll</option>
             <option value="elektro">Elektro</option>
@@ -186,12 +187,15 @@
             <option value="sito stripa">Sito Stripa</option>
           </select>
         </div>
-        <div class="hours">Laster...</div>
-        <div id="dinnerbox"></div>
+        <div class="content">
+          <div class="hours">Laster...</div>
+          <div id="dinnerbox"></div>
+        </div>
       </div>
       <div class="second">
-        <div class="dropdownWrapper">
-          <select class="titleDropdown">
+        <div class="title">_CANTINA_1_</div>
+        <div class="options">
+          <select>
             <option value="dmmh">DMMH</option>
             <option value="dragvoll">Dragvoll</option>
             <option value="elektro">Elektro</option>
@@ -215,8 +219,10 @@
             <option value="sito stripa">Sito Stripa</option>
           </select>
         </div>
-        <div class="hours">Laster...</div>
-        <div id="dinnerbox"></div>
+        <div class="content">
+          <div class="hours">Laster...</div>
+          <div id="dinnerbox"></div>
+        </div>
       </div>
     </div>
 
