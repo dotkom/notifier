@@ -239,6 +239,11 @@ var loadAffiliationIcon = function() {
   // Set badge title
   var name = Affiliation.org[key].name;
   Browser.setTitle(name + ' Notifier');
+  // Christmas icon for Online affiliation
+  if (key === ' online' && new Date().getMonth() === 11)
+    chrome.browserAction.setIcon({
+        path: '/img/logo-48-xmas.png'
+    });
 }
 
 // Document ready, go!
