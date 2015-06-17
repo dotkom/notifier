@@ -6,7 +6,6 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 ## Fremtidsplaner
 * Mer data hentes ferdiglaget fra Notiwire (API) i stedet for å lages i Notifier
 * Lunsjmeny for de forskjellige kantinene
-* Vise endringer fra forrige versjon
 * Events fra kalenderne til linjeforeningene
 * 1024-integrasjon
 * Vise hvilke data som er lagret for hver linjeforening, og hvordan du kan få dem endret
