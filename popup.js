@@ -121,9 +121,17 @@ mainLoop.intervalId = null;
 
   // Apply the affiliation's own name for it's office
   if (Affiliation.org[ls.affiliationKey1].hw) {
-    if (Affiliation.org[ls.affiliationKey1].hw.office) {
-      $('#todays #schedule .title').text(Affiliation.org[ls.affiliationKey1].hw.office);
-    }
+
+    var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
+    // Apply affiliation icons in options
+    $('span[data="ICON_OPEN"]').html('<img src="' + statusIcons.open + '" class="statusIcon" />');
+    $('span[data="ICON_CLOSED"]').html('<img src="' + statusIcons.closed + '" class="statusIcon" />');
+    $('span[data="ICON_MEETING"]').html('<img src="' + statusIcons.meeting + '" class="statusIcon" />');
+
+    // Apply affiliation names
+    var officeName = Affiliation.org[ls.affiliationKey1].hw.office;
+    $('#todays #schedule .title').text(officeName);
+    $('span[data="officeName"]').text(officeName);
   }
 }());
 

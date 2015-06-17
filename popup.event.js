@@ -88,8 +88,7 @@ popup.event = {
         $("div.content").slideUp();
         $("img#logo").css('opacity', '0.4');
         $("img#atbLogo").css('opacity', '0.4');
-        $("div#oracle").css('opacity', '0.4');
-        $("div#news img").css('opacity', '0.4');
+        $("div#oracle").slideUp();
         $("div.title").css('opacity', '0.4');
         // Analytics
         Analytics.trackEvent('clickEdit');
@@ -108,8 +107,7 @@ popup.event = {
         $("div.content").slideDown();
         $("img#logo").css('opacity', '');
         $("img#atbLogo").css('opacity', '');
-        $("div#oracle").css('opacity', '');
-        $("div#news img").css('opacity', '');
+        $("div#oracle").slideDown();
         $("div.title").css('opacity', '');
         // Analytics
         Analytics.trackEvent('clickEditDone');

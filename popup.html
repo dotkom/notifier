@@ -134,11 +134,19 @@
 
     <div id="todays">
       <div id="schedule">
-        <div class="title">_OFFICE_NAME_</div>
+        <div class="title"><span data="officeName">OFFICE_NAME</span></div>
         <div class="options">
           <input type="checkbox" name="STATUSTHING" value="STATUSTHING"></input>
           <label for="STATUSTHING">Se kontorstatus</label>
-          <div>Hvem har ansvar på _OFFICE_NAME_?<br />Er det flere møter i dag?<br />Er det åpent på _OFFICE_NAME_?<br />_ICON_OPEN_ _ICON_CLOSED_ _ICON_MEETING_ _ICON_WAFFLE_</div>
+          <div>
+            Er det flere møter i dag?<br />
+            Hvem har ansvar på <span data="officeName">OFFICE_NAME</span>?<br />
+            Åpent / Lukket / Møte / Vafler<br />
+            <span data="ICON_OPEN">ICON_OPEN</span>
+            <span data="ICON_CLOSED">ICON_CLOSED</span>
+            <span data="ICON_MEETING">ICON_MEETING</span>
+            <span data="ICON_WAFFLE"><img src="img/icon-waffle.png" class="statusIcon" /></span>
+          </div>
         </div>
         <div class="content">
           <div id="servant">- Laster ansvarlige...</div>
@@ -150,7 +158,7 @@
         <div class="options">
           <input type="checkbox" name="COFFEESUB" value="COFFEESUB"></input>
           <label for="COFFEESUB">Få kaffevarsel</label>
-          <div>Få kaffememe når noen koker en ny kanne kaffe på _OFFICE_NAME_?</div>
+          <div>Få kaffememe når noen koker en ny kanne kaffe på <span data="officeName">OFFICE_NAME</span>?</div>
         </div>
         <div class="content">
           <div id="pots">- Laster antall kanner...</div>
