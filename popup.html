@@ -127,6 +127,12 @@
         <img id="chatterButton" class="popupbutton" src="img/popup-chatter.png" />
         <img id="tipsButton" class="popupbutton" src="img/popup-tips.png" />
         <img id="colorButton" class="popupbutton" src="img/popup-color.png" />
+        <div id="bigOptions">
+          <input type="checkbox" name="SHOW_CANTINAS"></input>
+          <label for="SHOW_CANTINAS">SiT</label>
+          <input type="checkbox" name="SHOW_BUS"></input>
+          <label for="SHOW_BUS">AtB</label>
+        </div>
       </div>
       <img id="logo" src="img/blank.png" />
       <div id="buttontext"></div>
@@ -136,17 +142,17 @@
       <div id="schedule">
         <div class="title"><span data="officeName">OFFICE_NAME</span></div>
         <div class="options">
-          <input type="checkbox" name="STATUSTHING" value="STATUSTHING"></input>
-          <label for="STATUSTHING">Se kontorstatus &amp; kaffe</label>
+          <span data="ICON_OPEN">ICON_OPEN</span> Åpent
+          <span data="ICON_CLOSED">ICON_CLOSED</span> Lukket
+          <span data="ICON_MEETING">ICON_MEETING</span> Møte
+          <span data="ICON_WAFFLE"><img src="img/icon-waffle.png" class="statusIcon" /></span> Vafler
+          <!--<input type="checkbox" name="STATUSTHING" value="STATUSTHING"></input>
+          <label for="STATUSTHING">Se kontorstatus &amp; kaffe</label>-->
           <div>
-            <div>
+            <!--<div>-->
               Er det flere møter i dag?<br />
               Hvem har ansvar på <span data="officeName">OFFICE_NAME</span>?
-            </div>
-            <span data="ICON_OPEN">ICON_OPEN</span> Åpent
-            <span data="ICON_CLOSED">ICON_CLOSED</span> Lukket
-            <span data="ICON_MEETING">ICON_MEETING</span> Møte
-            <span data="ICON_WAFFLE"><img src="img/icon-waffle.png" class="statusIcon" /></span> Vafler
+            <!--</div>-->
           </div>
         </div>
         <div class="content">

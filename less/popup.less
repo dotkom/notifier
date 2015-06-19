@@ -182,6 +182,7 @@ div#tips {
       .popupbutton {
         height: 27px;
         width: auto;
+        float: left;
         border-radius: 5px;
         margin-right: 12px;
         cursor: pointer;
@@ -612,6 +613,17 @@ div.options {
   }
 }
 
+div#bigOptions {
+  position: relative;
+  display: none;
+  float: left;
+  width: 150px;
+
+  input, label {
+    position: relative;
+  }
+}
+
 div#bus {
   input {
     width: 112px;
@@ -619,6 +631,9 @@ div#bus {
   select {
     width: 70px;
     margin-left: 7px;
+  }
+  div#secondBus div.options select {
+    margin-left: 4px; /* Hack that's needed for an unidentified reason, otherwise select fields on left and right side have differentl margins-ish */
   }
   div#firstBus {
     input, select, div.lines {
@@ -637,7 +652,7 @@ div#bus {
     position: relative;
     margin-top: 7px;
     display: block;
-    width: 128px;
+    width: 181px;
     border-top: 1px solid white;
     box-shadow: 0 1px 2px #888;
     border-radius: 4px;

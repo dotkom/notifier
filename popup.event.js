@@ -86,9 +86,12 @@ popup.event = {
         // Slide in all options
         $("div.options").slideDown();
         $("div.content").slideUp();
-        $("img#logo").css('opacity', '0.4');
-        $("img#atbLogo").css('opacity', '0.4');
+        $("img#logo").css('opacity', '0.1');
+        $("img#atbLogo").css('opacity', '0.1');
         $("div#oracle").slideUp();
+        setTimeout(function() {
+          $("div#bigOptions").fadeIn();
+        }, 600);
         // Analytics
         Analytics.trackEvent('clickEdit');
       }
@@ -107,6 +110,9 @@ popup.event = {
         $("img#logo").css('opacity', '');
         $("img#atbLogo").css('opacity', '');
         $("div#oracle").slideDown();
+        setTimeout(function() {
+          $("div#bigOptions").fadeOut();
+        }, 600);
         // Analytics
         Analytics.trackEvent('clickEditDone');
       }
