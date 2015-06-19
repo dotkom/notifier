@@ -578,6 +578,7 @@ div#tips .text a {
 div.options {
   /* All options are hidden by default, they slide into view when they are needed */
   display: none;
+  /* Special cases */
 }
 div.options input,
 div.options label,
@@ -594,7 +595,11 @@ div.options div {
   /* Description of this option */
   margin: 9px 0px 2px 0px;
 }
-div.options img.statusIcon {
+div.options div#statusOptions {
+  position: relative;
+  top: -3px;
+}
+div.options div#statusOptions img.statusIcon {
   width: 20px;
   height: 20px;
   position: relative;
@@ -609,12 +614,19 @@ div.options div#leftNewsOptionTitle {
 div#bigOptions {
   position: relative;
   display: none;
+  top: 3px;
   float: left;
   width: 150px;
+  font-size: 24px;
+  line-height: 24px;
 }
 div#bigOptions input,
 div#bigOptions label {
   position: relative;
+}
+div#bigOptions input {
+  top: -4px;
+  margin-left: 10px;
 }
 div#bus input {
   width: 112px;

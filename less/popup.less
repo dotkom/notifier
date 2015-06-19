@@ -598,13 +598,19 @@ div.options {
     margin: 9px 0px 2px 0px;
   }
 
-  img.statusIcon {
-    width: 20px;
-    height: 20px;
+  /* Special cases */
+
+  div#statusOptions {
     position: relative;
-    top: 5px;
-    -webkit-filter: drop-shadow(0 0 4px black);
-    filter: drop-shadow(0 0 4px black);
+    top: -3px;
+    img.statusIcon {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      top: 5px;
+      -webkit-filter: drop-shadow(0 0 4px black);
+      filter: drop-shadow(0 0 4px black);
+    }
   }
 
   div#leftNewsOptionTitle {
@@ -616,11 +622,18 @@ div.options {
 div#bigOptions {
   position: relative;
   display: none;
+  top: 3px;
   float: left;
   width: 150px;
+  font-size: 24px;
+  line-height: 24px;
 
   input, label {
     position: relative;
+  }
+  input {
+    top: -4px;
+    margin-left: 10px;
   }
 }
 
