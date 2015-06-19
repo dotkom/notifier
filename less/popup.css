@@ -588,7 +588,7 @@ div.options div {
 }
 div.options label {
   /* Text to go with a checkbox / radio button */
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 div.options div {
   /* Description of this option */
