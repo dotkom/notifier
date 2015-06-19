@@ -54,6 +54,12 @@
   margin-bottom: 4px;
 }
 
+@-webkit-keyframes editButtonPulse {
+  from { border: 1px solid white; }
+  50% { border: 1px solid transparent; }
+  to { border: 1px solid white; }
+}
+
 /* Rules */
 
 body {
@@ -186,8 +192,10 @@ div#tips {
         border: 1px solid white;
       }
       .popupbutton.glow {
-        /* Edit button glows while toggled */
-        box-shadow: 0px 0px 5px white, 0px 0px 15px snow, 0px 0px 25px goldenrod;
+        /* Edit button glows discreetly while toggled */
+        -webkit-animation-name: editButtonPulse;
+        -webkit-animation-duration: 1.5s;
+        -webkit-animation-iteration-count: infinite;
       }
       #chatterButton {
         /* Hiding Slack button by default */
@@ -641,12 +649,12 @@ div#bus {
     text-shadow: 0 0 0 white; /* resets inhertied value from parent element */
 
     table {
-      .debugRed;
+      .debugBox;
       width: 100%;
       table-layout: fixed;
       text-align: center;
       td {
-        .debugyellow;
+        .debugText;
         padding: 1px 0;
       }
     }

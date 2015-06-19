@@ -51,6 +51,17 @@
   font-style: italic;
   margin-bottom: 4px;
 }
+@-webkit-keyframes editButtonPulse {
+  from {
+    border: 1px solid white;
+  }
+  50% {
+    border: 1px solid transparent;
+  }
+  to {
+    border: 1px solid white;
+  }
+}
 /* Rules */
 body {
   color: white;
@@ -187,8 +198,10 @@ div#tips .text a {
   border: 1px solid white;
 }
 #container #header #buttons .popupbutton.glow {
-  /* Edit button glows while toggled */
-  box-shadow: 0px 0px 5px white, 0px 0px 15px snow, 0px 0px 25px goldenrod;
+  /* Edit button glows discreetly while toggled */
+  -webkit-animation-name: editButtonPulse;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-iteration-count: infinite;
 }
 #container #header #buttons #chatterButton {
   /* Hiding Slack button by default */
@@ -610,4 +623,68 @@ div#bus div#firstBus div.options {
 div#bus div.secondBus input,
 div#bus div.secondBus select {
   float: left;
+}
+div#bus div.lines {
+  position: relative;
+  margin-top: 7px;
+  display: block;
+  width: 128px;
+  border-top: 1px solid white;
+  box-shadow: 0 1px 2px #888;
+  border-radius: 4px;
+  background: -webkit-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
+  /* Chrome10+,Safari5.1+,Opera15+ */
+  background: linear-gradient(to bottom, #e8e8e8 0%, #c0c0c0 100%);
+  /* W3C */
+  padding: 2px 7px 1px 7px;
+  text-align: left;
+  font-size: 12px;
+  text-shadow: 0 0 0 white;
+  /* resets inhertied value from parent element */
+}
+div#bus div.lines table {
+  border: 1px solid transparent;
+  width: 100%;
+  table-layout: fixed;
+  text-align: center;
+}
+div#bus div.lines table td {
+  border: 1px solid transparent;
+  padding: 1px 0;
+}
+div#bus div.lines .active {
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+}
+div#bus div.lines .active:hover {
+  text-decoration: underline;
+}
+div#bus div.lines .inactive {
+  cursor: pointer;
+  color: gray;
+}
+div#bus div.lines .inactive:hover {
+  text-decoration: underline;
+}
+div#bus div.lines .error {
+  color: black;
+  text-align: center;
+  font-size: 12px;
+}
+div#bus div.lines .retry {
+  color: black;
+  text-align: center;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+div#bus div.lines .loadingLeft {
+  position: relative;
+  width: 80px;
+  -webkit-transform: scaleX(-1);
+}
+div#bus div.lines .loadingRight {
+  position: relative;
+  width: 80px;
 }
