@@ -288,7 +288,7 @@ div#tips .text a {
   float: right;
   width: 47.5%;
 }
-#container #cantinas #dinnerbox {
+#container #cantinas .dinnerBox {
   border: 1px solid transparent;
 }
 #container #cantinas li {

@@ -204,15 +204,15 @@
             <option value="sito stripa">Sito Stripa</option>
           </select>
           <br />
-          <input type="checkbox" name="LUNCH_1"></input>
-          <label for="LUNCH_1">Lunsjmeny (til 14)</label>
+          <input type="checkbox" name="showLunch"></input>
+          <label for="showLunch">Lunsjmeny (til 14)</label>
           <br />
-          <input type="checkbox" name="DINNER_1"></input>
-          <label for="DINNER_1">Middagsmeny (etter 14)</label>
+          <input type="checkbox" name="showDinner"></input>
+          <label for="showDinner">Middagsmeny (etter 14)</label>
         </div>
         <div class="content">
           <div class="hours">Laster...</div>
-          <div id="dinnerbox"></div>
+          <div class="dinnerBox"></div>
         </div>
       </div>
       <div class="second">
@@ -242,15 +242,15 @@
             <option value="sito stripa">Sito Stripa</option>
           </select>
           <br />
-          <input type="checkbox" name="LUNCH_2"></input>
-          <label for="LUNCH_2">Lunsjmeny (til 14)</label>
+          <input type="checkbox" name="showLunch"></input>
+          <label for="showLunch">Lunsjmeny (til 14)</label>
           <br />
-          <input type="checkbox" name="DINNER_2"></input>
-          <label for="DINNER_2">Middagsmeny (etter 14)</label>
+          <input type="checkbox" name="showDinner"></input>
+          <label for="showDinner">Middagsmeny (etter 14)</label>
         </div>
         <div class="content">
           <div class="hours">Laster...</div>
-          <div id="dinnerbox"></div>
+          <div class="dinnerBox"></div>
         </div>
       </div>
     </div>
@@ -601,10 +601,11 @@
   <script src="js/hackerspace.js"></script>
   <script src="js/oracle.js"></script>
 
-  <!-- Document sript -->
+  <!-- Document sripts -->
   <script src="popup.globals.js"></script>
   <script src="popup.update.js"></script>
   <script src="popup.event.js"></script>
+  <script src="popup.options.js"></script>
   <script src="popup.js"></script>
 
 </body>

@@ -164,6 +164,10 @@ $(document).ready(function() {
 
   // Hook up all event handlers
   popup.event.bindAll();
+  // Load all localStorage values into inline options
+  popup.options.loadAll();
+  // Hoop up all option handlers
+  popup.options.bindAll();
 
   // Track popularity of the chosen palette, the palette
   // itself is loaded a lot earlier for perceived speed

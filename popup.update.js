@@ -86,14 +86,11 @@ popup.update = {
 
     var update = function(shortname, data, selector) {
       var name = Cantina.names[shortname];
-      var hours = '#cantinas '+selector+' .hours';
-      var dinners = '#cantinas '+selector+' #dinnerbox';
+      var hours = '#cantinas ' + selector + ' .hours';
+      var dinners = '#cantinas ' + selector + ' .dinnerBox';
 
       // Set current cantina as selected in the title dropdown
-      $('#cantinas '+selector+' .title').text(name);
-      // $('#cantinas '+selector+' .titleDropdown option').filter(function() {
-      //   return shortname === $(this).val();
-      // }).attr('selected', true);
+      $('#cantinas ' + selector + ' .title').text(name);
 
       // If data is just a message
       if (typeof data === 'string') {
