@@ -75,31 +75,33 @@ popup.event = {
     $('#editButton').click(function() {
       var toggled = ('img/popup-edit-done.png' === $(this).attr('src'));
       if (!toggled) {
-        // Switch image and fade out other buttons
+        // Switch image and change other buttons
         $(this).attr('src', 'img/popup-edit-done.png').addClass('glow');
         $("img.popupbutton").not(this).each(function(index, value) {
           $(this).fadeOut();
         });
+        setTimeout(function() {
+          $("div#bigOptions").fadeIn();
+        }, 600);
         // Show Done?-question in buttontext, leave it there until done
         $('#editButton').unbind('mouseenter mouseleave');
         $('#buttontext').text('Trykk på knappen når du er ferdig');
         // Slide in all options
         $("div.options").slideDown();
         $("div.content").slideUp();
-        $("img#logo").css('opacity', '0.1');
-        $("img#atbLogo").css('opacity', '0.1');
+        $("img#logo").animate({'opacity': '0.1'});
+        $("img#atbLogo").animate({'opacity': '0.1'});
         $("div#oracle").slideUp();
-        setTimeout(function() {
-          $("div#bigOptions").fadeIn();
-        }, 600);
         // Analytics
         Analytics.trackEvent('clickEdit');
       }
       else {
-        // Switch image and fade in other buttons
+        // Switch image and change other buttons
         $(this).attr('src', 'img/popup-edit.png').removeClass('glow');
-        $("img.popupbutton").not(this).each(function(index, value) {
-          $(this).fadeIn();
+        $("div#bigOptions").fadeOut(function() {
+          $("img.popupbutton").not(this).each(function(index, value) {
+            $(this).fadeIn();
+          });
         });
         // Switch back to regular hover texts for buttons
         $('#buttontext').html('Sweet! <3');
@@ -107,12 +109,9 @@ popup.event = {
         // Slide away all options
         $("div.options").slideUp();
         $("div.content").slideDown();
-        $("img#logo").css('opacity', '');
-        $("img#atbLogo").css('opacity', '');
+        $("img#logo").animate({'opacity': '1.0'});
+        $("img#atbLogo").animate({'opacity': '1.0'});
         $("div#oracle").slideDown();
-        setTimeout(function() {
-          $("div#bigOptions").fadeOut();
-        }, 600);
         // Analytics
         Analytics.trackEvent('clickEditDone');
       }
