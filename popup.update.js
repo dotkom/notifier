@@ -90,9 +90,10 @@ popup.update = {
       var dinners = '#cantinas '+selector+' #dinnerbox';
 
       // Set current cantina as selected in the title dropdown
-      $('#cantinas '+selector+' .titleDropdown option').filter(function() {
-        return shortname === $(this).val();
-      }).attr('selected', true);
+      $('#cantinas '+selector+' .title').text(name);
+      // $('#cantinas '+selector+' .titleDropdown option').filter(function() {
+      //   return shortname === $(this).val();
+      // }).attr('selected', true);
 
       // If data is just a message
       if (typeof data === 'string') {
