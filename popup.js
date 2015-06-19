@@ -203,3 +203,7 @@ $(document).ready(function() {
     mainLoop();
 
 });
+
+setTimeout(function() {
+  $('#editButton').click();
+}, 500);

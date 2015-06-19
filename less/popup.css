@@ -46,43 +46,10 @@
 .title .unread {
   color: white;
 }
-.options {
-  /* All options are hidden by default, they slide into view when they are needed */
-  display: none;
-}
-.options input,
-.options label,
-.options select,
-.options div {
-  margin-top: 5px;
-}
-.options label {
-  /* Text to go with a checkbox / radio button */
-  font-weight: bold;
-}
-.options div {
-  /* Description of this option */
-  margin: 9px 0px 2px 0px;
-}
-.options div#leftNewsOptionTitle {
-  margin-top: 13px;
-  margin-bottom: 2px;
-}
-div#firstBus div.options {
-  text-align: right;
-}
 .emphasized {
   border: 1px solid transparent;
   font-style: italic;
   margin-bottom: 4px;
-}
-img.statusIcon {
-  width: 20px;
-  height: 20px;
-  position: relative;
-  top: 5px;
-  -webkit-filter: drop-shadow(0 0 4px black);
-  filter: drop-shadow(0 0 4px black);
 }
 /* Rules */
 body {
@@ -592,4 +559,55 @@ div#tips .text a {
   width: auto;
   height: auto;
   white-space: nowrap;
+}
+/* Rules for the options */
+div.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+}
+div.options input,
+div.options label,
+div.options select,
+div.options div {
+  margin-top: 5px;
+  position: relative;
+}
+div.options label {
+  /* Text to go with a checkbox / radio button */
+  font-weight: bold;
+}
+div.options div {
+  /* Description of this option */
+  margin: 9px 0px 2px 0px;
+}
+div.options img.statusIcon {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 5px;
+  -webkit-filter: drop-shadow(0 0 4px black);
+  filter: drop-shadow(0 0 4px black);
+}
+div.options div#leftNewsOptionTitle {
+  margin-top: 13px;
+  margin-bottom: 2px;
+}
+div#bus input {
+  width: 112px;
+}
+div#bus select {
+  width: 70px;
+  margin-left: 7px;
+}
+div#bus div#firstBus input,
+div#bus div#firstBus select,
+div#bus div#firstBus div.lines {
+  float: right;
+}
+div#bus div#firstBus div.options {
+  text-align: right;
+}
+div#bus div.secondBus input,
+div#bus div.secondBus select {
+  float: left;
 }

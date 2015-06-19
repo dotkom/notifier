@@ -48,43 +48,10 @@
   }
 }
 
-.options {
-  /* All options are hidden by default, they slide into view when they are needed */
-  display: none;
-
-  input, label, select, div {
-    margin-top: 5px;
-  }
-  label { /* Text to go with a checkbox / radio button */
-    font-weight: bold;
-  }
-  div { /* Description of this option */
-    margin: 9px 0px 2px 0px;
-  }
-
-  div#leftNewsOptionTitle {
-    margin-top: 13px;
-    margin-bottom: 2px;
-  }
-}
-
-div#firstBus div.options {
-  text-align: right;
-}
-
 .emphasized {
   .debugText;
   font-style: italic;
   margin-bottom: 4px;
-}
-
-img.statusIcon {
-  width: 20px;
-  height: 20px;
-  position: relative;
-  top: 5px;
-  -webkit-filter: drop-shadow(0 0 4px black);
-  filter: drop-shadow(0 0 4px black);
 }
 
 /* Rules */
@@ -603,4 +570,121 @@ div#tips {
     white-space: nowrap;
   }
 
+}
+
+/* Rules for the options */
+
+div.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+
+  input, label, select, div {
+    margin-top: 5px;
+    position: relative;
+  }
+  label { /* Text to go with a checkbox / radio button */
+    font-weight: bold;
+  }
+  div { /* Description of this option */
+    margin: 9px 0px 2px 0px;
+  }
+
+  img.statusIcon {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 5px;
+    -webkit-filter: drop-shadow(0 0 4px black);
+    filter: drop-shadow(0 0 4px black);
+  }
+
+  div#leftNewsOptionTitle {
+    margin-top: 13px;
+    margin-bottom: 2px;
+  }
+}
+
+div#bus {
+  input {
+    width: 112px;
+  }
+  select {
+    width: 70px;
+    margin-left: 7px;
+  }
+  div#firstBus {
+    input, select, div.lines {
+      float: right;
+    }
+    div.options {
+      text-align: right;
+    }
+  }
+  div.secondBus {
+    input, select {
+      float: left;
+    }
+  }
+  div.lines {
+    position: relative;
+    margin-top: 7px;
+    display: block;
+    width: 128px;
+    border-top: 1px solid white;
+    box-shadow: 0 1px 2px #888;
+    border-radius: 4px;
+    background: -webkit-linear-gradient(top, #e8e8e8 0%,#c0c0c0 100%); /* Chrome10+,Safari5.1+,Opera15+ */
+    background: linear-gradient(to bottom, #e8e8e8 0%,#c0c0c0 100%); /* W3C */
+    padding: 2px 7px 1px 7px;
+    text-align: left;
+    font-size: 12px;
+    text-shadow: 0 0 0 white; /* resets inhertied value from parent element */
+
+    table {
+      .debugRed;
+      width: 100%;
+      table-layout: fixed;
+      text-align: center;
+      td {
+        .debugyellow;
+        padding: 1px 0;
+      }
+    }
+    .active {
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .inactive {
+      cursor: pointer;
+      color: gray;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .error {
+      color: black;
+      text-align: center;
+      font-size: 12px;
+    }
+    .retry {
+      color: black;
+      text-align: center;
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .loadingLeft {
+      position: relative;
+      width: 80px;
+      -webkit-transform: scaleX(-1);
+    }
+    .loadingRight {
+      position: relative;
+      width: 80px;
+    }
+  }
 }
