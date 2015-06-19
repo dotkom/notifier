@@ -564,16 +564,6 @@ div#tips .text a {
   font-size: 11px;
   text-shadow: 0 0 5px black, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
 }
-#container #titleMeasure {
-  font-weight: bold;
-  color: transparent;
-  /* not to be seen, only used for measurement of title widths */
-  position: absolute;
-  visibility: hidden;
-  width: auto;
-  height: auto;
-  white-space: nowrap;
-}
 /* Rules for the options */
 div.options {
   /* All options are hidden by default, they slide into view when they are needed */

@@ -1,32 +1,8 @@
 popup.options = {
 
-  adjustDropdownWidths: function() {
-    adjustCantinaTitleWidth(ls.cantina1, '#cantinas .first');
-    adjustCantinaTitleWidth(ls.cantina2, '#cantinas .second');
-  },
-
-  //
-  // Text width measuring for title dropdowns
-  //
-
-  getTitleWidth: function (title) {
-    var width = $('#titleMeasure').text(title).width();
-    $('#titleMeasure').text('');
-    return width * 1.1 + 30; // Buffer estimated to 1.1x real text length + 30px
-  },
-
   //
   // Cantinas
   //
-
-  adjustCantinaTitleWidth: function(title, element) {
-    var wrapper = element + ' .dropdownWrapper';
-    var dropdown = element + ' .dropdownWrapper .titleDropdown';
-    var cantinaName = Cantina.names[title];
-    var width = getTitleWidth(cantinaName);
-    $(wrapper).width(width);
-    $(dropdown).width(width - 23);
-  },
 
   cantinaChangeHandler: function(which, cantina) {
     var titleDropdown = '#cantinas ' + which + ' .titleDropdown';
@@ -35,8 +11,6 @@ popup.options = {
     $(titleDropdown).change(function () {
       // Save
       ls[cantina] = this.value;
-      // Measure
-      adjustCantinaTitleWidth(ls[cantina], '#cantinas ' + which);
       // Add loading bar
       $(hoursBox).html('');
       $(dinnerBox).html('<img class="loadingLeft" src="img/loading.gif" />');
