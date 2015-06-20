@@ -5,7 +5,6 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 
 ## Fremtidsplaner
 * Mer data hentes ferdiglaget fra Notiwire (API) i stedet for å lages i Notifier
-* Lunsjmeny for de forskjellige kantinene
 * Events fra kalenderne til linjeforeningene
 * 1024-integrasjon
 * Vise hvilke data som er lagret for hver linjeforening, og hvordan du kan få dem endret
@@ -16,7 +15,8 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 * Back to basics: Popupen er nå hele Notifier
 	* Infoscreen splittet ut til ny Chrome extension ved navn Online Notiwall
 	* Options er i popupen fremfor separat Options-side
-* Kuttet mange tusen linjer kode (ANTALL?)
+	* Kuttet mange tusen linjer kode (ANTALL?)
+* Viser lunsjemeny før kl 14, deretter middagsmeny
 * Viser changelog i popupen
 
 ### 2015-04-16 Versjon 4.7
