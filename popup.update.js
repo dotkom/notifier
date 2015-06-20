@@ -33,6 +33,7 @@ popup.update = {
 
   meeting: function() {
     console.log('updateMeeting');
+    // This function just fetches from localstorage (updates in background)
 
     if (!ls.meetingString) {
       $('#todays #schedule #meetings').html(Affiliation.msgConnectionError);
@@ -63,6 +64,7 @@ popup.update = {
 
   coffee: function() {
     console.log('updateCoffee');
+    // This function just fetches from localstorage (updates in background)
 
     if (!ls.coffeePotsString || !ls.coffeeDateString) {
       $('#todays #coffee #pots').html('- ' + Coffee.msgConnectionError);
@@ -81,23 +83,26 @@ popup.update = {
   //
 
   cantinas: function() {
-    // This function just fetches from localstorage (updates in background)
     console.log('updateCantinas');
+    // This function just fetches from localstorage (updates in background)
 
     var update = function(shortname, data, selector) {
       var name = Cantina.names[shortname];
+      var title = '#cantinas ' + selector + ' .title';
+      var subtitle = '#cantinas ' + selector + ' .subtitle';
       var hours = '#cantinas ' + selector + ' .hours';
-      var lunches = '#cantinas ' + selector + ' .lunchBox'; ///////////////
-      var dinners = '#cantinas ' + selector + ' .dinnerBox';
+      var mealBox = '#cantinas ' + selector + ' .mealBox';
 
-      // Set current cantina as selected in the title dropdown
-      $('#cantinas ' + selector + ' .title').text(name);
+      // Lunchtime or dinnertime?
+      var isLunchTime = new Date().getHours() < 14;
+
+      // Title: Set name of current cantina
+      $(title).text(name);
 
       // If data is just a message
       if (typeof data === 'string') {
         $(hours).html('- ' + data);
-        $(lunches).html(''); ////////////////////
-        $(dinners).html('');
+        $(mealBox).html('');
       }
       // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
       else {
@@ -107,45 +112,27 @@ popup.update = {
           $(hours).html('- ' + data.hours.message);
           clickHours(hours, shortname);
         }
-        ///////// BEGIN TEST
-        // Set lunches
-        $(lunches).html('');
-        if (data.lunch) {
-          for (var i in data.lunch) {
-            var lunch = data.lunch[i];
-            if (lunch.price !== undefined) {
-              if (lunch.price) {
-                $(lunches).append('<li>' + lunch.price + ',- ' + lunch.text + '</li>');
+        // Set subtitle, lunch or dinner
+        $(subtitle).text(isLunchTime ? 'Lunsj' : 'Middag');
+        // Set meals
+        $(mealBox).html('');
+        var meals = (isLunchTime ? data.lunch : data.dinner);
+        if (meals) {
+          for (var i in meals) {
+            var meal = meals[i];
+            if (meal.price !== undefined) {
+              if (meal.price) {
+                $(mealBox).append('<li>' + meal.price + ',- ' + meal.text + '</li>');
               }
               else {
-                $(lunches).append('<li class="message">"' + lunch.text + '"</li>');
+                $(mealBox).append('<li class="message">"' + meal.text + '"</li>');
               }
             }
             else {
-              $(lunches).append('<li class="message">"' + lunch + '"</li>');
+              $(mealBox).append('<li class="message">"' + meal + '"</li>');
             }
           }
-          clickMeal(lunches + ' li', shortname);
-        }
-        ///////// END TEST
-        // Set dinners
-        $(dinners).html('');
-        if (data.dinner) {
-          for (var i in data.dinner) {
-            var dinner = data.dinner[i];
-            if (dinner.price !== undefined) {
-              if (dinner.price) {
-                $(dinners).append('<li>' + dinner.price + ',- ' + dinner.text + '</li>');
-              }
-              else {
-                $(dinners).append('<li class="message">"' + dinner.text + '"</li>');
-              }
-            }
-            else {
-              $(dinners).append('<li class="message">"' + dinner + '"</li>');
-            }
-          }
-          clickMeal(dinners + ' li', shortname);
+          clickMeal(mealBox + ' li', shortname);
         }
         // Log error messages
         if (data.error) console.error(data.error);
@@ -249,6 +236,7 @@ popup.update = {
 
   affiliationNews: function(number) {
     console.log('updateAffiliationNews'+number);
+    // This function just fetches from localstorage (updates in background)
     number = ''+number; // stringify
 
     var displayItems = function(items, selector, newsListName, viewedListName, unreadCountName) {

@@ -99,12 +99,10 @@ popup.options = {
       // Content
       var title = cantina + '.title';
       var hoursBox = cantina + '.hours';
-      var dinnerBox = cantina + '.dinnerBox';
+      var mealBox = cantina + '.mealBox';
 
       // Options
       var selectCantina = cantina + 'select';
-      // var showLunch = cantina + 'input#showLunch';////////////////
-      // var showDinner = cantina + 'input#showDinner';////////////////
 
       // Handle change
       $(selectCantina).change(function () {
@@ -115,11 +113,11 @@ popup.options = {
         $(title).text(name);
         // Add loading bar
         $(hoursBox).html('');
-        $(dinnerBox).html('<img class="loadingLeft" src="img/loading.gif" />');
+        $(mealBox).html('<img class="loadingLeft" src="img/loading.gif" />');
         // Prepare for connection error
         window._cantinaOptionTimeout_ = setTimeout(function() {
           $(hoursBox).html('');
-          $(dinnerBox).html(Cantina.msgConnectionError);
+          $(mealBox).html(Cantina.msgConnectionError);
         }, 6000);
         // Load
         Browser.getBackgroundProcess().updateCantinas(function () {
