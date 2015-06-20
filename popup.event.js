@@ -130,12 +130,9 @@ popup.event = {
     if (!toggled) {
       // Switch image and change other buttons
       $('#editButton').attr('src', 'img/popup-edit-done.png').addClass('glow');
-      $("img.popupbutton").not('#editButton').each(function(index, value) {
-        $(this).fadeOut();
-      });
-      setTimeout(function() {
+      $('div#normalButtons').fadeOut(function() {
         $("div#bigOptions").fadeIn();
-      }, 600);
+      });
       // Show Done?-question in buttontext, leave it there until done
       $('#editButton').unbind('mouseenter mouseleave');
       $('#buttontext').text('Trykk på knappen når du er ferdig');
@@ -143,7 +140,6 @@ popup.event = {
       $("div.options").slideDown();
       $("div.content").slideUp();
       $("img#logo").animate({'opacity': '0.1'});
-      $("img#atbLogo").animate({'opacity': '0.1'});
       $("div#oracle").slideUp();
       // Deal with second affiliation not being shown
       if (ls.showAffiliation2 !== 'true') {
@@ -165,10 +161,8 @@ popup.event = {
     else {
       // Switch image and change other buttons
       $('#editButton').attr('src', 'img/popup-edit.png').removeClass('glow');
-      $("div#bigOptions").fadeOut(function() {
-        $("img.popupbutton").not('#editButton').each(function(index, value) {
-          $(this).fadeIn();
-        });
+      $('div#bigOptions').fadeOut(function() {
+        $('div#normalButtons').fadeIn();
       });
       // Switch back to regular hover texts for buttons
       $('#buttontext').html('Sweet! <3');
@@ -177,7 +171,6 @@ popup.event = {
       $("div.options").slideUp();
       $("div.content").slideDown();
       $("img#logo").animate({'opacity': '1.0'});
-      $("img#atbLogo").animate({'opacity': '1.0'});
       $("div#oracle").slideDown();
       // Deal with second affiliation not being shown
       if (ls.showAffiliation2 !== 'true') {

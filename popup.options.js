@@ -620,11 +620,11 @@ popup.options = {
         }
       }
 
+      // Remove old news from localStorage and view
+      ls.removeItem('affiliationNews' + number);
+      $('#news ' + (number === '1' ? '#left' : '#right') + ' div.articles article').remove();
       // Update news
-      // ls.removeItem('affiliationNews' + number);// FIXME probably overkill
-      if (ls['showAffiliation'+number] === 'true') {
-        Browser.getBackgroundProcess().updateAffiliationNews(number);
-      }
+      Browser.getBackgroundProcess().updateAffiliationNews(number);
 
       // Analytics
       Analytics.trackEvent('clickAffiliation'+number, affiliationKey);

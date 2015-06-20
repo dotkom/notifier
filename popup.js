@@ -100,7 +100,7 @@ mainLoop.intervalId = null;
 // (executes itself once AND is usable later)
 //
 
-var applyAffiliationSettings = (function applyAffiliationSettings() {
+var applyAffiliationSettings = (function() {
 
   var apply = function() {
     // Applying affiliation graphics
@@ -114,10 +114,7 @@ var applyAffiliationSettings = (function applyAffiliationSettings() {
 
     // Chatter button, if applicable
     if (Affiliation.org[ls.affiliationKey1].slack) {
-      // If any options are visible (edit mode toggled), then don't show the button just yet
-      if ($('div.options:visible').length === 0) {
         $('#chatterButton').show();
-      }
     }
     else {
       $('#chatterButton').hide();

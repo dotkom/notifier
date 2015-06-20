@@ -589,7 +589,7 @@ div.options div#statusOptions img.statusIcon {
   filter: drop-shadow(0 0 4px black);
 }
 div.options div#leftNewsOptionTitle {
-  margin-top: 13px;
+  margin-top: 9px;
   margin-bottom: 2px;
 }
 div#bigOptions {
@@ -611,10 +611,10 @@ div#bigOptions input {
   margin-left: 10px;
 }
 div#bus input {
-  width: 112px;
+  width: 107px;
 }
 div#bus select {
-  width: 70px;
+  width: 75px;
   margin-left: 7px;
 }
 div#bus div#secondBus div.options select {
