@@ -573,6 +573,10 @@ div.options div {
   margin-top: 5px;
   position: relative;
 }
+div.options input,
+div.options label {
+  cursor: pointer;
+}
 div.options div#statusOptions {
   position: relative;
   top: -3px;
@@ -601,6 +605,7 @@ div#bigOptions {
 div#bigOptions input,
 div#bigOptions label {
   position: relative;
+  cursor: pointer;
 }
 div#bigOptions input {
   top: -4px;

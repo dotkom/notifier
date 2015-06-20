@@ -18,13 +18,13 @@ popup.options = {
 
   loadBigOptionValues: function () {
     var showCantina = ('true' === ls.showCantina);
-    $('input[name="showCantina"]').prop('checked', showCantina);
+    $('input#showCantina').prop('checked', showCantina);
     var showBus = ('true' === ls.showBus);
-    $('input[name="showBus"]').prop('checked', showBus);
+    $('input#showBus').prop('checked', showBus);
   },
 
   bindBigOptions: function () {
-    $('input[name="showCantina"]').click(function() {
+    $('input#showCantina').click(function() {
       // Save
       ls[this.name] = this.checked;
       // Animate
@@ -37,7 +37,7 @@ popup.options = {
       // Track
       Analytics.trackEvent('toggleCantinas', this.checked);
     });
-    $('input[name="showBus"]').click(function() {
+    $('input#showBus').click(function() {
       // Save
       ls[this.name] = this.checked;
       // Animate
@@ -58,12 +58,12 @@ popup.options = {
 
   loadCoffeeOptionValues: function() {
     var checked = ls.coffeeSubscription;
-    $('input[name="coffeeSubscription"]').prop('checked', checked);
+    $('input#coffeeSubscription').prop('checked', checked);
   },
 
   bindCoffeeOptions: function() {
     var self = this;
-    $('input[name="coffeeSubscription"]').click(function() {
+    $('input#coffeeSubscription').click(function() {
       // Save
       ls[this.name] = this.checked;
       // Demo
@@ -103,8 +103,8 @@ popup.options = {
 
       // Options
       var selectCantina = cantina + 'select';
-      // var showLunch = cantina + 'input[name="showLunch"]';////////////////
-      // var showDinner = cantina + 'input[name="showDinner"]';////////////////
+      // var showLunch = cantina + 'input#showLunch';////////////////
+      // var showDinner = cantina + 'input#showDinner';////////////////
 
       // Handle change
       $(selectCantina).change(function () {
