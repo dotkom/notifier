@@ -330,8 +330,8 @@ popup.update = {
       });
 
       // Remove old news, add fresh news
-      $('#news ' + selector + ' .content article').remove();
-      $('#news ' + selector + ' .content').append(column);
+      $('#news ' + selector + ' div.articles article').remove();
+      $('#news ' + selector + ' div.articles').append(column);
 
       // Store list of last viewed items
       ls[viewedListName] = JSON.stringify(viewedList);
@@ -341,7 +341,7 @@ popup.update = {
       ls[unreadCountName] = 0;
 
       // Make news items open extension website while closing popup
-      $('#news '+selector+' .content article').click(function() {
+      $('#news '+selector+' div.articles article').click(function() {
         // The link is embedded as the ID of the element, we don't want to use
         // <a> anchors because it creates an ugly box marking the focus element.
         // Note that altLinks are embedded in the name-property of the element,
@@ -395,7 +395,7 @@ popup.update = {
       // The background process looks for images, and sometimes that process
       // isn't finished before the popup loads, that's why we have to check
       // in with localStorage.storedImages a couple of times.
-      $.each($('#news .content article'), function(i, val) {
+      $.each($('#news div.articles article'), function(i, val) {
         var link = $(this).attr('data');
         var image = JSON.parse(localStorage.storedImages)[link];
         if (typeof image !== 'undefined') {
@@ -426,9 +426,9 @@ popup.update = {
       // Offline or unresponsive
       var key = ls['affiliationKey'+number];
       var name = Affiliation.org[key].name;
-      $('#news '+selector+' .content article').remove(); // Remove all existing articles
+      $('#news '+selector+' div.articles article').remove(); // Remove all existing articles
       $('#news '+selector).append('<article>Frakoblet fra nyhetsstrøm</article>');
-      $('#news '+selector+' .content article').click(function() {
+      $('#news '+selector+' div.articles article').click(function() {
         // Link to affiliation website
         Browser.openTab(Affiliation.org[key].web);
       });

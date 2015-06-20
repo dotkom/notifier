@@ -73,49 +73,8 @@ popup.event = {
     // Button and logo clicks
 
     $('#editButton').click(function() {
-      var toggled = ('img/popup-edit-done.png' === $(this).attr('src'));
-      if (!toggled) {
-        // Switch image and change other buttons
-        $(this).attr('src', 'img/popup-edit-done.png').addClass('glow');
-        $("img.popupbutton").not(this).each(function(index, value) {
-          $(this).fadeOut();
-        });
-        setTimeout(function() {
-          $("div#bigOptions").fadeIn();
-        }, 600);
-        // Show Done?-question in buttontext, leave it there until done
-        $('#editButton').unbind('mouseenter mouseleave');
-        $('#buttontext').text('Trykk på knappen når du er ferdig');
-        // Slide in all options
-        $("div.options").slideDown();
-        $("div.content").slideUp();
-        $("img#logo").animate({'opacity': '0.1'});
-        $("img#atbLogo").animate({'opacity': '0.1'});
-        $("div#oracle").slideUp();
-        // Analytics
-        Analytics.trackEvent('clickEdit');
-      }
-      else {
-        // Switch image and change other buttons
-        $(this).attr('src', 'img/popup-edit.png').removeClass('glow');
-        $("div#bigOptions").fadeOut(function() {
-          $("img.popupbutton").not(this).each(function(index, value) {
-            $(this).fadeIn();
-          });
-        });
-        // Switch back to regular hover texts for buttons
-        $('#buttontext').html('Sweet! <3');
-        toggleButtonText({'#editButton': 'Endre innstillinger'});
-        // Slide away all options
-        $("div.options").slideUp();
-        $("div.content").slideDown();
-        $("img#logo").animate({'opacity': '1.0'});
-        $("img#atbLogo").animate({'opacity': '1.0'});
-        $("div#oracle").slideDown();
-        // Analytics
-        Analytics.trackEvent('clickEditDone');
-      }
-    });
+      this.toggleOptions(toggleButtonText);
+    }.bind(this));
 
     $('#chatterButton').click(function() {
       var slack = Affiliation.org[ls.affiliationKey1].slack;
@@ -164,6 +123,80 @@ popup.event = {
       Browser.openTab(web);
       window.close();
     });
+  },
+
+  toggleOptions: function(toggleButtonText) {
+    var toggled = ('img/popup-edit-done.png' === $('#editButton').attr('src'));
+    if (!toggled) {
+      // Switch image and change other buttons
+      $('#editButton').attr('src', 'img/popup-edit-done.png').addClass('glow');
+      $("img.popupbutton").not('#editButton').each(function(index, value) {
+        $(this).fadeOut();
+      });
+      setTimeout(function() {
+        $("div#bigOptions").fadeIn();
+      }, 600);
+      // Show Done?-question in buttontext, leave it there until done
+      $('#editButton').unbind('mouseenter mouseleave');
+      $('#buttontext').text('Trykk på knappen når du er ferdig');
+      // Slide in all options
+      $("div.options").slideDown();
+      $("div.content").slideUp();
+      $("img#logo").animate({'opacity': '0.1'});
+      $("img#atbLogo").animate({'opacity': '0.1'});
+      $("div#oracle").slideUp();
+      // Deal with second affiliation not being shown
+      if (ls.showAffiliation2 !== 'true') {
+        $('div#news div#full > .title').slideDown(function() {
+          $('div.articles').fadeOut(function() {
+            $('div#news div#full').attr('id', 'left');
+            setTimeout(function() {
+              $('div#news div#right').slideDown();
+            }, 200)
+          })
+        });
+      }
+      else {
+        $('div#news div.articles').slideUp();
+      }
+      // Analytics
+      Analytics.trackEvent('clickEdit');
+    }
+    else {
+      // Switch image and change other buttons
+      $('#editButton').attr('src', 'img/popup-edit.png').removeClass('glow');
+      $("div#bigOptions").fadeOut(function() {
+        $("img.popupbutton").not('#editButton').each(function(index, value) {
+          $(this).fadeIn();
+        });
+      });
+      // Switch back to regular hover texts for buttons
+      $('#buttontext').html('Sweet! <3');
+      toggleButtonText({'#editButton': 'Endre innstillinger'});
+      // Slide away all options
+      $("div.options").slideUp();
+      $("div.content").slideDown();
+      $("img#logo").animate({'opacity': '1.0'});
+      $("img#atbLogo").animate({'opacity': '1.0'});
+      $("div#oracle").slideDown();
+      // Deal with second affiliation not being shown
+      if (ls.showAffiliation2 !== 'true') {
+        $('div#news').fadeOut(function() {
+          $('div#news div.articles').show();
+          $('div#news div#right').hide();
+          $('div#news div#left > .title').hide();
+          $('div#news div#left').attr('id', 'full');
+          setTimeout(function() {
+            $('div#news').fadeIn();
+          }, 200);
+        });
+      }
+      else {
+        $('div#news div.articles').slideDown();
+      }
+      // Analytics
+      Analytics.trackEvent('clickEditDone');
+    }
   },
 
   //
