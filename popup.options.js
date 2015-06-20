@@ -94,7 +94,7 @@ popup.options = {
   },
 
   bindCantinaOptions: function() {
-    
+
     var bindOption = function(selector, storageKey) {
       var cantina = '#cantinas ' + selector + ' ';
 
@@ -153,7 +153,7 @@ popup.options = {
     // Affiliations
     $('select#affiliationKey1').val(ls.affiliationKey1);
     $('select#affiliationKey2').val(ls.affiliationKey2);
-    
+
     // Notifications
     var showNotifications1 = ('true' === ls.showNotifications1);
     $('input#showNotifications1').prop('checked', showNotifications1);
@@ -169,22 +169,9 @@ popup.options = {
     this.bindAffiliationSelector('1');
     this.bindAffiliationSelector('2');
 
-
-
-
-    
-    // // Catch new clicks
-    // $('input:checkbox').click(function() {
-    //   var _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
-    //   Analytics.trackEvent('click'+_capitalized, this.checked);
-
-    //   ls[this.id] = this.checked;
-
-    //   if (this.id === 'showNotificationsXXXXXXX' && this.checked === true) {
-    //     this.testDesktopNotification({demo: true, key: ls.affiliationKey1});
-    //     this.testDesktopNotification({demo: true, key: ls.affiliationKey2});
-    //   }
-    // });
+    // Notifications
+    this.bindAffiliationNotifications('1');
+    this.bindAffiliationNotifications('2');
   },
 
   bindShowAffiliation2: function() {
@@ -261,7 +248,22 @@ popup.options = {
   },
 
   bindAffiliationNotifications: function(number) {
-
+    number = ''+number;
+    var id = 'show' + number;
+    var self = this;
+    $('input#showNotifications' + number).click(function() {
+      // Save
+      ls[this.id] = this.checked;
+      // Demo notification
+      if (this.checked === true) {
+        News.showNotification({
+          demo: true,
+          key: ls['affiliationKey' + number],
+        });
+      }
+      // Track
+      Analytics.trackEvent('clickShowNotifications' + number, this.checked);
+    });
   },
 
   disableHardwareFeatures: function() {
@@ -277,13 +279,6 @@ popup.options = {
     //REMOVE this is probably overkill:
     // // Update office status
     // Browser.getBackgroundProcess().updateStatusAndMeetings(true);
-  },
-
-  testDesktopNotification: function(affiliationKey) {
-    News.showNotification({
-      demo: true,
-      key: affiliationKey,
-    });
   },
 
 };

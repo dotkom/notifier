@@ -117,7 +117,7 @@ var applyAffiliationSettings = (function applyAffiliationSettings() {
 
     // Chatter button, if applicable
     if (Affiliation.org[ls.affiliationKey1].slack) {
-      // If any options are visible, then don't show the button just yet
+      // If any options are visible (edit mode toggled), then don't show the button just yet
       if ($('div.options:visible').length === 0) {
         $('#chatterButton').show();
       }

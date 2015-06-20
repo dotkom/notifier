@@ -14,7 +14,6 @@ var News = {
   msgNoDescription: 'Uten tekst',
 
   _autoLoadDefaults_: function() {
-    console.warn('HELLO')
     var ls = localStorage;
     if (ls.showNotifications1 === undefined)
       ls.showNotifications1 = 'true';
@@ -440,16 +439,18 @@ var News = {
     var ls = localStorage;
     // Fail?
     if (item === undefined) {
-      console.error('News.showNotification got an undefined item to show');
+      console.error('News.showNotification got an undefined item to show. If you are trying to use demo mode, check description in this function.');
       return;
     }
     // Demo mode
     if (item.demo) {
+      var image = Affiliation.org[item.key].placeholder;
+      image = Browser.getUrl(image);
       item = {
         title: Affiliation.org[item.key].name + ' Notifier',
         description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"',
         link: Affiliation.org[item.key].web,
-        image: Affiliation.org[item.key].placeholder,
+        image: image,
         feedKey: item.key,
       }
       // Need to run it by the background process because the event listeners are there
@@ -458,7 +459,7 @@ var News = {
     // Normal mode
     else {
       var showIt = function() {
-        if ((item.key === ls.affiliationKey1 && ls.showNotifications1 === 'true') || (item.key === ls.affiliationKey2 && ls.showNotifications2 === 'true'))
+        if ((item.key === ls.affiliationKey1 && ls.showNotifications1 === 'true') || (item.key === ls.affiliationKey2 && ls.showNotifications2 === 'true')) {
 
           // Save timestamp
           ls.lastNotifiedTime = new Date().getTime();
