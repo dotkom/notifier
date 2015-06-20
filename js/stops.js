@@ -3,7 +3,7 @@
 var Stops = {
   api: 'http://bybussen.api.tmn.io/stops',
   msgDisconnected: 'Frakoblet fra bybussen.api.tmn.io',
-  msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
+  msgKeyExpired: 'Nøkkelen vår har utløpt, trenger oppdatering',
   msgParsingCompleted: 'Busslister lastet fra localstorage',
   msgParsingStopsSuccess: 'Busslister lastet fra API',
   msgParsingStopsFailed: 'Klarte ikke hente liste over busstopp',

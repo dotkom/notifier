@@ -428,7 +428,7 @@ var News = {
   /*
    * Demo item contains:
    * - demo: true
-   * - affiliation: 1
+   * - key: 'someAffiliation'
    * Normal item contains:
    * - title: 'Some news'
    * - description: 'Some ~tweet sized description'
@@ -444,15 +444,13 @@ var News = {
       return;
     }
     // Demo mode
-    // Pass in an item like this to use demo mode: {demo: true, affiliation: 1/2}
     if (item.demo) {
-      var key = ls['affiliationKey' + item.affiliation];
       item = {
-        title: Affiliation.org[key].name + ' Notifier',
+        title: Affiliation.org[item.key].name + ' Notifier',
         description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"',
-        link: Affiliation.org[key].web,
-        image: Affiliation.org[key].placeholder,
-        feedKey: key,
+        link: Affiliation.org[item.key].web,
+        image: Affiliation.org[item.key].placeholder,
+        feedKey: item.key,
       }
       // Need to run it by the background process because the event listeners are there
       Browser.getBackgroundProcess().Browser.createNotification(item);

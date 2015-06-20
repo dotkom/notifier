@@ -3,7 +3,7 @@
 var Defaults = {
 
   _autoLoad_: function() {
-  
+
     var ls = localStorage;
 
     // Clear previous thoughts
@@ -22,10 +22,10 @@ var Defaults = {
         }
       }
     }
-    
-    // Set default choices if undefined, in the same order as on the options page
 
-    ls.extensionName = 'Online Notifier';
+    //
+    // Set default choices if undefined
+    //
 
     // Note install time for future reference
     if (ls.installTime === undefined)
@@ -38,7 +38,7 @@ var Defaults = {
       ls.affiliationNewsList1 = JSON.stringify([]);
     if (ls.affiliationViewedList1 === undefined)
       ls.affiliationViewedList1 = JSON.stringify([]);
-    
+
     if (ls.affiliationPalette === undefined)
       ls.affiliationPalette = 'online';
     if (ls.storedImages === undefined)
@@ -54,7 +54,7 @@ var Defaults = {
 
     if (ls.showBus === undefined)
       ls.showBus = 'true';
-    
+
     // Bus - If any of these properties are undefined we'll reset all of them
     var firstBusProps = [
       ls.firstBus,
@@ -96,11 +96,11 @@ var Defaults = {
       ls.secondBusActiveLines = JSON.stringify([5, 22]);
       ls.secondBusInactiveLines = JSON.stringify([169]);
     }
-    
+
     // Office
     if (ls.showStatus === undefined)
       ls.showStatus = 'true';
-    
+
     // Subscription
     if (ls.coffeeSubscription === undefined)
       ls.coffeeSubscription = 'true';
@@ -112,7 +112,7 @@ var Defaults = {
       ls.activelySetCoffee = 'true';
       ls.coffeeSubscription = 'true';
     }
-    
+
     // General
     if (ls.everOpenedOptions === undefined)
       ls.everOpenedOptions = 'false';
@@ -147,7 +147,7 @@ var Defaults = {
   // a) the user has explicitly turned them off, or
   // b) hardwarefeatures are not available (this function called from background process)
   setHardwareFeatures: function(isAvailable) {
-    
+
     var ls = localStorage;
 
     if (isAvailable) {

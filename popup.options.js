@@ -140,6 +140,7 @@ popup.options = {
   //
 
   loadAffiliationOptionValues: function() {
+
     // Show affiliation 2
     var showAffiliation2 = ('true' === ls.showAffiliation2);
     $('input#showAffiliation2').prop('checked', showAffiliation2);
@@ -164,11 +165,13 @@ popup.options = {
     // Show affiliation 2?
     this.bindShowAffiliation2();
 
+    // Affiliations
+    this.bindAffiliationSelector('1');
+    this.bindAffiliationSelector('2');
 
-    // // Allow user to change affiliation and palette
-    // bindAffiliationSelector('1', true);
-    // bindAffiliationSelector('2', false);
-    // bindPaletteSelector();
+
+
+
     
     // // Catch new clicks
     // $('input:checkbox').click(function() {
@@ -177,27 +180,9 @@ popup.options = {
 
     //   ls[this.id] = this.checked;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //   if (this.id === 'showNotificationsXXXXXXX' && this.checked === true) {
-    //     this.testDesktopNotification();
+    //     this.testDesktopNotification({demo: true, key: ls.affiliationKey1});
+    //     this.testDesktopNotification({demo: true, key: ls.affiliationKey2});
     //   }
     // });
   },
@@ -222,96 +207,56 @@ popup.options = {
     });
   },
 
-
-
-
-
-  bindAffiliationSelector: function(number, isPrimaryAffiliation) {
-    var id = 'affiliationKey'+number;
+  bindAffiliationSelector: function(number) {
+    var isPrimaryAffiliation = (''+number === '1');
+    var id = 'affiliationKey' + number;
     var affiliationKey = ls[id];
-    // Default values, set only the chosen affiliation as selected, because it is the Chosen One
-    $('#'+id).val(affiliationKey);
-    // React to change
-    $('#'+id).change(function() {
+
+    var self = this;
+    $('#' + id).change(function() {
       var affiliationKey = $(this).val();
       var oldAffiliation = ls[id];
-      // Save the change
+      // Save
       ls[id] = affiliationKey;
 
       if (isPrimaryAffiliation) {
 
+        // Globally apply affiliation settings
+        applyAffiliationSettings(); // in popup.js
+        Browser.getBackgroundProcess().loadAffiliationIcon();
 
-
-
-
-
-
-
-
-
+        // Palette
+        var palette = Affiliation.org[affiliationKey].palette;
+        if (typeof palette !== 'undefined') {
+          ls.affiliationPalette = palette;
+          Palettes.load();
+        }
 
         // Check if switching from or to an affiliation with hardware features
         var old_has_hardware = (Affiliation.org[oldAffiliation].hw ? true : false);
         var new_has_hardware = (Affiliation.org[affiliationKey].hw ? true : false);
         if (old_has_hardware && !new_has_hardware) {
-          disableHardwareFeatures();
+          self.disableHardwareFeatures();
         }
         else if (!old_has_hardware && new_has_hardware) {
-          enableHardwareFeatures();
+          self.enableHardwareFeatures();
         }
         // either way, change the icons shown in the office status feature
         if (new_has_hardware) {
-          changeStatusIcons();
           // Clear and update affiliation data
           Affiliation.clearAffiliationData();
           Browser.getBackgroundProcess().updateAffiliation();
         }
-
-        // Palette
-        var palette = Affiliation.org[affiliationKey].palette;
-        if (typeof palette !== 'undefined') {
-          $('#affiliationPalette').val(palette);
-          ls.affiliationPalette = palette;
-          // Applying chosen palette
-          $('#palette').attr('href', Palettes.get(palette));
-        }
-
-        // Extension icon
-        var icon = Affiliation.org[affiliationKey].icon;
-        Browser.setIcon(icon);
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Name to badge title and localstorage
-        var newExtensionName = Affiliation.org[affiliationKey].name + ' Notifier';
-        Browser.setTitle(newExtensionName);
-        ls.extensionName = newExtensionName;
       }
 
-      // Throw out old news
-      ls.removeItem('affiliationNews'+number);
-
+      // Update news
+      // ls.removeItem('affiliationNews' + number);//REMOVE probably overkill
       if (ls['showAffiliation'+number] === 'true') {
-        // Update to new feed
         Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
 
-
-
       // Analytics
       Analytics.trackEvent('clickAffiliation'+number, affiliationKey);
-
-
     });
   },
 
@@ -322,60 +267,23 @@ popup.options = {
   disableHardwareFeatures: function() {
     ls.showStatus = 'false';
     ls.coffeeSubscription = 'false';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    $('div#todays').slideUp();
   },
 
   enableHardwareFeatures: function(quick) {
     ls.showStatus = 'true';
     ls.coffeeSubscription = 'true';
-
-    if (quick) {
-
-
-
-
-    }
-    else {
-      // Update office status
-      Browser.getBackgroundProcess().updateStatusAndMeetings(true);
-
-
-
-
-
-
-
-
-    }
+    $('div#todays').slideDown();
+    //REMOVE this is probably overkill:
+    // // Update office status
+    // Browser.getBackgroundProcess().updateStatusAndMeetings(true);
   },
 
-  changeStatusIcons: function() {
-    if (Affiliation.org[ls.affiliationKey1].hw) {
-      var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
-      $('img.icon.open').attr('src', statusIcons.open);
-      $('img.icon.closed').attr('src', statusIcons.closed);
-      $('img.icon.meeting').attr('src', statusIcons.meeting);
-      $('#statusOverlay').attr('src', statusIcons.open);
-    }
-  },
-
-  testDesktopNotification: function() {
-    News.showNotification();
+  testDesktopNotification: function(affiliationKey) {
+    News.showNotification({
+      demo: true,
+      key: affiliationKey,
+    });
   },
 
 };

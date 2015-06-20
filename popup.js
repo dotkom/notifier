@@ -51,7 +51,7 @@ mainLoop.intervalId = null;
 
 //
 // Tiny Screen Check
-// (self executing)
+// (executes itself once)
 //
 
 (function tinyScreenCheck() {
@@ -67,16 +67,16 @@ mainLoop.intervalId = null;
 
 //
 // Show And Hide Elements
-// (self executing)
+// (executes itself once)
 //
 
 (function showAndHideElements() {
   // Show stuff that the user hasn't explicitly removed yet
   if (ls.closedSpecialNews !== $('#specialNews a').attr('href')) $('#specialNews').show();
   // Hide stuff the user can't or doesn't want to see
-  if (ls.showStatus !== 'true') $('#todays').hide();
-  if (ls.showCantina !== 'true') $('#cantinas').hide();
-  if (ls.showBus !== 'true') $('#bus').hide();
+  if (ls.showStatus !== 'true' || typeof Affiliation.org[ls.affiliationKey1].hw === "undefined") $('div#todays').hide();
+  if (ls.showCantina !== 'true') $('div#cantinas').hide();
+  if (ls.showBus !== 'true') $('div#bus').hide();
 
   // If only one affiliation is to be shown remove the second news column
   // Also, some serious statistics
@@ -100,44 +100,56 @@ mainLoop.intervalId = null;
 
 //
 // Apply Affiliation Settings
-// (self executing)
+// (executes itself once AND is usable later)
 //
 
-(function applyAffiliationSettings() {
+var applyAffiliationSettings = (function applyAffiliationSettings() {
 
-  // Applying affiliation graphics
-  var key = ls.affiliationKey1;
-  var logo = Affiliation.org[key].logo;
-  var icon = Affiliation.org[key].icon;
-  var placeholder = Affiliation.org[key].placeholder;
-  $('#logo').prop('src', logo);
-  $('link[rel="shortcut icon"]').prop('href', icon);
-  $('#news .post img').prop('src', placeholder);
+  var apply = function() {
+    // Applying affiliation graphics
+    var key = ls.affiliationKey1;
+    var logo = Affiliation.org[key].logo;
+    var icon = Affiliation.org[key].icon;
+    var placeholder = Affiliation.org[key].placeholder;
+    $('#logo').prop('src', logo);
+    $('link[rel="shortcut icon"]').prop('href', icon);
+    $('#news article img').prop('src', placeholder);
 
-  // Hide Chatter button if not applicable
-  if (Affiliation.org[ls.affiliationKey1].slack) {
-    $('#chatterButton').show();
+    // Chatter button, if applicable
+    if (Affiliation.org[ls.affiliationKey1].slack) {
+      // If any options are visible, then don't show the button just yet
+      if ($('div.options:visible').length === 0) {
+        $('#chatterButton').show();
+      }
+    }
+    else {
+      $('#chatterButton').hide();
+    }
+
+    // Apply the affiliation's own name for it's office
+    if (Affiliation.org[ls.affiliationKey1].hw) {
+
+      var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
+      // Apply affiliation icons in options
+      $('span[data="ICON_OPEN"]').html('<img src="' + statusIcons.open + '" class="statusIcon" />');
+      $('span[data="ICON_CLOSED"]').html('<img src="' + statusIcons.closed + '" class="statusIcon" />');
+      $('span[data="ICON_MEETING"]').html('<img src="' + statusIcons.meeting + '" class="statusIcon" />');
+
+      // Apply affiliation names
+      var officeName = Affiliation.org[ls.affiliationKey1].hw.office;
+      $('#todays #schedule .title').text(officeName);
+      $('span[data="officeName"]').text(officeName);
+    }
   }
 
-  // Apply the affiliation's own name for it's office
-  if (Affiliation.org[ls.affiliationKey1].hw) {
+  apply(); // Run once
+  return apply; // Save for later use
 
-    var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
-    // Apply affiliation icons in options
-    $('span[data="ICON_OPEN"]').html('<img src="' + statusIcons.open + '" class="statusIcon" />');
-    $('span[data="ICON_CLOSED"]').html('<img src="' + statusIcons.closed + '" class="statusIcon" />');
-    $('span[data="ICON_MEETING"]').html('<img src="' + statusIcons.meeting + '" class="statusIcon" />');
-
-    // Apply affiliation names
-    var officeName = Affiliation.org[ls.affiliationKey1].hw.office;
-    $('#todays #schedule .title').text(officeName);
-    $('span[data="officeName"]').text(officeName);
-  }
 }());
 
 //
 // Add CHANGELOG.md to div#tips
-// (self executing)
+// (executes itself once)
 //
 
 (function addChangeLog() {
