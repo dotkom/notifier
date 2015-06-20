@@ -11,7 +11,7 @@ popup.options = {
     this.bindBigOptions();
     this.bindCoffeeOptions();
     this.bindCantinaOptions();
-    // this.bindAffiliationOptions();
+    this.bindAffiliationOptions();
   },
 
   //
@@ -140,7 +140,7 @@ popup.options = {
   //
 
   loadAffiliationOptionValues: function() {
-    // Show affiliation 2?
+    // Show affiliation 2
     var showAffiliation2 = ('true' === ls.showAffiliation2);
     $('input#showAffiliation2').prop('checked', showAffiliation2);
     if (!showAffiliation2) {
@@ -155,52 +155,76 @@ popup.options = {
     
     // Notifications
     var showNotifications1 = ('true' === ls.showNotifications1);
-    console.warn('showNotifications1', showNotifications1)
     $('input#showNotifications1').prop('checked', showNotifications1);
     var showNotifications2 = ('true' === ls.showNotifications2);
     $('input#showNotifications2').prop('checked', showNotifications2);
   },
 
   bindAffiliationOptions: function() {
-    // Allow user to change affiliation and palette
-    bindAffiliationSelector('1', true);
-    bindAffiliationSelector('2', false);
-    bindPaletteSelector();
-    if (ls.showAffiliation2 !== 'true') {
-      $('#affiliationKey2').attr('disabled', 'disabled');
-      ////////////.css('-webkit-filter', 'grayscale(100%)');
-    }
-    // Catch new clicks
-    $('input:checkbox').click(function() {
-      var _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
-      Analytics.trackEvent('click'+_capitalized, this.checked);
+    // Show affiliation 2?
+    this.bindShowAffiliation2();
 
-      ls[this.id] = this.checked;
 
-      if (this.id === 'showAffiliation2' && this.checked === false) {
-        $('#affiliationKey2').attr('disabled', 'disabled');
+    // // Allow user to change affiliation and palette
+    // bindAffiliationSelector('1', true);
+    // bindAffiliationSelector('2', false);
+    // bindPaletteSelector();
+    
+    // // Catch new clicks
+    // $('input:checkbox').click(function() {
+    //   var _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
+    //   Analytics.trackEvent('click'+_capitalized, this.checked);
 
+    //   ls[this.id] = this.checked;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //   if (this.id === 'showNotificationsXXXXXXX' && this.checked === true) {
+    //     this.testDesktopNotification();
+    //   }
+    // });
+  },
+
+  bindShowAffiliation2: function() {
+    $('input#showAffiliation2').click(function() {
+      // Save
+      ls.showAffiliation2 = this.checked;
+      // React
+      if (this.checked) {
+        $('select#affiliationKey2').removeAttr('disabled');
+        $('input#showNotifications2').removeAttr('disabled');
+        $('label[for="showNotifications2"]').css('color', '');
       }
-      if (this.id === 'showAffiliation2' && this.checked === true) {
-        $('#affiliationKey2').removeAttr('disabled');
-
+      else {
+        $('select#affiliationKey2').attr('disabled', 'disabled');
+        $('input#showNotifications2').attr('disabled', 'disabled');
+        $('label[for="showNotifications2"]').css('color', 'grey');
       }
-
-
-
-
-
-
-
-
-
-
-
-      if (this.id === 'showNotificationsXXXXXXX' && this.checked === true) {
-        this.testDesktopNotification();
-      }
+      // Track
+      Analytics.trackEvent('clickShowAffiliation2', this.checked);
     });
   },
+
+
+
+
 
   bindAffiliationSelector: function(number, isPrimaryAffiliation) {
     var id = 'affiliationKey'+number;
