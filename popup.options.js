@@ -1,13 +1,55 @@
 popup.options = {
 
   loadAll: function() {
+    this.loadBigOptionValues();
     this.loadCoffeeOptionValues();
     this.loadCantinaOptionValues();
   },
 
   bindAll: function() {
+    this.bindBigOptions();
     this.bindCoffeeOptions();
     this.bindCantinaOptions();
+  },
+
+  //
+  // Big options
+  //
+
+  loadBigOptionValues: function () {
+    var showCantina = ('true' === ls.showCantina);
+    $('input[name="showCantina"]').prop('checked', showCantina);
+    var showBus = ('true' === ls.showBus);
+    $('input[name="showBus"]').prop('checked', showBus);
+  },
+
+  bindBigOptions: function () {
+    $('input[name="showCantina"]').click(function() {
+      // Save
+      ls[this.name] = this.checked;
+      // Animate
+      if (this.checked === true) {
+        $('#cantinas').slideDown();
+      }
+      else {
+        $('#cantinas').slideUp();
+      }
+      // Track
+      Analytics.trackEvent('clickCantinaOption', this.checked);
+    });
+    $('input[name="showBus"]').click(function() {
+      // Save
+      ls[this.name] = this.checked;
+      // Animate
+      if (this.checked === true) {
+        $('#bus').slideDown();
+      }
+      else {
+        $('#bus').slideUp();
+      }
+      // Track
+      Analytics.trackEvent('clickBusOption', this.checked);
+    });
   },
 
   //
@@ -35,7 +77,7 @@ popup.options = {
         ls.activelySetCoffee = 'true';
       }
       // Track
-      Analytics.trackEvent('clickCoffee', this.checked);
+      Analytics.trackEvent('clickCoffeeOption', this.checked);
     });
   },
 
