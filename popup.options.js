@@ -237,7 +237,7 @@ popup.options = {
       }
 
       // Update news
-      // ls.removeItem('affiliationNews' + number);//REMOVE probably overkill
+      // ls.removeItem('affiliationNews' + number);// FIXME probably overkill
       if (ls['showAffiliation'+number] === 'true') {
         Browser.getBackgroundProcess().updateAffiliationNews(number);
       }
@@ -267,16 +267,14 @@ popup.options = {
   },
 
   disableHardwareFeatures: function() {
-    ls.showStatus = 'false';
     ls.coffeeSubscription = 'false';
     $('div#todays').slideUp();
   },
 
   enableHardwareFeatures: function(quick) {
-    ls.showStatus = 'true';
     ls.coffeeSubscription = 'true';
     $('div#todays').slideDown();
-    //REMOVE this is probably overkill:
+    // FIXME this is probably overkill:
     // // Update office status
     // Browser.getBackgroundProcess().updateStatusAndMeetings(true);
   },

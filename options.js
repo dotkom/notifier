@@ -9,102 +9,6 @@
 
 
 
-var testDesktopNotification = function() {
-  News.showNotification();
-}
-
-
-
-
-
-var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
-  var id = 'affiliationKey'+number;
-  var affiliationKey = ls[id];
-  // Default values, set only the chosen affiliation as selected, because it is the Chosen One
-  $('#'+id).val(affiliationKey);
-  // React to change
-  $('#'+id).change(function() {
-    var affiliationKey = $(this).val();
-    var oldAffiliation = ls[id];
-    // Save the change
-    ls[id] = affiliationKey;
-
-    if (!isPrimaryAffiliation) {
-      // Symbol
-      var symbol = Affiliation.org[ls.affiliationKey2].symbol;
-      $('#affiliation2Symbol').attr('style', 'background-image:url("'+symbol+'");');
-      // Website link
-      var web = Affiliation.org[ls.affiliationKey2].web
-      $('#affiliation2Symbol').unbind('click');
-      $('#affiliation2Symbol').click(function() {
-        Browser.openTab(web);
-      });
-    }
-    else {
-      // Check if switching from or to an affiliation with fancy features
-      var old_has_hardware = (Affiliation.org[oldAffiliation].hw ? true : false);
-      var new_has_hardware = (Affiliation.org[affiliationKey].hw ? true : false);
-      if (old_has_hardware && !new_has_hardware) {
-        disableHardwareFeatures();
-      }
-      else if (!old_has_hardware && new_has_hardware) {
-        enableHardwareFeatures();
-      }
-      // either way, change the icons shown in the office status feature
-      if (new_has_hardware) {
-        changeStatusIcons();
-        // Clear and update affiliation data
-        Affiliation.clearAffiliationData();
-        Browser.getBackgroundProcess().updateAffiliation();
-      }
-
-      // Palette
-      var palette = Affiliation.org[affiliationKey].palette;
-      if (typeof palette !== 'undefined') {
-        $('#affiliationPalette').val(palette);
-        ls.affiliationPalette = palette;
-        // Applying chosen palette
-        $('#palette').attr('href', Palettes.get(palette));
-      }
-
-      // Extension icon
-      var icon = Affiliation.org[affiliationKey].icon;
-      Browser.setIcon(icon);
-      // Favicon
-      $('link[rel="shortcut icon"]').attr('href', icon);
-      // Symbol
-      var symbol = Affiliation.org[affiliationKey].symbol;
-      $('#affiliation1Symbol').attr('style', 'background-image:url("'+symbol+'");');
-      // "Popup here"-bubble
-      $('#popupHere img.icon').attr('src', symbol);
-      // Website link
-      var web = Affiliation.org[affiliationKey].web;
-      $('#affiliation1Symbol').unbind('click');
-      $('#affiliation1Symbol').click(function() {
-        Browser.openTab(web);
-      });
-      // Name to badge title and localstorage
-      var name = Affiliation.org[affiliationKey].name;
-      Browser.setTitle(name + ' Notifier');
-      ls.extensionName = name + ' Notifier';
-    }
-
-    // Throw out old news
-    ls.removeItem('affiliationNews'+number);
-
-    if (ls['showAffiliation'+number] === 'true') {
-      // Update to new feed
-      Browser.getBackgroundProcess().updateAffiliationNews(number);
-    }
-
-    // Display Saved<3
-    showSavedNotification();
-    // Analytics
-    Analytics.trackEvent('clickAffiliation'+number, affiliationKey);
-    // Display popup here with new icon
-    popupHere(3000);
-  });
-}
 
 
 
@@ -125,60 +29,155 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
 
 
 
-var disableHardwareFeatures = function(quick) {
-  ls.showStatus = 'false';
-  ls.coffeeSubscription = 'false';
-  if (quick) {
-    $('label[for="showStatus"]').slideUp({duration:0});
-    $('label[for="coffeeSubscription"]').slideUp({duration:0});
-    $('#container').css('top', '60%');
-    $('header').css('top', '60%');
-  }
-  else {
-    // Hide office status option
-    $('label[for="showStatus"]').slideUp('slow');
-    // Hide coffee subscription option
-    $('label[for="coffeeSubscription"]').slideUp('slow', function() {
-      // Move all content back down
-      $('#container').animate({'top':'60%'}, 300);
-      $('header').animate({'top':'60%'}, 300);
-    });
-  }
-}
 
-var enableHardwareFeatures = function(quick) {
-  ls.showStatus = 'true';
-  ls.coffeeSubscription = 'true';
-  restoreChecksToBoxes();
-  if (quick) {
-    $('label[for="showStatus"]').slideDown({duration:0});
-    $('label[for="coffeeSubscription"]').slideDown({duration:0});
-    $('#container').css('top', '50%');
-    $('header').css('top', '50%');
-  }
-  else {
-    // Update office status
-    Browser.getBackgroundProcess().updateStatusAndMeetings(true);
-    // Move all content back up
-    $('#container').animate({'top':'50%'}, 300);
-    $('header').animate({'top':'50%'}, 300, function() {
-      // Show office status option
-      $('label[for="showStatus"]').slideDown('slow');
-      // Show coffee subscription option
-      $('label[for="coffeeSubscription"]').slideDown('slow');
-    });
-  }
-}
 
-var changeStatusIcons = function() {
-  if (Affiliation.org[ls.affiliationKey1].hw) {
-    var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
-    $('img.icon.open').attr('src', statusIcons.open);
-    $('img.icon.closed').attr('src', statusIcons.closed);
-    $('img.icon.meeting').attr('src', statusIcons.meeting);
-    $('#statusOverlay').attr('src', statusIcons.open);
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -667,31 +666,6 @@ var bindSuggestions = function() {
 
 
 
-  // Catch new clicks
-  $('input:checkbox').click(function() {
-    var _capitalized = this.id.charAt(0).toUpperCase() + this.id.slice(1);
-    Analytics.trackEvent('click'+_capitalized, this.checked);
-
-    ls[this.id] = this.checked;
-
-
-
-
-
-
-
-
-
-
-    if (this.id === 'showStatus' && this.checked === true) {
-      ls.activelySetOffice = 'true';
-      Browser.getBackgroundProcess().updateStatusAndMeetings(true);
-    }
-    if (this.id === 'showStatus' && this.checked === false) {
-      ls.activelySetOffice = 'false';
-      Browser.setIcon(Affiliation.org[ls.affiliationKey1].icon);
-      Browser.setTitle(ls.extensionName);
-    }
 
 
 
@@ -706,11 +680,36 @@ var bindSuggestions = function() {
 
 
 
-  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   if (ls.everOpenedOptions !== 'true') {
     // Note the options page as opened so that it won't be opened automatically again
     ls.everOpenedOptions = 'true'; // Will never be false again
   }
 
-});
+

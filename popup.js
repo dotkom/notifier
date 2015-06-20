@@ -19,23 +19,20 @@ var mainLoop = function(options) {
     if (ls.showBus === 'true')
       if (mainLoop.iteration % UPDATE_BUS_INTERVAL === 0)
         popup.update.bus();
-    if (ls.showAffiliation1 === 'true')
-      if (mainLoop.iteration % UPDATE_NEWS_INTERVAL === 0)
-        popup.update.affiliationNews(1);
+    if (mainLoop.iteration % UPDATE_NEWS_INTERVAL === 0)
+      popup.update.affiliationNews(1);
     if (ls.showAffiliation2 === 'true')
       if (mainLoop.iteration % UPDATE_NEWS_INTERVAL === 0)
         popup.update.affiliationNews(2);
     // Only if hardware
     if (Affiliation.org[ls.affiliationKey1].hw) {
-      if (ls.showStatus === 'true') {
-        if (mainLoop.iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
-          Browser.getBackgroundProcess().updateAffiliation(function() {
-            popup.update.meeting();
-            popup.update.servant();
-            popup.update.coffee();
-            // popup.update.status(); // TODO: No status info in popup yet
-          });
-        }
+      if (mainLoop.iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
+        Browser.getBackgroundProcess().updateAffiliation(function() {
+          popup.update.meeting();
+          popup.update.servant();
+          popup.update.coffee();
+          // popup.update.status(); // TODO: No status info in popup yet
+        });
       }
     }
   }
@@ -74,7 +71,7 @@ mainLoop.intervalId = null;
   // Show stuff that the user hasn't explicitly removed yet
   if (ls.closedSpecialNews !== $('#specialNews a').attr('href')) $('#specialNews').show();
   // Hide stuff the user can't or doesn't want to see
-  if (ls.showStatus !== 'true' || typeof Affiliation.org[ls.affiliationKey1].hw === "undefined") $('div#todays').hide();
+  if (typeof Affiliation.org[ls.affiliationKey1].hw === "undefined") $('div#todays').hide();
   if (ls.showCantina !== 'true') $('div#cantinas').hide();
   if (ls.showBus !== 'true') $('div#bus').hide();
 

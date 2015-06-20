@@ -37,7 +37,9 @@ localStorage.removeItem('officescreenLastMessage');
 // REMOVE AFTER SEPTEMBER 2015
 
 localStorage.removeItem('showOffice');
+localStorage.removeItem('showStatus');
 localStorage.removeItem('activelySetOffice');
+localStorage.removeItem('showAffiliation1');
 
 // EXPANDING NOTIFICATIONS OPTIONS
 // changing old system into new system

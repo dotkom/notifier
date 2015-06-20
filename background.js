@@ -10,17 +10,15 @@ var mainLoop = function(force) {
   if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
-  if (ls.showAffiliation1 === 'true')
-    if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
-      updateAffiliationNews('1');
+  if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
+    updateAffiliationNews('1');
   if (ls.showAffiliation2 === 'true')
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
   // Only if hardware
-  if (ls.showStatus === 'true')
-    if (Affiliation.org[ls.affiliationKey1].hw)
-      if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
-        updateAffiliation();
+  if (Affiliation.org[ls.affiliationKey1].hw)
+    if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
+      updateAffiliation();
 
   // No reason to count to infinity
   if (10000 < iteration)

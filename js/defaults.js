@@ -97,10 +97,6 @@ var Defaults = {
       ls.secondBusInactiveLines = JSON.stringify([169]);
     }
 
-    // Office
-    if (ls.showStatus === undefined)
-      ls.showStatus = 'true';
-
     // Subscription
     if (ls.coffeeSubscription === undefined)
       ls.coffeeSubscription = 'true';
@@ -151,8 +147,6 @@ var Defaults = {
     var ls = localStorage;
 
     if (isAvailable) {
-      // office
-      ls.showStatus = 'true';
       // coffee
       if (ls.activelySetCoffee == 'false')
         ls.coffeeSubscription = 'false';
@@ -160,7 +154,6 @@ var Defaults = {
         ls.coffeeSubscription = 'true';
     }
     else if (!isAvailable) {
-      ls.showStatus = 'false';
       ls.coffeeSubscription = 'false';
     }
   },

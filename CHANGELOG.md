@@ -17,6 +17,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 	* Options er i popupen fremfor separat Options-side
 	* Kuttet mange tusen linjer kode (ANTALL?)
 * Viser lunsjemeny før kl 14, deretter middagsmeny
+* Kontorstatus er nå alltid på for linjeforeninger som har kjøpt Notipi
 * Viser changelog i popupen
 
 ### 2015-04-16 Versjon 4.7
