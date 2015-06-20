@@ -622,22 +622,22 @@ var bindSuggestions = function() {
 
 
 
-  // Minor esthetical adjustments for OS
-  if (Browser.onMac()) {
-    $('#popupHere .subtext b').text('Cmd+Shift+A');
-  }
 
 
 
 
-  // Allow user to change affiliation and palette
-  bindAffiliationSelector('1', true);
-  bindAffiliationSelector('2', false);
-  bindPaletteSelector();
-  if (ls.showAffiliation2 !== 'true') {
-    $('#affiliationKey2').attr('disabled', 'disabled');
-    $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
-  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -674,14 +674,14 @@ var bindSuggestions = function() {
 
     ls[this.id] = this.checked;
 
-    if (this.id === 'showAffiliation2' && this.checked === false) {
-      $('#affiliationKey2').attr('disabled', 'disabled');
-      $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
-    }
-    if (this.id === 'showAffiliation2' && this.checked === true) {
-      $('#affiliationKey2').removeAttr('disabled');
-      $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(0%)');
-    }
+
+
+
+
+
+
+
+
 
     if (this.id === 'showStatus' && this.checked === true) {
       ls.activelySetOffice = 'true';
@@ -693,9 +693,9 @@ var bindSuggestions = function() {
       Browser.setTitle(ls.extensionName);
     }
 
-    if (this.id === 'showNotifications' && this.checked === true) {
-      testDesktopNotification();
-    }
+
+
+
 
 
 
