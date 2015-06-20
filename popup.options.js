@@ -1,11 +1,42 @@
 popup.options = {
 
   loadAll: function() {
+    this.loadCoffeeOptionValues();
     this.loadCantinaOptionValues();
   },
 
   bindAll: function() {
+    this.bindCoffeeOptions();
     this.bindCantinaOptions();
+  },
+
+  //
+  // Coffee
+  //
+
+  loadCoffeeOptionValues: function() {
+    var checked = ls.coffeeSubscription;
+    $('input[name="coffeeSubscription"]').prop('checked', checked);
+  },
+
+  bindCoffeeOptions: function() {
+    var self = this;
+    $('input[name="coffeeSubscription"]').click(function() {
+      // Save
+      ls[this.name] = this.checked;
+      // Demo
+      if (this.checked === true) {
+        ls.activelySetCoffee = 'true';
+        Coffee.showNotification();
+      }
+      else {
+        // Note: activelySetCoffee is a reminder about what concious choice the user has made.
+        // Don't override that choice with defaults later.
+        ls.activelySetCoffee = 'true';
+      }
+      // Track
+      Analytics.trackEvent('clickCoffee', this.checked);
+    });
   },
 
   //
@@ -58,6 +89,18 @@ popup.options = {
     // Hit it
     bindOption('.first', 'cantina1');
     bindOption('.second', 'cantina2');
+  },
+
+  //
+  // News
+  //
+
+  testDesktopNotification: function() {
+    News.showNotification();
+  },
+
+  bindNews: function() {
+
   },
 
 };
