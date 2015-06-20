@@ -163,6 +163,18 @@ var applyAffiliationSettings = (function() {
 }());
 
 //
+// DEBUG
+// (executes itself once)
+//
+
+(function() {
+  if (DEBUG) {
+    // Show the DEBUG affiliation
+    $('optgroup.debugAffiliation').show();
+  }
+}());
+
+//
 // Document ready function
 //
 

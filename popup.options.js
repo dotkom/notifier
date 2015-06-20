@@ -144,9 +144,6 @@ popup.options = {
   loadBusOptionValues: function() {},
 
   bindBusOptions: function() {
-
-
-
     // Give user suggestions for autocomplete of bus stops
     this.bindBusFields('firstBus');
     this.bindBusFields('secondBus');
@@ -160,8 +157,8 @@ popup.options = {
 
   bindBusFields: function(busField) {
     var cssSelector = '#' + busField;
-    // console.log('Binding bus fields for ' + cssSelector);
     var fadeTime = 50;
+    var self = this;
 
     var stop = $(cssSelector + ' input');
     var direction = $(cssSelector + ' select');
@@ -189,24 +186,24 @@ popup.options = {
         if (ls.busStopClickedAway !== null) {
           $(stop).val(ls.busStopClickedAway);
         }
-        $('#busSuggestions').html('');
+        $('#suggestions').html('');
       }
       // 1 suggestion, go for it!
       else if (suggestions.length === 1) {
         console.log('focusout - 1 suggestion, save it');
         var correctStop = suggestions[0];
         $(stop).val(correctStop);
-        $('#busSuggestions').html('');
-        this.getDirections(busField, correctStop);
-        this.getFavoriteLines(busField);
-        this.saveBus(busField);
+        $('#suggestions').html('');
+        self.getDirections(busField, correctStop);
+        self.getFavoriteLines(busField);
+        self.saveBus(busField);
       }
       // Several suggestions, allow the user to see them and click them for a short while
       else if (suggestions.length > 1) {
         console.log('focusout - several suggestions, remove them');
         setTimeout(function() {
-          $('#busSuggestions .suggestion').fadeOut(function() {
-            $('#busSuggestions').html('');
+          $('#suggestions .suggestion').fadeOut(function() {
+            $('#suggestions').html('');
           });
         }, 5000);
       }
@@ -232,21 +229,21 @@ popup.options = {
           var realStopName = Stops.idToName(suggestions[0]);
           $(stop).val(realStopName);
           // then empty the suggestion list
-          $('#busSuggestions').html('');
+          $('#suggestions').html('');
           // then show only the correct stop for a little over a second
           var suggestion = $('<div class="correct">' + realStopName + '</div>').hide();
-          $('#busSuggestions').append(suggestion);
+          $('#suggestions').append(suggestion);
           $(suggestion).fadeIn();
           setTimeout(function() {
-            $('#busSuggestions .correct').fadeOut(fadeTime);
+            $('#suggestions .correct').fadeOut(fadeTime);
             setTimeout(function() {
-              $('#busSuggestions').html('');
+              $('#suggestions').html('');
             }, 300);
           }, 1200);
           // and of course, save and get directions
-          this.getDirections(busField, realStopName);
-          this.getFavoriteLines(busField);
-          this.saveBus(busField);
+          self.getDirections(busField, realStopName);
+          self.getFavoriteLines(busField);
+          self.saveBus(busField);
         }
       }
 
@@ -261,12 +258,12 @@ popup.options = {
         if (nameStart.length > 0) {
           // Suggestions
           var suggestions = Stops.partialNameToPotentialNames(nameStart);
-          $('#busSuggestions').html('');
+          $('#suggestions').html('');
           for (var i in suggestions) {
             var _text = suggestions[i];
             var suggestion = $('<div class="suggestion">' + _text + '</div>').hide();
 
-            $('#busSuggestions').append(suggestion);
+            $('#suggestions').append(suggestion);
             $(suggestion).fadeIn();
           }
 
@@ -275,29 +272,29 @@ popup.options = {
             var correctStop = suggestions[0];
             $(stop).val(correctStop);
             $(stop).blur();
-            $('#busSuggestions').html('');
+            $('#suggestions').html('');
             suggestion = $('<div class="correct">' + correctStop + '</div>').hide();
-            $('#busSuggestions').append(suggestion);
+            $('#suggestions').append(suggestion);
             $(suggestion).fadeIn();
             setTimeout(function() {
-              $('#busSuggestions .correct').fadeOut(fadeTime);
+              $('#suggestions .correct').fadeOut(fadeTime);
               setTimeout(function() {
-                $('#busSuggestions').html('');
+                $('#suggestions').html('');
               }, 300);
             }, 1200);
-            this.getDirections(busField, correctStop);
-            this.getFavoriteLines(busField);
-            this.saveBus(busField);
+            self.getDirections(busField, correctStop);
+            self.getFavoriteLines(busField);
+            self.saveBus(busField);
           }
         }
         // All characters removed, remove suggestions
         else {
-          $('#busSuggestions .suggestion').fadeOut(fadeTime, function() {
-            $('#busSuggestions').html(''  );
+          $('#suggestions .suggestion').fadeOut(fadeTime, function() {
+            $('#suggestions').html(''  );
           });
         }
         // After inserting new results, rebind suggestions, making them clickable
-        this.bindSuggestions();
+        self.bindSuggestions();
       }
     });
 
@@ -510,8 +507,8 @@ popup.options = {
         this.getDirections(ls.busInFocus, text);
         this.getFavoriteLines(ls.busInFocus);
         this.saveBus(ls.busInFocus);
-        $('#busSuggestions .suggestion').fadeOut(50, function() {
-          $('#busSuggestions').html('');
+        $('#suggestions .suggestion').fadeOut(50, function() {
+          $('#suggestions').html('');
         });
       }
     });
@@ -579,7 +576,6 @@ popup.options = {
   bindAffiliationSelector: function(number) {
     var isPrimaryAffiliation = (''+number === '1');
     var id = 'affiliationKey' + number;
-    var affiliationKey = ls[id];
     var newsSelector = '#news ' + (number === '1' ? '#left' : '#right');
 
     var self = this;
@@ -629,7 +625,7 @@ popup.options = {
         popup.update.affiliationNews(number);
       });
 
-      // Analytics
+      // Track
       Analytics.trackEvent('clickAffiliation'+number, affiliationKey);
     });
   },

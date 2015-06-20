@@ -641,10 +641,7 @@ div#bus div.lines {
   border-top: 1px solid white;
   box-shadow: 0 1px 2px #888;
   border-radius: 4px;
-  background: -webkit-linear-gradient(top, #e8e8e8 0%, #c0c0c0 100%);
-  /* Chrome10+,Safari5.1+,Opera15+ */
-  background: linear-gradient(to bottom, #e8e8e8 0%, #c0c0c0 100%);
-  /* W3C */
+  background-color: white;
   padding: 2px 7px 1px 7px;
   text-align: left;
   font-size: 12px;
@@ -696,6 +693,51 @@ div#bus div.lines .loadingLeft {
 div#bus div.lines .loadingRight {
   position: relative;
   width: 80px;
+}
+/* Suggestions for bus stops */
+div#busSuggestions {
+  border: 1px solid transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  display: none;
+  /* Will slide down when needed */
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 15px;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+  background-color: snow;
+}
+div#busSuggestions div#suggestionTitle {
+  border: 1px solid transparent;
+  margin-bottom: 15px;
+  font-size: 24px;
+  text-align: left;
+  color: #444;
+}
+div#busSuggestions .suggestion {
+  color: #444;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+div#busSuggestions .suggestion:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+div#busSuggestions .suggestion .matched_character {
+  font-weight: bold;
+}
+div#busSuggestions .correct {
+  color: black;
+  font-weight: bold;
+  line-height: 1.5;
+}
+/* Debug affiliation in the top of the affiliation selection lists */
+optgroup.debugAffiliation {
+  display: none;
 }
 /* Animations */
 @-webkit-keyframes editButtonPulse {
