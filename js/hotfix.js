@@ -27,13 +27,27 @@ if (localStorage.useBigscreen === 'true') {
 }
 localStorage.removeItem('useBigscreen');
 localStorage.removeItem('whichScreen');
+localStorage.removeItem('infoscreenLastStatusCode');
+localStorage.removeItem('infoscreenLastMessage');
+localStorage.removeItem('officescreenLastStatusCode');
+localStorage.removeItem('officescreenLastMessage');
 
 // RENAMING LOCALSTORAGE VARS
 // deprecating old naming schemes
 // REMOVE AFTER SEPTEMBER 2015
 
 localStorage.removeItem('showOffice');
-localStorage.removeItem('infoscreenLastStatusCode');
-localStorage.removeItem('infoscreenLastMessage');
-localStorage.removeItem('officescreenLastStatusCode');
-localStorage.removeItem('officescreenLastMessage');
+localStorage.removeItem('activelySetOffice');
+
+// EXPANDING NOTIFICATIONS OPTIONS
+// changing old system into new system
+// REMOVE AFTER SEPTEMBER 2015
+if (localStorage.showNotifications === 'false') {
+	localStorage.showNotifications1 = 'false';
+	localStorage.showNotifications2 = 'false';
+}
+else if (localStorage.showNotifications === 'true') {
+	localStorage.showNotifications1 = 'true';
+	localStorage.showNotifications2 = 'true';
+}
+localStorage.removeItem('showNotifications');

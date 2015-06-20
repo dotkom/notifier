@@ -13,6 +13,15 @@ var News = {
   msgNoTitle: 'Uten tittel',
   msgNoDescription: 'Uten tekst',
 
+  _autoLoadDefaults_: function() {
+    console.warn('HELLO')
+    var ls = localStorage;
+    if (ls.showNotifications1 === undefined)
+      ls.showNotifications1 = 'true';
+    if (ls.showNotifications2 === undefined)
+      ls.showNotifications2 = 'true';
+  },
+
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
@@ -584,3 +593,6 @@ var News = {
   },
 
 }
+
+// Auto-load self
+News._autoLoadDefaults_();

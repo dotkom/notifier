@@ -100,14 +100,6 @@ var Defaults = {
     // Office
     if (ls.showStatus === undefined)
       ls.showStatus = 'true';
-    if (ls.activelySetOffice === undefined) {
-      ls.activelySetOffice = 'true';
-      ls.showStatus = 'true';
-    }
-    
-    // Notifications
-    if (ls.showNotifications === undefined)
-      ls.showNotifications = 'true';
     
     // Subscription
     if (ls.coffeeSubscription === undefined)
@@ -160,10 +152,7 @@ var Defaults = {
 
     if (isAvailable) {
       // office
-      if (ls.activelySetOffice == 'false')
-        ls.showStatus = 'false';
-      else
-        ls.showStatus = 'true';
+      ls.showStatus = 'true';
       // coffee
       if (ls.activelySetCoffee == 'false')
         ls.coffeeSubscription = 'false';
