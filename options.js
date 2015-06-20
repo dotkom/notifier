@@ -1,21 +1,21 @@
-"use strict";
 
-var ls = localStorage;
 
-var showSavedNotification = function() {
-  $("#notification").fadeIn(200);
-  setTimeout(function() {
-    $("#notification").fadeOut(200);
-  }, 800);
-}
+
+
+
+
+
+
+
+
 
 var testDesktopNotification = function() {
   News.showNotification();
 }
 
-var testCoffeeSubscription = function() {
-  Coffee.showNotification();
-}
+
+
+
 
 var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
   var id = 'affiliationKey'+number;
@@ -106,24 +106,24 @@ var bindAffiliationSelector = function(number, isPrimaryAffiliation) {
   });
 }
 
-var bindPaletteSelector = function() {
-  // Default values
-  $('#affiliationPalette').val(ls.affiliationPalette);
-  // React to change
-  $('#affiliationPalette').change(function() {
-    // Get newly set value
-    var palette = $(this).val();
-    // Save it
-    ls.affiliationPalette = palette;
-    // Applying palette to options page
-    console.log('Applying chosen palette', palette);
-    $('#palette').attr('href', Palettes.get(palette));
-    // Display Saved<3
-    showSavedNotification();
-    // Analytics
-    Analytics.trackEvent('clickPalette', palette);
-  });
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var disableHardwareFeatures = function(quick) {
   ls.showStatus = 'false';
@@ -180,17 +180,17 @@ var changeStatusIcons = function() {
   }
 }
 
-var bindCantinaSelector = function(selector) {
-  // Default values
-  $('#' + selector).val(ls[selector]);
-  // React to change
-  $('#' + selector).change(function() {
-    var cantina = $(this).prop('value');
-    ls[selector] = cantina;
-    Analytics.trackEvent('clickCantina', cantina);
-    Browser.getBackgroundProcess().updateCantinas();
-  });
-}
+
+
+
+
+
+
+
+
+
+
+
 
 var bindBusFields = function(busField) {
   var cssSelector = '#' + busField;
@@ -551,84 +551,84 @@ var bindSuggestions = function() {
   });
 }
 
-var restoreChecksToBoxes = function() {
-  // Restore checks to boxes from localStorage
-  $('input:checkbox').each(function(index, element) {
-    if (ls[element.id] === 'true') {
-      element.checked = true;
-    }
-  });
-}
 
-var popupHere = function(time) {
-  if (typeof time === 'undefined') {
-    time = 7000;
-  }
-  // Fade in the "popup here"-bubble
-  setTimeout(function() {
-    $('#popupHere').fadeIn('swing');
-    setTimeout(function() {
-      $('#popupHere').fadeOut('fast');
-    }, 7000);
-  }, time);
-}
 
-// Document ready, go!
-$(document).ready(function() {
-  if (DEBUG) {
-    // Show the DEBUG affiliation
-    $('optgroup.debugAffiliation').show();
-    // Show buttons directly to cantina feeds
-    $('#debugLinks').show();
-    $('button.debug').click(function() {
-      Browser.openTab($(this).attr('data'));
-    });
-  }
 
-  // Remove hardware features if the affiliation does not have it
-  if (!Affiliation.org[ls.affiliationKey1].hw) {
-    disableHardwareFeatures(true); // true means be quick about it!
-  }
 
-  // Apply affiliation specific features
-  // favicon
-  var icon = Affiliation.org[ls.affiliationKey1].icon;
-  $('link[rel="shortcut icon"]').attr('href', icon);
-  // news symbol
-  var symbol1 = Affiliation.org[ls.affiliationKey1].symbol;
-  $('#affiliation1Symbol').attr('style', 'background-image:url("'+symbol1+'");');
-  var symbol2 = Affiliation.org[ls.affiliationKey2].symbol;
-  $('#affiliation2Symbol').attr('style', 'background-image:url("'+symbol2+'");');
-  // website
-  var web1 = Affiliation.org[ls.affiliationKey1].web;
-  $('#affiliation1Symbol').unbind('click');
-  $('#affiliation1Symbol').click(function() {
-    Browser.openTab(web1);
-  });
-  var web2 = Affiliation.org[ls.affiliationKey2].web;
-  $('#affiliation2Symbol').unbind('click');
-  $('#affiliation2Symbol').click(function() {
-    Browser.openTab(web2);
-  });
-  // palette
-  $('#palette').attr('href', Palettes.get(ls.affiliationPalette));
-  // icons
-  changeStatusIcons();
-  // popup-here bubble
-  $('#popupHere img.icon').attr('src', symbol1);
 
-  restoreChecksToBoxes();
 
-  // Set focus to affiliation 1 selector
-  $('#affiliationKey1').focus();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Minor esthetical adjustments for OS
   if (Browser.onMac()) {
     $('#popupHere .subtext b').text('Cmd+Shift+A');
   }
 
-  // Show the "popup here"-bubble in the top right corner
-  popupHere();
+
+
 
   // Allow user to change affiliation and palette
   bindAffiliationSelector('1', true);
@@ -639,9 +639,9 @@ $(document).ready(function() {
     $('#affiliation2Symbol').css('-webkit-filter', 'grayscale(100%)');
   }
 
-  // Allow user to select cantinas
-  bindCantinaSelector('cantina1');
-  bindCantinaSelector('cantina2');
+
+
+
 
   // Give user suggestions for autocomplete of bus stops
   bindBusFields('firstBus');
@@ -653,19 +653,19 @@ $(document).ready(function() {
   // Load lists of bus stops
   Stops.load();
 
-  // Adding a hover class to #busBox whenever the mouse is hovering over it
-  $('#busBox').hover(function() {
-    $(this).addClass('hover');
-  }, function() {
-    $(this).removeClass('hover');
-  });
 
-  // Adding a hover class to #affiliationBox whenever the mouse is hovering over it
-  $('#affiliationBox').hover(function() {
-    $(this).addClass('hover');
-  }, function() {
-    $(this).removeClass('hover');
-  });
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Catch new clicks
   $('input:checkbox').click(function() {
@@ -697,15 +697,15 @@ $(document).ready(function() {
       testDesktopNotification();
     }
 
-    if (this.id === 'coffeeSubscription' && this.checked === true) {
-      ls.activelySetCoffee = 'true';
-      testCoffeeSubscription();
-    }
-    if (this.id === 'coffeeSubscription' && this.checked === false) {
-      ls.activelySetCoffee = 'false';
-    }
 
-    showSavedNotification();
+
+
+
+
+
+
+
+
   });
 
   if (ls.everOpenedOptions !== 'true') {

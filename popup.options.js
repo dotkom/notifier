@@ -35,7 +35,7 @@ popup.options = {
         $('#cantinas').slideUp();
       }
       // Track
-      Analytics.trackEvent('clickCantinaOption', this.checked);
+      Analytics.trackEvent('toggleCantinas', this.checked);
     });
     $('input[name="showBus"]').click(function() {
       // Save
@@ -48,7 +48,7 @@ popup.options = {
         $('#bus').slideUp();
       }
       // Track
-      Analytics.trackEvent('clickBusOption', this.checked);
+      Analytics.trackEvent('toggleBus', this.checked);
     });
   },
 
@@ -126,6 +126,8 @@ popup.options = {
           clearTimeout(window._cantinaOptionTimeout_);
           popup.update.cantinas();
         });
+        // Track
+        Analytics.trackEvent('clickCantinaOption', name);
       });
     }
     // Hit it

@@ -154,7 +154,7 @@ popup.event = {
       // Text feedback, fades out after timeout
       $('#buttontext').text('Fargepalett satt til "' + colors[index].capitalize() + '"');
       // And track it
-      Analytics.trackEvent('clickColor');
+      Analytics.trackEvent('clickColor', colors[index].capitalize());
     });
 
     $('#logo').click(function() {
