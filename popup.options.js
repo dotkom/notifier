@@ -155,9 +155,7 @@ popup.options = {
     this.slideFavoriteBusLines();
 
     // Load lists of bus stops
-    var then = Date.now();
     Stops.load();
-    console.warn('Stops.load() took', Date.now() - then, 'ms');
   },
 
   bindBusFields: function(busField) {
@@ -582,6 +580,7 @@ popup.options = {
     var isPrimaryAffiliation = (''+number === '1');
     var id = 'affiliationKey' + number;
     var affiliationKey = ls[id];
+    var newsSelector = '#news ' + (number === '1' ? '#left' : '#right');
 
     var self = this;
     $('#' + id).change(function() {
@@ -592,11 +591,11 @@ popup.options = {
 
       if (isPrimaryAffiliation) {
 
-        // Globally apply affiliation settings
+        // Affiliation settings: Popup
         applyAffiliationSettings(); // in popup.js
+        // Affiliation settings: Extension Icon
         Browser.getBackgroundProcess().loadAffiliationIcon();
-
-        // Palette
+        // Affiliation settings: Palette
         var palette = Affiliation.org[affiliationKey].palette;
         if (typeof palette !== 'undefined') {
           ls.affiliationPalette = palette;
@@ -620,11 +619,15 @@ popup.options = {
         }
       }
 
-      // Remove old news from localStorage and view
+      // Affiliation news: Change news title (until overwritten by the popup.update.news function)
+      $(newsSelector + ' .title').html(Affiliation.org[affiliationKey].name);
+      // Affiliation news: Remove old news from last affiliation
       ls.removeItem('affiliationNews' + number);
-      $('#news ' + (number === '1' ? '#left' : '#right') + ' div.articles article').remove();
-      // Update news
-      Browser.getBackgroundProcess().updateAffiliationNews(number);
+      $(newsSelector + ' div.articles article').remove();
+      // Affiliation news: Request fresh news
+      Browser.getBackgroundProcess().updateAffiliationNews(number, function() {
+        popup.update.affiliationNews(number);
+      });
 
       // Analytics
       Analytics.trackEvent('clickAffiliation'+number, affiliationKey);
