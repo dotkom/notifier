@@ -87,6 +87,7 @@ popup.update = {
     var update = function(shortname, data, selector) {
       var name = Cantina.names[shortname];
       var hours = '#cantinas ' + selector + ' .hours';
+      var lunches = '#cantinas ' + selector + ' .lunchBox'; ///////////////
       var dinners = '#cantinas ' + selector + ' .dinnerBox';
 
       // Set current cantina as selected in the title dropdown
@@ -95,6 +96,7 @@ popup.update = {
       // If data is just a message
       if (typeof data === 'string') {
         $(hours).html('- ' + data);
+        $(lunches).html(''); ////////////////////
         $(dinners).html('');
       }
       // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
@@ -105,6 +107,27 @@ popup.update = {
           $(hours).html('- ' + data.hours.message);
           clickHours(hours, shortname);
         }
+        ///////// BEGIN TEST
+        // Set lunches
+        $(lunches).html('');
+        if (data.lunch) {
+          for (var i in data.lunch) {
+            var lunch = data.lunch[i];
+            if (lunch.price !== undefined) {
+              if (lunch.price) {
+                $(lunches).append('<li>' + lunch.price + ',- ' + lunch.text + '</li>');
+              }
+              else {
+                $(lunches).append('<li class="message">"' + lunch.text + '"</li>');
+              }
+            }
+            else {
+              $(lunches).append('<li class="message">"' + lunch + '"</li>');
+            }
+          }
+          clickMeal(lunches + ' li', shortname);
+        }
+        ///////// END TEST
         // Set dinners
         $(dinners).html('');
         if (data.dinner) {
@@ -122,7 +145,7 @@ popup.update = {
               $(dinners).append('<li class="message">"' + dinner + '"</li>');
             }
           }
-          clickDinners(dinners + ' li', shortname);
+          clickMeal(dinners + ' li', shortname);
         }
         // Log error messages
         if (data.error) console.error(data.error);
@@ -137,7 +160,7 @@ popup.update = {
       });
     }
 
-    var clickDinners = function(cssSelector, cantina) {
+    var clickMeal = function(cssSelector, cantina) {
       $(cssSelector).click(function() {
         Analytics.trackEvent('clickDinner', $(this).text());
         Browser.openTab(Cantina.webDinner);

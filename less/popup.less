@@ -39,7 +39,6 @@
   .debugText;
   color: NavajoWhite;
   display: block;
-  font-size: 12px;
   font-weight: bold;
   margin-top: 13px;
   margin-bottom: 4px;
@@ -48,16 +47,15 @@
   }
 }
 
+.subtitle {
+  .debugText;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
 .emphasized {
   .debugText;
   font-style: italic;
-  margin-bottom: 4px;
-}
-
-@-webkit-keyframes editButtonPulse {
-  from { border: 1px solid white; }
-  50% { border: 1px solid transparent; }
-  to { border: 1px solid white; }
 }
 
 /* Rules */
@@ -232,6 +230,9 @@ div#tips {
       #servant {
         .emphasized;
       }
+      #meetings {
+        margin-top: 5px;
+      }
       #hackerspace {
         margin-top: 4px;
         span {
@@ -249,6 +250,9 @@ div#tips {
       width: 47.5%;
       #pots {
         .emphasized;
+      }
+      #age {
+        margin-top: 5px;
       }
     }
   }
@@ -277,7 +281,7 @@ div#tips {
       float: right;
       width: 47.5%;
     }
-    .dinnerBox {
+    .lunchBox, .dinnerBox {
       .debugElement;
     }
     li {
@@ -576,16 +580,11 @@ div.options {
   /* All options are hidden by default, they slide into view when they are needed */
   display: none;
 
-  input, label, select, div {
+  select, input, div {
     margin-top: 5px;
     position: relative;
   }
-  label { /* Text to go with a checkbox / radio button */
-    /* font-weight: bold; */
-  }
-  div { /* Description of this option */
-    margin: 9px 0px 2px 0px;
-  }
+  /* Note: <input>s and <label>s are wrapped in a div to get their margins */
 
   /* Special cases */
 
@@ -712,4 +711,12 @@ div#bus {
       width: 80px;
     }
   }
+}
+
+/* Animations */
+
+@-webkit-keyframes editButtonPulse {
+  from { border: 1px solid white; }
+  50% { border: 1px solid transparent; }
+  to { border: 1px solid white; }
 }

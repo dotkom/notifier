@@ -147,14 +147,10 @@
             <span data="ICON_CLOSED">ICON_CLOSED</span> Lukket
             <span data="ICON_MEETING">ICON_MEETING</span> Møte
             <span data="ICON_WAFFLE"><img src="img/icon-waffle.png" class="statusIcon" /></span>Vafler
-            <!--<input type="checkbox" name="STATUSTHING" value="STATUSTHING"></input>
-            <label for="STATUSTHING">Se kontorstatus &amp; kaffe</label>-->
-            <div>
-              <!--<div>-->
-                Er det flere møter i dag?<br />
-                Hvem har ansvar på <span data="officeName">OFFICE_NAME</span>?
-              <!--</div>-->
-            </div>
+          </div>
+          <div>
+            Er det flere møter i dag?<br />
+            Hvem har ansvar på <span data="officeName">OFFICE_NAME</span>?
           </div>
         </div>
         <div class="content">
@@ -165,9 +161,13 @@
       <div id="coffee">
         <div class="title">Kaffe</div>
         <div class="options">
-          <input type="checkbox" name="COFFEESUB" value="COFFEESUB"></input>
-          <label for="COFFEESUB">Få kaffevarsel</label>
-          <div>Få kaffememe når noen koker en ny<br />kanne kaffe på <span data="officeName">OFFICE_NAME</span>.</div>
+          <div>
+            <input type="checkbox" name="COFFEESUB" value="COFFEESUB"></input>
+            <label for="COFFEESUB">Få kaffevarsel</label>
+          </div>
+          <div>
+            Få kaffememe når noen koker en ny<br />kanne kaffe på <span data="officeName">OFFICE_NAME</span>.
+          </div>
         </div>
         <div class="content">
           <div id="pots">- Laster antall kanner...</div>
@@ -203,20 +203,24 @@
             <option value="sito realfag">Sito Realfag</option>
             <option value="sito stripa">Sito Stripa</option>
           </select>
-          <br />
-          <input type="checkbox" name="showLunch"></input>
-          <label for="showLunch">Lunsjmeny (til 14)</label>
-          <br />
-          <input type="checkbox" name="showDinner"></input>
-          <label for="showDinner">Middagsmeny (etter 14)</label>
+          <div>
+            <input type="checkbox" name="showLunch1"></input>
+            <label for="showLunch1">Vis lunsjmeny</label>
+          </div>
+          <div>
+            Noen kantiner har også lunsjmeny, som regel frem til kl 14:00.
+          </div>
         </div>
         <div class="content">
           <div class="hours">Laster...</div>
+          <div class="subtitle">Lunsj</div>
+          <div class="lunchBox"></div>
+          <div class="subtitle">Middag</div>
           <div class="dinnerBox"></div>
         </div>
       </div>
       <div class="second">
-        <div class="title">_CANTINA_1_</div>
+        <div class="title">_CANTINA_2_</div>
         <div class="options">
           <select>
             <option value="dmmh">DMMH</option>
@@ -241,15 +245,19 @@
             <option value="sito realfag">Sito Realfag</option>
             <option value="sito stripa">Sito Stripa</option>
           </select>
-          <br />
-          <input type="checkbox" name="showLunch"></input>
-          <label for="showLunch">Lunsjmeny (til 14)</label>
-          <br />
-          <input type="checkbox" name="showDinner"></input>
-          <label for="showDinner">Middagsmeny (etter 14)</label>
+          <div>
+            <input type="checkbox" name="showLunch2"></input>
+            <label for="showLunch2">Vis lunsjmeny</label>
+          </div>
+          <div>
+            Noen kantiner har også lunsjmeny, som regel frem til kl 14:00.
+          </div>
         </div>
         <div class="content">
           <div class="hours">Laster...</div>
+          <div class="subtitle">Lunsj</div>
+          <div class="lunchBox"></div>
+          <div class="subtitle">Middag</div>
           <div class="dinnerBox"></div>
         </div>
       </div>
@@ -437,9 +445,10 @@
               <option value="dmmh">DMMH</option>
             </optgroup>
           </select>
-          <br />
-          <input type="checkbox" name="NEWS_NOTIFICATION_1"></input>
-          <label for="NEWS_NOTIFICATION_1">Få nyhetsvarsler</label>
+          <div>
+            <input type="checkbox" name="NEWS_NOTIFICATION_1"></input>
+            <label for="NEWS_NOTIFICATION_1">Få nyhetsvarsler</label>
+          </div>
         </div>
         <div class="content">
           <article data="">
@@ -465,7 +474,7 @@
           <div>
             <input type="checkbox" name="SHOW_AFFILIATION_2"></input>
             <label for="SHOW_AFFILIATION_2">Vis ekstra nyhetskilde</label>
-            <select id="affiliationKey1">
+            <select id="affiliationKey2">
               <optgroup class="debugAffiliation" label="DEBUG">
                 <option value="DEBUG">DEBUG</option>
               </optgroup>
@@ -553,9 +562,10 @@
                 <option value="dmmh">DMMH</option>
               </optgroup>
             </select>
-            <br />
-            <input type="checkbox" name="NEWS_NOTIFICATION_2"></input>
-            <label for="NEWS_NOTIFICATION_2">Få nyhetsvarsler</label>
+            <div>
+              <input type="checkbox" name="NEWS_NOTIFICATION_2"></input>
+              <label for="NEWS_NOTIFICATION_2">Få nyhetsvarsler</label>
+            </div>
           </div>
         </div>
         <div class="content">

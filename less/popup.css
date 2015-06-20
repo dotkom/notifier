@@ -38,7 +38,6 @@
   border: 1px solid transparent;
   color: NavajoWhite;
   display: block;
-  font-size: 12px;
   font-weight: bold;
   margin-top: 13px;
   margin-bottom: 4px;
@@ -46,21 +45,14 @@
 .title .unread {
   color: white;
 }
+.subtitle {
+  border: 1px solid transparent;
+  font-weight: bold;
+  margin-top: 5px;
+}
 .emphasized {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
-}
-@-webkit-keyframes editButtonPulse {
-  from {
-    border: 1px solid white;
-  }
-  50% {
-    border: 1px solid transparent;
-  }
-  to {
-    border: 1px solid white;
-  }
 }
 /* Rules */
 body {
@@ -238,7 +230,9 @@ div#tips .text a {
 #container #todays #schedule #servant {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
+}
+#container #todays #schedule #meetings {
+  margin-top: 5px;
 }
 #container #todays #schedule #hackerspace {
   margin-top: 4px;
@@ -258,7 +252,9 @@ div#tips .text a {
 #container #todays #coffee #pots {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
+}
+#container #todays #coffee #age {
+  margin-top: 5px;
 }
 #container #cantinas {
   border: 1px solid transparent;
@@ -270,7 +266,6 @@ div#tips .text a {
 #container #cantinas .hours {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
   cursor: pointer;
 }
 #container #cantinas .hours:hover:hover {
@@ -288,6 +283,7 @@ div#tips .text a {
   float: right;
   width: 47.5%;
 }
+#container #cantinas .lunchBox,
 #container #cantinas .dinnerBox {
   border: 1px solid transparent;
 }
@@ -568,22 +564,14 @@ div#tips .text a {
 div.options {
   /* All options are hidden by default, they slide into view when they are needed */
   display: none;
+  /* Note: <input>s and <label>s are wrapped in a div to get their margins */
   /* Special cases */
 }
-div.options input,
-div.options label,
 div.options select,
+div.options input,
 div.options div {
   margin-top: 5px;
   position: relative;
-}
-div.options label {
-  /* Text to go with a checkbox / radio button */
-  /* font-weight: bold; */
-}
-div.options div {
-  /* Description of this option */
-  margin: 9px 0px 2px 0px;
 }
 div.options div#statusOptions {
   position: relative;
@@ -704,4 +692,16 @@ div#bus div.lines .loadingLeft {
 div#bus div.lines .loadingRight {
   position: relative;
   width: 80px;
+}
+/* Animations */
+@-webkit-keyframes editButtonPulse {
+  from {
+    border: 1px solid white;
+  }
+  50% {
+    border: 1px solid transparent;
+  }
+  to {
+    border: 1px solid white;
+  }
 }

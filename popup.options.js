@@ -16,7 +16,6 @@ popup.options = {
     // Dropdowns
     $('#cantinas .first .options select').val(ls.cantina1);
     $('#cantinas .second .options select').val(ls.cantina2);
-    // Lunch and dinner checkboxes
   },
 
   bindCantinaOptions: function() {
@@ -31,8 +30,8 @@ popup.options = {
 
       // Options
       var selectCantina = cantina + 'select';
-      var showLunch = cantina + 'input[name="showLunch"]';
-      var showDinner = cantina + 'input[name="showDinner"]';
+      // var showLunch = cantina + 'input[name="showLunch"]';////////////////
+      // var showDinner = cantina + 'input[name="showDinner"]';////////////////
 
       // Handle change
       $(selectCantina).change(function () {
