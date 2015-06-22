@@ -642,15 +642,6 @@ var bindSuggestions = function() {
 
 
 
-  // Give user suggestions for autocomplete of bus stops
-  bindBusFields('firstBus');
-  bindBusFields('secondBus');
-
-  // Slide away favorite bus lines when not needed to conserve space
-  slideFavoriteBusLines();
-
-  // Load lists of bus stops
-  Stops.load();
 
 
 
@@ -707,9 +698,18 @@ var bindSuggestions = function() {
 
 
 
-  if (ls.everOpenedOptions !== 'true') {
-    // Note the options page as opened so that it won't be opened automatically again
-    ls.everOpenedOptions = 'true'; // Will never be false again
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

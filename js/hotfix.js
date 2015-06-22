@@ -40,6 +40,7 @@ localStorage.removeItem('showOffice');
 localStorage.removeItem('showStatus');
 localStorage.removeItem('activelySetOffice');
 localStorage.removeItem('showAffiliation1');
+localStorage.removeItem('everOpenedOptions');
 
 // EXPANDING NOTIFICATIONS OPTIONS
 // changing old system into new system

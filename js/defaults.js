@@ -110,8 +110,8 @@ var Defaults = {
     }
 
     // General
-    if (ls.everOpenedOptions === undefined)
-      ls.everOpenedOptions = 'false';
+    if (ls.everClickedEdit === undefined)
+      ls.everClickedEdit = 'false';
   }(),
 
   // Whenever we need to remove an existing affiliation,

@@ -249,12 +249,6 @@ $(document).ready( function() {
   var isAvailable = (Affiliation.org[ls.affiliationKey1].hw ? true : false);
   Defaults.setHardwareFeatures(isAvailable);
 
-  // Open options page after install
-  if (ls.everOpenedOptions === 'false' && !DEBUG) {
-    Browser.openTab('options.html');
-    Analytics.trackEvent('loadOptions (fresh install)');
-  }
-
   loadAffiliationIcon();
 
   Browser.bindCommandHotkeys();
@@ -265,6 +259,8 @@ $(document).ready( function() {
   setInterval( function() {
     // App version is interesting
     Analytics.trackEvent('appVersion', Browser.getAppVersion() + ' @ ' + Browser.name);
+    // Ever opened options? Interesting
+    Analytics.trackEvent('everClickedEdit', ls.everClickedEdit);
     // Affiliation is also interesting, in contrast to the popup some of these are inactive users
     // To find inactive user count, subtract these stats from popup stats
     if (ls.showAffiliation2 !== 'true') {

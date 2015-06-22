@@ -157,6 +157,8 @@ popup.event = {
       }
       // Analytics
       Analytics.trackEvent('clickEdit');
+      // Note the options page as opened so that it won't be opened automatically again
+      ls.everClickedEdit = 'true'; // Will never be false again
     }
     else {
       // Switch image and change other buttons
