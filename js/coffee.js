@@ -90,7 +90,7 @@ var Coffee = {
         title: Affiliation.org[key].name + ' Notifier',
         description: this.msgNotification,
         image: image,
-        link: 'options.html',
+        link: Affiliation.org[key].web,
         feedKey: key,
       }
       if (!demo) {

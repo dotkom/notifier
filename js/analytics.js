@@ -41,9 +41,9 @@ var Analytics = {
   debug: 0,
 
   trackEvent: function(action, label, value) {
-    var category = window.location.pathname; // chrome-extension://dohbapaojpimhoikcihglgkicjolfajj/options.html
-    category = category.split('/').pop(); // options.html
-    category = category.replace('.html',''); // options
+    var category = window.location.pathname; // chrome-extension://dohbapaojpimhoikcihglgkicjolfajj/popup.html
+    category = category.split('/').pop(); // popup.html
+    category = category.replace('.html',''); // popup
 
     // Event tracking:
     // Params: "_trackEvent", "category", "action", "label", value (num), noninteraction (bool)

@@ -27,7 +27,7 @@ var Stops = {
 
     // Check if the lists we have are old. They are expensive to fetch
     // so we'll only get the list from Tri's API every two weeks and
-    // this is only checked when the user opens the options page.
+    // this is only checked when the user opens the popup.
     var needNewList = false;
     var listAge = localStorage.stopListAge;
     if (listAge === undefined) {

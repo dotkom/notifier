@@ -122,9 +122,7 @@ var Defaults = {
     var ls = localStorage;
 
     var gotoOptions = function(key) {
-      if (confirm('Online Notifier beklager:\n\n"'+key+'" er borte fra Notifier :(\n\nTrolig fordi foreningens nettside ikke finnes lenger.\n\nDu kan trykke OK for å åpne Notifiers innstillinger.')) {
-        Browser.openTab('options.html');
-      }
+      alert('Online Notifier beklager:\n\n"'+key+'" er borte fra Notifier :(\n\nTrolig fordi foreningens nettside ikke finnes lenger.\n\nÅpne Notifier oppe til høyre i Chrome og trykk "Edit" for å velge ny tilhørighet.');
     }
     if (affiliationKeys.indexOf(key1) === -1) {
       ls.affiliationKey1 = 'online';

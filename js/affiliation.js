@@ -31,7 +31,7 @@ var Affiliation = {
     'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png', image: './img/image-waffle.png'},
   },
   
-  // IMPORTANT: Keep the same order of affiliations here as in options.html
+  // IMPORTANT: Keep the same order of affiliations here as <select> in popup.html
 
   // Explanation of organization attributes:
 

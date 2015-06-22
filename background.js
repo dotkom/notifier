@@ -259,7 +259,7 @@ $(document).ready( function() {
   setInterval( function() {
     // App version is interesting
     Analytics.trackEvent('appVersion', Browser.getAppVersion() + ' @ ' + Browser.name);
-    // Ever opened options? Interesting
+    // Ever clicked edit? Interesting
     Analytics.trackEvent('everClickedEdit', ls.everClickedEdit);
     // Affiliation is also interesting, in contrast to the popup some of these are inactive users
     // To find inactive user count, subtract these stats from popup stats
