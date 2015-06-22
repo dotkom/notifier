@@ -562,11 +562,14 @@ popup.options = {
         $('select#affiliationKey2').removeAttr('disabled');
         $('input#showNotifications2').removeAttr('disabled');
         $('label[for="showNotifications2"]').css('color', '');
+        popup.update.affiliationNews('1');
+        popup.update.affiliationNews('2');
       }
       else {
         $('select#affiliationKey2').attr('disabled', 'disabled');
         $('input#showNotifications2').attr('disabled', 'disabled');
         $('label[for="showNotifications2"]').css('color', 'grey');
+        popup.update.affiliationNews('1');
       }
       // Track
       Analytics.trackEvent('clickShowAffiliation2', this.checked);
