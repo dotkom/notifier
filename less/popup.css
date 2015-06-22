@@ -323,7 +323,7 @@ div#tips .text a {
 #container #bus #realtime {
   border: 1px solid transparent;
   line-height: 13px;
-  height: 90px;
+  overflow-y: auto;
 }
 #container #bus #realtime .first,
 #container #bus #realtime .second,
@@ -636,6 +636,7 @@ div#bus div.secondBus select {
 div#bus div.lines {
   position: relative;
   margin-top: 7px;
+  margin-bottom: 10px;
   display: block;
   width: 181px;
   border-top: 1px solid white;
