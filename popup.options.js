@@ -300,8 +300,8 @@ popup.options = {
 
     $(direction).change(function() {
       // Get new favorite lines in case they are different, and save changes ofc
-      this.getFavoriteLines(busField);
-      this.saveBus(busField);
+      self.getFavoriteLines(busField);
+      self.saveBus(busField);
     });
 
     this.bindFavoriteBusLines(busField);
