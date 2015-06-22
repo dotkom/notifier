@@ -148,9 +148,6 @@ popup.options = {
     this.bindBusFields('firstBus');
     this.bindBusFields('secondBus');
 
-    // Slide away favorite bus lines when not needed to conserve space
-    this.slideFavoriteBusLines();
-
     // Load lists of bus stops
     Stops.load();
   },
@@ -342,10 +339,6 @@ popup.options = {
   getFavoriteLines: function(busField) {
     var cssSelector = '#' + busField;
 
-    // Show it
-    $('#busBox .lines').slideDown();
-    $('#busBox #arrowDown').fadeOut();
-
     // Get stopname, direction, stopid
     var stopName = $(cssSelector + ' input').val();
     var direction = $(cssSelector + ' select').val();
@@ -377,14 +370,6 @@ popup.options = {
       // Make the bus lines clickable
       this.bindFavoriteBusLines(busField);
     }
-
-    // Hide the favorite lines after a short timeout
-    setTimeout(function() {
-      if (!$('#busBox').hasClass('hover')) {
-        $('#busBox .lines').slideUp();
-        $('#busBox #arrowDown').fadeIn();
-      }
-    }, 2500);
   },
 
   saveBus: function(busField) {
@@ -471,32 +456,6 @@ popup.options = {
         $(cssSelector + ' .lines').append('</tr></table>');
       }
     }
-  },
-
-  slideFavoriteBusLines: function() {
-    // Hide the favorite bus line spans from the start
-    setTimeout(function() {
-      if (!$('#busBox').hasClass('hover')) {
-        $('#busBox .lines').slideUp();
-        $('#busBox #arrowDown').fadeIn();
-      }
-    }, 1500);
-    // Show favorite bus line spans when hovering
-    $('#busBox').mouseenter(function() {
-      clearTimeout($(this).data('timeoutId'));
-      $('#busBox .lines').slideDown();
-      $('#busBox #arrowDown').fadeOut();
-    });
-    $('#busBox').mouseleave(function() {
-      var timeoutId = setTimeout(function() {
-        if ($('#busBox .lines img').length === 0) { // currently displaying loading gifs?
-          $('#busBox .lines').slideUp();
-          $('#busBox #arrowDown').fadeIn();
-        }
-      }, 500);
-      // Set the timeoutId, allowing us to clear this trigger if the mouse comes back over
-      $('#busBox').data('timeoutId', timeoutId);
-    });
   },
 
   bindSuggestions: function() {
