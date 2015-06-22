@@ -142,11 +142,16 @@ var applyAffiliationSettings = (function() {
 }());
 
 //
-// Add CHANGELOG.md to div#tips
+// Add version and changelog to div#tips
 // (executes itself once)
 //
 
-(function addChangeLog() {
+(function addToTips() {
+  // Add app version
+  var appVersion = chrome.app.getDetails().version.match(/^\d+\.\d+/)[0];
+  $('span[data="appVersion"]').text(appVersion);
+  
+  // Add CHANGELOG.md to div#tips
   Ajaxer.getPlainText({
     url: "CHANGELOG.md",
     success: function(data) {
@@ -225,7 +230,3 @@ $(document).ready(function() {
     mainLoop();
 
 });
-
-setTimeout(function() {
-  $('#editButton').click();
-}, 500);

@@ -400,13 +400,12 @@ div#tips .text a {
   position: relative;
   float: left;
   text-align: center;
-  height: 100%;
   width: 16%;
 }
 #container #bus #realtime #middle #atbLogo {
   position: relative;
   left: -0.7px;
-  margin: 15px auto;
+  margin: 15px auto 10px auto;
   height: 61px;
   cursor: pointer;
   border-radius: 3px;
@@ -575,6 +574,9 @@ div.options div {
 div.options input,
 div.options label {
   cursor: pointer;
+}
+div.options select {
+  width: 100%;
 }
 div.options div#statusOptions {
   position: relative;
