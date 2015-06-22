@@ -137,9 +137,9 @@ popup.event = {
       $('#editButton').unbind('mouseenter mouseleave');
       $('#buttontext').text('Trykk på knappen når du er ferdig');
       // Slide in all options
+      $("div.content").slideUp()
       $("div.options").slideDown();
-      $("div.content").slideUp();
-      $("img#logo").animate({'opacity': '0.1'});
+      // Slide away things the user doesn't need to see in options mode
       $("div#oracle").slideUp();
       // Deal with second affiliation not being shown
       if (ls.showAffiliation2 !== 'true') {
@@ -168,9 +168,9 @@ popup.event = {
       $('#buttontext').html('Sweet! <3');
       toggleButtonText({'#editButton': 'Endre innstillinger'});
       // Slide away all options
-      $("div.options").slideUp();
+      $("div.options").slideUp()
       $("div.content").slideDown();
-      $("img#logo").animate({'opacity': '1.0'});
+      // Add back the other stuff that the user didn't need to see while in options mode
       $("div#oracle").slideDown();
       // Deal with second affiliation not being shown
       if (ls.showAffiliation2 !== 'true') {
