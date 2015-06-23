@@ -16,10 +16,12 @@
     <div class="text">
       <div class="clicktoclose">click me to close me</div>
 
-      <div class="big">AppKom i Online</div>
+      <h1>Notifier <span data="appVersion">APP_VERSION</span></h1>
+      
+      <h2>Laget av appKom i Online</h2>
       <p>
         Epost: <a href="mailto:appkom@online.ntnu.no">appkom@online.ntnu.no</a><br />
-        GitHub: <a href="https://github.com/appkom/">github.com/appkom</a><br />
+        GitHub: <a href="https://github.com/appkom/notifier">github.com/appkom/notifier</a><br />
         Facebook: <a href="https://www.facebook.com/onlineappkom">facebook.com/onlineappkom</a><br />
       </p>
       <p>
@@ -27,12 +29,13 @@
       </p>
       <p>
         Notifier (extension): <a href="http://bit.ly/NotifierForChrome">bit.ly/NotifierForChrome</a> / <a href="http://bit.ly/NotifierForOpera">bit.ly/NotifierForOpera</a><br />
+        Notiwall (extension): <a href="http://bit.ly/NotiwallForChrome">bit.ly/NotiwallForChrome</a><br />
         Grader (extension): <a href="http://bit.ly/GraderForChrome">bit.ly/GraderForChrome</a><br />
         Notiwire (API): <a href="http://passoa.online.ntnu.no/api/cantina/hangaren">passoa.online.ntnu.no/api/cantina/hangaren</a>
       </p>
       
       <div id="tipsText">
-        <div class="big">Tips</div>
+        <h2>Tips</h2>
         <ul>
           <li><b>Ctrl/Cmd+Shift+A</b> er hotkey for Notifier</li>
           <li><b>Ctrl/Cmd+Shift+I</b> er hotkey til Instabart</li>
@@ -42,7 +45,7 @@
       </div>
       
       <div id="linjeforeningerText">
-        <div class="big">Links</div>
+        <h2>Links</h2>
         <ul>
 
           <li>
@@ -107,6 +110,7 @@
 
         </ul>
       </div>
+      <div id="changelog"></div>
     </div>
   </div>
   
@@ -121,10 +125,18 @@
 
     <div id="header">
       <div id="buttons">
-        <img id="optionsButton" class="popupbutton" src="img/popup-options.png" />
-        <img id="chatterButton" class="popupbutton" src="img/popup-chatter.png" />
-        <img id="tipsButton" class="popupbutton" src="img/popup-tips.png" />
-        <img id="colorButton" class="popupbutton" src="img/popup-color.png" />
+        <img id="editButton" class="popupbutton" src="img/popup-edit.png" />
+        <div id="normalButtons">
+          <img id="chatterButton" class="popupbutton" src="img/popup-chatter.png" />
+          <img id="tipsButton" class="popupbutton" src="img/popup-tips.png" />
+          <img id="colorButton" class="popupbutton" src="img/popup-color.png" />
+        </div>
+        <div id="bigOptions">
+          <input type="checkbox" id="showCantina"></input>
+          <label for="showCantina">SiT</label>
+          <input type="checkbox" id="showBus"></input>
+          <label for="showBus">AtB</label>
+        </div>
       </div>
       <img id="logo" src="img/blank.png" />
       <div id="buttontext"></div>
@@ -132,21 +144,47 @@
 
     <div id="todays">
       <div id="schedule">
-        <div class="title">Kontoret</div>
-        <div id="servant">- Laster ansvarlige...</div>
-        <div id="meetings">Laster møtekalender...</div>
+        <div class="title"><span data="officeName">OFFICE_NAME</span></div>
+        <div class="options">
+          <div id="statusOptions">
+            <span data="ICON_OPEN">ICON_OPEN</span> Åpent
+            <span data="ICON_CLOSED">ICON_CLOSED</span> Lukket
+            <span data="ICON_MEETING">ICON_MEETING</span> Møte
+            <span data="ICON_WAFFLE"><img src="img/icon-waffle.png" class="statusIcon" /></span>Vafler
+          </div>
+          <div>
+            Er det flere møter i dag?<br />
+            Hvem har ansvar på <span data="officeName">OFFICE_NAME</span>?
+          </div>
+        </div>
+        <div class="content">
+          <div id="servant">- Laster ansvarlige...</div>
+          <div id="meetings">Laster møtekalender...</div>
+        </div>
       </div>
       <div id="coffee">
         <div class="title">Kaffe</div>
-        <div id="pots">- Laster antall kanner...</div>
-        <div id="age">Laster kaffestatus...</div>
+        <div class="options">
+          <div>
+            <input type="checkbox" id="coffeeSubscription"></input>
+            <label for="coffeeSubscription">Få kaffevarsel</label>
+          </div>
+          <div>
+            Få kaffememe når noen koker en ny<br />kanne kaffe på <span data="officeName">OFFICE_NAME</span>.
+          </div>
+        </div>
+        <div class="content">
+          <div id="pots">- Laster antall kanner...</div>
+          <div id="age">Laster kaffestatus...</div>
+        </div>
       </div>
     </div>
     
     <div id="cantinas">
       <div class="first">
-        <div class="dropdownWrapper">
-          <select class="titleDropdown">
+        <div class="title">Laster...</div>
+        <div class="options">
+          <select>
             <option value="dmmh">DMMH</option>
             <option value="dragvoll">Dragvoll</option>
             <option value="elektro">Elektro</option>
@@ -169,13 +207,20 @@
             <option value="sito realfag">Sito Realfag</option>
             <option value="sito stripa">Sito Stripa</option>
           </select>
+          <div>
+            Lunsjmeny vises før kl 14:00, deretter vises middagsmeny.
+          </div>
         </div>
-        <div class="hours">Laster...</div>
-        <div id="dinnerbox"></div>
+        <div class="content">
+          <div class="hours">Laster...</div>
+          <div class="subtitle">Laster...</div>
+          <div class="mealBox"></div>
+        </div>
       </div>
       <div class="second">
-        <div class="dropdownWrapper">
-          <select class="titleDropdown">
+        <div class="title">Laster...</div>
+        <div class="options">
+          <select>
             <option value="dmmh">DMMH</option>
             <option value="dragvoll">Dragvoll</option>
             <option value="elektro">Elektro</option>
@@ -198,55 +243,93 @@
             <option value="sito realfag">Sito Realfag</option>
             <option value="sito stripa">Sito Stripa</option>
           </select>
+          <div>
+            Lunsjmeny vises før kl 14:00, deretter vises middagsmeny.
+          </div>
         </div>
-        <div class="hours">Laster...</div>
-        <div id="dinnerbox"></div>
+        <div class="content">
+          <div class="hours">Laster...</div>
+          <div class="subtitle">Laster...</div>
+          <div class="mealBox"></div>
+        </div>
       </div>
     </div>
 
     <div id="bus">
       <div id="realtime">
         <div id="firstBus">
-          <div class="name">
-            <!-- br's are hackish -->
-            <br /><br /><img class="loadingLeft" src="img/loading.gif" />
+          <div class="options">
+
+            <!--<div id="secondBus" class="busStop">-->
+              <select>
+                <option selected="selected">til byen</option>
+                <option>fra byen</option>
+              </select>
+              <input type="text" placeholder="Busstopp"></input>
+              <div class="lines">
+                <!-- wrapping div for favorite bus lines -->
+              </div>
+            <!--</div>-->
+
           </div>
-          <div class="first">
-            <span class="line"></span>
-            <span class="time"></span>
-          </div>
-          <div class="second">
-            <span class="line"></span>
-            <span class="time"></span>
-          </div>
-          <div class="third">
-            <span class="line"></span>
-            <span class="time"></span>
-          </div>
-          <div class="error">
+          <div class="content">
+            <div class="name">
+              <!-- br's are hackish -->
+              <br /><br /><img class="loadingLeft" src="img/loading.gif" />
+            </div>
+            <div class="first">
+              <span class="line"></span>
+              <span class="time"></span>
+            </div>
+            <div class="second">
+              <span class="line"></span>
+              <span class="time"></span>
+            </div>
+            <div class="third">
+              <span class="line"></span>
+              <span class="time"></span>
+            </div>
+            <div class="error">
+            </div>
           </div>
         </div>
         <div id="middle">
           <img id="atbLogo" src="img/logo-atb.png" />
         </div>
         <div id="secondBus">
-          <div class="name">
-            <!-- br's are hackish -->
-            <br /><br /><img class="loadingRight" src="img/loading.gif" />
+          <div class="options">
+
+            <!--<div id="secondBus" class="busStop">-->
+              <input type="text" placeholder="Busstopp"></input>
+              <select>
+                <option selected="selected">til byen</option>
+                <option>fra byen</option>
+              </select>
+              <div class="lines">
+                <!-- wrapping div for favorite bus lines -->
+              </div>
+            <!--</div>-->
+
           </div>
-          <div class="first">
-            <span class="time"></span>
-            <span class="line"></span>
-          </div>
-          <div class="second">
-            <span class="time"></span>
-            <span class="line"></span>
-          </div>
-          <div class="third">
-            <span class="time"></span>
-            <span class="line"></span>
-          </div>
-          <div class="error">
+          <div class="content">
+            <div class="name">
+              <!-- br's are hackish -->
+              <br /><br /><img class="loadingRight" src="img/loading.gif" />
+            </div>
+            <div class="first">
+              <span class="time"></span>
+              <span class="line"></span>
+            </div>
+            <div class="second">
+              <span class="time"></span>
+              <span class="line"></span>
+            </div>
+            <div class="third">
+              <span class="time"></span>
+              <span class="line"></span>
+            </div>
+            <div class="error">
+            </div>
           </div>
         </div>
       </div>
@@ -262,47 +345,252 @@
         <div class="title">
           Laster...
         </div>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
+        <div class="options">
+          <div id="leftNewsOptionTitle">
+            Min linjeforening eller organisasjon
+          </div>
+          <select id="affiliationKey1">
+            <optgroup class="debugAffiliation" label="DEBUG">
+              <option value="DEBUG">DEBUG</option>
+            </optgroup>
+            <optgroup label="Linjeforeninger Gløshaugen">
+              <option value="abakus">Abakus</option>
+              <option value="smorekoppen">A/F Smørekoppen</option>
+              <!--<option value="industrivinduet">A/F Smørekoppen -> Industrivinduet</option>-->
+              <option value="berg">Berg</option>
+              <option value="broderskabet">Broderskabet</option>
+              <option value="delta">Delta</option>
+              <option value="emil">EMIL</option>
+              <option value="aarhonen">H.M. Aarhønen</option>
+              <option value="hybrida">Hybrida</option>
+              <option value="hc">Høiskolens Chemikerforening</option>
+              <option value="janus">Janus</option>
+              <option value="leonardo">Leonardo</option>
+              <option value="mannhullet">Mannhullet</option>
+              <option value="placebo">MF Placebo</option>
+              <option value="omega">Omega</option>
+              <option value="online">Online</option>
+              <option value="nabla">Nabla</option>
+              <option value="solan">Solan</option>
+              <option value="spanskroeret">Spanskrøret</option>
+              <option value="timini">Timini</option>
+              <option value="volvox">Volvox &amp; Alkymisten</option>
+            </optgroup>
+            <optgroup label="Linjeforeninger Dragvoll">
+              <option value="communitas">Communitas</option>
+              <option value="dhs">Det Historiske Selskab</option>
+              <option value="dionysos">Dionysos</option>
+              <option value="erudio">Erudio</option>
+              <option value="eureka">Eureka</option>
+              <option value="geolf">Geolf</option>
+              <option value="gengangere">Gengangere</option>
+              <option value="jump_cut">Jump Cut</option>
+              <option value="paideia">Paideia</option>
+              <option value="panoptikon">Panoptikon</option>
+              <option value="pareto">Pareto</option>
+              <option value="primetime">Primetime</option>
+              <option value="psi">Psi</option>
+              <option value="psykolosjen">Psykolosjen</option>
+              <option value="sturm_und_drang">Sturm und Drang</option>
+              <option value="teaterlosjen">Teaterlosjen</option>
+              <option value="theodor">Theodor</option>
+              <option value="universitetsteatret">Universitetsteatret</option>
+            </optgroup>
+            <optgroup label="Linjeforeninger HiST/DMMH/TJSF/BI">
+              <option value="kom">KOM</option>
+              <option value="logistikkstudentene">Logistikkstudentene</option>
+              <option value="nutrix">Nutrix</option>
+              <option value="sftoh">STØH</option>
+              <option value="tihlde">TIHLDE</option>
+              <option value="tim_og_shaenko">Tim &amp; Shænko</option>
+              <option value="tjsf">TJSF</option>
+              <option value="vivas">Vivas</option>
+            </optgroup>
+            <optgroup label="Master-/doktor-/internasjonale foreninger">
+              <option value="dion">DION</option>
+              <option value="esn">ESN</option>
+              <option value="iaeste">IAESTE</option>
+              <option value="isu">ISU</option>
+              <option value="projeksjon">Projeksjon</option>
+              <option value="signifikant">Signifikant</option>
+              <option value="soma">Soma</option>
+              <option value="symbiosis">Symbiosis</option>
+            </optgroup>
+            <optgroup label="Studentmedier++">
+              <option value="dusken">Dusken</option>
+              <option value="universitetsavisa">Universitetsavisa</option>
+              <option value="adressa">Adressa Student</option>
+              <option value="gemini">Gemini</option>
+            </optgroup>
+            <optgroup label="Store studentorganisasjoner">
+              <option value="samfundet">Samfundet</option>
+            </optgroup>
+            <optgroup label="Studentdemokrati">
+              <option value="velferdstinget">Velferdstinget</option>
+              <option value="studentparlamentet_hist">Studentparlamentet HiST</option>
+              <option value="studenttinget_ntnu">Studenttinget NTNU</option>
+            </optgroup>
+            <optgroup label="Institusjoner">
+              <option value="ntnu">NTNU</option>
+              <option value="rektoratet_ntnu">Rektoratet NTNU</option>
+              <option value="hist">HiST</option>
+              <option value="dmmh">DMMH</option>
+            </optgroup>
+          </select>
+          <div>
+            <input type="checkbox" id="showNotifications1"></input>
+            <label for="showNotifications1">Få nyhetsvarsler</label>
+          </div>
+        </div>
+        <div class="articles">
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+        </div>
       </div>
       <!-- Secondary affiliation news -->
       <div id="right">
         <div class="title">
-          Laster...
+          Velg kilde
         </div>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
-        <article data="">
-          <img src="img/placeholder.png">
-        </article>
+        <div class="options">
+          <div>
+            <div>
+              <input type="checkbox" id="showAffiliation2"></input>
+              <label for="showAffiliation2">Vis ekstra nyhetskilde</label>
+            </div>
+            <select id="affiliationKey2">
+              <optgroup class="debugAffiliation" label="DEBUG">
+                <option value="DEBUG">DEBUG</option>
+              </optgroup>
+              <optgroup label="Linjeforeninger Gløshaugen">
+                <option value="abakus">Abakus</option>
+                <option value="smorekoppen">A/F Smørekoppen</option>
+                <!--<option value="industrivinduet">A/F Smørekoppen -> Industrivinduet</option>-->
+                <option value="berg">Berg</option>
+                <option value="broderskabet">Broderskabet</option>
+                <option value="delta">Delta</option>
+                <option value="emil">EMIL</option>
+                <option value="aarhonen">H.M. Aarhønen</option>
+                <option value="hybrida">Hybrida</option>
+                <option value="hc">Høiskolens Chemikerforening</option>
+                <option value="janus">Janus</option>
+                <option value="leonardo">Leonardo</option>
+                <option value="mannhullet">Mannhullet</option>
+                <option value="placebo">MF Placebo</option>
+                <option value="omega">Omega</option>
+                <option value="online">Online</option>
+                <option value="nabla">Nabla</option>
+                <option value="solan">Solan</option>
+                <option value="spanskroeret">Spanskrøret</option>
+                <option value="timini">Timini</option>
+                <option value="volvox">Volvox &amp; Alkymisten</option>
+              </optgroup>
+              <optgroup label="Linjeforeninger Dragvoll">
+                <option value="communitas">Communitas</option>
+                <option value="dhs">Det Historiske Selskab</option>
+                <option value="dionysos">Dionysos</option>
+                <option value="erudio">Erudio</option>
+                <option value="eureka">Eureka</option>
+                <option value="geolf">Geolf</option>
+                <option value="gengangere">Gengangere</option>
+                <option value="jump_cut">Jump Cut</option>
+                <option value="paideia">Paideia</option>
+                <option value="panoptikon">Panoptikon</option>
+                <option value="pareto">Pareto</option>
+                <option value="primetime">Primetime</option>
+                <option value="psi">Psi</option>
+                <option value="psykolosjen">Psykolosjen</option>
+                <option value="sturm_und_drang">Sturm und Drang</option>
+                <option value="teaterlosjen">Teaterlosjen</option>
+                <option value="theodor">Theodor</option>
+                <option value="universitetsteatret">Universitetsteatret</option>
+              </optgroup>
+              <optgroup label="Linjeforeninger HiST/DMMH/TJSF/BI">
+                <option value="kom">KOM</option>
+                <option value="logistikkstudentene">Logistikkstudentene</option>
+                <option value="nutrix">Nutrix</option>
+                <option value="sftoh">STØH</option>
+                <option value="tihlde">TIHLDE</option>
+                <option value="tim_og_shaenko">Tim &amp; Shænko</option>
+                <option value="tjsf">TJSF</option>
+                <option value="vivas">Vivas</option>
+              </optgroup>
+              <optgroup label="Master-/doktor-/internasjonale foreninger">
+                <option value="dion">DION</option>
+                <option value="esn">ESN</option>
+                <option value="iaeste">IAESTE</option>
+                <option value="isu">ISU</option>
+                <option value="projeksjon">Projeksjon</option>
+                <option value="signifikant">Signifikant</option>
+                <option value="soma">Soma</option>
+                <option value="symbiosis">Symbiosis</option>
+              </optgroup>
+              <optgroup label="Studentmedier++">
+                <option value="dusken">Dusken</option>
+                <option value="universitetsavisa">Universitetsavisa</option>
+                <option value="adressa">Adressa Student</option>
+                <option value="gemini">Gemini</option>
+              </optgroup>
+              <optgroup label="Store studentorganisasjoner">
+                <option value="samfundet">Samfundet</option>
+              </optgroup>
+              <optgroup label="Studentdemokrati">
+                <option value="velferdstinget">Velferdstinget</option>
+                <option value="studentparlamentet_hist">Studentparlamentet HiST</option>
+                <option value="studenttinget_ntnu">Studenttinget NTNU</option>
+              </optgroup>
+              <optgroup label="Institusjoner">
+                <option value="ntnu">NTNU</option>
+                <option value="rektoratet_ntnu">Rektoratet NTNU</option>
+                <option value="hist">HiST</option>
+                <option value="dmmh">DMMH</option>
+              </optgroup>
+            </select>
+            <div>
+              <input type="checkbox" id="showNotifications2"></input>
+              <label for="showNotifications2">Få nyhetsvarsler</label>
+            </div>
+          </div>
+        </div>
+        <div class="articles">
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+          <article data="">
+            <img src="img/placeholder.png" />
+          </article>
+        </div>
       </div>
     </div>
     
   </div>
 
-  <!-- This is just a helper for measuring the length of <select>-fields shown as titles -->
-  <span id="titleMeasure"></span>
+  <!-- Suggestions for bus stops -->
+  <div id="busSuggestions">
+    <div id="suggestionTitle">Forslag</div>
+    <div id="suggestions"></div> <!-- Suggestions will be added to this div -->
+  </div>
 
   <!-- JS No Dependencies -->
   <script src="libs/jquery-2.1.0.min.js"></script>
   <script src="libs/jquery-konami.js"></script>
+  <script src="libs/Markdown.Converter.js"></script>
   <script src="js/missing.js"></script>
   <script src="js/hotfix.js"></script>
   
@@ -320,10 +608,17 @@
   <script src="js/bus.js"></script>
   <script src="js/cantina.js"></script>
   <script src="js/coffee.js"></script>
+  <script src="js/favorite.js"></script>
   <script src="js/hackerspace.js"></script>
+  <script src="js/news.js"></script>
   <script src="js/oracle.js"></script>
+  <script src="js/stops.js"></script>
 
-  <!-- Document ready sript -->
+  <!-- Document sripts -->
+  <script src="popup.globals.js"></script>
+  <script src="popup.update.js"></script>
+  <script src="popup.event.js"></script>
+  <script src="popup.options.js"></script>
   <script src="popup.js"></script>
 
 </body>

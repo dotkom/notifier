@@ -6,7 +6,7 @@ var Bus = {
   msgDisconnected: 'Frakoblet fra bybussen.api.tmn.io',
   msgConnectionError: 'Tilkoblingsfeil',
   msgInvalidDirection: 'Ugyldig retning',
-  msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
+  msgKeyExpired: 'Nøkkelen vår har utløpt, trenger oppdatering',
   msgOldData: 'Mottok utdatert sanntidsdata',
 
   // Public functions

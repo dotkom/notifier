@@ -10,18 +10,15 @@ var mainLoop = function(force) {
   if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
-  if (ls.showAffiliation1 === 'true')
-    if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
-      updateAffiliationNews('1');
+  if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
+    updateAffiliationNews('1');
   if (ls.showAffiliation2 === 'true')
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
-  // Only if hardware and not infoscreen
-  if (ls.showStatus === 'true')
-    if (ls.useBigscreen !== 'true')
-      if (Affiliation.org[ls.affiliationKey1].hw)
-        if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
-          updateAffiliation();
+  // Only if hardware
+  if (Affiliation.org[ls.affiliationKey1].hw)
+    if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
+      updateAffiliation();
 
   // No reason to count to infinity
   if (10000 < iteration)
@@ -35,11 +32,9 @@ var updateAffiliation = function(callback) {
   // Fetch
   Affiliation.get(ls.affiliationKey1, function() {
     // Run relevant background updates
-    if (ls.useBigscreen !== 'true') {
-      if (Affiliation.org[ls.affiliationKey1].hw) {
-        updateStatusAndMeetings();
-        updateCoffeeSubscription();
-      }
+    if (Affiliation.org[ls.affiliationKey1].hw) {
+      updateStatusAndMeetings();
+      updateCoffeeSubscription();
     }
     // Callback
     if (typeof callback === 'function') callback();
@@ -254,26 +249,6 @@ $(document).ready( function() {
   var isAvailable = (Affiliation.org[ls.affiliationKey1].hw ? true : false);
   Defaults.setHardwareFeatures(isAvailable);
 
-  // Open options page after install
-  if (ls.everOpenedOptions === 'false' && !DEBUG) {
-    Browser.openTab('options.html');
-    Analytics.trackEvent('loadOptions (fresh install)');
-  }
-  // Open Bigscreen if the option is set
-  if (ls.useBigscreen === 'true') {
-    if (ls.whichScreen === 'infoscreen') {
-      Browser.openTab('infoscreen.html');
-      Analytics.trackEvent('loadInfoscreen');
-    }
-    else if (ls.whichScreen === 'officescreen') {
-      Browser.openTab('officescreen.html');
-      Analytics.trackEvent('loadOfficescreen');
-    }
-    else {
-      console.error('useBigscreen enabled, but whichScreen was "' + ls.whichScreen + '"');
-    }
-  }
-
   loadAffiliationIcon();
 
   Browser.bindCommandHotkeys();
@@ -284,6 +259,8 @@ $(document).ready( function() {
   setInterval( function() {
     // App version is interesting
     Analytics.trackEvent('appVersion', Browser.getAppVersion() + ' @ ' + Browser.name);
+    // Ever clicked edit? Interesting
+    Analytics.trackEvent('everClickedEdit', ls.everClickedEdit);
     // Affiliation is also interesting, in contrast to the popup some of these are inactive users
     // To find inactive user count, subtract these stats from popup stats
     if (ls.showAffiliation2 !== 'true') {
@@ -299,7 +276,7 @@ $(document).ready( function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
-    console.log(ONLINE_MESSAGE);
+    console.info(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? BACKGROUND_LOOP_DEBUG : BACKGROUND_LOOP);
     // Schedule for repetition
     intervalId = setInterval( function() {
@@ -314,7 +291,7 @@ $(document).ready( function() {
   // When offline, mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
-    console.log(OFFLINE_MESSAGE);
+    console.warn(OFFLINE_MESSAGE);
     clearInterval(intervalId);
   });
 

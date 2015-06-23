@@ -31,7 +31,7 @@ var Affiliation = {
     'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png', image: './img/image-waffle.png'},
   },
   
-  // IMPORTANT: Keep the same order of affiliations here as in options.html
+  // IMPORTANT: Keep the same order of affiliations here as <select> in popup.html
 
   // Explanation of organization attributes:
 
@@ -1601,8 +1601,6 @@ var Affiliation = {
 
   _autoLoadDefaults_: function() {
     var ls = localStorage;
-    if (ls.showAffiliation1 === undefined)
-      ls.showAffiliation1 = 'true';
     if (ls.affiliationKey1 === undefined)
       ls.affiliationKey1 = (DEBUG ? 'DEBUG' : 'online');
     if (ls.showAffiliation2 === undefined)
@@ -1626,13 +1624,9 @@ var Affiliation = {
     // Status
     ls.removeItem('statusData');
     ls.removeItem('statusStrings');
-    // Remove statuses held by background.js, infoscreen.js, officescreen.js
+    // Remove statuses held by background.js (this is a bit of a hack, should perhaps not be dealt with here)
     ls.removeItem('backgroundLastStatusCode');
     ls.removeItem('backgroundLastStatusMessage');
-    ls.removeItem('infoscreenLastStatusCode');
-    ls.removeItem('infoscreenLastMessage');
-    ls.removeItem('officescreenLastStatusCode');
-    ls.removeItem('officescreenLastMessage');
   },
 
   get: function(affiliation, callback) {

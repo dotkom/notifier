@@ -39,7 +39,6 @@
   .debugText;
   color: NavajoWhite;
   display: block;
-  font-size: 12px;
   font-weight: bold;
   margin-top: 13px;
   margin-bottom: 4px;
@@ -48,51 +47,15 @@
   }
 }
 
-.dropdownWrapper {
-  position: relative;
-  left: -8px;
-  margin-top: 13px;
-  margin-bottom: 4px;
-  /* New, trying out some tweaks on the dropdowns */
-  /* http://bavotasan.com/2011/style-select-box-using-only-css/ */
-  width: 172px;
-  height: 20px;
-  overflow: hidden;
-  background: url('../img/popup-dropdown-arrows.png') no-repeat right rgba(0,0,0,0);
-}
-
-.titleDropdown {
+.subtitle {
   .debugText;
-  color: NavajoWhite;
-  display: block;
-  /*background-color: rgba(0,0,0,0);*/
-  /*border: 1px solid transparent;*/
-  font-size: 12px;
   font-weight: bold;
-  outline: none;
-  /* New, trying out some tweaks on the dropdowns */
-  background: rgba(0,0,0,0);
-  width: 200px; /* default 28px wider than wrapper */
-  padding-left: 8px;
-  border: 0;
-  border-radius: 0;
-  height: 20px;
-  -webkit-appearance: none;
-
-  /* Old, trying out some tweaks on the dropdowns */
-  /*&:hover {
-    background-color: black;
-    border: 1px solid navajowhite;
-  }*/
-  .unread {
-    color: white;
-  }
+  margin-top: 5px;
 }
 
 .emphasized {
   .debugText;
   font-style: italic;
-  margin-bottom: 4px;
 }
 
 /* Rules */
@@ -110,7 +73,7 @@ body {
   line-height: 14px;
 }
 
-#tips {
+div#tips {
   position: fixed;
   background-color: Snow;
   top: 0px;
@@ -137,9 +100,17 @@ body {
       font-style: italic;
       margin-top: -20px;
     }
-    .big {
+    h1 {
+      font-size: 24px;
+      font-weight: 200;
+      padding-top: 10px;
+    }
+    h2 {
       font-size: 17px;
-      padding-top: 5px;
+      font-weight: 200;
+    }
+    h3, h4, h5, h6 {
+      font-weight: 600;
     }
     .url {
       display: inline;
@@ -209,15 +180,24 @@ body {
       .popupbutton {
         height: 27px;
         width: auto;
+        float: left;
         border-radius: 5px;
         margin-right: 12px;
         cursor: pointer;
         border: 1px solid transparent;
+        -webkit-transition: box-shadow .2s ease-out;
       }
       .popupbutton:hover {
         border: 1px solid white;
       }
+      .popupbutton.glow {
+        /* Edit button glows discreetly while toggled */
+        -webkit-animation-name: editButtonPulse;
+        -webkit-animation-duration: 1.5s;
+        -webkit-animation-iteration-count: infinite;
+      }
       #chatterButton {
+        /* Hiding Slack button by default */
         display: none;
       }
     }
@@ -250,6 +230,9 @@ body {
       #servant {
         .emphasized;
       }
+      #meetings {
+        margin-top: 5px;
+      }
       #hackerspace {
         margin-top: 4px;
         span {
@@ -267,6 +250,9 @@ body {
       width: 47.5%;
       #pots {
         .emphasized;
+      }
+      #age {
+        margin-top: 5px;
       }
     }
   }
@@ -295,7 +281,7 @@ body {
       float: right;
       width: 47.5%;
     }
-    #dinnerbox {
+    .mealBox {
       .debugElement;
     }
     li {
@@ -334,7 +320,7 @@ body {
     #realtime {
       .debugBox;
       line-height: 13px;
-      height: 90px;
+      overflow-y: auto;
       
       .first, .second, .third, .error {
         cursor: pointer;
@@ -396,12 +382,11 @@ body {
         position: relative;
         float: left;
         text-align: center;
-        height: 100%;
         width: 16%;
         #atbLogo {
           position: relative;
           left: -.7px;
-          margin: 15px auto;
+          margin: 15px auto 10px auto;
           height: 61px;
           cursor: pointer;
           border-radius: 3px;
@@ -586,15 +571,208 @@ body {
     }
   }
 
-  #titleMeasure {
-    font-weight: bold;
-    color: transparent;
-    /* not to be seen, only used for measurement of title widths */
-    position: absolute;
-    visibility: hidden;
-    width: auto;
-    height: auto;
-    white-space: nowrap;
+}
+
+/* Rules for the options */
+
+div.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+
+  select, input, div {
+    margin-top: 5px;
+    position: relative;
+  }
+  input, label {
+    cursor: pointer;
+  }
+  select {
+    width: 100%;
+  }
+  /* Note: <input>s and <label>s are wrapped in a div to get their margins */
+
+  /* Special cases */
+
+  div#statusOptions {
+    position: relative;
+    top: -3px;
+    img.statusIcon {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      top: 5px;
+      -webkit-filter: drop-shadow(0 0 4px black);
+      filter: drop-shadow(0 0 4px black);
+    }
   }
 
+  div#leftNewsOptionTitle {
+    margin-top: 9px;
+    margin-bottom: 2px;
+  }
+}
+
+div#bigOptions {
+  position: relative;
+  display: none;
+  top: 3px;
+  float: left;
+  width: 150px;
+  font-size: 24px;
+  line-height: 24px;
+
+  input, label {
+    position: relative;
+    cursor: pointer;
+  }
+  input {
+    top: -4px;
+    margin-left: 10px;
+  }
+}
+
+div#bus {
+  input {
+    width: 107px;
+  }
+  select {
+    width: 75px;
+    margin-left: 7px;
+  }
+  div#secondBus div.options select {
+    margin-left: 4px; /* Hack that's needed for an unidentified reason, otherwise select fields on left and right side have differentl margins-ish */
+  }
+  div#firstBus {
+    input, select, div.lines {
+      float: right;
+    }
+    div.options {
+      text-align: right;
+    }
+  }
+  div.secondBus {
+    input, select {
+      float: left;
+    }
+  }
+  div.lines {
+    position: relative;
+    margin-top: 7px;
+    margin-bottom: 10px;
+    display: block;
+    width: 181px;
+    border-top: 1px solid white;
+    box-shadow: 0 1px 2px #888;
+    border-radius: 4px;
+    background-color: white;
+    padding: 2px 7px 1px 7px;
+    text-align: left;
+    font-size: 12px;
+    text-shadow: 0 0 0 white; /* resets inhertied value from parent element */
+
+    table {
+      .debugBox;
+      width: 100%;
+      table-layout: fixed;
+      text-align: center;
+      td {
+        .debugText;
+        padding: 1px 0;
+      }
+    }
+    .active {
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .inactive {
+      cursor: pointer;
+      color: gray;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .error {
+      color: black;
+      text-align: center;
+      font-size: 12px;
+    }
+    .retry {
+      color: black;
+      text-align: center;
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .loadingLeft {
+      position: relative;
+      width: 80px;
+      -webkit-transform: scaleX(-1);
+    }
+    .loadingRight {
+      position: relative;
+      width: 80px;
+    }
+  }
+}
+
+/* Suggestions for bus stops */
+
+div#busSuggestions {
+  .debugContainer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  display: none; /* Will slide down when needed */
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 15px;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+  background-color: snow;
+  
+  div#suggestionTitle {
+    .debugText;
+    margin-bottom: 15px;
+    font-size: 24px;
+    text-align: left;
+    color: #444;
+  }
+  .suggestion {
+    color: #444;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .matched_character {
+      font-weight: bold;
+    }
+  }
+  .correct {
+    color: black;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+}
+
+/* Debug affiliation in the top of the affiliation selection lists */
+
+optgroup.debugAffiliation {
+  display: none;
+}
+
+/* Animations */
+
+@-webkit-keyframes editButtonPulse {
+  from { border: 1px solid white; }
+  50% { border: 1px solid transparent; }
+  to { border: 1px solid white; }
 }

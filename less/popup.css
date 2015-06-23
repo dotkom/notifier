@@ -38,7 +38,6 @@
   border: 1px solid transparent;
   color: NavajoWhite;
   display: block;
-  font-size: 12px;
   font-weight: bold;
   margin-top: 13px;
   margin-bottom: 4px;
@@ -46,49 +45,14 @@
 .title .unread {
   color: white;
 }
-.dropdownWrapper {
-  position: relative;
-  left: -8px;
-  margin-top: 13px;
-  margin-bottom: 4px;
-  /* New, trying out some tweaks on the dropdowns */
-  /* http://bavotasan.com/2011/style-select-box-using-only-css/ */
-  width: 172px;
-  height: 20px;
-  overflow: hidden;
-  background: url('../img/popup-dropdown-arrows.png') no-repeat right rgba(0, 0, 0, 0);
-}
-.titleDropdown {
+.subtitle {
   border: 1px solid transparent;
-  color: NavajoWhite;
-  display: block;
-  /*background-color: rgba(0,0,0,0);*/
-  /*border: 1px solid transparent;*/
-  font-size: 12px;
   font-weight: bold;
-  outline: none;
-  /* New, trying out some tweaks on the dropdowns */
-  background: rgba(0, 0, 0, 0);
-  width: 200px;
-  /* default 28px wider than wrapper */
-  padding-left: 8px;
-  border: 0;
-  border-radius: 0;
-  height: 20px;
-  -webkit-appearance: none;
-  /* Old, trying out some tweaks on the dropdowns */
-  /*&:hover {
-    background-color: black;
-    border: 1px solid navajowhite;
-  }*/
-}
-.titleDropdown .unread {
-  color: white;
+  margin-top: 5px;
 }
 .emphasized {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
 }
 /* Rules */
 body {
@@ -103,7 +67,7 @@ body {
   font-size: 12px;
   line-height: 14px;
 }
-#tips {
+div#tips {
   position: fixed;
   background-color: Snow;
   top: 0px;
@@ -118,29 +82,40 @@ body {
   overflow-x: hidden;
   box-shadow: 0 0 20px black;
 }
-#tips .text {
+div#tips .text {
   border: 1px solid transparent;
   color: black;
   font-size: 12px;
   line-height: 16px;
 }
-#tips .text .clicktoclose {
+div#tips .text .clicktoclose {
   border: 1px solid transparent;
   color: #aaa;
   text-align: right;
   font-style: italic;
   margin-top: -20px;
 }
-#tips .text .big {
-  font-size: 17px;
-  padding-top: 5px;
+div#tips .text h1 {
+  font-size: 24px;
+  font-weight: 200;
+  padding-top: 10px;
 }
-#tips .text .url {
+div#tips .text h2 {
+  font-size: 17px;
+  font-weight: 200;
+}
+div#tips .text h3,
+div#tips .text h4,
+div#tips .text h5,
+div#tips .text h6 {
+  font-weight: 600;
+}
+div#tips .text .url {
   display: inline;
   color: grey;
   font-style: italic;
 }
-#tips .text a {
+div#tips .text a {
   outline: none;
   text-decoration: underline;
   color: DarkBlue;
@@ -205,15 +180,24 @@ body {
 #container #header #buttons .popupbutton {
   height: 27px;
   width: auto;
+  float: left;
   border-radius: 5px;
   margin-right: 12px;
   cursor: pointer;
   border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.2s ease-out;
 }
 #container #header #buttons .popupbutton:hover {
   border: 1px solid white;
 }
+#container #header #buttons .popupbutton.glow {
+  /* Edit button glows discreetly while toggled */
+  -webkit-animation-name: editButtonPulse;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-iteration-count: infinite;
+}
 #container #header #buttons #chatterButton {
+  /* Hiding Slack button by default */
   display: none;
 }
 #container #header #buttontext {
@@ -246,7 +230,9 @@ body {
 #container #todays #schedule #servant {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
+}
+#container #todays #schedule #meetings {
+  margin-top: 5px;
 }
 #container #todays #schedule #hackerspace {
   margin-top: 4px;
@@ -266,7 +252,9 @@ body {
 #container #todays #coffee #pots {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
+}
+#container #todays #coffee #age {
+  margin-top: 5px;
 }
 #container #cantinas {
   border: 1px solid transparent;
@@ -278,7 +266,6 @@ body {
 #container #cantinas .hours {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
   cursor: pointer;
 }
 #container #cantinas .hours:hover:hover {
@@ -296,7 +283,7 @@ body {
   float: right;
   width: 47.5%;
 }
-#container #cantinas #dinnerbox {
+#container #cantinas .mealBox {
   border: 1px solid transparent;
 }
 #container #cantinas li {
@@ -336,7 +323,7 @@ body {
 #container #bus #realtime {
   border: 1px solid transparent;
   line-height: 13px;
-  height: 90px;
+  overflow-y: auto;
 }
 #container #bus #realtime .first,
 #container #bus #realtime .second,
@@ -413,13 +400,12 @@ body {
   position: relative;
   float: left;
   text-align: center;
-  height: 100%;
   width: 16%;
 }
 #container #bus #realtime #middle #atbLogo {
   position: relative;
   left: -0.7px;
-  margin: 15px auto;
+  margin: 15px auto 10px auto;
   height: 61px;
   cursor: pointer;
   border-radius: 3px;
@@ -570,15 +556,201 @@ body {
 }
 #container #news .unread {
   font-size: 11px;
-  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
+  text-shadow: 0 0 5px black, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
 }
-#container #titleMeasure {
+/* Rules for the options */
+div.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+  /* Note: <input>s and <label>s are wrapped in a div to get their margins */
+  /* Special cases */
+}
+div.options select,
+div.options input,
+div.options div {
+  margin-top: 5px;
+  position: relative;
+}
+div.options input,
+div.options label {
+  cursor: pointer;
+}
+div.options select {
+  width: 100%;
+}
+div.options div#statusOptions {
+  position: relative;
+  top: -3px;
+}
+div.options div#statusOptions img.statusIcon {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 5px;
+  -webkit-filter: drop-shadow(0 0 4px black);
+  filter: drop-shadow(0 0 4px black);
+}
+div.options div#leftNewsOptionTitle {
+  margin-top: 9px;
+  margin-bottom: 2px;
+}
+div#bigOptions {
+  position: relative;
+  display: none;
+  top: 3px;
+  float: left;
+  width: 150px;
+  font-size: 24px;
+  line-height: 24px;
+}
+div#bigOptions input,
+div#bigOptions label {
+  position: relative;
+  cursor: pointer;
+}
+div#bigOptions input {
+  top: -4px;
+  margin-left: 10px;
+}
+div#bus input {
+  width: 107px;
+}
+div#bus select {
+  width: 75px;
+  margin-left: 7px;
+}
+div#bus div#secondBus div.options select {
+  margin-left: 4px;
+  /* Hack that's needed for an unidentified reason, otherwise select fields on left and right side have differentl margins-ish */
+}
+div#bus div#firstBus input,
+div#bus div#firstBus select,
+div#bus div#firstBus div.lines {
+  float: right;
+}
+div#bus div#firstBus div.options {
+  text-align: right;
+}
+div#bus div.secondBus input,
+div#bus div.secondBus select {
+  float: left;
+}
+div#bus div.lines {
+  position: relative;
+  margin-top: 7px;
+  margin-bottom: 10px;
+  display: block;
+  width: 181px;
+  border-top: 1px solid white;
+  box-shadow: 0 1px 2px #888;
+  border-radius: 4px;
+  background-color: white;
+  padding: 2px 7px 1px 7px;
+  text-align: left;
+  font-size: 12px;
+  text-shadow: 0 0 0 white;
+  /* resets inhertied value from parent element */
+}
+div#bus div.lines table {
+  border: 1px solid transparent;
+  width: 100%;
+  table-layout: fixed;
+  text-align: center;
+}
+div#bus div.lines table td {
+  border: 1px solid transparent;
+  padding: 1px 0;
+}
+div#bus div.lines .active {
+  cursor: pointer;
+  color: black;
   font-weight: bold;
-  color: transparent;
-  /* not to be seen, only used for measurement of title widths */
-  position: absolute;
-  visibility: hidden;
-  width: auto;
-  height: auto;
-  white-space: nowrap;
+}
+div#bus div.lines .active:hover {
+  text-decoration: underline;
+}
+div#bus div.lines .inactive {
+  cursor: pointer;
+  color: gray;
+}
+div#bus div.lines .inactive:hover {
+  text-decoration: underline;
+}
+div#bus div.lines .error {
+  color: black;
+  text-align: center;
+  font-size: 12px;
+}
+div#bus div.lines .retry {
+  color: black;
+  text-align: center;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+div#bus div.lines .loadingLeft {
+  position: relative;
+  width: 80px;
+  -webkit-transform: scaleX(-1);
+}
+div#bus div.lines .loadingRight {
+  position: relative;
+  width: 80px;
+}
+/* Suggestions for bus stops */
+div#busSuggestions {
+  border: 1px solid transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  display: none;
+  /* Will slide down when needed */
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 15px;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+  background-color: snow;
+}
+div#busSuggestions div#suggestionTitle {
+  border: 1px solid transparent;
+  margin-bottom: 15px;
+  font-size: 24px;
+  text-align: left;
+  color: #444;
+}
+div#busSuggestions .suggestion {
+  color: #444;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+div#busSuggestions .suggestion:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+div#busSuggestions .suggestion .matched_character {
+  font-weight: bold;
+}
+div#busSuggestions .correct {
+  color: black;
+  font-weight: bold;
+  line-height: 1.5;
+}
+/* Debug affiliation in the top of the affiliation selection lists */
+optgroup.debugAffiliation {
+  display: none;
+}
+/* Animations */
+@-webkit-keyframes editButtonPulse {
+  from {
+    border: 1px solid white;
+  }
+  50% {
+    border: 1px solid transparent;
+  }
+  to {
+    border: 1px solid white;
+  }
 }

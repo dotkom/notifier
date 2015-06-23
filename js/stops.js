@@ -3,7 +3,7 @@
 var Stops = {
   api: 'http://bybussen.api.tmn.io/stops',
   msgDisconnected: 'Frakoblet fra bybussen.api.tmn.io',
-  msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
+  msgKeyExpired: 'Nøkkelen vår har utløpt, trenger oppdatering',
   msgParsingCompleted: 'Busslister lastet fra localstorage',
   msgParsingStopsSuccess: 'Busslister lastet fra API',
   msgParsingStopsFailed: 'Klarte ikke hente liste over busstopp',
@@ -27,7 +27,7 @@ var Stops = {
 
     // Check if the lists we have are old. They are expensive to fetch
     // so we'll only get the list from Tri's API every two weeks and
-    // this is only checked when the user opens the options page.
+    // this is only checked when the user opens the popup.
     var needNewList = false;
     var listAge = localStorage.stopListAge;
     if (listAge === undefined) {
