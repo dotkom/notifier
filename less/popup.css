@@ -200,7 +200,7 @@ div#tips .text a {
   /* Hiding Slack button by default */
   display: none;
 }
-#container #header #buttontext {
+#container #header #buttonText {
   border: 1px solid transparent;
   display: none;
   position: relative;

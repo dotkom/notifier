@@ -47,35 +47,14 @@ popup.event = {
 
   bindHeaderButtonsAndLogo: function() {
 
-    // Bind buttons to button hover text
+    // Hovertexts for the buttons
 
-    var toggleButtonText = function(buttons) {
-      for (var selector in buttons) {
-        var textToShow = buttons[selector];
-        $(selector).attr('data', textToShow);
-        $(selector).hover(function() {
-          var textToShowInner = $(this).attr('data');
-          $('#buttontext').html(textToShowInner);
-          $('#buttontext').toggle();
-        });
-      };
-    };
-    var buttons = {
-      '#editButton': 'Endre innstillinger',
-      '#tipsButton': 'Om Notifier, changelog, ++',
-      '#colorButton': 'Bytt fargepalett',
-    }
-    var slack = Affiliation.org[ls.affiliationKey1].slack;
-    if (slack) {
-      slack = 'Join us at ' + slack.match(/https?:\/\/(.*?)\//)[1];
-      buttons['#chatterButton'] = slack;
-    }
-    toggleButtonText(buttons);
+    this.bindButtonText();
 
     // Button and logo clicks
 
     $('#editButton').click(function() {
-      this.toggleOptions(toggleButtonText);
+      this.toggleOptions();
     }.bind(this));
 
     $('#chatterButton').click(function() {
@@ -113,7 +92,7 @@ popup.event = {
       ls.affiliationPalette = colors[index];
       Palettes.load();
       // Text feedback, fades out after timeout
-      $('#buttontext').text('Fargepalett satt til "' + colors[index].capitalize() + '"');
+      $('#buttonText').text('Fargepalett satt til "' + colors[index].capitalize() + '"');
       // And track it
       Analytics.trackEvent('clickColor', colors[index].capitalize());
     });
@@ -127,17 +106,65 @@ popup.event = {
     });
   },
 
-  toggleOptions: function(toggleButtonText) {
-    var toggled = ('img/popup-edit-done.png' === $('#editButton').attr('src'));
+  // Use this function to bind/unbind the button texts
+  bindButtonText: function(overrideButtons, unbindAll) {
+    var buttons = {};
+    
+    // Param overrideButtons lets you override default values like so:
+    //    {'#editButton': 'Some non-default text to show when hovering'}
+    // Param unbindAll is a boolean. If set all buttons are unbound, then
+    //    only the ones specified in overrideButtons are rebound
+    if (unbindAll) {
+      var buttonNames = ['#editButton', '#tipsButton', '#colorButton', '#chatterButton'];
+      for (var i in buttonNames) {
+        $(buttonNames[i]).unbind('mouseenter mouseleave');
+      }
+    }
+    else {
+      buttons = {
+        '#editButton': 'Endre innstillinger',
+        '#tipsButton': 'Om Notifier, changelog, ++',
+        '#colorButton': 'Bytt fargepalett',
+      }
+      // We have to specially construct the Slack button text
+      var slack = Affiliation.org[ls.affiliationKey1].slack;
+      if (slack) {
+        slack = 'Join us at ' + slack.match(/https?:\/\/(.*?)\//)[1];
+        buttons['#chatterButton'] = slack;
+      }
+    }
+
+    // Add in any overriding arguments
+    for (var selector in overrideButtons) {
+      buttons[selector] = overrideButtons[selector];
+    }
+
+    // Now rebind the specified buttons to new texts
+    for (var selector in buttons) {
+      // Unbind
+      $(selector).unbind('mouseenter mouseleave');
+      // Rebind
+      var textToShow = buttons[selector];
+      $(selector).attr('data', textToShow);
+      $(selector).hover(function() {
+        var textToShowInner = $(this).attr('data');
+        $('#buttonText').html(textToShowInner);
+        $('#buttonText').toggle();
+      });
+    }
+  },
+
+  toggleOptions: function() {
+    var toggled = ('img/popup-edit-done.png' === $('#editButton').attr('src')); // Hack
     if (!toggled) {
       // Switch image and change other buttons
       $('#editButton').attr('src', 'img/popup-edit-done.png').addClass('glow');
       $('div#normalButtons').fadeOut(function() {
         $("div#bigOptions").fadeIn();
       });
-      // Show Done?-question in buttontext, leave it there until done
-      $('#editButton').unbind('mouseenter mouseleave');
-      $('#buttontext').text('Trykk på knappen når du er ferdig');
+      // Change button text, unbind all other button texts
+      $('#buttonText').html('Trykk på knappen når du er ferdig');
+      this.bindButtonText({'#editButton': 'Trykk på knappen når du er ferdig'}, true);
       // Slide in all options
       $("div.content").slideUp()
       $("div.options").slideDown();
@@ -169,8 +196,8 @@ popup.event = {
         $('div#normalButtons').fadeIn();
       });
       // Switch back to regular hover texts for buttons
-      $('#buttontext').html('Sweet! <3');
-      toggleButtonText({'#editButton': 'Endre innstillinger'});
+      $('#buttonText').html('Sweet! <3');
+      this.bindButtonText(); // Back to default
       // Slide away all options
       $("div.options").slideUp()
       $("div.content").slideDown();
