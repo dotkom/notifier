@@ -185,23 +185,6 @@ var applyAffiliationSettings = (function() {
 
 $(document).ready(function() {
 
-  // Hook up all event handlers
-  popup.event.bindAll();
-  // Load all localStorage values into inline options
-  popup.options.loadAll();
-  // Hoop up all option handlers
-  popup.options.bindAll();
-
-  // Track popularity of the chosen palette, the palette
-  // itself is loaded a lot earlier for perceived speed
-  Analytics.trackEvent('loadPalette', ls.affiliationPalette);
-
-  // Set the cursor to focus on the question field
-  // (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
-  $('#oracle #question').focus();
-  // Repeat for good measure (the browser may sometimes blur the question-field)
-  setTimeout(function() {$('#oracle #question').focus();}, 400);
-
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
     console.info(ONLINE_MESSAGE);
@@ -228,5 +211,22 @@ $(document).ready(function() {
     stayUpdated({forceUpdate: true});
   else
     mainLoop();
+
+  // Hook up all event handlers
+  popup.event.bindAll();
+  // Load all localStorage values into inline options
+  popup.options.loadAll();
+  // Hoop up all option handlers
+  popup.options.bindAll();
+
+  // Set the cursor to focus on the question field
+  // (e.g. Chrome on Windows doesn't do this automatically so I blatantly blame Windows)
+  $('#oracle #question').focus();
+  // Repeat for good measure (the browser may sometimes blur the question-field)
+  setTimeout(function() {$('#oracle #question').focus();}, 400);
+
+  // Track popularity of the chosen palette, the palette
+  // itself is loaded a lot earlier for perceived speed
+  Analytics.trackEvent('loadPalette', ls.affiliationPalette);
 
 });

@@ -62,7 +62,7 @@ popup.event = {
     };
     var buttons = {
       '#editButton': 'Endre innstillinger',
-      '#tipsButton': 'Om appKom, changelog, ++',
+      '#tipsButton': 'Om Notifier, changelog, ++',
       '#colorButton': 'Bytt fargepalett',
     }
     var slack = Affiliation.org[ls.affiliationKey1].slack;
