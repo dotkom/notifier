@@ -95,8 +95,24 @@ popup.update = {
       var hours = '#cantinas ' + selector + ' .hours';
       var mealBox = '#cantinas ' + selector + ' .mealBox';
 
-      // Lunchtime or dinnertime?
+      // Default to dinner, be positive
+      var doLunch = false;
+      var noDinnerExists = false;
+
+      // Decide whether to show lunch or dinner
       var isLunchTime = new Date().getHours() < 14;
+      // Check if either lunch or dinner is empty, if so, and the other has content, show the other
+      var isThereLunch = Array.isArray(data.lunch); // Otherwise just an object with a message
+      var isThereDinner = Array.isArray(data.dinner); // Otherwise just an object with a message
+      // So is it lunch then?
+      if (isLunchTime && isThereLunch) {
+        doLunch = true;
+      }
+      // Also, if there is a lunch menu, but no dinner menu, just show the lunch throughout, whatever the time.
+      if (!isThereDinner && isThereLunch) {
+        doLunch = true;
+        noDinnerExists = true;
+      }
 
       // Title: Set name of current cantina
       $(title).text(name);
@@ -115,10 +131,11 @@ popup.update = {
           clickHours(hours, shortname);
         }
         // Set subtitle, lunch or dinner
-        $(subtitle).text(isLunchTime ? 'Lunsj' : 'Middag');
+        var menuTitle = (doLunch ? 'Lunsjmeny' + (noDinnerExists ? ' (ingen middag)' : '') : 'Middagsmeny');
+        $(subtitle).text(menuTitle);
         // Set meals
         $(mealBox).html('');
-        var meals = (isLunchTime ? data.lunch : data.dinner);
+        var meals = (doLunch ? data.lunch : data.dinner);
         if (meals) {
           for (var i in meals) {
             var meal = meals[i];
