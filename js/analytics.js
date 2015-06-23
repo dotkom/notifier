@@ -15,7 +15,6 @@ else {
 
   // Set account vars and set to track page views
   _gaq.push(['_setAccount', 'UA-9905766-3']);
-  _gaq.push(['_gat._anonymizeIp']); // Proper anonymization
   _gaq.push(['_trackPageview']);
 
   (function() {
