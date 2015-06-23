@@ -1,3 +1,5 @@
+"use strict";
+
 popup.options = {
 
   loadAll: function() {
