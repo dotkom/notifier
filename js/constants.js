@@ -39,4 +39,5 @@ var UPDATE_BUS_INTERVAL = 2; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
 
 // Hard totals
-var MEME_AMOUNT = 30;
+// It's this, or doing synchronous XMLHttpRequests, which have been deprecated in Chrome now, so.. yeah.
+var MEME_AMOUNT = 31;
