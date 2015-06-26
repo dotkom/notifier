@@ -153,7 +153,7 @@ var Oracle = {
 
 
 // /*
-//         Buss 5 passerer Kongens gate K2 kl. 2345 og kl. 0005 
+// Buss 5 passerer Kongens gate K2 kl. 2345 og kl. 0005 
 // og kommer til Gløshaugen Nord, 7 minutter senere.
 // Buss 22 passerer Munkegata M2 kl. 0005 
 // og kommer til Gløshaugen Nord, 7 minutter senere.
@@ -423,9 +423,12 @@ var Oracle = {
   },
 
   prettify: function(answer) {
-    // If not meant to be prettified
-    if (answer.match(/(Buss \d+ (passerer|går fra) .*? kl\. )|(Bus \d+ (|passes by|goes from) .*? at )/) == null)
-      return answer;
+    // Just minor prettifying needed
+    // if (answer.match(/(Buss \d+ (passerer|går fra) .*? kl\. )|(Bus \d+ (|passes by|goes from) .*? at )/) == null) {
+
+    //   return answer;
+    // }
+    console.warn('remember this')
     
     if (this.debug) console.log('\nBEFORE prettify\n' + answer);
 
@@ -490,6 +493,9 @@ var Oracle = {
     // Replace "Buss 66 passerer NTNU Dragvoll kl." with just "Buss 66:"
     answer = answer.replace(/(Buss \d+) passerer .*? kl\. /gi, '@$1 går ');
     answer = answer.replace(/(Bus \d+) passes by .*? at /gi, '@$1 leaves ');
+    // Replace "Buss 46 (mot Pirbadet) passerer Prof. Brochs gate kl. 2205" with just "Buss 46 går"
+    answer = answer.replace(/(Buss \d+) \(mot .*?\) passerer .*? (kl\.)/gi, '@$1 går $2');
+    answer = answer.replace(/(Bus \d+) \(towards .*?\) passes by .*? (\d+\:\d+)/gi, '@$1 leaves $2');
     // Replace "og kl." with just a comma
     answer = answer.replace(/,?( og)? kl\. /gi, ', ');
     answer = answer.replace(/,?( and)? at (\d+)/gi, ', $2');
