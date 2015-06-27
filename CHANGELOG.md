@@ -15,7 +15,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 * Back to basics: Popupen er nå hele Notifier
 	* Infoscreen splittet ut til ny Chrome extension ved navn Online Notiwall
 	* Options er i popupen fremfor separat Options-side
-	* Kuttet mange tusen linjer kode (ANTALL?)
+	* Kuttet 3.500 linjer kode
 * Viser lunsjemeny før kl 14, deretter middagsmeny
 * Kontorstatus er nå alltid på for linjeforeninger som har kjøpt Notipi
 * Viser changelog i popupen
@@ -84,7 +84,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 * Nye kontorstatuser: Boller, Kaffe, Kake, Pizza, Taco
 
 ### 2013-10-29 Versjon 3.4
-* Bedre sikkerhet
+* Bedre sikkerhet mot feil hos datakildene
 
 ### 2013-10-22 Versjon 3.3
 * Delta fikk hardwarefeatures
@@ -142,7 +142,6 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 * Infoscreen gikk fra å være en frittstående side til å bli en del av Notifier
 
 ### 2012-05-15 Versjon 1.0
-* Kontorstatus
-* Nyheter fra online.ntnu.no
-* Nyhetsvarsler
+* Kontorstatus for Onlinekontoret
+* Nyheter fra online.ntnu.no, med nyhetsvarsler
 * Middagsmeny fra Hangaren og Realfag
