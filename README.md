@@ -16,7 +16,7 @@ Installation of Notifier
 Technology stack
 ----------------
 
-Some of the data is delivered by [Notipis](https://github.com/appKom/notipi) (raspberry pis), via the middle layer [Online Notiwire](https://github.com/appKom/notiwire). Notipi is a joint project between Omega Verksted and Onlines appKom. Notipis consist of hardware from Omega Verksted and software from Online appKom.
+Some of the data is delivered by [OmegaV Notipi](https://github.com/appKom/notipi)s (raspberry pis), via the middle layer [Online Notiwire](https://github.com/appKom/notiwire). Notipi is a joint project between Omega Verksted and Onlines appKom. Notipis consist of hardware from Omega Verksted and software from Online appKom.
 
 The hardware bundle which complements makes hardware features in Notifier accessible to any student union who purchases and installs the bundle. OmegaV currently sells this bundle at a reasonable price. The earnings goes to further development and to support OmegaV's operations.
 
@@ -33,7 +33,7 @@ For all the included affiliations
 - Displays bus data from AtB in realtime and through the Oracle
 - All pages in the extension are live, they stay updated while open
 
-Additional features for affiliations who have a [NotiPi](https://github.com/appKom/notipi)
+Additional features for affiliations who have a [OmegaV NotiPi](https://github.com/appKom/notipi)
 
 - Displays office status: Open, closed, meeting, waffles
 - Displays todays meetings and current servant at the office
@@ -132,34 +132,27 @@ Analytics
 - Categories are split into actions which are either clickSomething, loadSomething or toggleSomething
 - An action may have a label, which is usually the clicked link, the loaded file, and so on
 
-Chronological Credz
--------------------
+People
+------
 
-Key people are annotated with their email address
+Project lead (chronologically descending)
 
-- Michael Johansen <michael@informatikk.org> is the project leader and was the sole developer of the extension itself (not support services) for the first couple of years
-- Espen Jacobsson wrote Onlines API-service in OnlineWeb3
-- Roy Sindre Norangshol wrote the initial light service
-- Dag Olav Prestegarden wrote the initial calendar service
-- René Räisänen designed the background image
-- Tri Minh Nguyen created the API for AtB's realtime bus API
-- Jonas Svarvaa wrote several revisions of calendar services
-- Roy Sindre Norangshol helped with several maintenance issues
-- Magnus Dysthe has been working on hardware for the infoscreen
-- Tor Håkon Bonsaksen helped with several hardware issues
-- Kristoffer Dalby hacked up scripts that fixed ubuntu screen-to-black issues
-- Jim Frode Hoff made Online's coffee button, attached to an Arduino
-- Nils Herde fixed hardware issues, kept the infoscreen running and installed the coffee button
-- Vegard Stenhjem Hagen installed all the hardware for Delta
-- Eirik Larsen <eirik.larsen93@gmail.com> made the OmegaV NotiPi, which made Notifier's hardware features accessible to all the student unions in Trondheim
+- *New lead developer coming* is the current lead developer
+- Michael Johansen was the lead developer of Notifier from 2012 - 2015
+
+Credz to (chronologically descending)
+
+- Christian Duvholt wrote the API, [Online Notiwire](https://github.com/appKom/notiwire)
 - Petter Rostrup made the Konami code video roll
-- Also, the following made coffee memes:
-	- Thomas Gautvedt
-	- Aleksander Skraastad
-	- John Hanssen Kolstad
-	- Magnus Dysthe
-	- Michael Johansen
-	- Linn Vikre
+- Eirik Larsen made the OmegaV NotiPi, which made coffee notifications and office status accessible to all the student unions in Trondheim
+- Vegard Stenhjem Hagen installed all the hardware for Delta
+- Jim Frode Hoff made Online's coffee button, attached to an Arduino
+- Jonas Svarvaa wrote several revisions of calendar services
+- Tri Minh Nguyen created the API for AtB's realtime bus API
+- René Räisänen designed the background images
+- Dag Olav Prestegarden wrote the initial calendar service
+- Roy Sindre Norangshol wrote the initial light service
+- Espen Jacobsson wrote Onlines API-service in OnlineWeb3
 
 Media coverage
 --------------
