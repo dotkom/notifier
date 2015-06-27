@@ -56,6 +56,10 @@ popup.event = {
     $('#editButton').click(function() {
       this.toggleOptions();
     }.bind(this));
+    if (ls.everClickedEdit === 'false') {
+      // If the user hasn't ever clicked that button, highlight it, it's an important button
+      $('#editButton').addClass('glow');
+    }
 
     $('#chatterButton').click(function() {
       var slack = Affiliation.org[ls.affiliationKey1].slack;
@@ -70,6 +74,7 @@ popup.event = {
       Analytics.trackEvent('clickTips');
     });
     $('div#tips:not(a)').click(function() {
+      // This binds the whole background of the tips box
       $(this).toggle();
       $('body').css('overflow-y', '');
     });
