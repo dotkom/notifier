@@ -98,7 +98,10 @@ div#tips .text .clicktoclose {
 div#tips .text h1 {
   font-size: 24px;
   font-weight: 200;
-  padding-top: 10px;
+  padding-top: 20px;
+}
+div#tips .text h1.firstTitle {
+  padding-top: 0;
 }
 div#tips .text h2 {
   font-size: 17px;
