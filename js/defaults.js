@@ -4,8 +4,6 @@ var Defaults = {
 
   _autoLoad_: function() {
 
-    var ls = localStorage;
-
     // Clear previous thoughts
     if (DEBUG) ls.clear();
 
@@ -119,8 +117,6 @@ var Defaults = {
   // ahead and uncomment that affiliation in Affiliation.js !
   resetAffiliationsIfNotExist: function(key1, key2, affiliationKeys) {
 
-    var ls = localStorage;
-
     var gotoOptions = function(key) {
       alert('Online Notifier beklager:\n\n"'+key+'" er borte fra Notifier :(\n\nTrolig fordi foreningens nettside ikke finnes lenger.\n\nÅpne Notifier oppe til høyre i Chrome og trykk "Edit" for å velge ny tilhørighet.');
     }
@@ -141,8 +137,6 @@ var Defaults = {
   // a) the user has explicitly turned them off, or
   // b) hardwarefeatures are not available (this function called from background process)
   setHardwareFeatures: function(isAvailable) {
-
-    var ls = localStorage;
 
     if (isAvailable) {
       // coffee

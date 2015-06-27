@@ -1600,7 +1600,6 @@ var Affiliation = {
   // Functions below
 
   _autoLoadDefaults_: function() {
-    var ls = localStorage;
     if (ls.affiliationKey1 === undefined)
       ls.affiliationKey1 = (DEBUG ? 'DEBUG' : 'online');
     if (ls.showAffiliation2 === undefined)

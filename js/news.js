@@ -14,7 +14,6 @@ var News = {
   msgNoDescription: 'Uten tekst',
 
   _autoLoadDefaults_: function() {
-    var ls = localStorage;
     if (ls.showNotifications1 === undefined)
       ls.showNotifications1 = 'true';
     if (ls.showNotifications2 === undefined)
@@ -436,7 +435,6 @@ var News = {
    * - OPTIONAL image: 'http://somedomain.com/somearticle/someimage.png'
    */
   showNotification: function(item) {
-    var ls = localStorage;
     // Fail?
     if (item === undefined) {
       console.error('News.showNotification got an undefined item to show. If you are trying to use demo mode, check description in this function.');

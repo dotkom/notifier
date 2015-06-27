@@ -1,6 +1,5 @@
 "use strict";
 
-var ls = localStorage;
 var iteration = 0;
 var intervalId = null;
 

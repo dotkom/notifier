@@ -17,6 +17,12 @@ if (!DEBUG) {
 }
 
 //
+// Shorthand to localStorage, used everywhere
+//
+
+var ls = localStorage;
+
+//
 // All other constants
 //
 
