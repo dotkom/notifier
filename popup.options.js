@@ -143,7 +143,70 @@ popup.options = {
   // Bus
   //
 
-  loadBusOptionValues: function() {},
+  loadBusOptionValues: function() {
+
+    var loadBus = function(busField) {
+      var cssSelector = '#' + busField;
+      var stopName = ls[busField + 'Name'];
+      var direction = ls[busField + 'Direction'];
+      var activeLines = ls[busField + 'ActiveLines'];
+      var inactiveLines = ls[busField + 'InactiveLines'];
+
+      // Add stopname and direction to busfields
+      if (typeof stopName !== 'undefined' && typeof direction !== 'undefined') {
+        $(cssSelector + ' input').val(stopName);
+        $(cssSelector + ' select').val(direction);
+        // console.log('loaded "' + stopName + '" to "' + busField + '"');
+      }
+
+      // Add active and inactive lines to busfields
+      if (typeof activeLines !== 'undefined' && typeof inactiveLines !== 'undefined') {
+        // If the page just opened and there are no favorite lines then get some
+        if (activeLines === '' && inactiveLines === '') {
+          this.getFavoriteLines(busField);
+        }
+        else {
+          activeLines = JSON.parse(activeLines); // stringified array
+          inactiveLines = JSON.parse(inactiveLines); // stringified array
+          // Collect active and inactive lines to a single dict
+          // with boolean values showing active or inactive
+          var lines = {};
+          for (var i in activeLines) {
+            var line = activeLines[i]
+            lines[line] = true;
+          }
+          for (var i in inactiveLines) {
+            var line = inactiveLines[i]
+            lines[line] = false;
+          }
+          // Sort the dict by keys (bus line numbers sorted in ascending order)
+          var keys = [];
+          for (var i in lines) {
+            keys.push(i);
+          }
+          keys = keys.sort(function(a,b) {
+            return a - b;
+          });
+          // Add lines to bus stop as a generated table
+          $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
+          var counter = 0;
+          for (var i in keys) {
+            var i = keys[i];
+            if (counter % 4 == 0) {
+              $(cssSelector + ' .lines table').append('</tr><tr>');
+            }
+            var status = (lines[i] === true ? 'active' : 'inactive');
+            $(cssSelector + ' .lines table tr:last').append('<td class="line '+status+'">'+i+'</td>');
+            counter++;
+          }
+          $(cssSelector + ' .lines').append('</tr></table>');
+        }
+      }
+    };
+
+    loadBus('firstBus');
+    loadBus('secondBus');
+  },
 
   bindBusOptions: function() {
     // Give user suggestions for autocomplete of bus stops
