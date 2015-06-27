@@ -546,10 +546,10 @@ popup.options = {
 
     var self = this;
     $('#' + id).change(function() {
-      var affiliationKey = $(this).val();
-      var oldAffiliation = ls[id];
+      var newAffiliationKey = $(this).val();
+      var oldAffiliationKey = ls[id];
       // Save
-      ls[id] = affiliationKey;
+      ls[id] = newAffiliationKey;
 
       if (isPrimaryAffiliation) {
 
@@ -557,32 +557,18 @@ popup.options = {
         applyAffiliationSettings(); // in popup.js
         // Affiliation settings: Extension Icon
         Browser.getBackgroundProcess().loadAffiliationIcon();
+        // Affiliation settings: Hardware features
+        self.toggleHardwareFeatures(oldAffiliationKey, newAffiliationKey);
         // Affiliation settings: Palette
-        var palette = Affiliation.org[affiliationKey].palette;
+        var palette = Affiliation.org[newAffiliationKey].palette;
         if (typeof palette !== 'undefined') {
           ls.affiliationPalette = palette;
           Palettes.load();
         }
-
-        // Check if switching from or to an affiliation with hardware features
-        var old_has_hardware = (Affiliation.org[oldAffiliation].hw ? true : false);
-        var new_has_hardware = (Affiliation.org[affiliationKey].hw ? true : false);
-        if (old_has_hardware && !new_has_hardware) {
-          self.disableHardwareFeatures();
-        }
-        else if (!old_has_hardware && new_has_hardware) {
-          self.enableHardwareFeatures();
-        }
-        // either way, change the icons shown in the office status feature
-        if (new_has_hardware) {
-          // Clear and update affiliation data
-          Affiliation.clearAffiliationData();
-          Browser.getBackgroundProcess().updateAffiliation();
-        }
       }
 
       // Affiliation news: Change news title (until overwritten by the popup.update.news function)
-      $(newsSelector + ' .title').html(Affiliation.org[affiliationKey].name);
+      $(newsSelector + ' .title').html(Affiliation.org[newAffiliationKey].name);
       // Affiliation news: Remove old news from last affiliation
       ls.removeItem('affiliationNews' + number);
       $(newsSelector + ' div.articles article').remove();
@@ -592,8 +578,31 @@ popup.options = {
       });
 
       // Track
-      Analytics.trackEvent('clickAffiliation'+number, affiliationKey);
+      Analytics.trackEvent('clickAffiliation'+number, newAffiliationKey);
     });
+  },
+
+  toggleHardwareFeatures: function(oldAffiliationKey, newAffiliationKey) {
+    // Check if switching from or to an affiliation with hardware features
+    var old_has_hardware = (Affiliation.org[oldAffiliationKey].hw ? true : false);
+    var new_has_hardware = (Affiliation.org[newAffiliationKey].hw ? true : false);
+    if (old_has_hardware && !new_has_hardware) {
+      // Disable hardware features
+      ls.coffeeSubscription = 'false';
+      $('div#todays').slideUp();
+    }
+    else if (!old_has_hardware && new_has_hardware) {
+      // Enable hardware features
+      ls.coffeeSubscription = 'true';
+      $('div#todays').slideDown();
+      Browser.getBackgroundProcess().updateStatusAndMeetings(true);
+    }
+    // either way, change the icons shown in the office status feature
+    if (new_has_hardware) {
+      // Clear and update affiliation data
+      Affiliation.clearAffiliationData();
+      Browser.getBackgroundProcess().updateAffiliation();
+    }
   },
 
   bindAffiliationNotifications: function(number) {
@@ -613,19 +622,6 @@ popup.options = {
       // Track
       Analytics.trackEvent('clickShowNotifications' + number, this.checked);
     });
-  },
-
-  disableHardwareFeatures: function() {
-    ls.coffeeSubscription = 'false';
-    $('div#todays').slideUp();
-  },
-
-  enableHardwareFeatures: function(quick) {
-    ls.coffeeSubscription = 'true';
-    $('div#todays').slideDown();
-    // FIXME this is probably overkill:
-    // // Update office status
-    // Browser.getBackgroundProcess().updateStatusAndMeetings(true);
   },
 
 };
