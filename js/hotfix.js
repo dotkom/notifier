@@ -3,7 +3,6 @@
 // RENAMING LOCALSTORAGE VARS
 // deprecating ancient naming scheme
 // REMOVE AFTER AUGUST 2015
-
 if (localStorage.affiliationFeedItems1) {
 	localStorage.affiliationNews1 = localStorage.affiliationFeedItems1;
 	localStorage.removeItem('affiliationFeedItems1');
@@ -35,12 +34,12 @@ localStorage.removeItem('officescreenLastMessage');
 // RENAMING LOCALSTORAGE VARS
 // deprecating old naming schemes
 // REMOVE AFTER SEPTEMBER 2015
-
 localStorage.removeItem('showOffice');
 localStorage.removeItem('showStatus');
 localStorage.removeItem('activelySetOffice');
 localStorage.removeItem('showAffiliation1');
 localStorage.removeItem('everOpenedOptions');
+localStorage.removeItem('busInFocus');
 
 // EXPANDING NOTIFICATIONS OPTIONS
 // changing old system into new system

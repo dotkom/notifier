@@ -219,22 +219,36 @@ popup.options = {
 
   bindBusFields: function(busField) {
     var cssSelector = '#' + busField;
-    var fadeTime = 50;
+    // console.log('Binding bus fields for ' + cssSelector);
     var self = this;
 
     var stop = $(cssSelector + ' input');
     var direction = $(cssSelector + ' select');
 
-    // Load users saved buses
-    this.loadBus(busField);
+    //
+    // Stop field -> Focus
+    //
 
     $(stop).focus(function() {
       // Clear stop field on click
       console.log('focus - clear field and show saved value as placeholder');
+      // Show suggestion sheet
+      if (busField === 'firstBus') {
+        $('div#busSuggestions').css({'left': '', 'right': '0'});
+      }
+      else {
+        $('div#busSuggestions').css({'left': '0', 'right': ''});
+      }
+      $('div#busSuggestions').slideDown();
+      // Keep the stop that has been "clicked away"
       ls.busStopClickedAway = ls[busField+'Name'];
       $(stop).val('');
       $(stop).attr('placeholder', ls.busStopClickedAway);
     });
+
+    //
+    // Stop field -> Lose focus
+    //
 
     $(stop).focusout(function() {
 
@@ -248,14 +262,18 @@ popup.options = {
         if (ls.busStopClickedAway !== null) {
           $(stop).val(ls.busStopClickedAway);
         }
-        $('#suggestions').html('');
+        self.clearSuggestions();
       }
       // 1 suggestion, go for it!
       else if (suggestions.length === 1) {
         console.log('focusout - 1 suggestion, save it');
         var correctStop = suggestions[0];
         $(stop).val(correctStop);
-        $('#suggestions').html('');
+        $('div#suggestions').html('<div class="correct">' + correctStop + '</div>');
+        // Show final bus stop in suggestion sheet for a short while
+        setTimeout(function() {
+          self.clearSuggestions();
+        }, 1500);
         self.getDirections(busField, correctStop);
         self.getFavoriteLines(busField);
         self.saveBus(busField);
@@ -264,15 +282,23 @@ popup.options = {
       else if (suggestions.length > 1) {
         console.log('focusout - several suggestions, remove them');
         setTimeout(function() {
-          $('#suggestions .suggestion').fadeOut(function() {
-            $('#suggestions').html('');
+          $('div#suggestions .suggestion').fadeOut(function() {
+            self.clearSuggestions();
+            if (ls.busStopClickedAway !== null) {
+              $(stop).val(ls.busStopClickedAway);
+            }
           });
-        }, 5000);
+        }, 500);
       }
       else {
         console.log('focusout - nothing to do');
+        $('div#busSuggestions').slideUp(); // Hide suggestion sheet
       }
     });
+
+    //
+    // Stop field -> Key up
+    //
 
     $(stop).keyup(function(event) {
 
@@ -282,51 +308,19 @@ popup.options = {
         console.log('keyup - arrow key or function key, do nothing');
       }
 
-      // If Enter is clicked, check it and save it
-      else if (event.keyCode === 13) {
-        console.log('keyup - enter, checking input');
-        var possibleStop = $(stop).val();
-        var suggestions = Stops.nameToIds(possibleStop);
-        if (suggestions.length !== 0) {
-          var realStopName = Stops.idToName(suggestions[0]);
-          $(stop).val(realStopName);
-          // then empty the suggestion list
-          $('#suggestions').html('');
-          // then show only the correct stop for a little over a second
-          var suggestion = $('<div class="correct">' + realStopName + '</div>').hide();
-          $('#suggestions').append(suggestion);
-          $(suggestion).fadeIn();
-          setTimeout(function() {
-            $('#suggestions .correct').fadeOut(fadeTime);
-            setTimeout(function() {
-              $('#suggestions').html('');
-            }, 300);
-          }, 1200);
-          // and of course, save and get directions
-          self.getDirections(busField, realStopName);
-          self.getFavoriteLines(busField);
-          self.saveBus(busField);
-        }
-      }
-
       // If anything else is clicked, get suggestions
       else {
         console.log('keyup - getting suggestions');
-        // Save the id of the bus field in focus
-        ls.busInFocus = $(stop).parent().attr('id');
         // Find the partial name
         var nameStart = $(stop).val();
 
         if (nameStart.length > 0) {
           // Suggestions
           var suggestions = Stops.partialNameToPotentialNames(nameStart);
-          $('#suggestions').html('');
+          $('div#suggestions').html('');
           for (var i in suggestions) {
             var _text = suggestions[i];
-            var suggestion = $('<div class="suggestion">' + _text + '</div>').hide();
-
-            $('#suggestions').append(suggestion);
-            $(suggestion).fadeIn();
+            $('div#suggestions').append('<div class="suggestion">' + _text + '</div>');
           }
 
           // Only one suggestion? Inject it
@@ -334,16 +328,11 @@ popup.options = {
             var correctStop = suggestions[0];
             $(stop).val(correctStop);
             $(stop).blur();
-            $('#suggestions').html('');
-            suggestion = $('<div class="correct">' + correctStop + '</div>').hide();
-            $('#suggestions').append(suggestion);
-            $(suggestion).fadeIn();
+            $('div#suggestions').html('<div class="correct">' + correctStop + '</div>');
+            // Show final bus stop in suggestion sheet for a short while
             setTimeout(function() {
-              $('#suggestions .correct').fadeOut(fadeTime);
-              setTimeout(function() {
-                $('#suggestions').html('');
-              }, 300);
-            }, 1200);
+              self.clearSuggestions();
+            }, 1500);
             self.getDirections(busField, correctStop);
             self.getFavoriteLines(busField);
             self.saveBus(busField);
@@ -351,14 +340,17 @@ popup.options = {
         }
         // All characters removed, remove suggestions
         else {
-          $('#suggestions .suggestion').fadeOut(fadeTime, function() {
-            $('#suggestions').html(''  );
-          });
+          $('div#suggestions').html(''); // Empty suggestion sheet
+          // But don't remove it, because the user still focuses on the field
         }
         // After inserting new results, rebind suggestions, making them clickable
-        self.bindSuggestions();
+        self.bindSuggestions(busField);
       }
     });
+
+    //
+    // Direction field -> Change
+    //
 
     $(direction).change(function() {
       // Get new favorite lines in case they are different, and save changes ofc
@@ -366,12 +358,13 @@ popup.options = {
       self.saveBus(busField);
     });
 
+    // Bind favorite bus lines fields as well
     this.bindFavoriteBusLines(busField);
   },
 
   bindFavoriteBusLines: function(busField) {
-    var self = this;
     var cssSelector = '#' + busField;
+    var self = this;
     // Switch status on click
     $(cssSelector + ' .lines .line').click(function() {
       // Switch status and save
@@ -386,6 +379,11 @@ popup.options = {
       }
       self.saveBus(busField);
     });
+  },
+
+  clearSuggestions: function() {
+    $('div#suggestions').html(''); // Empty suggestion sheet
+    $('div#busSuggestions').slideUp(); // Hide suggestion sheet
   },
 
   getDirections: function(busField, correctStop) {
@@ -461,80 +459,21 @@ popup.options = {
     console.log('saved activeLines for '+busField, '"', activeLines, '"');
     console.log('saved inactiveLines '+busField, '"', inactiveLines, '"');
     console.log('saved for busStopId ' + busStopId);
-    // Track? No, we're not running analytics on bus stops, it would have privacy implications.
+    // Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
   },
 
-  loadBus: function(busField) {
-    var cssSelector = '#' + busField;
-    var stopName = ls[busField + 'Name'];
-    var direction = ls[busField + 'Direction'];
-    var activeLines = ls[busField + 'ActiveLines'];
-    var inactiveLines = ls[busField + 'InactiveLines'];
-
-    // Add stopname and direction to busfields
-    if (typeof stopName !== 'undefined' && typeof direction !== 'undefined') {
-      $(cssSelector + ' input').val(stopName);
-      $(cssSelector + ' select').val(direction);
-      // console.log('loaded "' + stopName + '" to "' + busField + '"');
-    }
-
-    // Add active and inactive lines to busfields
-    if (typeof activeLines !== 'undefined' && typeof inactiveLines !== 'undefined') {
-      // If the page just opened and there are no favorite lines then get some
-      if (activeLines === '' && inactiveLines === '') {
-        this.getFavoriteLines(busField);
-      }
-      else {
-        activeLines = JSON.parse(activeLines); // stringified array
-        inactiveLines = JSON.parse(inactiveLines); // stringified array
-        // Collect active and inactive lines to a single dict
-        // with boolean values showing active or inactive
-        var lines = {};
-        for (var i in activeLines) {
-          var line = activeLines[i]
-          lines[line] = true;
-        }
-        for (var i in inactiveLines) {
-          var line = inactiveLines[i]
-          lines[line] = false;
-        }
-        // Sort the dict by keys (bus line numbers sorted in ascending order)
-        var keys = [];
-        for (var i in lines) {
-          keys.push(i);
-        }
-        keys = keys.sort(function(a,b) {
-          return a - b;
-        });
-        // Add lines to bus stop as a generated table
-        $(cssSelector + ' .lines').html('<table border="0" cellpadding="0" cellspacing="0"><tr>');
-        var counter = 0;
-        for (var i in keys) {
-          var i = keys[i];
-          if (counter % 4 == 0) {
-            $(cssSelector + ' .lines table').append('</tr><tr>');
-          }
-          var status = (lines[i] === true ? 'active' : 'inactive');
-          $(cssSelector + ' .lines table tr:last').append('<td class="line '+status+'">'+i+'</td>');
-          counter++;
-        }
-        $(cssSelector + ' .lines').append('</tr></table>');
-      }
-    }
-  },
-
-  bindSuggestions: function() {
+  bindSuggestions: function(busField) {
+    var self = this;
+    $('.suggestion').unbind('click');
     $('.suggestion').click(function() {
-      if (typeof ls.busInFocus !== 'undefined') {
-        var text = $(this).text();
-        $('#' + ls.busInFocus + ' input').val(text);
-        this.getDirections(ls.busInFocus, text);
-        this.getFavoriteLines(ls.busInFocus);
-        this.saveBus(ls.busInFocus);
-        $('#suggestions .suggestion').fadeOut(50, function() {
-          $('#suggestions').html('');
-        });
-      }
+      var text = $(this).text();
+      $('#' + busField + ' input').val(text);
+      self.getDirections(busField, text);
+      self.getFavoriteLines(busField);
+      self.saveBus(busField);
+      $('div#suggestions .suggestion').fadeOut(50, function() {
+        self.clearSuggestions();
+      });
     });
   },
 
