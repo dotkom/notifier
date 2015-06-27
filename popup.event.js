@@ -170,20 +170,10 @@ popup.event = {
       $("div.options").slideDown();
       // Slide away things the user doesn't need to see in options mode
       $("div#oracle").slideUp();
-      // Deal with second affiliation not being shown
-      if (ls.showAffiliation2 !== 'true') {
-        $('div#news div#full > .title').slideDown(function() {
-          $('div.articles').fadeOut(function() {
-            $('div#news div#full').attr('id', 'left');
-            setTimeout(function() {
-              $('div#news div#right').slideDown();
-            }, 200)
-          })
-        });
-      }
-      else {
-        $('div#news div.articles').slideUp();
-      }
+      // For affiliation news, options are shown only in div#left and div#right, hence div#full must slide away
+      $('div#news div#full').slideUp();
+      $('div#news div#left').slideDown();
+      $('div#news div#right').slideDown();
       // Analytics
       Analytics.trackEvent('clickEdit');
       // Note the options page as opened so that it won't be opened automatically again
@@ -203,20 +193,11 @@ popup.event = {
       $("div.content").slideDown();
       // Add back the other stuff that the user didn't need to see while in options mode
       $("div#oracle").slideDown();
-      // Deal with second affiliation not being shown
-      if (ls.showAffiliation2 !== 'true') {
-        $('div#news').fadeOut(function() {
-          $('div#news div.articles').show();
-          $('div#news div#right').hide();
-          $('div#news div#left > .title').hide();
-          $('div#news div#left').attr('id', 'full');
-          setTimeout(function() {
-            $('div#news').fadeIn();
-          }, 200);
-        });
-      }
-      else {
-        $('div#news div.articles').slideDown();
+      // For affiliation news, we must slide down the correct column and its news
+      if (ls.showAffiliation2 === 'false') {
+        $('div#news div#left').slideUp();
+        $('div#news div#right').slideUp();
+        $('div#news div#full').slideDown();
       }
       // Analytics
       Analytics.trackEvent('clickEditDone');

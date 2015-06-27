@@ -525,6 +525,9 @@ popup.options = {
         $('select#affiliationKey2').removeAttr('disabled');
         $('input#showNotifications2').removeAttr('disabled');
         $('label[for="showNotifications2"]').css('color', '');
+        // Remove old news immediately
+        $('#news #full div.content article').remove(); // NOTE: Old news was stored in #full, not #left / #right
+        // Fetch fresh news while the user is still tweaking options
         popup.update.affiliationNews('1');
         popup.update.affiliationNews('2');
       }
@@ -532,7 +535,13 @@ popup.options = {
         $('select#affiliationKey2').attr('disabled', 'disabled');
         $('input#showNotifications2').attr('disabled', 'disabled');
         $('label[for="showNotifications2"]').css('color', 'grey');
+        // Remove old news immediately
+        $('#news #left div.content article').remove(); // NOTE: Old news was stored in #left / #right, not #full
+        $('#news #right div.content article').remove(); // NOTE: Old news was stored in #left / #right, not #full
+        // Fetch fresh news while the user is still tweaking options
         popup.update.affiliationNews('1');
+        // Throw out news that won't be shown anymore
+        ls.removeItem('affiliationNews2');
       }
       // Track
       Analytics.trackEvent('clickShowAffiliation2', this.checked);
@@ -542,7 +551,10 @@ popup.options = {
   bindAffiliationSelector: function(number) {
     var isPrimaryAffiliation = (''+number === '1');
     var id = 'affiliationKey' + number;
-    var newsSelector = '#news ' + (number === '1' ? '#left' : '#right');
+    var newsSelector = 'div#news ' + (number === '1' ? 'div#left' : 'div#right');
+    if (ls.showAffiliation2 === 'false') {
+      newsSelector = 'div#news div#full';
+    }
 
     var self = this;
     $('#' + id).change(function() {
@@ -571,7 +583,7 @@ popup.options = {
       $(newsSelector + ' .title').html(Affiliation.org[newAffiliationKey].name);
       // Affiliation news: Remove old news from last affiliation
       ls.removeItem('affiliationNews' + number);
-      $(newsSelector + ' div.articles article').remove();
+      $(newsSelector + ' div.content article').remove();
       // Affiliation news: Request fresh news
       Browser.getBackgroundProcess().updateAffiliationNews(number, function() {
         popup.update.affiliationNews(number);

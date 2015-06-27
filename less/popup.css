@@ -456,6 +456,8 @@ div#tips .text a {
 }
 #container #news #full {
   position: relative;
+  display: none;
+  /* popup will determine which news columns to show */
   width: 100%;
   float: left;
 }
@@ -473,6 +475,8 @@ div#tips .text a {
 #container #news #left,
 #container #news #right {
   position: relative;
+  display: none;
+  /* popup will determine which news columns to show */
   width: 47.5%;
 }
 #container #news #left > .title,

@@ -78,14 +78,17 @@ mainLoop.intervalId = null;
   // If only one affiliation is to be shown remove the second news column
   // Also, some serious statistics
   if (ls.showAffiliation2 !== 'true') {
-    $('#news #right').hide();
-    $('#news #left').attr('id', 'full');
+    // Show correct news column(s)
+    $('#news #full').show();
     // Who uses single affiliations?
     Analytics.trackEvent('loadSingleAffiliation', ls.affiliationKey1);
     // What is the prefered primary affiliation?
     Analytics.trackEvent('loadAffiliation1', ls.affiliationKey1);
   }
   else {
+    // Show correct news column(s)
+    $('#news #left').show();
+    $('#news #right').show();
     // What kind of double affiliations are used?
     Analytics.trackEvent('loadDoubleAffiliation', ls.affiliationKey1 + ' - ' + ls.affiliationKey2);
     // What is the prefered primary affiliation?
@@ -110,7 +113,14 @@ var applyAffiliationSettings = (function() {
     var placeholder = Affiliation.org[key].placeholder;
     $('#logo').prop('src', logo);
     $('link[rel="shortcut icon"]').prop('href', icon);
-    $('#news article img').prop('src', placeholder);
+
+    // News placeholder graphics
+    if (ls.showAffiliation2 === 'true') {
+      $('div#news div#left article img').prop('src', placeholder);
+    }
+    else {
+      $('div#news div#full article img').prop('src', placeholder);
+    }
 
     // Chatter button, if applicable
     if (Affiliation.org[ls.affiliationKey1].slack) {
