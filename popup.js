@@ -108,19 +108,14 @@ var applyAffiliationSettings = (function() {
   var apply = function() {
     // Applying affiliation graphics
     var key = ls.affiliationKey1;
+    var name = Affiliation.org[key].name;
     var logo = Affiliation.org[key].logo;
     var icon = Affiliation.org[key].icon;
     var placeholder = Affiliation.org[key].placeholder;
-    $('#logo').prop('src', logo);
-    $('link[rel="shortcut icon"]').prop('href', icon);
 
-    // News placeholder graphics
-    if (ls.showAffiliation2 === 'true') {
-      $('div#news div#left article img').prop('src', placeholder);
-    }
-    else {
-      $('div#news div#full article img').prop('src', placeholder);
-    }
+    // Graphics
+    $('#logo').prop('src', logo);
+    $('link[rel="shortcut icon"]').prop('href', icon); // Favicon has no purpose, yet, but hell, we're prepared
 
     // Chatter button, if applicable
     if (Affiliation.org[ls.affiliationKey1].slack) {
@@ -143,6 +138,17 @@ var applyAffiliationSettings = (function() {
       var officeName = Affiliation.org[ls.affiliationKey1].hw.office;
       $('#todays #schedule .title').text(officeName);
       $('span[data="officeName"]').text(officeName);
+    }
+
+    // News title (also set when news updates, this is a backup for an edge case)
+    $('div#news div#left .title').text(name);
+
+    // News placeholder graphics
+    if (ls.showAffiliation2 === 'true') {
+      $('div#news div#left article img').prop('src', placeholder);
+    }
+    else {
+      $('div#news div#full article img').prop('src', placeholder);
     }
   }
 
