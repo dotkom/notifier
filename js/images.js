@@ -12,7 +12,7 @@
 // 5. Good image? Add domain URL, add HTTP, ++
 
 var Images = {
-  debug: 0,
+  debug: 1,
 
   // Possible values in options:
   // options = {
@@ -342,10 +342,12 @@ var Images = {
       return false;
     }
 
+    // Before checking keys, go lowercase (remember that we are not returning this URL anyway)
     imageUrl = imageUrl.toLowerCase();
 
     // Look for bad keys and return false if any are found
     var keys = [
+      'avatar',           // Exclude any avatars
       '.gif',             // Exclude gifs since they're most likely smilies and the likes
       'data:image/gif',   // Another way to show gifs
       '/sociable/',       // Exclude social image icons (only applies for some blogs)
