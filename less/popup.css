@@ -131,8 +131,9 @@ div#tips .text a {
   height: 100%;
   /* Using a div because the background is color shifted by the palette CSS files */
   background-image: url('/img/background-popup.png');
+  z-index: -1;
 }
-#specialNews {
+div#specialNews {
   border: 1px solid transparent;
   clear: both;
   margin: 0;
@@ -147,14 +148,30 @@ div#tips .text a {
   box-shadow: 0px 4px 10px #444;
   display: none;
 }
-#specialNews a {
+div#specialNews a {
   color: #444;
 }
-#specialNews img#closeSpecialNews {
+div#specialNews img#closeSpecialNews {
   position: relative;
   top: 1px;
   right: -18px;
   width: 10px;
+  height: auto;
+  cursor: pointer;
+}
+div#comic {
+  border: 1px solid transparent;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 1vw 2vw black;
+  display: none;
+}
+div#comic img#dailyStrip {
+  width: 96vw;
+  padding: 2vw;
   height: auto;
   cursor: pointer;
 }

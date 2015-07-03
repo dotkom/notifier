@@ -136,9 +136,10 @@ div#tips {
   height: 100%;
   /* Using a div because the background is color shifted by the palette CSS files */
   background-image: url('/img/background-popup.png');
+  z-index: -1; // This is a hack
 }
 
-#specialNews {
+div#specialNews {
   .fullbox;
   position: relative;
   background-color: bisque;
@@ -156,6 +157,23 @@ div#tips {
     top: 1px;
     right: -18px;
     width: 10px;
+    height: auto;
+    cursor: pointer;
+  }
+}
+
+div#comic {
+  .debugContainer;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 1vw 2vw black;
+  display: none;
+  img#dailyStrip {
+    width: 96vw;
+    padding: 2vw;
     height: auto;
     cursor: pointer;
   }

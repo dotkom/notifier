@@ -102,6 +102,16 @@ popup.event = {
       Analytics.trackEvent('clickColor', colors[index].capitalize());
     });
 
+    $('#comicButton').click(function() {
+      if ($('div#comic').is(':visible')) {
+        $('div#comic').slideUp();
+      }
+      else {
+        $('div#comic').slideDown();
+        Analytics.trackEvent('clickComic');
+      }
+    });
+
     $('#logo').click(function() {
       var name = Affiliation.org[ls.affiliationKey1].name;
       Analytics.trackEvent('clickLogo', name);
@@ -129,6 +139,7 @@ popup.event = {
       buttons = {
         '#editButton': 'Endre innstillinger',
         '#tipsButton': 'Om Notifier, changelog, ++',
+        '#comicButton': 'Dagens Dilbert',
         '#colorButton': 'Bytt fargepalett',
       }
       // We have to specially construct the Slack button text

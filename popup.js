@@ -184,6 +184,30 @@ var applyAffiliationSettings = (function() {
 }());
 
 //
+// Daily Comic
+// (executes itself once)
+//
+
+(function() {
+  Ajaxer.getCleanHtml({
+    url: 'http://dilbert.com',
+    success: function(data) {
+      try {
+        var img = $(data).find('pic.img-comic').eq(0).attr('src');
+        $('div#comic img#dailyStrip').attr('src', img);
+        $('div#comic').click(function() {
+          $(this).slideUp();
+        });
+      }
+      catch (err) {
+        // Doesn't matter...
+      }
+    },
+    error: function() {/* ...really, it doesn't */},
+  });
+}());
+
+//
 // DEBUG
 // (executes itself once)
 //
