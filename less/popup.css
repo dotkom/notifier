@@ -159,22 +159,6 @@ div#specialNews img#closeSpecialNews {
   height: auto;
   cursor: pointer;
 }
-div#comic {
-  border: 1px solid transparent;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 1vw 2vw black;
-  display: none;
-}
-div#comic img#dailyStrip {
-  width: 96vw;
-  padding: 2vw;
-  height: auto;
-  cursor: pointer;
-}
 /* This container keeps the content centered */
 #container {
   border: 1px solid transparent;
@@ -197,7 +181,7 @@ div#comic img#dailyStrip {
   width: 260px;
   float: left;
 }
-#container #header #buttons .popupbutton {
+#container #header #buttons .popupButton {
   height: 27px;
   width: auto;
   float: left;
@@ -207,10 +191,10 @@ div#comic img#dailyStrip {
   border: 1px solid transparent;
   -webkit-transition: box-shadow 0.2s ease-out;
 }
-#container #header #buttons .popupbutton:hover {
+#container #header #buttons .popupButton:hover {
   border: 1px solid white;
 }
-#container #header #buttons .popupbutton.glow {
+#container #header #buttons .popupButton.glow {
   /* Edit button glows discreetly while toggled */
   -webkit-animation-name: editButtonPulse;
   -webkit-animation-duration: 1.5s;

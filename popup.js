@@ -188,24 +188,28 @@ var applyAffiliationSettings = (function() {
 // (executes itself once)
 //
 
-(function() {
-  Ajaxer.getCleanHtml({
-    url: 'http://dilbert.com',
-    success: function(data) {
-      try {
-        var img = $(data).find('pic.img-comic').eq(0).attr('src');
-        $('div#comic img#dailyStrip').attr('src', img);
-        $('div#comic').click(function() {
-          $(this).slideUp();
-        });
-      }
-      catch (err) {
-        // Doesn't matter...
-      }
-    },
-    error: function() {/* ...really, it doesn't */},
-  });
-}());
+// UNCOMMENTED, see also popup.less, popup.event.js, popup.html, - search for "comic"
+
+// (function() {
+//   Ajaxer.getCleanHtml({
+//     url: 'http://www.tu.no/lunch',
+//     success: function(data) {
+//       try {
+//         console.log(data)
+//         var img = $(data).find('div#main pic').eq(0).attr('src');
+//         console.log(img)
+//         $('div#comic img#dailyStrip').attr('src', img);
+//         $('div#comic').click(function() {
+//           $(this).slideUp();
+//         });
+//       }
+//       catch (err) {
+//         // Doesn't matter...
+//       }
+//     },
+//     error: function() {/* ...really, it doesn't */},
+//   });
+// }());
 
 //
 // DEBUG

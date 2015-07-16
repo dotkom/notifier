@@ -162,22 +162,23 @@ div#specialNews {
   }
 }
 
-div#comic {
-  .debugContainer;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 1vw 2vw black;
-  display: none;
-  img#dailyStrip {
-    width: 96vw;
-    padding: 2vw;
-    height: auto;
-    cursor: pointer;
-  }
-}
+// UNCOMMENTED, see also popup.js, popup.event.js, popup.html, - search for "comic"
+// div#comic {
+//   .debugContainer;
+//   clear: both;
+//   margin: 0;
+//   padding: 0;
+//   width: 100%;
+//   background-color: white;
+//   box-shadow: 0 1vw 2vw black;
+//   display: none;
+//   img#dailyStrip {
+//     width: 96vw;
+//     padding: 1.2vw;
+//     height: auto;
+//     cursor: pointer;
+//   }
+// }
 
 /* This container keeps the content centered */
 
@@ -198,7 +199,7 @@ div#comic {
       width: 260px;
       float: left;
 
-      .popupbutton {
+      .popupButton {
         height: 27px;
         width: auto;
         float: left;
@@ -208,10 +209,10 @@ div#comic {
         border: 1px solid transparent;
         -webkit-transition: box-shadow .2s ease-out;
       }
-      .popupbutton:hover {
+      .popupButton:hover {
         border: 1px solid white;
       }
-      .popupbutton.glow {
+      .popupButton.glow {
         /* Edit button glows discreetly while toggled */
         -webkit-animation-name: editButtonPulse;
         -webkit-animation-duration: 1.5s;
