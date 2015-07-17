@@ -2,10 +2,7 @@
 
 var News = {
   debug: 0,
-  newsMinLimit: 1,
-  newsMaxLimit: 15,
   unreadMaxCount: 3, // 0-indexed like the list it its counting, actually +1
-  msgNewsLimit: 'Nyhetsantall må være et tall mellom '+this.newsMinLimit+' og '+this.newsMaxLimit,
   msgConnectionError: 'Frakoblet fra feeden til ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
   msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
@@ -26,10 +23,6 @@ var News = {
   get: function(affiliationObject, limit, callback) {
     if (typeof affiliationObject == 'undefined') {
       if (this.debug) console.error(this.msgUnsupportedFeed);
-      return;
-    }
-    if (!isNumber(limit) || (limit < 1 && 20 < limit)) {
-      if (this.debug) console.error(this.msgNewsLimit);
       return;
     }
     if (typeof callback === 'undefined') {
