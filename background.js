@@ -151,41 +151,28 @@ var updateAffiliationNews = function(number, callback) {
   var affiliation = Affiliation.org[affiliationKey];
   // Get news for this affiliation
   if (affiliation) {
-    News.get(affiliation, function(postArray) {
-      // And wouldn't you know it. postArray is an array of post objects. Thanks news.js!
-      // TODO: Can postArray be an error message?
-      // Save it
-      // TODO
-      // Call it back
-      if (typeof callback === 'function') callback(); // TODO: Callback error message
+    News.get(affiliation, function(posts) {
+      // Error message, log it maybe
+      if (typeof posts === 'string') {
+        console.error(posts);
+      }
+      // Empty news posts, don't count
+      else if (posts.length === 0) {
+        updateUnreadCount(0, 0);
+      }
+      // News is here! NEWS IS HERE! FRESH FROM THE PRESS!
+      else {
+        saveAndCountNews(posts, number);
+        updateUnreadCount();
+        fetchAndStoreImageLinks(number); // TODO: This needs to be a thing of the past
+      }
+      if (typeof callback === 'function') callback();
     });
   }
   else {
     console.error('Chosen affiliation "' + affiliationKey + '" is not known');
     if (typeof callback === 'function') callback();
   }
-
-  ///***********/// OLD BELOW
-
-
-  //   News.get(affiliationObject, newsLimit, function(items) {
-  //     // Error message, log it maybe
-  //     if (typeof items === 'string') {
-  //       console.error(items);
-  //     }
-  //     // Empty news items, don't count
-  //     else if (items.length === 0) {
-  //       updateUnreadCount(0, 0);
-  //     }
-  //     // News is here! NEWS IS HERE! FRESH FROM THE PRESS!
-  //     else {
-  //       saveAndCountNews(items, number);
-  //       updateUnreadCount();
-  //       fetchAndStoreImageLinks(number);
-  //     }
-  //     if (typeof callback === 'function') callback();
-  //   });
-
 }
 
 var saveAndCountNews = function(items, number) {
