@@ -63,9 +63,9 @@ var Affiliation = {
   //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.png
   // },
   // news: {
-  //   type: "feed",                            // "feed" or "website" (scraping), new types can be added, e.g. "facebook"
-  //   url: "http://orgx.com/feed",             // ONLY if type is "feed", must be RSS or Atom feed
-  //   get: function(callback) {},              // ONLY if type is "website" (scraping)
+  //   type: "feed",                            // types: "feed" (RSS/Atom), "json" (API), "website" (scraping)
+  //   url: "http://orgx.com/feed",             // ONLY for types "feed", "json"
+  //   get: function(callback) {},              // ONLY for types "json", "website"
 
     // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
     // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
@@ -521,7 +521,8 @@ var Affiliation = {
         memeCount: 5,
       },
       news: {
-        type: "website",
+        type: "json",
+        url: "https://online.ntnu.no/api/v0/article/all/?format=json",
         // getImages unnecessary, images are extracted in getNews
         get: function(posts, callback) {
           var self = this;

@@ -35,10 +35,17 @@ var News = {
     //
 
     if (affiliation.news.type === "website") {
+      console.info('SUPPORTED')
       // If the type is website, then use the parser function from the affiliation
       affiliation.news.get(callback);
     }
+    if (affiliation.news.type === "json") {
+      console.info('SUPPORTED')
+      // If the type is json, then use the parser function from the affiliation
+      affiliation.news.get(callback);
+    }
     else if (affiliation.news.type === "feed") {
+      console.warn('UNSUPPORTED')
       // If the type is feed, then get the feed URL and let's do this
       var feed = affiliation.news.url;
     }
