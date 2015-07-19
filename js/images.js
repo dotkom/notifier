@@ -96,8 +96,7 @@ var Images = {
     $.when.apply($, promises).then(function() {
       for (var i in arguments) {
         var html = arguments[i][0];
-        console.warn('HTML#'+i, html);
-        posts = self.parseForImages(html, posts, affiliation);
+        posts[i] = self.parseForImages(html, posts[i], affiliation);
       }
       callback(posts);
     }, function(e) {
@@ -107,7 +106,8 @@ var Images = {
 
   },
 
-  parseForImages: function(html, posts, affiliation) {
+  parseForImages: function(html, post, affiliation) {
+  // parseForImages: function(html, posts, affiliation) {
 
     // Create empty object to avoid crashes when looking up undefined props of undefined object
     var options = affiliation.news.imageOptions || {};
@@ -120,9 +120,9 @@ var Images = {
     // Decide which selector to use for identifying news containers
     var newsSelector = this.findNewsSelector(doc, options);
 
-    for (var i in posts) {
+    // for (var i in posts) {
 
-      var link = posts[i].link;
+      var link = post.link;
 
       //
       // Simplify link
@@ -237,9 +237,11 @@ var Images = {
       if (self.debug) console.log('Images: All done, pushing', image);
 
       // // Store it
-      posts[i].image = image;
-    }
-    return posts;
+      // posts[i].image = image;
+      post.image = image;
+    // }
+    return post;
+    // return posts;
     // callback(posts);
   },
 

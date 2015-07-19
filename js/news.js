@@ -107,6 +107,7 @@ var News = {
       success: function(website) {
         // Now we have fetched the website, time to scrape for posts
         affiliation.news.scrape(website, self.newsLimit, affiliation, function(posts) {
+          // TODO: Smørekoppen requires image fetching on top of this ///////////////////////
           // Now we have the scraped posts, time to postprocess them
           for (var i in posts) {
             posts[i] = self.postProcess(posts[i], affiliation);
