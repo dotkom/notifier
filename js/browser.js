@@ -2,8 +2,8 @@
 
 var Browser = {
   debug: 0,
-  msgCallbackMissing: 'Callback is missing',
-  msgUnsupported: 'Unsupported browser',
+  msgCallbackMissing: 'Callback er påkrevd',
+  msgUnsupported: 'Nettleseren støttes ikke',
 
   name: 'Unknown', // Changed automatically at the end of this file with Browser.detect()
   version: 0,
