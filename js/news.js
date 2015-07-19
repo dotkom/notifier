@@ -1,12 +1,12 @@
 "use strict";
 
 var News = {
-  debug: 0,
   msgAffiliationRequired: 'Tilhørighet må spesifiseres',
   msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
   msgCallbackRequired: 'Callback er påkrevd',
   newsLimit: 10, // Get more news than needed to check for old news that have been updated
   //// IN USE ABOVE
+  debug: 0,
   unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
   msgConnectionError: 'Frakoblet fra feeden til ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
@@ -22,6 +22,8 @@ var News = {
   },
 
   get: function(affiliation, callback) {
+    // News.get() is called by the background page periodically,
+    // with News.unreadCount as callback. // TODO: Check that
     if (typeof affiliation === 'undefined') {
       console.error(this.msgAffiliationRequired);
       return;
@@ -62,12 +64,14 @@ var News = {
 
 
     // fetch news
-    //   Website / Json
-    //     Scrape images! LOL DONE!
+    //   Website
+    //     Scraping, finds images too
+    //   Json
+    //     Parsing, finds images too
     //   Feed
-    //     if (Images in feed?)
-    //       LOL DONE!
-    //     else
+    //     if Feed with images:
+    //       Parsing, finds images too
+    //     else Feed without images:
     //       // getImagesFromFrontPage ( params )
     //       //  done.
     //       getImageByImageFromArticles ( params )
@@ -92,12 +96,20 @@ var News = {
   },
 
   fetchWebsite: function(affiliation, callback) {
-    // Scrape the organization's website and use the affiliation's parser
     var self = this;
+    // Fetch the organization's website
     Ajaxer.getCleanHtml({
       url: affiliation.web,
       success: function(website) {
-        affiliation.news.parse(website, self.newsLimit, callback);
+        // Now we have fetched the website, time to scrape for posts
+        affiliation.news.scrape(website, self.newsLimit, function(posts) {
+          // Now we have the scraped posts, time to postprocess them
+          for (var i in posts) {
+            posts[i] = self.postProcess(posts[i], affiliation);
+          }
+          // Now that posts have been fetched, scraped and postprocessed, time to send them back
+          callback(posts);
+        });
       },
       error: function(e) {
         console.error('Could not fetch ' + affiliation.name + ' website');
@@ -106,12 +118,20 @@ var News = {
   },
 
   fetchJson: function(affiliation, callback) {
-    // Get JSON from the organization's API and use the affiliation's parser
     var self = this;
+    // Fetch JSON from the organization's API
     Ajaxer.getJson({
       url: affiliation.news.url,
       success: function(json) {
-        affiliation.news.parse(json, self.newsLimit, callback);
+        // Now we have fetched the JSON, time to parse it
+        affiliation.news.parse(json, self.newsLimit, function(posts) {
+          // Now we have the parsed news items, time to postprocess them
+          for (var i in posts) {
+            posts[i] = self.postProcess(posts[i], affiliation);
+          }
+          // Now that posts have been fetched, parsed and postprocessed, time to send them back
+          callback(posts);
+        });
       },
       error: function(e) {
         console.error('Could not fetch from ' + affiliation.name + ' JSON API');
@@ -119,66 +139,31 @@ var News = {
     });
   },
 
-  fetchFeed: function() {},
+  fetchFeed: function(affiliation, callback) {
+    var self = this;
+    // Fetch RSS or Atom feed
+    Ajaxer.getXml({
+      url: affiliation.news.feed,
+      success: function(xml) {
+        self.parseFeed(xml, affiliation, limit, callback);
+      },
+      error: function(jqXHR, text, err) {
+        // Misconfigured servers will send XML with HTML headers
+        if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
+          xml = jqXHR.responseText;
+          self.parseFeed(xml, affiliation, limit, callback);
+        }
+        // Else, actual error
+        else {
+          console.error(self.msgConnectionError + ": " + affiliation.name);
+          callback(self.msgConnectionError + affiliation.name);
+        }
+      },
+    });
+  },
 
   ///////////////////////////////////////// OLD //////////////////////////////////////////
 
-  // Get is called by background.html periodically, with News.unreadCount as
-  // callback. Fetchfeed is also called by popup.html when requested, but
-  // without the callback as we already know the amount of unread posts.
-  get2: function() {
-
-
-    var self = this;
-    // Get news the regular way (RSS or Atom feeds)
-    if (typeof affiliationObject.feed !== 'undefined') {
-      Ajaxer.getXml({
-        url: affiliationObject.feed,
-        success: function(xml) {
-          self.parseFeed(xml, affiliationObject, limit, callback);
-        },
-        error: function(jqXHR, text, err) {
-          // Check for XML sent with HTML headers
-          if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
-            xml = jqXHR.responseText;
-            self.parseFeed(xml, affiliationObject, limit, callback);
-          }
-          else {
-            if (self.debug) console.error(self.msgConnectionError + ": " + affiliationObject.name);
-            callback(self.msgConnectionError + affiliationObject.name);
-          }
-        },
-      });
-    }
-    
-    // Get news the irregular way, through a getNews function defined in the affiliation object
-    else if (affiliationObject.getNews) {
-      
-      // Empty preprocessed array for posts
-      var posts = [];
-      for (var i = 0; i < limit; i++) {
-        var post = {};
-        post = this.preProcess(post, affiliationObject);
-        posts.push(post);
-      }
-      
-      // Get news posts
-      affiliationObject.getNews(posts, function(newPosts) {
-        
-        // Strip away any empty posts
-        for (var i = newPosts.length - 1; i >= 0; i--)
-          if (typeof newPosts[i].title == 'undefined')
-            newPosts.splice(i, 1);
-        
-        // Postprocessing of newPosts
-        for (var i in newPosts)
-          newPosts[i] = self.postProcess(newPosts[i], affiliationObject);
-
-        callback(newPosts);
-      });
-    }
-
-  },
 
   // Need to know about the news feeds used in Online Notifier:
   // These RSS fields are always used:
@@ -232,7 +217,7 @@ var News = {
 
   parseRssItem: function(item, affiliationObject) {
     var post = {};
-    post = this.preProcess(post, affiliationObject);
+    // post = this.preProcess(post, affiliationObject);
 
     // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes. Yes I have." - MrClean
 
@@ -343,7 +328,7 @@ var News = {
 
   parseAtomEntry: function(entry, affiliationObject) {
     var post = {};
-    post = this.preProcess(post, affiliationObject);
+    // post = this.preProcess(post, affiliationObject);
 
     // Title field
     post.title = $(entry).find("title").filter(':first').text();
@@ -379,19 +364,29 @@ var News = {
     return post;
   },
 
-  // Applies for both RSS and ATOM feeds
-  preProcess: function(post, affiliationObject) {
-    // Tag the posts with the key, name and placeholder image of the feed they came from
-    post.feedKey = affiliationObject.key;
-    post.feedName = affiliationObject.name;
-    post.image = affiliationObject.placeholder;
-    return post;
-  },
+  // // Applies for both RSS and ATOM feeds
+  // preProcess: function(post, affiliationObject) {
+  //   // Tag the posts with the key, name and placeholder image of the feed they came from
+  //   post.feedKey = affiliationObject.key;
+  //   post.feedName = affiliationObject.name;
+  //   post.image = affiliationObject.placeholder;
+  //   return post;
+  // },
 
   // Applies for both RSS and ATOM feeds
   postProcess: function(post, affiliationObject) {
 
+    //
+    // Tag the post
+    //
+
+    // Tag the posts with the key and name of the source affiliation
+    post.feedKey = affiliationObject.key;
+    post.feedName = affiliationObject.name;
+
+    //
     // Image field
+    //
 
     // If we haven't found a good image, scour the description for an alternative, arrrr
     // NOTE: This must be done before HTML is removed during postprocessing of the description! (look below)
@@ -407,11 +402,15 @@ var News = {
       post.image = affiliationObject.placeholder;
     }
 
+    //
     // Title field
+    //
 
     post.title = this.treatTextField(post.title, this.msgNoTitle);
 
+    //
     // Link field
+    //
 
     // Trim link either way
     post.link = post.link.trim(); // This is muy importanté for everything to work well later on
@@ -419,7 +418,9 @@ var News = {
     // this can help users avoid one step while navigating to links via Notifier
     post.altLink = this.checkDescriptionForAltLink(post.description);
 
+    //
     // Description field
+    //
 
     post.description = this.treatTextField(post.description, this.msgNoDescription);
     // Remove HTML from description (must be done AFTER checking for CDATA tags)
@@ -427,7 +428,9 @@ var News = {
     post.description = post.description.replace(/<[^>]*>/g, ''); // Tags
     // post.description = post.description.replace(/&(#\d+|\w+);/g, ''); // Entities, this works, but ppl should be allowed to use entitites
 
+    //
     // Creator field
+    //
 
     // Didn't find a creator, set the feedname as creator
     if (post.creator == undefined || post.creator.length == 0)
@@ -440,11 +443,17 @@ var News = {
     if (post.creator != affiliationObject.name)
       post.creator = this.abbreviateName(post.creator);
 
+    //
     // Date field
+    //
 
     // In case pubDate didn't exist, set to null
     if (post.date == '')
       post.date = null;
+
+    //
+    // Done
+    //
 
     return post;
   },
