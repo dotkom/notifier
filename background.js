@@ -24,7 +24,11 @@ var mainLoop = function(force) {
     iteration = 0;
   else
     iteration++;
-}
+};
+
+//
+// Status (office status, meetings, and servant for affiliation)
+//
 
 var updateAffiliation = function(callback) {
   console.log('updateAffiliation');
@@ -80,7 +84,11 @@ var updateStatusAndMeetings = function(force, callback) {
     Browser.setTitle(today);
   }
   if (typeof callback === 'function') callback();
-}
+};
+
+//
+// Coffee
+//
 
 var updateCoffeeSubscription = function(callback) {
   console.log('updateCoffeeSubscription');
@@ -128,7 +136,11 @@ var updateCoffeeSubscription = function(callback) {
   catch (e) {
     console.error(e);
   }
-}
+};
+
+//
+// Cantina
+//
 
 var updateCantinas = function(callback) {
   console.log('updateCantinas');
@@ -142,7 +154,11 @@ var updateCantinas = function(callback) {
       if (typeof callback === 'function') callback();
     });
   });
-}
+};
+
+//
+// Affiliation news
+//
 
 var updateAffiliationNews = function(number, callback) {
   console.log('updateAffiliationNews'+number);
@@ -173,7 +189,7 @@ var updateAffiliationNews = function(number, callback) {
     console.error('Chosen affiliation "' + affiliationKey + '" is not known');
     if (typeof callback === 'function') callback();
   }
-}
+};
 
 var saveAndCountNews = function(items, number) {
   var feedItems = 'affiliationNews' + number;
@@ -185,13 +201,13 @@ var saveAndCountNews = function(items, number) {
   var list = JSON.parse(ls[newsList]);
   ls[unreadCount] = News.countNewsAndNotify(items, list, lastNotified);
   ls[newsList] = News.refreshNewsList(items);
-}
+};
 
 var updateUnreadCount = function(count1, count2) {
   // TODO: Tag all news with a "read" boolean, use this for counting and showing which news are unread
   var unreadCount = (Number(ls.affiliationUnreadCount1)) + (Number(ls.affiliationUnreadCount2));
   Browser.setBadgeText(String(unreadCount));
-}
+};
 
 var fetchAndStoreImageLinks = function(number) {
   var key = ls['affiliationKey'+number];
@@ -223,37 +239,59 @@ var fetchAndStoreImageLinks = function(number) {
       ls.storedImages = JSON.stringify(storedImages);
     });
   }
-}
+};
 
-var loadAffiliationIcon = function() {
-  var key = ls.affiliationKey1;
-  // Set badge icon
-  var icon = Affiliation.org[key].icon;
-  Browser.setIcon(icon);
-  // Set badge title
-  var name = Affiliation.org[key].name;
-  Browser.setTitle(name + ' Notifier');
-}
+//
+// Prepare Affiliations
+// (must run before other affiliation things!)
+// (executes itself once)
+//
 
-// Document ready, go!
-$(document).ready( function() {
-  // Clear values that should start empty
+(function prepareAffiliations() {
+  // Clears values that should start empty
   Affiliation.clearAffiliationData();
-
   // Check if both current affiliations still exist, reset if not
   var keys = Object.keys(Affiliation.org);
   Defaults.resetAffiliationsIfNotExist(ls.affiliationKey1, ls.affiliationKey2, keys);
-
   // Turn off hardwarefeatures if they're not available
   var isAvailable = (Affiliation.org[ls.affiliationKey1].hardware ? true : false);
   Defaults.setHardwareFeatures(isAvailable);
+}());
 
-  loadAffiliationIcon();
+//
+// Load Affiliation Icon
+// (executes itself once)
+//
 
+(function loadAffiliationIcon() {
+  var loadAffiliationIcon = function() {
+    var key = ls.affiliationKey1;
+    // Set badge icon
+    var icon = Affiliation.org[key].icon;
+    Browser.setIcon(icon);
+    // Set badge title
+    var name = Affiliation.org[key].name;
+    Browser.setTitle(name + ' Notifier');
+  }
+}());
+
+//
+// Browser Setup
+// (executes itself once)
+//
+
+(function browserSetup() {
   Browser.bindCommandHotkeys();
   Browser.registerNotificationListeners();
   Browser.bindOmniboxToOracle();
+}());
 
+//
+// Daily Statistics
+// (executes itself once)
+//
+
+(function dailyStatistics() {
   // Send some basic statistics once a day
   setInterval( function() {
     // App version is interesting
@@ -272,6 +310,13 @@ $(document).ready( function() {
       Analytics.trackEvent('affiliation2', ls.affiliationKey2);
     }
   }, 1000 * 60 * 60 * 24);
+}());
+
+//
+// Document ready function
+//
+
+$(document).ready( function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
