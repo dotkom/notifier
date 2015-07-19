@@ -2,10 +2,13 @@
 
 var News = {
   debug: 0,
-  unreadMaxCount: 3, // 0-indexed like the list it its counting, actually +1
+  msgAffiliationRequired: 'Tilhørighet må spesifiseres',
+  msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
+  msgCallbackRequired: 'Callback er påkrevd',
+  //// IN USE ABOVE
+  unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
   msgConnectionError: 'Frakoblet fra feeden til ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
-  msgCallbackRequired: 'Callback er påkrevd, legg resultatene inn i DOMen',
   msgNoNewsSource: 'Ingen nyhetskilde funnet for valgt tilhørightet',
   msgNoTitle: 'Uten tittel',
   msgNoDescription: 'Uten tekst',
@@ -17,10 +20,70 @@ var News = {
       ls.showNotifications2 = 'true';
   },
 
+  get: function(affiliation, callback) {
+    if (typeof affiliation === 'undefined') {
+      console.error(this.msgAffiliationRequired);
+      return;
+    }
+    if (typeof callback === 'undefined') {
+      console.error(this.msgCallbackRequired);
+      return;
+    }
+
+    //
+    // Find out how we are going to get news for this affiliation
+    //
+
+    if (affiliation.news.type === "website") {
+      // If the type is website, then use the parser function from the affiliation
+      affiliation.news.get(callback);
+    }
+    else if (affiliation.news.type === "feed") {
+      // If the type is feed, then get the feed URL and let's do this
+      var feed = affiliation.news.url;
+    }
+    else {
+      console.error(this.msg);
+      return;
+    }
+
+
+
+
+    // fetch news
+    //   Website
+    //     Scrape images! LOL DONE!
+    //   Feed
+    //     if (Images in feed?)
+    //       LOL DONE!
+    //     else
+    //       // getImagesFromFrontPage ( params )
+    //       //  done.
+    //       getImageByImageFromArticles ( params )
+    //         ugh.... done.
+
+    // How to store?
+    //   Store together with news in article-array
+    //    [
+    //      {
+    //       title: "noe"
+    //       link: "noe"
+    //       image: "noe"
+    //       description: "noe"
+    //       author: "noe"
+    //       altlink: <dropp>
+    //      },
+    //      and so on
+    //   ]
+
+
+
+  },
+
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
-  get: function(affiliationObject, limit, callback) {
+  get2: function(affiliationObject, limit, callback) {
     if (typeof affiliationObject == 'undefined') {
       if (this.debug) console.error(this.msgUnsupportedFeed);
       return;
@@ -306,7 +369,7 @@ var News = {
       }
     }
     else {
-      post.image = Affiliation.org[affiliationObject.key].placeholder;
+      post.image = affiliationObject.placeholder;
     }
 
     // Title field
