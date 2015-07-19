@@ -133,9 +133,7 @@ var Images = {
     // };
 
     // Create empty object to avoid crashes when looking up undefined props of undefined object
-    if (options == undefined) {
-      options = {};
-    }
+    options = options || {};
 
     // Single link?
     var url = affiliation.web;
