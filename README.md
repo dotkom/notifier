@@ -137,8 +137,8 @@ People
 
 Project lead (chronologically descending)
 
-- *New lead developer coming* is the current lead developer
-- Michael Johansen was the lead developer of Notifier from 2012 - 2015
+- *(New lead developer coming)* is the current lead developer
+- Michael Johansen was the lead developer of Notifier from v1.0 in 2012 to v5.0 in 2015
 
 Credz to (chronologically descending)
 
