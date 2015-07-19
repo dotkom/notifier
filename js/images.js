@@ -333,8 +333,9 @@ var Images = {
   control: function(imageUrl) {
     if (this.debug) console.log('Images: Controlling image url "'+imageUrl+'"');
     
-    // This function is primarily used by news.js for controlling the goodness
-    // of image URLs found in items that contain HTML descriptions (in RSS feeds)
+    // This function is primarily used by news.js for controlling the goodness of
+    // image URLs found in items that contain HTML descriptions (in RSS/Atom feeds)
+
     if (isEmpty(imageUrl)) {
       if (this.debug) console.error('Images.control() received empty imageUrl');
       return false;
@@ -347,7 +348,7 @@ var Images = {
     var keys = [
       'avatar',           // Exclude any avatars
       '.gif',             // Exclude gifs since they're most likely smilies and the likes
-      'data:image/gif',   // Another way to show gifs
+      'data:image/gif',   // Exclude gifs in this form as well
       '/sociable/',       // Exclude social image icons (only applies for some blogs)
       '/static/',         // Exclude static content, most likely icons
       '/comments/',       // Exclude comments, most likely text in image as "Add comment here"
@@ -355,7 +356,7 @@ var Images = {
     for (var i in keys) {
       var str = keys[i];
       if (imageUrl.indexOf(str) !== -1) {
-        if (this.debug) console.log('Images: Image url was bad, contained "'+str);
+        if (this.debug) console.warn('Images: Image url was bad, contained "' + str + '"');
         return false;
       }
     }
@@ -363,11 +364,11 @@ var Images = {
     // Look for proper formats and return false if none are used
     var formats = new RegExp('(png|jpe?g|bmp|svg)$', 'gi');
     if (imageUrl.match(formats) === null) {
-      if (this.debug) console.log('Images: Image url was bad, was not a proper format');
+      if (this.debug) console.warn('Images: Image url was bad, was not a proper format');
       return false;
     }
 
-    if (this.debug) console.log('Images: Image url deemed OK');
+    if (this.debug) console.info('Images: Image url deemed OK');
     // Control out
     return true;
   },

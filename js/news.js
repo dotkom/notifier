@@ -36,7 +36,7 @@ var News = {
 
     // Fetching news and images for an arbitrary number of affiliations
     // who are using arbitrary website solutions, feeds and APIs is a
-    // highly complex task with lots and lots of edge cases.
+    // complex task with _lots_ of edge cases.
     //
     // Therefore it is _critical_ to understand what goes on here.
     // Fortunately, it is rather simple when boiled down to pseudo code:
@@ -74,8 +74,7 @@ var News = {
       }
       case "feed": {
         console.info('FEED', affiliation.name.toUpperCase())
-        // If the type is feed, then get the feed URL and let's do this
-        var feed = affiliation.news.url;
+        this.fetchFeed(affiliation, callback);
         break;
       }
       default: {
@@ -150,13 +149,13 @@ var News = {
     Ajaxer.getXml({
       url: affiliation.news.feed,
       success: function(xml) {
-        self.parseFeed(xml, affiliation, limit, callback);
+        self.parseFeed(xml, affiliation, self.newsLimit, callback);
       },
       error: function(jqXHR, text, err) {
         // Misconfigured servers will send XML with HTML headers
         if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
           xml = jqXHR.responseText;
-          self.parseFeed(xml, affiliation, limit, callback);
+          self.parseFeed(xml, affiliation, self.newsLimit, callback);
         }
         // Else, actual error
         else {
@@ -189,7 +188,7 @@ var News = {
   // - link[rel="self"] - is this entry in XML format, useless
   // - link[rel="alternate"] - is the entry as text/html, good!
   // - author -> name - name is a subtag of the author tag
-  parseFeed: function(xml, affiliationObject, limit, callback) {
+  parseFeed: function(xml, affiliation, limit, callback) {
     var posts = [];
     var self = this;
     var count = 0;
@@ -197,27 +196,28 @@ var News = {
     if ($(xml).find('item').length != 0) {
       $(xml).find('item').each( function() {
         if (count++ < limit) {
-          var item = self.parseRssItem(this, affiliationObject);
+          var item = self.parseRssItem(this, affiliation);
           posts.push(item);
         }
       });
+      callback(posts);
     }
     // Add each Atom entry
     else if ($(xml).find('entry').length != 0) {
       $(xml).find('entry').each( function() {
         if (count++ < limit) {
-          var entry = self.parseAtomEntry(this, affiliationObject);
+          var entry = self.parseAtomEntry(this, affiliation);
           posts.push(entry);
         }
       });
+      callback(posts);
     }
     else {
       console.error(this.msgUnknownFeedType);
     }
-    callback(posts);
   },
 
-  parseRssItem: function(item, affiliationObject) {
+  parseRssItem: function(item, affiliation) {
     var post = {};
 
     //
@@ -308,7 +308,7 @@ var News = {
         encodedContent = $(item).find("encoded").filter(':first').text();
       }
       if (encodedContent !== '') {
-        post.image = this.checkDescriptionForImageLink(post.image, encodedContent, affiliationObject.web);
+        post.image = this.checkDescriptionForImageLink(post.image, encodedContent, affiliation.web);
       }
       // Samfundet uses this little trick to get images in their feed
       var linkEnclosure = $(item).find('link[rel="enclosure"]').filter(':first');
@@ -336,11 +336,11 @@ var News = {
     // Done
     //
 
-    post = this.postProcess(post, affiliationObject);
+    post = this.postProcess(post, affiliation);
     return post;
   },
 
-  parseAtomEntry: function(entry, affiliationObject) {
+  parseAtomEntry: function(entry, affiliation) {
     var post = {};
 
     // Title field
@@ -373,7 +373,7 @@ var News = {
       post.date = null;
     }
 
-    post = this.postProcess(post, affiliationObject);
+    post = this.postProcess(post, affiliation);
     return post;
   },
 
