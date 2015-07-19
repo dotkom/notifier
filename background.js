@@ -180,7 +180,7 @@ var updateAffiliationNews = function(number, callback) {
       else {
         saveAndCountNews(posts, number);
         updateUnreadCount();
-        fetchAndStoreImageLinks(number); // TODO: This needs to be a thing of the past
+        // fetchAndStoreImageLinks(number); // TODO: This needs to be a thing of the past ////////////
       }
       if (typeof callback === 'function') callback();
     });
@@ -209,37 +209,37 @@ var updateUnreadCount = function(count1, count2) {
   Browser.setBadgeText(String(unreadCount));
 };
 
-var fetchAndStoreImageLinks = function(number) {
-  var key = ls['affiliationKey'+number];
-  var newsList = JSON.parse(ls['affiliationNewsList'+number]);
-  // If the organization has it's own getImage function, use it
-  if (Affiliation.org[key].getImage !== undefined) {
-    for (var i in newsList) {
-      var link = newsList[i];
-      // It's important to get the link from the callback within the function below,
-      // not the above code, - because of race conditions mixing up the news posts, async ftw.
-      Affiliation.org[key].getImage(link, function(link, image) {
-        if (null !== image[0]) {
-          var storedImages = JSON.parse(ls.storedImages);
-          storedImages[link] = image[0];
-          ls.storedImages = JSON.stringify(storedImages);
-        }
-      });
-    }
-  }
-  // If the organization has it's own getImages (plural) function, use it
-  if (Affiliation.org[key].getImages !== undefined) {
-    Affiliation.org[key].getImages(newsList, function(links, images) {
-      var storedImages = JSON.parse(ls.storedImages);
-      for (var i in links) {
-        if (null !== images[i]) {
-          storedImages[links[i]] = images[i];
-        }
-      }
-      ls.storedImages = JSON.stringify(storedImages);
-    });
-  }
-};
+// var fetchAndStoreImageLinks = function(number) {
+//   var key = ls['affiliationKey'+number];
+//   var newsList = JSON.parse(ls['affiliationNewsList'+number]);
+//   // If the organization has it's own getImage function, use it
+//   if (Affiliation.org[key].getImage !== undefined) {
+//     for (var i in newsList) {
+//       var link = newsList[i];
+//       // It's important to get the link from the callback within the function below,
+//       // not the above code, - because of race conditions mixing up the news posts, async ftw.
+//       Affiliation.org[key].getImage(link, function(link, image) {
+//         if (null !== image[0]) {
+//           var storedImages = JSON.parse(ls.storedImages);
+//           storedImages[link] = image[0];
+//           ls.storedImages = JSON.stringify(storedImages);
+//         }
+//       });
+//     }
+//   }
+//   // If the organization has it's own getImages (plural) function, use it
+//   if (Affiliation.org[key].getImages !== undefined) {
+//     Affiliation.org[key].getImages(newsList, function(links, images) {
+//       var storedImages = JSON.parse(ls.storedImages);
+//       for (var i in links) {
+//         if (null !== images[i]) {
+//           storedImages[links[i]] = images[i];
+//         }
+//       }
+//       ls.storedImages = JSON.stringify(storedImages);
+//     });
+//   }
+// };
 
 //
 // Prepare Affiliations
