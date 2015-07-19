@@ -87,6 +87,36 @@ var News = {
 
   },
 
+  fetchWebsite: function(affiliation, callback) {
+    var self = this;
+    Ajaxer.getCleanHtml({
+      url: affiliation.web,
+      success: function(website) {
+        affiliation.news.parse(website, callback);
+      },
+      error: function(e) {
+        console.error('Could not fetch ' + affiliation.name + ' website');
+      },
+    });
+  },
+
+  fetchJson: function() {
+    var self = this;
+    Ajaxer.getJson({
+      url: affiliation.news.url,
+      success: function(json) {
+        affiliation.news.parse(json, callback);
+      },
+      error: function(e) {
+        console.error('Could not fetch from ' + affiliation.name + ' JSON API');
+      },
+    });
+  },
+
+  fetchFeed: function() {},
+
+  ///////////////////////////////////////// OLD //////////////////////////////////////////
+
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.

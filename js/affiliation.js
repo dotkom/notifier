@@ -38,34 +38,34 @@ var Affiliation = {
   // name: 'Organization X',
   // key: 'orgx',
   // web: 'https://orgx.com',
-  // feed: 'https://orgx.com/feed',             // ALTERNATIVE: Use either 'feed' or 'getNews', not both
-  // logo: './org/orgx/logo.png',               // 512x128 transparent white logo, for dark backgrounds
-  // icon: './org/orgx/icon.png',               //  76x76  transparent icon, for extension icon
-  // symbol: './org/orgx/symbol.png',           // 256x256 transparent symbol, big version of the icon with ~20% empty padding
-  // placeholder: './org/orgx/placeholder.png', // 512x256 placeholder, used when news images is loading, standard was previously 512x384
-  // sponsor: './org/orgx/sponsor.png',         // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
-  // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
-  // palettePath: './org/orgx/palette.css',     // OPTIONAL: Path to the special palette
-  // useAltLink: true,                          // OPTIONAL: Search each news post for alternative link to use?
-  // slack: 'https://orgx.slack.com/signup',    // OPTIONAL: add Slack button to the popup
-  // hardware: {                                // OPTIONAL: Has hardwarefeatures?
-  //   office: "orgxkontoret",                  // OPTIONAL: Friendly name for the affiliation office
+  // feed: 'https://orgx.com/feed',               // ALTERNATIVE: Use either 'feed' or 'getNews', not both
+  // logo: './org/orgx/logo.png',                 // 512x128 transparent white logo, for dark backgrounds
+  // icon: './org/orgx/icon.png',                 //  76x76  transparent icon, for extension icon
+  // symbol: './org/orgx/symbol.png',             // 256x256 transparent symbol, big version of the icon with ~20% empty padding
+  // placeholder: './org/orgx/placeholder.png',   // 512x256 placeholder, used when news images is loading, standard was previously 512x384
+  // sponsor: './org/orgx/sponsor.png',           // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
+  // palette: 'orgx',                             // The color palette to use, if special palette exists use orgx-key
+  // palettePath: './org/orgx/palette.css',       // OPTIONAL: Path to the special palette
+  // useAltLink: true,                            // OPTIONAL: Search each news post for alternative link to use?
+  // slack: 'https://orgx.slack.com/signup',      // OPTIONAL: add Slack button to the popup
+  // hardware: {                                  // OPTIONAL: Has hardwarefeatures?
+  //   office: "orgxkontoret",                    // OPTIONAL: Friendly name for the affiliation office
   //   statusIcons: {
   //     open: './org/orgx/icon.png',
   //     closed: './org/orgx/icon.png',
   //     meeting: './org/orgx/icon.png',
   //   },
-  //   statusMessages: {                        // OPTIONAL: separate statusmessages for this affiliation's office
+  //   statusMessages: {                          // OPTIONAL: separate statusmessages for this affiliation's office
   //     open: 'Velkommen inn!',
   //     closed: 'Få tilgang av kontorsjef',
   //     meeting: 'Kontoret er helt opptatt!',
   //   },
-  //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.png
+  //   memePath: './org/orgx/meme/',              // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.png
   // },
   // news: {
-  //   type: "feed",                            // types: "feed" (RSS/Atom), "json" (API), "website" (scraping)
-  //   url: "http://orgx.com/feed",             // ONLY for types "feed", "json"
-  //   get: function(callback) {},              // ONLY for types "json", "website"
+  //   type: "feed",                              // types: "feed" (RSS/Atom), "json" (API), "website" (scraping)
+  //   url: "http://orgx.com/feed",               // ONLY for types "feed", "json"
+  //   parse: function(affiliation, callback) {}, // ONLY for types "json", "website"
 
     // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
     // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
@@ -77,7 +77,9 @@ var Affiliation = {
 
   org: {
 
+    //
     // DEBUG, a debug affiliation that fetches data from Notiwire when DEBUG is enabled
+    //
 
     'DEBUG': {
       name: 'DEBUG',
@@ -106,7 +108,9 @@ var Affiliation = {
       },
     },
 
+    //
     // Linjeforeninger Gløshaugen
+    //
     
     'abakus': {
       name: 'Abakus',
@@ -523,8 +527,7 @@ var Affiliation = {
       news: {
         type: "json",
         url: "https://online.ntnu.no/api/v0/article/all/?format=json",
-        // getImages unnecessary, images are extracted in getNews
-        get: function(posts, callback) {
+        parse: function(callback) {
           var self = this;
           Ajaxer.getJson({
             url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
@@ -562,6 +565,7 @@ var Affiliation = {
             },
           });
         },
+        // getImages unnecessary, images are extracted in getNews
       },
     },
 
@@ -844,7 +848,9 @@ var Affiliation = {
       },
     },
 
+    //
     // Linjeforeninger Dragvoll
+    //
 
     'communitas': {
       name: 'Communitas',
@@ -1150,7 +1156,9 @@ var Affiliation = {
       // images extract from feed item description
     },
 
+    //
     // Linjeforeninger HiST/DMMH/TJSF/BI
+    //
 
     'kom': {
       name: 'KOM',
@@ -1390,7 +1398,9 @@ var Affiliation = {
       },
     },
 
+    //
     // Studentmedier
+    //
 
     'dusken': {
       name: 'Dusken.no',
@@ -1451,7 +1461,9 @@ var Affiliation = {
       },
     },
 
+    //
     // Store studentorganisasjoner
+    //
 
     'samfundet': {
       name: 'Studentersamfundet',
@@ -1466,7 +1478,9 @@ var Affiliation = {
       // getImages unnecessary, Samfundet uses <link>-tag for images
     },
 
+    //
     // Studentdemokrati
+    //
 
     'velferdstinget': {
       name: 'Velferdstinget',
@@ -1513,7 +1527,9 @@ var Affiliation = {
       },
     },
 
+    //
     // Institusjoner
+    //
 
     'ntnu': {
       name: 'NTNU',
