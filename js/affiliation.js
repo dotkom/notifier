@@ -64,8 +64,10 @@ var Affiliation = {
   // },
   // news: {
   //   type: "feed",                              // types: "feed" (RSS/Atom), "json" (API), "website" (scraping)
-  //   url: "http://orgx.com/feed",               // ONLY for types "feed", "json"
-  //   parse: function(affiliation, callback) {}, // ONLY for types "json", "website"
+  //   feed: "http://orgx.com/feed",              // ONLY for types "feed"
+  //   api: "http://orgx.com/feed",               // ONLY for types "json"
+  //   parse: function(affiliation, callback) {}, // ONLY for types "json"
+  //   scrape: function(affiliation, callback) {},// ONLY for types "website"
 
     // ONLY for types "feed" ???????????????????????????????
     // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'

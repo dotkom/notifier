@@ -5,7 +5,7 @@ var News = {
   msgAffiliationRequired: 'Tilhørighet må spesifiseres',
   msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
   msgCallbackRequired: 'Callback er påkrevd',
-  newsLimit: 10,
+  newsLimit: 10, // Get more news than needed to check for old news that have been updated
   //// IN USE ABOVE
   unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
   msgConnectionError: 'Frakoblet fra feeden til ',
@@ -35,15 +35,15 @@ var News = {
     // Find out how we are going to get news for this affiliation
     //
 
+    console.info('affiliation', affiliation.name)
+
     if (affiliation.news.type === "website") {
       console.info('SUPPORTED')
-      // If the type is website, then use the parser function from the affiliation
-      affiliation.news.get(callback);
+      this.fetchWebsite(affiliation, callback);
     }
     if (affiliation.news.type === "json") {
       console.info('SUPPORTED')
-      // If the type is json, then use the parser function from the affiliation
-      affiliation.news.get(callback);
+      this.fetchJson(affiliation, callback);
     }
     else if (affiliation.news.type === "feed") {
       console.warn('UNSUPPORTED')
@@ -89,6 +89,7 @@ var News = {
   },
 
   fetchWebsite: function(affiliation, callback) {
+    // Scrape the organization's website and use the affiliation's parser
     var self = this;
     Ajaxer.getCleanHtml({
       url: affiliation.web,
@@ -101,7 +102,8 @@ var News = {
     });
   },
 
-  fetchJson: function() {
+  fetchJson: function(affiliation, callback) {
+    // Get JSON from the organization's API and use the affiliation's parser
     var self = this;
     Ajaxer.getJson({
       url: affiliation.news.url,

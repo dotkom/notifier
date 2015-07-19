@@ -153,6 +153,7 @@ var updateAffiliationNews = function(number, callback) {
   if (affiliation) {
     News.get(affiliation, function() {
       // ?
+      if (typeof callback === 'function') callback();
     });
   }
   else {
@@ -163,9 +164,6 @@ var updateAffiliationNews = function(number, callback) {
   ///***********/// OLD BELOW
 
 
-  // if (affiliationObject) {
-  //   // Get more news than needed to check for old news that have been updated
-  //   var newsLimit = 10;
   //   News.get(affiliationObject, newsLimit, function(items) {
   //     // Error message, log it maybe
   //     if (typeof items === 'string') {
@@ -183,7 +181,6 @@ var updateAffiliationNews = function(number, callback) {
   //     }
   //     if (typeof callback === 'function') callback();
   //   });
-  // }
 
 }
 
