@@ -67,6 +67,7 @@ var Affiliation = {
   //   url: "http://orgx.com/feed",               // ONLY for types "feed", "json"
   //   parse: function(affiliation, callback) {}, // ONLY for types "json", "website"
 
+    // ONLY for types "feed" ???????????????????????????????
     // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
     // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
 
@@ -527,45 +528,36 @@ var Affiliation = {
       news: {
         type: "json",
         url: "https://online.ntnu.no/api/v0/article/all/?format=json",
-        parse: function(callback) {
-          var self = this;
-          Ajaxer.getJson({
-            url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
-            success: function(json) {
-              var count = 0;
-              var articles = json.articles;
-
-              if (articles) {
-                // Add each article from the API...
-                for (var i in articles) {
-                  var article = articles[i];
-                  // ...as long as there is more room for posts
-                  if (count < posts.length) {
-                    var post = posts[count];
-                    post.title = article.heading;
-                    post.link = self.web + article.absolute_url;
-                    post.description = article.content;
-                    post.creator = article.author.first_name + ' ' + article.author.last_name;
-                    post.date = article.created_date;
-                    post.image = self.web + article.image_article_front_featured;
-                    posts[count++] = post;
-                    // Postprocess description to remove markdown stuff (crude method)
-                    post.description = post.description.replace(/(####|###|\*\*)/gi, '');
-                    post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
-                  }
-                }
+        parse: function(json, limit, callback) {
+          var posts = [];
+          var count = 0;
+          var articles = json.articles;
+          if (articles) {
+            // Add each article from the API...
+            for (var i in articles) {
+              if (count < 10) {
+                var article = articles[i];
+                var post = {};
+                post.title = article.heading;
+                post.link = self.web + article.absolute_url;
+                post.description = article.content;
+                post.creator = article.author.first_name + ' ' + article.author.last_name;
+                post.date = article.created_date;
+                post.image = self.web + article.image_article_front_featured;
+                // Postprocess description to remove markdown stuff (crude method)
+                post.description = post.description.replace(/(####|###|\*\*)/gi, '');
+                post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
+                // Push and increment
+                posts.push(post);
+                count++;
               }
-              else {
-                console.error('No articles found at', self.web);
-              }
-              callback(posts);
-            },
-            error: function(e) {
-              console.error('Could not fetch '+self.name+' website');
-            },
-          });
+            }
+          }
+          else {
+            console.error('No articles found at', self.web);
+          }
+          callback(posts);
         },
-        // getImages unnecessary, images are extracted in getNews
       },
     },
 

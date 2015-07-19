@@ -5,6 +5,7 @@ var News = {
   msgAffiliationRequired: 'Tilhørighet må spesifiseres',
   msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
   msgCallbackRequired: 'Callback er påkrevd',
+  newsLimit: 10,
   //// IN USE ABOVE
   unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
   msgConnectionError: 'Frakoblet fra feeden til ',
@@ -92,7 +93,7 @@ var News = {
     Ajaxer.getCleanHtml({
       url: affiliation.web,
       success: function(website) {
-        affiliation.news.parse(website, callback);
+        affiliation.news.parse(website, self.newsLimit, callback);
       },
       error: function(e) {
         console.error('Could not fetch ' + affiliation.name + ' website');
@@ -105,7 +106,7 @@ var News = {
     Ajaxer.getJson({
       url: affiliation.news.url,
       success: function(json) {
-        affiliation.news.parse(json, callback);
+        affiliation.news.parse(json, self.newsLimit, callback);
       },
       error: function(e) {
         console.error('Could not fetch from ' + affiliation.name + ' JSON API');
