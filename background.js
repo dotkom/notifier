@@ -15,7 +15,7 @@ var mainLoop = function(force) {
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
   // Only if hardware
-  if (Affiliation.org[ls.affiliationKey1].hw)
+  if (Affiliation.org[ls.affiliationKey1].hardware)
     if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
       updateAffiliation();
 
@@ -31,7 +31,7 @@ var updateAffiliation = function(callback) {
   // Fetch
   Affiliation.get(ls.affiliationKey1, function() {
     // Run relevant background updates
-    if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hardware) {
       updateStatusAndMeetings();
       updateCoffeeSubscription();
     }
@@ -66,7 +66,7 @@ var updateStatusAndMeetings = function(force, callback) {
     else {
       // Set icon
       var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
-      var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[statusCode];
+      var statusIcon = Affiliation.org[ls.affiliationKey1].hardware.statusIcons[statusCode];
       if (statusCode === 'error' || typeof(statusIcon) === 'undefined') {
         Browser.setIcon(errorIcon);
       }
@@ -146,34 +146,45 @@ var updateCantinas = function(callback) {
 
 var updateAffiliationNews = function(number, callback) {
   console.log('updateAffiliationNews'+number);
-  // Get affiliation object
+  // Get affiliation
   var affiliationKey = ls['affiliationKey'+number];
-  var affiliationObject = Affiliation.org[affiliationKey];
-  if (affiliationObject) {
-    // Get more news than needed to check for old news that have been updated
-    var newsLimit = 10;
-    News.get(affiliationObject, newsLimit, function(items) {
-      // Error message, log it maybe
-      if (typeof items === 'string') {
-        console.error(items);
-      }
-      // Empty news items, don't count
-      else if (items.length === 0) {
-        updateUnreadCount(0, 0);
-      }
-      // News is here! NEWS IS HERE! FRESH FROM THE PRESS!
-      else {
-        saveAndCountNews(items, number);
-        updateUnreadCount();
-        fetchAndStoreImageLinks(number);
-      }
-      if (typeof callback === 'function') callback();
+  var affiliation = Affiliation.org[affiliationKey];
+  // Get news for this affiliation
+  if (affiliation) {
+    News.get(affiliation, function() {
+      // ?
     });
   }
   else {
-    console.error('Chosen affiliation "' + ls['affiliationKey'+number] + '" is not known');
+    console.error('Chosen affiliation "' + affiliationKey + '" is not known');
     if (typeof callback === 'function') callback();
   }
+
+  ///***********/// OLD BELOW
+
+
+  // if (affiliationObject) {
+  //   // Get more news than needed to check for old news that have been updated
+  //   var newsLimit = 10;
+  //   News.get(affiliationObject, newsLimit, function(items) {
+  //     // Error message, log it maybe
+  //     if (typeof items === 'string') {
+  //       console.error(items);
+  //     }
+  //     // Empty news items, don't count
+  //     else if (items.length === 0) {
+  //       updateUnreadCount(0, 0);
+  //     }
+  //     // News is here! NEWS IS HERE! FRESH FROM THE PRESS!
+  //     else {
+  //       saveAndCountNews(items, number);
+  //       updateUnreadCount();
+  //       fetchAndStoreImageLinks(number);
+  //     }
+  //     if (typeof callback === 'function') callback();
+  //   });
+  // }
+
 }
 
 var saveAndCountNews = function(items, number) {
@@ -189,6 +200,7 @@ var saveAndCountNews = function(items, number) {
 }
 
 var updateUnreadCount = function(count1, count2) {
+  // TODO: Tag all news with a "read" boolean, use this for counting and showing which news are unread
   var unreadCount = (Number(ls.affiliationUnreadCount1)) + (Number(ls.affiliationUnreadCount2));
   Browser.setBadgeText(String(unreadCount));
 }
@@ -245,7 +257,7 @@ $(document).ready( function() {
   Defaults.resetAffiliationsIfNotExist(ls.affiliationKey1, ls.affiliationKey2, keys);
 
   // Turn off hardwarefeatures if they're not available
-  var isAvailable = (Affiliation.org[ls.affiliationKey1].hw ? true : false);
+  var isAvailable = (Affiliation.org[ls.affiliationKey1].hardware ? true : false);
   Defaults.setHardwareFeatures(isAvailable);
 
   loadAffiliationIcon();
