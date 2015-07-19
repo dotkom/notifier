@@ -2,6 +2,7 @@
 
 var News = {
   msgAffiliationRequired: 'Tilhørighet må spesifiseres',
+  msgUnknownFeedType: 'Ukjent type nyhetsstrøm, verken RSS eller Atom, what is it precious?',
   msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
   msgCallbackRequired: 'Callback er påkrevd',
   newsLimit: 10, // Get more news than needed to check for old news that have been updated
@@ -41,17 +42,17 @@ var News = {
 
     switch (affiliation.news.type) {
       case "website": {
-        console.info('SUPPORTED')
+        console.info('WEBSITE', affiliation.name)
         this.fetchWebsite(affiliation, callback);
         break;
       }
       case "json": {
-        console.info('SUPPORTED')
+        console.info('JSON', affiliation.name)
         this.fetchJson(affiliation, callback);
         break;
       }
       case "feed": {
-        console.warn('UNSUPPORTED')
+        console.info('FEED', affiliation.name)
         // If the type is feed, then get the feed URL and let's do this
         var feed = affiliation.news.url;
         break;
@@ -101,7 +102,7 @@ var News = {
       url: affiliation.web,
       success: function(website) {
         // Now we have fetched the website, time to scrape for posts
-        affiliation.news.scrape(website, self.newsLimit, function(posts) {
+        affiliation.news.scrape(website, self.newsLimit, affiliation, function(posts) {
           // Now we have the scraped posts, time to postprocess them
           for (var i in posts) {
             posts[i] = self.postProcess(posts[i], affiliation);
@@ -123,7 +124,7 @@ var News = {
       url: affiliation.news.url,
       success: function(json) {
         // Now we have fetched the JSON, time to parse it
-        affiliation.news.parse(json, self.newsLimit, function(posts) {
+        affiliation.news.parse(json, self.newsLimit, affiliation, function(posts) {
           // Now we have the parsed news items, time to postprocess them
           for (var i in posts) {
             posts[i] = self.postProcess(posts[i], affiliation);
@@ -161,9 +162,6 @@ var News = {
     });
   },
 
-  ///////////////////////////////////////// OLD //////////////////////////////////////////
-
-
   // Need to know about the news feeds used in Online Notifier:
   // These RSS fields are always used:
   // - title
@@ -190,7 +188,7 @@ var News = {
     var posts = [];
     var self = this;
     var count = 0;
-    // Add each item from RSS feed
+    // Add each RSS item
     if ($(xml).find('item').length != 0) {
       $(xml).find('item').each( function() {
         if (count++ < limit) {
@@ -199,7 +197,7 @@ var News = {
         }
       });
     }
-    // Add each item from Atom feed
+    // Add each Atom entry
     else if ($(xml).find('entry').length != 0) {
       $(xml).find('entry').each( function() {
         if (count++ < limit) {
@@ -209,23 +207,25 @@ var News = {
       });
     }
     else {
-      if (this.debug) console.error('Unknown feed type, neither RSS nor Atom');
+      console.error(this.msgUnknownFeedType);
     }
     callback(posts);
   },
 
   parseRssItem: function(item, affiliationObject) {
     var post = {};
-    // post = this.preProcess(post, affiliationObject);
+
+    //
+    // Title field
+    //
 
     // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes. Yes I have." - MrClean
-
-    // Title field
-
     post.title = $(item).find("title").filter(':first').text();
     post.title = this.stripCdata(item, 'title', post.title);
 
+    //
     // Link field
+    //
 
     post.link = $(item).find("link").filter(':first').text();
     if (post.link.trim() === '') {
@@ -237,7 +237,9 @@ var News = {
       }
     }
 
+    //
     // Description field
+    //
 
     // First, try to get HTML, if not working try getting text
     post.description = $(item).find("description").filter(':first').html();
@@ -259,7 +261,9 @@ var News = {
     }
     post.description = this.stripCdata(item, 'description', post.description);
 
+    //
     // Creator field
+    //
 
     post.creator = $(item).find("dc\\:creator").filter(':first').text();
     if (post.creator === '') {
@@ -279,11 +283,15 @@ var News = {
       }
     }
     
+    //
     // Date field
+    //
 
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
     
+    //
     // Image field
+    //
 
     // Check for image in <content:encoded> and in rarely used tags <enclosure> and <bilde>
     post.image = '';
@@ -319,7 +327,9 @@ var News = {
       // Do nothing, we were just checking, move along quitely
     }
 
-    // All done! Next please.
+    //
+    // Done
+    //
 
     post = this.postProcess(post, affiliationObject);
     return post;
@@ -327,7 +337,6 @@ var News = {
 
   parseAtomEntry: function(entry, affiliationObject) {
     var post = {};
-    // post = this.preProcess(post, affiliationObject);
 
     // Title field
     post.title = $(entry).find("title").filter(':first').text();
@@ -363,25 +372,16 @@ var News = {
     return post;
   },
 
-  // // Applies for both RSS and ATOM feeds
-  // preProcess: function(post, affiliationObject) {
-  //   // Tag the posts with the key, name and placeholder image of the feed they came from
-  //   post.feedKey = affiliationObject.key;
-  //   post.feedName = affiliationObject.name;
-  //   post.image = affiliationObject.placeholder;
-  //   return post;
-  // },
-
-  // Applies for both RSS and ATOM feeds
-  postProcess: function(post, affiliationObject) {
+  postProcess: function(post, affiliation) {
+    // All posts from all sources must go through postprocessing.
 
     //
     // Tag the post
     //
 
     // Tag the posts with the key and name of the source affiliation
-    post.feedKey = affiliationObject.key;
-    post.feedName = affiliationObject.name;
+    post.feedKey = affiliation.key;
+    post.feedName = affiliation.name;
 
     //
     // Image field
@@ -389,16 +389,12 @@ var News = {
 
     // If we haven't found a good image, scour the description for an alternative, arrrr
     // NOTE: This must be done before HTML is removed during postprocessing of the description! (look below)
-    if (isEmpty(post.image) || post.image == affiliationObject.placeholder)
-      post.image = this.checkDescriptionForImageLink(post.image, post.description, affiliationObject.web);
-    // Do a check to see that the image we found was not useless
-    if (post.image != '') {
-      if (!Images.control(post.image)) {
-        post.image = '';
-      }
+    if (isEmpty(post.image) || post.image === affiliation.placeholder) {
+      post.image = this.checkDescriptionForImageLink(post.image, post.description, affiliation.web);
     }
-    else {
-      post.image = affiliationObject.placeholder;
+    // Do a check to see that the image we found was not useless
+    if (Images.control(post.image) === false) {
+      post.image = affiliation.placeholder;
     }
 
     //
@@ -436,7 +432,7 @@ var News = {
     // Remove unnecessary inline spaces
     post.creator = post.creator.replace(/\s+/g,' ');
     // Abbreviate long creator names
-    if (post.creator != affiliationObject.name)
+    if (post.creator != affiliation.name)
       post.creator = this.abbreviateName(post.creator);
 
     //

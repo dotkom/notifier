@@ -528,7 +528,7 @@ var Affiliation = {
       news: {
         type: "json",
         url: "https://online.ntnu.no/api/v0/article/all/?format=json",
-        parse: function(json, limit, callback) {
+        parse: function(json, limit, affiliation, callback) {
           var posts = [];
           var count = 0;
           var articles = json.articles;
@@ -539,12 +539,12 @@ var Affiliation = {
                 var article = articles[i];
                 var post = {};
                 post.title = article.heading;
-                post.link = self.web + article.absolute_url;
+                post.link = affiliation.web + article.absolute_url;
                 post.description = article.content;
                 post.creator = article.author.first_name + ' ' + article.author.last_name;
                 post.date = article.created_date;
-                post.image = self.web + article.image_article_front_featured;
-                // Postprocess description to remove markdown stuff (crude method)
+                post.image = affiliation.web + article.image_article_front_featured;
+                // Remove markdown from description (somewhat crude method)
                 post.description = post.description.replace(/(####|###|\*\*)/gi, '');
                 post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
                 // Push and increment
@@ -554,7 +554,7 @@ var Affiliation = {
             }
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', affiliation.web);
           }
           callback(posts);
         },
