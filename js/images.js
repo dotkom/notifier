@@ -13,6 +13,9 @@
 
 var Images = {
   debug: 1,
+  msgAffiliationRequired: 'Images.get trenger å motta tilhørighet',
+  msgCallbackRequired: 'Callback er påkrevd',
+  msgPostsRequired: 'Images.get trenger å motta nyhetspostene',
 
   // Possible values in options:
   // options = {
@@ -102,17 +105,17 @@ var Images = {
 
 
 
-  get: function(affiliation, links, callback, options) {
-    if (affiliation == undefined) {
-      console.error('Images.get needs the affiliation parameter');
+  get: function(posts, affiliation, callback) {
+    if (posts === undefined) {
+      console.error(this.msgPostsRequired);
       return;
     }
-    if (links == undefined) {
-      console.error('Images.get needs the links parameter');
+    if (affiliation === undefined) {
+      console.error(this.msgAffiliationRequired);
       return;
     }
-    if (callback == undefined) {
-      console.error('Callback is required. In the callback you should insert the results into the DOM.');
+    if (callback === undefined) {
+      console.error(this.msgCallbackRequired);
       return;
     }
 
@@ -124,16 +127,27 @@ var Images = {
 
     // Possible values in options:
     // options = {
-    //   directHit: 'img#header', // the exact image tag that needs to be matched
-    //   domainUrl: 'hybrida.no', // if website uses relative links, split by this url and search for last part of the link
-    //   imageIndex: 2, // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
-    //   linkDelimiter: '?', // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
+    //   directHit: 'img#header',       // the exact image tag that needs to be matched
+    //   domainUrl: 'hybrida.no',       // if website uses relative links, split by this url and search for last part of the link
+    //   imageIndex: 2,                 // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
+    //   linkDelimiter: '?',            // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
     //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
-    //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/ // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
+    //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/    // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
     // };
 
     // Create empty object to avoid crashes when looking up undefined props of undefined object
-    options = options || {};
+    var options = affiliation.news.imageOptions || {};
+
+    // Fetching from articles or frontpage?
+    var method = affiliation.news.imageMethod;
+
+
+
+
+
+
+
+    /****************** OLD ******************/
 
     // Single link?
     var url = affiliation.web;

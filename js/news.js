@@ -149,7 +149,13 @@ var News = {
     Ajaxer.getXml({
       url: affiliation.news.feed,
       success: function(xml) {
-        self.parseFeed(xml, affiliation, self.newsLimit, callback);
+        // Now we have fetched the feed, time to parse it
+        self.parseFeed(xml, affiliation, self.newsLimit, function(posts) {
+
+          // Now we have the parsed news items, time to search for images
+          // Now we have the parsed news items, time to postprocess them
+          callback(posts);
+        });
       },
       error: function(jqXHR, text, err) {
         // Misconfigured servers will send XML with HTML headers
@@ -200,7 +206,28 @@ var News = {
           posts.push(item);
         }
       });
-      callback(posts);
+      // Get images for the posts
+      console.warn('BEFORE posts images', posts)////////////////////////////////////
+
+      Images.get(posts, affiliation, function(posts) {
+
+        // Send list of links, get list of images
+        console.warn('POSTS WITH IMAGES?', posts);
+        
+        // Do post processing
+        for (var i in posts) {
+          posts[i] = self.postProcess(posts[i], affiliation);
+        }
+        console.warn('AFTER posts images', posts)////////////////////////////////////
+        // END LOL
+        callback(posts);  
+      });
+
+      // TODO: Get images here
+
+
+
+      
     }
     // Add each Atom entry
     else if ($(xml).find('entry').length != 0) {
@@ -210,6 +237,14 @@ var News = {
           posts.push(entry);
         }
       });
+      // Get images for the posts
+
+      // TODO: Get images here ///////////////////////////////////////////////
+
+      // Do post processing
+      for (var i in posts) {
+        posts[i] = self.postProcess(posts[i], affiliation);
+      }
       callback(posts);
     }
     else {
@@ -336,7 +371,6 @@ var News = {
     // Done
     //
 
-    post = this.postProcess(post, affiliation);
     return post;
   },
 
@@ -373,7 +407,6 @@ var News = {
       post.date = null;
     }
 
-    post = this.postProcess(post, affiliation);
     return post;
   },
 
