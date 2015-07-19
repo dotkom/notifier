@@ -151,9 +151,13 @@ var updateAffiliationNews = function(number, callback) {
   var affiliation = Affiliation.org[affiliationKey];
   // Get news for this affiliation
   if (affiliation) {
-    News.get(affiliation, function() {
-      // ?
-      if (typeof callback === 'function') callback();
+    News.get(affiliation, function(postArray) {
+      // And wouldn't you know it. postArray is an array of post objects. Thanks news.js!
+      // TODO: Can postArray be an error message?
+      // Save it
+      // TODO
+      // Call it back
+      if (typeof callback === 'function') callback(); // TODO: Callback error message
     });
   }
   else {

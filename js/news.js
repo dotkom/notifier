@@ -37,29 +37,32 @@ var News = {
 
     console.info('affiliation', affiliation.name)
 
-    if (affiliation.news.type === "website") {
-      console.info('SUPPORTED')
-      this.fetchWebsite(affiliation, callback);
+    switch (affiliation.news.type) {
+      case "website": {
+        console.info('SUPPORTED')
+        this.fetchWebsite(affiliation, callback);
+        break;
+      }
+      case "json": {
+        console.info('SUPPORTED')
+        this.fetchJson(affiliation, callback);
+        break;
+      }
+      case "feed": {
+        console.warn('UNSUPPORTED')
+        // If the type is feed, then get the feed URL and let's do this
+        var feed = affiliation.news.url;
+        break;
+      }
+      default: {
+        console.error(this.msgUnsupportedType);
+      }
     }
-    if (affiliation.news.type === "json") {
-      console.info('SUPPORTED')
-      this.fetchJson(affiliation, callback);
-    }
-    else if (affiliation.news.type === "feed") {
-      console.warn('UNSUPPORTED')
-      // If the type is feed, then get the feed URL and let's do this
-      var feed = affiliation.news.url;
-    }
-    else {
-      console.error(this.msg);
-      return;
-    }
-
 
 
 
     // fetch news
-    //   Website
+    //   Website / Json
     //     Scrape images! LOL DONE!
     //   Feed
     //     if (Images in feed?)
@@ -123,15 +126,8 @@ var News = {
   // Get is called by background.html periodically, with News.unreadCount as
   // callback. Fetchfeed is also called by popup.html when requested, but
   // without the callback as we already know the amount of unread posts.
-  get2: function(affiliationObject, limit, callback) {
-    if (typeof affiliationObject == 'undefined') {
-      if (this.debug) console.error(this.msgUnsupportedFeed);
-      return;
-    }
-    if (typeof callback === 'undefined') {
-      if (this.debug) console.error(this.msgCallbackRequired);
-      return;
-    }
+  get2: function() {
+
 
     var self = this;
     // Get news the regular way (RSS or Atom feeds)
@@ -154,6 +150,7 @@ var News = {
         },
       });
     }
+    
     // Get news the irregular way, through a getNews function defined in the affiliation object
     else if (affiliationObject.getNews) {
       
@@ -180,9 +177,7 @@ var News = {
         callback(newPosts);
       });
     }
-    else {
-      console.error(self.msgNoNewsSource);
-    }
+
   },
 
   // Need to know about the news feeds used in Online Notifier:
@@ -239,7 +234,7 @@ var News = {
     var post = {};
     post = this.preProcess(post, affiliationObject);
 
-    // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes, yes I have." - MrClean
+    // - "If I've seen RSS feeds with multiple title fields in one item? Why, yes. Yes I have." - MrClean
 
     // Title field
 
