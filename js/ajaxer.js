@@ -56,23 +56,23 @@ var Ajaxer = {
 
   get: function(params) {
     if (params === undefined) {
-      if (Ajaxer.debug) console.error('Params is required. Check ajaxer.js to see format of params.');
+      console.error('Params is required. Check ajaxer.js to see format of params.');
       return;
     }
     if (params.url === undefined) {
-      if (Ajaxer.debug) console.error('URL missing from params.');
+      console.error('URL missing from params.');
       return;
     }
     if (params.dataType === undefined) {
-      if (Ajaxer.debug) console.error('Do not use Ajaxer.get() directly, use Ajaxer.getXml(), Ajaxer.getJson() or one of the others instead.');
+      console.error('Do not use Ajaxer.get() directly, use Ajaxer.getXml(), Ajaxer.getJson() or one of the others instead.');
       return;
     }
     if (params.success === undefined) {
-      if (Ajaxer.debug) console.error('Params is missing success function. The success function should use the results for something useful.');
+      console.error('Params is missing success function. The success function should use the results for something useful.');
       return;
     }
     if (params.error === undefined) {
-      if (Ajaxer.debug) console.error('Params is missing error function. Error handling must be in place.');
+      console.error('Params is missing error function. Error handling must be in place.');
       return;
     }
 
@@ -83,7 +83,7 @@ var Ajaxer = {
     }
 
     var ajax = function(params) {
-      $.ajax({
+      return $.ajax({
         type: (params.data ? 'POST' : 'GET'),
         data: (params.data ? params.data : ''),
         url: params.url,
@@ -105,7 +105,7 @@ var Ajaxer = {
       });
     }
 
-    ajax(params);
+    return ajax(params); // Returns the promise that is given by $.ajax
   },
 
   cleanHtml: function(html, type) {
