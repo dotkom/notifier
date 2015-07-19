@@ -34,25 +34,46 @@ var News = {
       return;
     }
 
+    // Fetching news and images for an arbitrary number of affiliations
+    // who are using arbitrary website solutions, feeds and APIs is a
+    // highly complex task with lots and lots of edge cases.
     //
-    // Find out how we are going to get news for this affiliation
+    // Therefore it is _critical_ to understand what goes on here.
+    // Fortunately, it is rather simple when boiled down to pseudo code:
     //
+    // News.get
+    //   Website?
+    //     Scraping, finds images too
+    //   Json?
+    //     Parsing, finds images too
+    //   Feed?
+    //     Feed with images?
+    //       Parsing, finds images too
+    //     Feed without images?
+    //       Images on frontpage?
+    //         Request frontpage and scrape for images
+    //       Images only on individual news pages?
+    //         Request all site links from feed posts
+    //           Scrape each returned site for news image
+    //             See? Simple. No, this last one is a tough nut. It's true.
 
-    console.info('affiliation', affiliation.name)
+    //
+    // First, find out how we are going to get news for this affiliation
+    //
 
     switch (affiliation.news.type) {
       case "website": {
-        console.info('WEBSITE', affiliation.name)
+        console.info('WEBSITE', affiliation.name.toUpperCase())
         this.fetchWebsite(affiliation, callback);
         break;
       }
       case "json": {
-        console.info('JSON', affiliation.name)
+        console.info('JSON', affiliation.name.toUpperCase())
         this.fetchJson(affiliation, callback);
         break;
       }
       case "feed": {
-        console.info('FEED', affiliation.name)
+        console.info('FEED', affiliation.name.toUpperCase())
         // If the type is feed, then get the feed URL and let's do this
         var feed = affiliation.news.url;
         break;
@@ -62,37 +83,21 @@ var News = {
       }
     }
 
-
-
-    // fetch news
-    //   Website
-    //     Scraping, finds images too
-    //   Json
-    //     Parsing, finds images too
-    //   Feed
-    //     if Feed with images:
-    //       Parsing, finds images too
-    //     else Feed without images:
-    //       // getImagesFromFrontPage ( params )
-    //       //  done.
-    //       getImageByImageFromArticles ( params )
-    //         ugh.... done.
-
-    // How to store?
-    //   Store together with news in article-array
-    //    [
-    //      {
-    //       title: "noe"
-    //       link: "noe"
-    //       image: "noe"
-    //       description: "noe"
-    //       author: "noe"
-    //      },
-    //      and so on
-    //   ]
-
-
-
+    // Oh, and while we are explaining stuff. This is what
+    // the array of posts looks like. Array of posts:
+    //
+    // [
+    //   0: {
+    //     title: "something"
+    //     link: "some link"
+    //     image: "some image"
+    //     description: "some stuff"
+    //     author: "someone"
+    //   },
+    //   1: {
+    //     and so on...
+    //   },
+    // ],
   },
 
   fetchWebsite: function(affiliation, callback) {
