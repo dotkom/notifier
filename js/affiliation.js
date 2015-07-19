@@ -46,7 +46,6 @@ var Affiliation = {
   // sponsor: './org/orgx/sponsor.png',           // 512x128 sponsor logo, replaces the affiliation logo in the corner of the infoscreen
   // palette: 'orgx',                             // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',       // OPTIONAL: Path to the special palette
-  // useAltLink: true,                            // OPTIONAL: Search each news post for alternative link to use?
   // slack: 'https://orgx.slack.com/signup',      // OPTIONAL: add Slack button to the popup
   // hardware: {                                  // OPTIONAL: Has hardwarefeatures?
   //   office: "orgxkontoret",                    // OPTIONAL: Friendly name for the affiliation office
@@ -510,7 +509,6 @@ var Affiliation = {
       sponsor: './org/online/sponsor.png',
       palette: 'online',
       palettePath: './org/online/palette.css',
-      useAltLink: true,
       slack: 'https://onlinentnu.slack.com/signup',
       hardware: {
         office: 'Onlinekontoret',

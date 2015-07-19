@@ -86,7 +86,6 @@ var News = {
     //       image: "noe"
     //       description: "noe"
     //       author: "noe"
-    //       altlink: <dropp>
     //      },
     //      and so on
     //   ]
@@ -414,9 +413,6 @@ var News = {
 
     // Trim link either way
     post.link = post.link.trim(); // This is muy importanté for everything to work well later on
-    // Sometimes we would like to link directly to a link in the news description,
-    // this can help users avoid one step while navigating to links via Notifier
-    post.altLink = this.checkDescriptionForAltLink(post.description);
 
     //
     // Description field
@@ -662,22 +658,6 @@ var News = {
       return 'http://img.youtube.com/vi/' + id + '/0.jpg';
     }
     return oldImage;
-  },
-
-  checkDescriptionForAltLink: function(description) {
-    // Looking for alternative link, find the first and best full link
-    if (typeof description != 'undefined') {
-      var altLink = description.match(/href="(http[^"]*)"/);
-      if (altLink != null) {
-        if (typeof altLink[1] == 'string') {
-          return altLink[1];
-        }
-      }
-    }
-    else {
-      if (this.debug) console.error('checking for alternative link in undefined var post.description');
-    }
-    return null;
   },
 
   abbreviateName: function(oldName) {

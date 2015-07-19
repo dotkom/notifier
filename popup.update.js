@@ -297,14 +297,6 @@ popup.update = {
           //   }
           // }
 
-          // EXPLANATION NEEDED:
-          // article[data] contains the link
-          // article[name] contains the alternative link, if one exists, otherwise null
-          var altLink = '';
-          if (item.altLink !== null) {
-            altLink = ' name="' + item.altLink + '"';
-          }
-
           var descLimit = 140;
           if (ls.showAffiliation2 === 'true') {
             descLimit = 100;
@@ -326,7 +318,7 @@ popup.update = {
 
           if (ls.showAffiliation2 === 'true') {
             htmlItem = [
-              '<article data="' + item.link + '"' + altLink + '>',
+              '<article data="' + item.link + '">',
                 '<img class="flashy" src="' + item.image + '" />',
                 '<div class="title flashy">' + readUnread + item.title + '</div>',
                 '<div class="author flashy">&ndash; Av ' + item.creator + '</div>',
@@ -335,7 +327,7 @@ popup.update = {
           }
           else {
             htmlItem = [
-              '<article data="' + item.link + '"' + altLink + '>',
+              '<article data="' + item.link + '">',
                 '<img class="regular" src="' + item.image + '" />',
                 '<div class="title">' + readUnread + item.title + '</div>',
                 item.description,
@@ -363,14 +355,7 @@ popup.update = {
       $('#news '+selector+' div.content article').click(function() {
         // The link is embedded as the ID of the element, we don't want to use
         // <a> anchors because it creates an ugly box marking the focus element.
-        // Note that altLinks are embedded in the name-property of the element,
-        // - if preferred by the organization, we should use that instead.
         var link = $(this).attr('data');
-        var altLink = $(this).attr('name');
-        var useAltLink = Affiliation.org[feedKey].useAltLink;
-        if (typeof altLink !== 'undefined' && useAltLink === true) {
-          link = $(this).attr('name');
-        }
         Browser.openTab(link);
         Analytics.trackEvent('clickNews', link);
         window.close();
