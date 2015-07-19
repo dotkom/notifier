@@ -63,12 +63,14 @@ var Affiliation = {
   // },
   // news: {
   //   type: "feed",                              // types: "feed" (RSS/Atom), "json" (API), "website" (scraping)
-  //   feed: "http://orgx.com/feed",              // ONLY for types "feed"
+  //   scrape: function(affiliation, callback) {},// ONLY for types "website"
   //   api: "http://orgx.com/feed",               // ONLY for types "json"
   //   parse: function(affiliation, callback) {}, // ONLY for types "json"
-  //   scrape: function(affiliation, callback) {},// ONLY for types "website"
+  //   feed: "http://orgx.com/feed",              // ONLY for types "feed"
+  //   imageMethod: "articles",                   // ONLY for types "feed", must be either "articles" (fetch from each article) or "frontpage" (fetch from frontpage)
+  //   imageOptions: {options...},                // ONLY for types "feed"
 
-    // ONLY for types "feed" ???????????????????????????????
+    // ONLY for types "feed" //////////////
     // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
     // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
 
@@ -102,10 +104,15 @@ var Affiliation = {
         },
       },
       news: {
-        type: "feed",
+        type: 'feed',
         feed: 'http://dusken.no/feed/',
+        imageMethod: 'articles',
+        imageOptions: {directHit:'img#header-img', domainUrl:'dusken.no'}, ////////// pic?
+
+
+
         getImage: function(link, callback) {
-          Images.get(this, link, callback, {directHit:'img#header-img', domainUrl:'dusken.no'});
+          Images.get(this, link, callback, );
         },
       },
     },
