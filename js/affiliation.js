@@ -2,7 +2,7 @@
 
 var Affiliation = {
 
-  // URLs
+  // API
   api: API_SERVER_1 + 'affiliation/',
   // Messages
   msgUnsupportedAffiliation: 'Tilhørigheten støttes ikke',
@@ -47,7 +47,8 @@ var Affiliation = {
   // palette: 'orgx',                           // The color palette to use, if special palette exists use orgx-key
   // palettePath: './org/orgx/palette.css',     // OPTIONAL: Path to the special palette
   // useAltLink: true,                          // OPTIONAL: Search each news post for alternative link to use?
-  // hw: {                                      // OPTIONAL: Has hardwarefeatures?
+  // slack: 'https://orgx.slack.com/signup',    // OPTIONAL: add Slack button to the popup
+  // hardware: {                                // OPTIONAL: Has hardwarefeatures?
   //   office: "orgxkontoret",                  // OPTIONAL: Friendly name for the affiliation office
   //   statusIcons: {
   //     open: './org/orgx/icon.png',
@@ -61,29 +62,34 @@ var Affiliation = {
   //   },
   //   memePath: './org/orgx/meme/',            // OPTIONAL: pictures in /orgx/meme/ with the format 1...N.png
   // },
-  // slack: 'https://orgx.slack.com/signup',    // OPTIONAL: add Slack button to the popup
-  // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
-  // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
-  // getNews: function(limit, callback) {},     // OPTIONAL: getNews may override standard RSS/Atom fetching, use either 'feed' or 'getNews', not both
+  // news: {
+  //   type: "feed",                            // "feed" or "website" (scraping), new types can be added, e.g. "facebook"
+  //   url: "http://orgx.com/feed",             // ONLY if type is "feed", must be RSS or Atom feed
+  //   get: function(callback) {},              // ONLY if type is "website" (scraping)
+
+    // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
+    // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
+
+  // }
 
   // Other notes:
   // - Image dimensions should be in the power of two in case we decide to use WebGL one day.
 
   org: {
 
-    // DEBUG (separate affiliation that fetches data from Notipis / Notiwire in DEBUG mode)
+    // DEBUG, a debug affiliation that fetches data from Notiwire when DEBUG is enabled
 
     'DEBUG': {
       name: 'DEBUG',
       key: 'DEBUG',
       web: 'http://example.com/',
-      feed: 'http://dusken.no/feed/',
       logo: './org/DEBUG/logo.png',
       icon: './org/DEBUG/icon.png',
       symbol: './org/DEBUG/symbol.png',
       placeholder: './org/DEBUG/placeholder.png',
       palette: 'grey',
-      hw: {
+      slack: 'https://onlinentnu.slack.com/signup',
+      hardware: {
         office: 'DEBUG-kontoret',
         statusIcons: {
           open: './org/DEBUG/icon-open.png',
@@ -91,9 +97,12 @@ var Affiliation = {
           meeting: './org/DEBUG/icon-meeting.png',
         },
       },
-      slack: 'https://onlinentnu.slack.com/signup',
-      getImage: function(link, callback) {
-        Images.get(this, link, callback, {directHit:'img#header-img', domainUrl:'dusken.no'});
+      news: {
+        type: "feed",
+        feed: 'http://dusken.no/feed/',
+        getImage: function(link, callback) {
+          Images.get(this, link, callback, {directHit:'img#header-img', domainUrl:'dusken.no'});
+        },
       },
     },
 
@@ -109,7 +118,7 @@ var Affiliation = {
       symbol: './org/abakus/symbol.png',
       placeholder: './org/abakus/placeholder.png',
       palette: 'red',
-      hw: {
+      hardware: {
         office: "Abakuskontoret",
         statusIcons: {
           // TODO: update when Abakus gets office status feature
@@ -177,6 +186,16 @@ var Affiliation = {
       getImage: function(link, callback) {
         Images.get(this, link, callback);
       },
+      news: {
+        // Feel free to add new types for news fetching, like "facebook"
+        // Current types are just "feed" for RSS/Atom feeds and "website" for scraping a homepage
+        type: "feed",
+        url: "",
+
+        type: "website",
+        get: function() {},
+
+      },
     },
 
     'berg': {
@@ -219,7 +238,7 @@ var Affiliation = {
       symbol: './org/delta/symbol.png',
       placeholder: './org/delta/placeholder.png',
       palette: 'green',
-      hw: {
+      hardware: {
         office: 'Deltakontoret',
         statusIcons: {
           open: './org/delta/icon-open.png',
@@ -259,7 +278,7 @@ var Affiliation = {
       symbol: './org/hc/symbol.png',
       placeholder: './org/hc/placeholder.png',
       palette: 'yellow',
-      hw: {
+      hardware: {
         office: 'HC-kontoret',
         statusIcons: {
           open: './org/hc/icon-open.png',
@@ -485,7 +504,8 @@ var Affiliation = {
       palette: 'online',
       palettePath: './org/online/palette.css',
       useAltLink: true,
-      hw: {
+      slack: 'https://onlinentnu.slack.com/signup',
+      hardware: {
         office: 'Onlinekontoret',
         statusIcons: {
           open: './org/online/icon-open.png',
@@ -500,45 +520,47 @@ var Affiliation = {
         memePath: './org/online/meme/',
         memeCount: 5,
       },
-      slack: 'https://onlinentnu.slack.com/signup',
-      // getImages unnecessary, images are extracted in getNews
-      getNews: function(posts, callback) {
-        var self = this;
-        Ajaxer.getJson({
-          url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
-          success: function(json) {
-            var count = 0;
-            var articles = json.articles;
+      news: {
+        type: "website",
+        // getImages unnecessary, images are extracted in getNews
+        get: function(posts, callback) {
+          var self = this;
+          Ajaxer.getJson({
+            url: 'https://online.ntnu.no/api/v0/article/all/?format=json',
+            success: function(json) {
+              var count = 0;
+              var articles = json.articles;
 
-            if (articles) {
-              // Add each article from the API...
-              for (var i in articles) {
-                var article = articles[i];
-                // ...as long as there is more room for posts
-                if (count < posts.length) {
-                  var post = posts[count];
-                  post.title = article.heading;
-                  post.link = self.web + article.absolute_url;
-                  post.description = article.content;
-                  post.creator = article.author.first_name + ' ' + article.author.last_name;
-                  post.date = article.created_date;
-                  post.image = self.web + article.image_article_front_featured;
-                  posts[count++] = post;
-                  // Postprocess description to remove markdown stuff (crude method)
-                  post.description = post.description.replace(/(####|###|\*\*)/gi, '');
-                  post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
+              if (articles) {
+                // Add each article from the API...
+                for (var i in articles) {
+                  var article = articles[i];
+                  // ...as long as there is more room for posts
+                  if (count < posts.length) {
+                    var post = posts[count];
+                    post.title = article.heading;
+                    post.link = self.web + article.absolute_url;
+                    post.description = article.content;
+                    post.creator = article.author.first_name + ' ' + article.author.last_name;
+                    post.date = article.created_date;
+                    post.image = self.web + article.image_article_front_featured;
+                    posts[count++] = post;
+                    // Postprocess description to remove markdown stuff (crude method)
+                    post.description = post.description.replace(/(####|###|\*\*)/gi, '');
+                    post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
+                  }
                 }
               }
-            }
-            else {
-              console.error('No articles found at', self.web);
-            }
-            callback(posts);
-          },
-          error: function(e) {
-            console.error('Could not fetch '+self.name+' website');
-          },
-        });
+              else {
+                console.error('No articles found at', self.web);
+              }
+              callback(posts);
+            },
+            error: function(e) {
+              console.error('Could not fetch '+self.name+' website');
+            },
+          });
+        },
       },
     },
 
@@ -552,7 +574,7 @@ var Affiliation = {
       symbol: './org/nabla/symbol.png',
       placeholder: './org/nabla/placeholder.png',
       palette: 'red',
-      hw: {
+      hardware: {
         office: 'Nablakontoret',
         statusIcons: {
           open: './org/nabla/icon-open.png',
@@ -720,7 +742,7 @@ var Affiliation = {
       symbol: './org/solan/symbol.png',
       placeholder: './org/solan/placeholder.png',
       palette: 'blue',
-      hw: {
+      hardware: {
         office: "Solanstua",
         statusIcons: {
           open: './org/solan/icon-open.png',
@@ -1596,8 +1618,11 @@ var Affiliation = {
 
   },
 
+  //
   // Affiliations above
+  //
   // Functions below
+  //
 
   _autoLoadDefaults_: function() {
     if (ls.affiliationKey1 === undefined)
@@ -1605,7 +1630,7 @@ var Affiliation = {
     if (ls.showAffiliation2 === undefined)
       ls.showAffiliation2 = 'true';
     if (ls.affiliationKey2 === undefined)
-      ls.affiliationKey2 = 'dusken';
+      ls.affiliationKey2 = (DEBUG ? 'online' : 'dusken');
   },
 
   clearAffiliationData: function() {
@@ -1773,9 +1798,9 @@ var Affiliation = {
 
     // Prepare affiliation status messages
     var affiliationMessages = null;
-    var affiliationHw = Affiliation.org[ls.affiliationKey1].hw;
-    if (affiliationHw && affiliationHw.statusMessages) {
-      affiliationMessages = Affiliation.org[ls.affiliationKey1].hw.statusMessages;
+    var affiliationHardware = Affiliation.org[ls.affiliationKey1].hardware;
+    if (affiliationHardware && affiliationHardware.statusMessages) {
+      affiliationMessages = Affiliation.org[ls.affiliationKey1].hardware.statusMessages;
     }
 
     // status: meeting || food
@@ -1840,8 +1865,8 @@ var Affiliation = {
   },
 
   getMemeCount: function(affiliation) {
-    if (Affiliation.org[affiliation].hw.memePath && Affiliation.org[affiliation].hw.memeCount) {
-      return Affiliation.org[affiliation].hw.memeCount;
+    if (Affiliation.org[affiliation].hardware.memePath && Affiliation.org[affiliation].hardware.memeCount) {
+      return Affiliation.org[affiliation].hardware.memeCount;
     }
     else {
       console.warn('Affiliation', affiliation, 'have not made their own coffee memes yet');
