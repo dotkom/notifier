@@ -596,8 +596,8 @@ popup.options = {
 
   toggleHardwareFeatures: function(oldAffiliationKey, newAffiliationKey) {
     // Check if switching from or to an affiliation with hardware features
-    var old_has_hardware = (Affiliation.org[oldAffiliationKey].hw ? true : false);
-    var new_has_hardware = (Affiliation.org[newAffiliationKey].hw ? true : false);
+    var old_has_hardware = (Affiliation.org[oldAffiliationKey].hardware ? true : false);
+    var new_has_hardware = (Affiliation.org[newAffiliationKey].hardware ? true : false);
     if (old_has_hardware && !new_has_hardware) {
       // Disable hardware features
       ls.coffeeSubscription = 'false';

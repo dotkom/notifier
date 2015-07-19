@@ -25,7 +25,7 @@ var mainLoop = function(options) {
       if (mainLoop.iteration % UPDATE_NEWS_INTERVAL === 0)
         popup.update.affiliationNews(2);
     // Only if hardware
-    if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hardware) {
       if (mainLoop.iteration % UPDATE_AFFILIATION_INTERVAL === 0) {
         Browser.getBackgroundProcess().updateAffiliation(function() {
           popup.update.meeting();
@@ -71,7 +71,7 @@ mainLoop.intervalId = null;
   // Show stuff that the user hasn't explicitly removed yet
   if (ls.closedSpecialNews !== $('#specialNews a').attr('href')) $('#specialNews').show();
   // Hide stuff the user can't or doesn't want to see
-  if (typeof Affiliation.org[ls.affiliationKey1].hw === "undefined") $('div#todays').hide();
+  if (typeof Affiliation.org[ls.affiliationKey1].hardware === "undefined") $('div#todays').hide();
   if (ls.showCantina !== 'true') $('div#cantinas').hide();
   if (ls.showBus !== 'true') $('div#bus').hide();
 
@@ -126,16 +126,16 @@ var applyAffiliationSettings = (function() {
     }
 
     // Apply the affiliation's own name for it's office
-    if (Affiliation.org[ls.affiliationKey1].hw) {
+    if (Affiliation.org[ls.affiliationKey1].hardware) {
 
-      var statusIcons = Affiliation.org[ls.affiliationKey1].hw.statusIcons;
+      var statusIcons = Affiliation.org[ls.affiliationKey1].hardware.statusIcons;
       // Apply affiliation icons in options
       $('span[data="ICON_OPEN"]').html('<img src="' + statusIcons.open + '" class="statusIcon" />');
       $('span[data="ICON_CLOSED"]').html('<img src="' + statusIcons.closed + '" class="statusIcon" />');
       $('span[data="ICON_MEETING"]').html('<img src="' + statusIcons.meeting + '" class="statusIcon" />');
 
       // Apply affiliation names
-      var officeName = Affiliation.org[ls.affiliationKey1].hw.office;
+      var officeName = Affiliation.org[ls.affiliationKey1].hardware.office;
       $('#todays #schedule .title').text(officeName);
       $('span[data="officeName"]').text(officeName);
     }

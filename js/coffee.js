@@ -70,9 +70,9 @@ var Coffee = {
       }
 
       // Add affiliation memes
-      if (Affiliation.org[key].hw.memePath) {
+      if (Affiliation.org[key].hardware.memePath) {
         var amount = Affiliation.getMemeCount(key);
-        var path = Affiliation.org[key].hw.memePath;
+        var path = Affiliation.org[key].hardware.memePath;
         for (var i = 1; i <= amount; i++) {
           memes.push(path+i+'.png');
         }

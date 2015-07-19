@@ -40,7 +40,7 @@ var Defaults = {
     if (ls.affiliationPalette === undefined)
       ls.affiliationPalette = 'online';
     if (ls.storedImages === undefined)
-      ls.storedImages = JSON.stringify({});
+      ls.storedImages = JSON.stringify({}); ///////////////////////////////////////////
 
     // Secondary affiliation
     if (ls.affiliationUnreadCount2 === undefined)
@@ -117,16 +117,16 @@ var Defaults = {
   // ahead and uncomment that affiliation in Affiliation.js !
   resetAffiliationsIfNotExist: function(key1, key2, affiliationKeys) {
 
-    var gotoOptions = function(key) {
+    var sorry = function(key) {
       alert('Online Notifier beklager:\n\n"'+key+'" er borte fra Notifier :(\n\nTrolig fordi foreningens nettside ikke finnes lenger.\n\nÅpne Notifier oppe til høyre i Chrome og trykk "Edit" for å velge ny tilhørighet.');
     }
     if (affiliationKeys.indexOf(key1) === -1) {
       ls.affiliationKey1 = 'online';
-      gotoOptions(key1);
+      sorry(key1);
     }
     if (affiliationKeys.indexOf(key2) === -1) {
       ls.affiliationKey2 = 'dusken';
-      gotoOptions(key2);
+      sorry(key2);
     }
   },
 
@@ -135,7 +135,7 @@ var Defaults = {
   // user starts out with the features turned on.
   // Then, the features will be turned off if:
   // a) the user has explicitly turned them off, or
-  // b) hardwarefeatures are not available (this function called from background process)
+  // b) hardwarefeatures are not available (this function is then called from background process)
   setHardwareFeatures: function(isAvailable) {
 
     if (isAvailable) {
