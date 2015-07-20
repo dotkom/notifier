@@ -63,10 +63,6 @@ var Images = {
   //   directHit: 'img#header',       // if we have an exact image tag to use
   //   domainUrl: 'hybrida.no',       // if website uses relative links, split by this url and search for last part of the link
   //   imageIndex: 2,                 // if the first picture in each news post is a bad fit, use the one at specified index, note that this is zero-indexed
-
-  // TODO: Purge linkDelimiter
-  //   linkDelimiter: '?',            // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
-
   //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
   //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/
   //                                  // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex

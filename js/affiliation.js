@@ -364,7 +364,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://industrielldesign.com/feed',
-        imageScraping: {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1},
+        imageScraping: {newsSelector:'.content-wrapper', imageIndex: 1},
       },
     },
 
