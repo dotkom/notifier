@@ -53,7 +53,10 @@ var Images = {
   //   directHit: 'img#header',       // if we have an exact image tag to use
   //   domainUrl: 'hybrida.no',       // if website uses relative links, split by this url and search for last part of the link
   //   imageIndex: 2,                 // if the first picture in each news post is a bad fit, use the one at specified index, note that this is zero-indexed
+
+  // TODO: Purge linkDelimiter
   //   linkDelimiter: '?',            // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
+
   //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
   //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/
   //                                  // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
@@ -63,17 +66,14 @@ var Images = {
     var options = affiliation.news.imageScraping || {};
 
     //
-    // Let the games begin
+    // Wrap HTML to traverse with jQuery.
+    // All <img> tags are replaced with <pic> to avoid jQuery's automatic preloading of all the images.
     //
 
-    // First we will wrap the HTML to be able to traverse it with jQuery.
-    // Remember that all <img> tags have been replaced with <pic> to avoid
-    // preloading of all the images.
     var doc = $(html);
 
     //
-    // Find the news container which contains the news image, using our selector
-    //
+    // Find the news container which contains the news image, using our selector.
     // We'll search for the newsSelector and assume that the first news container
     // we find contains the image we're looking for, which is highly likely based
     // on experience.
@@ -89,26 +89,29 @@ var Images = {
     
     var image = null;
 
+    // Try direct hit first, usually the fastest and best option
     if (options.directHit) {
       options.directHit = options.directHit.replace(/(^|\s)img/g, '$1pic');
       image = doc.find(options.directHit).attr('src');
-      if (this.debug) console.log('Images: Direct hit');
+      if (this.debug) console.log('Images: Direct hit resulted in', image);
     }
-    else if (options.noscriptMatching) {
-      // If a <noscript> tag is used, we'll just find the image URL by matching
-      // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
-      image = container.html().match(options.noscriptMatching)[1];
-      if (this.debug) console.log('Images: Ran noscript matching');
+
+    // Try noscriptmatching
+    if (!this.control(image)) {
+      if (options.noscriptMatching) {
+        // If a <noscript> tag is used, we'll just find the image URL by matching
+        // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
+        image = container.html().match(options.noscriptMatching)[1];
+        if (this.debug) console.log('Images: Noscript matching resulted in', image);
+      }
     }
-    else {
-      // First find all images within container
-      image = container.find('pic');
-      // Exclude all unacceptable images
-      image = this.exclude(image);
-      // Use image at specified index if requested
-      if (options.imageIndex) image = image.eq(options.imageIndex);
-      // Get the src for the first image left in the array
-      image = image.attr('src');
+
+    // Try searching the container
+    if (!this.control(image)) {
+      image = container.find('pic'); // First find all images within container
+      image = this.exclude(image); // Exclude all unacceptable images      
+      if (options.imageIndex) image = image.eq(options.imageIndex); // Use image at specified index if requested
+      image = image.attr('src'); // Get the src for the first image left in the array
     }
 
     //
@@ -116,7 +119,7 @@ var Images = {
     //
 
     // If image is undefined
-    if (typeof image == 'undefined') {
+    if (!this.control(image)) {
       if (this.debug) console.log('Images: No image exists for link "'+link+'"');
       image = null;
     }
