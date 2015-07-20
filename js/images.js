@@ -70,9 +70,12 @@ var Images = {
   scrapeForImage: function(html, post, affiliation) {
     // Get those options for image scraping
     var options = affiliation.news.imageScraping || {};
+    
+    // Give us some space, there will be lots of logging
+    if (this.debug) console.log('');
 
     // If someone is using this function, but already have a good image, we'll just tell them
-    if (this.control(post.image)) {
+    if (!isEmpty(post.image) && this.control(post.image)) {
       console.warn('Images: You already have a good image, why do you ask?');
       return post.image;
     }
@@ -125,48 +128,39 @@ var Images = {
     }
 
     //
-    // Now we have probably found an image, but if we did, is it a worthy image?
+    // Now we have probably found something that resembles an image URL, but if we did, is the URL good enough?
     //
-
-    // Did we find something?
-    if (this.debug) console.log('did we find something?', image); //////////////////////////////
-    if (!isEmpty(image)) {
+    
+    // Did we find anything at all?
+    if (isEmpty(image)) {
       if (this.debug) console.warn('Images: No image exists for link "' + post.link + '"');
-      image = null;
+      return affiliation.placeholder;
     }
-    // If image needs to be prefixed with the domain name
-    else if (options.domainUrl) {
-      if (image.indexOf('//') == -1) {
+
+    // We found something, does it need to be prefixed with the domain name?
+    if (options.domainUrl) {
+      if (image.indexOf('//') === -1) {
         image = 'http://' + options.domainUrl + image;
-        if (this.debug) console.log('Images: Found image (domain url added) "'+image+'"');
+        if (this.debug) console.log('Images: Added domain URL', image);
       }
       else {
-        if (this.debug) console.log('Images: Found a good image at "'+image+'"');
+        if (this.debug) console.warn('Images: Domain URL was specified as an option, but the image link already had a domain name. It seems we overkilled that one.');
       }
     }
 
     // If image URL contains the optional protocol operator "//", specify "http://"
-    if (image !== null && image.match(/^\/\//) !== null) {
+    if (image.match(/^\/\//) !== null) {
       image = image.replace(/^\/\//, 'http://');
-    }
-    // If image does not start with http://, https:// or at least //
-    // NOTE: Must be checked after adding "http" and domainUrl
-    else if (image !== null && image.match(/^(http)?s?:?\/\//) == null) {
-      if (this.debug) console.warn('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
-      image = null;
-    }
-    // If null
-    else if (image === null) {
-      if (this.debug) console.warn('Images: Did not find a good image');
-    }
-    // If all is good
-    else {
-      if (this.debug) console.log('Images: Found a good image at "'+image+'"');
+      if (this.debug) console.log('Images: Optional protocol operator "//" replaced by "http://"');
     }
 
-    if (this.debug) console.log('Images: All done, pushing', image);
+    // If the image URL does not start with a protocol at this point, it's no good for us
+    if (image.match(/^(http)?s?:?\/\//) === null) {
+      if (this.debug) console.warn('Images: Did not find a good image at "' + post.link + '", all we have is "' + image + '"');
+      return affiliation.placeholder;
+    }
 
-    console.log('');
+    if (this.debug) console.info('Images: All done, pushing', image);
 
     // Store it
     return image;
@@ -210,10 +204,10 @@ var Images = {
 
   control: function(imageUrl) {
     // This function is used both internally here in images.js, and in by news.js
-    if (this.debug) console.log('Images: Controlling image URL "'+imageUrl+'"');
 
+    // Is it empty?
     if (isEmpty(imageUrl)) {
-      if (this.debug) console.error('Images.control() received empty imageUrl');
+      if (this.debug) console.warn('Images: Control received empty imageUrl');
       return false;
     }
 
@@ -224,7 +218,7 @@ var Images = {
     for (var i in this.excludeKeys) {
       var str = this.excludeKeys[i];
       if (imageUrl.indexOf(str) !== -1) {
-        if (this.debug) console.warn('Images: Image URL was bad, contained "' + str + '"');
+        if (this.debug) console.warn('Images: Control found bad URL, contained "' + str + '"');
         return false;
       }
     }
@@ -232,11 +226,10 @@ var Images = {
     // Look for proper image formats and return false if none are used
     var formats = new RegExp('(png|jpe?g|bmp|svg)$', 'gi');
     if (imageUrl.match(formats) === null) {
-      if (this.debug) console.warn('Images: Image URL was bad, was not a proper format');
+      if (this.debug) console.warn('Images: Control found bad URL, was not a proper image format');
       return false;
     }
 
-    if (this.debug) console.info('Images: Image URL deemed OK');
     // Control out
     return true;
   },
