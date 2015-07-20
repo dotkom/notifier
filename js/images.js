@@ -42,7 +42,7 @@ var Images = {
     // TODO: Refactor, think of an awesome new way to organize this function.
 
     // Fetching from articles or frontpage?
-    var options = affiliation.news.imageFetching;
+    var options = affiliation.news.imageScraping;
 
     var self = this;
 
@@ -73,10 +73,8 @@ var Images = {
   },
 
   parseForImages: function(html, post, affiliation) {
-  // parseForImages: function(html, posts, affiliation) {
-
-    // Create empty object to avoid crashes when looking up undefined props of undefined object
-    var options = affiliation.news.imageFetching || {};
+    // Get options for image scraping
+    var options = affiliation.news.imageScraping || {};
 
     // IMPORTANT:
     // jQuery tries to preload images found in the string, that is why

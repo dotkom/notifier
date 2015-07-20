@@ -68,7 +68,7 @@ var Affiliation = {
   //   parse: function(html, limit, affiliation, callback) {}, // ONLY for types "json"
   //   feed: "http://orgx.com/feed",              // ONLY for types "feed"
   //   imageMethod: "articles",                   // OPTIONAL, ONLY for types "feed" or "website", must be either "articles" (fetch from each article) or "frontpage" (fetch from frontpage)
-  //   imageFetching: {options...},               // OPTIONAL, ONLY for types "feed" or "website"
+  //   imageScraping: {options...},               // OPTIONAL, ONLY for types "feed" or "website"
 
     // ONLY for types "feed" //////////////
     // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
@@ -106,7 +106,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://dusken.no/feed/',
-        imageFetching: {directHit:'img#header-img', domainUrl:'dusken.no'},
+        imageScraping: {directHit:'img#header-img', domainUrl:'dusken.no'},
       },
     },
 
@@ -181,7 +181,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://aarhonen.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -197,7 +197,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://bergstud.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -213,7 +213,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://broderskabet.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -239,7 +239,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.deltahouse.no/?feed=rss2',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -255,7 +255,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://emilweb.no/feed/',
-        imageFetching: {newsSelector:'div.frontpage'},
+        imageScraping: {newsSelector:'div.frontpage'},
       },
     },
 
@@ -302,7 +302,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://hybrida.no/newsfeed/rss',
-        imageFetching: {newsSelector:'div.headerImage', domainUrl:'hybrida.no'},
+        imageScraping: {newsSelector:'div.headerImage', domainUrl:'hybrida.no'},
       },
     },
 
@@ -364,7 +364,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://industrielldesign.com/feed',
-        imageFetching: {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1},
+        imageScraping: {newsSelector:'.content-wrapper', linkDelimiter:'?', imageIndex: 1},
       },
     },
 
@@ -544,7 +544,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://nabla.no/feed/',
-        imageFetching: {newsSelector:'div.row div.col-md-8', domainUrl:'nabla.no'},
+        imageScraping: {newsSelector:'div.row div.col-md-8', domainUrl:'nabla.no'},
       },
     },
 
@@ -560,7 +560,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://mfplacebo.no/feed/',
-        imageFetching: {newsSelector:'article'},
+        imageScraping: {newsSelector:'article'},
       },
     },
 
@@ -609,7 +609,7 @@ var Affiliation = {
           }
           callback(posts);
         },
-        imageFetching: {newsSelector:'div#main', domainUrl:'smorekoppen.no/'},
+        imageScraping: {newsSelector:'div#main', domainUrl:'smorekoppen.no/'},
       },
     },
     // // TODO: Put Industrivinduet into Smørekoppen as an alternative news source specific to them
@@ -701,7 +701,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.solanlinjeforening.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -717,7 +717,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://spanskroret.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -777,7 +777,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://org.ntnu.no/volvox/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -797,7 +797,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://sosantntnu.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -813,7 +813,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://ntnuhistorie.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -829,7 +829,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://dionysosntnu.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -845,7 +845,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://erudiontnu.blogspot.com/feeds/posts/default?alt=rss',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -861,7 +861,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://eurekalf.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -877,7 +877,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://geolf.org/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -893,7 +893,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.gengangere.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -909,7 +909,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://jumpcutdragvoll.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -925,7 +925,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://paideiantnu.wordpress.com/rss',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -941,7 +941,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://panoptikonlinjeforening.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -973,7 +973,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.primetime.trondheim.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -989,7 +989,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://psilinjeforening.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1044,7 +1044,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.sturm.ntnu.no/wordpress/?feed=rss2',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1060,7 +1060,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://teaterlosjen.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
       // TODO: This, alternate feeds per organization
       // altFeeds: {
@@ -1079,7 +1079,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://universitetsteatret.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1115,7 +1115,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://kjemiogmaterial.wordpress.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1131,7 +1131,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://logistikkstudentene.no/?feed=rss2',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1147,7 +1147,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://nutrix.hist.no/?feed=rss2',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1179,7 +1179,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://tihlde.org/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1195,7 +1195,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://bygging.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1211,7 +1211,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://tjsf.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1227,7 +1227,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://vivas.hist.no/?feed=rss2',
-        imageFetching: {newsSelector:'.post'},
+        imageScraping: {newsSelector:'.post'},
       },
     },
 
@@ -1245,7 +1245,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.dion.ntnu.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1261,7 +1261,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.trondheim.esn.no/rss.xml',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1277,7 +1277,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://iaeste.no/wp/?feed=rss2',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1293,7 +1293,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://org.ntnu.no/isu/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1309,7 +1309,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://projeksjon.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1325,7 +1325,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://org.ntnu.no/signifikant/?q=rss.xml',
-        imageFetching: {newsSelector:'div.content', domainUrl:'org.ntnu.no'},
+        imageScraping: {newsSelector:'div.content', domainUrl:'org.ntnu.no'},
       },
     },
 
@@ -1357,7 +1357,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.ntnusymbiosis.com/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1377,7 +1377,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://dusken.no/feed/',
-        imageFetching: {directHit:'img#header-img', domainUrl:'dusken.no'},
+        imageScraping: {directHit:'img#header-img', domainUrl:'dusken.no'},
       },
     },
 
@@ -1409,7 +1409,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://gemini.no/feed/',
-        imageFetching: {newsSelector:'header.entry-header'},
+        imageScraping: {newsSelector:'header.entry-header'},
       },
     },
 
@@ -1425,7 +1425,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.adressa.no/student/?widgetName=polarisFeeds&widgetId=3185248&getXmlFeed=true',
-        imageFetching: {newsSelector:'div.image.top'},
+        imageScraping: {newsSelector:'div.image.top'},
       },
     },
 
@@ -1465,7 +1465,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.velferdstinget.no/feed/rss/',
-        imageFetching: {newsSelector:'#innhold'},
+        imageScraping: {newsSelector:'#innhold'},
       },
     },
 
@@ -1481,7 +1481,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.studenttinget.no/feed/',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1497,7 +1497,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://studentparlamentet.com/?feed=rss2',
-        imageFetching: {},
+        imageScraping: {},
       },
     },
 
@@ -1517,7 +1517,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
-        imageFetching: {},
+        imageScraping: {},
       },
       //TODO: Fikse dette///////////////////////////////////////////////////////////////////////
       // getImage: function(link, callback) {
@@ -1579,7 +1579,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://www.ntnu.no/blogger/rektoratet/feed/',
-        imageFetching: {newsSelector:'div.entry'},
+        imageScraping: {newsSelector:'div.entry'},
       },
     },
 
@@ -1595,7 +1595,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://hist.no/rss.ap?thisId=1393',
-        imageFetching: {newsSelector:'div.nyhet', domainUrl:'hist.no'},
+        imageScraping: {newsSelector:'div.nyhet', domainUrl:'hist.no'},
       },
     },
 
@@ -1611,7 +1611,7 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'http://dmmh.no/hva-skjer?rss=true',
-        imageFetching: {domainUrl:'dmmh.no'},
+        imageScraping: {domainUrl:'dmmh.no'},
       },
     },
 

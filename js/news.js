@@ -212,9 +212,9 @@ var News = {
       });
 
       // We now have the parsed posts, but we (likely) need to get images for them
-      if (affiliation.news.imageFetching !== undefined) {
+      if (affiliation.news.imageScraping !== undefined) {
         // Debugging
-        if (self.debug) console.warn('News:', affiliation.name, '- Image fetching:', affiliation.news.imageFetching);
+        if (self.debug) console.warn('News:', affiliation.name, '- Image fetching:', affiliation.news.imageScraping);
         for (var i in posts) {
           if (self.debug) console.warn('News:', affiliation.name, '- PRE-Image-Fetching has #' + i + ' "' + posts[i].image + '"');
         }
