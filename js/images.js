@@ -12,7 +12,17 @@
 // 5. Good image? Add domain URL, add HTTP, ++
 
 var Images = {
+
   debug: 1,
+  // Images whose URL contains these keys will be excluded automatically
+  excludeKeys: [
+    'avatar',           // Exclude any avatars
+    '.gif',             // Exclude gifs since they're most likely smilies and the likes
+    'data:image/gif',   // Exclude gifs in this form as well
+    '/sociable/',       // Exclude social image icons (only applies for some blogs)
+    '/static/',         // Exclude static content, most likely icons
+    '/comments/',       // Exclude comments, most likely text as image like "Add comment here"
+  ],
 
   get: function(posts, affiliation, callback) {
     if (posts === undefined || affiliation === undefined || callback === undefined) {
@@ -39,7 +49,7 @@ var Images = {
     $.when.apply($, promises).then(function() {
       for (var i in arguments) {
         var html = arguments[i][0];
-        posts[i] = self.parseForImages(html, posts[i], affiliation);
+        posts[i].image = self.scrapeForImage(html, posts[i], affiliation);
       }
       callback(posts);
     }, function(e) {
@@ -61,7 +71,7 @@ var Images = {
   //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/
   //                                  // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
   // };
-  parseForImages: function(html, post, affiliation) {
+  scrapeForImage: function(html, post, affiliation) {
     // Get those options for image scraping
     var options = affiliation.news.imageScraping || {};
 
@@ -86,7 +96,7 @@ var Images = {
     //
     // Presumably we've found the news container here, now we need to find the image within it
     //
-    
+
     var image = null;
 
     // Try direct hit first, usually the fastest and best option
@@ -109,17 +119,18 @@ var Images = {
     // Try searching the container
     if (!this.control(image)) {
       image = container.find('pic'); // First find all images within container
-      image = this.exclude(image); // Exclude all unacceptable images      
+      image = this.excludeBadImages(image); // Exclude all unacceptable images
       if (options.imageIndex) image = image.eq(options.imageIndex); // Use image at specified index if requested
       image = image.attr('src'); // Get the src for the first image left in the array
     }
 
     //
-    // Lastly we determine whether we have found an image or not, and then store the image or null
+    // Now we have probably found an image, but if we did, is it a worthy image?
     //
 
-    // If image is undefined
-    if (!this.control(image)) {
+    // Did we find something?
+    if (this.debug) console.log('did we find something?', image); //////////////////////////////
+    if (!isEmpty(image)) {
       if (this.debug) console.log('Images: No image exists for link "'+link+'"');
       image = null;
     }
@@ -155,12 +166,10 @@ var Images = {
 
     if (this.debug) console.log('Images: All done, pushing', image);
 
-    // // Store it
-    post.image = image;
-
     console.log('');
 
-    return post;
+    // Store it
+    return image;
   },
 
   findBestNewsSelector: function(doc, options, affiliation) {
@@ -187,16 +196,14 @@ var Images = {
     }
   },
 
-  exclude: function(images) {
-    // Exclude gifs since they're most likely smilies and the likes
-    images = images.not('pic[src*=".gif"]');
-    images = images.not('pic[src*="data:image/gif"]');
-    // Exclude social image icons on some blogs
-    images = images.not('pic[src*="/sociable/"]');
-    // Exclude static content, most likely icons
-    images = images.not('pic[src*="/static/"]');
-    // Exclude comments, most likely text in images like "Add comment here"
-    images = images.not('pic[src*="/comments/"]');
+  excludeBadImages: function(images) {
+    for (var i in this.excludeKeys) {
+      var prevLength = images.length;
+      images = images.not('pic[src*="' + this.excludeKeys[i] + '"]');
+      if (images.length !== prevLength) {
+        if (self.debug) console.log('Images: Some images were excluded while searching for bad key', this.excludeKeys[i]);
+      }
+    }
     return images;
   },
 
@@ -215,15 +222,7 @@ var Images = {
     imageUrl = imageUrl.toLowerCase();
 
     // Look for bad keys and return false if any are found
-    var keys = [
-      'avatar',           // Exclude any avatars
-      '.gif',             // Exclude gifs since they're most likely smilies and the likes
-      'data:image/gif',   // Exclude gifs in this form as well
-      '/sociable/',       // Exclude social image icons (only applies for some blogs)
-      '/static/',         // Exclude static content, most likely icons
-      '/comments/',       // Exclude comments, most likely text in image as "Add comment here"
-    ];
-    for (var i in keys) {
+    for (var i in this.excludeKeys) {
       var str = keys[i];
       if (imageUrl.indexOf(str) !== -1) {
         if (this.debug) console.warn('Images: Image URL was bad, contained "' + str + '"');
@@ -231,7 +230,7 @@ var Images = {
       }
     }
 
-    // Look for proper formats and return false if none are used
+    // Look for proper image formats and return false if none are used
     var formats = new RegExp('(png|jpe?g|bmp|svg)$', 'gi');
     if (imageUrl.match(formats) === null) {
       if (this.debug) console.warn('Images: Image URL was bad, was not a proper format');
