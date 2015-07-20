@@ -42,41 +42,8 @@ var Images = {
     // TODO: Refactor, think of an awesome new way to organize this function.
 
     // Fetching from articles or frontpage?
-    var method = affiliation.news.imageMethod;
+    var options = affiliation.news.imageFetching;
 
-    if (method === 'frontpage') {
-      console.info('DOING FRONTPAGE METHOD')
-      this.fetchFrontpage(posts, affiliation, callback);
-    }
-    else if (method === 'articles') {
-      console.info('DOING ARTICLES METHOD')
-      this.fetchArticles(posts, affiliation, callback);
-    }
-    else {
-      console.error('Unsupported image fetching method');
-    }
-  },
-
-  fetchFrontpage: function(posts, affiliation, callback) {
-    var self = this;
-
-    Ajaxer.getCleanHtml({
-      url: affiliation.web,
-      success: function(html) {
-
-        posts = self.parseForImages(html, posts, affiliation);
-        callback(posts);
-
-      },
-      error: function(e) {
-        if (self.debug) console.error('Images: Could not fetch "'+affiliation.name+'" website:');
-        callback(posts);
-      },
-    });
-
-  },
-
-  fetchArticles: function(posts, affiliation, callback) {
     var self = this;
 
     // Fetch all articles asynchronously
@@ -84,7 +51,7 @@ var Images = {
     for (var i in posts) {
       var promise = Ajaxer.getCleanHtml({
         url: posts[i].link,
-        success: function() {}, // Using promises, see below here somewhere
+        success: function() {}, // Using promises, see below
         error: function(e) {
           console.error('Images: Could not fetch "' + affiliation.name + '" website:');
         },
@@ -92,7 +59,7 @@ var Images = {
       promises.push(promise);
     }
 
-    // When all articles have returned, parse each one
+    // When all articles have returned as promised, scrape each one for a nice image
     $.when.apply($, promises).then(function() {
       for (var i in arguments) {
         var html = arguments[i][0];
@@ -103,14 +70,13 @@ var Images = {
       console.error('Fetching of articles for image parsing has failed');
       callback(posts);
     });
-
   },
 
   parseForImages: function(html, post, affiliation) {
   // parseForImages: function(html, posts, affiliation) {
 
     // Create empty object to avoid crashes when looking up undefined props of undefined object
-    var options = affiliation.news.imageOptions || {};
+    var options = affiliation.news.imageFetching || {};
 
     // IMPORTANT:
     // jQuery tries to preload images found in the string, that is why
@@ -145,20 +111,20 @@ var Images = {
 
       var container = null;
 
-      if (self.debug) console.log('Images: Checking for news post with link', link);
+      if (this.debug) console.log('Images: Checking for news post with link', link);
 
       // Look up the first post with the link inside it...
       container = doc.find(newsSelector + ' a[href="' + link + '"]');
 
       // ...then find parent 'article' or 'div.post' or the like...
       if (container.length != 0) {
-        if (self.debug) console.log('Images: Found something with the link, locating parent tag (likely the news box)');
+        if (this.debug) console.log('Images: Found something with the link, locating parent tag (likely the news box)');
         container = container.parents(newsSelector);
       }
       // ...unless we didn't find anything with the link, in which case we just look for the news selector
       else {
       // else if (isSingleLink) {
-        if (self.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
+        if (this.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
         // On a specific news page (not a frontpage) we can allow ourselves to search
         // more broadly if we didn't find anything while searching for the link. We'll
         // search for the newsSelector instead and assume that the first news container
@@ -176,19 +142,19 @@ var Images = {
       if (options.directHit) {
         options.directHit = options.directHit.replace(/(^|\s)img/g, '$1pic');
         image = doc.find(options.directHit).attr('src');
-        if (self.debug) console.log('Images: Direct hit');
+        if (this.debug) console.log('Images: Direct hit');
       }
       else if (options.noscriptMatching) {
         // If a <noscript> tag is used, we'll just find the image URL by matching
         // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
         image = container.html().match(options.noscriptMatching)[1];
-        if (self.debug) console.log('Images: Ran noscript matching');
+        if (this.debug) console.log('Images: Ran noscript matching');
       }
       else {
         // First find all images within container
         image = container.find('pic');
         // Exclude all unacceptable images
-        image = self.exclude(image);
+        image = this.exclude(image);
         // Use image at specified index if requested
         if (options.imageIndex) image = image.eq(options.imageIndex);
         // Get the src for the first image left in the array
@@ -201,17 +167,17 @@ var Images = {
 
       // If image is undefined
       if (typeof image == 'undefined') {
-        if (self.debug) console.log('Images: No image exists for link "'+link+'"');
+        if (this.debug) console.log('Images: No image exists for link "'+link+'"');
         image = null;
       }
       // If image needs to be prefixed with the domain name
       else if (options.domainUrl) {
         if (image.indexOf('//') == -1) {
           image = 'http://' + options.domainUrl + image;
-          if (self.debug) console.log('Images: Found image (domain url added) "'+image+'"');
+          if (this.debug) console.log('Images: Found image (domain url added) "'+image+'"');
         }
         else {
-          if (self.debug) console.log('Images: Found a good image at "'+image+'"');
+          if (this.debug) console.log('Images: Found a good image at "'+image+'"');
         }
       }
 
@@ -222,24 +188,26 @@ var Images = {
       // If image does not start with http://, https:// or at least //
       // NOTE: Must be checked after adding "http" and domainUrl
       else if (image !== null && image.match(/^(http)?s?:?\/\//) == null) {
-        if (self.debug) console.log('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
+        if (this.debug) console.log('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
         image = null;
       }
       // If null
       else if (image === null) {
-        if (self.debug) console.log('Images: Did not find a good image');
+        if (this.debug) console.log('Images: Did not find a good image');
       }
       // If all is good
       else {
-        if (self.debug) console.log('Images: Found a good image at "'+image+'"');
+        if (this.debug) console.log('Images: Found a good image at "'+image+'"');
       }
 
-      if (self.debug) console.log('Images: All done, pushing', image);
+      if (this.debug) console.log('Images: All done, pushing', image);
 
       // // Store it
       // posts[i].image = image;
       post.image = image;
     // }
+    console.log('');
+
     return post;
     // return posts;
     // callback(posts);
@@ -281,7 +249,7 @@ var Images = {
   },
 
   control: function(imageUrl) {
-    if (this.debug) console.log('Images: Controlling image url "'+imageUrl+'"');
+    if (this.debug) console.log('Images: Controlling image URL "'+imageUrl+'"');
 
     // This function is primarily used by news.js for controlling the goodness of
     // image URLs found in items that contain HTML descriptions (in RSS/Atom feeds)
@@ -306,7 +274,7 @@ var Images = {
     for (var i in keys) {
       var str = keys[i];
       if (imageUrl.indexOf(str) !== -1) {
-        if (this.debug) console.warn('Images: Image url was bad, contained "' + str + '"');
+        if (this.debug) console.warn('Images: Image URL was bad, contained "' + str + '"');
         return false;
       }
     }
@@ -314,11 +282,11 @@ var Images = {
     // Look for proper formats and return false if none are used
     var formats = new RegExp('(png|jpe?g|bmp|svg)$', 'gi');
     if (imageUrl.match(formats) === null) {
-      if (this.debug) console.warn('Images: Image url was bad, was not a proper format');
+      if (this.debug) console.warn('Images: Image URL was bad, was not a proper format');
       return false;
     }
 
-    if (this.debug) console.info('Images: Image url deemed OK');
+    if (this.debug) console.info('Images: Image URL deemed OK');
     // Control out
     return true;
   },

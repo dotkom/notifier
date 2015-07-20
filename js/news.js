@@ -1,13 +1,13 @@
 "use strict";
 
 var News = {
+  debug: 1,
   msgAffiliationRequired: 'Tilhørighet må spesifiseres',
   msgUnknownFeedType: 'Ukjent type nyhetsstrøm, verken RSS eller Atom, what is it precious?',
   msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
   msgCallbackRequired: 'Callback er påkrevd',
   newsLimit: 10, // Get more news than needed to check for old news that have been updated
   //// IN USE ABOVE
-  debug: 0,
   unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
   msgConnectionError: 'Frakoblet fra feeden til ',
   msgUnsupportedFeed: 'Feeden støttes ikke',
@@ -199,39 +199,51 @@ var News = {
     var posts = [];
     var self = this;
     var count = 0;
-    // Add each RSS item
+
+    // RSS feed?
     if ($(xml).find('item').length != 0) {
+
+      // Parse each RSS item
       $(xml).find('item').each( function() {
         if (count++ < limit) {
           var item = self.parseRssItem(this, affiliation);
           posts.push(item);
         }
       });
-      // Get images for the posts
-      console.warn('BEFORE posts images', posts)////////////////////////////////////
 
-      Images.get(posts, affiliation, function(posts) {
+      // We now have the parsed posts, but we (likely) need to get images for them
+      if (affiliation.news.imageFetching !== undefined) {
+        // Debugging
+        if (self.debug) console.warn('News:', affiliation.name, '- Image fetching:', affiliation.news.imageFetching);
+        for (var i in posts) {
+          if (self.debug) console.warn('News:', affiliation.name, '- PRE-Image-Fetching has #' + i + ' "' + posts[i].image + '"');
+        }
 
-        // Send list of links, get list of images
-        console.warn('POSTS WITH IMAGES?', posts);
-        
+        Images.get(posts, affiliation, function(posts) {
+          // Debugging
+          for (var i in posts) {
+            console.warn('News:', affiliation.name, '- POST-Image-Fetching has #' + i + ' "' + posts[i].image + '"');
+          }
+          // Do post processing
+          for (var i in posts) {
+            posts[i] = self.postProcess(posts[i], affiliation);
+          }
+          callback(posts);
+        });
+      }
+      else {
+        if (self.debug) console.warn('News:', affiliation.name, '- No image fetching needed');
         // Do post processing
         for (var i in posts) {
           posts[i] = self.postProcess(posts[i], affiliation);
         }
-        console.warn('AFTER posts images', posts)////////////////////////////////////
-        // END LOL
-        callback(posts);  
-      });
-
-      // TODO: Get images here
-
-
-
-      
+        callback(posts);
+      }
     }
-    // Add each Atom entry
+
+    // Atom feed?
     else if ($(xml).find('entry').length != 0) {
+      // Parse each Atom entry
       $(xml).find('entry').each( function() {
         if (count++ < limit) {
           var entry = self.parseAtomEntry(this, affiliation);
@@ -248,6 +260,8 @@ var News = {
       }
       callback(posts);
     }
+
+    // Unknown feed type
     else {
       console.error(this.msgUnknownFeedType);
     }
@@ -323,13 +337,13 @@ var News = {
         }
       }
     }
-    
+
     //
     // Date field
     //
 
     post.date = $(item).find("pubDate").filter(':first').text().substr(5, 11);
-    
+
     //
     // Image field
     //
@@ -390,7 +404,7 @@ var News = {
     post.description = $(entry).find("content").filter(':first').text();
     if (isEmpty(post.description))
       post.description = $(entry).find("summary").filter(':first').text();
-    
+
     // Creator field
     post.creator = $(entry).find("author name").filter(':first').text();
 
@@ -506,10 +520,10 @@ var News = {
     // Count feed items
     var self = this;
     for (var i=0; i<items.length; i++) {
-      
+
       var item = items[i];
       var link = item.link;
-      
+
       // Counting...
       if (newsList.indexOf(link) === -1) {
         unreadCount++;
