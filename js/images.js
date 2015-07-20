@@ -6,43 +6,19 @@
 
 // The whole process explained simply:
 // 1. Find a worthy CSS selector
-// 2. Use selector to find worthy container
-// 3. Use container to find worthy image
+// 2. Use selector to find worthy DOM container
+// 3. Use DOM container to find worthy image
 // 4. Scrutinise image, try to kill it
 // 5. Good image? Add domain URL, add HTTP, ++
 
 var Images = {
   debug: 1,
 
-  // Possible values in options:
-  // options = {
-  //   directHit: 'img#header',       // the exact image tag that needs to be matched
-  //   domainUrl: 'hybrida.no',       // if website uses relative links, split by this url and search for last part of the link
-  //   imageIndex: 2,                 // if the first picture in each post is a bad fit, use the one at specified index, note that this is zero-indexed
-  //   linkDelimiter: '?',            // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
-  //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
-  //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/    // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
-  // };
-
-  // TODO: Point of improvement: A few sites have differing selectors for
-  // news articles across different news pages. Like e.g. if one of their
-  // news pages have a regular header image and another has a slideshow.
-  // Make sure this function can check for multiple different selectors.
-
   get: function(posts, affiliation, callback) {
     if (posts === undefined || affiliation === undefined || callback === undefined) {
       console.error('Required argument is missing');
       return;
     }
-
-    // TODO: Point of improvement: A few sites have differing selectors for
-    // news articles across different news pages. Like e.g. if one of their
-    // news pages have a regular header image and another has a slideshow.
-    // Make sure this function can check for multiple different selectors.
-    // TODO: Refactor, think of an awesome new way to organize this function.
-
-    // Fetching from articles or frontpage?
-    var options = affiliation.news.imageScraping;
 
     var self = this;
 
@@ -59,7 +35,7 @@ var Images = {
       promises.push(promise);
     }
 
-    // When all articles have returned as promised, scrape each one for a nice image
+    // When all articles are fetched, as promised, scrape each one for a nice image
     $.when.apply($, promises).then(function() {
       for (var i in arguments) {
         var html = arguments[i][0];
@@ -72,143 +48,152 @@ var Images = {
     });
   },
 
+  // Possible options for image scraping:
+  // options = {
+  //   directHit: 'img#header',       // if we have an exact image tag to use
+  //   domainUrl: 'hybrida.no',       // if website uses relative links, split by this url and search for last part of the link
+  //   imageIndex: 2,                 // if the first picture in each news post is a bad fit, use the one at specified index, note that this is zero-indexed
+  //   linkDelimiter: '?',            // if the link contains parameter data which isn't used in the on-site link, trash the parameter data after this specified delimiter
+  //   newsSelector: 'div.news_item', // if website uses uncommon selectors for news containers it must be defined here
+  //   noscriptMatching: /src="(http:\/\/gfx.nrk.no\/\/[a-zA-Z0-9]+)"/
+  //                                  // If a noscript tag is used we'll just search the contents of the noscript tag for the image src with regex
+  // };
   parseForImages: function(html, post, affiliation) {
-    // Get options for image scraping
+    // Get those options for image scraping
     var options = affiliation.news.imageScraping || {};
 
-    // IMPORTANT:
-    // jQuery tries to preload images found in the string, that is why
-    // Ajaxer.getCleanHtml has replaced all <img> tags with <pic> tags
+    //
+    // Let the games begin
+    //
+
+    // First we will wrap the HTML to be able to traverse it with jQuery.
+    // Remember that all <img> tags have been replaced with <pic> to avoid
+    // preloading of all the images.
     var doc = $(html);
+
+    //
+    // Make corrections to the link
+    //
+    
+    var link = post.link;
+
+    // If posts are using relative links, split by domainUrl, like 'hist.no'
+    if (options.domainUrl) {
+      if (this.debug) console.log('Images: Splitting link by domain url "'+options.domainUrl+'"');
+      link = link.split(options.domainUrl)[1];
+    }
+    // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
+    if (options.linkDelimiter) {
+      if (this.debug) console.log('Images: Splitting link by delimiter "'+options.linkDelimiter+'"');
+      link = link.split(options.linkDelimiter)[0];
+    }
+
+    //
+    // Find the news container which contains the news image, using our selector
+    //
 
     // Decide which selector to use for identifying news containers
     var newsSelector = this.findNewsSelector(doc, options);
 
-    // for (var i in posts) {
+    var container = null;
 
-      var link = post.link;
+    if (this.debug) console.log('Images: Checking for news post with link', link);
 
-      //
-      // Simplify link
-      //
+    // Look up the first post with the link inside it...
+    container = doc.find(newsSelector + ' a[href="' + link + '"]');
 
-      // If posts are using relative links, split by domainUrl, like 'hist.no'
-      if (options.domainUrl) {
-        if (this.debug) console.log('Images: Splitting link by domain url "'+options.domainUrl+'"');
-        link = link.split(options.domainUrl)[1];
+    // ...then find parent 'article' or 'div.post' or the like...
+    if (container.length != 0) {
+      if (this.debug) console.log('Images: Found something with the link, locating parent tag (likely the news box)');
+      container = container.parents(newsSelector);
+    }
+    // ...unless we didn't find anything with the link, in which case we just look for the news selector
+    else {
+    // else if (isSingleLink) {
+      if (this.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
+      // On a specific news page (not a frontpage) we can allow ourselves to search
+      // more broadly if we didn't find anything while searching for the link. We'll
+      // search for the newsSelector instead and assume that the first news container
+      // we find contains the image we're looking for (which is highly likely based
+      // on experience).
+      container = doc.find(newsSelector);
+    }
+
+    //
+    // Presumably we've found the news container here, now we need to find the image within it
+    //
+    
+    var image = null;
+
+    if (options.directHit) {
+      options.directHit = options.directHit.replace(/(^|\s)img/g, '$1pic');
+      image = doc.find(options.directHit).attr('src');
+      if (this.debug) console.log('Images: Direct hit');
+    }
+    else if (options.noscriptMatching) {
+      // If a <noscript> tag is used, we'll just find the image URL by matching
+      // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
+      image = container.html().match(options.noscriptMatching)[1];
+      if (this.debug) console.log('Images: Ran noscript matching');
+    }
+    else {
+      // First find all images within container
+      image = container.find('pic');
+      // Exclude all unacceptable images
+      image = this.exclude(image);
+      // Use image at specified index if requested
+      if (options.imageIndex) image = image.eq(options.imageIndex);
+      // Get the src for the first image left in the array
+      image = image.attr('src');
+    }
+
+    //
+    // Lastly we determine whether we have found an image or not, and then store the image or null
+    //
+
+    // If image is undefined
+    if (typeof image == 'undefined') {
+      if (this.debug) console.log('Images: No image exists for link "'+link+'"');
+      image = null;
+    }
+    // If image needs to be prefixed with the domain name
+    else if (options.domainUrl) {
+      if (image.indexOf('//') == -1) {
+        image = 'http://' + options.domainUrl + image;
+        if (this.debug) console.log('Images: Found image (domain url added) "'+image+'"');
       }
-      // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
-      if (options.linkDelimiter) {
-        if (this.debug) console.log('Images: Splitting link by delimiter "'+options.linkDelimiter+'"');
-        link = link.split(options.linkDelimiter)[0];
-      }
-
-      //
-      // Find the news container which contains the news image, using our selector
-      //
-
-      var container = null;
-
-      if (this.debug) console.log('Images: Checking for news post with link', link);
-
-      // Look up the first post with the link inside it...
-      container = doc.find(newsSelector + ' a[href="' + link + '"]');
-
-      // ...then find parent 'article' or 'div.post' or the like...
-      if (container.length != 0) {
-        if (this.debug) console.log('Images: Found something with the link, locating parent tag (likely the news box)');
-        container = container.parents(newsSelector);
-      }
-      // ...unless we didn't find anything with the link, in which case we just look for the news selector
-      else {
-      // else if (isSingleLink) {
-        if (this.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
-        // On a specific news page (not a frontpage) we can allow ourselves to search
-        // more broadly if we didn't find anything while searching for the link. We'll
-        // search for the newsSelector instead and assume that the first news container
-        // we find contains the image we're looking for (which is highly likely based
-        // on experience).
-        container = doc.find(newsSelector);
-      }
-
-      //
-      // Presumably we've found the news container here, now we need to find the image within it
-      //
-
-      var image = null;
-
-      if (options.directHit) {
-        options.directHit = options.directHit.replace(/(^|\s)img/g, '$1pic');
-        image = doc.find(options.directHit).attr('src');
-        if (this.debug) console.log('Images: Direct hit');
-      }
-      else if (options.noscriptMatching) {
-        // If a <noscript> tag is used, we'll just find the image URL by matching
-        // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
-        image = container.html().match(options.noscriptMatching)[1];
-        if (this.debug) console.log('Images: Ran noscript matching');
-      }
-      else {
-        // First find all images within container
-        image = container.find('pic');
-        // Exclude all unacceptable images
-        image = this.exclude(image);
-        // Use image at specified index if requested
-        if (options.imageIndex) image = image.eq(options.imageIndex);
-        // Get the src for the first image left in the array
-        image = image.attr('src');
-      }
-
-      //
-      // Lastly we determine whether we have found an image or not, and then store the image or null
-      //
-
-      // If image is undefined
-      if (typeof image == 'undefined') {
-        if (this.debug) console.log('Images: No image exists for link "'+link+'"');
-        image = null;
-      }
-      // If image needs to be prefixed with the domain name
-      else if (options.domainUrl) {
-        if (image.indexOf('//') == -1) {
-          image = 'http://' + options.domainUrl + image;
-          if (this.debug) console.log('Images: Found image (domain url added) "'+image+'"');
-        }
-        else {
-          if (this.debug) console.log('Images: Found a good image at "'+image+'"');
-        }
-      }
-
-      // If image URL contains the optional protocol operator "//", specify "http://"
-      if (image !== null && image.match(/^\/\//) !== null) {
-        image = image.replace(/^\/\//, 'http://');
-      }
-      // If image does not start with http://, https:// or at least //
-      // NOTE: Must be checked after adding "http" and domainUrl
-      else if (image !== null && image.match(/^(http)?s?:?\/\//) == null) {
-        if (this.debug) console.log('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
-        image = null;
-      }
-      // If null
-      else if (image === null) {
-        if (this.debug) console.log('Images: Did not find a good image');
-      }
-      // If all is good
       else {
         if (this.debug) console.log('Images: Found a good image at "'+image+'"');
       }
+    }
 
-      if (this.debug) console.log('Images: All done, pushing', image);
+    // If image URL contains the optional protocol operator "//", specify "http://"
+    if (image !== null && image.match(/^\/\//) !== null) {
+      image = image.replace(/^\/\//, 'http://');
+    }
+    // If image does not start with http://, https:// or at least //
+    // NOTE: Must be checked after adding "http" and domainUrl
+    else if (image !== null && image.match(/^(http)?s?:?\/\//) == null) {
+      if (this.debug) console.log('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
+      image = null;
+    }
+    // If null
+    else if (image === null) {
+      if (this.debug) console.log('Images: Did not find a good image');
+    }
+    // If all is good
+    else {
+      if (this.debug) console.log('Images: Found a good image at "'+image+'"');
+    }
 
-      // // Store it
-      // posts[i].image = image;
-      post.image = image;
-    // }
+    if (this.debug) console.log('Images: All done, pushing', image);
+
+    // // Store it
+    post.image = image;
+
     console.log('');
 
     return post;
-    // return posts;
-    // callback(posts);
   },
 
   findNewsSelector: function(doc, options) {
