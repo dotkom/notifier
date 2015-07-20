@@ -75,6 +75,12 @@ var Images = {
     // Get those options for image scraping
     var options = affiliation.news.imageScraping || {};
 
+    // If someone is using this function, but already have a good image, we'll just tell them
+    if (this.control(post.image)) {
+      console.warn('Images: You already have a good image, why do you ask?');
+      return post.image;
+    }
+
     //
     // Wrap HTML to traverse with jQuery.
     // All <img> tags are replaced with <pic> to avoid jQuery's automatic preloading of all the images.
@@ -83,18 +89,7 @@ var Images = {
     var doc = $(html);
 
     //
-    // Find the news container which contains the news image, using our selector.
-    // We'll search for the newsSelector and assume that the first news container
-    // we find contains the image we're looking for, which is highly likely based
-    // on experience.
-    //
-
-    var newsSelector = this.findBestNewsSelector(doc, affiliation);
-    if (this.debug) console.log('Images: Trying news selector "'+newsSelector+'"');
-    var container = doc.find(newsSelector);
-
-    //
-    // Presumably we've found the news container here, now we need to find the image within it
+    // Now, to start looking for the image
     //
 
     var image = null;
@@ -111,17 +106,26 @@ var Images = {
       if (options.noscriptMatching) {
         // If a <noscript> tag is used, we'll just find the image URL by matching
         // NOTE: This is for very special cases only! Like NRK.no, lulz @ nrk
-        image = container.html().match(options.noscriptMatching)[1];
+        image = html.match(options.noscriptMatching)[1];
         if (this.debug) console.log('Images: Noscript matching resulted in', image);
       }
     }
 
-    // Try searching the container
+    // Try finding the container that has the news article, and search through it
     if (!this.control(image)) {
-      image = container.find('pic'); // First find all images within container
-      image = this.excludeBadImages(image); // Exclude all unacceptable images
-      if (options.imageIndex) image = image.eq(options.imageIndex); // Use image at specified index if requested
-      image = image.attr('src'); // Get the src for the first image left in the array
+      var newsSelector = this.findBestNewsSelector(doc, affiliation);
+      if (newsSelector !== null) {
+        if (this.debug) console.log('Images: Trying news selector "'+newsSelector+'"');
+        var container = doc.find(newsSelector);
+        var imgArray = container.find('pic'); // First find all images within container
+        imgArray = this.excludeBadImages(imgArray); // Exclude all unacceptable images
+        if (options.imageIndex) imgArray = imgArray.eq(options.imageIndex); // Use image at specified index if requested
+        image = imgArray.attr('src'); // Get the src for the first image left in the array
+        if (this.debug) console.log('Images: Container searching resulted in', image);
+      }
+      else {
+        if (this.debug) console.warn('Images: Found no good news selectors');
+      }
     }
 
     //
@@ -131,7 +135,7 @@ var Images = {
     // Did we find something?
     if (this.debug) console.log('did we find something?', image); //////////////////////////////
     if (!isEmpty(image)) {
-      if (this.debug) console.log('Images: No image exists for link "'+link+'"');
+      if (this.debug) console.warn('Images: No image exists for link "' + post.link + '"');
       image = null;
     }
     // If image needs to be prefixed with the domain name
@@ -152,12 +156,12 @@ var Images = {
     // If image does not start with http://, https:// or at least //
     // NOTE: Must be checked after adding "http" and domainUrl
     else if (image !== null && image.match(/^(http)?s?:?\/\//) == null) {
-      if (this.debug) console.log('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
+      if (this.debug) console.warn('Images: Did not find a good image at "'+link+'", all we have is "'+image+'"');
       image = null;
     }
     // If null
     else if (image === null) {
-      if (this.debug) console.log('Images: Did not find a good image');
+      if (this.debug) console.warn('Images: Did not find a good image');
     }
     // If all is good
     else {
@@ -172,7 +176,7 @@ var Images = {
     return image;
   },
 
-  findBestNewsSelector: function(doc, options, affiliation) {
+  findBestNewsSelector: function(doc, affiliation) {
     // Get those options for image scraping
     var options = affiliation.news.imageScraping || {};
     // Array of possible news containers sorted by experience based probabilty
@@ -194,6 +198,7 @@ var Images = {
         }
       }
     }
+    return null;
   },
 
   excludeBadImages: function(images) {
@@ -208,10 +213,8 @@ var Images = {
   },
 
   control: function(imageUrl) {
+    // This function is used both internally here in images.js, and in by news.js
     if (this.debug) console.log('Images: Controlling image URL "'+imageUrl+'"');
-
-    // This function is primarily used by news.js for controlling the goodness of
-    // image URLs found in items that contain HTML descriptions (in RSS/Atom feeds)
 
     if (isEmpty(imageUrl)) {
       if (this.debug) console.error('Images.control() received empty imageUrl');
@@ -223,7 +226,7 @@ var Images = {
 
     // Look for bad keys and return false if any are found
     for (var i in this.excludeKeys) {
-      var str = keys[i];
+      var str = this.excludeKeys[i];
       if (imageUrl.indexOf(str) !== -1) {
         if (this.debug) console.warn('Images: Image URL was bad, contained "' + str + '"');
         return false;
