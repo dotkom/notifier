@@ -205,6 +205,7 @@ var saveAndCountNews = function(items, number) {
 
 var updateUnreadCount = function(count1, count2) {
   // TODO: Tag all news with a "read" boolean, use this for counting and showing which news are unread
+  // TODO: If the user does not want noficiations from a source, then all should be marked as read
   var unreadCount = (Number(ls.affiliationUnreadCount1)) + (Number(ls.affiliationUnreadCount2));
   Browser.setBadgeText(String(unreadCount));
 };
