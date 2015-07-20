@@ -72,52 +72,16 @@ var Images = {
     var doc = $(html);
 
     //
-    // Make corrections to the link
-    //
-    
-    var link = post.link;
-
-    // If posts are using relative links, split by domainUrl, like 'hist.no'
-    if (options.domainUrl) {
-      if (this.debug) console.log('Images: Splitting link by domain url "'+options.domainUrl+'"');
-      link = link.split(options.domainUrl)[1];
-    }
-    // Trash link suffix data (found after delimiter) which is included in some news feeds for the sake of statistics and such
-    if (options.linkDelimiter) {
-      if (this.debug) console.log('Images: Splitting link by delimiter "'+options.linkDelimiter+'"');
-      link = link.split(options.linkDelimiter)[0];
-    }
-
-    //
     // Find the news container which contains the news image, using our selector
     //
+    // We'll search for the newsSelector and assume that the first news container
+    // we find contains the image we're looking for, which is highly likely based
+    // on experience.
+    //
 
-    // Decide which selector to use for identifying news containers
-    var newsSelector = this.findNewsSelector(doc, options);
-
-    var container = null;
-
-    if (this.debug) console.log('Images: Checking for news post with link', link);
-
-    // Look up the first post with the link inside it...
-    container = doc.find(newsSelector + ' a[href="' + link + '"]');
-
-    // ...then find parent 'article' or 'div.post' or the like...
-    if (container.length != 0) {
-      if (this.debug) console.log('Images: Found something with the link, locating parent tag (likely the news box)');
-      container = container.parents(newsSelector);
-    }
-    // ...unless we didn't find anything with the link, in which case we just look for the news selector
-    else {
-    // else if (isSingleLink) {
-      if (this.debug) console.log('Images: Found nothing with a[href=url], instead trying news selector "'+newsSelector+'"');
-      // On a specific news page (not a frontpage) we can allow ourselves to search
-      // more broadly if we didn't find anything while searching for the link. We'll
-      // search for the newsSelector instead and assume that the first news container
-      // we find contains the image we're looking for (which is highly likely based
-      // on experience).
-      container = doc.find(newsSelector);
-    }
+    var newsSelector = this.findBestNewsSelector(doc, affiliation);
+    if (this.debug) console.log('Images: Trying news selector "'+newsSelector+'"');
+    var container = doc.find(newsSelector);
 
     //
     // Presumably we've found the news container here, now we need to find the image within it
@@ -196,22 +160,24 @@ var Images = {
     return post;
   },
 
-  findNewsSelector: function(doc, options) {
-    // Array of possible news containers sorted by estimated probabilty
+  findBestNewsSelector: function(doc, options, affiliation) {
+    // Get those options for image scraping
+    var options = affiliation.news.imageScraping || {};
+    // Array of possible news containers sorted by experience based probabilty
     var containers = [
       'div.entry',
       'div.post', // some blogs have div.entry inside a div.post, therefore we check div.entry first
       'article', // leave <article> at the bottom of the preferred list, it's a bit misused out there in the wild
     ];
     if (options.newsSelector) {
-      if (this.debug) console.log('Images: Using _specified_ selector "' + options.newsSelector + '" for news at "'+options.url+'"');
+      if (this.debug) console.log('Images: Using _specified_ selector "' + options.newsSelector + '" for news at "' + affiliation.url + '"');
       return options.newsSelector;
     }
     else {
       for (var i = 0; i < containers.length; i++) {
         var newsSelector = containers[i];
-        if (doc.find(newsSelector).length != 0) {
-          if (this.debug) console.log('Images: Using typical selector "' + newsSelector + '" for news at "' + options.url + '"');
+        if (doc.find(newsSelector).length !== 0) {
+          if (this.debug) console.log('Images: Using typical selector "' + newsSelector + '" for news at "' + affiliation.url + '"');
           return newsSelector;
         }
       }
