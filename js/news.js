@@ -215,15 +215,8 @@ var News = {
       if (affiliation.news.imageScraping !== undefined) {
         // Debugging
         if (self.debug) console.warn('News:', affiliation.name, '- Image fetching:', affiliation.news.imageScraping);
-        for (var i in posts) {
-          if (self.debug) console.warn('News:', affiliation.name, '- PRE-Image-Fetching has #' + i + ' "' + posts[i].image + '"');
-        }
 
         Images.get(posts, affiliation, function(posts) {
-          // Debugging
-          for (var i in posts) {
-            console.warn('News:', affiliation.name, '- POST-Image-Fetching has #' + i + ' "' + posts[i].image + '"');
-          }
           // Do post processing
           for (var i in posts) {
             posts[i] = self.postProcess(posts[i], affiliation);
