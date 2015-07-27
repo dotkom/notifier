@@ -264,8 +264,8 @@ var updateUnreadCount = function(count1, count2) {
 // (executes itself once)
 //
 
-(function loadAffiliationIcon() {
-  var loadAffiliationIcon = function() {
+var loadAffiliationIcon = (function() {
+  var load = function() {
     var key = ls.affiliationKey1;
     // Set badge icon
     var icon = Affiliation.org[key].icon;
@@ -274,6 +274,8 @@ var updateUnreadCount = function(count1, count2) {
     var name = Affiliation.org[key].name;
     Browser.setTitle(name + ' Notifier');
   }
+  load(); // Run once
+  return load; // Return for later use
 }());
 
 //

@@ -142,9 +142,9 @@ var Affiliation = {
           var posts = [];
           // Add each item from news tags
           if ($(html).find('.article').length != 0) {
-            $(html).find('.article').each( function() {
+            $(html).find('.article').each(function() {
               if (count < limit) {
-                var post = posts[count];
+                var post = {};
                 // The popular fields
                 post.title = $(this).find("h2").filter(':first').text();
                 post.link = $(this).find("a").filter(':first').attr('href');
@@ -324,7 +324,7 @@ var Affiliation = {
           if ($(html).find('div.feature').length != 0) {
             $(html).find('div.feature').each( function() {
               if (count < limit) {
-                var post = posts[count];
+                var post = {};
                 // The popular fields
                 post.title = $(this).find("h6").filter(':first').text();
                 post.link = $(this).find("a").attr('href');
@@ -386,7 +386,7 @@ var Affiliation = {
           if ($(html).find('div.post').length != 0) {
             $(html).find('div.post').each( function() {
               if (count < limit) {
-                var post = posts[count];
+                var post = {};
                 // The popular fields
                 post.title = $(this).find("h3").text();
                 post.link = $(this).find("a:first").attr('href');
@@ -429,7 +429,7 @@ var Affiliation = {
           if ($(html).find('div.news').length != 0) {
             $(html).find('div.news').each( function() {
               if (count < limit) {
-                var post = posts[count];
+                var post = {};
                 // The popular fields
                 post.title = $(this).find('h5 a').text();
                 post.link = $(this).find('h5 a').attr('href');
@@ -582,7 +582,7 @@ var Affiliation = {
           if ($(html).find('li[id^="article-"]').length != 0) {
             $(html).find('li[id^="article-"]').each( function() {
               if (count < limit) {
-                var post = posts[count];
+                var post = {};
                 // The popular fields
                 post.title = $(this).find('h2 a').text();
                 post.link = $(this).find('h2 a').attr('href');
@@ -637,7 +637,7 @@ var Affiliation = {
     //         if ($(html).find('li[id^="article-"]').length != 0) {
     //           $(html).find('li[id^="article-"]').each( function() {
     //             if (count < posts.length) {
-    //               var post = posts[count];
+    //               var post = {};
                   
     //               // The popular fields
     //               post.title = $(this).find('h2 a').text();
@@ -739,7 +739,7 @@ var Affiliation = {
           if ($(html).find('article').length != 0) {
             $(html).find('article').each( function() {
               if (count < limit) {
-                var post = posts[count];
+                var post = {};
                 // The popular fields
                 post.title = $(this).find("h1").filter(':first').text();
                 post.link = $(this).find("h1 a").attr('href');
@@ -1011,7 +1011,7 @@ var Affiliation = {
           if ($(html).find('#articles').children().length != 0) {
             $(html).find('#articles').children().each( function() {
               if (count < limit) {
-                var post = posts[count];
+                var post = {};
                 // The popular fields
                 post.title = $(this).find('.articleBody h2 a').text();
                 post.link = $(this).find('.articleBody h2 a').prop('href');

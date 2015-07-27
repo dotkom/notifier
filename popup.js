@@ -32,7 +32,7 @@ var mainLoop = function(options) {
           popup.update.servant();
           popup.update.coffee();
           // popup.update.status(); // TODO: No status info in popup yet
-        });
+        }.bind(this));
       }
     }
   }

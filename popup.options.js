@@ -628,7 +628,7 @@ popup.options = {
       if (this.checked === true) {
         News.showNotification({
           demo: true,
-          key: ls['affiliationKey' + number],
+          feedKey: ls['affiliationKey' + number],
         });
       }
       // Track
