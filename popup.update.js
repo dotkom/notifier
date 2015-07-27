@@ -281,7 +281,7 @@ popup.update = {
       // Add feed items
       $.each(items, function (index, item) {
 
-        if (index < 4) { // Four is the best amount of news for the popup, IMO
+        if (index < News.newsLimitToShow) { // Four is the best amount of news for the popup, IMO
           viewedList.push(item.link);
 
           var unreadCount = Number(ls[unreadCountName]);

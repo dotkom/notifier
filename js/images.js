@@ -39,7 +39,7 @@ var Images = {
         url: posts[i].link,
         success: function() {}, // Using promises, see below
         error: function(e) {
-          console.error('Images: Could not fetch "' + affiliation.name + '" website:');
+          console.error('Images: Could not fetch "' + affiliation.name + '" link because of "' + e.statusText + '":', posts[i].link);
         },
       });
       promises.push(promise);
@@ -76,7 +76,7 @@ var Images = {
 
     // If someone is using this function, but already have a good image, we'll just tell them
     if (!isEmpty(post.image) && this.control(post.image)) {
-      console.warn('Images: You already have a good image, why do you ask?');
+      console.warn('Images: You already have a good image, why do you ask?', post.image);
       return post.image;
     }
 
@@ -120,10 +120,10 @@ var Images = {
         imgArray = this.excludeBadImages(imgArray); // Exclude all unacceptable images
         if (options.imageIndex) imgArray = imgArray.eq(options.imageIndex); // Use image at specified index if requested
         image = imgArray.attr('src'); // Get the src for the first image left in the array
-        if (this.debug) console.log('Images: Container searching resulted in', image);
+        if (this.debug) console.log('Images: Container searching resulted in', image, (image ? '- hope that helps' : '- useless'));
       }
       else {
-        if (this.debug) console.warn('Images: Found no good news selectors');
+        if (this.debug) console.log('Images: Found no good news selectors');
       }
     }
 
@@ -144,7 +144,7 @@ var Images = {
         if (this.debug) console.log('Images: Added domain URL', image);
       }
       else {
-        if (this.debug) console.warn('Images: Domain URL was specified as an option, but the image link already had a domain name. It seems we overkilled that one.');
+        if (this.debug) console.warn('Images: Domain URL was specified as an option, but the image link already had a domain name. Either we overkilled it, or they used an image from another domain.');
       }
     }
 
@@ -160,7 +160,7 @@ var Images = {
       return affiliation.placeholder;
     }
 
-    if (this.debug) console.info('Images: All done, pushing', image);
+    if (this.debug) console.log('Images: All done, pushing', image);
 
     // Store it
     return image;
@@ -176,14 +176,14 @@ var Images = {
       'article', // leave <article> at the bottom of the preferred list, it's a bit misused out there in the wild
     ];
     if (options.newsSelector) {
-      if (this.debug) console.log('Images: Using _specified_ selector "' + options.newsSelector + '" for news at "' + affiliation.url + '"');
+      if (this.debug) console.log('Images: Using _specified_ selector "' + options.newsSelector + '" for news at "' + affiliation.web + '"');
       return options.newsSelector;
     }
     else {
       for (var i = 0; i < containers.length; i++) {
         var newsSelector = containers[i];
         if (doc.find(newsSelector).length !== 0) {
-          if (this.debug) console.log('Images: Using typical selector "' + newsSelector + '" for news at "' + affiliation.url + '"');
+          if (this.debug) console.log('Images: Using typical selector "' + newsSelector + '" for news at "' + affiliation.web + '"');
           return newsSelector;
         }
       }
@@ -207,12 +207,16 @@ var Images = {
 
     // Is it empty?
     if (isEmpty(imageUrl)) {
-      if (this.debug) console.warn('Images: Control received empty imageUrl');
       return false;
     }
 
     // Before checking keys, go lowercase (remember that we are not returning this URL anyway)
     imageUrl = imageUrl.toLowerCase();
+
+    // Look for a valid protocol, and return false if none are used
+    if (imageUrl.match(/^https?:\/\//) === null) {
+      return false;
+    }
 
     // Look for bad keys and return false if any are found
     for (var i in this.excludeKeys) {

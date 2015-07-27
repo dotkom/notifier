@@ -87,7 +87,7 @@ var Ajaxer = {
         type: (params.data ? 'POST' : 'GET'),
         data: (params.data ? params.data : ''),
         url: params.url,
-        timeout: params.timeout || 6000,
+        timeout: params.timeout || 10000,
         dataFilter: params.dataFilter,
         dataType: params.dataType,
         success: params.success,
@@ -95,7 +95,7 @@ var Ajaxer = {
           if (params.url.indexOf(API_SERVER_1) !== -1) {
             if (Ajaxer.debug) console.warn('Ajaxer: Falling back to secondary API server');
             params.url = params.url.replace(API_SERVER_1, API_SERVER_2);
-            params.timeout = 15000; // Assume slow network, be patient
+            params.timeout = 20000; // Assume slow network, be patient
             ajax(params);
           }
           else {
@@ -120,7 +120,7 @@ var Ajaxer = {
     }
     // More tags were found, most likely nested html (malicious).
     else {
-      if (Ajaxer.debug) console.log('Ajaxer detected malicious html.');
+      if (Ajaxer.debug) console.warn('Ajaxer detected malicious html.');
       return '';
     }
   },

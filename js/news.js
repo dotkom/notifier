@@ -6,14 +6,12 @@ var News = {
   msgUnknownFeedType: 'Ukjent type nyhetsstrøm, verken RSS eller Atom, what is it precious?',
   msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
   msgCallbackRequired: 'Callback er påkrevd',
-  newsLimit: 10, // Get more news than needed to check for old news that have been updated
-  //// IN USE ABOVE
-  unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
-  msgConnectionError: 'Frakoblet fra feeden til ',
-  msgUnsupportedFeed: 'Feeden støttes ikke',
-  msgNoNewsSource: 'Ingen nyhetskilde funnet for valgt tilhørightet',
-  msgNoTitle: 'Uten tittel',
+  msgFeedConnectionError: 'Frakoblet fra feeden til ',
   msgNoDescription: 'Uten tekst',
+  msgNoTitle: 'Uten tittel',
+  newsLimit: 10, // Get more news than needed to check for old news that have been updated
+  newsLimitToShow: 10, // How many news posts we will actually show
+  unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
 
   _autoLoadDefaults_: function() {
     if (ls.showNotifications1 === undefined)
@@ -156,8 +154,8 @@ var News = {
         }
         // Else, actual error
         else {
-          console.error(self.msgConnectionError + ": " + affiliation.name);
-          callback(self.msgConnectionError + affiliation.name);
+          console.error(self.msgFeedConnectionError + ": " + affiliation.name);
+          callback(self.msgFeedConnectionError + affiliation.name);
         }
       },
     });
@@ -358,8 +356,11 @@ var News = {
       // Universitetsavisa/Adressa does this little trick to get images in their feed
       var enclosure = $(item).find('enclosure').filter(':first');
       if (enclosure.length !== 0) {
-        post.image = enclosure['0'].attributes.url.value;
-        post.image += '?isimage=.jpg'; // Help image-URLs without file extension pass through Images.control()
+        if (enclosure['0'].attributes.type.value.match(/image/g) !== null) {
+          if (this.debug) console.warn('News: Found image in enclosure', enclosure['0'].attributes);
+          post.image = enclosure['0'].attributes.url.value;
+          post.image += '?isimage=.jpg'; // Help image-URLs without file extension pass through Images.control()
+        }
       }
       // Gemini uses this rather blunt hack to put images in their feed
       var bilde = $(item).find('bilde');
@@ -573,7 +574,6 @@ var News = {
    * - OPTIONAL image: 'http://somedomain.com/somearticle/someimage.png'
    */
   showNotification: function(item) {
-    if (this.debug) console.log('News: showNotification', item);
     // Fail?
     if (item === undefined) {
       console.error('News.showNotification got an undefined item to show. If you are trying to use demo mode, check description in this function.');
@@ -581,12 +581,12 @@ var News = {
     }
     // Demo mode
     if (item.demo) {
-      var image = Affiliation.org[item.key].placeholder;
+      var image = Affiliation.org[item.feedKey].placeholder;
       image = Browser.getUrl(image);
       item = {
-        title: Affiliation.org[item.key].name + ' Notifier',
+        title: Affiliation.org[item.feedKey].name + ' Notifier',
         description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 3.. 2.. 1.. *Liftoff!*"',
-        link: Affiliation.org[item.key].web,
+        link: Affiliation.org[item.feedKey].web,
         image: image,
         feedKey: item.feedKey,
       }
@@ -595,6 +595,7 @@ var News = {
     }
     // Normal mode
     else {
+      if (this.debug) console.log('News: Showing notification "' + item.title + '"');
       var showIt = function() {
         if ((item.feedKey === ls.affiliationKey1 && ls.showNotifications1 === 'true') || (item.feedKey === ls.affiliationKey2 && ls.showNotifications2 === 'true')) {
 
@@ -640,6 +641,8 @@ var News = {
           showTime = 10000;
         }
       }
+      // Debugging? Show it instantly
+      if (DEBUG) showTime = 0;
       // Showtime, show it!
       setTimeout(showIt, showTime);
     }
@@ -681,17 +684,22 @@ var News = {
   },
 
   checkDescriptionForImageLink: function(oldImage, description, website) {
+    // This function is far from perfect, but it does the job in most cases
     var pieces = description.match(/src="(.*?(\.(jpg|bmp|png)))("|\?)/i);
     if (pieces != null) {
       var image = pieces[1];
-      // Quick and dirty check for HTML, otherwise we would have to regex any image URL
-      if (image.match(/[\<\>]/g) == null) {
+      // No HTML in the resulting string?
+      if (image.match(/[\<\>]/g) === null) {
         if (image.startsWith('http')) {
-          // Direct link
+          // Assume image with direct link
           return image;
         }
+        else if (image.startsWith('//')) {
+          // Assume image with direct link, but optional protocol
+          return 'http' + image;
+        }
         else {
-          // Relative link
+          // Assume image with relative link
           return website + image;
         }
       }

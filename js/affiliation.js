@@ -437,7 +437,7 @@ var Affiliation = {
                 post.author = $(this).next().find('span i').text().trim();
                 post.image = $(this).find('pic').attr('src');
                 // Link fixing
-                post.link = self.web + post.link;
+                post.link = 'http://omega.ntnu.no' + post.link;
                 // Image fixing
                 if (typeof post.image === 'undefined')
                   post.image = self.placeholder;
