@@ -573,6 +573,7 @@ var News = {
    * - OPTIONAL image: 'http://somedomain.com/somearticle/someimage.png'
    */
   showNotification: function(item) {
+    if (this.debug) console.log('News: showNotification', item);
     // Fail?
     if (item === undefined) {
       console.error('News.showNotification got an undefined item to show. If you are trying to use demo mode, check description in this function.');
@@ -584,10 +585,10 @@ var News = {
       image = Browser.getUrl(image);
       item = {
         title: Affiliation.org[item.key].name + ' Notifier',
-        description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 1.. 2.. 3.. *BLASTOFF!*"',
+        description: 'Slik ser et nyhetsvarsel ut.\n"Testing.. 3.. 2.. 1.. *Liftoff!*"',
         link: Affiliation.org[item.key].web,
         image: image,
-        feedKey: item.key,
+        feedKey: item.feedKey,
       }
       // Need to run it by the background process because the event listeners are there
       Browser.getBackgroundProcess().Browser.createNotification(item);
@@ -595,7 +596,7 @@ var News = {
     // Normal mode
     else {
       var showIt = function() {
-        if ((item.key === ls.affiliationKey1 && ls.showNotifications1 === 'true') || (item.key === ls.affiliationKey2 && ls.showNotifications2 === 'true')) {
+        if ((item.feedKey === ls.affiliationKey1 && ls.showNotifications1 === 'true') || (item.feedKey === ls.affiliationKey2 && ls.showNotifications2 === 'true')) {
 
           // Save timestamp
           ls.lastNotifiedTime = new Date().getTime();
@@ -632,15 +633,14 @@ var News = {
       }
       // Make sure notifications are sent with at least 10 seconds inbetween
       var showTime = 0;
-      if (!DEBUG) {
-        var lastTime = ls.lastNotifiedTime;
-        if (isNumber(lastTime)) {
-          var diff = new Date().getTime() - lastTime;
-          if (diff < 10000) { // less than 10 seconds?
-            showTime = 10000;
-          }
+      var lastTime = ls.lastNotifiedTime;
+      if (isNumber(lastTime)) {
+        var diff = new Date().getTime() - lastTime;
+        if (diff < 10000) { // less than 10 seconds?
+          showTime = 10000;
         }
       }
+      // Showtime, show it!
       setTimeout(showIt, showTime);
     }
   },
