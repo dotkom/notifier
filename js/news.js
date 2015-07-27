@@ -108,13 +108,8 @@ var News = {
       success: function(website) {
         // Now we have fetched the website, time to scrape for posts
         affiliation.news.scrape(website, self.newsLimit, affiliation, function(posts) {
-          // TODO: Smørekoppen requires image fetching on top of this ///////////////////////
-          // Now we have the scraped posts, time to postprocess them
-          for (var i in posts) {
-            posts[i] = self.postProcess(posts[i], affiliation);
-          }
-          // Now that posts have been fetched, scraped and postprocessed, time to send them back
-          callback(posts);
+          // Now we have the news posts, time to scrape for images and finish up
+          self.fetchImagesAndFinishUp(affiliation, posts, callback);
         });
       },
       error: function(e) {
@@ -131,12 +126,8 @@ var News = {
       success: function(json) {
         // Now we have fetched the JSON, time to parse it
         affiliation.news.parse(json, self.newsLimit, affiliation, function(posts) {
-          // Now we have the parsed news items, time to postprocess them
-          for (var i in posts) {
-            posts[i] = self.postProcess(posts[i], affiliation);
-          }
-          // Now that posts have been fetched, parsed and postprocessed, time to send them back
-          callback(posts);
+          // Now we have the news posts, time to scrape for images and finish up
+          self.fetchImagesAndFinishUp(affiliation, posts, callback);
         });
       },
       error: function(e) {
@@ -153,17 +144,15 @@ var News = {
       success: function(xml) {
         // Now we have fetched the feed, time to parse it
         self.parseFeed(xml, affiliation, self.newsLimit, function(posts) {
-
-          // Now we have the parsed news items, time to search for images
-          // Now we have the parsed news items, time to postprocess them
-          callback(posts);
+          // Now we have the news posts, time to scrape for images and finish up
+          self.fetchImagesAndFinishUp(affiliation, posts, callback);
         });
       },
       error: function(jqXHR, text, err) {
         // Misconfigured servers will send XML with HTML headers
         if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
           xml = jqXHR.responseText;
-          self.parseFeed(xml, affiliation, self.newsLimit, callback);
+          this.success(xml);
         }
         // Else, actual error
         else {
@@ -173,6 +162,42 @@ var News = {
       },
     });
   },
+
+  //
+  // Finishup
+  // Called after the above fetch functions,
+  // fetches images and calls postprocessing
+  //
+
+  fetchImagesAndFinishUp: function(affiliation, posts, callback) {
+    
+    // Minor helper function to keep things DRY
+    var postProcessHelper = function(posts, affiliation) {
+      for (var i in posts) {
+        posts[i] = this.postProcess(posts[i], affiliation);
+      }
+      return posts;
+    }.bind(this);
+
+    // We now have the parsed posts, but we (likely) need to get images for them
+    if (affiliation.news.imageScraping !== undefined) {
+      if (this.debug) console.log('News: Affiliation is "' + affiliation.name + '", image fetching is', affiliation.news.imageScraping);
+      Images.get(posts, affiliation, function(posts) {
+        posts = postProcessHelper(posts, affiliation);
+        callback(posts);
+      });
+    }
+    // Otherwise, no need for image scraping, just postprocess and do callback
+    else {
+      if (this.debug) console.log('News: Affiliation is "' + affiliation.name + '", no image fetching specified');
+      posts = postProcessHelper(posts, affiliation);
+      callback(posts);
+    }
+  },
+
+  //
+  // Feed parsing
+  //
 
   // Need to know about the news feeds used in Online Notifier:
   // These RSS fields are always used:
@@ -210,28 +235,7 @@ var News = {
           posts.push(item);
         }
       });
-
-      // We now have the parsed posts, but we (likely) need to get images for them
-      if (affiliation.news.imageScraping !== undefined) {
-        // Debugging
-        if (self.debug) console.warn('News:', affiliation.name, '- Image fetching:', affiliation.news.imageScraping);
-
-        Images.get(posts, affiliation, function(posts) {
-          // Do post processing
-          for (var i in posts) {
-            posts[i] = self.postProcess(posts[i], affiliation);
-          }
-          callback(posts);
-        });
-      }
-      else {
-        if (self.debug) console.warn('News:', affiliation.name, '- No image fetching needed');
-        // Do post processing
-        for (var i in posts) {
-          posts[i] = self.postProcess(posts[i], affiliation);
-        }
-        callback(posts);
-      }
+      callback(posts);
     }
 
     // Atom feed?
@@ -243,14 +247,6 @@ var News = {
           posts.push(entry);
         }
       });
-      // Get images for the posts
-
-      // TODO: Get images here ///////////////////////////////////////////////
-
-      // Do post processing
-      for (var i in posts) {
-        posts[i] = self.postProcess(posts[i], affiliation);
-      }
       callback(posts);
     }
 
