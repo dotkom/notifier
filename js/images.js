@@ -48,8 +48,21 @@ var Images = {
     // When all articles are fetched, as promised, scrape each one for a nice image
     $.when.apply($, promises).then(function() {
       for (var i in arguments) {
-        var html = arguments[i][0];
-        posts[i].image = self.scrapeForImage(html, posts[i], affiliation);
+        // HTML is either hidden in arguments[i] or in arguments[i][0], figure out which
+        var html = null;
+        if (typeof arguments[i]['0'] === 'string' && arguments[i]['0'].indexOf('<html') !== -1) {
+          html = arguments[i]['0'];
+        }
+        else if (typeof arguments[i] === 'string' && arguments[i].indexOf('<html') !== -1) {
+          html = arguments[i];
+        }
+        else {
+          if (self.debug) console.warn('Images: Unidentified pattern for arguments', arguments);
+        }
+        // Did we find the HTML string from arguments?
+        if (html && html !== null) {
+          posts[i].image = self.scrapeForImage(html, posts[i], affiliation);
+        }
       }
       callback(posts);
     }, function(e) {
