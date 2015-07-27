@@ -50,12 +50,8 @@ var News = {
     //     Feed with images?
     //       Parsing, finds images too
     //     Feed without images?
-    //       Images on frontpage?
-    //         Request frontpage and scrape for images
-    //       Images only on individual news pages?
-    //         Request all site links from feed posts
-    //           Scrape each returned site for news image
-    //             See? Simple. No, this last one is a tough nut. It's true.
+    //       Request all site links from feed posts
+    //         Scrape each returned site for news image
 
     //
     // First, find out how we are going to get news for this affiliation
@@ -63,17 +59,17 @@ var News = {
 
     switch (affiliation.news.type) {
       case "website": {
-        console.info('WEBSITE', affiliation.name.toUpperCase())
+        if (this.debug) console.info('News: Via website for', affiliation.name);
         this.fetchWebsite(affiliation, callback);
         break;
       }
       case "json": {
-        console.info('JSON', affiliation.name.toUpperCase())
+        if (this.debug) console.info('News: Via JSON for', affiliation.name);
         this.fetchJson(affiliation, callback);
         break;
       }
       case "feed": {
-        console.info('FEED', affiliation.name.toUpperCase())
+        if (this.debug) console.info('News: Via feed for', affiliation.name);
         this.fetchFeed(affiliation, callback);
         break;
       }
@@ -98,6 +94,11 @@ var News = {
     //   },
     // ],
   },
+
+  //
+  // Fetch functions
+  // Fetches from websites, APIs and news feeds
+  //
 
   fetchWebsite: function(affiliation, callback) {
     var self = this;
@@ -202,7 +203,6 @@ var News = {
 
     // RSS feed?
     if ($(xml).find('item').length != 0) {
-
       // Parse each RSS item
       $(xml).find('item').each( function() {
         if (count++ < limit) {
@@ -417,6 +417,10 @@ var News = {
 
     return post;
   },
+
+  //
+  // Post processing of news posts
+  //
 
   postProcess: function(post, affiliation) {
     // All posts from all sources must go through postprocessing.
@@ -644,6 +648,10 @@ var News = {
       setTimeout(showIt, showTime);
     }
   },
+
+  //
+  // Utility functions
+  //
 
   stripCdata: function(item, tagName, postField) {
     // If feed uses CDATA-tags in title and description we need to be more clever
