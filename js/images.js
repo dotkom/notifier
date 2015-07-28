@@ -13,7 +13,7 @@
 
 var Images = {
 
-  debug: 1,
+  debug: 0,
   // Images whose URL contains these keys will be excluded automatically
   excludeKeys: [
     'avatar',           // Exclude any avatars

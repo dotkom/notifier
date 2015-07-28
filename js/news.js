@@ -1,7 +1,7 @@
 "use strict";
 
 var News = {
-  debug: 1,
+  debug: 0,
   msgAffiliationRequired: 'Tilhørighet må spesifiseres',
   msgUnknownFeedType: 'Ukjent type nyhetsstrøm, verken RSS eller Atom, what is it precious?',
   msgUnsupportedType: 'Tilhørigheten har et nyhetsformat som ikke støttes enda',
