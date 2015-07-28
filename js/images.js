@@ -19,9 +19,12 @@ var Images = {
     'avatar',           // Exclude any avatars
     '.gif',             // Exclude gifs since they're most likely smilies and the likes
     'data:image/gif',   // Exclude gifs in this form as well
+    '/comments/',       // Exclude comments, most likely text as image like "Add comment here"
+    '/buttons/',        // Exclude button images
+    'share',            // Exclude any presumed share buttons
+    '/smilies/',        // Exclude smiley images
     '/sociable/',       // Exclude social image icons (only applies for some blogs)
     '/static/',         // Exclude static content, most likely icons
-    '/comments/',       // Exclude comments, most likely text as image like "Add comment here"
   ],
 
   get: function(posts, affiliation, callback) {

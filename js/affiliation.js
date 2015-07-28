@@ -1368,8 +1368,8 @@ var Affiliation = {
       palette: 'cyan',
       news: {
         type: 'feed',
-        feed: 'http://org.ntnu.no/signifikant/?q=rss.xml',
-        imageScraping: {newsSelector:'div.content', domainUrl:'org.ntnu.no'},
+        feed: 'http://org.ntnu.no/signifikant/?feed=rss2',
+        imageScraping: {}, // TODO: No image pattern on their website yet, check later
       },
     },
 
