@@ -533,7 +533,7 @@ var News = {
       // All counted :)
       else {
         if (unreadCount == 0) {
-          if (self.debug) console.log('no new posts');
+          if (self.debug) console.log('No new posts');
           return 0;
         }
         else if (maxNewsAmount <= unreadCount) {

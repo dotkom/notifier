@@ -19,6 +19,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 * Viser lunsjemeny før kl 14, deretter middagsmeny
 * Kontorstatus er nå alltid på for linjeforeninger som har kjøpt Notipi
 * Viser changelog i popupen
+* La til 3 nye linjeforeninger++: CAF, Omega Verksted (Omega), Industrivinduet (A/F Smørekoppen)
 
 ### 2015-04-16 Versjon 4.7
 * Notiwire (APIet) er installert på en sekundær lokasjon

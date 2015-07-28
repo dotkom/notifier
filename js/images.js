@@ -51,12 +51,16 @@ var Images = {
     // When all articles are fetched, as promised, scrape each one for a nice image
     $.when.apply($, promises).then(function() {
       var html = null;
-      // Single argument
-      if (typeof arguments['0'] === 'string' && arguments['0'].indexOf('<html') !== -1) {
+      // Worst case: No arguments :(
+      if (isEmpty(arguments) || typeof arguments !== 'object' || arguments.length === 0) {
+        if (self.debug) console.warn('Images: No links received, I bet News.js was unable to find any news posts for this affiliation:', affiliation.name);
+      }
+      // Better case: Single article
+      else if (typeof arguments['0'] === 'string' && arguments['0'].indexOf('<html') !== -1) {
         html = arguments['0'];
         posts[0].image = self.scrapeForImage(html, posts[0], affiliation);
       }
-      // Multiple arguments
+      // Best case: Multiple articles
       else if (typeof arguments['0']['0'] === 'string' && arguments['0']['0'].indexOf('<html') !== -1) {
         for (var i in arguments) {
           html = arguments[i]['0'];
@@ -149,7 +153,7 @@ var Images = {
     
     // Did we find anything at all?
     if (isEmpty(image)) {
-      if (this.debug) console.warn('Images: No image exists for link "' + post.link + '"');
+      if (this.debug) console.log('Images: No image exists for link "' + post.link + '"');
       return affiliation.placeholder;
     }
 
@@ -172,7 +176,7 @@ var Images = {
 
     // If the image URL does not start with a protocol at this point, it's no good for us
     if (image.match(/^(http)?s?:?\/\//) === null) {
-      if (this.debug) console.warn('Images: Did not find a good image at "' + post.link + '", all we have is "' + image + '"');
+      if (this.debug) console.log('Images: Did not find a good image at "' + post.link + '", all we have is "' + image + '"');
       return affiliation.placeholder;
     }
 
