@@ -63,9 +63,9 @@ var Affiliation = {
   // },
   // news: {
   //   type: "feed",                              // types: "feed" (RSS/Atom), "json" (API), "website" (scraping)
-  //   scrape: function(json, limit, affiliation, callback) {},// ONLY for types "website"
+  //   scrape: function(json, limit, callback) {},// ONLY for types "website"
   //   api: "http://orgx.com/feed",               // ONLY for types "json"
-  //   parse: function(html, limit, affiliation, callback) {}, // ONLY for types "json"
+  //   parse: function(html, limit, callback) {}, // ONLY for types "json"
   //   feed: "http://orgx.com/feed",              // ONLY for types "feed"
   //   imageMethod: "articles",                   // OPTIONAL, ONLY for types "feed" or "website", must be either "articles" (fetch from each article) or "frontpage" (fetch from frontpage)
   //   imageScraping: {options...},               // OPTIONAL, ONLY for types "feed" or "website"
@@ -137,7 +137,8 @@ var Affiliation = {
       },
       news: {
         type: 'website',
-        scrape: function(html, limit, affiliation, callback) {
+        scrape: function(html, limit, callback) {
+          var aff = Affiliation.org['abakus'];
           var count = 0;
           var posts = [];
           // Add each item from news tags
@@ -153,16 +154,18 @@ var Affiliation = {
                 // Link fixing
                 post.link = 'http://abakus.no' + post.link;
                 // Image fixing
-                if (typeof post.image != 'undefined')
+                if (typeof post.image != 'undefined') {
                   post.image = 'http://abakus.no' + post.image;
-                else
-                  post.image = self.placeholder;
+                }
+                else {
+                  post.image = aff.placeholder;
+                }
                 posts[count++] = post;
               }
             });
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
@@ -317,7 +320,8 @@ var Affiliation = {
       palette: 'blue',
       news: {
         type: 'website',
-        scrape: function(html, limit, affiliation, callback) { 
+        scrape: function(html, limit, callback) { 
+          var aff = Affiliation.org['janus'];
           var count = 0;
           var posts = [];
           // Add each item from news tags
@@ -336,16 +340,18 @@ var Affiliation = {
                 // Link fixing
                 post.link = 'http://www.januslinjeforening.no' + post.link;
                 // Image fixing
-                if (typeof post.image != 'undefined')
+                if (typeof post.image != 'undefined') {
                   post.image = 'http://www.januslinjeforening.no' + post.image;
-                else
-                  post.image = self.placeholder;
+                }
+                else {
+                  post.image = aff.placeholder;
+                }
                 posts[count++] = post;
               }
             });
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
@@ -379,7 +385,8 @@ var Affiliation = {
       palette: 'blue',
       news: {
         type: 'website',
-        scrape: function(html, limit, affiliation, callback) {
+        scrape: function(html, limit, callback) {
+          var aff = Affiliation.org['mannhullet'];
           var count = 0;
           var posts = [];
           // Add each item from news tags
@@ -395,16 +402,18 @@ var Affiliation = {
                 // Link fixing
                 post.link = 'http://mannhullet.no' + post.link;
                 // Image fixing
-                if (typeof post.image != 'undefined')
+                if (typeof post.image !== 'undefined') {
                   post.image = 'http://mannhullet.no' + post.image;
-                else
-                  post.image = self.placeholder;
+                }
+                else {
+                  post.image = aff.placeholder;
+                }
                 posts[count++] = post;
               }
             });
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
@@ -422,7 +431,8 @@ var Affiliation = {
       palette: 'grey',
       news: {
         type: 'website',
-        scrape: function(html, limit, affiliation, callback) {
+        scrape: function(html, limit, callback) {
+          var aff = Affiliation.org['omega'];
           var count = 0;
           var posts = [];
           // Add each item from news tags
@@ -439,16 +449,18 @@ var Affiliation = {
                 // Link fixing
                 post.link = 'http://omega.ntnu.no' + post.link;
                 // Image fixing
-                if (typeof post.image === 'undefined')
-                  post.image = self.placeholder;
-                else
-                  post.image = self.web + post.image;
+                if (typeof post.image === 'undefined') {
+                  post.image = aff.placeholder;
+                }
+                else {
+                  post.image = aff.web + post.image;
+                }
                 posts[count++] = post;
               }
             });
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
@@ -485,7 +497,8 @@ var Affiliation = {
       news: {
         type: "json",
         url: "https://online.ntnu.no/api/v0/article/all/?format=json",
-        parse: function(json, limit, affiliation, callback) {
+        parse: function(json, limit, callback) {
+          var aff = Affiliation.org['online'];
           var posts = [];
           var count = 0;
           var articles = json.articles;
@@ -496,11 +509,11 @@ var Affiliation = {
                 var article = articles[i];
                 var post = {};
                 post.title = article.heading;
-                post.link = affiliation.web + article.absolute_url;
+                post.link = aff.web + article.absolute_url;
                 post.description = article.content;
                 post.creator = article.author.first_name + ' ' + article.author.last_name;
                 post.date = article.created_date;
-                post.image = affiliation.web + article.image_article_front_featured;
+                post.image = aff.web + article.image_article_front_featured;
                 // Remove markdown from description (somewhat crude method)
                 post.description = post.description.replace(/(####|###|\*\*)/gi, '');
                 post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
@@ -511,7 +524,7 @@ var Affiliation = {
             }
           }
           else {
-            console.error('No articles found at', affiliation.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
@@ -575,7 +588,8 @@ var Affiliation = {
       palette: 'red',
       news: {
         type: 'website',
-        scrape: function(html, limit, affiliation, callback) {
+        scrape: function(html, limit, callback) {
+          var aff = Affiliation.org['smorekoppen'];
           var count = 0;
           var posts = [];
           // Add each item from news tags
@@ -591,21 +605,25 @@ var Affiliation = {
                 post.image = $(this).find('pic').attr('src');
                 // Author fixing
                 post.author = post.author.match(/[a-zæøå\-'_]+ [a-zæøå\-'_]+/i);
-                if (post.author !== null)
+                if (post.author !== null) {
                   post.author = post.author[0];
-                else
+                }
+                else {
                   post.author = 'A/F Smørekoppen';
+                }
                 // Image fixing
-                if (typeof post.image === 'undefined')
-                  post.image = self.placeholder;
-                else
-                  post.image = self.web + post.image;
+                if (typeof post.image === 'undefined') {
+                  post.image = aff.placeholder;
+                }
+                else {
+                  post.image = aff.web + post.image;
+                }
                 posts[count++] = post;
               }
             });
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
@@ -631,6 +649,7 @@ var Affiliation = {
     //     Ajaxer.getCleanHtml({
     //       url: self.web,
     //       success: function(html) {
+    //         var aff = Affiliation.org['industrivinduet'];
     //         var count = 0;
 
     //         // Add each item from news tags
@@ -655,21 +674,21 @@ var Affiliation = {
 
     //               // Image fixing
     //               if (typeof post.image === 'undefined')
-    //                 post.image = self.placeholder;
+    //                 post.image = aff.placeholder;
     //               else
-    //                 post.image = self.web + post.image;
+    //                 post.image = aff.web + post.image;
 
     //               posts[count++] = post;
     //             }
     //           });
     //         }
     //         else {
-    //           console.error('No articles found at', self.web);
+    //           console.error('No articles found at', aff.web);
     //         }
     //         callback(posts);
     //       },
     //       error: function(e) {
-    //         console.error('Could not fetch '+self.name+' website');
+    //         console.error('Could not fetch '+aff.name+' website');
     //       },
     //     });
     //   },
@@ -732,7 +751,8 @@ var Affiliation = {
       palette: 'cyan',
       news: {
         type: 'website',
-        scrape: function(html, limit, affiliation, callback) {
+        scrape: function(html, limit, callback) {
+          var aff = Affiliation.org['timini'];
           var count = 0;
           var posts = [];
           // Add each item from news tags
@@ -758,7 +778,7 @@ var Affiliation = {
             });
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
@@ -1004,7 +1024,8 @@ var Affiliation = {
       palette: 'blue',
       news: {
         type: 'website',
-        scrape: function(html, limit, affiliation, callback) {
+        scrape: function(html, limit, callback) {
+          var aff = Affiliation.org['psykolosjen'];
           var count = 0;
           var posts = [];
           // Add each item from news tags
@@ -1018,14 +1039,15 @@ var Affiliation = {
                 post.description = $(this).find('.articleBody p:first span').text();
                 post.author = $(this).find('.articleMeta').find('a:first').text();
                 post.image = $(this).find('.articleBody pic').attr('src');
-                if (typeof post.image === 'undefined')
-                  post.image = self.placeholder;
+                if (typeof post.image === 'undefined') {
+                  post.image = aff.placeholder;
+                }
                 posts[count++] = post;
               }
             });
           }
           else {
-            console.error('No articles found at', self.web);
+            console.error('No articles found at', aff.web);
           }
           callback(posts);
         },
