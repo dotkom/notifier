@@ -4,7 +4,7 @@ var News = {
   debug: 1,
   msgAffiliationRequired: 'Tilhørighet må spesifiseres',
   msgUnknownFeedType: 'Ukjent type nyhetsstrøm, verken RSS eller Atom, what is it precious?',
-  msgUnsupportedType: 'Tilhørigheten har en nyhetstype som ikke støttes enda',
+  msgUnsupportedType: 'Tilhørigheten har et nyhetsformat som ikke støttes enda',
   msgCallbackRequired: 'Callback er påkrevd',
   msgFeedConnectionError: 'Frakoblet fra feeden til ',
   msgNoDescription: 'Uten tekst',
@@ -105,7 +105,7 @@ var News = {
       url: affiliation.web,
       success: function(website) {
         // Now we have fetched the website, time to scrape for posts
-        affiliation.news.scrape(website, self.newsLimit, affiliation, function(posts) {
+        affiliation.news.scrape(website, self.newsLimit, function(posts) {
           // Now we have the news posts, time to scrape for images and finish up
           self.fetchImagesAndFinishUp(affiliation, posts, callback);
         });
@@ -123,7 +123,7 @@ var News = {
       url: affiliation.news.url,
       success: function(json) {
         // Now we have fetched the JSON, time to parse it
-        affiliation.news.parse(json, self.newsLimit, affiliation, function(posts) {
+        affiliation.news.parse(json, self.newsLimit, function(posts) {
           // Now we have the news posts, time to scrape for images and finish up
           self.fetchImagesAndFinishUp(affiliation, posts, callback);
         });
@@ -154,8 +154,9 @@ var News = {
         }
         // Else, actual error
         else {
-          console.error(self.msgFeedConnectionError + ": " + affiliation.name);
-          callback(self.msgFeedConnectionError + affiliation.name);
+          var errorMsg = self.msgFeedConnectionError + affiliation.name;
+          console.error(errorMsg);
+          callback(errorMsg);
         }
       },
     });
