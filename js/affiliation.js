@@ -998,18 +998,40 @@ var Affiliation = {
     },
 
     'psi': {
-      name: 'Psi',
+      name: 'PSI',
       key: 'psi',
-      web: 'http://psilinjeforening.wordpress.com/',
+      web: 'http://www.psintnu.no/',
       logo: './org/psi/logo.png',
       icon: './org/psi/icon.png',
       symbol: './org/psi/symbol.png',
       placeholder: './org/psi/placeholder.png',
       palette: 'red',
       news: {
-        type: 'feed',
-        feed: 'http://psilinjeforening.wordpress.com/feed/',
-        imageScraping: {},
+        type: 'website',
+        scrape: function(html, limit, callback) {
+          var aff = Affiliation.org['psi'];
+          var count = 0;
+          var posts = [];
+          // Add each item from news tags
+          if ($(html).find('div#main-wrap div.paragraph').length != 0) {
+            $(html).find('div#main-wrap div.paragraph').each(function() {
+              if (count < limit) {
+                var post = {};
+                // The popular fields
+                post.title = $(this).find('strong').text();
+                post.link = aff.web; // All articles are just on their frontpage
+                post.description = $(this).find('font').eq(1).text();
+                post.author = 'PSI';
+                post.image = aff.placeholder;
+                posts[count++] = post;
+              }
+            });
+          }
+          else {
+            console.error('No articles found at', aff.web);
+          }
+          callback(posts);
+        },
       },
     },
 
