@@ -47,22 +47,22 @@ var Images = {
 
     // When all articles are fetched, as promised, scrape each one for a nice image
     $.when.apply($, promises).then(function() {
-      for (var i in arguments) {
-        // HTML is either hidden in arguments[i] or in arguments[i][0], figure out which
-        var html = null;
-        if (typeof arguments[i]['0'] === 'string' && arguments[i]['0'].indexOf('<html') !== -1) {
+      var html = null;
+      // Single argument
+      if (typeof arguments['0'] === 'string' && arguments['0'].indexOf('<html') !== -1) {
+        html = arguments['0'];
+        posts[0].image = self.scrapeForImage(html, posts[0], affiliation);
+      }
+      // Multiple arguments
+      else if (typeof arguments['0']['0'] === 'string' && arguments['0']['0'].indexOf('<html') !== -1) {
+        for (var i in arguments) {
           html = arguments[i]['0'];
-        }
-        else if (typeof arguments[i] === 'string' && arguments[i].indexOf('<html') !== -1) {
-          html = arguments[i];
-        }
-        else {
-          if (self.debug) console.warn('Images: Unidentified pattern for arguments', arguments);
-        }
-        // Did we find the HTML string from arguments?
-        if (html && html !== null) {
           posts[i].image = self.scrapeForImage(html, posts[i], affiliation);
         }
+      }
+      // Unknown arguments
+      else {
+        if (self.debug) console.error('Images: Unidentified pattern for arguments', arguments);
       }
       callback(posts);
     }, function(e) {
@@ -89,7 +89,7 @@ var Images = {
 
     // If someone is using this function, but already have a good image, we'll just tell them
     if (!isEmpty(post.image) && this.control(post.image)) {
-      console.warn('Images: You already have a good image, why do you ask?', post.image);
+      console.log('Images: You already have a good image', post.image);
       return post.image;
     }
 
@@ -154,7 +154,7 @@ var Images = {
     if (options.domainUrl) {
       if (image.indexOf('//') === -1) {
         image = 'http://' + options.domainUrl + image;
-        if (this.debug) console.log('Images: Added domain URL', image);
+        if (this.debug) console.log('Images: Added domain URL');
       }
       else {
         if (this.debug) console.warn('Images: Domain URL was specified as an option, but the image link already had a domain name. Either we overkilled it, or they used an image from another domain.');
@@ -241,9 +241,9 @@ var Images = {
     }
 
     // Look for proper image formats and return false if none are used
-    var formats = new RegExp('(png|jpe?g|bmp|svg)$', 'gi');
+    var formats = /(png|jpe?g|bmp|svg)(\?.*)?$/gi;
     if (imageUrl.match(formats) === null) {
-      if (this.debug) console.warn('Images: Control found bad URL, was not a proper image format');
+      if (this.debug) console.warn('Images: Control found bad URL, was not a proper image format', imageUrl);
       return false;
     }
 
