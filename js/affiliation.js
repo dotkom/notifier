@@ -1561,54 +1561,8 @@ var Affiliation = {
       news: {
         type: 'feed',
         feed: 'https://www.retriever-info.com/feed/2002900/generell_arkiv166/index.xml',
-        imageScraping: {},
+        imageScraping: {}, // All links from this feed are on different domains, so just try something, who knows, it might work.
       },
-      //TODO: Fikse dette///////////////////////////////////////////////////////////////////////
-      // getImage: function(link, callback) {
-      //   if (link.indexOf('adressa.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div.media'});
-      //   }
-      //   else if (link.indexOf('bygg.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div#article'});
-      //   }
-      //   else if (link.indexOf('byggfakta.no') !== -1 || link.indexOf('byggaktuelt.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div.body-content'});
-      //   }
-      //   else if (link.indexOf('dn.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'figure', domainUrl:'www.dn.no'});
-      //   }
-      //   else if (link.indexOf('dusken.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div#main-col', domainUrl:'dusken.no'});
-      //   }
-      //   else if (link.indexOf('forskningsradet.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'article', domainUrl:'www.forskningsradet.no'});
-      //   }
-      //   else if (link.indexOf('npolar.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div.paragraph', domainUrl:'www.npolar.no'});
-      //   }
-      //   else if (link.indexOf('nrk.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'figure', noscriptMatching:/src="(http:\/\/gfx.nrk.no\/\/.*)"/});
-      //   }
-      //   else if (link.indexOf('regjeringen.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div.imagecontainer', domainUrl:'regjeringen.no'});
-      //   }
-      //   else if (link.indexOf('stfk.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div.documentbody', domainUrl:'www.stfk.no'});
-      //   }
-      //   else if (link.indexOf('trondheim.kommune.no') !== -1) {
-      //     Images.get(this, link, callback, {domainUrl:'www.trondheim.kommune.no'});
-      //   }
-      //   else if (link.indexOf('tu.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div#topImage'});
-      //   }
-      //   else if (link.indexOf('utdanningsnytt.no') !== -1) {
-      //     Images.get(this, link, callback, {newsSelector:'div#hovedartikkelContainer', domainUrl:'utdanningsnytt.no'});
-      //   }
-      //   else {
-      //     // Just try something, might work!
-      //     Images.get(this, link, callback);
-      //   }
-      // },
     },
 
     'rektoratet_ntnu': {
