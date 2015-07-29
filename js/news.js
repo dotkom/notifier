@@ -10,7 +10,7 @@ var News = {
   msgNoDescription: 'Uten tekst',
   msgNoTitle: 'Uten tittel',
   newsLimit: 10, // Get more news than needed to check for old news that have been updated
-  newsLimitToShow: 10, // How many news posts we will actually show
+  newsLimitToShow: 4, // How many news posts we will actually show
   unreadMaxCount: 3, // 0-indexed like the list its counting, actually +1
 
   _autoLoadDefaults_: function() {
@@ -21,8 +21,7 @@ var News = {
   },
 
   get: function(affiliation, callback) {
-    // News.get() is called by the background page periodically,
-    // with News.unreadCount as callback. // TODO: Check that
+    // News.get() is called by the background page periodically
     if (typeof affiliation === 'undefined') {
       console.error(this.msgAffiliationRequired);
       return;
@@ -524,8 +523,8 @@ var News = {
         unreadCount++;
         // Send a desktop notification about the first new item
         if (unreadCount == 1) {
-          if (localStorage[lastNotifiedName] != link) {
-            localStorage[lastNotifiedName] = item.link;
+          if (ls[lastNotifiedName] != link) {
+            ls[lastNotifiedName] = item.link;
             self.showNotification(item);
           }
         }
@@ -608,29 +607,7 @@ var News = {
           // this (should we ever bother) is to test-load the image first and not
           // use if it the link is clearly broken.
 
-          // If we already have the image, just go ahead
-          if (!isEmpty(item.image) && item.image != Affiliation.org[item.feedKey].placeholder) {
-            Browser.createNotification(item);
-          }
-          // If the organization has an image API or whatever (scraping), use it
-          else if (typeof Affiliation.org[item.feedKey].getImage != 'undefined') {
-            Affiliation.org[item.feedKey].getImage(item.link, function(link, image) {
-              item.image = image[0];
-              Browser.createNotification(item);
-            });
-          }
-          else if (typeof Affiliation.org[item.feedKey].getImages != 'undefined') {
-            var links = [];
-            links.push(item.link);
-            Affiliation.org[item.feedKey].getImages(links, function(links, images) {
-              item.image = images[0];
-              Browser.createNotification(item);
-            });
-          }
-          // Otherwise, just show it without an image
-          else {
-            Browser.createNotification(item);
-          }
+          Browser.createNotification(item);
         }
       }
       // Make sure notifications are sent with at least 10 seconds inbetween
