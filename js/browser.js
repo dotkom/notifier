@@ -361,7 +361,7 @@ var Browser = {
           if (Browser.debug) console.log('oracle answer: ' + answer);
           Analytics.trackEvent('oracleOmniboxAnswer');
           // Browser.createNotification
-          //   'feedKey': ls.affiliationKey1
+          //   'feedKey': localStorage.affiliationKey1
           //   'title': 'Orakelet'
           //   'description': answer
           //   'link': 'http://atb.no'
