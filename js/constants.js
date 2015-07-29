@@ -17,7 +17,7 @@ if (!DEBUG) {
 }
 
 //
-// Shorthand to localStorage, used everywhere
+// Shorthand to localStorage, used everywhere, as essential here as jQuery
 //
 
 var ls = localStorage;

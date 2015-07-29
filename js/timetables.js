@@ -5,15 +5,15 @@ var Timetables = {
   api: 'https://www.atb.no/rutetider/',
 
   _initStorage_: function() {
-    if (localStorage.busTimetables === undefined)
-      localStorage.busTimetables = JSON.stringify({});
-    if (localStorage.busTimetablesAge === undefined)
-      localStorage.busTimetablesAge = 0;
+    if (ls.busTimetables === undefined)
+      ls.busTimetables = JSON.stringify({});
+    if (ls.busTimetablesAge === undefined)
+      ls.busTimetablesAge = 0;
   },
 
   _load_: function() {
     // Old list of PDFs?
-    var then = Number(localStorage.busTimetablesAge);
+    var then = Number(ls.busTimetablesAge);
     var now = new Date().getTime();
     var week = 7 * 24 * 60 * 60 * 1000;
     if (isNaN(then) || (now - then) > week) {
@@ -25,7 +25,7 @@ var Timetables = {
         success: function(html) {
 
           // Parse out all the PDF links from the rutetider-page
-          var timetables = JSON.parse(localStorage.busTimetables);
+          var timetables = JSON.parse(ls.busTimetables);
 
           $.each($(html).find('table.rutetabell:first tr a[href*=".pdf"]'), function(i, val) {
 
@@ -44,8 +44,8 @@ var Timetables = {
           });
 
           // Save it all back to localstorage
-          localStorage.busTimetables = JSON.stringify(timetables);
-          localStorage.busTimetablesAge = String(new Date().getTime());
+          ls.busTimetables = JSON.stringify(timetables);
+          ls.busTimetablesAge = String(new Date().getTime());
         },
         error: function(err) {
           if (self.debug) console.error('Could not fetch AtB\'s timetables:', err);

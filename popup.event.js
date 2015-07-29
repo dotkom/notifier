@@ -23,7 +23,7 @@ popup.event = {
     });
     $('div#specialNews img').click(function() {
       Analytics.trackEvent('closeSpecialNews', $('#specialNews').text().trim());
-      localStorage.closedSpecialNews = $('#specialNews a').attr('href');
+      ls.closedSpecialNews = $('#specialNews a').attr('href');
       $('#specialNews').slideUp();
     });
   },
@@ -228,7 +228,7 @@ popup.event = {
   bindRealtimeBus: function() {
 
     // Bind realtimebus lines to their timetables
-    var timetables = JSON.parse(localStorage.busTimetables);
+    var timetables = JSON.parse(ls.busTimetables);
     var clickBus = function() {
       try {
         var line = $(this).find('.line').text().trim().split(' ')[0];

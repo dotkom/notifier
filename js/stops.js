@@ -29,7 +29,7 @@ var Stops = {
     // so we'll only get the list from Tri's API every two weeks and
     // this is only checked when the user opens the popup.
     var needNewList = false;
-    var listAge = localStorage.stopListAge;
+    var listAge = ls.stopListAge;
     if (listAge === undefined) {
       needNewList = true;
     }
@@ -47,11 +47,11 @@ var Stops = {
     }
 
     // Parse the saved copies of stopList and stopNames
-    if (!needNewList && localStorage.stopList !== undefined && localStorage.stopNames !== undefined) {
+    if (!needNewList && ls.stopList !== undefined && ls.stopNames !== undefined) {
       try {
         if (this.debug) console.log('load - parsing saved lists');
-        this.list = JSON.parse(localStorage.stopList);
-        this.names = JSON.parse(localStorage.stopNames);
+        this.list = JSON.parse(ls.stopList);
+        this.names = JSON.parse(ls.stopNames);
         if (callback !== undefined)
           callback(this.msgParsingCompleted);
       }
@@ -81,8 +81,8 @@ var Stops = {
   reset: function(callback) {
     if (this.debug) console.log('reset');
     // Remove any saved info
-    localStorage.removeItem('stopList');
-    localStorage.removeItem('stopNames');
+    ls.removeItem('stopList');
+    ls.removeItem('stopNames');
     // Get a new, fresh list with requested callback
     this.load(callback);
   },
@@ -125,11 +125,11 @@ var Stops = {
       this.names = tempNames;
 
       // Save lists to localStorage when done
-      localStorage.stopList = JSON.stringify(this.list);
-      localStorage.stopNames = JSON.stringify(this.names);
+      ls.stopList = JSON.stringify(this.list);
+      ls.stopNames = JSON.stringify(this.names);
 
       // ...and note the time so we can compare it later
-      localStorage.stopListAge = JSON.stringify(new Date());
+      ls.stopListAge = JSON.stringify(new Date());
 
       // All done!
       if (this.debug) console.log('parse - list parsing success');

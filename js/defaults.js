@@ -39,8 +39,6 @@ var Defaults = {
 
     if (ls.affiliationPalette === undefined)
       ls.affiliationPalette = 'online';
-    if (ls.storedImages === undefined)
-      ls.storedImages = JSON.stringify({}); ///////////////////////////////////////////
 
     // Secondary affiliation
     if (ls.affiliationUnreadCount2 === undefined)

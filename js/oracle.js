@@ -12,11 +12,11 @@ var Oracle = {
   msgYouBrokeIt2: '»">trykke her for å sende feilrapport til busstuc@idi.ntnu.no</a>? (A)',
 
   _autoLoadDefaults_: function() {
-    if (localStorage.oracleBrain == undefined) {
+    if (ls.oracleBrain == undefined) {
       var oracleBrain = {};
       for (var i=0; i<=6; i++)
         oracleBrain[i] = {night:'', morning:'', afternoon:'', evening:''};
-      localStorage.oracleBrain = JSON.stringify(oracleBrain);
+      ls.oracleBrain = JSON.stringify(oracleBrain);
     }
   }(),
 
@@ -287,7 +287,7 @@ var Oracle = {
   },
 
   predict: function() {
-    var oracleBrain = JSON.parse(localStorage.oracleBrain);
+    var oracleBrain = JSON.parse(ls.oracleBrain);
     
     // Get question from timeslot
     var timeslot = this.getTimeslot();
@@ -306,7 +306,7 @@ var Oracle = {
     if (pieces != null) {
       // Relevant enough? Simple keyword recognition
       if (pieces.length >= 3) {
-        var oracleBrain = JSON.parse(localStorage.oracleBrain);
+        var oracleBrain = JSON.parse(ls.oracleBrain);
         
         // Get timeslot
         var timeslot = this.getTimeslot();
@@ -324,7 +324,7 @@ var Oracle = {
         }
 
         // Stringify the brain
-        localStorage.oracleBrain = JSON.stringify(oracleBrain);
+        ls.oracleBrain = JSON.stringify(oracleBrain);
       }
       else {
         if (this.debug) console.log('Oracle thinks the answer did not contain enough expected keywords');

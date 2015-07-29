@@ -40,6 +40,7 @@ localStorage.removeItem('activelySetOffice');
 localStorage.removeItem('showAffiliation1');
 localStorage.removeItem('everOpenedOptions');
 localStorage.removeItem('busInFocus');
+localStorage.removeItem('storedImages');
 
 // EXPANDING NOTIFICATIONS OPTIONS
 // changing old system into new system

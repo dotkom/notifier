@@ -42,9 +42,9 @@ var Coffee = {
     // allowing two consecutive notifications within 4 minutes
     // of each other.
     var showIt = true;
-    if (typeof localStorage.lastSubscriptionTime !== 'undefined') {
+    if (typeof ls.lastSubscriptionTime !== 'undefined') {
       try {
-        var then = JSON.parse(localStorage.lastSubscriptionTime);
+        var then = JSON.parse(ls.lastSubscriptionTime);
         if (this.minuteDiff(then) < 5) {
           showIt = false;
         }
@@ -58,9 +58,9 @@ var Coffee = {
 
       // Save timestamp if this was a real coffee notification
       if (!demo)
-        localStorage.lastSubscriptionTime = JSON.stringify(new Date());
+        ls.lastSubscriptionTime = JSON.stringify(new Date());
 
-      var key = localStorage.affiliationKey1;
+      var key = ls.affiliationKey1;
       var memes = [];
 
       // Add regular memes
