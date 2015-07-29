@@ -67,13 +67,8 @@ var Affiliation = {
   //   api: "http://orgx.com/feed",               // ONLY for types "json"
   //   parse: function(html, limit, callback) {}, // ONLY for types "json"
   //   feed: "http://orgx.com/feed",              // ONLY for types "feed"
-  //   imageMethod: "articles",                   // OPTIONAL, ONLY for types "feed" or "website", must be either "articles" (fetch from each article) or "frontpage" (fetch from frontpage)
-  //   imageScraping: {options...},               // OPTIONAL, ONLY for types "feed" or "website"
-
-    // ONLY for types "feed" //////////////
-    // getImages: function(links, callback) {},   // OPTIONAL: fetch all news images with one scrape, prefer this to 'getImage'
-    // getImage: function(link, callback) {},     // OPTIONAL: fetch news images for articles separately
-
+  //   imageScraping: {options...},               // OPTIONAL, for all news types, see Images.js for the different options
+  //   imageScraping: {},                         // SEE ABOVE, if you want scraping, but it works without options, then just use empty object like this
   // }
 
   // Other notes:
