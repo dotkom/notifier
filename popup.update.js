@@ -272,16 +272,13 @@ popup.update = {
       // Build list of last viewed for the next time the user views the news
       viewedList = [];
 
-      // Prepare the list of images with salt, pepper and some vinegar
-      var storedImages = JSON.parse(ls.storedImages);
-
       // Prepare a column for our elements
       var column = $();
 
       // Add feed items
       $.each(items, function (index, item) {
 
-        if (index < News.newsLimitToShow) { // Four is the best amount of news for the popup, IMO
+        if (index < News.newsLimitToShow) {
           viewedList.push(item.link);
 
           var unreadCount = Number(ls[unreadCountName]);
@@ -303,15 +300,6 @@ popup.update = {
           }
           if (item.description.length > descLimit) {
             item.description = item.description.substr(0, descLimit) + '...';
-          }
-          // Use image we've found to accompany the news item
-          var storedImage = storedImages[item.link];
-          if (typeof storedImage !== 'undefined') {
-            // Also, check whether there's already a qualified image before replacing it
-            if (item.image.indexOf('http') === -1) {
-              console.warn('Unqualified image:', item.image);
-              item.image = storedImage;
-            }
           }
 
           var htmlItem = '';
@@ -360,15 +348,6 @@ popup.update = {
         Analytics.trackEvent('clickNews', link);
         window.close();
       });
-
-      // Update images some times after news are loaded in case of late image arrivals
-      // which are common when the browser has just started Notifier
-      var times = [100, 500, 1000, 2000, 3000, 5000, 10000];
-      for (var i in times) {
-        setTimeout(function() {
-          updateNewsImages();
-        }, times[i]);
-      }
     }
 
     // Checks the most recent list of news against the most recently viewed list of news
@@ -392,20 +371,6 @@ popup.update = {
         }
       }
       return updatedList;
-    }
-
-    var updateNewsImages = function() {
-      console.log('updateNewsImages');
-      // The background process looks for images, and sometimes that process
-      // isn't finished before the popup loads, that's why we have to check
-      // in with localStorage.storedImages a couple of times.
-      $.each($('#news div.content article'), function(i, val) {
-        var link = $(this).attr('data');
-        var image = JSON.parse(localStorage.storedImages)[link];
-        if (typeof image !== 'undefined') {
-          $(this).find('img').attr('src', image);
-        }
-      });
     }
 
     //
