@@ -459,6 +459,8 @@ popup.options = {
     console.log('saved activeLines for '+busField, '"', activeLines, '"');
     console.log('saved inactiveLines '+busField, '"', inactiveLines, '"');
     console.log('saved for busStopId ' + busStopId);
+    // Update bus data
+    popup.update.bus();
     // Analytics? No, we're not running analytics on bus stops, it would have privacy implications.
   },
 
