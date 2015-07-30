@@ -88,33 +88,29 @@ popup.update = {
     console.log('updateCantinas');
     // This function just fetches from localstorage (updates in background)
 
+    // data: {
+    //   name: cantina name
+    //   hours: open, start, end, message
+    //   lunch: [item1, item2, item3] // item contains of {text, price, index, flags}
+    //   dinner: [item1, item2, item3]
+    // }
+    // Lunch/dinner can also just contain a message string or an error string.
+    // The entire object can also contain an error key, like so:
+    // data: {error: "Kantinen støttes ikke"}
+
     var update = function(shortname, data, selector) {
       var name = Cantina.names[shortname];
       var title = '#cantinas ' + selector + ' .title';
       var subtitle = '#cantinas ' + selector + ' .subtitle';
       var hours = '#cantinas ' + selector + ' .hours';
       var mealBox = '#cantinas ' + selector + ' .mealBox';
+      
+      // Reset
+      $(hours).html('');
+      $(subtitle).text('');
+      $(mealBox).html('');
 
-      // Default to dinner, be positive
-      var doLunch = false;
-      var noDinnerExists = false;
-
-      // Decide whether to show lunch or dinner
-      var isLunchTime = new Date().getHours() < 14;
-      // Check if either lunch or dinner is empty, if so, and the other has content, show the other
-      var isThereLunch = Array.isArray(data.lunch); // Otherwise just an object with a message
-      var isThereDinner = Array.isArray(data.dinner); // Otherwise just an object with a message
-      // So is it lunch then?
-      if (isLunchTime && isThereLunch) {
-        doLunch = true;
-      }
-      // Also, if there is a lunch menu, but no dinner menu, just show the lunch throughout, whatever the time.
-      if (!isThereDinner && isThereLunch) {
-        doLunch = true;
-        noDinnerExists = true;
-      }
-
-      // Title: Set name of current cantina
+      // Set name
       $(title).text(name);
 
       // If data is just a message
@@ -122,39 +118,74 @@ popup.update = {
         $(hours).html('- ' + data);
         $(mealBox).html('');
       }
-      // Otherwise data has attributes "name", "hours", "menu" and possibly "error"
       else {
         // Set hours
-        $(hours).html('');
         if (data.hours && data.hours.message) {
           $(hours).html('- ' + data.hours.message);
           clickHours(hours, shortname);
         }
-        // Set subtitle, lunch or dinner
-        var menuTitle = (doLunch ? 'Lunsjmeny' + (noDinnerExists ? ' (ingen middag)' : '') : 'Middagsmeny');
-        $(subtitle).text(menuTitle);
-        // Set meals
-        $(mealBox).html('');
-        var meals = (doLunch ? data.lunch : data.dinner);
-        if (meals) {
-          for (var i in meals) {
-            var meal = meals[i];
-            if (meal.price !== undefined) {
-              if (meal.price) {
-                $(mealBox).append('<li>' + meal.price + ',- ' + meal.text + '</li>');
-              }
-              else {
-                $(mealBox).append('<li class="message">"' + meal.text + '"</li>');
-              }
+
+        // If lunch/cantina? Otherwise kiosk/café
+        if (data.lunch || data.dinner) {
+          
+          // Decide whether to show lunch or dinner
+          var isLunchTime = new Date().getHours() < 14;
+
+          if (isLunchTime) {
+            if (data.lunch) {
+              setSubtitle(subtitle, 'Lunsjmeny');
+              setMeals(mealBox, shortname, data.lunch);
             }
             else {
-              $(mealBox).append('<li class="message">"' + meal + '"</li>');
+              setSubtitle(subtitle, 'Middagsmeny (ingen lunsj)');
+              setMeals(mealBox, shortname, data.dinner);
             }
           }
-          clickMeal(mealBox + ' li', shortname);
+          else {
+            if (data.dinner) {
+              setSubtitle(subtitle, 'Middagsmeny');
+              setMeals(mealBox, shortname, data.dinner);
+            }
+            else {
+              // Fallback, we just have a lunch menu for dinner time
+              setSubtitle(subtitle, 'Lunsjmeny (ingen middag)');
+              setMeals(mealBox, shortname, data.lunch);
+            }
+          }
         }
-        // Log error messages
-        if (data.error) console.error(data.error);
+      }
+      // Log error messages
+      if (data.error) console.error(data.error);
+    };
+
+    var setSubtitle = function(subtitle, title) {
+      $(subtitle).text(title);
+    };
+
+    var setMeals = function(mealBox, shortname, meals) {
+      // Meals, message or error?
+      if (meals.message || meals.error) {
+        $(mealBox).append('<li class="message">"' + (meals.message || meals.error) + '"</li>');
+      }
+      else if (Array.isArray(meals)) {
+        for (var i in meals) {
+          var meal = meals[i];
+          if (meal.price !== undefined) {
+            if (meal.price) {
+              $(mealBox).append('<li>' + meal.price + ',- ' + meal.text + '</li>');
+            }
+            else {
+              $(mealBox).append('<li class="message">"' + meal.text + '"</li>');
+            }
+          }
+          else {
+            $(mealBox).append('<li class="message">"' + meal + '"</li>');
+          }
+        }
+        clickMeal(mealBox + ' li', shortname);
+      }
+      else {
+        console.error('Unknown data in meals from a cantina');
       }
     };
 
@@ -164,7 +195,7 @@ popup.update = {
         Browser.openTab(Cantina.webHours);
         window.close();
       });
-    }
+    };
 
     var clickMeal = function(cssSelector, cantina) {
       $(cssSelector).click(function() {
@@ -172,7 +203,7 @@ popup.update = {
         Browser.openTab(Cantina.webDinner);
         window.close();
       });
-    }
+    };
 
     // Load data from cantinas
     var cantina1Data = JSON.parse(ls.cantina1Data);
