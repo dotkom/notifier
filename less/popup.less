@@ -1,69 +1,79 @@
+/* DEBUG variables, set to colors instead of
+ * transparents for debug borders around everything
+ */
 
-@import "common.less";
+/*
+@debugRed: red;
+@debugCyan: cyan;
+@debugLime: lime;
+@debugYellow: yellow;
+/*/
+@debugRed: transparent;
+@debugCyan: transparent;
+@debugLime: transparent;
+@debugYellow: transparent;
+//*/
 
-/* This file contains popup-additions to common.less */
+/* Debugging, use bright colors that stand out */
 
-// Vars
+.debugContainer {border: 1px solid @debugCyan;} /* Outer containers */
+.debugBox {border: 1px solid @debugRed;} /* Inner containers */
+.debugText {border: 1px solid @debugYellow;} /* Text elements */
+.debugElement {border: 1px solid @debugLime;} /* Other elements */
+
+/* Vars */
 
 /* Nothing here yet */
 
-// Mixins
+/* Mixins */
+
+.fullbox {
+  .debugContainer;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
 
 .title {
-  font-size: 12px;
-  margin-top: 13px;
-  margin-bottom: 4px;
-}
-
-.dropdownWrapper {
-  position: relative;
-  left: -8px;
-  margin-top: 13px;
-  margin-bottom: 4px;
-  /* New, trying out some tweaks on the dropdowns */
-  /* http://bavotasan.com/2011/style-select-box-using-only-css/ */
-  width: 172px;
-  height: 20px;
-  overflow: hidden;
-  background: url('../img/popup-dropdown-arrows.png') no-repeat right rgba(0,0,0,0);
-}
-
-.titleDropdown {
-  /*background-color: rgba(0,0,0,0);*/
-  /*border: 1px solid transparent;*/
-  font-size: 12px;
+  .debugText;
+  color: NavajoWhite;
+  display: block;
   font-weight: bold;
-  outline: none;
-  /* New, trying out some tweaks on the dropdowns */
-  background: rgba(0,0,0,0);
-  width: 200px; /* default 28px wider than wrapper */
-  padding-left: 8px;
-  border: 0;
-  border-radius: 0;
-  height: 20px;
-  -webkit-appearance: none;
+  margin-top: 13px;
+  margin-bottom: 4px;
+  .unread {
+    color: white;
+  }
+}
 
-  /* Old, trying out some tweaks on the dropdowns */
-  /*&:hover {
-    background-color: black;
-    border: 1px solid navajowhite;
-  }*/
+.subtitle {
+  .debugText;
+  font-weight: bold;
+  margin-top: 5px;
 }
 
 .emphasized {
-  margin-bottom: 4px;
+  .debugText;
+  font-style: italic;
 }
 
-// Rules
+/* Rules */
 
 body {
+  color: white;
+  font-family: Helvetica;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
   width: 532px; // max 800px
   height: 600px; // max 600px
   font-size: 12px;
   line-height: 14px;
 }
 
-#tips {
+div#tips {
   position: fixed;
   background-color: Snow;
   top: 0px;
@@ -90,9 +100,20 @@ body {
       font-style: italic;
       margin-top: -20px;
     }
-    .big {
+    h1 {
+      font-size: 24px;
+      font-weight: 200;
+      padding-top: 20px;
+    }
+    h1.firstTitle {
+      padding-top: 0;
+    }
+    h2 {
       font-size: 17px;
-      padding-top: 5px;
+      font-weight: 200;
+    }
+    h3, h4, h5, h6 {
+      font-weight: 600;
     }
     .url {
       display: inline;
@@ -108,11 +129,17 @@ body {
 }
 
 #background {
-  /* This is typically tweaked by palettes, be careful when changing it */
+  position: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  /* Using a div because the background is color shifted by the palette CSS files */
   background-image: url('/img/background-popup.png');
+  z-index: -1; // This is a hack
 }
 
-#specialNews {
+div#specialNews {
   .fullbox;
   position: relative;
   background-color: bisque;
@@ -135,10 +162,31 @@ body {
   }
 }
 
+// UNCOMMENTED, see also popup.js, popup.event.js, popup.html, - search for "comic"
+// div#comic {
+//   .debugContainer;
+//   clear: both;
+//   margin: 0;
+//   padding: 0;
+//   width: 100%;
+//   background-color: white;
+//   box-shadow: 0 1vw 2vw black;
+//   display: none;
+//   img#dailyStrip {
+//     width: 96vw;
+//     padding: 1.2vw;
+//     height: auto;
+//     cursor: pointer;
+//   }
+// }
+
 /* This container keeps the content centered */
 
 #container {
+  .debugContainer;
+  position: relative;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px;
 
   #header {
@@ -151,47 +199,38 @@ body {
       width: 260px;
       float: left;
 
-      .popupbutton {
+      .popupButton {
         height: 27px;
         width: auto;
+        float: left;
         border-radius: 5px;
         margin-right: 12px;
         cursor: pointer;
-        -webkit-transition: all .15s ease-out;
+        border: 1px solid transparent;
+        -webkit-transition: box-shadow .2s ease-out;
       }
-      .popupbutton:hover {
-        box-shadow:
-          inset 0 0 7px #777,
-          0 0 13px #bbb,
-          0 0 20px #bbb,
-          0 0 27px #bbb;
+      .popupButton:hover {
+        border: 1px solid white;
       }
-      #chatterButton, #chatterIcon {
+      .popupButton.glow {
+        /* Edit button glows discreetly while toggled */
+        -webkit-animation-name: editButtonPulse;
+        -webkit-animation-duration: 1.5s;
+        -webkit-animation-iteration-count: infinite;
+      }
+      #chatterButton {
+        /* Hiding Slack button by default */
         display: none;
-      }
-      #chatterIcon {
-        pointer-events: none;
-        position: absolute;
-        cursor: pointer;
-        left: 165px;
-        top: 28px;
-        z-index: 50;
-        width: 16px;
-        height: 16px;
       }
     }
 
-    #buttontext {
+    #buttonText {
       .debugText;
       display: none;
       position: relative;
       float: left;
       width: 213px;
       font-weight: bold;
-      text-shadow:
-        0 0 13px white,
-        0 0 20px white,
-        0 0 27px white;
     }
     #logo {
       .debugElement;
@@ -203,9 +242,18 @@ body {
   }
 
   #todays {
+    .fullbox;
+    
     #schedule {
+      .debugBox;
+      float: left;
+      width: 47.5%;
+
       #servant {
         .emphasized;
+      }
+      #meetings {
+        margin-top: 5px;
       }
       #hackerspace {
         margin-top: 4px;
@@ -219,13 +267,21 @@ body {
       }
     }
     #coffee {
+      .debugBox;
+      float: right;
+      width: 47.5%;
       #pots {
         .emphasized;
+      }
+      #age {
+        margin-top: 5px;
       }
     }
   }
 
   #cantinas {
+    .fullbox;
+
     .hours {
       .emphasized;
       cursor: pointer;
@@ -235,11 +291,33 @@ body {
         text-decoration: underline;
       }
     }
+    .first {
+      .debugBox;
+      position: relative;
+      float: left;
+      width: 47.5%;
+    }
+    .second {
+      .debugBox;
+      position: relative;
+      float: right;
+      width: 47.5%;
+    }
+    .mealBox {
+      .debugElement;
+    }
     li {
+      .debugText;
+      position: relative;
+      width: 95%;
+      list-style-type: none;
       cursor: pointer;
       &:hover {
         text-decoration: underline;
       }
+    }
+    li.message {
+      /*font-style: italic;*/
     }
     .loadingLeft {
       width: 80px;
@@ -248,16 +326,23 @@ body {
   }
 
   #bus {
-    // This is typically tweaked by palettes, be careful when changing it
-    box-shadow: 0 0 15px #aaa;
+    .fullbox;
+    position: relative;
+    background-color: #111;
+    background-clip: padding-box; /* makes the background color only show on the inside of the border */
+    width: 110%;
     top: 16px;
+    margin-left: -5%;
     margin-bottom: 20px;
     padding-bottom: 10px;
+
+    // This is typically tweaked by palettes, be careful when changing it
+    box-shadow: 0 0 15px #aaa;
 
     #realtime {
       .debugBox;
       line-height: 13px;
-      height: 90px;
+      overflow-y: auto;
       
       .first, .second, .third, .error {
         cursor: pointer;
@@ -266,28 +351,64 @@ body {
         }
       }
       .name {
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-bottom: 7px;
       }
       .loadingLeft {
+        position: relative;
+        z-index: 100;
+        -webkit-transform: scaleX(-1);
         width: 80px;
         bottom: 4px;
       }
       .loadingRight {
+        position: relative;
+        z-index: 100;
         width: 80px;
         bottom: 4px;
       }
+      .first, .second, .third, .fourth, .fifth, .sixth, .seventh, .eighth, .nineth, .tenth {
+        .debugText;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .time {
+        /* nothing here yet */
+      }
+      .error {
+        font-style: italic;
+      }
       #firstBus {
+        .debugBox;
+        position: relative;
+        float: left;
+        text-align: right;
+        padding-top: 14px;
         width: 41%;
       }
       #secondBus {
+        .debugBox;
+        position: relative;
+        float: left;
+        text-align: left;
+        padding-top: 14px;
         width: 41%;
       }
       #middle {
+        .debugBox;
+        position: relative;
+        float: left;
+        text-align: center;
         width: 16%;
         #atbLogo {
           position: relative;
           left: -.7px;
-          margin: 15px auto;
+          margin: 15px auto 10px auto;
           height: 61px;
           cursor: pointer;
           border-radius: 3px;
@@ -330,79 +451,354 @@ body {
   }
 
   #news {
+    .fullbox;
+
     /* #full for using a single column */
     #full {
-      .post {
-        .item {
-          img.regular {
-            min-height: 80px;
-            max-height: 200px;
-            margin: 0 7px 0 0;
-          }
+      position: relative;
+      display: none; /* popup will determine which news columns to show */
+      width: 100%;
+      float: left;
+
+      >.title {
+        display: none; /* no need for affiliation title when only one is in use */
+      }
+      article {
+        img.regular {
+          float: left;
+          width: 33%;
+          min-height: 80px;
+          max-height: 200px;
+          margin: 0 7px 0 0;
         }
       }
     }
 
     #left, #right {
+      position: relative;
+      display: none; /* popup will determine which news columns to show */
+      width: 47.5%;
       >.title {
         margin-bottom: -5px;
       }
+      >.title.regular {
+        color: LightGrey;
+      }
     }
 
-    .post {
+    /* #left and #right for using double columns */
+    #left {
+      float: left;
+    }
+
+    #right {
+      float: right;
+    }
+
+    /* For each news article */
+    article {
+      .debugBox;
+      position: relative;
+      clear: both;
+      text-overflow: ellipsis;
+      overflow: hidden;
       margin-top: 13px;
-      .item {
-        margin-top: -5px;
-        min-height: 40px;
-        cursor: pointer;
-        margin-left: -7px;
-        margin-right: -7px;
-        padding: 7px;
-        -webkit-transition: box-shadow 0.3s ease-out 0s;
+      min-height: 40px;
+      cursor: pointer;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+      &:hover {
+        background-color: rgba(255, 255, 255, .1);
+      }
+      
+      .title {
+        position: relative;
+        margin-top: 0; /* overrides default value */
+      }
+      .title.regular {
 
-        &:hover {
-          box-shadow:
-            inset 0 0 2px #bbb,
-            0 0 13px white;
-        }
-        
-        .title.flashy {
-          font-size: 15px;
-          line-height: 18px;
-          top: 13px;
-          left: 8px;
-        }
+      }
+      .title.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        text-transform: none;
+        text-shadow:
+          0 0 5px #333,
+          0 0 3px #333,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+        font-size: 15px;
+        line-height: 18px;
+        top: 7px;
+        left: 8px;
+      }
 
-        .author.flashy {
-          font-size: 12px;
-          bottom: 14px;
-          left: 8px;
-        }
+      .author {
+        display: inline;
+        position: relative;
+        font-style: italic;
+      }
+      .author.regular {
 
-        img {
-          min-height: 80px;
-          max-height: 250px;
-          padding: 4px;
-        }
-        img.regular {
-          margin: 2px 0 0 4px;
-        }
+      }
+      .author.flashy {
+        position: absolute;
+        width: 92%;
+        color: white;
+        font-family: Helvetica;
+        font-weight: lighter;
+        text-shadow:
+          0 0 5px #333,
+          0 0 3px #333,
+          -1px -1px 1px #333,
+          -1px 1px 1px #333,
+          1px -1px 1px #333,
+          1px 1px 1px #333;
+        font-size: 12px;
+        bottom: 8px;
+        left: 8px;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        background: snow;
+        min-height: 80px;
+        max-height: 250px;
+        padding: 3px;
+        border-radius: 3px;
+      }
+      img.regular {
+        float: right;
+        width: 33%;
+        margin: 2px 0 0 4px;
+      }
+      img.flashy {
+        float: left;
+        width: 97%;
+        margin: 0;
       }
     }
     .unread {
       font-size: 11px;
+      text-shadow:
+        0 0 5px black,
+        -1px -1px 1px #333,
+        -1px 1px 1px #333,
+        1px -1px 1px #333,
+        1px 1px 1px #333;
     }
   }
 
-  #titleMeasure {
-    font-weight: bold;
-    color: transparent;
-    /* not to be seen, only used for measurement of title widths */
-    position: absolute;
-    visibility: hidden;
-    width: auto;
-    height: auto;
-    white-space: nowrap;
+}
+
+/* Rules for the options */
+
+div.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+
+  select, input, div {
+    margin-top: 5px;
+    position: relative;
+  }
+  input, label {
+    cursor: pointer;
+  }
+  select {
+    width: 100%;
+  }
+  /* Note: <input>s and <label>s are wrapped in a div to get their margins */
+
+  /* Special cases */
+
+  div#statusOptions {
+    position: relative;
+    top: -3px;
+    img.statusIcon {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      top: 5px;
+      -webkit-filter: drop-shadow(0 0 4px black);
+      filter: drop-shadow(0 0 4px black);
+    }
   }
 
+  div#leftNewsOptionTitle {
+    margin-top: 9px;
+    margin-bottom: 2px;
+  }
+}
+
+div#bigOptions {
+  position: relative;
+  display: none;
+  top: 3px;
+  float: left;
+  width: 150px;
+  font-size: 24px;
+  line-height: 24px;
+
+  input, label {
+    position: relative;
+    cursor: pointer;
+  }
+  input {
+    top: -4px;
+    margin-left: 10px;
+  }
+}
+
+div#bus {
+  input {
+    width: 107px;
+  }
+  select {
+    width: 75px;
+    margin-left: 7px;
+  }
+  div#secondBus div.options select {
+    margin-left: 4px; /* Hack that's needed for an unidentified reason, otherwise select fields on left and right side have differentl margins-ish */
+  }
+  div#firstBus {
+    input, select, div.lines {
+      float: right;
+    }
+    div.options {
+      text-align: right;
+    }
+  }
+  div.secondBus {
+    input, select {
+      float: left;
+    }
+  }
+  div.lines {
+    position: relative;
+    margin-top: 7px;
+    margin-bottom: 10px;
+    display: block;
+    width: 181px;
+    border-top: 1px solid white;
+    box-shadow: 0 1px 2px #888;
+    border-radius: 4px;
+    background-color: white;
+    padding: 2px 7px 1px 7px;
+    text-align: left;
+    font-size: 12px;
+    text-shadow: 0 0 0 white; /* resets inhertied value from parent element */
+
+    table {
+      .debugBox;
+      width: 100%;
+      table-layout: fixed;
+      text-align: center;
+      td {
+        .debugText;
+        padding: 1px 0;
+      }
+    }
+    .active {
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .inactive {
+      cursor: pointer;
+      color: gray;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .error {
+      color: black;
+      text-align: center;
+      font-size: 12px;
+    }
+    .retry {
+      color: black;
+      text-align: center;
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .loadingLeft {
+      position: relative;
+      width: 80px;
+      -webkit-transform: scaleX(-1);
+    }
+    .loadingRight {
+      position: relative;
+      width: 80px;
+    }
+  }
+}
+
+/* Suggestions for bus stops */
+
+div#busSuggestions {
+  .debugContainer;
+  position: fixed;
+  top: 0;
+  // left:0 or right:0 will be set programmatically
+  bottom: 0;
+  width: 50%;
+  display: none; /* Will slide down when needed */
+
+  padding: 15px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+  background-color: snow;
+  
+  div#suggestionTitle {
+    .debugText;
+    margin: 15px;
+    font-size: 24px;
+    text-align: left;
+    color: #444;
+  }
+  .suggestion {
+    margin: 0 15px;
+    color: #444;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .matched_character {
+      font-weight: bold;
+    }
+  }
+  .correct {
+    margin: 0 15px;
+    color: black;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+}
+
+/* Debug affiliation in the top of the affiliation selection lists */
+
+optgroup.debugAffiliation {
+  display: none;
+}
+
+/* Animations */
+
+@-webkit-keyframes editButtonPulse {
+  from { border: 1px solid white; }
+  50% { border: 1px solid transparent; }
+  to { border: 1px solid white; }
 }

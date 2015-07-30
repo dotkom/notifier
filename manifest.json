@@ -1,14 +1,13 @@
 {
   "name": "Online Notifier",
   "short_name": "Notifier",
-  "version": "4.7.2",
+  "version": "5.0.0",
   "manifest_version": 2,
   "offline_enabled": false,
 	
   "description": "Linjeforeningsnyheter, middagsmeny, sanntidsbuss og mer.",
   "homepage_url": "https://online.ntnu.no/",
   
-  "options_page": "options.html",
   "background": {
     "page": "background.html"
   },
@@ -52,7 +51,7 @@
 	"content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["libs/jquery-2.1.0.min.js", "js/on_website.js"]
+      "js": ["libs/jquery-2.1.4.min.js", "js/on_website.js"]
     }
   ],
 

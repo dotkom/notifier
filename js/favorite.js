@@ -6,7 +6,7 @@ var Favorite = {
   msgFailed: 'Oops! :(',
 
   getLinesForStop: function(stopId) {
-    var stopsAndLines = localStorage.stopsAndLines;
+    var stopsAndLines = ls.stopsAndLines;
     if (stopsAndLines != undefined) {
       stopsAndLines = JSON.parse(stopsAndLines);
       if (stopsAndLines[stopId] != undefined) {
@@ -22,14 +22,14 @@ var Favorite = {
   _load_: function() {
 
     // Nonexisting list of stops and lines?
-    if (localStorage.stopsAndLines == undefined || localStorage.stopsAndLinesAge == undefined) {
+    if (ls.stopsAndLines == undefined || ls.stopsAndLinesAge == undefined) {
       if (this.debug) console.log('Favorite: Nonexisting list of stops and their lines, fetching new')
       Favorite.fetch();
       return;
     }
 
     // Old list of stops and lines?
-    var then = Number(localStorage.stopsAndLinesAge);
+    var then = Number(ls.stopsAndLinesAge);
     var now = new Date().getTime();
     var week = 7 * 24 * 60 * 60 * 1000;
     if (isNaN(then) || (now - then) > week) {
@@ -66,8 +66,8 @@ var Favorite = {
         if (self.debug) console.log('Favorite: Parse time', (new Date().getTime() - start), 'ms for', Object.keys(stopsAndLines).length, 'stops and their lines');
         
         // Save to localstorage
-        localStorage.stopsAndLines = JSON.stringify(stopsAndLines);
-        localStorage.stopsAndLinesAge = String(new Date().getTime());
+        ls.stopsAndLines = JSON.stringify(stopsAndLines);
+        ls.stopsAndLinesAge = String(new Date().getTime());
       },
       error: function(jqXHR, text, err) {
         if (self.debug) console.error('Could not fetch busstops and their respective lines');

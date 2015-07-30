@@ -1,4 +1,3 @@
-/* COMMON FILE FOR popup.html, infoscreen.html */
 /* DEBUG variables, set to colors instead of
  * transparents for debug borders around everything
  */
@@ -25,6 +24,8 @@
   border: 1px solid transparent;
 }
 /* Other elements */
+/* Vars */
+/* Nothing here yet */
 /* Mixins */
 .fullbox {
   border: 1px solid transparent;
@@ -33,16 +34,21 @@
   padding: 0;
   width: 100%;
 }
-.title,
-.titleDropdown {
+.title {
   border: 1px solid transparent;
   color: NavajoWhite;
   display: block;
   font-weight: bold;
+  margin-top: 13px;
+  margin-bottom: 4px;
 }
-.title .unread,
-.titleDropdown .unread {
+.title .unread {
   color: white;
+}
+.subtitle {
+  border: 1px solid transparent;
+  font-weight: bold;
+  margin-top: 5px;
 }
 .emphasized {
   border: 1px solid transparent;
@@ -50,313 +56,18 @@
 }
 /* Rules */
 body {
-  background: black;
   color: white;
   font-family: Helvetica;
   overflow-x: hidden;
   overflow-y: auto;
   margin: 0;
   padding: 0;
-}
-#background {
-  /* using a div because the background needs to be resized if
-   * the display is really big (1500px-2000px in width or height)
-   */
-  position: fixed;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  width: 100%;
-  height: 100%;
-}
-/* This container keeps the content centered */
-#container {
-  border: 1px solid transparent;
-  position: relative;
-}
-#container #office {
-  border: 1px solid transparent;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-#container #todays {
-  border: 1px solid transparent;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-#container #todays #schedule {
-  border: 1px solid transparent;
-  float: left;
-  width: 47.5%;
-}
-#container #todays #schedule #servant {
-  border: 1px solid transparent;
-  font-style: italic;
-  margin-bottom: 4px;
-}
-#container #todays #coffee {
-  border: 1px solid transparent;
-  float: right;
-  width: 47.5%;
-}
-#container #todays #coffee #pots {
-  border: 1px solid transparent;
-  font-style: italic;
-  margin-bottom: 4px;
-}
-#container #cantinas {
-  border: 1px solid transparent;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-#container #cantinas .hours {
-  border: 1px solid transparent;
-  font-style: italic;
-  margin-bottom: 4px;
-  -webkit-transition: text-shadow 0.15s ease-out 0s;
-}
-#container #cantinas .first {
-  border: 1px solid transparent;
-  position: relative;
-  float: left;
-  width: 47.5%;
-}
-#container #cantinas .second {
-  border: 1px solid transparent;
-  position: relative;
-  float: right;
-  width: 47.5%;
-}
-#container #cantinas #dinnerbox {
-  border: 1px solid transparent;
-}
-#container #cantinas li {
-  border: 1px solid transparent;
-  position: relative;
-  width: 95%;
-  list-style-type: none;
-  -webkit-transition: text-shadow 0.15s ease-out 0s;
-}
-#container #cantinas li.message {
-  /*font-style: italic;*/
-}
-#container #bus {
-  border: 1px solid transparent;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  position: relative;
-  background-color: #111;
-  background-clip: padding-box;
-  /* makes the background color only show on the inside of the border */
-  width: 110%;
-  margin-left: -5%;
-}
-#container #bus .name {
-  font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-#container #bus #firstBus {
-  border: 1px solid transparent;
-  position: relative;
-  float: left;
-  text-align: right;
-  padding-top: 14px;
-}
-#container #bus #secondBus {
-  border: 1px solid transparent;
-  position: relative;
-  float: left;
-  text-align: left;
-  padding-top: 14px;
-}
-#container #bus .loadingLeft {
-  position: relative;
-  z-index: 100;
-  -webkit-transform: scaleX(-1);
-}
-#container #bus .loadingRight {
-  position: relative;
-  z-index: 100;
-}
-#container #bus .first,
-#container #bus .second,
-#container #bus .third,
-#container #bus .fourth,
-#container #bus .fifth,
-#container #bus .sixth,
-#container #bus .seventh,
-#container #bus .eighth,
-#container #bus .nineth,
-#container #bus .tenth {
-  border: 1px solid transparent;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-#container #bus .time {
-  /* nothing here yet */
-}
-#container #bus .error {
-  font-style: italic;
-}
-#container #bus #middle {
-  border: 1px solid transparent;
-  position: relative;
-  float: left;
-  text-align: center;
-  height: 100%;
-}
-#container #news {
-  border: 1px solid transparent;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  /* #full for using a single column */
-  /* #left and #right for using double columns */
-  /* for each news post, and item within */
-}
-#container #news #full {
-  position: relative;
-  width: 100%;
-  float: left;
-}
-#container #news #full > .title {
-  display: none;
-  /* no need for affiliation title when only one is in use */
-}
-#container #news #full .post .item img.regular {
-  float: left;
-  width: 33%;
-}
-#container #news #left {
-  position: relative;
-  width: 47.5%;
-  float: left;
-}
-#container #news #right {
-  position: relative;
-  width: 47.5%;
-  float: right;
-}
-#container #news #right .title.regular {
-  color: LightGrey;
-}
-#container #news .post {
-  border: 1px solid transparent;
-  position: relative;
-  clear: both;
-}
-#container #news .post .item {
-  border: 1px solid transparent;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-#container #news .post .item .title {
-  position: relative;
-  margin-top: 0;
-  /* overrides default value */
-}
-#container #news .post .item .title.flashy {
-  position: absolute;
-  width: 92%;
-  color: white;
-  font-family: Helvetica;
-  font-weight: lighter;
-  text-transform: none;
-  text-shadow: 0 0 5px #333333, 0 0 10px #333333, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
-}
-#container #news .post .item .author {
-  display: inline;
-  position: relative;
-  font-style: italic;
-}
-#container #news .post .item .author.flashy {
-  position: absolute;
-  width: 92%;
-  color: white;
-  font-family: Helvetica;
-  font-weight: lighter;
-  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
-}
-#container #news .post .item img {
-  width: auto;
-  height: auto;
-  background: snow;
-}
-#container #news .post .item img.regular {
-  float: right;
-  width: 33%;
-}
-#container #news .post .item img.flashy {
-  float: left;
-  width: 97%;
-  margin: 0;
-}
-#container #news .unread {
-  text-shadow: 0 0 5px #000000, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
-}
-/* This file contains popup-additions to common.less */
-/* Nothing here yet */
-.title {
-  font-size: 12px;
-  margin-top: 13px;
-  margin-bottom: 4px;
-}
-.dropdownWrapper {
-  position: relative;
-  left: -8px;
-  margin-top: 13px;
-  margin-bottom: 4px;
-  /* New, trying out some tweaks on the dropdowns */
-  /* http://bavotasan.com/2011/style-select-box-using-only-css/ */
-  width: 172px;
-  height: 20px;
-  overflow: hidden;
-  background: url('../img/popup-dropdown-arrows.png') no-repeat right rgba(0, 0, 0, 0);
-}
-.titleDropdown {
-  /*background-color: rgba(0,0,0,0);*/
-  /*border: 1px solid transparent;*/
-  font-size: 12px;
-  font-weight: bold;
-  outline: none;
-  /* New, trying out some tweaks on the dropdowns */
-  background: rgba(0, 0, 0, 0);
-  width: 200px;
-  /* default 28px wider than wrapper */
-  padding-left: 8px;
-  border: 0;
-  border-radius: 0;
-  height: 20px;
-  -webkit-appearance: none;
-  /* Old, trying out some tweaks on the dropdowns */
-  /*&:hover {
-    background-color: black;
-    border: 1px solid navajowhite;
-  }*/
-}
-.emphasized {
-  margin-bottom: 4px;
-}
-body {
   width: 532px;
   height: 600px;
   font-size: 12px;
   line-height: 14px;
 }
-#tips {
+div#tips {
   position: fixed;
   background-color: Snow;
   top: 0px;
@@ -371,38 +82,58 @@ body {
   overflow-x: hidden;
   box-shadow: 0 0 20px black;
 }
-#tips .text {
+div#tips .text {
   border: 1px solid transparent;
   color: black;
   font-size: 12px;
   line-height: 16px;
 }
-#tips .text .clicktoclose {
+div#tips .text .clicktoclose {
   border: 1px solid transparent;
   color: #aaa;
   text-align: right;
   font-style: italic;
   margin-top: -20px;
 }
-#tips .text .big {
-  font-size: 17px;
-  padding-top: 5px;
+div#tips .text h1 {
+  font-size: 24px;
+  font-weight: 200;
+  padding-top: 20px;
 }
-#tips .text .url {
+div#tips .text h1.firstTitle {
+  padding-top: 0;
+}
+div#tips .text h2 {
+  font-size: 17px;
+  font-weight: 200;
+}
+div#tips .text h3,
+div#tips .text h4,
+div#tips .text h5,
+div#tips .text h6 {
+  font-weight: 600;
+}
+div#tips .text .url {
   display: inline;
   color: grey;
   font-style: italic;
 }
-#tips .text a {
+div#tips .text a {
   outline: none;
   text-decoration: underline;
   color: DarkBlue;
 }
 #background {
-  /* This is typically tweaked by palettes, be careful when changing it */
+  position: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  /* Using a div because the background is color shifted by the palette CSS files */
   background-image: url('/img/background-popup.png');
+  z-index: -1;
 }
-#specialNews {
+div#specialNews {
   border: 1px solid transparent;
   clear: both;
   margin: 0;
@@ -417,10 +148,10 @@ body {
   box-shadow: 0px 4px 10px #444;
   display: none;
 }
-#specialNews a {
+div#specialNews a {
   color: #444;
 }
-#specialNews img#closeSpecialNews {
+div#specialNews img#closeSpecialNews {
   position: relative;
   top: 1px;
   right: -18px;
@@ -430,7 +161,10 @@ body {
 }
 /* This container keeps the content centered */
 #container {
+  border: 1px solid transparent;
+  position: relative;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px;
 }
 #container #header {
@@ -447,44 +181,36 @@ body {
   width: 260px;
   float: left;
 }
-#container #header #buttons .popupbutton {
+#container #header #buttons .popupButton {
   height: 27px;
   width: auto;
+  float: left;
   border-radius: 5px;
   margin-right: 12px;
   cursor: pointer;
-  -webkit-transition: all 0.15s ease-out;
+  border: 1px solid transparent;
+  -webkit-transition: box-shadow 0.2s ease-out;
 }
-#container #header #buttons .popupbutton:hover {
-  box-shadow: inset 0 0 7px #777,
-          0 0 13px #bbb,
-          0 0 20px #bbb,
-          0 0 27px #bbb;
+#container #header #buttons .popupButton:hover {
+  border: 1px solid white;
 }
-#container #header #buttons #chatterButton,
-#container #header #buttons #chatterIcon {
+#container #header #buttons .popupButton.glow {
+  /* Edit button glows discreetly while toggled */
+  -webkit-animation-name: editButtonPulse;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-iteration-count: infinite;
+}
+#container #header #buttons #chatterButton {
+  /* Hiding Slack button by default */
   display: none;
 }
-#container #header #buttons #chatterIcon {
-  pointer-events: none;
-  position: absolute;
-  cursor: pointer;
-  left: 165px;
-  top: 28px;
-  z-index: 50;
-  width: 16px;
-  height: 16px;
-}
-#container #header #buttontext {
+#container #header #buttonText {
   border: 1px solid transparent;
   display: none;
   position: relative;
   float: left;
   width: 213px;
   font-weight: bold;
-  text-shadow: 0 0 13px white,
-        0 0 20px white,
-        0 0 27px white;
 }
 #container #header #logo {
   border: 1px solid transparent;
@@ -493,10 +219,24 @@ body {
   max-width: 187px;
   max-height: 67px;
 }
+#container #todays {
+  border: 1px solid transparent;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+#container #todays #schedule {
+  border: 1px solid transparent;
+  float: left;
+  width: 47.5%;
+}
 #container #todays #schedule #servant {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
+}
+#container #todays #schedule #meetings {
+  margin-top: 5px;
 }
 #container #todays #schedule #hackerspace {
   margin-top: 4px;
@@ -508,40 +248,86 @@ body {
 #container #todays #schedule #hackerspace span:hover {
   text-decoration: underline;
 }
+#container #todays #coffee {
+  border: 1px solid transparent;
+  float: right;
+  width: 47.5%;
+}
 #container #todays #coffee #pots {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
+}
+#container #todays #coffee #age {
+  margin-top: 5px;
+}
+#container #cantinas {
+  border: 1px solid transparent;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 #container #cantinas .hours {
   border: 1px solid transparent;
   font-style: italic;
-  margin-bottom: 4px;
   cursor: pointer;
 }
 #container #cantinas .hours:hover:hover {
   text-decoration: underline;
 }
+#container #cantinas .first {
+  border: 1px solid transparent;
+  position: relative;
+  float: left;
+  width: 47.5%;
+}
+#container #cantinas .second {
+  border: 1px solid transparent;
+  position: relative;
+  float: right;
+  width: 47.5%;
+}
+#container #cantinas .mealBox {
+  border: 1px solid transparent;
+}
 #container #cantinas li {
+  border: 1px solid transparent;
+  position: relative;
+  width: 95%;
+  list-style-type: none;
   cursor: pointer;
 }
 #container #cantinas li:hover {
   text-decoration: underline;
+}
+#container #cantinas li.message {
+  /*font-style: italic;*/
 }
 #container #cantinas .loadingLeft {
   width: 80px;
   bottom: 4px;
 }
 #container #bus {
-  box-shadow: 0 0 15px #aaa;
+  border: 1px solid transparent;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  background-color: #111;
+  background-clip: padding-box;
+  /* makes the background color only show on the inside of the border */
+  width: 110%;
   top: 16px;
+  margin-left: -5%;
   margin-bottom: 20px;
   padding-bottom: 10px;
+  box-shadow: 0 0 15px #aaa;
 }
 #container #bus #realtime {
   border: 1px solid transparent;
   line-height: 13px;
-  height: 90px;
+  overflow-y: auto;
 }
 #container #bus #realtime .first,
 #container #bus #realtime .second,
@@ -556,29 +342,74 @@ body {
   text-decoration: underline;
 }
 #container #bus #realtime .name {
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-bottom: 7px;
 }
 #container #bus #realtime .loadingLeft {
+  position: relative;
+  z-index: 100;
+  -webkit-transform: scaleX(-1);
   width: 80px;
   bottom: 4px;
 }
 #container #bus #realtime .loadingRight {
+  position: relative;
+  z-index: 100;
   width: 80px;
   bottom: 4px;
 }
+#container #bus #realtime .first,
+#container #bus #realtime .second,
+#container #bus #realtime .third,
+#container #bus #realtime .fourth,
+#container #bus #realtime .fifth,
+#container #bus #realtime .sixth,
+#container #bus #realtime .seventh,
+#container #bus #realtime .eighth,
+#container #bus #realtime .nineth,
+#container #bus #realtime .tenth {
+  border: 1px solid transparent;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#container #bus #realtime .time {
+  /* nothing here yet */
+}
+#container #bus #realtime .error {
+  font-style: italic;
+}
 #container #bus #realtime #firstBus {
+  border: 1px solid transparent;
+  position: relative;
+  float: left;
+  text-align: right;
+  padding-top: 14px;
   width: 41%;
 }
 #container #bus #realtime #secondBus {
+  border: 1px solid transparent;
+  position: relative;
+  float: left;
+  text-align: left;
+  padding-top: 14px;
   width: 41%;
 }
 #container #bus #realtime #middle {
+  border: 1px solid transparent;
+  position: relative;
+  float: left;
+  text-align: center;
   width: 16%;
 }
 #container #bus #realtime #middle #atbLogo {
   position: relative;
   left: -0.7px;
-  margin: 15px auto;
+  margin: 15px auto 10px auto;
   height: 61px;
   cursor: pointer;
   border-radius: 3px;
@@ -615,62 +446,320 @@ body {
   color: white;
 }
 #container #news {
+  border: 1px solid transparent;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  width: 100%;
   /* #full for using a single column */
+  /* #left and #right for using double columns */
+  /* For each news article */
 }
-#container #news #full .post .item img.regular {
+#container #news #full {
+  position: relative;
+  display: none;
+  /* popup will determine which news columns to show */
+  width: 100%;
+  float: left;
+}
+#container #news #full > .title {
+  display: none;
+  /* no need for affiliation title when only one is in use */
+}
+#container #news #full article img.regular {
+  float: left;
+  width: 33%;
   min-height: 80px;
   max-height: 200px;
   margin: 0 7px 0 0;
+}
+#container #news #left,
+#container #news #right {
+  position: relative;
+  display: none;
+  /* popup will determine which news columns to show */
+  width: 47.5%;
 }
 #container #news #left > .title,
 #container #news #right > .title {
   margin-bottom: -5px;
 }
-#container #news .post {
-  margin-top: 13px;
+#container #news #left > .title.regular,
+#container #news #right > .title.regular {
+  color: LightGrey;
 }
-#container #news .post .item {
-  margin-top: -5px;
+#container #news #left {
+  float: left;
+}
+#container #news #right {
+  float: right;
+}
+#container #news article {
+  border: 1px solid transparent;
+  position: relative;
+  clear: both;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-top: 13px;
   min-height: 40px;
   cursor: pointer;
-  margin-left: -7px;
-  margin-right: -7px;
-  padding: 7px;
-  -webkit-transition: box-shadow 0.3s ease-out 0s;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
-#container #news .post .item:hover {
-  box-shadow: inset 0 0 2px #bbb,
-            0 0 13px white;
+#container #news article:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
-#container #news .post .item .title.flashy {
+#container #news article .title {
+  position: relative;
+  margin-top: 0;
+  /* overrides default value */
+}
+#container #news article .title.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-transform: none;
+  text-shadow: 0 0 5px #333333, 0 0 3px #333333, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
   font-size: 15px;
   line-height: 18px;
-  top: 13px;
+  top: 7px;
   left: 8px;
 }
-#container #news .post .item .author.flashy {
+#container #news article .author {
+  display: inline;
+  position: relative;
+  font-style: italic;
+}
+#container #news article .author.flashy {
+  position: absolute;
+  width: 92%;
+  color: white;
+  font-family: Helvetica;
+  font-weight: lighter;
+  text-shadow: 0 0 5px #333333, 0 0 3px #333333, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
   font-size: 12px;
-  bottom: 14px;
+  bottom: 8px;
   left: 8px;
 }
-#container #news .post .item img {
+#container #news article img {
+  width: 100%;
+  height: auto;
+  background: snow;
   min-height: 80px;
   max-height: 250px;
-  padding: 4px;
+  padding: 3px;
+  border-radius: 3px;
 }
-#container #news .post .item img.regular {
+#container #news article img.regular {
+  float: right;
+  width: 33%;
   margin: 2px 0 0 4px;
+}
+#container #news article img.flashy {
+  float: left;
+  width: 97%;
+  margin: 0;
 }
 #container #news .unread {
   font-size: 11px;
+  text-shadow: 0 0 5px black, -1px -1px 1px #333333, -1px 1px 1px #333333, 1px -1px 1px #333333, 1px 1px 1px #333333;
 }
-#container #titleMeasure {
+/* Rules for the options */
+div.options {
+  /* All options are hidden by default, they slide into view when they are needed */
+  display: none;
+  /* Note: <input>s and <label>s are wrapped in a div to get their margins */
+  /* Special cases */
+}
+div.options select,
+div.options input,
+div.options div {
+  margin-top: 5px;
+  position: relative;
+}
+div.options input,
+div.options label {
+  cursor: pointer;
+}
+div.options select {
+  width: 100%;
+}
+div.options div#statusOptions {
+  position: relative;
+  top: -3px;
+}
+div.options div#statusOptions img.statusIcon {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 5px;
+  -webkit-filter: drop-shadow(0 0 4px black);
+  filter: drop-shadow(0 0 4px black);
+}
+div.options div#leftNewsOptionTitle {
+  margin-top: 9px;
+  margin-bottom: 2px;
+}
+div#bigOptions {
+  position: relative;
+  display: none;
+  top: 3px;
+  float: left;
+  width: 150px;
+  font-size: 24px;
+  line-height: 24px;
+}
+div#bigOptions input,
+div#bigOptions label {
+  position: relative;
+  cursor: pointer;
+}
+div#bigOptions input {
+  top: -4px;
+  margin-left: 10px;
+}
+div#bus input {
+  width: 107px;
+}
+div#bus select {
+  width: 75px;
+  margin-left: 7px;
+}
+div#bus div#secondBus div.options select {
+  margin-left: 4px;
+  /* Hack that's needed for an unidentified reason, otherwise select fields on left and right side have differentl margins-ish */
+}
+div#bus div#firstBus input,
+div#bus div#firstBus select,
+div#bus div#firstBus div.lines {
+  float: right;
+}
+div#bus div#firstBus div.options {
+  text-align: right;
+}
+div#bus div.secondBus input,
+div#bus div.secondBus select {
+  float: left;
+}
+div#bus div.lines {
+  position: relative;
+  margin-top: 7px;
+  margin-bottom: 10px;
+  display: block;
+  width: 181px;
+  border-top: 1px solid white;
+  box-shadow: 0 1px 2px #888;
+  border-radius: 4px;
+  background-color: white;
+  padding: 2px 7px 1px 7px;
+  text-align: left;
+  font-size: 12px;
+  text-shadow: 0 0 0 white;
+  /* resets inhertied value from parent element */
+}
+div#bus div.lines table {
+  border: 1px solid transparent;
+  width: 100%;
+  table-layout: fixed;
+  text-align: center;
+}
+div#bus div.lines table td {
+  border: 1px solid transparent;
+  padding: 1px 0;
+}
+div#bus div.lines .active {
+  cursor: pointer;
+  color: black;
   font-weight: bold;
-  color: transparent;
-  /* not to be seen, only used for measurement of title widths */
-  position: absolute;
-  visibility: hidden;
-  width: auto;
-  height: auto;
-  white-space: nowrap;
+}
+div#bus div.lines .active:hover {
+  text-decoration: underline;
+}
+div#bus div.lines .inactive {
+  cursor: pointer;
+  color: gray;
+}
+div#bus div.lines .inactive:hover {
+  text-decoration: underline;
+}
+div#bus div.lines .error {
+  color: black;
+  text-align: center;
+  font-size: 12px;
+}
+div#bus div.lines .retry {
+  color: black;
+  text-align: center;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+div#bus div.lines .loadingLeft {
+  position: relative;
+  width: 80px;
+  -webkit-transform: scaleX(-1);
+}
+div#bus div.lines .loadingRight {
+  position: relative;
+  width: 80px;
+}
+/* Suggestions for bus stops */
+div#busSuggestions {
+  border: 1px solid transparent;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  display: none;
+  /* Will slide down when needed */
+  padding: 15px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+  background-color: snow;
+}
+div#busSuggestions div#suggestionTitle {
+  border: 1px solid transparent;
+  margin: 15px;
+  font-size: 24px;
+  text-align: left;
+  color: #444;
+}
+div#busSuggestions .suggestion {
+  margin: 0 15px;
+  color: #444;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+div#busSuggestions .suggestion:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+div#busSuggestions .suggestion .matched_character {
+  font-weight: bold;
+}
+div#busSuggestions .correct {
+  margin: 0 15px;
+  color: black;
+  font-weight: bold;
+  line-height: 1.5;
+}
+/* Debug affiliation in the top of the affiliation selection lists */
+optgroup.debugAffiliation {
+  display: none;
+}
+/* Animations */
+@-webkit-keyframes editButtonPulse {
+  from {
+    border: 1px solid white;
+  }
+  50% {
+    border: 1px solid transparent;
+  }
+  to {
+    border: 1px solid white;
+  }
 }

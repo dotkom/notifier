@@ -12,11 +12,11 @@ var Oracle = {
   msgYouBrokeIt2: '»">trykke her for å sende feilrapport til busstuc@idi.ntnu.no</a>? (A)',
 
   _autoLoadDefaults_: function() {
-    if (localStorage.oracleBrain == undefined) {
+    if (ls.oracleBrain == undefined) {
       var oracleBrain = {};
       for (var i=0; i<=6; i++)
         oracleBrain[i] = {night:'', morning:'', afternoon:'', evening:''};
-      localStorage.oracleBrain = JSON.stringify(oracleBrain);
+      ls.oracleBrain = JSON.stringify(oracleBrain);
     }
   }(),
 
@@ -153,7 +153,7 @@ var Oracle = {
 
 
 // /*
-//         Buss 5 passerer Kongens gate K2 kl. 2345 og kl. 0005 
+// Buss 5 passerer Kongens gate K2 kl. 2345 og kl. 0005 
 // og kommer til Gløshaugen Nord, 7 minutter senere.
 // Buss 22 passerer Munkegata M2 kl. 0005 
 // og kommer til Gløshaugen Nord, 7 minutter senere.
@@ -287,7 +287,7 @@ var Oracle = {
   },
 
   predict: function() {
-    var oracleBrain = JSON.parse(localStorage.oracleBrain);
+    var oracleBrain = JSON.parse(ls.oracleBrain);
     
     // Get question from timeslot
     var timeslot = this.getTimeslot();
@@ -306,7 +306,7 @@ var Oracle = {
     if (pieces != null) {
       // Relevant enough? Simple keyword recognition
       if (pieces.length >= 3) {
-        var oracleBrain = JSON.parse(localStorage.oracleBrain);
+        var oracleBrain = JSON.parse(ls.oracleBrain);
         
         // Get timeslot
         var timeslot = this.getTimeslot();
@@ -324,7 +324,7 @@ var Oracle = {
         }
 
         // Stringify the brain
-        localStorage.oracleBrain = JSON.stringify(oracleBrain);
+        ls.oracleBrain = JSON.stringify(oracleBrain);
       }
       else {
         if (this.debug) console.log('Oracle thinks the answer did not contain enough expected keywords');
@@ -423,10 +423,7 @@ var Oracle = {
   },
 
   prettify: function(answer) {
-    // If not meant to be prettified
-    if (answer.match(/(Buss \d+ (passerer|går fra) .*? kl\. )|(Bus \d+ (|passes by|goes from) .*? at )/) == null)
-      return answer;
-    
+
     if (this.debug) console.log('\nBEFORE prettify\n' + answer);
 
     //
@@ -487,27 +484,39 @@ var Oracle = {
     // Replace "Holdeplassen nærmest Gløshaugen er Gløshaugen Syd." with just: Valgte "Gløshaugen Syd" for "Gløshaugen"
     answer = answer.replace(/Holdeplassen nærmest (.*?) er (.*?)\. /gi, '@Valgte "$2" for "$1"@');
     answer = answer.replace(/The station nearest to .*? is (.*?)\. /gi, '@Chose "$2" for "$1"@');
+    if (this.debug) console.log(answer);
     // Replace "Buss 66 passerer NTNU Dragvoll kl." with just "Buss 66:"
     answer = answer.replace(/(Buss \d+) passerer .*? kl\. /gi, '@$1 går ');
     answer = answer.replace(/(Bus \d+) passes by .*? at /gi, '@$1 leaves ');
+    if (this.debug) console.log(answer);
+    // Replace "Buss 46 (mot Pirbadet) passerer Prof. Brochs gate kl. 2205" with just "Buss 46 går"
+    answer = answer.replace(/(Buss \d+) \(mot .*?\) passerer .*? (kl\.)/gi, '@$1 går $2');
+    answer = answer.replace(/(Bus \d+) \(towards .*?\) passes by .*? (\d+\:\d+)/gi, '@$1 leaves $2');
+    if (this.debug) console.log(answer);
     // Replace "og kl." with just a comma
     answer = answer.replace(/,?( og)? kl\. /gi, ', ');
     answer = answer.replace(/,?( and)? at (\d+)/gi, ', $2');
+    if (this.debug) console.log(answer);
     // Make sure the first time isn't prefixed with a comma, "Dragvoll, 11:08, 12:10" -> "Dragvoll 11:08, 12:10"
-    answer = answer.replace(/(\w+), (\d{2}:?\d{2})/gi, '$1 $2');
+    answer = answer.replace(/([a-zA-ZæøåÆØÅ]+), (\d{2}:?\d{2})/gi, '$1 $2');
+    if (this.debug) console.log(answer);
     // Replace "og kommer til Munkegata M4, 16 minutter senere" with just ""
     answer = answer.replace(/og kommer til (.*?), (\d+)(-\d+)? minutter senere./gi, 'til $1'); // på $2 min');
     answer = answer.replace(/and arrives at (.*?), (\d+)(-\d+)? minutes later./gi, 'to $1');
+    if (this.debug) console.log(answer);
 
     // Replace 2321 with 23:21, but not when it says "11 Des. 2013 er en onsdag"
     answer = answer.replace(/(\d\d)(\d\d)(?! (er en|is a))/gi, '$1:$2');
-    // English version already contains colons
+    // (English version already contains colons)
+    if (this.debug) console.log(answer);
 
     // Trim and remove punctuation at end of line
     answer = answer.trim();
     answer = answer.replace(/[\.,;:]$/,'');
+    if (this.debug) console.log(answer);
     // Don't start with a line break
     answer = answer.replace(/^@/, '');
+    if (this.debug) console.log(answer);
 
     if (this.debug) console.log('\nAFTER prettify\n' + answer);
     return answer;

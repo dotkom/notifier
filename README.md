@@ -13,48 +13,10 @@ Installation of Notifier
 * Install for Chrome: https://chrome.google.com/webstore/detail/hfgffimlnajpbenfpaofmmffcdmgkllf
 * Install for Opera: https://addons.opera.com/en/extensions/details/online-notifier
 
-Installation of Infoscreen
---------------------------
-
-Use a spare computer, one you don't need for anything else.
-
-1. Install the latest version of [Ubuntu](http://www.ubuntu.com/desktop)
-  * Write down the username and password from the installation!
-  * Turn on Autologin when asked about it
-1. Open “System Settings”
-  * Displays -> Set rotation to clockwise
-  * Brightness & Lock -> Never turn screen off
-  * Appearance -> Behavior -> Auto-hide the launcher
-1. Open “Update Manager”
-  * Settings -> Never automatically check updates (unless it's really important to you)
-  * Settings -> Never notify me of a new Ubuntu version
-1. Open “Software Updater”
-  * Install updates this once
-1. Open a terminal
-  * `sudo apt-get install openssh-server unclutter chromium-browser`
-1. Open Chrome
-  * Settings -> Set Chrome as default browser
-  * Settings -> Do not offer to save passwords
-  * Settings -> On startup, open the new tab page (this is important for kiosk mode to work properly)
-  * Install Notifier from the [Chrome Web Store](https://chrome.google.com/webstore/detail/online-notifier/hfgffimlnajpbenfpaofmmffcdmgkllf)
-  * Online Notifier Options -> Enable Infoscreen
-1. The launcher
-  * Lock the Chrome icon to the launcher
-  * Other apps you might want to lock to the launcher
-    * System Settings, Startup Applications, Software Updater, Terminal
-  * Remove unnecessary icons, yes, Firefox as well
-1. Open “Startup Applications”
-  * Add `chromium-browser --kiosk --disable-translate`
-  * Add `unclutter`
-1. `sudo reboot`
-1. Enter the BIOS on startup (typically by clicking F2, F9, F10 or Del like a maniac)
-  * Find the option for what happens on power-loss, set it to turn power back on
-  * This feature is very important for the infoscreen to survive power outages, which are frequent at NTNU due to construction work
-
 Technology stack
 ----------------
 
-Some of the data is delivered by [Notipis](https://github.com/appKom/notipi) (raspberry pis), via the middle layer [Online Notiwire](https://github.com/appKom/notiwire). Notipi is a joint project between Omega Verksted and Onlines appKom. Notipis consist of hardware from Omega Verksted and software from Online appKom.
+Some of the data is delivered by [OmegaV Notipi](https://github.com/appKom/notipi)s (raspberry pis), via the middle layer [Online Notiwire](https://github.com/appKom/notiwire). Notipi is a joint project between Omega Verksted and Onlines appKom. Notipis consist of hardware from Omega Verksted and software from Online appKom.
 
 The hardware bundle which complements makes hardware features in Notifier accessible to any student union who purchases and installs the bundle. OmegaV currently sells this bundle at a reasonable price. The earnings goes to further development and to support OmegaV's operations.
 
@@ -70,9 +32,8 @@ For all the included affiliations
 - Displays todays dinner menu and opening hours from SiT cantinas, cafés and kiosks
 - Displays bus data from AtB in realtime and through the Oracle
 - All pages in the extension are live, they stay updated while open
-- Can be used as an infoscreen (full HD vertical screen) for continous use
 
-Additional features for affiliations who have a [NotiPi](https://github.com/appKom/notipi)
+Additional features for affiliations who have a [OmegaV NotiPi](https://github.com/appKom/notipi)
 
 - Displays office status: Open, closed, meeting, waffles
 - Displays todays meetings and current servant at the office
@@ -85,7 +46,6 @@ General
 
 - Only HTML5, CSS3 and JavaScript
 - Libraries used: jQuery, LESS
-- Opens options page on first run
 - All pages keep themselves updated while running
 - Separate scripts containing constants and defaults, for changeability
 - Runs Google Analytics on all pages, tracking both pages and events anonymously
@@ -96,7 +56,7 @@ General
 Student organizations
 
 - Affiliations
-  - Tons of different organizations and institutions are supported
+  - Tons of different organizations and institutions are supported (all of Gløshaugen is included)
   - Each organization has it's own logos and symbols
   - Each organizations' news feed is fetched and parsed
   - Each organization has a recommended color palette
@@ -110,9 +70,9 @@ Student organizations
   - Serves HTML5 desktop notifications on news / updates
 - Palettes
   - Stored as plain, short CSS stylesheets
-  - Override common CSS selectors in options, popup and the infoscreen
+  - Override common CSS selectors in the popup
   - Primarily changing style of the background image via CSS3 hue-rotation and such
-  - Palettes may also change colors of titles, pageflip and other details
+  - Palettes may also change colors of titles and other details
 
 SiT
 
@@ -132,7 +92,7 @@ AtB
   - Fetches realtime bus data from a third-party API at bybussen.api.tmn.io
   - Frequently updated in order to always show correct information
   - Support for favorite bus lines, simplifying finding a particular bus at a busy stop
-  - Smart selection of bus stops at the options page, quickly determining which stop the user wants
+  - Smart selection of bus stops, quickly determining which stop the user wants
   - The complete list of bus stops is fetched and parsed every now and then
 - Oracle
   - Allows the user access to SiTs bus oracle
@@ -159,15 +119,8 @@ Hardware Features (requires [NotiPi](https://github.com/appKom/notipi))
   - Users get a HTML desktop notification with a random coffee meme when the coffee button is clicked
   - Overview shows how fresh the last pot of coffee is and how many pots of coffee has been made today
 
-Options page
-
-- All options react to changes immediately
-- Github link to the open source repository
-- Google +1 button for Onlines website when affiliation is Online
-
 Injected script
 
-- Automatically switches to the correct clicked cantina from the popup
 - Detects when user is visiting the affiliation website, nullifying the counter badge
 
 Analytics
@@ -179,34 +132,27 @@ Analytics
 - Categories are split into actions which are either clickSomething, loadSomething or toggleSomething
 - An action may have a label, which is usually the clicked link, the loaded file, and so on
 
-Chronological Credz
--------------------
+People
+------
 
-Key people are annotated with their email address
+Project lead (chronologically descending)
 
-- Michael Johansen <michael@informatikk.org> is the project leader and was the sole developer of the extension itself (not support services) for the first couple of years
-- Espen Jacobsson wrote Onlines API-service in OnlineWeb3
-- Roy Sindre Norangshol wrote the initial light service
-- Dag Olav Prestegarden wrote the initial calendar service
-- René Räisänen designed the background image
-- Tri Minh Nguyen created the API for AtB's realtime bus API
-- Jonas Svarvaa wrote several revisions of calendar services
-- Roy Sindre Norangshol helped with several maintenance issues
-- Magnus Dysthe has been working on hardware for the infoscreen
-- Tor Håkon Bonsaksen helped with several hardware issues
-- Kristoffer Dalby hacked up scripts that fixed ubuntu screen-to-black issues
-- Jim Frode Hoff made Online's coffee button, attached to an Arduino
-- Nils Herde fixed hardware issues, kept the infoscreen running and installed the coffee button
-- Vegard Stenhjem Hagen installed all the hardware for Delta
-- Eirik Larsen <eirik.larsen93@gmail.com> made the OmegaV NotiPi, which made Notifier's hardware features accessible to all the student unions in Trondheim
+- *(New lead developer coming)* is the current lead developer
+- Michael Johansen was the lead developer of Notifier from v1.0 in 2012 to v5.0 in 2015
+
+Credz to (chronologically descending)
+
+- Christian Duvholt wrote the API, [Online Notiwire](https://github.com/appKom/notiwire)
 - Petter Rostrup made the Konami code video roll
-- Also, the following made coffee memes:
-	- Thomas Gautvedt
-	- Aleksander Skraastad
-	- John Hanssen Kolstad
-	- Magnus Dysthe
-	- Michael Johansen
-	- Linn Vikre
+- Eirik Larsen made the OmegaV NotiPi, which made coffee notifications and office status accessible to all the student unions in Trondheim
+- Vegard Stenhjem Hagen installed all the hardware for Delta
+- Jim Frode Hoff made Online's coffee button, attached to an Arduino
+- Jonas Svarvaa wrote several revisions of calendar services
+- Tri Minh Nguyen created the API for AtB's realtime bus API
+- René Räisänen designed the background images
+- Dag Olav Prestegarden wrote the initial calendar service
+- Roy Sindre Norangshol wrote the initial light service
+- Espen Jacobsson wrote Onlines API-service in OnlineWeb3
 
 Media coverage
 --------------

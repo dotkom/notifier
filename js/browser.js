@@ -2,8 +2,8 @@
 
 var Browser = {
   debug: 0,
-  msgCallbackMissing: 'Callback is missing',
-  msgUnsupported: 'Unsupported browser',
+  msgCallbackMissing: 'Callback er påkrevd',
+  msgUnsupported: 'Nettleseren støttes ikke',
 
   name: 'Unknown', // Changed automatically at the end of this file with Browser.detect()
   version: 0,
@@ -361,7 +361,7 @@ var Browser = {
           if (Browser.debug) console.log('oracle answer: ' + answer);
           Analytics.trackEvent('oracleOmniboxAnswer');
           // Browser.createNotification
-          //   'feedKey': ls.affiliationKey1
+          //   'feedKey': localStorage.affiliationKey1
           //   'title': 'Orakelet'
           //   'description': answer
           //   'link': 'http://atb.no'

@@ -3,8 +3,6 @@
 var Defaults = {
 
   _autoLoad_: function() {
-  
-    var ls = localStorage;
 
     // Clear previous thoughts
     if (DEBUG) ls.clear();
@@ -22,13 +20,10 @@ var Defaults = {
         }
       }
     }
-    
-    // Set default choices if undefined, in the same order as on the options page
 
-    ls.extensionName = 'Online Notifier';
-    // These two names will be shown in a loop, both can be max 8 letters because of styling
-    ls.extensionOwner = 'Online';
-    ls.extensionCreator = 'appKom';
+    //
+    // Set default choices if undefined
+    //
 
     // Note install time for future reference
     if (ls.installTime === undefined)
@@ -41,11 +36,9 @@ var Defaults = {
       ls.affiliationNewsList1 = JSON.stringify([]);
     if (ls.affiliationViewedList1 === undefined)
       ls.affiliationViewedList1 = JSON.stringify([]);
-    
+
     if (ls.affiliationPalette === undefined)
       ls.affiliationPalette = 'online';
-    if (ls.storedImages === undefined)
-      ls.storedImages = JSON.stringify({});
 
     // Secondary affiliation
     if (ls.affiliationUnreadCount2 === undefined)
@@ -57,7 +50,7 @@ var Defaults = {
 
     if (ls.showBus === undefined)
       ls.showBus = 'true';
-    
+
     // Bus - If any of these properties are undefined we'll reset all of them
     var firstBusProps = [
       ls.firstBus,
@@ -99,19 +92,7 @@ var Defaults = {
       ls.secondBusActiveLines = JSON.stringify([5, 22]);
       ls.secondBusInactiveLines = JSON.stringify([169]);
     }
-    
-    // Office
-    if (ls.showStatus === undefined)
-      ls.showStatus = 'true';
-    if (ls.activelySetOffice === undefined) {
-      ls.activelySetOffice = 'true';
-      ls.showStatus = 'true';
-    }
-    
-    // Notifications
-    if (ls.showNotifications === undefined)
-      ls.showNotifications = 'true';
-    
+
     // Subscription
     if (ls.coffeeSubscription === undefined)
       ls.coffeeSubscription = 'true';
@@ -123,16 +104,10 @@ var Defaults = {
       ls.activelySetCoffee = 'true';
       ls.coffeeSubscription = 'true';
     }
-    
-    // Bigscreen
-    if (ls.useBigscreen === undefined)
-      ls.useBigscreen = 'false';
-    if (ls.whichScreen === undefined)
-      ls.whichScreen = 'notifier';
-    
+
     // General
-    if (ls.everOpenedOptions === undefined)
-      ls.everOpenedOptions = 'false';
+    if (ls.everClickedEdit === undefined)
+      ls.everClickedEdit = 'false';
   }(),
 
   // Whenever we need to remove an existing affiliation,
@@ -140,20 +115,16 @@ var Defaults = {
   // ahead and uncomment that affiliation in Affiliation.js !
   resetAffiliationsIfNotExist: function(key1, key2, affiliationKeys) {
 
-    var ls = localStorage;
-
-    var gotoOptions = function(key) {
-      if (confirm('Online Notifier beklager:\n\n"'+key+'" er borte fra Notifier :(\n\nTrolig fordi foreningens nettside ikke finnes lenger.\n\nDu kan trykke OK for å åpne Notifiers innstillinger.')) {
-        Browser.openTab('options.html');
-      }
+    var sorry = function(key) {
+      alert('Online Notifier beklager:\n\n"'+key+'" er borte fra Notifier :(\n\nTrolig fordi foreningens nettside ikke finnes lenger.\n\nÅpne Notifier oppe til høyre i Chrome og trykk "Edit" for å velge ny tilhørighet.');
     }
     if (affiliationKeys.indexOf(key1) === -1) {
       ls.affiliationKey1 = 'online';
-      gotoOptions(key1);
+      sorry(key1);
     }
     if (affiliationKeys.indexOf(key2) === -1) {
       ls.affiliationKey2 = 'dusken';
-      gotoOptions(key2);
+      sorry(key2);
     }
   },
 
@@ -162,17 +133,10 @@ var Defaults = {
   // user starts out with the features turned on.
   // Then, the features will be turned off if:
   // a) the user has explicitly turned them off, or
-  // b) hardwarefeatures are not available (this function called from background process)
+  // b) hardwarefeatures are not available (this function is then called from background process)
   setHardwareFeatures: function(isAvailable) {
-    
-    var ls = localStorage;
 
     if (isAvailable) {
-      // office
-      if (ls.activelySetOffice == 'false')
-        ls.showStatus = 'false';
-      else
-        ls.showStatus = 'true';
       // coffee
       if (ls.activelySetCoffee == 'false')
         ls.coffeeSubscription = 'false';
@@ -180,7 +144,6 @@ var Defaults = {
         ls.coffeeSubscription = 'true';
     }
     else if (!isAvailable) {
-      ls.showStatus = 'false';
       ls.coffeeSubscription = 'false';
     }
   },

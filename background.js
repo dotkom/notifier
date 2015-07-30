@@ -1,6 +1,5 @@
 "use strict";
 
-var ls = localStorage;
 var iteration = 0;
 var intervalId = null;
 
@@ -10,36 +9,35 @@ var mainLoop = function(force) {
   if (ls.showCantina === 'true')
     if (force || iteration % UPDATE_CANTINAS_INTERVAL === 0)
       updateCantinas();
-  if (ls.showAffiliation1 === 'true')
-    if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
-      updateAffiliationNews('1');
+  if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
+    updateAffiliationNews('1');
   if (ls.showAffiliation2 === 'true')
     if (force || iteration % UPDATE_NEWS_INTERVAL === 0)
       updateAffiliationNews('2');
-  // Only if hardware and not infoscreen
-  if (ls.showStatus === 'true')
-    if (ls.useBigscreen !== 'true')
-      if (Affiliation.org[ls.affiliationKey1].hw)
-        if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
-          updateAffiliation();
+  // Only if hardware
+  if (Affiliation.org[ls.affiliationKey1].hardware)
+    if (force || iteration % UPDATE_AFFILIATION_INTERVAL === 0)
+      updateAffiliation();
 
   // No reason to count to infinity
   if (10000 < iteration)
     iteration = 0;
   else
     iteration++;
-}
+};
+
+//
+// Status (office status, meetings, and servant for affiliation)
+//
 
 var updateAffiliation = function(callback) {
   console.log('updateAffiliation');
   // Fetch
   Affiliation.get(ls.affiliationKey1, function() {
     // Run relevant background updates
-    if (ls.useBigscreen !== 'true') {
-      if (Affiliation.org[ls.affiliationKey1].hw) {
-        updateStatusAndMeetings();
-        updateCoffeeSubscription();
-      }
+    if (Affiliation.org[ls.affiliationKey1].hardware) {
+      updateStatusAndMeetings();
+      updateCoffeeSubscription();
     }
     // Callback
     if (typeof callback === 'function') callback();
@@ -72,7 +70,7 @@ var updateStatusAndMeetings = function(force, callback) {
     else {
       // Set icon
       var errorIcon = Affiliation.org[ls.affiliationKey1].icon;
-      var statusIcon = Affiliation.org[ls.affiliationKey1].hw.statusIcons[statusCode];
+      var statusIcon = Affiliation.org[ls.affiliationKey1].hardware.statusIcons[statusCode];
       if (statusCode === 'error' || typeof(statusIcon) === 'undefined') {
         Browser.setIcon(errorIcon);
       }
@@ -86,7 +84,11 @@ var updateStatusAndMeetings = function(force, callback) {
     Browser.setTitle(today);
   }
   if (typeof callback === 'function') callback();
-}
+};
+
+//
+// Coffee
+//
 
 var updateCoffeeSubscription = function(callback) {
   console.log('updateCoffeeSubscription');
@@ -134,7 +136,11 @@ var updateCoffeeSubscription = function(callback) {
   catch (e) {
     console.error(e);
   }
-}
+};
+
+//
+// Cantina
+//
 
 var updateCantinas = function(callback) {
   console.log('updateCantinas');
@@ -148,42 +154,44 @@ var updateCantinas = function(callback) {
       if (typeof callback === 'function') callback();
     });
   });
-}
+};
+
+//
+// Affiliation news
+//
 
 var updateAffiliationNews = function(number, callback) {
   console.log('updateAffiliationNews'+number);
-  // Get affiliation object
+  // Get affiliation
   var affiliationKey = ls['affiliationKey'+number];
-  var affiliationObject = Affiliation.org[affiliationKey];
-  if (affiliationObject) {
-    // Get more news than needed to check for old news that have been updated
-    var newsLimit = 10;
-    News.get(affiliationObject, newsLimit, function(items) {
+  var affiliation = Affiliation.org[affiliationKey];
+  // Get news for this affiliation
+  if (affiliation) {
+    News.get(affiliation, function(posts) {
       // Error message, log it maybe
-      if (typeof items === 'string') {
-        console.error(items);
+      if (typeof posts === 'string') {
+        console.error(posts);
       }
-      // Empty news items, don't count
-      else if (items.length === 0) {
+      // Empty news posts, don't count
+      else if (posts.length === 0) {
         updateUnreadCount(0, 0);
       }
       // News is here! NEWS IS HERE! FRESH FROM THE PRESS!
       else {
-        saveAndCountNews(items, number);
+        saveAndCountNews(posts, number);
         updateUnreadCount();
-        fetchAndStoreImageLinks(number);
       }
       if (typeof callback === 'function') callback();
     });
   }
   else {
-    console.error('Chosen affiliation "' + ls['affiliationKey'+number] + '" is not known');
+    console.error('Chosen affiliation "' + affiliationKey + '" is not known');
     if (typeof callback === 'function') callback();
   }
-}
+};
 
 var saveAndCountNews = function(items, number) {
-  var feedItems = 'affiliationFeedItems' + number;
+  var feedItems = 'affiliationNews' + number;
   var newsList = 'affiliationNewsList' + number;
   var unreadCount = 'affiliationUnreadCount' + number;
   var lastNotified = 'affiliationLastNotified' + number;
@@ -192,98 +200,79 @@ var saveAndCountNews = function(items, number) {
   var list = JSON.parse(ls[newsList]);
   ls[unreadCount] = News.countNewsAndNotify(items, list, lastNotified);
   ls[newsList] = News.refreshNewsList(items);
-}
+};
 
 var updateUnreadCount = function(count1, count2) {
-  var unreadCount = (Number(ls.affiliationUnreadCount1)) + (Number(ls.affiliationUnreadCount2));
+  // TODO: Tag all news with a "read" boolean, use this for counting and showing which news are unread
+  var unreadCount = 0;
+  if (ls.showNotifications1 === 'true') {
+    unreadCount += Number(ls.affiliationUnreadCount1);
+  }
+  if (ls.showNotifications2 === 'true') {
+    unreadCount += Number(ls.affiliationUnreadCount2);
+  }
   Browser.setBadgeText(String(unreadCount));
-}
+};
 
-var fetchAndStoreImageLinks = function(number) {
-  var key = ls['affiliationKey'+number];
-  var newsList = JSON.parse(ls['affiliationNewsList'+number]);
-  // If the organization has it's own getImage function, use it
-  if (Affiliation.org[key].getImage !== undefined) {
-    for (var i in newsList) {
-      var link = newsList[i];
-      // It's important to get the link from the callback within the function below,
-      // not the above code, - because of race conditions mixing up the news posts, async ftw.
-      Affiliation.org[key].getImage(link, function(link, image) {
-        if (null !== image[0]) {
-          var storedImages = JSON.parse(ls.storedImages);
-          storedImages[link] = image[0];
-          ls.storedImages = JSON.stringify(storedImages);
-        }
-      });
-    }
-  }
-  // If the organization has it's own getImages (plural) function, use it
-  if (Affiliation.org[key].getImages !== undefined) {
-    Affiliation.org[key].getImages(newsList, function(links, images) {
-      var storedImages = JSON.parse(ls.storedImages);
-      for (var i in links) {
-        if (null !== images[i]) {
-          storedImages[links[i]] = images[i];
-        }
-      }
-      ls.storedImages = JSON.stringify(storedImages);
-    });
-  }
-}
+//
+// Prepare Affiliations
+// (must run before other affiliation things!)
+// (executes itself once)
+//
 
-var loadAffiliationIcon = function() {
-  var key = ls.affiliationKey1;
-  // Set badge icon
-  var icon = Affiliation.org[key].icon;
-  Browser.setIcon(icon);
-  // Set badge title
-  var name = Affiliation.org[key].name;
-  Browser.setTitle(name + ' Notifier');
-}
-
-// Document ready, go!
-$(document).ready( function() {
-  // Clear values that should start empty
+(function prepareAffiliations() {
+  // Clears values that should start empty
   Affiliation.clearAffiliationData();
-
   // Check if both current affiliations still exist, reset if not
   var keys = Object.keys(Affiliation.org);
   Defaults.resetAffiliationsIfNotExist(ls.affiliationKey1, ls.affiliationKey2, keys);
-
   // Turn off hardwarefeatures if they're not available
-  var isAvailable = (Affiliation.org[ls.affiliationKey1].hw ? true : false);
+  var isAvailable = (Affiliation.org[ls.affiliationKey1].hardware ? true : false);
   Defaults.setHardwareFeatures(isAvailable);
+}());
 
-  // Open options page after install
-  if (ls.everOpenedOptions === 'false' && !DEBUG) {
-    Browser.openTab('options.html');
-    Analytics.trackEvent('loadOptions (fresh install)');
+//
+// Load Affiliation Icon
+// (executes itself once)
+//
+
+var loadAffiliationIcon = (function() {
+  var load = function() {
+    var key = ls.affiliationKey1;
+    // Set badge icon
+    var icon = Affiliation.org[key].icon;
+    Browser.setIcon(icon);
+    // Set badge title
+    var name = Affiliation.org[key].name;
+    Browser.setTitle(name + ' Notifier');
   }
-  // Open Bigscreen if the option is set
-  if (ls.useBigscreen === 'true') {
-    if (ls.whichScreen === 'infoscreen') {
-      Browser.openTab('infoscreen.html');
-      Analytics.trackEvent('loadInfoscreen');
-    }
-    else if (ls.whichScreen === 'officescreen') {
-      Browser.openTab('officescreen.html');
-      Analytics.trackEvent('loadOfficescreen');
-    }
-    else {
-      console.error('useBigscreen enabled, but whichScreen was "' + ls.whichScreen + '"');
-    }
-  }
+  load(); // Run once
+  return load; // Return for later use
+}());
 
-  loadAffiliationIcon();
+//
+// Browser Setup
+// (executes itself once)
+//
 
+(function browserSetup() {
   Browser.bindCommandHotkeys();
   Browser.registerNotificationListeners();
   Browser.bindOmniboxToOracle();
+}());
 
+//
+// Daily Statistics
+// (executes itself once)
+//
+
+(function dailyStatistics() {
   // Send some basic statistics once a day
   setInterval( function() {
     // App version is interesting
     Analytics.trackEvent('appVersion', Browser.getAppVersion() + ' @ ' + Browser.name);
+    // Ever clicked edit? Interesting
+    Analytics.trackEvent('everClickedEdit', ls.everClickedEdit);
     // Affiliation is also interesting, in contrast to the popup some of these are inactive users
     // To find inactive user count, subtract these stats from popup stats
     if (ls.showAffiliation2 !== 'true') {
@@ -296,10 +285,17 @@ $(document).ready( function() {
       Analytics.trackEvent('affiliation2', ls.affiliationKey2);
     }
   }, 1000 * 60 * 60 * 24);
+}());
+
+//
+// Document ready function
+//
+
+$(document).ready(function() {
 
   // Enter main loop, keeping everything up-to-date
   var stayUpdated = function(now) {
-    console.log(ONLINE_MESSAGE);
+    console.info(ONLINE_MESSAGE);
     var loopTimeout = (DEBUG ? BACKGROUND_LOOP_DEBUG : BACKGROUND_LOOP);
     // Schedule for repetition
     intervalId = setInterval( function() {
@@ -314,7 +310,7 @@ $(document).ready( function() {
   // When offline, mainloop is stopped to decrease power consumption
   window.addEventListener('online', stayUpdated);
   window.addEventListener('offline', function() {
-    console.log(OFFLINE_MESSAGE);
+    console.warn(OFFLINE_MESSAGE);
     clearInterval(intervalId);
   });
 

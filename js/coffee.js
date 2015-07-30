@@ -42,9 +42,9 @@ var Coffee = {
     // allowing two consecutive notifications within 4 minutes
     // of each other.
     var showIt = true;
-    if (typeof localStorage.lastSubscriptionTime !== 'undefined') {
+    if (typeof ls.lastSubscriptionTime !== 'undefined') {
       try {
-        var then = JSON.parse(localStorage.lastSubscriptionTime);
+        var then = JSON.parse(ls.lastSubscriptionTime);
         if (this.minuteDiff(then) < 5) {
           showIt = false;
         }
@@ -58,9 +58,9 @@ var Coffee = {
 
       // Save timestamp if this was a real coffee notification
       if (!demo)
-        localStorage.lastSubscriptionTime = JSON.stringify(new Date());
+        ls.lastSubscriptionTime = JSON.stringify(new Date());
 
-      var key = localStorage.affiliationKey1;
+      var key = ls.affiliationKey1;
       var memes = [];
 
       // Add regular memes
@@ -70,9 +70,9 @@ var Coffee = {
       }
 
       // Add affiliation memes
-      if (Affiliation.org[key].hw.memePath) {
+      if (Affiliation.org[key].hardware.memePath) {
         var amount = Affiliation.getMemeCount(key);
-        var path = Affiliation.org[key].hw.memePath;
+        var path = Affiliation.org[key].hardware.memePath;
         for (var i = 1; i <= amount; i++) {
           memes.push(path+i+'.png');
         }
@@ -90,7 +90,7 @@ var Coffee = {
         title: Affiliation.org[key].name + ' Notifier',
         description: this.msgNotification,
         image: image,
-        link: 'options.html',
+        link: Affiliation.org[key].web,
         feedKey: key,
       }
       if (!demo) {

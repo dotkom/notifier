@@ -1,11 +1,11 @@
 "use strict";
 
-var DEBUG = 1;
+//
+// Debugging
+//
 
-// Production detection
-if (Browser.inProduction()) {
-	DEBUG = 0;
-}
+// Declare DEBUG constant, but be sure we aren't in production
+var DEBUG = Browser.inProduction() ? false : true;
 
 // Disable logging if in production
 if (!DEBUG) {
@@ -16,8 +16,18 @@ if (!DEBUG) {
 	window.console.error = function(){};
 }
 
+//
+// Shorthand to localStorage, used everywhere, as essential here as jQuery
+//
+
+var ls = localStorage;
+
+//
+// All other constants
+//
+
 // API servers
-var API_SERVER_1 = 'http://passoa.online.ntnu.no/api/';
+var API_SERVER_1 = 'https://passoa.online.ntnu.no/api/';
 var API_SERVER_2 = 'http://online.duvholt.net/api/';
 
 // Loops & intervals
@@ -35,4 +45,5 @@ var UPDATE_BUS_INTERVAL = 2; // recommended: 1
 var UPDATE_NEWS_INTERVAL = 20; // recommended: 20
 
 // Hard totals
-var MEME_AMOUNT = 30;
+// It's this, or doing synchronous XMLHttpRequests, which have been deprecated in Chrome now, so.. yeah.
+var MEME_AMOUNT = 31;

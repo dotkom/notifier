@@ -56,38 +56,38 @@ var Ajaxer = {
 
   get: function(params) {
     if (params === undefined) {
-      if (Ajaxer.debug) console.error('Params is required. Check ajaxer.js to see format of params.');
+      console.error('Params is required. Check ajaxer.js to see format of params.');
       return;
     }
     if (params.url === undefined) {
-      if (Ajaxer.debug) console.error('URL missing from params.');
+      console.error('URL missing from params.');
       return;
     }
     if (params.dataType === undefined) {
-      if (Ajaxer.debug) console.error('Do not use Ajaxer.get() directly, use Ajaxer.getXml(), Ajaxer.getJson() or one of the others instead.');
+      console.error('Do not use Ajaxer.get() directly, use Ajaxer.getXml(), Ajaxer.getJson() or one of the others instead.');
       return;
     }
     if (params.success === undefined) {
-      if (Ajaxer.debug) console.error('Params is missing success function. The success function should use the results for something useful.');
+      console.error('Params is missing success function. The success function should use the results for something useful.');
       return;
     }
     if (params.error === undefined) {
-      if (Ajaxer.debug) console.error('Params is missing error function. Error handling must be in place.');
+      console.error('Params is missing error function. Error handling must be in place.');
       return;
     }
 
     if (params.url.indexOf(API_SERVER_1) !== -1) {
       // Expect fast response from primary API server...
       // ...to fall back quickly to secondary API server
-      params.timeout = 4000;
+      params.timeout = 3000;
     }
 
     var ajax = function(params) {
-      $.ajax({
+      return $.ajax({
         type: (params.data ? 'POST' : 'GET'),
         data: (params.data ? params.data : ''),
         url: params.url,
-        timeout: params.timeout || 6000,
+        timeout: params.timeout || 10000,
         dataFilter: params.dataFilter,
         dataType: params.dataType,
         success: params.success,
@@ -95,7 +95,7 @@ var Ajaxer = {
           if (params.url.indexOf(API_SERVER_1) !== -1) {
             if (Ajaxer.debug) console.warn('Ajaxer: Falling back to secondary API server');
             params.url = params.url.replace(API_SERVER_1, API_SERVER_2);
-            params.timeout = 15000; // Assume slow network, be patient
+            params.timeout = 20000; // Assume slow network, be patient
             ajax(params);
           }
           else {
@@ -105,7 +105,7 @@ var Ajaxer = {
       });
     }
 
-    ajax(params);
+    return ajax(params); // Returns the promise that is given by $.ajax
   },
 
   cleanHtml: function(html, type) {
@@ -120,7 +120,7 @@ var Ajaxer = {
     }
     // More tags were found, most likely nested html (malicious).
     else {
-      if (Ajaxer.debug) console.log('Ajaxer detected malicious html.');
+      if (Ajaxer.debug) console.warn('Ajaxer detected malicious html.');
       return '';
     }
   },
@@ -152,8 +152,7 @@ var Ajaxer = {
 
     // Rename <img> tags to <pic> tags to prevent jQuery from trying to fetch all images.
     // jQuerys behavior is not too problematic, but has some security concerns, also it
-    // will most definitely slow down any slow computer running Notifier, like most
-    // Infoscreen computers out there.
+    // will most definitely slow down any slow computer running Notifier.
     // When parsing for images, we will just look for the <pic> tags.
     html = html.replace(/<[\s]*?img/gi, '<pic');
     html = html.replace(/<[\s]*?\/[\s]*?img/gi, '</pic');

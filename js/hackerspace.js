@@ -15,7 +15,7 @@ var Hackerspace = {
   get: function(callback) {
     
     // Valid affiliation?
-    var key = localStorage.affiliationKey1;
+    var key = ls.affiliationKey1;
     if (key !== 'online' && key !== 'abakus') {
       if (this.debug) console.error('Data only available for affiliations [online, abakus]');
       return;

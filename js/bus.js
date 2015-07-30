@@ -6,7 +6,8 @@ var Bus = {
   msgDisconnected: 'Frakoblet fra bybussen.api.tmn.io',
   msgConnectionError: 'Tilkoblingsfeil',
   msgInvalidDirection: 'Ugyldig retning',
-  msgKeyExpired: localStorage.extensionName + ' trenger oppdatering',
+  msgKeyExpired: 'Nøkkelen vår har utløpt, trenger oppdatering',
+  msgOldData: 'Mottok utdatert sanntidsdata',
 
   // Public functions
 
@@ -81,13 +82,16 @@ var Bus = {
       var time = departures[i].t;
       var isRealtime = departures[i].rt;
       var destination = departures[i].d.trim();
-      // destination = this.prettifyDestination(destination);
-
-      // Add destination
-      lines.destination.push(line + ' ' + destination);
-
-      // Add departure
       var calculatedTime = this.calculateTime(time, isRealtime);
+
+      // Callback and return if realtime data is old (bus info from this morning rather than now)
+      if (calculatedTime === this.msgOldData) {
+        callback(this.msgOldData);
+        return;
+      }
+
+      // Add destination and departure
+      lines.destination.push(line + ' ' + destination);
       lines.departures.push(calculatedTime);
     }
 
@@ -98,6 +102,7 @@ var Bus = {
     callback(lines);
   },
 
+  // If calculateTime returns this.msgOldData then we have old realtime data from this morning rather than now
   calculateTime: function(time, isRealtime) {
     // We only need the time, the date is always today
     // Format is "10.11.2012 12:07"
@@ -120,21 +125,17 @@ var Bus = {
 
     // Create a proper time string from all the minutes
     var calculatedTime;
-    if (-1 <= diff && diff <= 0)
-      calculatedTime = isRealtime?'nå':'ca nå';
+    if (diff < -1)
+      calculatedTime = this.msgOldData; // This is an error
+    else if (-1 <= diff && diff <= 0)
+      calculatedTime = isRealtime ? 'nå' : 'ca nå';
     else if (1 <= diff && diff <= 59)
-      calculatedTime = (isRealtime?'':'ca ') + diff+" min";
+      calculatedTime = (isRealtime?'':'ca ') + diff + " min";
     else if (60 <= diff)
       calculatedTime = timePieces[0] + ':' + timePieces[1];
 
     if (this.debug) console.log('Calculated time:', calculatedTime);
     return calculatedTime;
   },
-
-  // prettifyDestination: function(destination) {
-  //   if (destination.match(/Munkegata|(Dronningens|Kongens|Prinsens) ga?te?/) !== null)
-  //     destination = "Sentrum";
-  //   return destination;
-  // },
 
 };
