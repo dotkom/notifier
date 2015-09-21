@@ -184,6 +184,7 @@ div#specialNews {
 
 #container {
   .debugContainer;
+  height: 100%; /* HACK! Chrome regression caused the container to be unscrollable without a defined large height */
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
