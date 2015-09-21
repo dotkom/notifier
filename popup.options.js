@@ -71,16 +71,13 @@ popup.options = {
     var self = this;
     $('input#coffeeSubscription').click(function() {
       // Save
-      ls[this.name] = this.checked;
+      ls.coffeeSubscription = this.checked;
+      // Note: activelySetCoffee is a reminder about what concious choice the user has made.
+      // Don't override that choice with defaults later.
+      ls.activelySetCoffee = 'true';
       // Demo
       if (this.checked === true) {
-        ls.activelySetCoffee = 'true';
         Coffee.showNotification();
-      }
-      else {
-        // Note: activelySetCoffee is a reminder about what concious choice the user has made.
-        // Don't override that choice with defaults later.
-        ls.activelySetCoffee = 'true';
       }
       // Track
       Analytics.trackEvent('clickCoffeeOption', this.checked);

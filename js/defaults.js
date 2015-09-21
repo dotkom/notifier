@@ -101,7 +101,7 @@ var Defaults = {
     if (ls.coffeeMemeTime === undefined)
       ls.coffeeMemeTime = 0;
     if (ls.activelySetCoffee === undefined) {
-      ls.activelySetCoffee = 'true';
+      ls.activelySetCoffee = 'false';
       ls.coffeeSubscription = 'true';
     }
 
@@ -137,11 +137,13 @@ var Defaults = {
   setHardwareFeatures: function(isAvailable) {
 
     if (isAvailable) {
-      // coffee
-      if (ls.activelySetCoffee == 'false')
+      // Coffee
+      if (ls.activelySetCoffee === 'false') {
         ls.coffeeSubscription = 'false';
-      else
+      }
+      else {
         ls.coffeeSubscription = 'true';
+      }
     }
     else if (!isAvailable) {
       ls.coffeeSubscription = 'false';
