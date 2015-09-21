@@ -8,7 +8,7 @@ var Oracle = {
   msgPredictPostfix: ' [tab]',
   msg503: 'Orakelet har for mye å gjøre, vent littegrann er du grei',
   msgPaywall: 'Du har ikke logget på WiFien, åpne en hvilken som helst nettside for å få opp påloggingssiden, for eksempel denne: <a href="http://dusken.no">dusken.no</a>',
-  msgYouBrokeIt1: 'Oi, du ødela Orakelet. Disse feilene er spesielt sjeldne! Kan du være en engel og <a href="mailto:busstuc@idi.ntnu.no?subject=Bug report&amp;body=Hei, jeg ødela bussorakelet litt med dette spørsmålet: «',
+  msgYouBrokeIt1: 'Oi, du ødela Orakelet. Disse feilene er spesielt sjeldne! Kan du være en engel og <a href="mailto:busstuc@idi.ntnu.no?subject=Bug report&amp;body=Hei, jeg ødela bussorakelet litt med dette spørsmålet via Online Notifier: «',
   msgYouBrokeIt2: '»">trykke her for å sende feilrapport til busstuc@idi.ntnu.no</a>? (A)',
 
   _autoLoadDefaults_: function() {
@@ -281,6 +281,7 @@ var Oracle = {
       'Tore Amble er en av hjernene bak bussorakelet (1996-2012).',
       'Tore Bruland er en av hjernene bak bussorakelet (2004-2011).',
       'Trond Bø Engell er en av hjernene bak bussorakelet (2011-2012).',
+      'Erling Wishman Eeg-Henriksen er en av hjernene bak bussorakelet.',
     ];
     var randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
     return randomGreeting;

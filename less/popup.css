@@ -162,6 +162,8 @@ div#specialNews img#closeSpecialNews {
 /* This container keeps the content centered */
 #container {
   border: 1px solid transparent;
+  height: 100%;
+  /* HACK! Chrome regression caused the container to be unscrollable without a defined large height */
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;

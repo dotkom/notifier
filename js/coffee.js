@@ -34,7 +34,7 @@ var Coffee = {
   },
 
   showNotification: function(pots, age) { // Parameters 'pots' and 'age' not in use yet.
-    var demo = (typeof pots == 'undefined' && typeof age == 'undefined');
+    var demo = (typeof pots === 'undefined' && typeof age === 'undefined');
     // If the computer has slept for a while and there are
     // suddenly four new coffeepots then they will all be
     // lined up for notifications, giving the user four
@@ -50,59 +50,64 @@ var Coffee = {
         }
       }
       catch (err) {
-        if (this.debug) console.error('failed to calculate coffee subscription time difference');
+        if (DEBUG) console.error('Failed to calculate coffee subscription time difference');
       }
     }
 
     if (showIt || demo) {
+      if (ls.coffeeSubscription === 'true' || demo) {
 
-      // Save timestamp if this was a real coffee notification
-      if (!demo)
-        ls.lastSubscriptionTime = JSON.stringify(new Date());
+        // Save timestamp if this was a real coffee notification
+        if (!demo)
+          ls.lastSubscriptionTime = JSON.stringify(new Date());
 
-      var key = ls.affiliationKey1;
-      var memes = [];
+        var key = ls.affiliationKey1;
+        var memes = [];
 
-      // Add regular memes
-      var amount = MEME_AMOUNT; // Number of memes, in regular human numbers, not zero-indexed
-      for (var i = 1; i <= amount; i++) {
-        memes.push('./meme/'+i+'.png');
-      }
-
-      // Add affiliation memes
-      if (Affiliation.org[key].hardware.memePath) {
-        var amount = Affiliation.getMemeCount(key);
-        var path = Affiliation.org[key].hardware.memePath;
+        // Add regular memes
+        var amount = MEME_AMOUNT; // Number of memes, in regular human numbers, not zero-indexed
         for (var i = 1; i <= amount; i++) {
-          memes.push(path+i+'.png');
+          memes.push('./meme/'+i+'.png');
+        }
+
+        // Add affiliation memes
+        if (Affiliation.org[key].hardware.memePath) {
+          var amount = Affiliation.getMemeCount(key);
+          var path = Affiliation.org[key].hardware.memePath;
+          for (var i = 1; i <= amount; i++) {
+            memes.push(path+i+'.png');
+          }
+        }
+
+        // Randomize image
+        var random = 1 + (Math.floor(Math.random() * memes.length));
+        if (DEBUG) console.log('memes['+(random-1)+'] of '+0+'-'+(memes.length-1)+' is "'+memes[random-1]+'"');
+        var image = memes[random - 1]; // the list is zero-indexed
+
+        if (DEBUG) console.log('memes', random - 1, '/', memes.length, image);
+
+        // Create the notification
+        var item = {
+          title: Affiliation.org[key].name + ' Notifier',
+          description: this.msgNotification,
+          image: image,
+          link: Affiliation.org[key].web,
+          feedKey: key,
+        }
+        if (!demo) {
+          Browser.createNotification(item);
+        }
+        else {
+          // Need to run it by the background process because the event listeners are there
+          Browser.getBackgroundProcess().Browser.createNotification(item);
         }
       }
-
-      // Randomize image
-      var random = 1 + (Math.floor(Math.random() * memes.length));
-      if (this.debug) console.log('memes['+(random-1)+'] of '+0+'-'+(memes.length-1)+' is "'+memes[random-1]+'"');
-      var image = memes[random - 1]; // the list is zero-indexed
-
-      if (this.debug) console.log('memes', random - 1, '/', memes.length, image);
-
-      // Create the notification
-      var item = {
-        title: Affiliation.org[key].name + ' Notifier',
-        description: this.msgNotification,
-        image: image,
-        link: Affiliation.org[key].web,
-        feedKey: key,
-      }
-      if (!demo) {
-        Browser.createNotification(item);
-      }
       else {
-        // Need to run it by the background process because the event listeners are there
-        Browser.getBackgroundProcess().Browser.createNotification(item);
+        if (DEBUG) console.error('Coffee notification not shown: User has disabled them');
       }
     }
     else {
-      if (this.debug) console.error('coffee notification displayed less than four minutes ago');
+      if (DEBUG) console.warn('Coffee notification not shown: Last one displayed less than 5 minutes ago');
     }
   },
 
