@@ -164,7 +164,7 @@ var applyAffiliationSettings = (function() {
 
 (function addToTips() {
   // Add app version
-  var appVersion = chrome.app.getDetails().version.match(/^\d+\.\d+/)[0];
+  var appVersion = chrome.app.getDetails().version;
   $('span[data="appVersion"]').text(appVersion);
   
   // Add CHANGELOG.md to div#tips
