@@ -63,7 +63,6 @@ body {
   margin: 0;
   padding: 0;
   width: 532px;
-  height: 600px;
   font-size: 12px;
   line-height: 14px;
 }
@@ -163,10 +162,8 @@ div#specialNews img#closeSpecialNews {
 #container {
   border: 1px solid transparent;
   height: 100%;
-  /* HACK! Chrome regression caused the container to be unscrollable without a defined large height */
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   padding: 20px;
 }
 #container #header {
