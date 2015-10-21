@@ -1,7 +1,7 @@
 {
   "name": "Online Notifier",
   "short_name": "Notifier",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "manifest_version": 2,
   "offline_enabled": false,
 	
@@ -48,7 +48,7 @@
     "<all_urls>"
   ],
 
-	"content_scripts": [
+  "content_scripts": [
     {
       "matches": ["*://*/*"],
       "js": ["libs/jquery-2.1.4.min.js", "js/on_website.js"]
