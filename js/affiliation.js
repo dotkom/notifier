@@ -507,12 +507,12 @@ var Affiliation = {
       },
       news: {
         type: "json",
-        url: "https://online.ntnu.no/api/v0/article/all/?format=json",
+        url: "https://online.ntnu.no/api/v1/articles/?format=json",
         parse: function(json, limit, callback) {
           var aff = Affiliation.org['online'];
           var posts = [];
           var count = 0;
-          var articles = json.articles;
+          var articles = json.results;
           if (articles) {
             // Add each article from the API...
             for (var i in articles) {
@@ -524,7 +524,7 @@ var Affiliation = {
                 post.description = article.content;
                 post.creator = article.author.first_name + ' ' + article.author.last_name;
                 post.date = article.created_date;
-                post.image = aff.web + article.image_article_front_featured;
+                post.image = aff.web + (article.images[1] || article.images[0]);
                 // Remove markdown from description (somewhat crude method)
                 post.description = post.description.replace(/(####|###|\*\*)/gi, '');
                 post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');
