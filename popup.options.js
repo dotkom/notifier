@@ -72,9 +72,6 @@ popup.options = {
     $('input#coffeeSubscription').click(function() {
       // Save
       ls.coffeeSubscription = this.checked;
-      // Note: activelySetCoffee is a reminder about what concious choice the user has made.
-      // Don't override that choice with defaults later.
-      ls.activelySetCoffee = 'true';
       // Demo
       if (this.checked === true) {
         Coffee.showNotification();

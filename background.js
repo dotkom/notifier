@@ -226,9 +226,6 @@ var updateUnreadCount = function(count1, count2) {
   // Check if both current affiliations still exist, reset if not
   var keys = Object.keys(Affiliation.org);
   Defaults.resetAffiliationsIfNotExist(ls.affiliationKey1, ls.affiliationKey2, keys);
-  // Turn off hardwarefeatures if they're not available
-  var isAvailable = (Affiliation.org[ls.affiliationKey1].hardware ? true : false);
-  Defaults.setHardwareFeatures(isAvailable);
 }());
 
 //
