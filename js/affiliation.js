@@ -524,7 +524,7 @@ var Affiliation = {
                 post.description = article.content;
                 post.creator = article.author.first_name + ' ' + article.author.last_name;
                 post.date = article.created_date;
-                post.image = aff.web + (article.images[1] || article.images[0]);
+                post.image = aff.web + article.image.md;
                 // Remove markdown from description (somewhat crude method)
                 post.description = post.description.replace(/(####|###|\*\*)/gi, '');
                 post.description = post.description.replace(/\[(.*)\]\(.*\)/gi, '$1');

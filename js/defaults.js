@@ -5,7 +5,7 @@ var Defaults = {
   _autoLoad_: function() {
 
     // Clear previous thoughts
-    if (DEBUG) ls.clear();
+    //if (DEBUG) ls.clear();
 
     // Clear errors from previous versions: undefined objects that
     // may have been saved to localStorage, it did happen once.
@@ -94,20 +94,20 @@ var Defaults = {
     }
 
     // Subscription
-    if (ls.coffeeSubscription === undefined)
+    if (ls.coffeeSubscription === undefined) {
       ls.coffeeSubscription = 'true';
-    if (ls.coffeePots === undefined)
+    }
+    if (ls.coffeePots === undefined) {
       ls.coffeePots = 0;
-    if (ls.coffeeMemeTime === undefined)
+    }
+    if (ls.coffeeMemeTime === undefined) {
       ls.coffeeMemeTime = 0;
-    if (ls.activelySetCoffee === undefined) {
-      ls.activelySetCoffee = 'false';
-      ls.coffeeSubscription = 'true';
     }
 
     // General
-    if (ls.everClickedEdit === undefined)
+    if (ls.everClickedEdit === undefined) {
       ls.everClickedEdit = 'false';
+    }
   }(),
 
   // Whenever we need to remove an existing affiliation,
@@ -127,26 +127,5 @@ var Defaults = {
       sorry(key2);
     }
   },
-
-  // There is currently no way of knowing whether HardwareFeatures have been
-  // installed recently or not, - if they exist. Therefore we will assume the
-  // user starts out with the features turned on.
-  // Then, the features will be turned off if:
-  // a) the user has explicitly turned them off, or
-  // b) hardwarefeatures are not available (this function is then called from background process)
-  setHardwareFeatures: function(isAvailable) {
-
-    if (isAvailable) {
-      // Coffee
-      if (ls.activelySetCoffee === 'false') {
-        ls.coffeeSubscription = 'false';
-      }
-      else {
-        ls.coffeeSubscription = 'true';
-      }
-    }
-    else if (!isAvailable) {
-      ls.coffeeSubscription = 'false';
-    }
-  },
+  
 }
