@@ -479,8 +479,19 @@ var News = {
     // Remove unnecessary inline spaces
     post.creator = post.creator.replace(/\s+/g,' ');
     // Abbreviate long creator names
-    if (post.creator != affiliation.name)
-      post.creator = this.abbreviateName(post.creator);
+    if (post.creator != affiliation.name) {
+      if (post.creator.indexOf(',') !== -1) {
+        // Multiple authors, abbreviate each separately
+        var authors = post.creator.split(',');
+        for (var i = 0; i < authors.length; i++) {
+          authors[i] = this.abbreviateName(authors[i]);
+        }
+        post.creator = authors.join(',');
+      }
+      else {
+        post.creator = this.abbreviateName(post.creator);
+      }
+    }
 
     //
     // Date field
