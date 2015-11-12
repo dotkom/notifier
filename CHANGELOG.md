@@ -62,7 +62,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 * Officescreen
 * Bildefokuserte nyheter
 * Favorittbusslinjer ble reintrodusert
-* Rutetabeller lenket fra sanntidsbuss
+* Man kan nå klikke på en sanntidsbuss for å se rutetabellen
 * Grå og gul palett ble redesignet
 * La til 3 linjeforeninger: Teaterlosjen, Psykolosjen, Signifikant
 * Fjernet Notifier Mobile grunnet planer om ny og bedre app
