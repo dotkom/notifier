@@ -248,7 +248,7 @@ var Images = {
     }
 
     // Look for proper image formats and return false if none are used
-    var formats = /(png|jpe?g|bmp|svg)(\?.*)?$/gi;
+    var formats = /(png|jpe?g|bmp|svg)(\?.*)?/gi;
     if (imageUrl.match(formats) === null) {
       if (this.debug) console.warn('Images: Control found bad URL, was not a proper image format', imageUrl);
       return false;
