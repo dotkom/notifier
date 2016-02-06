@@ -11,6 +11,12 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 
 ## Versjonshistorie
 
+### 2016-02-06 Versjon 5.1
+* (Et halvt år siden siste update, og likevel har Notifier fungert tilnærmet plettfritt. Win!)
+* Merget HiST inn i NTNU
+* Fjernet støtte for Hackerspace (Online/Abakus) på grunn av en lang periode hvor dør-APIet ikke har levert data
+* Fjernet 3 linjeforeninger/tilhørigheter: Theodor (død nettside), Projeksjon (død nettside), Adressa Student (nedlagt feed)
+
 ### 2015-08-01 Versjon 5.0
 * Back to basics: Popupen er nå hele Notifier
 	* Infoscreen splittet ut til ny Chrome extension ved navn Online Notiwall
@@ -55,7 +61,7 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 * Retinastøtte
 * Hackerspace-døra (Online/Abakus)
 * La til 5 nye linjeforeninger: Høiskolens Chemikerforening, Arkitektstudentenes Broderskab, Communitas, Theodor, ESN (gjenopplivet)
-* Fjernet foreningene Fraktur, De Folkevalgte, grunnet døde nettsider
+* Fjernet 2 linjeforeninger/tilhørigheter: Fraktur (død nettside), De Folkevalgte (død nettside)
 * Høiskolens Chemikerforening fikk hardwarefeatures og den tredje Notipien fra Omega Verksted
 
 ### 2014-05-06 Versjon 4.0
