@@ -30,7 +30,7 @@ var Affiliation = {
     'taco': {title: 'Taco', color: 'NavajoWhite', icon: './img/icon-taco.png', image: './img/image-taco.png'},
     'waffle': {title: 'Vafler', color: 'NavajoWhite', icon: './img/icon-waffle.png', image: './img/image-waffle.png'},
   },
-  
+
   // IMPORTANT: Keep the same order of affiliations here as <select> in popup.html
 
   // Explanation of organization attributes:
@@ -108,7 +108,7 @@ var Affiliation = {
     //
     // Linjeforeninger Gløshaugen
     //
-    
+
     'abakus': {
       name: 'Abakus',
       key: 'abakus',
@@ -315,7 +315,7 @@ var Affiliation = {
       palette: 'blue',
       news: {
         type: 'website',
-        scrape: function(html, limit, callback) { 
+        scrape: function(html, limit, callback) {
           var aff = Affiliation.org['janus'];
           var count = 0;
           var posts = [];
@@ -1146,24 +1146,8 @@ var Affiliation = {
       },
     },
 
-    'theodor': {
-      name: 'Theodor',
-      key: 'theodor',
-      web: 'http://lftheodor.no/',
-      logo: './org/theodor/logo.png',
-      icon: './org/theodor/icon.png',
-      symbol: './org/theodor/symbol.png',
-      placeholder: './org/theodor/placeholder.png',
-      palette: 'red',
-      news: {
-        type: 'feed',
-        feed: 'http://lftheodor.no/index.php/component/k2/itemlist?format=feed&moduleID=148',
-        // Images extracted from feed
-      },
-    },
-
     //
-    // Linjeforeninger HiST/DMMH/TJSF/BI
+    // Linjeforeninger Kalvskinnet/DMMH/TJSF/BI
     //
 
     'kom': {
@@ -1360,22 +1344,6 @@ var Affiliation = {
       },
     },
 
-    'projeksjon': {
-      name: 'Projeksjon',
-      key: 'projeksjon',
-      web: 'http://projeksjon.no/',
-      logo: './org/projeksjon/logo.png',
-      icon: './org/projeksjon/icon.png',
-      symbol: './org/projeksjon/symbol.png',
-      placeholder: './org/projeksjon/placeholder.png',
-      palette: 'blue',
-      news: {
-        type: 'feed',
-        feed: 'http://projeksjon.no/feed/',
-        imageScraping: {},
-      },
-    },
-
     'signifikant': {
       name: 'Signifikant',
       key: 'signifikant',
@@ -1476,22 +1444,6 @@ var Affiliation = {
       },
     },
 
-    'adressa': {
-      name: 'Adressa Student',
-      key: 'adressa',
-      web: 'http://adressa.no/',
-      logo: './org/adressa/logo.png',
-      icon: './org/adressa/icon.png',
-      symbol: './org/adressa/symbol.png',
-      placeholder: './org/adressa/placeholder.png',
-      palette: 'blue',
-      news: {
-        type: 'feed',
-        feed: 'http://www.adressa.no/student/?widgetName=polarisFeeds&widgetId=3185248&getXmlFeed=true',
-        imageScraping: {newsSelector:'div.image.top'},
-      },
-    },
-
     //
     // Store studentorganisasjoner
     //
@@ -1548,22 +1500,6 @@ var Affiliation = {
       },
     },
 
-    'studentparlamentet_hist': {
-      name: 'Studentparlamentet HiST',
-      key: 'studentparlamentet_hist',
-      web: 'http://studentparlamentet.com/',
-      logo: './org/studentparlamentet hist/logo.png',
-      icon: './org/studentparlamentet hist/icon.png',
-      symbol: './org/studentparlamentet hist/symbol.png',
-      placeholder: './org/studentparlamentet hist/placeholder.png',
-      palette: 'blue',
-      news: {
-        type: 'feed',
-        feed: 'http://studentparlamentet.com/?feed=rss2',
-        imageScraping: {},
-      },
-    },
-
     //
     // Institusjoner
     //
@@ -1597,22 +1533,6 @@ var Affiliation = {
         type: 'feed',
         feed: 'http://www.ntnu.no/blogger/rektoratet/feed/',
         imageScraping: {newsSelector:'div.entry'},
-      },
-    },
-
-    'hist': {
-      name: 'HiST',
-      key: 'hist',
-      web: 'http://hist.no/',
-      logo: './org/hist/logo.png',
-      icon: './org/hist/icon.png',
-      symbol: './org/hist/symbol.png',
-      placeholder: './org/hist/placeholder.png',
-      palette: 'blue',
-      news: {
-        type: 'feed',
-        feed: 'http://hist.no/rss.ap?thisId=1393',
-        imageScraping: {newsSelector:'div.nyhet', domainUrl:'hist.no'},
       },
     },
 
@@ -1823,7 +1743,7 @@ var Affiliation = {
     if (meetingData.free === false) {
       statusCode = 'meeting'; // TODO: FOOD
       statusTitle = Affiliation.statuses[statusCode].title;
-      
+
       // Get specific meeting message
       if (meetingData.meetings) {
         statusMessage = meetingData.meetings[0].summary;
