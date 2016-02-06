@@ -522,7 +522,7 @@ var Affiliation = {
                 post.title = article.heading;
                 post.link = aff.web + article.absolute_url;
                 post.description = article.content;
-                post.creator = article.author.first_name + ' ' + article.author.last_name;
+                post.creator = article.authors || (article.created_by.first_name + ' ' + article.created_by.last_name);
                 post.date = article.created_date;
                 post.image = aff.web + article.image.md;
                 // Remove markdown from description (somewhat crude method)
