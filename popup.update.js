@@ -43,20 +43,7 @@ popup.update = {
     else {
       var meetingString = ls.meetingString;
       var htmlMeeting = meetingString.replace(/\n/g, '<br />');
-
-      // Online and Abakus gets the Hackerspace info as well as meetings
-      if (ls.affiliationKey1.match(/online|abakus/g)) {
-        Hackerspace.get(function(hackerspace) {
-          $('#todays #schedule #meetings').html(htmlMeeting + '<div id="hackerspace">' + hackerspace + '</div>');
-          $('#todays #schedule #meetings #hackerspace span').click(function(elem) {
-            Browser.openTab(Hackerspace.web);
-            window.close();
-          });
-        });
-      }
-      else {
-        $('#todays #schedule #meetings').html(htmlMeeting);
-      }
+      $('#todays #schedule #meetings').html(htmlMeeting);
     }
   },
 
@@ -104,7 +91,7 @@ popup.update = {
       var subtitle = '#cantinas ' + selector + ' .subtitle';
       var hours = '#cantinas ' + selector + ' .hours';
       var mealBox = '#cantinas ' + selector + ' .mealBox';
-      
+
       // Reset
       $(hours).html('');
       $(subtitle).text('');
@@ -127,7 +114,7 @@ popup.update = {
 
         // If lunch/cantina? Otherwise kiosk/café
         if (data.lunch || data.dinner) {
-          
+
           // Decide whether to show lunch or dinner
           var isLunchTime = new Date().getHours() < 14;
 
