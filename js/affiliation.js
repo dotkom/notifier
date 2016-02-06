@@ -1445,7 +1445,7 @@ var Affiliation = {
     },
 
     //
-    // Store studentorganisasjoner
+    // Samfundet, Studentdemokrati
     //
 
     'samfundet': {
@@ -1463,10 +1463,6 @@ var Affiliation = {
         // Images extracted from feed
       },
     },
-
-    //
-    // Studentdemokrati
-    //
 
     'velferdstinget': {
       name: 'Velferdstinget',
@@ -1501,7 +1497,7 @@ var Affiliation = {
     },
 
     //
-    // Institusjoner
+    // Utdanningsinstitusjoner
     //
 
     'ntnu': {

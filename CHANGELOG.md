@@ -12,10 +12,10 @@ Dette prosjektet følger [Semantic Versioning](http://semver.org/).
 ## Versjonshistorie
 
 ### 2016-02-06 Versjon 5.1
-* (Et halvt år siden siste update, og likevel har Notifier fungert tilnærmet plettfritt. Win!)
-* Merget HiST inn i NTNU
+* Win! Et halvt år siden siste update, og likevel har Notifier fungert tilnærmet plettfritt.
+* Fusjonerte HiST inn i NTNU
 * Fjernet støtte for Hackerspace (Online/Abakus) på grunn av en lang periode hvor dør-APIet ikke har levert data
-* Fjernet 3 linjeforeninger/tilhørigheter: Theodor (død nettside), Projeksjon (død nettside), Adressa Student (nedlagt feed)
+* Fjernet 3 linjeforeninger++: Theodor (død nettside), Projeksjon (død nettside), Adressa Student (nedlagt feed)
 
 ### 2015-08-01 Versjon 5.0
 * Back to basics: Popupen er nå hele Notifier
