@@ -237,16 +237,6 @@ div#specialNews img#closeSpecialNews {
 #container #todays #schedule #meetings {
   margin-top: 5px;
 }
-#container #todays #schedule #hackerspace {
-  margin-top: 4px;
-}
-#container #todays #schedule #hackerspace span {
-  font-weight: bold;
-  cursor: pointer;
-}
-#container #todays #schedule #hackerspace span:hover {
-  text-decoration: underline;
-}
 #container #todays #coffee {
   border: 1px solid transparent;
   float: right;

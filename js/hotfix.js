@@ -1,40 +1,16 @@
 "use strict";
 
-// REMOVING INFOSCREEN LOCALSTORAGE VARS
-// REMOVE AFTER SEPTEMBER 2015
-if (localStorage.useBigscreen === 'true') {
-	if (confirm("Fra appkom@online.ntnu.no :\n\nOnline Notifier sin infoskjerm-funksjon er nå skilt ut til en egen Chrome extension som heter Online Notiwall.\n\nÅpne https://chrome.google.com/webstore ?")) {
-		var url = 'https://chrome.google.com/webstore/detail/online-notiwall/ockmkaidddgbbababholkkhlmppnacjm';
-		chrome.tabs.create({url: url, selected: true});
-	}
+// MERGING STUDENTPARLAMENTET HIST INTO STUDENTTINGET NTNU
+// REMOVE AFTER MAY 2016
+if (localStorage.affiliationKey1 === 'studentparlamentet_hist') {
+	localStorage.affiliationKey1 = 'studenttinget_ntnu';
 }
-localStorage.removeItem('useBigscreen');
-localStorage.removeItem('whichScreen');
-localStorage.removeItem('infoscreenLastStatusCode');
-localStorage.removeItem('infoscreenLastMessage');
-localStorage.removeItem('officescreenLastStatusCode');
-localStorage.removeItem('officescreenLastMessage');
-
-// RENAMING LOCALSTORAGE VARS
-// deprecating old naming schemes
-// REMOVE AFTER SEPTEMBER 2015
-localStorage.removeItem('showOffice');
-localStorage.removeItem('showStatus');
-localStorage.removeItem('activelySetOffice');
-localStorage.removeItem('showAffiliation1');
-localStorage.removeItem('everOpenedOptions');
-localStorage.removeItem('busInFocus');
-localStorage.removeItem('storedImages');
-
-// EXPANDING NOTIFICATIONS OPTIONS
-// changing old system into new system
-// REMOVE AFTER SEPTEMBER 2015
-if (localStorage.showNotifications === 'false') {
-	localStorage.showNotifications1 = 'false';
-	localStorage.showNotifications2 = 'false';
+if (localStorage.affiliationKey2 === 'studentparlamentet_hist') {
+	localStorage.affiliationKey2 = 'studenttinget_ntnu';
 }
-else if (localStorage.showNotifications === 'true') {
-	localStorage.showNotifications1 = 'true';
-	localStorage.showNotifications2 = 'true';
+if (localStorage.affiliationKey1 === 'hist') {
+	localStorage.affiliationKey1 = 'rektoratet_ntnu';
 }
-localStorage.removeItem('showNotifications');
+if (localStorage.affiliationKey2 === 'hist') {
+	localStorage.affiliationKey2 = 'rektoratet_ntnu';
+}

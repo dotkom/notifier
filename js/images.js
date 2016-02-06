@@ -90,7 +90,7 @@ var Images = {
   scrapeForImage: function(html, post, affiliation) {
     // Get those options for image scraping
     var options = affiliation.news.imageScraping || {};
-    
+
     // Give us some space, there will be lots of logging
     if (this.debug) console.log('');
 
@@ -150,7 +150,7 @@ var Images = {
     //
     // Now we have probably found something that resembles an image URL, but if we did, is the URL good enough?
     //
-    
+
     // Did we find anything at all?
     if (isEmpty(image)) {
       if (this.debug) console.log('Images: No image exists for link "' + post.link + '"');
@@ -248,7 +248,7 @@ var Images = {
     }
 
     // Look for proper image formats and return false if none are used
-    var formats = /(png|jpe?g|bmp|svg)(\?.*)?$/gi;
+    var formats = /(png|jpe?g|bmp|svg)(\?.*)?/gi;
     if (imageUrl.match(formats) === null) {
       if (this.debug) console.warn('Images: Control found bad URL, was not a proper image format', imageUrl);
       return false;

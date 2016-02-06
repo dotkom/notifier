@@ -147,8 +147,8 @@ var News = {
       },
       error: function(jqXHR, text, err) {
         // Misconfigured servers will send XML with HTML headers
-        if (jqXHR.status == 200 && jqXHR.responseText.match(/^\<\?xml/) != null) {
-          xml = jqXHR.responseText;
+        if (jqXHR.status == 200 && jqXHR.responseText && jqXHR.responseText.match(/^\<\?xml/) != null) {
+          var xml = jqXHR.responseText;
           this.success(xml);
         }
         // Else, actual error
@@ -168,7 +168,7 @@ var News = {
   //
 
   fetchImagesAndFinishUp: function(affiliation, posts, callback) {
-    
+
     // Minor helper function to keep things DRY
     var postProcessHelper = function(posts, affiliation) {
       for (var i in posts) {

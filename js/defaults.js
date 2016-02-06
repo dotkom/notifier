@@ -127,5 +127,5 @@ var Defaults = {
       sorry(key2);
     }
   },
-  
+
 }

@@ -87,7 +87,7 @@ var Ajaxer = {
         type: (params.data ? 'POST' : 'GET'),
         data: (params.data ? params.data : ''),
         url: params.url,
-        timeout: params.timeout || 10000,
+        timeout: params.timeout || 15000,
         dataFilter: params.dataFilter,
         dataType: params.dataType,
         success: params.success,
