@@ -266,21 +266,21 @@ var Affiliation = {
       symbol: './org/hc/symbol.png',
       placeholder: './org/hc/placeholder.png',
       palette: 'yellow',
-      hardware: {
-        office: 'HC-kontoret',
-        statusIcons: {
-          open: './org/hc/icon-open.png',
-          closed: './org/hc/icon-closed.png',
-          meeting: './org/hc/icon-meeting.png',
-        },
-        statusMessages: {
-          open: 'Velkommen inn!',
-          closed: 'Finn et komitemedlem for å åpne',
-          meeting: 'Kontoret er opptatt',
-        },
-        memePath: './org/hc/meme/',
-        memeCount: 2,
-      },
+      // hardware: {
+      //   office: 'HC-kontoret',
+      //   statusIcons: {
+      //     open: './org/hc/icon-open.png',
+      //     closed: './org/hc/icon-closed.png',
+      //     meeting: './org/hc/icon-meeting.png',
+      //   },
+      //   statusMessages: {
+      //     open: 'Velkommen inn!',
+      //     closed: 'Finn et komitemedlem for å åpne',
+      //     meeting: 'Kontoret er opptatt',
+      //   },
+      //   memePath: './org/hc/meme/',
+      //   memeCount: 2,
+      // },
       news: {
         type: 'feed',
         feed: 'https://chemie.no/feed/',
