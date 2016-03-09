@@ -694,7 +694,7 @@ var News = {
       }
     }
     // Check for YouTube-links as well (we can fetch thumbnail images)
-    pieces = description.match(/youtube.com\/embed\/([a-z0-9]+)/i);
+    pieces = description.match(/youtube.com\/embed\/([a-z0-9_\-]+)/i);
     if (pieces != null) {
       var id = pieces[1];
       // A YouTube thumbnail has the format http://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg
