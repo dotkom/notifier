@@ -26,9 +26,8 @@ var ls = localStorage;
 // All other constants
 //
 
-// API servers
-var API_SERVER_1 = 'https://passoa.online.ntnu.no/api/';
-var API_SERVER_2 = 'http://online.duvholt.net/api/';
+// API server
+var API_SERVER = 'https://passoa.online.ntnu.no/api/';
 
 // Loops & intervals
 var BACKGROUND_LOOP = 60000; // 60s

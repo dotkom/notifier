@@ -76,12 +76,6 @@ var Ajaxer = {
       return;
     }
 
-    if (params.url.indexOf(API_SERVER_1) !== -1) {
-      // Expect fast response from primary API server...
-      // ...to fall back quickly to secondary API server
-      params.timeout = 3000;
-    }
-
     var ajax = function(params) {
       return $.ajax({
         type: (params.data ? 'POST' : 'GET'),
@@ -92,15 +86,7 @@ var Ajaxer = {
         dataType: params.dataType,
         success: params.success,
         error: function(err) {
-          if (params.url.indexOf(API_SERVER_1) !== -1) {
-            if (Ajaxer.debug) console.warn('Ajaxer: Falling back to secondary API server');
-            params.url = params.url.replace(API_SERVER_1, API_SERVER_2);
-            params.timeout = 20000; // Assume slow network, be patient
-            ajax(params);
-          }
-          else {
-            params.error(err);
-          }
+          params.error(err);
         },
       });
     }

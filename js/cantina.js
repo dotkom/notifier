@@ -3,7 +3,7 @@
 var Cantina = {
 
   // URLs
-  api: API_SERVER_1 + 'cantina/',
+  api: API_SERVER + 'cantina/',
   webHours: 'https://www.sit.no/mat',
   webDinner: 'https://www.sit.no/middag',
   // Messages
