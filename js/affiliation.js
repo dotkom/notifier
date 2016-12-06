@@ -1648,7 +1648,7 @@ var Affiliation = {
     }
     else {
       // B) It's meetings objects
-      if (meetingData.meetings) {
+      if (Array.isArray(meetingData.meetings) && meetingData.meetings.length > 0) {
         var htmlMeeting = '';
         for (var i in meetingData.meetings) {
           htmlMeeting += (i!=="0"?"\n":"") + meetingData.meetings[i].message;
